@@ -1,0 +1,29 @@
+HealthCareAbroad\ProviderBundle\Entity\Provider:
+    type: entity
+    table: providers
+    repositoryClass: HealthCareAbroad\ProviderBundle\Repository\ProviderRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        slug:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,35 @@
+HealthCareAbroad\ProviderBundle\Entity\ProviderUser:
+    type: entity
+    table: provider_users
+    repositoryClass: HealthCareAbroad\ProviderBundle\Repository\ProviderUserRepository
+    fields:
+        accountId:
+            id: true
+            type: bigint
+            nullable: false
+            column: account_id
+            generator:
+                strategy: IDENTITY
+        status:
+            type: boolean
+            nullable: false
+    manyToOne:
+        provider:
+            targetEntity: Providers
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                provider_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        providerUserType:
+            targetEntity: ProviderUserTypes
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                provider_user_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

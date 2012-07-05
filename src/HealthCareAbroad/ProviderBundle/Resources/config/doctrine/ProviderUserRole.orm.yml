@@ -1,0 +1,34 @@
+HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole:
+    type: entity
+    table: provider_user_roles
+    repositoryClass: HealthCareAbroad\ProviderBundle\Repository\ProviderUserRoleRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        description:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    manyToMany:
+        providerUserType:
+            targetEntity: ProviderUserTypes
+            cascade: {  }
+            mappedBy: providerUserRole
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

@@ -1,0 +1,29 @@
+HealthCareAbroad\HelperBundle\Entity\InvitationToken:
+    type: entity
+    table: invitation_tokens
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\InvitationTokenRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        token:
+            type: string
+            length: 32
+            fixed: false
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        expirationDate:
+            type: datetime
+            nullable: false
+            column: expiration_date
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }
