@@ -1,3 +1,7 @@
+ListingBundle:
+    resource: "@ListingBundle/Resources/config/routing.yml"
+    prefix:   /
+
 HelperBundle:
     resource: "@HelperBundle/Resources/config/routing.yml"
     prefix:   /

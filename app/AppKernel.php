@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\UserBundle\UserBundle(),
             new HealthCareAbroad\ProviderBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
+            new HealthCareAbroad\ListingBundle\ListingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
