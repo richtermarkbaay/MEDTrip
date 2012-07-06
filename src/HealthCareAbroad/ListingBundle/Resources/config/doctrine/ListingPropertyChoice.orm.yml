@@ -1,0 +1,30 @@
+HealthCareAbroad\ListingBundle\Entity\ListingPropertyChoice:
+    type: entity
+    table: listing_property_choices
+    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingPropertyChoiceRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        value:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    manyToOne:
+        listingProperty:
+            targetEntity: ListingProperty
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                listing_property_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

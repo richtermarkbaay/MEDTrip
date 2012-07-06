@@ -1,0 +1,21 @@
+HealthCareAbroad\ListingBundle\Entity\ListingProperty:
+    type: entity
+    table: listing_properties
+    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingPropertyRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,33 @@
+HealthCareAbroad\ListingBundle\Entity\Listing:
+    type: entity
+    table: listings
+    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        title:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    manyToOne:
+        provider:
+            targetEntity: Provider
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                provider_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
