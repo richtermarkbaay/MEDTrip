@@ -6,4 +6,6 @@ build/
 vendor
 composer.phar
 app/config/parameters.yml
+.settings
+.buildpath
 .project
