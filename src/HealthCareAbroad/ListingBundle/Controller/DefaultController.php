@@ -42,10 +42,10 @@ class DefaultController extends Controller
     
     public function editAction($id)
     {
-		$em = $this->get('doctrine')->getEntityManager();
-		$s = $em->find('ListingBundle:Listing', $id);
-		var_dump($s->getTitle()); exit;
-		//$listing = $this->get("listing.service")->getListing($id);
+		//$em = $this->get('doctrine')->getEntityManager();
+		//$listing = $em->find('ListingBundle:Listing', $id);
+		$listing = $this->get("listing.service")->getListing($id);
+		var_dump($listing->getTitle()); exit;
 		return $this->_createForm($listing);
     }
     
@@ -98,7 +98,7 @@ class DefaultController extends Controller
     	$data->set('description', 'Test description');
     	$data->set('status', 'false');
     	$data->set('providerId', 1);
-
+		var_dump($data->get('title')); exit;
     	$listing = $listingService->addListing($data);
     	
     	return new Response($listing);

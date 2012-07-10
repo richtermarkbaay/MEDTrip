@@ -5,6 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class ListingData extends ArrayCollection
 {
+	
 	private $keys = array(
 		"id",
 		"title",
@@ -19,9 +20,8 @@ class ListingData extends ArrayCollection
 	 */
 	public function get($key)
 	{
-		if ($this->isValidKey($key))
-		{	
-			parent::get($key);
+		if ($this->isValidKey($key)){
+			return parent::get($key);
 		}
 	}
 	

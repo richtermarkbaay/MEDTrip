@@ -17,9 +17,10 @@ class ListingService
 		$this->entityManager = $entityManager;
 	}
 	
-	public function getListing($listingId)
+	public function getListing($id)
 	{
-		$repository = $this->entityManager->getRepository('HealthCareAbroadBundle:Listing');
+		//$repository = $this->entityManager->getRepository('HealthCareAbroadBundle:Listing');
+		$repository = $this->entityManager->getRepository('ListingBundle:Listing');
 		$listing = $repository->findOneById($id); 
 		
 		return $listing;
