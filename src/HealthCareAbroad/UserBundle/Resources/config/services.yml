@@ -1,7 +1,7 @@
 parameters:
-#    user.example.class: HealthCareAbroad\UserBundle\Example
+    user_service_class: HealthCareAbroad\UserBundle\Services\UserService
 
 services:
-#    user.example:
-#        class: %user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    user_service:
+        class: %user_service_class%
+        arguments: [@chromedia_global_request, @?doctrine]

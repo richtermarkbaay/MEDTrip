@@ -2,12 +2,14 @@
 
 namespace HealthCareAbroad\ProviderBundle\Entity;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUserInterface;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * HealthCareAbroad\ProviderBundle\Entity\ProviderUser
  */
-class ProviderUser
+class ProviderUser implements SiteUserInterface
 {
     /**
      * @var bigint $accountId
@@ -104,5 +106,23 @@ class ProviderUser
     public function getProviderUserType()
     {
         return $this->providerUserType;
+    }
+    
+    /**
+     * SiteUserInterface
+     */
+    public function getId()
+    {
+        return $this->accountId;
+    }
+    
+    public function getEmail()
+    {
+        
+    }
+    
+    public function getPassword()
+    {
+        
     }
 }

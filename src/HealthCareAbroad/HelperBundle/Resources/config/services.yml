@@ -1,7 +1,6 @@
 parameters:
-#    helper.example.class: HealthCareAbroad\HelperBundle\Example
+    chromedia_global_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
 
 services:
-#    helper.example:
-#        class: %helper.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    chromedia_global_request:
+        class: %chromedia_global_request_class%
