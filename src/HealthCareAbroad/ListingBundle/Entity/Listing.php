@@ -25,12 +25,12 @@ class Listing
     private $description;
 
     /**
-     * @var boolean $dateModified
+     * @var datetime $dateModified
      */
     private $dateModified;
     
     /**
-     * @var boolean $dateCreated
+     * @var datetime $date_created
      */
     private $dateCreated;
     
@@ -101,12 +101,12 @@ class Listing
     /**
      * Set date_modified
      *
-     * @param datetime $dateModified
+     * @param datetime $date_modified
      * @return Listing
      */
     public function setDateModified($dateModified)
     {
-    	$this->date_modified = $dateModified;
+    	$this->dateModified = $dateModified;
     	return $this;
     }
     
@@ -117,7 +117,7 @@ class Listing
      */
     public function getDateModified()
     {
-    	return $this->date_modified;
+    	return $this->dateModified;
     }
 
     /**
@@ -128,7 +128,7 @@ class Listing
      */
     public function setDateCreated($dateCreated)
     {
-    	$this->date_created = $dateCreated;
+    	$this->dateCreated = $dateCreated;
     	return $this;
     }
     
@@ -139,7 +139,7 @@ class Listing
      */
     public function getDateCreated()
     {
-    	return $this->date_created;
+    	return $this->dateCreated;
     }
 
     /**

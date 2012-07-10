@@ -4,6 +4,7 @@ namespace HealthCareAbroad\ListingBundle\Service;
 use HealthCareAbroad\ListingBundle\Entity\Listing;
 use HealthCareAbroad\ListingBundle\Repository\ListingRepository;
 use HealthCareAbroad\ListingBundle\Service\ListingData;
+use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\EntityManager;
@@ -42,8 +43,12 @@ class ListingService
 	{
 	}
 	
-	public function getListings($criteria)
+	public function getListings($providerId)
 	{
+		$repository = $this->entityManager->getRepository('ListingBundle:Listing');
+		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($providerId);
+		$listings = $repository->findByProvider($provider);
+		return $listings;
 	}
 	
 	/**
@@ -56,18 +61,18 @@ class ListingService
 	
 	public function addListing(ListingData $data)
 	{
+
 		//$provider = $this->entityManager->getRepository('HealthCareAbroadBundle:Provider')->find($providerId);
-		
-		$msg = 'title: '.$data->get('title'). 'desc: '.$data->get('description');
-		
-		var_dump($msg); exit;
+		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($data->get('provider_id'));
 		
 		$listing = new Listing();
 		$listing->setTitle($data->get('title'));
 		$listing->setDescription($data->get('description'));
+		$listing->setDateModified(new \DateTime("now"));
+		$listing->setDateCreated(new \DateTime("now"));
 		$listing->setStatus($data->get('status'));
-		//$listing->setProvider($provider);
-		
+		$listing->setProvider($provider);
+		//var_dump($listing->getDateModified()); exit;
 		$this->entityManager->persist($listing);
 		$this->entityManager->flush($listing);
 		

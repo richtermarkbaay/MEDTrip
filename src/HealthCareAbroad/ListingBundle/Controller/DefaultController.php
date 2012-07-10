@@ -9,7 +9,6 @@ use HealthCareAbroad\ListingBundle\Entity\Listing;
 use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Reponse;
-use HealthCareAbroad\ListingBundle\Form\Type\ListingType;
 
 
 
@@ -19,17 +18,10 @@ class DefaultController extends Controller
     {
     	//$client = new Guzzle\Service\Client('http://test.com/');
     	//var_dump($client);
-    	
-		//$listings = $this->get("listing.service")->getFullListingsByProviderId($providerId, array('provider'));
-		for($i=0; $i<5; $i++) {
-			$listing = new Listing();
-			$listing->setTitle("Listing Title " . $i+1);
-			$listing->setDescription("Listing Desc. Lorem ipsum dulor sit amit. " . $i+1);
-			$listings[] = $listing;
-		}
-    	
-		//var_dump($listings[0]); exit;
-		$listings = array('listing1','listing2');
+
+		$listings = $this->get("listing.service")->getListings(1);
+    
+
     	$data = array('listings'=>$listings);
     	return $this->render('ListingBundle:Default:index.html.twig', $data);
     }
@@ -45,7 +37,11 @@ class DefaultController extends Controller
 		//$em = $this->get('doctrine')->getEntityManager();
 		//$listing = $em->find('ListingBundle:Listing', $id);
 		$listing = $this->get("listing.service")->getListing($id);
-		var_dump($listing->getTitle()); exit;
+		//$listing = new Listing();
+		//$listing->getTitle(); 
+		var_dump($listing); exit;
+		//$listing = new Listing();
+		//$listing->setTitle('test');
 		return $this->_createForm($listing);
     }
     
@@ -54,9 +50,21 @@ class DefaultController extends Controller
     	$data = $request->request->get('form');
 
 		if(!isset($data['provider']))
-			$data['provider'] = $request->getSession()->get('provider.id');
+			$data['provider_id'] = $request->getSession()->get('provider.id');
+		else 
+			$data['provider_id'] = $data['provider'];
+		
+		unset($data['_token']);
+		unset($data['provider']);
+		
+		$listingData = new ListingData();
+		$listingData->set('status', 1);
+		foreach($data as $key => $val) {
+			$listingData->set($key, $val);
+		}
 
-		//$listing = $this->get("listing.service")->addListing($providerId, $data);
+		
+		$listing = $this->get("listing.service")->addListing($listingData);
 		
 		$request->getSession()->setFlash('notice', 'New Listing has been added!');
 		return $this->redirect($this->generateUrl('ListingBundle_homepage'));
@@ -70,7 +78,7 @@ class DefaultController extends Controller
     private function _createForm(Listing $listing)
     {
     	$isProvider = false;
-    	$providers = array('ADelbert', 'Chris', 'Harold', 'Mike', 'Hazel');
+    	$providers = array(1 => 'ADelbert', 2=> 'Chris');
     	$countries = array('USA', 'Canada', 'Japan', 'China');
     	$states = array('Washington', 'New York', 'Chicago', 'California');
     	$countries = array('USA', 'Canada', 'Japan', 'China');
@@ -80,10 +88,10 @@ class DefaultController extends Controller
     	 
     	$formBuilder->add('title','text')
     	->add('description','textarea')
-    	->add('address', 'textarea', array("property_path" => false))
-    	->add('state', 'choice', array('choices'=> $states, 'property_path'=> false))
-    	->add('region', 'text', array('property_path'=> false))
-    	->add('country', 'choice', array('choices'=> $countries, 'property_path'=> false));
+    	->add('address', 'textarea', array("property_path" => false));
+    	//->add('state', 'choice', array('choices'=> $states, 'property_path'=> false))
+    	//->add('region', 'text', array('property_path'=> false))
+    	//->add('country', 'choice', array('choices'=> $countries, 'property_path'=> false));
  
     	$form = $formBuilder->getForm();
     	 

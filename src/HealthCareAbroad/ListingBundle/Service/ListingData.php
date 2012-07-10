@@ -10,8 +10,9 @@ class ListingData extends ArrayCollection
 		"id",
 		"title",
 		"description",
+		"address",
 		"status",
-		"providerId"	
+		"provider_id"
 	);
 	
 	/**
