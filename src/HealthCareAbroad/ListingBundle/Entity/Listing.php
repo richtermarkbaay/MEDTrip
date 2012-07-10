@@ -1,8 +1,8 @@
 <?php
-
 namespace HealthCareAbroad\ListingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * HealthCareAbroad\ListingBundle\Entity\Listing
@@ -34,6 +34,7 @@ class Listing
      */
     private $provider;
 
+    
 
     /**
      * Get id
@@ -131,5 +132,13 @@ class Listing
     public function getProvider()
     {
         return $this->provider;
+    }
+    
+    private $listingProperties;
+    
+    
+    public function __construct() 
+    {
+    	$this->listingProperties = new ArrayCollection();	
     }
 }

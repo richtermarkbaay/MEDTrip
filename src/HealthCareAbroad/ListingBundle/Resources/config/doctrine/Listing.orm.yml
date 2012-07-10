@@ -20,14 +20,14 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
         status:
             type: boolean
             nullable: false
-    manyToOne:
-        provider:
-            targetEntity: Provider
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                provider_id:
-                    referencedColumnName: id
-            orphanRemoval: false
+#    manyToOne:
+#        provider:
+#            targetEntity: Provider
+#            cascade: {  }
+#            mappedBy: null
+#            inversedBy: null
+#            joinColumns:
+#                provider_id:
+#                    referencedColumnName: id
+#            orphanRemoval: false
     lifecycleCallbacks: {  }

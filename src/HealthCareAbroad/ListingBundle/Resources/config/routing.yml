@@ -1,3 +1,3 @@
 ListingBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: ListingBundle:Default:index }
+    pattern:  /listing
+    defaults: { _controller: ListingBundle:Default:test }
