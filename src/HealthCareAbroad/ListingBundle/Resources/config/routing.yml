@@ -13,3 +13,7 @@ ListingBundle_add:
 ListingBundle_edit:
     pattern:  /listing/edit/{id}
     defaults: { _controller: ListingBundle:Default:edit }
+
+ListingBundle_test:
+    pattern:  /listing
+    defaults: { _controller: ListingBundle:Default:test }

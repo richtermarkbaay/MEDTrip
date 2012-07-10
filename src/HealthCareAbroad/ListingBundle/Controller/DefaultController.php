@@ -2,6 +2,7 @@
 namespace HealthCareAbroad\ListingBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use HealthCareAbroad\ListingBundle\Service\ListingData;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\ListingBundle\Entity\Listing;
@@ -9,6 +10,7 @@ use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Reponse;
 use HealthCareAbroad\ListingBundle\Form\Type\ListingType;
+
 
 
 class DefaultController extends Controller
@@ -86,5 +88,19 @@ class DefaultController extends Controller
     	$form = $formBuilder->getForm();
     	 
     	return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function testAction()
+    {
+    	$listingService = $this->get("listing.service");
+    	$data = new ListingData();
+    	$data->set('title', 'XXX title');
+    	$data->set('description', 'Test description');
+    	$data->set('status', 'false');
+    	$data->set('providerId', 1);
+
+    	$listing = $listingService->addListing($data);
+    	
+    	return new Response($listing);
     }
 }

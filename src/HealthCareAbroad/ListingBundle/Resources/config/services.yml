@@ -1,7 +1,8 @@
 parameters:
-#    listing.example.class: HealthCareAbroad\ListingBundle\Example
+  listing.service.class: HealthCareAbroad\ListingBundle\Service\ListingService
 
 services:
-#    listing.example:
-#        class: %listing.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+  listing.service:
+    class: "%listing.service.class%"
+    arguments: 
+      entityManager: "@doctrine.orm.entity_manager"

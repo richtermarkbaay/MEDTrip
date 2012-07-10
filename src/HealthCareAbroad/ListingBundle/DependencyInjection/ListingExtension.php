@@ -24,5 +24,7 @@ class ListingExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        
+        $container->setParameter('listing.couchdb.enabled', $config['use_couchdb']);        
     }
 }
