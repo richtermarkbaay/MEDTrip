@@ -1,3 +1,15 @@
 ListingBundle_homepage:
-    pattern:  /hello/{name}
+    pattern:  /listings
     defaults: { _controller: ListingBundle:Default:index }
+
+ListingBundle_create:
+    pattern:  /listing/create
+    defaults: { _controller: ListingBundle:Default:create }
+
+ListingBundle_add:
+    pattern:  /listing/add
+    defaults: { _controller: ListingBundle:Default:add }
+    
+ListingBundle_edit:
+    pattern:  /listing/edit/{id}
+    defaults: { _controller: ListingBundle:Default:edit }

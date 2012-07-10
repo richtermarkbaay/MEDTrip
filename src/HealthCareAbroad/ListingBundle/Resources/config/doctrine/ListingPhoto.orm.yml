@@ -1,7 +1,7 @@
-HealthCareAbroad\ListingBundle\Entity\Listing:
+HealthCareAbroad\ListingBundle\Entity\ListingPhoto:
+ListingPhotos:
     type: entity
-    table: listings
-    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingRepository
+    table: listing_photos
     fields:
         id:
             id: true
@@ -9,18 +9,20 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
             nullable: false
             generator:
                 strategy: IDENTITY
-        title:
+        listingId:
+            type: bigint
+            nullable: false
+            column: listing_id
+        filename:
             type: string
-            length: 250
+            length: 50
             fixed: false
             nullable: false
-        description:
-            type: text
+        caption:
+            type: string
+            length: 100
+            fixed: false
             nullable: false
-        dateModified:
-            type: datetime
-            nullable: false
-            column: date_modified
         dateCreated:
             type: datetime
             nullable: false
@@ -29,13 +31,13 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
             type: boolean
             nullable: false
     manyToOne:
-        provider:
-            targetEntity: HealthCareAbroad\ProviderBundle\Entity\Provider
+        listing:
+            targetEntity: Listing
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                provider_id:
+                listing_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
