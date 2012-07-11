@@ -8,11 +8,13 @@ class ListingData extends ArrayCollection
 	
 	private $keys = array(
 		"id",
+		"procedure_id",	
+		"provider_id",
+		"location_id",	
 		"title",
 		"description",
-		"address",
 		"status",
-		"provider_id"
+		
 	);
 	
 	/**

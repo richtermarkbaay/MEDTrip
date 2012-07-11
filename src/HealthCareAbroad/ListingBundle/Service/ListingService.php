@@ -45,9 +45,10 @@ class ListingService
 	
 	public function getListings($providerId)
 	{
-		$repository = $this->entityManager->getRepository('ListingBundle:Listing');
 		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($providerId);
-		$listings = $repository->findByProvider($provider);
+		
+		$listings = $this->entityManager->getRepository('ListingBundle:Listing')->findByProvider($provider);
+		
 		return $listings;
 	}
 	
@@ -61,8 +62,6 @@ class ListingService
 	
 	public function addListing(ListingData $data)
 	{
-
-		//$provider = $this->entityManager->getRepository('HealthCareAbroadBundle:Provider')->find($providerId);
 		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($data->get('provider_id'));
 		
 		$listing = new Listing();
@@ -72,18 +71,31 @@ class ListingService
 		$listing->setDateCreated(new \DateTime("now"));
 		$listing->setStatus($data->get('status'));
 		$listing->setProvider($provider);
-		//var_dump($listing->getDateModified()); exit;
 		$this->entityManager->persist($listing);
 		$this->entityManager->flush($listing);
 		
 		return $listing;
 	}
 	
-	public function editListing($providerId, ListingData $data)
+	public function editListing(ListingData $data)
 	{
+		$listing = $this->entityManager->getRepository('ListingBundle:Listing')->find($data->get('id'));
+		$listing->setTitle($data->get('title'));
+		$listing->setDescription($data->get('description'));
+		$listing->setDateModified(new \DateTime("now"));
+		$listing->setStatus($data->get('status'));
+		//$listing->setProvider($provider);
+
+		$this->entityManager->flush($listing);		
+		
+		return $listing;
 	}
 	
-	public function deleteListing($providerId)
+	public function deleteListing(ListingData $data)
 	{
+		$listing = $this->entityManager->getRepository('ListingBundle:Listing')->find($data->get('id'));
+
+		$this->entityManager->remove($listing);
+		$this->entityManager->flush($listing);
 	}
 }
