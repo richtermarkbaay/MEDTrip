@@ -11,6 +11,7 @@
 		{% for listing in listings %}
 			<div class="listings" style="border-bottom: 1px solid #efefef; margin: 10px;">
 				{{ listing.title }}
+				<a href="{{ path('ListingBundle_edit', {id:listing.id}) }}">edit</a>
 			</div>
 		{% endfor %}
 		</div>

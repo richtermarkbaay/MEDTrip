@@ -1,8 +1,8 @@
 <?php
+
 namespace HealthCareAbroad\ListingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * HealthCareAbroad\ListingBundle\Entity\Listing
@@ -25,24 +25,35 @@ class Listing
     private $description;
 
     /**
+     * @var string $logo
+     */
+    private $logo;
+
+    /**
      * @var datetime $dateModified
      */
     private $dateModified;
-    
+
     /**
-     * @var datetime $date_created
+     * @var datetime $dateCreated
      */
     private $dateCreated;
-    
+
     /**
      * @var boolean $status
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\ListingBundle\Entity\Provider
+     * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
+
+    /**
+     * @var HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure
+     */
+    private $procedure;
+
 
     /**
      * Get id
@@ -99,47 +110,69 @@ class Listing
     }
 
     /**
-     * Set date_modified
+     * Set logo
      *
-     * @param datetime $date_modified
+     * @param string $logo
+     * @return Listing
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set dateModified
+     *
+     * @param datetime $dateModified
      * @return Listing
      */
     public function setDateModified($dateModified)
     {
-    	$this->dateModified = $dateModified;
-    	return $this;
-    }
-    
-    /**
-     * Get date_modified
-     *
-     * @return datetime
-     */
-    public function getDateModified()
-    {
-    	return $this->dateModified;
+        $this->dateModified = $dateModified;
+        return $this;
     }
 
     /**
-     * Set date_created
+     * Get dateModified
+     *
+     * @return datetime 
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified;
+    }
+
+    /**
+     * Set dateCreated
      *
      * @param datetime $dateCreated
      * @return Listing
      */
     public function setDateCreated($dateCreated)
     {
-    	$this->dateCreated = $dateCreated;
-    	return $this;
+        $this->dateCreated = $dateCreated;
+        return $this;
     }
-    
+
     /**
-     * Get date_created
+     * Get dateCreated
      *
-     * @return datetime
+     * @return datetime 
      */
     public function getDateCreated()
     {
-    	return $this->dateCreated;
+        return $this->dateCreated;
     }
 
     /**
@@ -179,18 +212,32 @@ class Listing
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ListingBundle\Entity\Provider 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider 
      */
     public function getProvider()
     {
         return $this->provider;
     }
-    
-    private $listingProperties;
-    
-    
-    public function __construct() 
+
+    /**
+     * Set procedure
+     *
+     * @param HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure $procedure
+     * @return Listing
+     */
+    public function setProcedure(\HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure $procedure = null)
     {
-    	$this->listingProperties = new ArrayCollection();	
+        $this->procedure = $procedure;
+        return $this;
+    }
+
+    /**
+     * Get procedure
+     *
+     * @return HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure 
+     */
+    public function getProcedure()
+    {
+        return $this->procedure;
     }
 }

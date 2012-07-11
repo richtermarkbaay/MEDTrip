@@ -17,6 +17,11 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
         description:
             type: text
             nullable: false
+        logo:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
         dateModified:
             type: datetime
             nullable: false
@@ -38,4 +43,14 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
                 provider_id:
                     referencedColumnName: id
             orphanRemoval: false
+        procedure:
+            targetEntity: HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                medical_procedure_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
     lifecycleCallbacks: {  }

@@ -10,40 +10,25 @@ use Doctrine\ORM\Mapping as ORM;
 class ListingPhoto
 {
     /**
-     * @var integer $id
+     * @var bigint $id
      */
     private $id;
 
     /**
-     * @var bigint $listing_id
+     * @var HealthCareAbroad\HelperBundle\Entity\Photo
      */
-    private $listing_id;
+    private $photo;
 
     /**
-     * @var string $filename
+     * @var HealthCareAbroad\ListingBundle\Entity\Listing
      */
-    private $filename;
-
-    /**
-     * @var string $caption
-     */
-    private $caption;
-
-    /**
-     * @var datetime $date_created
-     */
-    private $date_created;
-
-    /**
-     * @var smallint $status
-     */
-    private $status;
+    private $listing;
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return bigint 
      */
     public function getId()
     {
@@ -51,112 +36,46 @@ class ListingPhoto
     }
 
     /**
-     * Set listing_id
+     * Set photo
      *
-     * @param bigint $listingId
+     * @param HealthCareAbroad\HelperBundle\Entity\Photo $photo
      * @return ListingPhoto
      */
-    public function setListingId($listingId)
+    public function setPhoto(\HealthCareAbroad\HelperBundle\Entity\Photo $photo = null)
     {
-        $this->listing_id = $listingId;
+        $this->photo = $photo;
         return $this;
     }
 
     /**
-     * Get listing_id
+     * Get photo
      *
-     * @return bigint 
+     * @return HealthCareAbroad\HelperBundle\Entity\Photo 
      */
-    public function getListingId()
+    public function getPhoto()
     {
-        return $this->listing_id;
+        return $this->photo;
     }
 
     /**
-     * Set filename
+     * Set listing
      *
-     * @param string $filename
+     * @param HealthCareAbroad\ListingBundle\Entity\Listing $listing
      * @return ListingPhoto
      */
-    public function setFilename($filename)
+    public function setListing(\HealthCareAbroad\ListingBundle\Entity\Listing $listing = null)
     {
-        $this->filename = $filename;
+        $this->listing = $listing;
         return $this;
     }
 
     /**
-     * Get filename
+     * Get listing
      *
-     * @return string 
+     * @return HealthCareAbroad\ListingBundle\Entity\Listing 
      */
-    public function getFilename()
+    public function getListing()
     {
-        return $this->filename;
-    }
-
-    /**
-     * Set caption
-     *
-     * @param string $caption
-     * @return ListingPhoto
-     */
-    public function setCaption($caption)
-    {
-        $this->caption = $caption;
-        return $this;
-    }
-
-    /**
-     * Get caption
-     *
-     * @return string 
-     */
-    public function getCaption()
-    {
-        return $this->caption;
-    }
-
-    /**
-     * Set date_created
-     *
-     * @param datetime $dateCreated
-     * @return ListingPhoto
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->date_created = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * Get date_created
-     *
-     * @return datetime 
-     */
-    public function getDateCreated()
-    {
-        return $this->date_created;
-    }
-
-    /**
-     * Set status
-     *
-     * @param smallint $status
-     * @return ListingPhoto
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return smallint 
-     */
-    public function getStatus()
-    {
-        return $this->status;
+        return $this->listing;
     }
 }

@@ -6,6 +6,7 @@ use HealthCareAbroad\ListingBundle\Service\ListingData;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\ListingBundle\Entity\Listing;
+use HealthCareAbroad\ListingBundle\Form\ListingType;
 use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Reponse;
@@ -36,10 +37,16 @@ class DefaultController extends Controller
     {
 		//$em = $this->get('doctrine')->getEntityManager();
 		//$listing = $em->find('ListingBundle:Listing', $id);
+
 		$listing = $this->get("listing.service")->getListing($id);
+
+		//$formBuilder = $this->createFormBuilder($listing);
+		$form = $this->createForm(new ListingType(), $listing);
+		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
+
+		return $form;
 		//$listing = new Listing();
 		//$listing->getTitle(); 
-		var_dump($listing); exit;
 		//$listing = new Listing();
 		//$listing->setTitle('test');
 		return $this->_createForm($listing);
@@ -83,8 +90,8 @@ class DefaultController extends Controller
     	$states = array('Washington', 'New York', 'Chicago', 'California');
     	$countries = array('USA', 'Canada', 'Japan', 'China');
     	$formBuilder = $this->createFormBuilder($listing);
-    	if(!$isProvider)
-    		$formBuilder->add('provider', 'choice', array('choices' => $providers));
+    	//if(!$isProvider)
+    		//$formBuilder->add('provider', 'choice', array('choices' => $providers));
     	 
     	$formBuilder->add('title','text')
     	->add('description','textarea')

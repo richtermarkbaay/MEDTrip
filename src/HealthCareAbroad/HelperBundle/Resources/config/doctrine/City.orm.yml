@@ -1,0 +1,31 @@
+HealthCareAbroad\HelperBundle\Entity\City:
+    type: entity
+    table: cities
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\CityRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

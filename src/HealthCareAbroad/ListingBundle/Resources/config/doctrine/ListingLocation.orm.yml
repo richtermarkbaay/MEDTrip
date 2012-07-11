@@ -1,7 +1,7 @@
-HealthCareAbroad\ListingBundle\Entity\ListingPhoto:
+HealthCareAbroad\ListingBundle\Entity\ListingLocation:
     type: entity
-    table: listing_photos
-    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingPhotoRepository
+    table: listing_locations
+    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingLocationRepository
     fields:
         id:
             id: true
@@ -9,14 +9,17 @@ HealthCareAbroad\ListingBundle\Entity\ListingPhoto:
             nullable: false
             generator:
                 strategy: IDENTITY
+        address:
+            type: text
+            nullable: false
     manyToOne:
-        photo:
-            targetEntity: HealthCareAbroad\HelperBundle\Entity\Photo
+        city:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\City
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                photo_id:
+                city_id:
                     referencedColumnName: id
             orphanRemoval: false
         listing:
@@ -26,6 +29,15 @@ HealthCareAbroad\ListingBundle\Entity\ListingPhoto:
             inversedBy: null
             joinColumns:
                 listing_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

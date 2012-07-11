@@ -1,0 +1,3 @@
+ProcedureBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: ProcedureBundle:Default:index }
