@@ -3,5 +3,5 @@
 #    defaults: { _controller: ProviderBundle:Default:index }
     
 ProviderBundle_create_token:
-    pattern:  /token
+    pattern:  /createtoken
     defaults: { _controller: ProviderBundle:Token:create }
