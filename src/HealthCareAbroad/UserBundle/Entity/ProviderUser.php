@@ -1,15 +1,15 @@
 <?php
 
-namespace HealthCareAbroad\ProviderBundle\Entity;
+namespace HealthCareAbroad\UserBundle\Entity;
 
-use HealthCareAbroad\UserBundle\Entity\SiteUserInterface;
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * HealthCareAbroad\ProviderBundle\Entity\ProviderUser
  */
-class ProviderUser implements SiteUserInterface
+class ProviderUser extends SiteUser
 {
     /**
      * @var bigint $accountId
@@ -67,10 +67,10 @@ class ProviderUser implements SiteUserInterface
     /**
      * Set provider
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\Providers $provider
+     * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return ProviderUser
      */
-    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Providers $provider = null)
+    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Provider $provider = null)
     {
         $this->provider = $provider;
         return $this;
@@ -79,7 +79,7 @@ class ProviderUser implements SiteUserInterface
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\Providers 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     public function getProvider()
     {
@@ -89,10 +89,10 @@ class ProviderUser implements SiteUserInterface
     /**
      * Set providerUserType
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType
+     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType
      * @return ProviderUser
      */
-    public function setProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType = null)
+    public function setProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType = null)
     {
         $this->providerUserType = $providerUserType;
         return $this;
@@ -101,28 +101,10 @@ class ProviderUser implements SiteUserInterface
     /**
      * Get providerUserType
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes 
+     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
      */
     public function getProviderUserType()
     {
         return $this->providerUserType;
-    }
-    
-    /**
-     * SiteUserInterface
-     */
-    public function getId()
-    {
-        return $this->accountId;
-    }
-    
-    public function getEmail()
-    {
-        
-    }
-    
-    public function getPassword()
-    {
-        
     }
 }

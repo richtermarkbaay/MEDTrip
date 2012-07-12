@@ -1,6 +1,6 @@
 parameters:
-    chromedia_global_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
+    services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
 
 services:
-    chromedia_global_request:
-        class: %chromedia_global_request_class%
+    services.chromedia_request:
+        class: %services.chromedia_request_class%

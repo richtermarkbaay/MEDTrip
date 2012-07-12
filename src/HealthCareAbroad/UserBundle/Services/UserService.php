@@ -22,15 +22,35 @@ class UserService
      */
     private $request;
     
+    private $chromediaAccountsUri;
+    
+    
+    public function __construct()
+    {
+            
+    }
+    
+    /**
+     * 
+     * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
+     */
+    public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+    
     /**
      * 
      * @param \HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest $request
-     * @param \Doctrine\Bundle\DoctrineBundle\Registry $doctrine
      */
-    public function __construct(\HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest $request,\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+    public function setChromediaRequest(\HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest $request)
     {
-        $this->doctrine = $doctrine;
-        $this->request = $request;   
+        $this->request = $request;
+    }
+    
+    public function setChromediaAccountsUri($uri)
+    {
+        $this->chromediaAccountsUri = $uri;
     }
     
     /**
@@ -38,9 +58,20 @@ class UserService
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user
      */
-    public function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user)
+    public function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
-        $this->request->post(null,array(),array());
+        
+        $form_data = array(
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'middle_name' => $user->getMiddleName()
+        );
+        
+        $response = $this->request->post($this->chromediaAccountsUri,array('data' => \base64_encode(\json_encode($form_data))));
+        
+        echo $response;
     }
     
     
@@ -49,7 +80,7 @@ class UserService
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user
      */
-    public function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user)
+    public function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
         
     }

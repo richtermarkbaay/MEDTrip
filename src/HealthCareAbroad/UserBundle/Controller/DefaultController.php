@@ -2,9 +2,7 @@
 
 namespace HealthCareAbroad\UserBundle\Controller;
 
-use HealthCareAbroad\ProviderBundle\Entity\ProviderUser;
-
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
+use HealthCareAbroad\UserBundle\Entity\ProviderUser;
 
 use Guzzle\Common\Event;
 
@@ -39,8 +37,13 @@ class DefaultController extends Controller
         $response = $request->send();**/
         
         $user = new ProviderUser();
+        $user->setEmail('chris.velarde@chromedia.com');
+        $user->setPassword('123456');// hash first the password
+        $user->setFirstName('Allejo Chris');
+        $user->setMiddleName('G');
+        $user->setLastName('Velarde');
         
-        $user_service = $this->get('user_service');
+        $user_service = $this->get('services.user');
         $user_service->createUser($user);
         
         exit;
