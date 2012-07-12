@@ -1,6 +1,7 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Entity;
 
+
 interface SiteUserInterface 
 {
     public function getId();

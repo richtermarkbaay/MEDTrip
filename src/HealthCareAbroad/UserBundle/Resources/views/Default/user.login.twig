@@ -1,0 +1,23 @@
+{% extends 'UserBundle::layout.html.twig' %}
+{% block body %}
+ <header>
+        <h1>Health Care Abroad Login Page</h1>
+</header>
+
+{% if app.session.hasFlash('blogger-notice') %}
+        <div class="blogger-notice">
+            {{ app.session.flash('blogger-notice') }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('UserBundle_login') }}" method="post" {{ form_enctype(form) }} class="user">
+        {{ form_errors(form) }}
+
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+
+        {{ form_rest(form) }}
+
+        <input type="submit" value="Submit" />
+    </form>
+{% endblock %}
