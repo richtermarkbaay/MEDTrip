@@ -1,3 +1,7 @@
-ProviderBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: ProviderBundle:Default:index }
+#ProviderBundle_homepage:
+#    pattern:  /hello/{name}
+#    defaults: { _controller: ProviderBundle:Default:index }
+    
+ProviderBundle_create_token:
+    pattern:  /token
+    defaults: { _controller: ProviderBundle:Token:create }
