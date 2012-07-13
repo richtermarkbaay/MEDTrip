@@ -114,26 +114,41 @@ class ProviderUserRole
     {
         return $this->status;
     }
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $providerUserTypes;
+
 
     /**
-     * Add providerUserType
+     * Add providerUserTypes
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType
+     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserTypes
      * @return ProviderUserRole
      */
-    public function addProviderUserTypes(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType)
+    public function addProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserTypes)
     {
-        $this->providerUserType[] = $providerUserType;
+        $this->providerUserTypes[] = $providerUserTypes;
         return $this;
     }
 
     /**
-     * Get providerUserType
+     * Remove providerUserTypes
+     *
+     * @param <variableType$providerUserTypes
+     */
+    public function removeProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserTypes)
+    {
+        $this->providerUserTypes->removeElement($providerUserTypes);
+    }
+
+    /**
+     * Get providerUserTypes
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getProviderUserType()
+    public function getProviderUserTypes()
     {
-        return $this->providerUserType;
+        return $this->providerUserTypes;
     }
 }

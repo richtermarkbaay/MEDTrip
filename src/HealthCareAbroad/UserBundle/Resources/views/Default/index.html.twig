@@ -1,1 +1,13 @@
-Hello {{ name }}!
+{% extends 'UserBundle::layout.html.twig' %}
+{% block body %}
+ <header>
+        <h1>Welcome to HealthCare Abroad</h1>
+</header>
+{% if app.session.hasFlash('msg-notice') %}
+        <div class="msg-notice">
+            {{ app.session.flash('msg-notice') }}
+        </div>
+    {% endif %}
+
+  Hello
+{% endblock %}

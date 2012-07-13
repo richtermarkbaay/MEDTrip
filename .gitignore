@@ -1,6 +1,7 @@
 web/bundles/
 app/bootstrap.php.cache
 app/cache/*
+app/cache_1/*
 app/logs/*
 build/
 vendor
@@ -15,3 +16,4 @@ app/Resources/.DS_Store
 src/.DS_Store
 src/HealthCareAbroad/.DS_Store
 web/.DS_Store
+MAMP.webarchive

@@ -96,10 +96,10 @@ class ProviderUserType
     /**
      * Set provider
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\Providers $provider
+     * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return ProviderUserType
      */
-    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Providers $provider = null)
+    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Provider $provider = null)
     {
         $this->provider = $provider;
         return $this;
@@ -108,32 +108,47 @@ class ProviderUserType
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\Providers 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     public function getProvider()
     {
         return $this->provider;
     }
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $providerUserRoles;
+
 
     /**
-     * Add providerUserRole
+     * Add providerUserRoles
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserRoles $providerUserRole
+     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole $providerUserRoles
      * @return ProviderUserType
      */
-    public function addProviderUserRoles(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserRoles $providerUserRole)
+    public function addProviderUserRole(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole $providerUserRoles)
     {
-        $this->providerUserRole[] = $providerUserRole;
+        $this->providerUserRoles[] = $providerUserRoles;
         return $this;
     }
 
     /**
-     * Get providerUserRole
+     * Remove providerUserRoles
+     *
+     * @param <variableType$providerUserRoles
+     */
+    public function removeProviderUserRole(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole $providerUserRoles)
+    {
+        $this->providerUserRoles->removeElement($providerUserRoles);
+    }
+
+    /**
+     * Get providerUserRoles
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getProviderUserRole()
+    public function getProviderUserRoles()
     {
-        return $this->providerUserRole;
+        return $this->providerUserRoles;
     }
 }

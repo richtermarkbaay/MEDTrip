@@ -19,8 +19,8 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserType:
             type: boolean
             nullable: false
     manyToMany:
-        providerUserRole:
-            targetEntity: ProviderUserRoles
+        providerUserRoles:
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole
             cascade: {  }
             mappedBy: null
             inversedBy: providerUserType
@@ -37,7 +37,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserType:
             orderBy: null
     manyToOne:
         provider:
-            targetEntity: Providers
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\Provider
             cascade: {  }
             mappedBy: null
             inversedBy: null

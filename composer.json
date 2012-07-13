@@ -17,7 +17,9 @@
         "sensio/framework-extra-bundle": "dev-master",
         "sensio/generator-bundle": "dev-master",
         "jms/security-extra-bundle": "1.1.*",
-        "jms/di-extra-bundle": "1.0.*"
+        "jms/di-extra-bundle": "1.0.*",
+        "guzzle/guzzle": "*",
+        "chromedia/utilities": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -37,5 +39,11 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web"
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://commonutilities.dev.chromedia.com/"
+        }
+    ]
 }

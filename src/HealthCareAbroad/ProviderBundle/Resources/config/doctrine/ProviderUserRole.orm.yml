@@ -24,11 +24,20 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole:
             type: boolean
             nullable: false
     manyToMany:
-        providerUserType:
-            targetEntity: ProviderUserTypes
+        providerUserTypes:
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
             cascade: {  }
-            mappedBy: providerUserRole
-            inversedBy: null
-            joinTable: null
+            mappedBy: null
+            inversedBy: providerUserRole
+            joinTable:
+                name: provider_user_type_roles
+                joinColumns:
+                    -
+                        name: provider_user_role_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: provider_user_type_id
+                        referencedColumnName: id
             orderBy: null
     lifecycleCallbacks: {  }

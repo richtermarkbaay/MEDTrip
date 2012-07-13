@@ -1,7 +1,7 @@
-HealthCareAbroad\ProviderBundle\Entity\ProviderUser:
+HealthCareAbroad\UserBundle\Entity\ProviderUser:
     type: entity
     table: provider_users
-    repositoryClass: HealthCareAbroad\ProviderBundle\Repository\ProviderUserRepository
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\ProviderUserRepository
     fields:
         accountId:
             id: true
@@ -9,13 +9,13 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUser:
             nullable: false
             column: account_id
             generator:
-                strategy: IDENTITY
+                strategy: NONE
         status:
-            type: boolean
+            type: integer
             nullable: false
     manyToOne:
         provider:
-            targetEntity: Providers
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\Provider
             cascade: {  }
             mappedBy: null
             inversedBy: null
@@ -24,7 +24,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUser:
                     referencedColumnName: id
             orphanRemoval: false
         providerUserType:
-            targetEntity: ProviderUserTypes
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
             cascade: {  }
             mappedBy: null
             inversedBy: null

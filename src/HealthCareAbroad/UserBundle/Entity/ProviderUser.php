@@ -1,18 +1,26 @@
 <?php
 
-namespace HealthCareAbroad\ProviderBundle\Entity;
+namespace HealthCareAbroad\UserBundle\Entity;
+
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
+use Symfony\Component\Validator\Constraints\MinLength;
+
+use Symfony\Component\Validator\Constraints\MaxLength;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * HealthCareAbroad\ProviderBundle\Entity\ProviderUser
  */
-class ProviderUser
+class ProviderUser extends SiteUser
 {
-    /**
-     * @var bigint $accountId
-     */
-    private $accountId;
+    
 
     /**
      * @var boolean $status
@@ -28,18 +36,7 @@ class ProviderUser
      * @var HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes
      */
     private $providerUserType;
-
-
-    /**
-     * Get accountId
-     *
-     * @return bigint 
-     */
-    public function getAccountId()
-    {
-        return $this->accountId;
-    }
-
+    
     /**
      * Set status
      *
@@ -65,10 +62,10 @@ class ProviderUser
     /**
      * Set provider
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\Providers $provider
+     * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return ProviderUser
      */
-    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Providers $provider = null)
+    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Provider $provider = null)
     {
         $this->provider = $provider;
         return $this;
@@ -77,7 +74,7 @@ class ProviderUser
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\Providers 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     public function getProvider()
     {
@@ -87,10 +84,10 @@ class ProviderUser
     /**
      * Set providerUserType
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType
+     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType
      * @return ProviderUser
      */
-    public function setProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes $providerUserType = null)
+    public function setProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType = null)
     {
         $this->providerUserType = $providerUserType;
         return $this;
@@ -99,7 +96,7 @@ class ProviderUser
     /**
      * Get providerUserType
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes 
+     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
      */
     public function getProviderUserType()
     {
