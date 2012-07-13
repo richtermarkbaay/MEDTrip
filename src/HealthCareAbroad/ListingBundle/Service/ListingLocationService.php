@@ -104,12 +104,6 @@ class ListingLocationService
 		return $entity;
 	}
 	
-	public function saveLocation(ListingLocation $entity)
-	{
-		$this->entityManager->persist($entity);
-		$this->entityManager->flush($entity);
-	}
-	
 	public function deleteLocationById($listingLocationId) {
 		$location = $this->entityManager->find('ListingBundle:ListingLocation', $listingLocationId);
 		
