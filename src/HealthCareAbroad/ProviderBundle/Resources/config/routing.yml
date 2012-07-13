@@ -1,7 +1,11 @@
-ProviderBundle_homepage:
-    pattern:  /hello/{name}
+ProviderBundle_Accounts_Accept_Invitation:
+    pattern:  /accouts/acceptInvitation/{token}/{id}
     defaults: { _controller: ProviderBundle:Default:index }
+    requirements:    
+        _method:  GET|POST
 
 ProviderBundle_invite:
     pattern:  /provider/invite
     defaults: { _controller: ProviderBundle:Default:invite }
+	requirements:    
+        _method:  POST
