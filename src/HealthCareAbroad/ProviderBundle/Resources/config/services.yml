@@ -1,8 +1,8 @@
 parameters:
-#    provider.example.class: HealthCareAbroad\ProviderBundle\Example
+    services.provider_class: HealthCareAbroad\ProviderBundle\Services\ProviderService
 
 services:
-
-#    provider.example:
-#        class: %provider.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.provider:
+        class: %services.provider_class%
+        calls:
+            - [setDoctrine, [@doctrine]]

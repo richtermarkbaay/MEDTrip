@@ -4,6 +4,15 @@ namespace HealthCareAbroad\UserBundle\Entity;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
+
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
+use Symfony\Component\Validator\Constraints\MinLength;
+
+use Symfony\Component\Validator\Constraints\MaxLength;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
