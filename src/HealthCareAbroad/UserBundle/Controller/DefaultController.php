@@ -36,7 +36,9 @@ class DefaultController extends Controller
         $user->setStatus(3);
         
         $user_service = $this->get('services.user');
-        $user_service->createProviderUser($user);
+        //$user_service->createProviderUser($user);
+        
+        $user_service->findByEmailAndPassword('chris.velarde@chromedia.com', \ChromediaUtilities\Helpers\SecurityHelper::hash_sha256('123456'));
         
         exit;
         
