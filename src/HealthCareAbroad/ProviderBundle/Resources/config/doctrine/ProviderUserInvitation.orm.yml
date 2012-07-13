@@ -47,7 +47,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation:
             nullable: false
     manyToOne:
         provider:
-            targetEntity: Providers
+            targetEntity: Provider
             cascade: {  }
             mappedBy: null
             inversedBy: null
@@ -56,7 +56,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation:
                     referencedColumnName: id
             orphanRemoval: false
         invitationToken:
-            targetEntity: InvitationTokens
+            targetEntity: \HealthCareAbroad\HelperBundle\Entity\InvitationToken
             cascade: {  }
             mappedBy: null
             inversedBy: null

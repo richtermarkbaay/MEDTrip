@@ -1,13 +1,42 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />       
+        {% block stylesheets %}
+            <link href="{{ asset('css/screen.css') }}" type="text/css" rel="stylesheet" />
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <section id="wrapper">
+            <header id="header">
+                <div class="top">
+                    {% block navigation %}
+                        <nav>
+                            <ul class="navigation">
+                                 <li><a href="{{ path('UserBundle_homepage') }}">Home</a></li>
+                                <li><a href="{{ path('ProviderBundle_invite') }}">Add new User</a></li>
+                            </ul>
+                        </nav>
+                    {% endblock %}
+                </div>
+
+            </header>
+
+            <section class="main-col">
+                  {% block body %}{% endblock %}
+            </section>
+    
+
+            <div id="footer">
+                {% block footer %}
+                    Copyright <a href="{{ path('UserBundle_homepage') }}">www.HealthCareAbroad.com</a>
+                {% endblock %}
+            </div>
+        </section>
+
         {% block javascripts %}{% endblock %}
+    </body>
     </body>
 </html>

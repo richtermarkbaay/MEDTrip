@@ -1,0 +1,25 @@
+{% extends 'ProviderBundle::layout.html.twig' %}
+{% block body %}
+ <header>
+        <h1>Send Invitation Email</h1>
+</header>
+
+{% if app.session.hasFlash('msg-notice') %}
+        <div class="msg-notice">
+            {{ app.session.flash('msg-notice') }}
+        </div>
+    {% endif %}
+
+    <form action="{{ path('ProviderBundle_invite') }}" method="post" {{ form_enctype(form) }} class="user">
+        {{ form_errors(form) }}
+		{{ form_row(form.firstName) }}	
+		{{ form_row(form.middleName) }}		
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.message) }}
+		
+        <input type="submit" value="Submit" />
+        
+        {{ form_rest(form)}}
+    </form>
+{% endblock %}
