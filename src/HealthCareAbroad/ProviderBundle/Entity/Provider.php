@@ -5,14 +5,14 @@ namespace HealthCareAbroad\ProviderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\ProviderBundle\Entity\Provider
+ * HealthCareAbroad\ProviderBundle\Entity\Providers
  */
 class Provider
 {
     /**
      * @var integer $id
      */
-    private $id;
+    private $id =1;
 
     /**
      * @var string $name

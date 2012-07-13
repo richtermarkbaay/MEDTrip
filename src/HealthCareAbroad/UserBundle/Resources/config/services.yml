@@ -1,7 +1,10 @@
 parameters:
-#    user.example.class: HealthCareAbroad\UserBundle\Example
+    services.user_class: HealthCareAbroad\UserBundle\Services\UserService
 
 services:
-#    user.example:
-#        class: %user.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.user:
+        class: %services.user_class%
+        calls: 
+            - [setDoctrine, [@doctrine]]
+            - [setChromediaRequest, [@services.chromedia_request]]
+            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
