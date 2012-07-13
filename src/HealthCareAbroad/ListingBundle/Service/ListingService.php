@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Service;
 
+use HealthCareAbroad\ListingBundle\Entity\ListingLocation;
+
 use HealthCareAbroad\ListingBundle\Entity\Listing;
 use HealthCareAbroad\ListingBundle\Repository\ListingRepository;
 use HealthCareAbroad\ListingBundle\Service\ListingData;
@@ -60,19 +62,58 @@ class ListingService
 	public function searchListings($searchCriteria) {
 	}
 	
-	public function addListing(ListingData $data)
+	private function prepareListingData($data) {
+		$location = array(
+			'country_id' => $data['country'], 
+			'city_id' => $data['city'], 
+			'address' => $data['address']
+		);
+
+		$listing = array(
+			'provider_id' => $data['provider'],
+			'medical_procedure_id' => $data['procedure'],
+			'title' => $data['title'],
+			'description' => $data['description'],
+			//'logo' => $data['logo']
+			'status' => isset($data['status']) ? $data['status'] : 0
+		);
+
+		return array('location'=>$location, 'listing'=>$listing);
+	}
+	
+	public function addListing($data = array())
 	{
-		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($data->get('provider_id'));
+		//$data = $this->prepareListingData($data);
+		//$this->entityManager->getRepository('ListingBundle:Listing')->saveListing($data['listing']);
+		//$this->entityManager->getRepository('ListingBundle:ListingLocation')->saveListing($data['listing']);
+
+		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($data['provider']);
+		$procedure = $this->entityManager->getRepository('ProcedureBundle:MedicalProcedure')->findOneById($data['procedure']);			
+
 		
 		$listing = new Listing();
-		$listing->setTitle($data->get('title'));
-		$listing->setDescription($data->get('description'));
+		$listing->setTitle($data['title']);
+		$listing->setDescription($data['description']);
+		//$listing->setLogo('testlogo');
 		$listing->setDateModified(new \DateTime("now"));
 		$listing->setDateCreated(new \DateTime("now"));
-		$listing->setStatus($data->get('status'));
+		$listing->setStatus($data['status']);
 		$listing->setProvider($provider);
+		$listing->setProcedure($procedure);
 		$this->entityManager->persist($listing);
 		$this->entityManager->flush($listing);
+
+
+		$country = $this->entityManager->getRepository('HelperBundle:Country')->findOneById($data['country']);
+		$city = $this->entityManager->getRepository('HelperBundle:City')->findOneById($data['city']);
+		
+		$listingLocation = new ListingLocation();
+		$listingLocation->setListing($listing);
+		$listingLocation->setCountry($country);
+		$listingLocation->setCity($city);
+		$listingLocation->setAddress($data['address']);
+		$this->entityManager->persist($listingLocation);
+		$this->entityManager->flush($listingLocation);
 		
 		return $listing;
 	}

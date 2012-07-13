@@ -25,6 +25,7 @@ class Listing
     private $description;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
      * @var string $logo
      */
     private $logo;
@@ -239,5 +240,14 @@ class Listing
     public function getProcedure()
     {
         return $this->procedure;
+    }
+    
+    public function prePersist($event) {
+		var_dump('testmepresave'); exit;
+    }
+    
+    public function doOtherStuffOnPrePersist()
+    {
+		echo 'etstcallbaml'; exit;
     }
 }

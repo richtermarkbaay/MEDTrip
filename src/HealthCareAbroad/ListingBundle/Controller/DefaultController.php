@@ -1,7 +1,6 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
 use HealthCareAbroad\ListingBundle\Service\ListingData;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +19,7 @@ class DefaultController extends Controller
     	//$client = new Guzzle\Service\Client('http://test.com/');
     	//var_dump($client);
 
-		$listings = $this->get("listing.service")->getListings(1);
+		$listings = $this->get("services.listing")->getListings(2);
     
 
     	$data = array('listings'=>$listings);
@@ -29,19 +28,22 @@ class DefaultController extends Controller
     
     public function createAction()
     {
-		$listing = new Listing();
-		return $this->_createForm($listing);
+    	$em = $this->get('doctrine')->getEntityManager();
+		$form = $this->createForm(new ListingType($em), new Listing());
+
+		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
     }    
     
     public function editAction($id)
     {
-		//$em = $this->get('doctrine')->getEntityManager();
+		$em = $this->get('doctrine')->getEntityManager();
 		//$listing = $em->find('ListingBundle:Listing', $id);
-
-		$listing = $this->get("listing.service")->getListing($id);
-
+		$listing = $this->get("services.listing")->getListing($id);
+		$l = new Listing();
+		//$l->setProcedure()
 		//$formBuilder = $this->createFormBuilder($listing);
-		$form = $this->createForm(new ListingType(), $listing);
+		$form = $this->createForm(new ListingType($em), $l);
+		$form->bindRequest($request);
 		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
 
 		return $form;
@@ -54,24 +56,26 @@ class DefaultController extends Controller
     
     public function addAction(Request $request)
     {
-    	$data = $request->request->get('form');
+    	$em = $this->get('doctrine')->getEntityManager();
+    	$data = $request->request->get('listing');
 
-		if(!isset($data['provider']))
-			$data['provider_id'] = $request->getSession()->get('provider.id');
-		else 
-			$data['provider_id'] = $data['provider'];
-		
-		unset($data['_token']);
-		unset($data['provider']);
-		
-		$listingData = new ListingData();
-		$listingData->set('status', 1);
-		foreach($data as $key => $val) {
-			$listingData->set($key, $val);
-		}
-
-		
-		$listing = $this->get("listing.service")->addListing($listingData);
+     	$form = $this->createForm(new ListingType($em), new Listing());
+    	$form->bindRequest($request);
+    	$form->setData($data);
+    	$x = $form->getNormData();
+    	echo 'bert'; exit;
+    	var_dump($x); exit;
+    			
+    	$data['status'] = 0;
+		//$listingData = new ListingData();
+		//$listingData->set('status', 1);
+		//foreach($data as $key => $val) {
+		//$listingData->set($key, $val);
+// 		}
+    	//$form = $this->createForm(new ListingType($em), );
+    	//$form->bindRequest($request)
+    	
+		$listing = $this->get("services.listing")->addListing($data);
 		
 		$request->getSession()->setFlash('notice', 'New Listing has been added!');
 		return $this->redirect($this->generateUrl('ListingBundle_homepage'));
@@ -81,33 +85,10 @@ class DefaultController extends Controller
     {
     	
     }
-    
-    private function _createForm(Listing $listing)
-    {
-    	$isProvider = false;
-    	$providers = array(1 => 'ADelbert', 2=> 'Chris');
-    	$countries = array('USA', 'Canada', 'Japan', 'China');
-    	$states = array('Washington', 'New York', 'Chicago', 'California');
-    	$countries = array('USA', 'Canada', 'Japan', 'China');
-    	$formBuilder = $this->createFormBuilder($listing);
-    	//if(!$isProvider)
-    		//$formBuilder->add('provider', 'choice', array('choices' => $providers));
-    	 
-    	$formBuilder->add('title','text')
-    	->add('description','textarea')
-    	->add('address', 'textarea', array("property_path" => false));
-    	//->add('state', 'choice', array('choices'=> $states, 'property_path'=> false))
-    	//->add('region', 'text', array('property_path'=> false))
-    	//->add('country', 'choice', array('choices'=> $countries, 'property_path'=> false));
- 
-    	$form = $formBuilder->getForm();
-    	 
-    	return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
-    }
-    
+        
     public function testAction()
     {
-    	$listingService = $this->get("listing.service");
+    	$listingService = $this->get("services.listing");
     	$data = new ListingData();
     	$data->set('title', 'XXX title');
     	$data->set('description', 'Test description');

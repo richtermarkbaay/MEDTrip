@@ -1,10 +1,11 @@
 parameters:
-  listing.service.class: HealthCareAbroad\ListingBundle\Service\ListingService
+  services.listing.class: HealthCareAbroad\ListingBundle\Service\ListingService
   services.listing_location.class: HealthCareAbroad\ListingBundle\Service\ListingLocationService
 
+
 services:
-  listing.service:
-    class: "%listing.service.class%"
+  services.listing:
+    class: "%services.listing.class%"
     arguments: 
       entityManager: "@doctrine.orm.entity_manager"
   

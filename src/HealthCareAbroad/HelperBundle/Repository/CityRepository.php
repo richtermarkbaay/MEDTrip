@@ -12,4 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class CityRepository extends EntityRepository
 {
+	function getCityListByCountryId($countryId) {
+		$criteria = array('status'=>1);
+		$cities = $this->_em->getRepository('HelperBundle:City')->findBy($criteria);
+		$arrCities = array();
+		foreach($cities as $each){
+			$arrCities[$each->getId()] = $each->getName();
+		}
+	
+		return $arrCities;
+	}
 }

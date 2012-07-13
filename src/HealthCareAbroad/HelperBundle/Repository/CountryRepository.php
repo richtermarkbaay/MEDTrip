@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends EntityRepository
 {
+	function getCountryList() {
+		$countries = $this->_em->getRepository('HelperBundle:Country')->findByStatus(1);
+		$arrCountries = array();
+		foreach($countries as $each){
+			$arrCountries[$each->getId()] = $each->getName();
+		}
+
+		return $arrCountries;
+	}
 }
