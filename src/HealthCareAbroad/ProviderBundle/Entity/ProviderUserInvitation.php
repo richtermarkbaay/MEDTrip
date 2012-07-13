@@ -47,10 +47,10 @@ class ProviderUserInvitation
     /**
      * @var boolean $status
      */
-    private $status;
+    private $status =0;
 
     /**
-     * @var HealthCareAbroad\ProviderBundle\Entity\Providers
+     * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
 
@@ -227,10 +227,10 @@ class ProviderUserInvitation
     /**
      * Set provider
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\Providers $provider
+     * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return ProviderUserInvitation
      */
-    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Providers $provider = null)
+    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Provider $provider = null)
     {
         $this->provider = $provider;
         return $this;
@@ -239,7 +239,7 @@ class ProviderUserInvitation
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\Providers 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider 
      */
     public function getProvider()
     {

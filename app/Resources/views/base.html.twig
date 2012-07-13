@@ -15,7 +15,8 @@
                     {% block navigation %}
                         <nav>
                             <ul class="navigation">
-                                <li></li>
+                                 <li><a href="{{ path('UserBundle_homepage') }}">Home</a></li>
+                                <li><a href="{{ path('ProviderBundle_invite') }}">Add new User</a></li>
                             </ul>
                         </nav>
                     {% endblock %}
@@ -30,7 +31,7 @@
 
             <div id="footer">
                 {% block footer %}
-                    Copyright www.HealthCareAbroad.com
+                    Copyright <a href="{{ path('UserBundle_homepage') }}">www.HealthCareAbroad.com</a>
                 {% endblock %}
             </div>
         </section>

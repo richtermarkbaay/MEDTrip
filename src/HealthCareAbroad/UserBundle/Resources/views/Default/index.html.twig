@@ -3,9 +3,9 @@
  <header>
         <h1>Welcome to HealthCare Abroad</h1>
 </header>
-{% if app.session.hasFlash('blogger-notice') %}
-        <div class="blogger-notice">
-            {{ app.session.flash('blogger-notice') }}
+{% if app.session.hasFlash('msg-notice') %}
+        <div class="msg-notice">
+            {{ app.session.flash('msg-notice') }}
         </div>
     {% endif %}
 

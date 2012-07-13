@@ -1,3 +1,7 @@
 ProviderBundle_homepage:
     pattern:  /hello/{name}
     defaults: { _controller: ProviderBundle:Default:index }
+
+ProviderBundle_invite:
+    pattern:  /provider/invite
+    defaults: { _controller: ProviderBundle:Default:invite }

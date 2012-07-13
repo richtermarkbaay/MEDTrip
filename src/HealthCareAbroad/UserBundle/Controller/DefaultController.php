@@ -4,8 +4,6 @@ namespace HealthCareAbroad\UserBundle\Controller;
 
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUser;
 
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
-
 use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -65,25 +63,28 @@ class DefaultController extends Controller
             ->getForm();
      	
      	$request = $this->getRequest();
+     	
 		if ($request->getMethod() == 'POST') 
 		{
-			   $form->bindRequest($request);
+			$form->bindRequest($request);
 		
         	if ($form->isValid())
         	{
-
-				$user = $this->get('services.user_service')->findByEmailAndPassword($email, $password);
+				$user = $this->get('user_service')->findByEmailAndPassword($email, $password);
+				
 				if (!$user) {
 					// invalid credentials
+					
 						$this->get('session')->setFlash('blogger-notice', 'Email and Password is invalid.');          
+            			
             			return $this->redirect($this->generateUrl('UserBundle_login'));
 				}
 				else {
 					
 						$this->get('session')->setFlash('blogger-notice', 'Login successfully!');          
+            			
             			return $this->redirect($this->generateUrl('UserBundle_homepage'));
 				}
-				
        		 }
   	 	}
 		
@@ -92,4 +93,5 @@ class DefaultController extends Controller
        		));             
         
     }
+ 
 }
