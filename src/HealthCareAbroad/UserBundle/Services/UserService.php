@@ -130,5 +130,12 @@ class UserService
             'searchBy' => \base64_encode(\json_encode($searchBy)),
             'option' => \base64_encode(\json_encode($option))
         ));
+        
+        if (200 == $response->getStatusCode()) {
+            $json_data = \json_decode($response->getBody(true), true);
+            $account_data = \count($json_data) ? $json_data[0] : null;
+        }
+        
+        return null;
     }
 }
