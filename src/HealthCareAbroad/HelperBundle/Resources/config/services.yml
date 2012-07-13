@@ -1,5 +1,6 @@
 parameters:
     services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
+    services.create_invitation_class: HealthCareAbroad\HelperBundle\Services\CreateInvitation
 
 services:
     services.chromedia_request:
@@ -7,3 +8,7 @@ services:
         calls:
             - [setAppId, [%application_id%]]
             - [setAppSecret, [%application_secret%]]
+            
+    services.create_invitation:
+        class: %services.create_invitation_class%
+        arguments: [@doctrine.orm.entity_manager]
