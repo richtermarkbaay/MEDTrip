@@ -11,6 +11,13 @@ use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
 use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
 class TokenController extends Controller
 {
+	public function confirmedTokenInvitationAction($email,$token)
+    {
+    	return $this->render('ProviderBundle:Token:confirmedTokenInvitation.html.twig', array(
+					'email' => $email,
+					'token' => $token
+				));
+    }
 	
     public function createAction(Request $request)
     {
@@ -34,6 +41,8 @@ class TokenController extends Controller
 				$tokenizer = new Tokenizer();
 				$generatedToken = $tokenizer->generateTokenString();
 				
+				// $generatedToken = SecurityHelper::hash_sha256(time());
+				
 				$expirationDate = new \DateTime('now');
 				$expirationDate->modify('+6 days');
 				$status = "1";
@@ -45,11 +54,7 @@ class TokenController extends Controller
 				$em = $this->getDoctrine()->getEntityManager();
 				$em->persist($invitationToken);
 				$em->flush();
-				
-				
-
-
-
+			
 				//send email
 				 $message = \Swift_Message::newInstance()
  					 ->setSubject('Activate your account with HealthCareAbroad')
@@ -74,6 +79,9 @@ class TokenController extends Controller
 				
 				//$checkToken = $this->get('CheckExpirationDate')->checkExpiredDateToken();
 				return new Response('Created token! and send invitation token to recipient');
+				// return $this->render('ProviderBundle:Token:create.html.twig', array(
+// 					'form' => $form->createView(),
+// 				));
 			}
 			return $this->render('ProviderBundle:Token:create.html.twig', array(
             	'form' => $form->createView(),

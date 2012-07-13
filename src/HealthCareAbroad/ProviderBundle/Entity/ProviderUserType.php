@@ -136,4 +136,26 @@ class ProviderUserType
     {
         return $this->providerUserRole;
     }
+
+    /**
+     * Add providerUserRole
+     *
+     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserRoles $providerUserRole
+     * @return ProviderUserType
+     */
+    public function addProviderUserRole(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserRoles $providerUserRole)
+    {
+        $this->providerUserRole[] = $providerUserRole;
+        return $this;
+    }
+
+    /**
+     * Remove providerUserRole
+     *
+     * @param <variableType$providerUserRole
+     */
+    public function removeProviderUserRole(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserRoles $providerUserRole)
+    {
+        $this->providerUserRole->removeElement($providerUserRole);
+    }
 }
