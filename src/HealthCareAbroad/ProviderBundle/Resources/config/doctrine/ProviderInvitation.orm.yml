@@ -34,7 +34,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation:
             nullable: false
     manyToOne:
         invitationToken:
-            targetEntity: InvitationTokens
+            targetEntity: \HealthCareAbroad\HelperBundle\Entity\InvitationToken
             cascade: {  }
             mappedBy: null
             inversedBy: null

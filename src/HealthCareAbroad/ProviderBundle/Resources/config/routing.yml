@@ -1,3 +1,15 @@
-ProviderBundle_homepage:
-    pattern:  /hello/{name}
-    defaults: { _controller: ProviderBundle:Default:index }
+#ProviderBundle_homepage:
+#    pattern:  /hello/{name}
+#    defaults: { _controller: ProviderBundle:Default:index }
+    
+ProviderBundle_create_token:
+    pattern:  /createtoken
+    defaults: { _controller: ProviderBundle:Token:create }
+
+
+ProviderBundle_confirmed_token:
+    pattern:  /confirm?e={email}&a={token}
+    defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
+    requirements:
+       _method: GET|POST
+       
