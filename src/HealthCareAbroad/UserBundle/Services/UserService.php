@@ -41,6 +41,8 @@ class UserService
         $this->doctrine = $doctrine;
     }
     
+    
+    
     /**
      * 
      * @param \HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest $request
