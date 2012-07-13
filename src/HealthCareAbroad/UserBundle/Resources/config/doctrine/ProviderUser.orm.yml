@@ -9,9 +9,9 @@ HealthCareAbroad\UserBundle\Entity\ProviderUser:
             nullable: false
             column: account_id
             generator:
-                strategy: IDENTITY
+                strategy: NONE
         status:
-            type: boolean
+            type: integer
             nullable: false
     manyToOne:
         provider:

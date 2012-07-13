@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 class UserService
 {
     /**
@@ -54,13 +56,36 @@ class UserService
     }
     
     /**
-     * Create new user
+     * Create a provider user
      * 
-     * @param \HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user
+     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     */
+    public function createProviderUser(\HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser)
+    {
+        // create user in chromedia global accounts
+        if ( $providerUser = $this->createUser($providerUser)){
+            
+            // persist to provider_users table
+            $em = $this->doctrine->getEntityManager();
+            $em->persist($providerUser);
+            $em->flush();
+            
+            return $providerUser;
+        }
+        
+        // something went wrong in creating global account
+        return NULL;
+    }
+    
+    /**
+     * Create new user in the global chromedia accounts
+     * 
+     * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
+     * @return NULL | SiteUser
      */
     public function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
-        
         $form_data = array(
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
@@ -70,8 +95,14 @@ class UserService
         );
         
         $response = $this->request->post($this->chromediaAccountsUri,array('data' => \base64_encode(\json_encode($form_data))));
-        
-        echo $response;
+        if (200 == $response->getStatusCode()) {
+            $account_data = \json_decode($response->getBody(true),true);
+            $user->setAccountId($account_data['id']);
+            return $user;
+        }
+        else {
+            return null;
+        }
     }
     
     
@@ -83,5 +114,21 @@ class UserService
     public function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
         
+    }
+    
+    /**
+     * Find a user in chromedia global accounts by email and password
+     * 
+     * @param string $email
+     * @param string $password
+     */
+    public function findByEmailAndPassword($email, $password)
+    {
+        $searchBy = array('email' => $email, 'password' => $password);
+        $option = array('limit' => 1);
+        $response = $this->request->post($this->chromediaAccountsUri.'/find', array(
+            'searchBy' => \base64_encode(\json_encode($searchBy)),
+            'option' => \base64_encode(\json_encode($option))
+        ));
     }
 }

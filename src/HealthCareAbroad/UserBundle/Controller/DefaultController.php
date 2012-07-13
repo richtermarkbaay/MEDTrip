@@ -21,30 +21,21 @@ class DefaultController extends Controller
     
     public function testAction()
     {
-        /**$url = 'http://accounts.chromedia.com/app_dev.php';
-        $post_data = array(
-            'account_id' => 2, 
-            'd' => 'eyJlbWFpbCI6ImNocmlzLnZlbGFyZGVAY2hyb21lZGlhLmNvbSIsImZpcnN0X25hbWUiOiJBbGxlam8gQ2hyaXMiLCJsYXN0X25hbWUiOiJWZWxhcmRlIiwicGFzc3dvcmQiOiJhNDBlOWQ3YzkxNDdhODg2M2I2ZmNkMDczODNiYjJhODBkM2U5MWZkM2E2MmI1Mzk3NGRkMjBmN2Q4ZjM4YmUzIn0='
-        );
-        $client = new \Guzzle\Service\Client();
-        
-        $client->getEventDispatcher()->addListener('request.error', function(\Guzzle\Common\Event $event){
-            
-            $event->stopPropagation();
-            
-        });
-        $request = $client->post($url, null, $post_data);
-        $response = $request->send();**/
+        $provider = $this->getDoctrine()->getRepository('ProviderBundle:Provider')->find(1);
+        $providerUserType = $this->getDoctrine()->getRepository('ProviderBundle:ProviderUserType')->find(1);
         
         $user = new ProviderUser();
         $user->setEmail('chris.velarde@chromedia.com');
-        $user->setPassword('123456');// hash first the password
+        $user->setPassword(\ChromediaUtilities\Helpers\SecurityHelper::hash_sha256('123456'));// hash first the password
         $user->setFirstName('Allejo Chris');
         $user->setMiddleName('G');
         $user->setLastName('Velarde');
+        $user->setProvider($provider);
+        $user->setProviderUserType($providerUserType);
+        $user->setStatus(3);
         
         $user_service = $this->get('services.user');
-        $user_service->createUser($user);
+        $user_service->createProviderUser($user);
         
         exit;
         

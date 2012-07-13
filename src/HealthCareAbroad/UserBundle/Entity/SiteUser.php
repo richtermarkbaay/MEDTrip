@@ -9,6 +9,31 @@ abstract class SiteUser
     protected $middleName;
     protected $lastName;
     
+    /**
+     * @var bigint $accountId
+     */
+    protected $accountId;
+    
+    /**
+     * Set account id
+     * 
+     * @param bigint $accountId
+     */
+    public function setAccountId($accountId)
+    {
+        $this->accountId = $accountId;
+    }
+    
+    /**
+     * Get accountId
+     *
+     * @return bigint
+     */
+    public function getAccountId()
+    {
+        return $this->accountId;
+    }
+    
     public function setEmail($email)
     {
         $this->email = $email;

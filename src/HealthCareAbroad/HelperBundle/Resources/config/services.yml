@@ -4,3 +4,6 @@ parameters:
 services:
     services.chromedia_request:
         class: %services.chromedia_request_class%
+        calls:
+            - [setAppId, [%application_id%]]
+            - [setAppSecret, [%application_secret%]]

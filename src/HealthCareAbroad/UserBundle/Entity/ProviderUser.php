@@ -11,10 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProviderUser extends SiteUser
 {
-    /**
-     * @var bigint $accountId
-     */
-    private $accountId;
+    
 
     /**
      * @var boolean $status
@@ -30,18 +27,7 @@ class ProviderUser extends SiteUser
      * @var HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes
      */
     private $providerUserType;
-
-
-    /**
-     * Get accountId
-     *
-     * @return bigint 
-     */
-    public function getAccountId()
-    {
-        return $this->accountId;
-    }
-
+    
     /**
      * Set status
      *
