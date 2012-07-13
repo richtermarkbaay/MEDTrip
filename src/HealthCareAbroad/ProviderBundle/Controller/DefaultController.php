@@ -16,9 +16,23 @@ use HealthCareAbroad\ProviderBundle\Entity\Provider;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function Accounts_Accept_Invitation($token,$id)
     {
-        return $this->render('ProviderBundle:Default:index.html.twig', array('name' => $name));
+    	$em = $this->getDoctrine()->getEntityManager();
+    	
+    	$Invitationtoken = $this->getDoctrine()->getRepository('HelperBundle:InvitationToken')
+        			->find($token);
+      
+    	if (!$Invitationtoken) {
+            throw $this->createNotFoundException('Invalid Token.');
+        }
+        
+        $ProviderUserInvitation = $em->getRepository('ProviderBundle:ProviderUserInvitation')
+                       ->getId($id);
+        
+        return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
+            'ProviderUserInvitation'      => $ProviderUserInvitation
+        ));
     }
         
     public function inviteAction()
@@ -30,7 +44,6 @@ class DefaultController extends Controller
         $providerUserInvitation->setProvider($provider);
         $providerUserInvitation->setDateCreated(new \DateTime('now'));
         $form = $this->createFormBuilder($providerUserInvitation)
-//        		->add('provider', 'text')
             ->add('email', 'email')
             ->add('message', 'textarea')
             ->add('firstName', 'text')
@@ -44,40 +57,37 @@ class DefaultController extends Controller
 		if ($request->getMethod() == 'POST') 
 		{
 			$form->bindRequest($request);
-		
+			    	
         	if ($form->isValid())
         	{
-        	 $em = $this->getDoctrine()
-                ->getEntityManager();
-                
+        		$data = $request->request->all();
+				$token = $data['form']['_token'];
+			
+        		$Invitationtoken = $this->getDoctrine()->getRepository('HelperBundle:InvitationToken')
+        			->find($token);
+
+        		$providerUserInvitation->setInvitationToken($Invitationtoken);
+        	
+        	 	$em = $this->getDoctrine()
+                	->getEntityManager();                
             	$em->persist($providerUserInvitation);
             	$em->flush();
-            	
-// 				$user = $this->get('user_service')->createUser($user->getEmail());
-				
-// 				if (!$user) {
-// 					// invalid credentials
-// 					
-// 						$this->get('session')->setFlash('blogger-notice', 'Unable to send Invitation.');          
-//             			
-//             			return $this->redirect($this->generateUrl('ProviderBundle_invite'));
-// 				}
-// 				else {
-// 					
-// 						$this->get('session')->setFlash('blogger-notice', 'Invitation email sent successfully!');          
-//             			
-//             			return $this->redirect($this->generateUrl('ProviderBundle_invite'));
-// 				}
-					$message = \Swift_Message::newInstance()
-     				->setSubject('Hello Email')
+
+				$message = \Swift_Message::newInstance()
+     				->setSubject('Provider User Invitation for Health Care Abroad')
         			->setFrom('chaztine.blance@chromedia.com')
-        			->setTo($provider->getEmail())
-      				->setBody($this->renderView('ProviderBundle:Email:invite.email.twig', array('name' => $provider->getEmail())));
+        			->setTo($providerUserInvitation->getEmail())
+      				->setBody($this->renderView('ProviderBundle:Email:invite.email.twig', array(
+      					'providerUserInvitation' => $providerUserInvitation,
+      					'token' => $Invitationtoken,
+      					'provider' => $provider
+      				)));
+    				
     				$this->get('mailer')->send($message);
     				
     				$this->get('session')->setFlash('msg-notice', 'Invitation email sent successfully!');          
             				
-             			return $this->redirect($this->generateUrl('ProviderBundle_invite'));
+             		return $this->redirect($this->generateUrl('ProviderBundle_invite'));
        		 }
   	 	}
 		
