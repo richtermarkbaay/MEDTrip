@@ -4,3 +4,18 @@
     {{ parent() }}
     <link href="{{ asset('bundles/user/login.css') }}" type="text/css" rel="stylesheet" />
 {% endblock %}
+
+{% block navigation %}
+    <nav>
+        <ul class="navigation">
+            <li><a href="{{ path('main_homepage') }}">Home</a></li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <li>
+                <a href="{{ path('provider_user.logout')}}">Logout</a>
+            </li>
+            {% else %}
+                <li><a href="{{ path('provider_user.login') }}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endblock %}
