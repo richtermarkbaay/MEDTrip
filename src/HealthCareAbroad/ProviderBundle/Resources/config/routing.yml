@@ -2,13 +2,18 @@ ProviderBundle_create_token:
     pattern:  /createtoken
     defaults: { _controller: ProviderBundle:Token:create }
 
+ProviderBundle_Accounts_Accept_Invitation:
+    pattern:  /accouts/acceptInvitation/{token}/{id}
+    defaults: { _controller: ProviderBundle:Default:index }
+    requirements:    
+        _method:  GET|POST
 
 ProviderBundle_confirmed_token:
-    pattern:  /confirm?e={email}&a={token}
+    pattern:  /confirm/t={token}
     defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
-    requirements:
-       _method: GET|POST
        
 ProviderBundle_invite:
     pattern:  /provider/invite
     defaults: { _controller: ProviderBundle:Default:invite }
+	requirements:    
+        _method:  POST
