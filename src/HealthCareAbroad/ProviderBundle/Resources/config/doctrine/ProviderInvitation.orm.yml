@@ -37,7 +37,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation:
             targetEntity: \HealthCareAbroad\HelperBundle\Entity\InvitationToken
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: providerInvitation
             joinColumns:
                 invitation_token_id:
                     referencedColumnName: id
