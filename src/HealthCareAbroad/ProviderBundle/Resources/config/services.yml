@@ -1,8 +1,15 @@
 parameters:
     services.provider_class: HealthCareAbroad\ProviderBundle\Services\ProviderService
-
+    services.provider_list : HealthCareAbroad\ProviderBundle\Form\ProviderListType
+  
 services:
     services.provider:
         class: %services.provider_class%
         calls:
             - [setDoctrine, [@doctrine]]
+    form.provider_list:
+        class: "%services.provider_list%"
+        arguments: 
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: provider_list }

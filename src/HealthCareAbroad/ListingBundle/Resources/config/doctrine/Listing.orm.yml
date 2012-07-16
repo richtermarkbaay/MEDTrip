@@ -17,12 +17,25 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
         description:
             type: text
             nullable: false
+        logo:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
         status:
             type: boolean
             nullable: false
     manyToOne:
         provider:
-            targetEntity: Provider
+            targetEntity: HealthCareAbroad\ProviderBundle\Entity\Provider
             cascade: {  }
             mappedBy: null
             inversedBy: null
@@ -30,4 +43,14 @@ HealthCareAbroad\ListingBundle\Entity\Listing:
                 provider_id:
                     referencedColumnName: id
             orphanRemoval: false
+        procedure:
+            targetEntity: HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                medical_procedure_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
     lifecycleCallbacks: {  }

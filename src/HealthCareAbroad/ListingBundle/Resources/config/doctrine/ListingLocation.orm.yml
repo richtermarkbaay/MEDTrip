@@ -1,0 +1,43 @@
+HealthCareAbroad\ListingBundle\Entity\ListingLocation:
+    type: entity
+    table: listing_locations
+    repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingLocationRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        address:
+            type: text
+            nullable: false
+    manyToOne:
+        city:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\City
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                city_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        listing:
+            targetEntity: Listing
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                listing_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

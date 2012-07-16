@@ -1,3 +1,7 @@
+ProcedureBundle:
+    resource: "@ProcedureBundle/Resources/config/routing.yml"
+    prefix:   /
+
 ListingBundle:
     resource: "@ListingBundle/Resources/config/routing.yml"
     prefix:   /

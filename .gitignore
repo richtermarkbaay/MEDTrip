@@ -10,4 +10,10 @@ app/config/parameters.yml
 .settings
 .buildpath
 .project
+.DS_Store
+app/.DS_Store
+app/Resources/.DS_Store
+src/.DS_Store
+src/HealthCareAbroad/.DS_Store
+web/.DS_Store
 MAMP.webarchive

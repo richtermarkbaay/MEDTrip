@@ -252,7 +252,7 @@ class ProviderUserInvitation
      * @param HealthCareAbroad\ProviderBundle\Entity\InvitationTokens $invitationToken
      * @return ProviderUserInvitation
      */
-    public function setInvitationToken(\HealthCareAbroad\ProviderBundle\Entity\InvitationTokens $invitationToken = null)
+    public function setInvitationToken(\HealthCareAbroad\HelperBundle\Entity\InvitationToken $invitationToken = null)
     {
         $this->invitationToken = $invitationToken;
         return $this;

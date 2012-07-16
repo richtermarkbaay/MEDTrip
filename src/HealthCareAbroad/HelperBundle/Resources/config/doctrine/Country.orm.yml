@@ -1,0 +1,21 @@
+HealthCareAbroad\HelperBundle\Entity\Country:
+    type: entity
+    table: countries
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\CountryRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }

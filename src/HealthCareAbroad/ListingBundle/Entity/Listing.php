@@ -25,14 +25,35 @@ class Listing
     private $description;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     * @var string $logo
+     */
+    private $logo;
+
+    /**
+     * @var datetime $dateModified
+     */
+    private $dateModified;
+
+    /**
+     * @var datetime $dateCreated
+     */
+    private $dateCreated;
+
+    /**
      * @var boolean $status
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\ListingBundle\Entity\Provider
+     * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
+
+    /**
+     * @var HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure
+     */
+    private $procedure;
 
 
     /**
@@ -90,6 +111,72 @@ class Listing
     }
 
     /**
+     * Set logo
+     *
+     * @param string $logo
+     * @return Listing
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set dateModified
+     *
+     * @param datetime $dateModified
+     * @return Listing
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->dateModified = $dateModified;
+        return $this;
+    }
+
+    /**
+     * Get dateModified
+     *
+     * @return datetime 
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param datetime $dateCreated
+     * @return Listing
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return datetime 
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
      * Set status
      *
      * @param boolean $status
@@ -114,10 +201,10 @@ class Listing
     /**
      * Set provider
      *
-     * @param HealthCareAbroad\ListingBundle\Entity\Provider $provider
+     * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return Listing
      */
-    public function setProvider(\HealthCareAbroad\ListingBundle\Entity\Provider $provider = null)
+    public function setProvider(\HealthCareAbroad\ProviderBundle\Entity\Provider $provider = null)
     {
         $this->provider = $provider;
         return $this;
@@ -126,10 +213,41 @@ class Listing
     /**
      * Get provider
      *
-     * @return HealthCareAbroad\ListingBundle\Entity\Provider 
+     * @return HealthCareAbroad\ProviderBundle\Entity\Provider 
      */
     public function getProvider()
     {
         return $this->provider;
+    }
+
+    /**
+     * Set procedure
+     *
+     * @param HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure $procedure
+     * @return Listing
+     */
+    public function setProcedure(\HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure $procedure = null)
+    {
+        $this->procedure = $procedure;
+        return $this;
+    }
+
+    /**
+     * Get procedure
+     *
+     * @return HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure 
+     */
+    public function getProcedure()
+    {
+        return $this->procedure;
+    }
+    
+    public function prePersist($event) {
+		var_dump('testmepresave'); exit;
+    }
+    
+    public function doOtherStuffOnPrePersist()
+    {
+		echo 'etstcallbaml'; exit;
     }
 }
