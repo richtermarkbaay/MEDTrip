@@ -11,9 +11,13 @@ ProviderBundle_Accounts_Accept_Invitation:
 ProviderBundle_confirmed_token:
     pattern:  /confirm/t={token}
     defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
+
+ProviderBundle_create_provider:
+    pattern:  /provider/create
+    defaults: { _controller: ProviderBundle:Provider:create }
        
 ProviderBundle_invite:
     pattern:  /provider/invite
     defaults: { _controller: ProviderBundle:Default:invite }
-	requirements:    
+    requirements:    
         _method:  POST

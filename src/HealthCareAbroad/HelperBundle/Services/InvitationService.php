@@ -7,7 +7,7 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 use Doctrine\ORM\EntityManager;
 
 
-class CreateInvitation
+class InvitationService
 {
 	protected $doctrine;
 	

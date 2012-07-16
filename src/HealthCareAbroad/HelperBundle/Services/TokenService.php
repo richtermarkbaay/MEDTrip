@@ -1,0 +1,49 @@
+<?php
+
+namespace HealthCareAbroad\HelperBundle\Services;
+use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
+use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
+
+class TokenService
+{
+	protected $doctrine;
+	
+	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+	{
+		$this->doctrine = $doctrine;
+	}
+	
+	public function validate($token)
+	{
+		$token = $token."1";
+		$repository = $this->doctrine
+ 						   ->getRepository('HelperBundle:InvitationToken');
+		
+		//select all token that has expired date and status is still active/1
+		$query = $repository->createQueryBuilder('t')
+ 							->select('t.id')
+     						->add('where', 't.token = :token and t.status = 1')
+     						->setParameter('token', $token)
+     						->getQuery();
+     	$invitationToken = $query->getResult();
+		
+					
+        if($invitationToken)	
+		{
+			$invitationTokenId =  $invitationToken[0]["id"]; 
+			//retrieve data esp name,email
+			$repository = $this->doctrine
+         						   ->getRepository('ProviderBundle:ProviderInvitation');
+         						   
+        	$query	= $repository->createQueryBuilder('p')
+ 								 ->add('where', 'p.invitationToken = :token_id and p.status = 1')
+     							 ->setParameter('token_id', $invitationTokenId)
+     							 ->getQuery();
+     		$providerInvitation = $query->getResult();
+     		return $providerInvitation;
+    	}
+		else{
+			return $invitationToken; 
+		}
+	}
+}
