@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthCareAbroad\UserBundle\Controller;
+namespace HealthCareAbroad\ProviderBundle\Controller;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
 
@@ -35,20 +35,21 @@ class ProviderUserController extends Controller
                     // invalid credentials
                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
                     
-                    return $this->redirect($this->generateUrl('provider_user.login'));
+                    return $this->redirect($this->generateUrl('provider_login'));
                 }
                 else {
                     
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
                     $token = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
                     $this->get("security.context")->setToken($token);
+                    
                     $this->getRequest()->getSession()->set('_security_provider_secured_area',  \serialize($token));
                     
                     return $this->redirect($this->generateUrl('provider_homepage'));
                 }
             }
         }
-        return $this->render('UserBundle:ProviderUser:login.html.twig', array(
+        return $this->render('ProviderBundle:ProviderUser:login.html.twig', array(
             'form' => $form->createView(),
         ));
     }

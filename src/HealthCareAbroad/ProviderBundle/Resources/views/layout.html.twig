@@ -11,10 +11,10 @@
             <li><a href="{{ path('main_homepage') }}">Home</a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <li>
-                <a href="{{ path('provider_user.logout')}}">Logout</a>
+                <a href="{{ path('provider_logout')}}">Logout</a>
             </li>
             {% else %}
-                <li><a href="{{ path('provider_user.login') }}">Login</a></li>
+                <li><a href="{{ path('provider_login') }}">Login</a></li>
             {% endif %}
         </ul>
     </nav>

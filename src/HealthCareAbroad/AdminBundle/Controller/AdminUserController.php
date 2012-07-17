@@ -31,7 +31,7 @@ class AdminUserController extends Controller
                     // invalid credentials
                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
                     
-                    return $this->redirect($this->generateUrl('admin.login'));
+                    return $this->redirect($this->generateUrl('admin_login'));
                 }
                 else {
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
