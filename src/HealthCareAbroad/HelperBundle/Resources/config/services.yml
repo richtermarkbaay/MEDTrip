@@ -1,6 +1,6 @@
 parameters:
     services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
-    services.create_invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
+    services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
 
 services:

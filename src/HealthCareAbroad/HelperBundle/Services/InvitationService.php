@@ -29,7 +29,6 @@ class InvitationService
  		return $generatedToken;
 	}
 	
-	
 	public function createProviderInvitation($email, $message, $name)
 	{
 		$providerInvitation = new ProviderInvitation();
@@ -37,7 +36,6 @@ class InvitationService
 		$providerInvitation->setMessage($message);
 		$providerInvitation->setName($name);
 		$providerInvitation->setStatus('1');
-		//$providerInvitation->setInvitationToken($generatedToken);
 		
 		$this->em->persist($providerInvitation);
 		$this->em->flush();
