@@ -1,8 +1,10 @@
 parameters:
     services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
     services.create_invitation_class: HealthCareAbroad\HelperBundle\Services\CreateInvitation
+    services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
     services.country_list: HealthCareAbroad\HelperBundle\Form\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\CityListType
+
 
 services:
     services.chromedia_request:
@@ -14,7 +16,11 @@ services:
     services.invitation:
         class: %services.create_invitation_class%
         arguments: [@doctrine.orm.entity_manager]
-        
+
+    services.token:
+        class: %services.token_class%
+        arguments: [@doctrine]
+
     form.country_list:
         class: "%services.country_list%"
         arguments: 
@@ -28,4 +34,3 @@ services:
             entityManager: "@doctrine.orm.entity_manager"
         tags:
             - { name: form.type, alias: city_list }
-            

@@ -11,6 +11,10 @@ ProviderBundle_Accounts_Accept_Invitation:
 ProviderBundle_confirmed_token:
     pattern:  /confirm/t={token}
     defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
+
+ProviderBundle_create_provider:
+    pattern:  /provider/create
+    defaults: { _controller: ProviderBundle:Provider:create }
        
 ProviderBundle_invite:
     pattern:  /provider/invite
@@ -21,3 +25,4 @@ ProviderBundle_invite:
 provider_homepage:
     pattern: /provider/home
     defaults: { _controller: ProviderBundle:Default:index }
+

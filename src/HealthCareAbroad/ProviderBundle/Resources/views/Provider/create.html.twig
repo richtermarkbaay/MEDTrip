@@ -1,0 +1,8 @@
+{% block body %}
+<form action="{{ path('ProviderBundle_create_provider') }}" method="post" {{ form_enctype(form) }}>
+	<div class="body">
+		{{ form_widget(form) }}  
+        	<p><input type="submit" value="Submit"></p>
+    </div>
+</form>
+{% endblock %}
