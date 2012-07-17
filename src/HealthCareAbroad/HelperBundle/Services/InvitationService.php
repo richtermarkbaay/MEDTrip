@@ -17,7 +17,7 @@ class InvitationService
 	}
 	public function createInvitationToken($daysofExpiration)
 	{
-		$daysofExpiration = intVal($daysofExpiration);
+		$daysofExpiration = intVal($daysofExpiration)	;
 		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
 		if(!$daysofExpiration){
 			$daysofExpiration = 30;

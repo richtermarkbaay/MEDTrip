@@ -16,6 +16,8 @@ services:
     services.invitation:
         class: %services.invitation_class%
         arguments: [@doctrine.orm.entity_manager]
+        calls:
+            - [setTwig, [@twig]]
 
     services.token:
         class: %services.token_class%

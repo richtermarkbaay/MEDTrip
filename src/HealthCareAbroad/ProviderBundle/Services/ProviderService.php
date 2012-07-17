@@ -2,16 +2,28 @@
 
 namespace HealthCareAbroad\ProviderBundle\Services;
 
+use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
+
+use HealthCareAbroad\ProviderBundle\Entity\Provider;
+
 class ProviderService
 {
+    protected $doctrine;
 
 	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
     {
     	$this->doctrine = $doctrine;
     }
     
-    
-    protected $doctrine;
+    /**
+     * Get the current provider set in the session
+     * 
+     */
+    public function getCurrentProvider()
+    {
+        $providerId = 1;
+        return $this->doctrine->getRepository('ProviderBundle:Provider')->find($providerId);
+    }
     
     
     public function getProviders()
@@ -23,5 +35,4 @@ class ProviderService
     
     	return $providers;
     }
-    
 }
