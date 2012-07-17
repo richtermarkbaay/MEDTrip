@@ -1,8 +1,8 @@
 <?php
 
-namespace HealthCareAbroad\ProviderBundle\Services;
+namespace HealthCareAbroad\ProcedureBundle\Services;
 
-class ProviderService
+class ProcedureService
 {
 	protected $doctrine;
 
@@ -11,12 +11,12 @@ class ProviderService
     	$this->doctrine = $doctrine;
     }
 
-    public function getProviders()
+    public function getActiveProcedures()
     {
     	return $this->doctrine->getEntityManager()->createQueryBuilder()
-				->add('select', 'p')
-				->add('from', 'ProviderBundle:Provider p')
-				->add('where', 'p.status = 1');
+    			->add('select', 'p')
+    			->add('from', 'ProcedureBundle:MedicalProcedure p')
+    			->add('where', 'p.status = 1');
     }
     
 }

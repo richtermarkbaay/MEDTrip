@@ -12,20 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class ListingRepository extends EntityRepository
 {
-	
-	function saveListing($data) {
-		$conn = $this->_em->getConnection();
-		$fields = implode(',', array_keys($data));
-
-		foreach($data as $key => $value) {
-			$values[] = is_numeric($value) ? $value : "'".addslashes($value)."'";
-		}
-		$values = implode(',', $values);
-		var_dump($fields);
-		var_dump($values);
-var_dump("INSERT INTO listings($fields) VALUES($values)"); exit;
-		$conn->exec("INSERT INTO listings($fields) VALUES($values)");
-		
-		//$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($data->get('provider'));
-	}
 }

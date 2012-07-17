@@ -2,6 +2,7 @@
 
 namespace HealthCareAbroad\ListingBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,8 +47,6 @@ class Listing
     private $status;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Provider")
-     * @ORM\JoinColumn(name="provider_id", referencedColumnName="id", nullable=false)
      * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
@@ -57,6 +56,16 @@ class Listing
      */
     private $procedure;
 
+    /**
+     * @var ArrayCollection
+     */
+    private $locations;
+    
+    public function __construct()
+    {
+    	$this->locations = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -242,13 +251,29 @@ class Listing
     {
         return $this->procedure;
     }
-    
-    public function prePersist($event) {
-		var_dump('testmepresave'); exit;
-    }
-    
-    public function doOtherStuffOnPrePersist()
+
+    /**
+     * Set locations
+     *
+     * @param ArrayCollection $locations
+     * @return locations
+     */
+    public function setLocations(ArrayCollection $locations)
     {
-		echo 'etstcallbaml'; exit;
+		foreach ($locations as $each) {
+			$each->setListing($this);
+		}
+
+		$this->locations = $locations;
+    }
+
+    /**
+     * get locations
+     *
+     * @return Listing
+     */
+    public function getLocations()
+    {
+    	return $this->locations;
     }
 }

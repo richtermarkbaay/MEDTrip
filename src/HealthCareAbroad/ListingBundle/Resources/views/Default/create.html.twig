@@ -1,23 +1,27 @@
 {% extends '::base.html.twig' %}
 
-
 {% block body %}
-	
+
 	<style type="text/css">
 		label {width:100px;display:inline-block; margin-bottom: 5px;}
 	</style>
-	
+
 	<div class="create-listing-form" style="margin: 20px;">
-	
+
 		<h2>Create Listing</h2>
-		
-		<form action="{{ path('ListingBundle_add') }}" method="post" {{ form_enctype(form) }}>
-			{% block field_row %}
-			    <div class="form_row">
-			        {{ form_errors(form) }}
-			        {{ form_widget(form) }}
-			    </div>
-			{% endblock field_row %}
+
+		<form action="{{ path('listing_save') }}" method="post" {{ form_enctype(form) }}>
+			{{ form_row(form.provider) }}
+			{{ form_row(form.procedure) }}
+			{{ form_row(form.title) }}
+			{{ form_row(form.description) }}
+
+			{% for location in form.locations %}
+				{{ form_row(location.country) }}
+				{{ form_row(location.city) }}
+				{{ form_row(location.address) }}
+			{% endfor %}
+			
 		    <input type="submit" />
 		</form>
 	

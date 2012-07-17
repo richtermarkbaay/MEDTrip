@@ -9,7 +9,6 @@ services:
             - [setDoctrine, [@doctrine]]
     form.provider_list:
         class: "%services.provider_list%"
-        arguments: []
         calls:
           - [setContainer, [@service_container]]
         tags:

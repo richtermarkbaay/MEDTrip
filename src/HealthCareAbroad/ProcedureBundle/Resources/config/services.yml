@@ -1,10 +1,16 @@
 parameters:
+    services.procedure_class: HealthCareAbroad\ProcedureBundle\Services\ProcedureService
     services.procedure_list: HealthCareAbroad\ProcedureBundle\Form\ProcedureListType
 
 services:
+    services.procedure:
+        class: %services.procedure_class%
+        calls:
+            - [setDoctrine, [@doctrine]]
+
     form.procedure_list:
         class: "%services.procedure_list%"
-        arguments: 
-            entityManager: "@doctrine.orm.entity_manager"
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: procedure_list }
