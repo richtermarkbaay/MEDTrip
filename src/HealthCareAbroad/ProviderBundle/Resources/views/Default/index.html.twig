@@ -1,4 +1,4 @@
 {% extends 'ProviderBundle::layout.html.twig' %}
 {% block body %}
-Hello {{ name }}!
+Welcome {{ app.security.getToken().getUser() }}!
 {% endblock %}
