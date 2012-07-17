@@ -1,14 +1,3 @@
-admin_user.login:
-    pattern: /admin/login
-    defaults: { _controller: UserBundle:AdminUser:login }
-    requirements:    
-        _method:  GET|POST
-        
-admin_user.logout:
-    pattern:  /admin/logout
-    defaults: { _controller: UserBundle:AdminUser:logout }
-    requirements:    
-        _method:  GET
 
 provider_user.login:
     pattern:  /provider/login

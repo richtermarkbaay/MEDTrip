@@ -22,33 +22,27 @@ class ProviderUserController extends Controller
             ->add('password', 'password', array('property_path'=> false))
             ->getForm();
         $request = $this->getRequest();
-        if ($request->isMethod('POST')) 
-        {
+        if ($request->isMethod('POST')) {
+            
             $form->bindRequest($request);
-            if ($form->isValid())
-            {
+            if ($form->isValid()) {
+                
                 $user->setEmail($form->get('email')->getData());
                 $user->setPassword(SecurityHelper::hash_sha256($form->get('password')->getData()));
                 $user = $this->get('services.provider_user')->findByEmailAndPassword($user->getEmail(), $user->getPassword());
                 
-                if (!$user) 
-                {
+                if (!$user){
                     // invalid credentials
                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
                     
                     return $this->redirect($this->generateUrl('provider_user.login'));
                 }
-                else 
-                {
+                else {
                     
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
                     $token = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
                     $this->get("security.context")->setToken($token);
-                    
                     $this->getRequest()->getSession()->set('_security_provider_secured_area',  \serialize($token));
-                    
-//                     $event = new InteractiveLoginEvent($this->getRequest(), $token);
-//                     $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
                     
                     return $this->redirect($this->generateUrl('provider_homepage'));
                 }

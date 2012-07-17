@@ -1,3 +1,15 @@
+admin_login:
+    pattern: /admin/login
+    defaults: { _controller: AdminBundle:AdminUser:login }
+    requirements:    
+        _method:  GET|POST
+        
+admin_logout:
+    pattern:  /admin/logout
+    defaults: { _controller: AdminBundle:AdminUser:logout }
+    requirements:    
+        _method:  GET
+        
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }

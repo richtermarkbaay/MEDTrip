@@ -1,1 +1,5 @@
-Hello {{ name }}!
+{% block body %}
+Welcome to the admin panel, {{ app.security.getToken().getUser() }}!
+
+<a href="{{ path('admin_logout')}}">Logout!</a>
+{% endblock %}
