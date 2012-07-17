@@ -11,7 +11,7 @@ services:
             - [setAppSecret, [%application_secret%]]
             
     services.invitation:
-        class: %services.create_invitation_class%
+        class: %services.invitation_class%
         arguments: [@doctrine.orm.entity_manager]
 
     services.token:
