@@ -1,0 +1,38 @@
+HealthCareAbroad\UserBundle\Entity\AdminUserRole:
+    type: entity
+    table: admin_user_roles
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\AdminUserRoleRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    manyToMany:
+        adminUserTypes:
+            targetEntity: HealthCareAbroad\UserBundle\Entity\AdminUserType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: adminUserRole
+            joinTable:
+                name: admin_user_type_roles
+                joinColumns:
+                    -
+                        name: admin_user_role_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: admin_user_type_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

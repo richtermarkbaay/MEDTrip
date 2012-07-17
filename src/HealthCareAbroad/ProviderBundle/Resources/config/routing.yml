@@ -23,6 +23,6 @@ ProviderBundle_invite:
         _method:  GET|POST
         
 provider_homepage:
-    pattern: /provider/home
+    pattern: /provider
     defaults: { _controller: ProviderBundle:Default:index }
 
