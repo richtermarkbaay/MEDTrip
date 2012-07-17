@@ -17,7 +17,7 @@ class InvitationService
 	}
 	public function createInvitationToken($daysofExpiration)
 	{
-		$daysofExpiration = (int)$daysofExpiration;
+		$daysofExpiration = intVal($daysofExpiration);
 		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
 		if(!$daysofExpiration){
 			$daysofExpiration = 30;
@@ -32,7 +32,7 @@ class InvitationService
 		
  		$this->em->persist($invitationToken);
  		$this->em->flush();
- 		return $generatedToken;
+ 		return $invitationToken;
 	}
 	
 	public function createProviderInvitation($email, $message, $name)
