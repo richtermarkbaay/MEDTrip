@@ -15,7 +15,9 @@ ProviderBundle_confirmed_token:
 ProviderBundle_create_provider:
     pattern:  /provider/create
     defaults: { _controller: ProviderBundle:Provider:create }
-       
+    requirements: 
+        _method:  POST|GET
+
 ProviderBundle_invite:
     pattern:  /provider/invite
     defaults: { _controller: ProviderBundle:Default:invite }

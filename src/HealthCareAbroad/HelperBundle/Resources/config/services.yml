@@ -1,6 +1,6 @@
 parameters:
     services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
-    services.create_invitation_class: HealthCareAbroad\HelperBundle\Services\CreateInvitation
+    services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
     services.country_list: HealthCareAbroad\HelperBundle\Form\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\CityListType
@@ -14,7 +14,7 @@ services:
             - [setAppSecret, [%application_secret%]]
             
     services.invitation:
-        class: %services.create_invitation_class%
+        class: %services.invitation_class%
         arguments: [@doctrine.orm.entity_manager]
 
     services.token:

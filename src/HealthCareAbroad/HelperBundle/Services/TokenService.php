@@ -15,10 +15,8 @@ class TokenService
 	
 	public function validate($token)
 	{
-		$token = $token."1";
-		$repository = $this->doctrine
- 						   ->getRepository('HelperBundle:InvitationToken');
-		
+		$repository = $this->doctrine->getRepository('HelperBundle:InvitationToken');
+ 						   
 		//select all token that has expired date and status is still active/1
 		$query = $repository->createQueryBuilder('t')
  							->select('t.id')
@@ -27,9 +25,8 @@ class TokenService
      						->getQuery();
      	$invitationToken = $query->getResult();
 		
-					
-        if($invitationToken)	
-		{
+        if(count($invitationToken) > 0){
+			
 			$invitationTokenId =  $invitationToken[0]["id"]; 
 			//retrieve data esp name,email
 			$repository = $this->doctrine

@@ -55,7 +55,6 @@ class DefaultController extends Controller
             ->add('firstName', 'text')
              ->add('middleName', 'text')
             ->add('lastName', 'text')
-        
             ->getForm();
      	
      	$request = $this->getRequest();

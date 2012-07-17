@@ -15,10 +15,16 @@ class InvitationService
 	{
 		$this->em = $em;
 	}
-	public function createInvitationToken($expirationDate)
+	public function createInvitationToken($daysofExpiration)
 	{
+		$daysofExpiration = (int)$daysofExpiration;
 		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
+		if(!$daysofExpiration){
+			$daysofExpiration = 30;
+		}
 		
+		$dateNow = new \DateTime('now');
+		$expirationDate = $dateNow->modify('+'. $daysofExpiration .'days');
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
 		$invitationToken->setExpirationDate($expirationDate);
@@ -29,7 +35,6 @@ class InvitationService
  		return $generatedToken;
 	}
 	
-	
 	public function createProviderInvitation($email, $message, $name)
 	{
 		$providerInvitation = new ProviderInvitation();
@@ -37,7 +42,6 @@ class InvitationService
 		$providerInvitation->setMessage($message);
 		$providerInvitation->setName($name);
 		$providerInvitation->setStatus('1');
-		//$providerInvitation->setInvitationToken($generatedToken);
 		
 		$this->em->persist($providerInvitation);
 		$this->em->flush();
