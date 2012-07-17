@@ -15,10 +15,16 @@ class InvitationService
 	{
 		$this->em = $em;
 	}
-	public function createInvitationToken($expirationDate)
+	public function createInvitationToken($daysofExpiration)
 	{
+		$daysofExpiration = (int)$daysofExpiration;
 		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
+		if(!$daysofExpiration){
+			$daysofExpiration = 30;
+		}
 		
+		$dateNow = new \DateTime('now');
+		$expirationDate = $dateNow->modify('+'. $daysofExpiration .'days');
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
 		$invitationToken->setExpirationDate($expirationDate);

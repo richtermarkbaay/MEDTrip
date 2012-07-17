@@ -17,6 +17,7 @@ class TokenController extends Controller
      	$value = $this->get('services.token')->validate($token);	
      	
      	if(count($value) > 0){
+     		
      		return $this->render('ProviderBundle:Token:confirmedTokenInvitation.html.twig', array('token' => $token));
      	}			
 		else{
@@ -37,16 +38,17 @@ class TokenController extends Controller
     	$request = $this->getRequest();
     		
     	if ($request->getMethod() == 'POST'){
-			$form->bindRequest($request);
+			$form->bindRequest($request);	
 			
 			if ($form->isValid()){
 				$data = $request->request->all();
 				$name = $data['form']['name'];
 				$email = $data['form']['email'];
 				
-				$dateNow = new \DateTime('now');
-				$expirationDate = $dateNow->modify('+6 days');
-				$generatedToken = $this->get('services.invitation')->createInvitationToken($dateNow);				
+				// $dateNow = new \DateTime('now');
+// 				$expirationDate = $dateNow->modify('+6 days');
+
+				$generatedToken = $this->get('services.invitation')->createInvitationToken('0');				
 				$message = \Swift_Message::newInstance()
  					->setSubject('Activate your account with HealthCareAbroad')
  					->setFrom('alnie.jacobe@chromedia.com')
