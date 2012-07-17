@@ -1,39 +1,23 @@
 <?php
 
-namespace HealthCareAbroad\AdminBundle\Entity;
+namespace HealthCareAbroad\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\AdminBundle\Entity\AdminUser
+ * HealthCareAbroad\UserBundle\Entity\AdminUser
  */
-class AdminUser
+class AdminUser extends SiteUser
 {
-    /**
-     * @var bigint $accountId
-     */
-    private $accountId;
-
     /**
      * @var boolean $status
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\AdminBundle\Entity\AdminUserTypes
+     * @var HealthCareAbroad\UserBundle\Entity\AdminUserType
      */
     private $adminUserType;
-
-
-    /**
-     * Get accountId
-     *
-     * @return bigint 
-     */
-    public function getAccountId()
-    {
-        return $this->accountId;
-    }
 
     /**
      * Set status
@@ -60,10 +44,10 @@ class AdminUser
     /**
      * Set adminUserType
      *
-     * @param HealthCareAbroad\AdminBundle\Entity\AdminUserTypes $adminUserType
+     * @param HealthCareAbroad\UserBundle\Entity\AdminUserType $adminUserType
      * @return AdminUser
      */
-    public function setAdminUserType(\HealthCareAbroad\AdminBundle\Entity\AdminUserTypes $adminUserType = null)
+    public function setAdminUserType(\HealthCareAbroad\UserBundle\Entity\AdminUserType $adminUserType = null)
     {
         $this->adminUserType = $adminUserType;
         return $this;
@@ -72,7 +56,7 @@ class AdminUser
     /**
      * Get adminUserType
      *
-     * @return HealthCareAbroad\AdminBundle\Entity\AdminUserTypes 
+     * @return HealthCareAbroad\UserBundle\Entity\AdminUserType 
      */
     public function getAdminUserType()
     {

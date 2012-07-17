@@ -24,7 +24,7 @@ HealthCareAbroad\UserBundle\Entity\ProviderUser:
                     referencedColumnName: id
             orphanRemoval: false
         providerUserType:
-            targetEntity: HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
+            targetEntity: HealthCareAbroad\UserBundle\Entity\ProviderUserType
             cascade: {  }
             mappedBy: null
             inversedBy: null

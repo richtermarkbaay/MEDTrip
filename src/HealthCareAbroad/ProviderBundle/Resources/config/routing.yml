@@ -24,7 +24,19 @@ ProviderBundle_invite:
     requirements:    
         _method:  GET|POST
         
+provider_login:
+    pattern:  /provider/login
+    defaults: { _controller: ProviderBundle:ProviderUser:login }
+    requirements:    
+        _method:  GET|POST
+
+provider_logout:
+    pattern:  /provider/logout
+    defaults: { _controller: ProviderBundle:ProviderUser:logout }
+    requirements:    
+        _method:  GET
+        
 provider_homepage:
-    pattern: /provider/home
+    pattern: /provider
     defaults: { _controller: ProviderBundle:Default:index }
 

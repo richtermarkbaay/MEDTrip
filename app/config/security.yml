@@ -18,6 +18,15 @@ security:
         main:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            
+        admin_user.login:
+            pattern: ^/admin/login$
+            security: false
+            
+        admin_secured_area:
+            pattern: ^/admin
+            form_login:
+                login_path: /admin/login
 
         provider_login:
             pattern:  ^/provider/login$
