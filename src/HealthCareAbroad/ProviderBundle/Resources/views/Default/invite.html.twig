@@ -10,7 +10,7 @@
         </div>
     {% endif %}
 
-    <form action="{{ path('ProviderBundle_invite') }}" method="post" {{ form_enctype(form) }} class="user">
+    <form action="{{ path('provider_invite_user') }}" method="post" {{ form_enctype(form) }} class="user">
         {{ form_errors(form) }}
 		{{ form_row(form.firstName) }}	
 		{{ form_row(form.middleName) }}		

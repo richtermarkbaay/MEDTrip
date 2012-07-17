@@ -5,8 +5,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class SiteUser implements UserInterface
 {
-    //const STATUS_INACTIVE = 0;
-    //const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
     
     protected $email;
     protected $password;

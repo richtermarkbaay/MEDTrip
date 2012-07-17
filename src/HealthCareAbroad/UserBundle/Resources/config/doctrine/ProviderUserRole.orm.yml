@@ -1,7 +1,7 @@
-HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole:
+HealthCareAbroad\UserBundle\Entity\ProviderUserRole:
     type: entity
     table: provider_user_roles
-    repositoryClass: HealthCareAbroad\ProviderBundle\Repository\ProviderUserRoleRepository
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\ProviderUserRoleRepository
     fields:
         id:
             id: true
@@ -25,7 +25,7 @@ HealthCareAbroad\ProviderBundle\Entity\ProviderUserRole:
             nullable: false
     manyToMany:
         providerUserTypes:
-            targetEntity: HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
+            targetEntity: HealthCareAbroad\UserBundle\Entity\ProviderUserType
             cascade: {  }
             mappedBy: null
             inversedBy: providerUserRole

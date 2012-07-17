@@ -10,7 +10,7 @@
     </div>
 {% endif %}
 
-<form action="{{ path('provider_user.login') }}" method="POST" {{ form_enctype(form) }} class="user">
+<form action="{{ path('provider_login') }}" method="POST" {{ form_enctype(form) }} class="user">
     {{ form_errors(form) }}
     
     {{ form_row(form.email) }}

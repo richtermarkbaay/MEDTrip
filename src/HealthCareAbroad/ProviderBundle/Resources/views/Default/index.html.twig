@@ -1,4 +1,18 @@
 {% extends 'ProviderBundle::layout.html.twig' %}
 {% block body %}
+
+{% if app.session.hasFlash('flash.notice') %}
+    <div class="msg-notice">
+        {{ app.session.flash('flash.notice') }}
+    </div>
+{% endif %}
+
 Welcome {{ app.security.getToken().getUser() }}!
+
+<div style="margin:10px;">
+    <ul style="list-style:disc;">
+	    <li><a href="{{ path('provider_invite_user') }}">Invite users</a> </li>
+	</ul>
+</div>
+
 {% endblock %}

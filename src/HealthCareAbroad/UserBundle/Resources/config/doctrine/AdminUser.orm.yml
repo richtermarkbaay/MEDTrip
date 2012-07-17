@@ -1,7 +1,7 @@
-HealthCareAbroad\AdminBundle\Entity\AdminUser:
+HealthCareAbroad\UserBundle\Entity\AdminUser:
     type: entity
     table: admin_users
-    repositoryClass: HealthCareAbroad\AdminBundle\Repository\AdminUserRepository
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\AdminUserRepository
     fields:
         accountId:
             id: true
@@ -9,13 +9,13 @@ HealthCareAbroad\AdminBundle\Entity\AdminUser:
             nullable: false
             column: account_id
             generator:
-                strategy: IDENTITY
+                strategy: NONE
         status:
             type: boolean
             nullable: false
     manyToOne:
         adminUserType:
-            targetEntity: AdminUserTypes
+            targetEntity: HealthCareAbroad\UserBundle\Entity\AdminUserType
             cascade: {  }
             mappedBy: null
             inversedBy: null

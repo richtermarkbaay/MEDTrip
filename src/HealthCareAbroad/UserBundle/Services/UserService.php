@@ -58,29 +58,6 @@ class UserService
     }
     
     /**
-     * Create a provider user
-     * 
-     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
-     */
-    public function createProviderUser(\HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser)
-    {
-        // create user in chromedia global accounts
-        if ( $providerUser = $this->createUser($providerUser)){
-            
-            // persist to provider_users table
-            $em = $this->doctrine->getEntityManager();
-            $em->persist($providerUser);
-            $em->flush();
-            
-            return $providerUser;
-        }
-        
-        // something went wrong in creating global account
-        return NULL;
-    }
-    
-    /**
      * Create new user in the global chromedia accounts
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
