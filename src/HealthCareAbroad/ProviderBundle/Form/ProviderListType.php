@@ -1,38 +1,32 @@
 <?php
 namespace HealthCareAbroad\ProviderBundle\Form;
 
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
-use HealthCareAbroad\ProviderBundle\Repository\ProviderRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
-class ProviderListType extends AbstractType
-{
-	private $entityManager;
-	
-	public function __construct(EntityManager $entityManager)
-	{
-		$this->entityManager = $entityManager;
+class ProviderListType extends AbstractType 
+{	
+	private $container;
+
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
 	}
-
+	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    	$result = $this->entityManager->getRepository('ProviderBundle:Provider')->findByStatus(1);
-    	$providers = array();
-    	
-    	foreach($result as $each) {
-    		$providers[$each->getId()] = $each->getName();
-    	}
- 
+    {	
         $resolver->setDefaults(array(
-            'choices' => $providers
+        	'property' => 'name',
+			'class' => 'ProviderBundle:Provider',
+			'query_builder' => $this->container->get("services.provider")->getProviders()
         ));
     }
-
+   
     public function getParent()
     {
-        return 'choice';
+        return 'entity';
     }
 
     public function getName()

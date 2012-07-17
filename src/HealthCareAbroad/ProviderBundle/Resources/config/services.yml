@@ -9,7 +9,8 @@ services:
             - [setDoctrine, [@doctrine]]
     form.provider_list:
         class: "%services.provider_list%"
-        arguments: 
-            entityManager: "@doctrine.orm.entity_manager"
+        arguments: []
+        calls:
+          - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: provider_list }

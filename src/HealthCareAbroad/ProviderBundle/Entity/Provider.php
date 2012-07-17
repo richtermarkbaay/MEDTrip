@@ -34,7 +34,6 @@ class Provider
      */
     private $status;
 
-
     /**
      * Get id
      *

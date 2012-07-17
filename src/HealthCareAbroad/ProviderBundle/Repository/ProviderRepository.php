@@ -12,4 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProviderRepository extends EntityRepository
 {
+	static function getProviders() {
+		return $this->_em->createQueryBuilder('p')->where('p.status = 1')->orderBy('p.name', 'ASC');
+	}
 }

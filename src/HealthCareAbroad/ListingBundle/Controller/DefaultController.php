@@ -16,12 +16,7 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-    	//$client = new Guzzle\Service\Client('http://test.com/');
-    	//var_dump($client);
-
 		$listings = $this->get("services.listing")->getListings(2);
-    
-
     	$data = array('listings'=>$listings);
     	return $this->render('ListingBundle:Default:index.html.twig', $data);
     }
@@ -54,15 +49,22 @@ class DefaultController extends Controller
 		return $this->_createForm($listing);
     }
     
-    public function addAction(Request $request)
+    public function addAction()
     {
     	$em = $this->get('doctrine')->getEntityManager();
-    	$data = $request->request->get('listing');
+    	$data = $this->get('request')->get('listing');
+ 
+    	$location = $data['location'];
+    	unset($data['location']);
 
-     	$form = $this->createForm(new ListingType($em), new Listing());
-    	$form->bindRequest($request);
-    	$form->setData($data);
-    	$x = $form->getNormData();
+     	$form = $this->createForm(new ListingType(), new Listing());
+    	$form->bind($data);
+    	
+    	var_dump($form->isValid()); exit;
+    	if ($form->isValid())
+    	{
+    		$form->save();
+    	}
     	echo 'bert'; exit;
     	var_dump($x); exit;
     			

@@ -8,12 +8,7 @@ class LocationType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder
-		->add('address', 'textarea')
-		->add('zipcode', 'text')
-		->add('city', 'text')
-		->add('country', 'text')
-		;
+		$builder->add('country', 'country_list')->add('city', 'city_list')->add('address', 'textarea');
 	}
 
 	public function getName()

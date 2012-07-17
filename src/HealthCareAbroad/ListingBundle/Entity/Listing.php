@@ -46,6 +46,8 @@ class Listing
     private $status;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Provider")
+     * @ORM\JoinColumn(name="provider_id", referencedColumnName="id", nullable=false)
      * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
@@ -54,7 +56,6 @@ class Listing
      * @var HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure
      */
     private $procedure;
-
 
     /**
      * Get id
@@ -200,7 +201,7 @@ class Listing
 
     /**
      * Set provider
-     *
+     * 
      * @param HealthCareAbroad\ProviderBundle\Entity\Provider $provider
      * @return Listing
      */

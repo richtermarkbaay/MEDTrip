@@ -1,7 +1,10 @@
 parameters:
-#    procedure.example.class: HealthCareAbroad\ProcedureBundle\Example
+    services.procedure_list: HealthCareAbroad\ProcedureBundle\Form\ProcedureListType
 
 services:
-#    procedure.example:
-#        class: %procedure.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    form.procedure_list:
+        class: "%services.procedure_list%"
+        arguments: 
+            entityManager: "@doctrine.orm.entity_manager"
+        tags:
+            - { name: form.type, alias: procedure_list }
