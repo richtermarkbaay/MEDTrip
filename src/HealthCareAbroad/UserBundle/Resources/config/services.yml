@@ -1,10 +1,18 @@
 parameters:
     services.user_class: HealthCareAbroad\UserBundle\Services\UserService
+    services.provider_user_class: HealthCareAbroad\UserBundle\Services\ProviderUserService
 
 services:
     services.user:
         class: %services.user_class%
         calls: 
+            - [setDoctrine, [@doctrine]]
+            - [setChromediaRequest, [@services.chromedia_request]]
+            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
+            
+    services.provider_user:
+        class: %services.provider_user_class%
+        calls:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]

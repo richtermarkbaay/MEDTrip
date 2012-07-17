@@ -16,6 +16,12 @@ use HealthCareAbroad\ProviderBundle\Entity\Provider;
 
 class DefaultController extends Controller
 {
+    public function indexAction()
+    {
+        return $this->render('ProviderBundle:Default:index.html.twig');
+    }
+    
+    
     public function Accounts_Accept_Invitation($token,$id)
     {
     	$em = $this->getDoctrine()->getEntityManager();

@@ -15,5 +15,9 @@ ProviderBundle_confirmed_token:
 ProviderBundle_invite:
     pattern:  /provider/invite
     defaults: { _controller: ProviderBundle:Default:invite }
-    requirements:
-        _method:  POST
+    requirements:    
+        _method:  GET|POST
+        
+provider_homepage:
+    pattern: /provider/home
+    defaults: { _controller: ProviderBundle:Default:index }

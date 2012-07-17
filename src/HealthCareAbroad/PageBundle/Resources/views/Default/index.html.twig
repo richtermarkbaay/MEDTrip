@@ -1,11 +1,11 @@
-{% extends 'UserBundle::layout.html.twig' %}
+{% extends 'PageBundle::layout.html.twig' %}
 {% block body %}
  <header>
         <h1>Welcome to HealthCare Abroad</h1>
 </header>
-{% if app.session.hasFlash('msg-notice') %}
+{% if app.session.hasFlash('flash.notice') %}
         <div class="msg-notice">
-            {{ app.session.flash('msg-notice') }}
+            {{ app.session.flash('flash.notice') }}
         </div>
     {% endif %}
 

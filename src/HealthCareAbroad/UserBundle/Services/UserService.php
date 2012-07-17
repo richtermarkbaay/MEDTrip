@@ -16,15 +16,15 @@ class UserService
      * 
      * @var \Doctrine\Bundle\DoctrineBundle\Registry
      */
-    private $doctrine;
+    protected $doctrine;
     
     /**
      * 
      * @var \HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
      */
-    private $request;
+    protected $request;
     
-    private $chromediaAccountsUri;
+    protected $chromediaAccountsUri;
     
     
     public function __construct()
@@ -119,23 +119,22 @@ class UserService
     }
     
     /**
-     * Find a user in chromedia global accounts by email and password
+     * Find a user in chromedia global accounts
      * 
-     * @param string $email
-     * @param string $password
+     * @param array $searchBy
+     * @param array $options
+     * @return array
      */
-    public function findByEmailAndPassword($email, $password)
+    public function find($searchBy, $options)
     {
-        $searchBy = array('email' => $email, 'password' => $password);
-        $option = array('limit' => 1);
         $response = $this->request->post($this->chromediaAccountsUri.'/find', array(
             'searchBy' => \base64_encode(\json_encode($searchBy)),
-            'option' => \base64_encode(\json_encode($option))
+            'option' => \base64_encode(\json_encode($options))
         ));
         
         if (200 == $response->getStatusCode()) {
             $json_data = \json_decode($response->getBody(true), true);
-            $account_data = \count($json_data) ? $json_data[0] : null;
+            return $json_data;
         }
         
         return null;

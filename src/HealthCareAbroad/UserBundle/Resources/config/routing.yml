@@ -1,13 +1,15 @@
-UserBundle_login:
-    pattern:  /login
-    defaults: { _controller: UserBundle:Default:login }
+provider_user.login:
+    pattern:  /provider/login
+    defaults: { _controller: UserBundle:ProviderUser:login }
     requirements:    
         _method:  GET|POST
+
+provider_user.logout:
+    pattern:  /provider/logout
+    defaults: { _controller: UserBundle:ProviderUser:logout }
+    requirements:    
+        _method:  GET
         
-UserBundle_homepage:
-    pattern:  /
-    defaults: { _controller: UserBundle:Default:index }
-     
 user_test_only:
     pattern:  /users/test
     defaults: { _controller: UserBundle:Default:test }
