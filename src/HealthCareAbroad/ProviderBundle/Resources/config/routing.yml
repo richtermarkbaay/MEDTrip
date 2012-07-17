@@ -15,7 +15,7 @@ ProviderBundle_confirmed_token:
 ProviderBundle_create_provider:
     pattern:  /provider/create
     defaults: { _controller: ProviderBundle:Provider:create }
-       
+
 provider_invite_user:
     pattern:  /provider/invite-user
     defaults: { _controller: ProviderBundle:ProviderUser:invite }

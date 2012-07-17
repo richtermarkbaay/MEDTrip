@@ -31,19 +31,23 @@ class InvitationService
 	{
 		$this->em = $em;
 	}
-	
 	public function setTwig(\Twig_Environment $twig)
 	{
 	    $this->twig = $twig;
 	}
 	
-	public function createInvitationToken($expirationDate)
+	public function createInvitationToken($daysofExpiration)
 	{
-		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
+		$daysofExpiration = (int)$daysofExpiration;
+		$generatedToken = SecurityHelper::hash_sha256(time());
+		if(!$daysofExpiration){
+			$daysofExpiration = 30;
+		}
 		
+		$expirationDate = new \DateTime('+'. $daysofExpiration .'days');
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
-		$invitationToken->setExpirationDate(new \DateTime('+30 days'));
+		$invitationToken->setExpirationDate($expirationDate);
 		$invitationToken->setStatus("1");
 		
  		$this->em->persist($invitationToken);
@@ -52,7 +56,6 @@ class InvitationService
  		return $invitationToken;
 	}
 	
-	
 	public function createProviderInvitation($email, $message, $name)
 	{
 		$providerInvitation = new ProviderInvitation();
@@ -60,7 +63,6 @@ class InvitationService
 		$providerInvitation->setMessage($message);
 		$providerInvitation->setName($name);
 		$providerInvitation->setStatus('1');
-		//$providerInvitation->setInvitationToken($generatedToken);
 		
 		$this->em->persist($providerInvitation);
 		$this->em->flush();

@@ -1,6 +1,29 @@
- is already verified.
-you can now start create your account!
-{{token}}
+<!-- app/Resources/views/base.html.twig -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
+        <title>{% block title %}symblog{% endblock %} - symblog</title>
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        {% block stylesheets %}
+            <link href="{{ asset('css/screen.css') }}" type="text/css" rel="stylesheet" />
+            <link href="{{ asset('..public/css/screen.css') }}" type="text/css" rel="stylesheet" />
+        {% endblock %}
+    </head>
+    <body>
+		<div id="content">
+        	{% block footer %}
+            	Your account is successfully verified!
+            	Start creating your account.
+        	{% endblock %}
+        </div>
+        <section id="wrapper">
+            	<a href="{{ path('ProviderBundle_create_provider') }}">Proceed..</a></li>
+        </section>
 
-Thanks,
-healthCareAbroad
+        
+    </body>
+</html>
+
