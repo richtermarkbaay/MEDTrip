@@ -7,7 +7,6 @@ services:
     services.user:
         class: %services.user_class%
         calls: 
-            - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             
@@ -17,6 +16,7 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
+            - [setSession, [@session]]
             
     services.admin_user:
         class: %services.admin_user_class%
@@ -24,3 +24,4 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
+            - [setSession, [@session]]
