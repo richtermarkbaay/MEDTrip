@@ -33,27 +33,15 @@ class ProviderController extends Controller
 				$providerUserName = $data["form"]['name'];
 				$providerUserEmail = $data["form"]['email'];
 				
-				//for provider_id
-				$provider = new Provider();
-				$provider->setName($providerName);
-				$provider->setDescription($providerDescription);
-				$provider->setSlug($providerDescription);
-				$provider->setStatus(1);
-				
-				
-				$em = $this->getDoctrine()->getEntityManager();
-				$em->persist($provider);
- 				$em->flush();
+				$invitationToken = $this->get('services.provider:')->createProvider($providerName,$providerDescription,$providerDescription);	
+				$providerUserType = $this->getDoctrine()->getRepository('UserBundle:ProviderUserType')->find('1');
  				
- 				$providerUserType = new ProviderUserType();
- 				$providerUserType = $this->getDoctrine()->getRepository('UserBundle:ProviderUserType')->find('1');
- 				//echo $providerUserType;exit;
  				$user = new ProviderUser();
  				$user->setProvider($provider);
  				$user->setProviderUserType($providerUserType);
  				$user->setStatus(1);
  				
-				//call service to create provider user by ProviderUser object
+ 				//call service to create provider user by ProviderUser object
 				$providerUser = $this->get('services.provider_user')->create($user);	
 				var_dump($providerUser);exit;
 				

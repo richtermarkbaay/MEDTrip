@@ -50,7 +50,6 @@ class InvitationService
 		
 		$dateNow = new \DateTime('now');
 		$expirationDate = $dateNow->modify('+'. $daysofExpiration .'days');
-		echo $expirationDate;exit;
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
 		$invitationToken->setExpirationDate($expirationDate);
@@ -77,9 +76,12 @@ class InvitationService
 	public function sendProviderUserInvitation(Provider $provider, ProviderUserInvitation $invitation)
 	{
 	    if (!$token = $invitation->getInvitationToken()) {
+
 	        // generate a token
+
 	        $token = $this->createInvitationToken(30);
 	        $invitation->setInvitationToken($token);
+
 	    }
 	    
 	    // persist invitation to database
@@ -87,15 +89,22 @@ class InvitationService
 	    $this->em->flush();
 	    $messageBody = $this->twig->render('ProviderBundle:Email:invite.email.twig', array(
             'providerUserInvitation' => $invitation,
+
             'token' => $token,
+
             'provider' => $provider
         ));
 	    echo $messageBody; exit;
+
 	    // send to email
 	    $message = \Swift_Message::newInstance()
+
     	    ->setSubject('Provider User Invitation for Health Care Abroad')
+
     	    ->setFrom('chaztine.blance@chromedia.com')
+
     	    ->setTo($invitation->getEmail())
+
     	    ->setBody($messageBody);
 	    
         return $this->mailer->send($message);

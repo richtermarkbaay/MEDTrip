@@ -47,7 +47,6 @@ class TokenController extends Controller
 				
 				
 				$invitationToken = $this->get('services.invitation')->createInvitationToken('0');	
-				echo $invitationToken;exit;
 				$message = \Swift_Message::newInstance()
  					->setSubject('Activate your account with HealthCareAbroad')
  					->setFrom('alnie.jacobe@chromedia.com')
