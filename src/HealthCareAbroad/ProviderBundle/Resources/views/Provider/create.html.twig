@@ -1,14 +1,14 @@
 {% block body %}
 <div class="body">
 	<form action="{{ path('ProviderBundle_create_provider') }}" method="post" {{ form_enctype(form) }}>
-			{{ form_widget(form) }}  
-				<p>Provider Users:</p>
-		   
-				<p>Email:<input type="text"></p>
-				<p>Name:<input type="text"></p>
-				<p>password:<input type="text"></p>
-				<p><input type="submit" value="Submit"></p>
+			<p>Institution Name: <input type="text" name="providerName"></p>
+			<p>Description: </p><textarea name="description" rows="10" cols="30"></textarea>
 			
+    		<p>Provider Users:</p>
+    		{{ form_row(form.name) }}
+			{{ form_row(form.email) }}
+    		{{ form_rest(form) }}
+			</br><input type="submit" value="Submit">
 	</form>
 </div>
 {% endblock %}

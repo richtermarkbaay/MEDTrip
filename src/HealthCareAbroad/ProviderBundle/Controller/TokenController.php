@@ -45,22 +45,21 @@ class TokenController extends Controller
 				$name = $data['form']['name'];
 				$email = $data['form']['email'];
 				
-				// $dateNow = new \DateTime('now');
-// 				$expirationDate = $dateNow->modify('+6 days');
-
-				$generatedToken = $this->get('services.invitation')->createInvitationToken('0');				
+				
+				$invitationToken = $this->get('services.invitation')->createInvitationToken('0');	
+				echo $invitationToken;exit;
 				$message = \Swift_Message::newInstance()
  					->setSubject('Activate your account with HealthCareAbroad')
  					->setFrom('alnie.jacobe@chromedia.com')
  					->setTo($email)
  					->setBody($this->renderView('ProviderBundle:Email:providerInvitationEmail.html.twig', array(
  								'name' => $name,
- 								'expirationDate' => $expirationDate,
+ 								'expirationDate' => $invitationToken->getExpirationDate(),
  					 			'email' => $email,
- 					 			'token' => $generatedToken)));
+ 					 			'token' => $invitationToken->getToken())));
  				
  				$this->get('mailer')->send($message);
- 				$this->get('services.invitation')->createProviderInvitation($email,$message, $name);
+ 				$this->get('services.invitation')->createProviderInvitation($email,$message, $name, $invitationToken);
 				
 				return new Response('Created token! and send invitation token to recipient');
 			}
