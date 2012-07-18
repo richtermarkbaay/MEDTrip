@@ -102,8 +102,9 @@ class ProviderUserController extends Controller
         // validate token
         $token = $this->getRequest()->get('token', null);
         $invitation = $this->get('services.token')->getActiveProviderUserInvitatinByToken($token);
+        
         if (!$invitation) {
-            $this->createNotFoundException('Invalid token');
+            throw $this->createNotFoundException('Invalid token');
         }
         
         //TODO: get the matching provider user type
@@ -127,16 +128,17 @@ class ProviderUserController extends Controller
         // TODO: fire event regarding provider user creation 
         
         // delete the invitation
-//         $em = $this->getDoctrine()->getEntityManager();
-//         $em->remove($invitation);
-//         $em->flush();
+        // TODO: move this to a listener
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($invitation);
+        $em->flush();
 
         // login to provider
         $this->get('services.provider_user')->login($providerUser->getEmail(), $temporaryPassword);
 
         // redirect to provider homepage        
         $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
-        $this->redirect($this->generateUrl('provider_homepage'));
+        return $this->redirect($this->generateUrl('provider_homepage'));
         
     }
     

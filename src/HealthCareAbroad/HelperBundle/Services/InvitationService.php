@@ -1,6 +1,10 @@
 <?php
 
 namespace HealthCareAbroad\HelperBundle\Services;
+use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
+
+use HealthCareAbroad\ProviderBundle\Entity\Provider;
+
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
 use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
 use ChromediaUtilities\Helpers\SecurityHelper;
