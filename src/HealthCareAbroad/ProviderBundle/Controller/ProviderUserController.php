@@ -43,27 +43,6 @@ class ProviderUserController extends Controller
                     
                     return $this->redirect($this->generateUrl('provider_login'));
                 }
-                
-//                 $user->setEmail($form->get('email')->getData());
-//                 $user->setPassword(SecurityHelper::hash_sha256($form->get('password')->getData()));
-//                 $user = $this->get('services.provider_user')->findByEmailAndPassword($user->getEmail(), $user->getPassword());
-                
-//                 if (!$user){
-//                     // invalid credentials
-//                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
-                    
-//                     return $this->redirect($this->generateUrl('provider_login'));
-//                 }
-//                 else {
-                    
-//                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
-//                     $token = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
-//                     $this->get("security.context")->setToken($token);
-                    
-//                     $this->getRequest()->getSession()->set('_security_provider_secured_area',  \serialize($token));
-                    
-//                     return $this->redirect($this->generateUrl('provider_homepage'));
-//                 }
             }
         }
         return $this->render('ProviderBundle:ProviderUser:login.html.twig', array(
