@@ -58,3 +58,14 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# ChromediaMediaBundle Configuration
+#chromedia_gaufrette:
+#    adapters:
+#        foo:
+#            local:
+#                directory: %media_filesystem_path%
+#    filesystems:
+#        bar:
+#            adapter:    foo
+#            alias:      foo_filesystem                
