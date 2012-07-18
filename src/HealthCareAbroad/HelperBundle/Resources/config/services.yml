@@ -20,6 +20,7 @@ services:
         arguments: [@doctrine.orm.entity_manager]
         calls:
             - [setTwig, [@twig]]
+            - [setMailer, [@mailer]]
 
     services.token:
         class: %services.token_class%

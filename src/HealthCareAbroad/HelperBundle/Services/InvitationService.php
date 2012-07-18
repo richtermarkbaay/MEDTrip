@@ -11,10 +11,34 @@ class InvitationService
 {
 	protected $doctrine;
 	
+	/**
+	 * 
+	 * @var Doctrine\ORM\EntityManager
+	 */
+	protected $em;
+	
+	/**
+	 * 
+	 * @var \Twig_Environment
+	 */
+	protected $twig;
+	
+	protected $mailer;
+	
 	public function __construct(EntityManager $em)
 	{
 		$this->em = $em;
 	}
+	public function setTwig(\Twig_Environment $twig)
+	{
+	    $this->twig = $twig;
+	}
+	
+	public function setMailer($mailer)
+	{
+	    $this->mailer = $mailer;
+	}
+	
 	public function createInvitationToken($daysofExpiration)
 	{
 		$daysofExpiration = intVal($daysofExpiration);
@@ -48,6 +72,33 @@ class InvitationService
 		
 		$this->em->persist($providerInvitation);
 		$this->em->flush();
-		
-	}	
+	}
+	
+	public function sendProviderUserInvitation(Provider $provider, ProviderUserInvitation $invitation)
+	{
+	    if (!$token = $invitation->getInvitationToken()) {
+	        // generate a token
+	        $token = $this->createInvitationToken(30);
+	        $invitation->setInvitationToken($token);
+	    }
+	    
+	    // persist invitation to database
+	    $this->em->persist($invitation);
+	    $this->em->flush();
+	    $messageBody = $this->twig->render('ProviderBundle:Email:invite.email.twig', array(
+            'providerUserInvitation' => $invitation,
+            'token' => $token,
+            'provider' => $provider
+        ));
+	    echo $messageBody; exit;
+	    // send to email
+	    $message = \Swift_Message::newInstance()
+    	    ->setSubject('Provider User Invitation for Health Care Abroad')
+    	    ->setFrom('chaztine.blance@chromedia.com')
+    	    ->setTo($invitation->getEmail())
+    	    ->setBody($messageBody);
+	    
+        return $this->mailer->send($message);
+	}
+
 }

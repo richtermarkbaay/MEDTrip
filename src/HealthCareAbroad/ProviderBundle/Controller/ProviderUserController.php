@@ -86,7 +86,7 @@ class ProviderUserController extends Controller
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendProviderUserInvitation($provider, $providerUserInvitation);
-                
+                var_dump($sendingResult); exit;
                 if ($sendingResult) {
                     $this->get('session')->setFlash('flash.notice', "Invitation sent to {$providerUserInvitation->getEmail()}");
                 }
@@ -101,6 +101,20 @@ class ProviderUserController extends Controller
         return $this->render('ProviderBundle:Default:invite.html.twig', array(
                         'form' => $form->createView(),
         ));
+    }
+    
+    public function acceptInvitationAction()
+    {
+        // validate token
+        $token = $this->getRequest()->get('token', null);
+        
+        $invitation = $this->get('services.token')->getActiveProviderUserInvitatinByToken($token);
+        if (!$invitation) {
+            $this->createNotFoundException('Invalid token');
+        }
+        
+        return $this->render('ProviderBundle:ProviderUser:acceptInvitation.html.twig');
+        
     }
     
 }
