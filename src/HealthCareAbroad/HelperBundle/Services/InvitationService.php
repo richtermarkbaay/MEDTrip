@@ -17,7 +17,7 @@ class InvitationService
 	
 	/**
 	 * 
-	 * @var EntityManager
+	 * @var Doctrine\ORM\EntityManager
 	 */
 	protected $em;
 	
@@ -27,6 +27,8 @@ class InvitationService
 	 */
 	protected $twig;
 	
+	protected $mailer;
+	
 	public function __construct(EntityManager $em)
 	{
 		$this->em = $em;
@@ -34,6 +36,11 @@ class InvitationService
 	public function setTwig(\Twig_Environment $twig)
 	{
 	    $this->twig = $twig;
+	}
+	
+	public function setMailer($mailer)
+	{
+	    $this->mailer = $mailer;
 	}
 	
 	public function createInvitationToken($daysofExpiration)
@@ -84,17 +91,14 @@ class InvitationService
             'token' => $token,
             'provider' => $provider
         ));
-	    
+	    echo $messageBody; exit;
 	    // send to email
 	    $message = \Swift_Message::newInstance()
-	    ->setSubject('Provider User Invitation for Health Care Abroad')
-	    ->setFrom('chaztine.blance@chromedia.com')
-	    ->setTo($invitation->getEmail())
-	    ->setBody($messageBody);
+    	    ->setSubject('Provider User Invitation for Health Care Abroad')
+    	    ->setFrom('chaztine.blance@chromedia.com')
+    	    ->setTo($invitation->getEmail())
+    	    ->setBody($messageBody);
 	    
-	    //$this->mailer->send($message);
-	    
-	    
-	    return true;
+        return $this->mailer->send($message);
 	}
 }
