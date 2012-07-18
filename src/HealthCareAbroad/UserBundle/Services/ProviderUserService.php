@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 use HealthCareAbroad\UserBundle\Entity\ProviderUser;
 
 use ChromediaUtilities\Helpers\Inflector;
@@ -12,6 +14,26 @@ use HealthCareAbroad\UserBundle\Services\UserService;
 class ProviderUserService extends UserService
 {
     /**
+     * 
+     * @param string $email
+     * @param password $password
+     */
+    public function login($email, $password)
+    {
+        $password = SecurityHelper::hash_sha256($password);
+        $user = $this->findByEmailAndPassword($email, $password);
+        if ($user) {
+            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
+            $this->session->set('_security_provider_secured_area',  \serialize($securityToken));
+            // $this->get("security.context")->setToken($securityToken);
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
      * Create a provider user
      *
      * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
@@ -19,6 +41,9 @@ class ProviderUserService extends UserService
      */
     public function create(ProviderUser $providerUser)
     {
+        // hash first the password
+        $providerUser->setPassword(SecurityHelper::hash_sha256($providerUser->getPassword()));
+        
         // create user in chromedia global accounts
         if ( $providerUser = $this->createUser($providerUser)){
         
