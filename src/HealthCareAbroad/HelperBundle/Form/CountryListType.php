@@ -1,37 +1,30 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form;
 
-use HealthCareAbroad\HelperBundle\Entity\Country;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class CountryListType extends AbstractType
-{
-	private $entityManager;
-	
-	public function __construct(EntityManager $entityManager)
-	{
-		$this->entityManager = $entityManager;
+class CountryListType extends AbstractType 
+{	
+	private $container;
+
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
 	}
-
+	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    	$result = $this->entityManager->getRepository('HelperBundle:Country')->findByStatus(1);
-    	$countries = array();
-    	
-    	foreach($result as $each) {
-    		$countries[$each->getId()] = $each->getName();
-    	}
- 
+    {	
         $resolver->setDefaults(array(
-            'choices' => $countries
+        	'property' => 'name',
+			'class' => 'HelperBundle:Country',
+			'query_builder' => $this->container->get("services.location")->getActiveCountries()
         ));
     }
-
+   
     public function getParent()
     {
-        return 'choice';
+        return 'entity';
     }
 
     public function getName()

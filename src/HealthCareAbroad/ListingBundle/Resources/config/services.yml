@@ -8,7 +8,7 @@ services:
     class: "%services.listing.class%"
     arguments: 
       entityManager: "@doctrine.orm.entity_manager"
-  
+
   services.listing_location:
     class: "%services.listing_location.class%"
     arguments:

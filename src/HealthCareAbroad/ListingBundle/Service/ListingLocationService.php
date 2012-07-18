@@ -30,7 +30,7 @@ class ListingLocationService
 	
 	public function getLocationByListing(Listing $entity)
 	{
-		return $this->entityManager->getRepository('ListingBundle:ListingLocation')->findOneBy(array(
+		return $this->entityManager->getRepository('ListingBundle:ListingLocation')->findBy(array(
 				'listing' => $entity
 		));		
 	}

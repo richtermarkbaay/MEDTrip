@@ -12,19 +12,18 @@ use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ListingType extends AbstractType
-{
+{	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$isProvider = false;
 		if(!$isProvider) 
 			$builder->add('provider', 'provider_list');
-			//$builder->add('provider', 'provider_list', array('class'=> 'HealthCareAbroad\ProviderBundle\Entity\Provider'));
 
 		$builder->add('procedure', 'procedure_list');
 		$builder->add('title');
 		$builder->add('description');
 		$builder->add('logo', 'file', array('required'=>false, 'constraints'=>array(new Blank())));
-		$builder->add('location', new LocationType(),array('property_path'=>false));
+		$builder->add('locations', 'collection', array('type' =>new LocationType(),'allow_add'=>true,'by_reference'=>false));
 	}
 
 	// How does it work?

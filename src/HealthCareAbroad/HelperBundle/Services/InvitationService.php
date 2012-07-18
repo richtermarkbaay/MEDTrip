@@ -1,10 +1,6 @@
 <?php
 
 namespace HealthCareAbroad\HelperBundle\Services;
-use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
-
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
-
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
 use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -45,13 +41,14 @@ class InvitationService
 	
 	public function createInvitationToken($daysofExpiration)
 	{
-		$daysofExpiration = (int)$daysofExpiration;
-		$generatedToken = SecurityHelper::hash_sha256(time());
+		$daysofExpiration = intVal($daysofExpiration)	;
+		$generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
 		if(!$daysofExpiration){
 			$daysofExpiration = 30;
 		}
 		
-		$expirationDate = new \DateTime('+'. $daysofExpiration .'days');
+		$dateNow = new \DateTime('now');
+		$expirationDate = $dateNow->modify('+'. $daysofExpiration .'days');
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
 		$invitationToken->setExpirationDate($expirationDate);
@@ -59,7 +56,6 @@ class InvitationService
 		
  		$this->em->persist($invitationToken);
  		$this->em->flush();
- 		
  		return $invitationToken;
 	}
 	
@@ -101,4 +97,5 @@ class InvitationService
 	    
         return $this->mailer->send($message);
 	}
+
 }

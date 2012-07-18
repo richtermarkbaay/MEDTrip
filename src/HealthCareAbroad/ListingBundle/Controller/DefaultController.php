@@ -1,11 +1,14 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Controller;
 
-use HealthCareAbroad\ListingBundle\Service\ListingData;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\ListingBundle\Entity\Listing;
+use HealthCareAbroad\ListingBundle\Entity\ListingLocation;
 use HealthCareAbroad\ListingBundle\Form\ListingType;
+use HealthCareAbroad\ListingBundle\Form\LocationType;
 use HealthCareAbroad\ProviderBundle\Entity\Provider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Reponse;
@@ -16,73 +19,65 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-		$listings = $this->get("services.listing")->getListings(2);
+		$listings = $this->get("services.listing")->getListings(1);
     	$data = array('listings'=>$listings);
     	return $this->render('ListingBundle:Default:index.html.twig', $data);
     }
     
-    public function createAction()
+    public function addAction()
     {
-    	$em = $this->get('doctrine')->getEntityManager();
-		$form = $this->createForm(new ListingType($em), new Listing());
+    	$listing = new Listing();
+		$listing->getLocations()->add(new ListingLocation());
+		$form = $this->createForm(new ListingType(), $listing);
 
 		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
     }    
     
     public function editAction($id)
     {
-		$em = $this->get('doctrine')->getEntityManager();
-		//$listing = $em->find('ListingBundle:Listing', $id);
 		$listing = $this->get("services.listing")->getListing($id);
-		$l = new Listing();
-		//$l->setProcedure()
-		//$formBuilder = $this->createFormBuilder($listing);
-		$form = $this->createForm(new ListingType($em), $l);
-		$form->bindRequest($request);
-		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
-
-		return $form;
-		//$listing = new Listing();
-		//$listing->getTitle(); 
-		//$listing = new Listing();
-		//$listing->setTitle('test');
-		return $this->_createForm($listing);
-    }
-    
-    public function addAction()
-    {
-    	$em = $this->get('doctrine')->getEntityManager();
-    	$data = $this->get('request')->get('listing');
- 
-    	$location = $data['location'];
-    	unset($data['location']);
-
-     	$form = $this->createForm(new ListingType(), new Listing());
-    	$form->bind($data);
-    	
-    	var_dump($form->isValid()); exit;
-    	if ($form->isValid())
-    	{
-    		$form->save();
-    	}
-    	echo 'bert'; exit;
-    	var_dump($x); exit;
-    			
-    	$data['status'] = 0;
-		//$listingData = new ListingData();
-		//$listingData->set('status', 1);
-		//foreach($data as $key => $val) {
-		//$listingData->set($key, $val);
-// 		}
-    	//$form = $this->createForm(new ListingType($em), );
-    	//$form->bindRequest($request)
-    	
-		$listing = $this->get("services.listing")->addListing($data);
 		
-		$request->getSession()->setFlash('notice', 'New Listing has been added!');
-		return $this->redirect($this->generateUrl('ListingBundle_homepage'));
+		$listing->setLocations(new ArrayCollection()); // TODO - This line should not be necessary
+		
+		$locations = $this->get('services.listing_location')->getLocationByListing($listing);
+		foreach($locations as $each) {
+			$listing->getLocations()->add($each);
+		}
+
+		$form = $this->createForm(new ListingType(), $listing);
+		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
     }
     
+    public function saveAction(Request $request)
+    {
+    	$listing = new Listing();
+     	$form = $this->createForm(new ListingType(), $listing);
+
+		if ('POST' == $request->getMethod()) {
+			$form->bindRequest($request);
+
+			//TODO  Validation Not Working!
+	    	if (!$form->isValid()) {
+
+	    		// Saving Listing
+				$listing = $this->get("services.listing")->saveListing($form->getData());
+
+				// Saving Listing Location
+				$listingLocations = $listing->getLocations();
+				foreach($listingLocations as $location) {
+					$this->get("services.listing_location")->saveLocation($location);
+				}
+
+				// Success Message
+				$request->getSession()->setFlash('notice', 'New Listing has been added!');
+
+				// Redirect
+				return $this->redirect($this->generateUrl('listing_homepage'));
+	    	}
+		}
+
+    }
+
     public function deleteAction(Request $request)
     {
     	

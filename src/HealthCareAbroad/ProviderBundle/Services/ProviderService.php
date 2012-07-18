@@ -24,15 +24,12 @@ class ProviderService
         $providerId = 1;
         return $this->doctrine->getRepository('ProviderBundle:Provider')->find($providerId);
     }
-    
-    
+
     public function getProviders()
     {
-    	$providers = $this->doctrine->getEntityManager()->createQueryBuilder()
-    	->add('select', 'p')
-    	->add('from', 'ProviderBundle:Provider p')
-    	->add('where', 'p.status = 1');
-    
-    	return $providers;
+    	return $this->doctrine->getEntityManager()->createQueryBuilder()
+				->add('select', 'p')
+				->add('from', 'ProviderBundle:Provider p')
+				->add('where', 'p.status = 1');
     }
 }

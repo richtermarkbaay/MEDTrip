@@ -1,11 +1,9 @@
 <?php
 namespace HealthCareAbroad\ProviderBundle\Form;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProviderListType extends AbstractType 
 {	
