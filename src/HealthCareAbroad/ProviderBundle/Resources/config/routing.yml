@@ -10,7 +10,7 @@ provider_accept_user_invitation:
 
 ProviderBundle_confirmed_token:
     pattern:  /confirm/t={token}
-    defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
+    defaults: { _controller: ProviderBundle:Token:confirmInvitationToken }
 
 ProviderBundle_create_provider:
     pattern:  /provider/create

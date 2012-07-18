@@ -42,11 +42,11 @@ class ProviderService
 		$provider->setSlug($slug);
 		$provider->setStatus(1);
 		
-		$em = $this->doctrine()->getEntityManager();
+		$em = $this->doctrine->getEntityManager();
 		$em->persist($provider);
 		$em->flush();
 		
-		$return $provider;
+		return $provider;
 		
     }
 }
