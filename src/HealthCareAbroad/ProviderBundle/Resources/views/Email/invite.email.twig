@@ -8,8 +8,8 @@ Message:
 
 <br>
 <p>
-
-<a href="{{ path('provider_accept_user_invitation', { 'id': providerUserInvitation.id, 'token': token.token }) }}">Click to Activate</a>
+Please go to the link provided below to activate your account. <br>
+<a href="{{ path('provider_accept_user_invitation', { 'providerId': provider.id, 'token': token.token }) }}">Click to Activate</a>
 </p>
 
 Thank you, <br>

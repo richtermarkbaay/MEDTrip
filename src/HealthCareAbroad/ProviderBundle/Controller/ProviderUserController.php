@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ProviderBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -29,25 +31,17 @@ class ProviderUserController extends Controller
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
                 
-                $user->setEmail($form->get('email')->getData());
-                $user->setPassword(SecurityHelper::hash_sha256($form->get('password')->getData()));
-                $user = $this->get('services.provider_user')->findByEmailAndPassword($user->getEmail(), $user->getPassword());
-                
-                if (!$user){
-                    // invalid credentials
+                if ($this->get('services.provider_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
+                    // valid login
+                    $this->get('session')->setFlash('flash.notice', 'Login successfully!');
+                    
+                    return $this->redirect($this->generateUrl('provider_homepage'));
+                }
+                else {
+                    // invalid login
                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
                     
                     return $this->redirect($this->generateUrl('provider_login'));
-                }
-                else {
-                    
-                    $this->get('session')->setFlash('flash.notice', 'Login successfully!');
-                    $token = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
-                    $this->get("security.context")->setToken($token);
-                    
-                    $this->getRequest()->getSession()->set('_security_provider_secured_area',  \serialize($token));
-                    
-                    return $this->redirect($this->generateUrl('provider_homepage'));
                 }
             }
         }
@@ -86,7 +80,7 @@ class ProviderUserController extends Controller
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendProviderUserInvitation($provider, $providerUserInvitation);
-                
+                var_dump($sendingResult); exit;
                 if ($sendingResult) {
                     $this->get('session')->setFlash('flash.notice', "Invitation sent to {$providerUserInvitation->getEmail()}");
                 }
@@ -101,6 +95,51 @@ class ProviderUserController extends Controller
         return $this->render('ProviderBundle:Default:invite.html.twig', array(
                         'form' => $form->createView(),
         ));
+    }
+    
+    public function acceptInvitationAction()
+    {
+        // validate token
+        $token = $this->getRequest()->get('token', null);
+        $invitation = $this->get('services.token')->getActiveProviderUserInvitatinByToken($token);
+        
+        if (!$invitation) {
+            throw $this->createNotFoundException('Invalid token');
+        }
+        
+        //TODO: get the matching provider user type
+        $providerUserType = $this->getDoctrine()->getRepository('UserBundle:ProviderUserType')->find(1);
+        
+        // create temporary 10 character password
+        $temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
+        
+        // create a provider user
+        $providerUser = new ProviderUser();
+        $providerUser->setProvider($invitation->getProvider());
+        $providerUser->setProviderUserType($providerUserType);
+        $providerUser->setEmail($invitation->getEmail());
+        $providerUser->setPassword($temporaryPassword);
+        $providerUser->setFirstName($invitation->getFirstName());
+        $providerUser->setMiddleName($invitation->getMiddleName());
+        $providerUser->setLastName($invitation->getLastName());
+        $providerUser->setStatus(SiteUser::STATUS_ACTIVE);
+        $this->get('services.provider_user')->create($providerUser);
+        
+        // TODO: fire event regarding provider user creation 
+        
+        // delete the invitation
+        // TODO: move this to a listener
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($invitation);
+        $em->flush();
+
+        // login to provider
+        $this->get('services.provider_user')->login($providerUser->getEmail(), $temporaryPassword);
+
+        // redirect to provider homepage        
+        $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
+        return $this->redirect($this->generateUrl('provider_homepage'));
+        
     }
     
 }

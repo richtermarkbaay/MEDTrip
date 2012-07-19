@@ -26,10 +26,20 @@ class UserService
     
     protected $chromediaAccountsUri;
     
+    /**
+     * 
+     * @var Symfony\Component\HttpFoundation\Session\Session
+     */
+    protected $session;
     
     public function __construct()
     {
             
+    }
+    
+    public function setSession($session)
+    {
+        $this->session = $session;
     }
     
     /**
@@ -63,7 +73,7 @@ class UserService
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
      * @return NULL | SiteUser
      */
-    public function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
+    protected function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
         $form_data = array(
             'email' => $user->getEmail(),
@@ -90,7 +100,7 @@ class UserService
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user
      */
-    public function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
+    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
         
     }

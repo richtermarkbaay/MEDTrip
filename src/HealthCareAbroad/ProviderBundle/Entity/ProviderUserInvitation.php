@@ -9,6 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProviderUserInvitation
 {
+    const STATUS_PENDING_FOR_SENDING = 0; // failed sending invitation
+    
+    const STATUS_SENT_AND_PENDING_FOR_ACCEPTANCE = 1; // invitation successfully sent and pending for acceptance
+    
+    const STATUS_ACCEPTED = 2; // accepted by target user
+    
+    const STATUS_EXPIRED = 3; // invitation no longer valid
+    
     /**
      * @var integer $id
      */

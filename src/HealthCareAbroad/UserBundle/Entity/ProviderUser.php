@@ -28,12 +28,12 @@ class ProviderUser extends SiteUser
     private $status;
 
     /**
-     * @var HealthCareAbroad\ProviderBundle\Entity\Providers
+     * @var HealthCareAbroad\ProviderBundle\Entity\Provider
      */
     private $provider;
 
     /**
-     * @var HealthCareAbroad\ProviderBundle\Entity\ProviderUserTypes
+     * @var HealthCareAbroad\UserBundle\Entity\ProviderUserType
      */
     private $providerUserType;
     
@@ -84,10 +84,10 @@ class ProviderUser extends SiteUser
     /**
      * Set providerUserType
      *
-     * @param HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType
+     * @param HealthCareAbroad\UserBundle\Entity\ProviderUserType $providerUserType
      * @return ProviderUser
      */
-    public function setProviderUserType(\HealthCareAbroad\ProviderBundle\Entity\ProviderUserType $providerUserType = null)
+    public function setProviderUserType(\HealthCareAbroad\UserBundle\Entity\ProviderUserType $providerUserType = null)
     {
         $this->providerUserType = $providerUserType;
         return $this;
@@ -96,7 +96,7 @@ class ProviderUser extends SiteUser
     /**
      * Get providerUserType
      *
-     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserType
+     * @return HealthCareAbroad\UserBundle\Entity\ProviderUserType
      */
     public function getProviderUserType()
     {
