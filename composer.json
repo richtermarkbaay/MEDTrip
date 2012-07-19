@@ -19,7 +19,7 @@
         "jms/security-extra-bundle": "1.1.*",
         "jms/di-extra-bundle": "1.0.*",
         "guzzle/guzzle": "*",
-        "chromedia/utilities": "dev-master"
+        "chromedia/utilities": "dev-master",
         "chromedia/media-bundle": "dev-master"
     },
     "scripts": {

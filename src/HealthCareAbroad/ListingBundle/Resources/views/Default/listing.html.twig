@@ -1,0 +1,31 @@
+
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<div id="content-wrapper">
+		
+		<div id="listings-wrapper" style="width: 50%; color: #555">
+			<h2>{{ listing.title }}</h2>
+			<p>{{ listing.description }}</p>
+			<p>
+				<label style="color:#aaa">Procedure:</label>
+				{{ listing.procedure.name }}
+			</p>
+			<p>
+				<label style="color:#aaa">Provider:</label>
+				{{ listing.provider.name }}
+			</p>
+			<p>
+				<label style="color:#aaa">Address:</label>
+				{% for location in listing.locations %}
+					{{ location.address }}, {{ location.city.name }}, {{ location.country.name }}
+				{% endfor %}
+			</p>
+			
+			<a href="{{ path('listing_edit', {id:listing.id}) }}">edit</a> | 
+			<a href="{{ path('listing_delete', {id:listing.id}) }}">delete</a>
+		</div>
+
+	</div>
+	
+{% endblock %}

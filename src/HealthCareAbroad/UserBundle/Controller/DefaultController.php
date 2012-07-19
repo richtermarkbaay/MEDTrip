@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\UserBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Event\UserEvents;
+
+use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
+
+use HealthCareAbroad\UserBundle\Event\ProviderUserEvents;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
@@ -18,24 +24,37 @@ use Guzzle\Service\Client;
 
 class DefaultController extends Controller
 {
+    public function testEventAction()
+    {
+        $invitation = $this->getDoctrine()->getRepository('ProviderBundle:ProviderUserInvitation')->find(3);
+        
+        $user = $this->get('services.provider_user')->findById(2);
+        $event = new CreateProviderUserEvent($user);
+        $event->setTemporaryPassword('wata');
+        $event->setUsedInvitation($invitation);
+        
+        $dispatcher = $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_PROVIDER_USER, $event);
+        
+        exit;
+    }
+    
+    
     public function testAction()
     {
-        $provider = $this->getDoctrine()->getRepository('ProviderBundle:Provider')->find(1);
-        $providerUserType = $this->getDoctrine()->getRepository('UserBundle:ProviderUserType')->find(1);
+//         $provider = $this->getDoctrine()->getRepository('ProviderBundle:Provider')->find(1);
+//         $providerUserType = $this->getDoctrine()->getRepository('UserBundle:ProviderUserType')->find(1);
 
         
-        $user = new ProviderUser();
-        $user->setEmail('alnie.jacobe@chromedia.com');
-        $user->setPassword(\ChromediaUtilities\Helpers\SecurityHelper::hash_sha256('123456'));// hash first the password
-        $user->setFirstName('Alnie');
-        $user->setMiddleName('');
-        $user->setLastName('Jacobe');
-        $user->setProvider($provider);
-        $user->setProviderUserType($providerUserType);
-        $user->setStatus(SiteUser::STATUS_ACTIVE);
-        
-//         $user_service = $this->get('services.user');
-        $this->get('services.provider_user')->create($user);
+//         $user = new ProviderUser();
+//         $user->setEmail('alnie.jacobe@chromedia.com');
+//         $user->setPassword(\ChromediaUtilities\Helpers\SecurityHelper::hash_sha256('123456'));// hash first the password
+//         $user->setFirstName('Alnie');
+//         $user->setMiddleName('');
+//         $user->setLastName('Jacobe');
+//         $user->setProvider($provider);
+//         $user->setProviderUserType($providerUserType);
+//         $user->setStatus(SiteUser::STATUS_ACTIVE);
+//         $this->get('services.provider_user')->create($user);
         
         //$user_service->findByEmailAndPassword('chris.velarde@chromedia.com', \ChromediaUtilities\Helpers\SecurityHelper::hash_sha256('123456'));
         

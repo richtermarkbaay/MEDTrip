@@ -17,7 +17,7 @@ class ProcedureListType extends AbstractType
     {
 			$resolver->setDefaults(array(
 			'property' => 'name',
-			'class' => 'ProcedureBundle:MedicalProcedure',
+			'class' => 'HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure',
 			'query_builder' => $this->container->get("services.procedure")->getActiveProcedures()
 		));
     }

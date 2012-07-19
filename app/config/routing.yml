@@ -1,3 +1,7 @@
+MailerBundle:
+    resource: "@MailerBundle/Resources/config/routing.yml"
+    prefix:   /
+
 PageBundle:
     resource: "@PageBundle/Resources/config/routing.yml"
     prefix:   /

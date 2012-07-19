@@ -1,15 +1,12 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Form;
 
-use Symfony\Component\Validator\Constraints\Blank;
-
-use HealthCareAbroad\ListingBundle\Entity\ListingLocation;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvents;
-use HealthCareAbroad\ProviderBundle\Form\ProviderListType;
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Blank;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 
 class ListingType extends AbstractType
 {	

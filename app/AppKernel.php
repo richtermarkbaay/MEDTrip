@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\ListingBundle\ListingBundle(),
             new HealthCareAbroad\ProcedureBundle\ProcedureBundle(),
             new HealthCareAbroad\PageBundle\PageBundle(),
+            new HealthCareAbroad\MailerBundle\MailerBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
