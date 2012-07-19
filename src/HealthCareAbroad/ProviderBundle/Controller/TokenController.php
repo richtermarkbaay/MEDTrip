@@ -12,19 +12,14 @@ use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
 class TokenController extends Controller
 {
 
-	public function confirmedTokenInvitationAction($token)
+	public function confirmInvitationTokenAction($token)
     {    	
-     	$value = $this->get('services.token')->validate($token);	
+     	$invitation = $this->get('services.token')->validateInvitationByToken('ProviderBundle:ProviderInvitation', $token);	
      	
-     	if(count($value) > 0){
-     		
-     		return $this->render('ProviderBundle:Token:confirmedTokenInvitation.html.twig', array('token' => $token));
-     	}			
-		else{
-			//prompt error
-			echo "failed";exit;
-		}
-		return $this->render('ProviderBundle:Token:confirmedTokenInvitation.html.twig', array('token' => $token));
+    	if (!$invitation) {
+            throw $this->createNotFoundException('Invalid token');
+        }
+		return $this->render('ProviderBundle:Token:confirmInvitationToken.html.twig', array('token' => $token));
     }
 	
     public function createAction(Request $request)
@@ -37,7 +32,7 @@ class TokenController extends Controller
             
     	$request = $this->getRequest();
     		
-    	if ($request->getMethod() == 'POST'){
+    	if ($request->getMethod() == 'POST') {
 			$form->bindRequest($request);	
 			
 			if ($form->isValid()){
@@ -45,8 +40,10 @@ class TokenController extends Controller
 				$name = $data['form']['name'];
 				$email = $data['form']['email'];
 				
+				//generate token
+				$invitationToken = $this->get('services.invitation')->createInvitationToken(0);	
 				
-				$invitationToken = $this->get('services.invitation')->createInvitationToken('0');	
+				//send provider invitation email
 				$message = \Swift_Message::newInstance()
  					->setSubject('Activate your account with HealthCareAbroad')
  					->setFrom('alnie.jacobe@chromedia.com')
@@ -58,6 +55,8 @@ class TokenController extends Controller
  					 			'token' => $invitationToken->getToken())));
  				
  				$this->get('mailer')->send($message);
+ 				
+ 				//create provider invitation
  				$this->get('services.invitation')->createProviderInvitation($email,$message, $name, $invitationToken);
 				
 				return new Response('Created token! and send invitation token to recipient');
