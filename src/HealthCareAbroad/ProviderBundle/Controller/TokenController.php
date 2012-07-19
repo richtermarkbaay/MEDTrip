@@ -52,7 +52,8 @@ class TokenController extends Controller
  								'name' => $name,
  								'expirationDate' => $invitationToken->getExpirationDate(),
  					 			'email' => $email,
- 					 			'token' => $invitationToken->getToken())));
+ 					 			'token' => $invitationToken->getToken()
+ 							)));
  				
  				$this->get('mailer')->send($message);
  				

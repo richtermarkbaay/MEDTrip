@@ -36,12 +36,13 @@ class ProviderController extends Controller
 				
 				//validate email if already exist in providerUser
 				$email = $this->get('services.user')->find(array('email' => $data["form"]["email"]),  array('limit' => 1));
-					
+				
 				if (count($email) > 0) {
 					$this->get('session')->setFlash('flash.notice', "Email already registered!");
 				}
 				else {
 					
+					//create provider
 					$provider = $this->get('services.provider')->createProvider($data["providerName"],$data["description"],$data["description"]);	
 					
 					//TODO: get the matching provider user type
@@ -61,10 +62,20 @@ class ProviderController extends Controller
 	 				$user->setLastName($data["form"]['lastName']);
 	 				$user->setStatus(SiteUser::STATUS_ACTIVE);
 	 				
+	 				
 	 				//call service to create provider user by ProviderUser object
 					$providerUser = $this->get('services.provider_user')->create($user);	
 					if ( count($providerUser) > 0 ) {
-						return new Response('Successfully created an account to HealthCareAbroad.');
+						$sendingResult = $this->get('services.invitation')->sendProviderUserLoginCredentials($user,$temporaryPassword);
+						if ($sendingResult) {
+		                    $this->get('session')->setFlash('flash.notice', "Invitation sent to {$user->getEmail()}");
+		                }
+		                else {
+		                    $this->get('session')->setFlash('flash.notice', "Failed to send invitation to {$user->getEmail()}");
+		                }
+		                
+		                return $this->redirect($this->generateUrl('provider_homepage'));
+						
 					}
 					
 				}		
