@@ -5,6 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+
 class ProviderListType extends AbstractType 
 {	
 	private $container;
@@ -17,7 +18,7 @@ class ProviderListType extends AbstractType
     {	
         $resolver->setDefaults(array(
         	'property' => 'name',
-			'class' => 'ProviderBundle:Provider',
+			'class' => 'HealthCareAbroad\ProviderBundle\Entity\Provider',
 			'query_builder' => $this->container->get("services.provider")->getProviders()
         ));
     }

@@ -274,6 +274,9 @@ class Listing
      */
     public function getLocations()
     {
+    	// TODO - This line should not be necessary
+    	if($this->locations === NULL) $this->locations = new ArrayCollection(); 
+
     	return $this->locations;
     }
 }

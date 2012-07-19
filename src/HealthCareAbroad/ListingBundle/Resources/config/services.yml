@@ -1,15 +1,15 @@
 parameters:
-  services.listing.class: HealthCareAbroad\ListingBundle\Service\ListingService
-  services.listing_location.class: HealthCareAbroad\ListingBundle\Service\ListingLocationService
+    services.listing.class: HealthCareAbroad\ListingBundle\Service\ListingService
+    services.listing_location.class: HealthCareAbroad\ListingBundle\Service\ListingLocationService
 
 
 services:
-  services.listing:
-    class: "%services.listing.class%"
-    arguments: 
-      entityManager: "@doctrine.orm.entity_manager"
+    services.listing:
+        class: "%services.listing.class%"
+        calls:
+            - [setContainer, [@service_container]]
 
-  services.listing_location:
-    class: "%services.listing_location.class%"
-    arguments:
-      entityManager: "@doctrine.orm.entity_manager"
+    services.listing_location:
+        class: "%services.listing_location.class%"
+        calls:
+            - [setContainer, [@service_container]]
