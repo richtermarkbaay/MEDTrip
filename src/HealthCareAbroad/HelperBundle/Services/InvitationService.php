@@ -70,7 +70,7 @@ class InvitationService
 		$providerInvitation->setEmail($email);
 		$providerInvitation->setMessage($message);
 		$providerInvitation->setName($name);
-		$providerInvitation->setStatus('1');
+		$providerInvitation->setStatus('0');
 		$providerInvitation->setInvitationToken($invitationToken);
 		
 		$this->em->persist($providerInvitation);

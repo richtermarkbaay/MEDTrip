@@ -16,6 +16,18 @@ listing_edit:
     requirements:
          id: ".+"
 
+listing_view:
+    pattern:  /listing/{id}
+    defaults: { _controller: ListingBundle:Default:view }
+    requirements:
+         id: ".+"
+
+listing_delete:
+    pattern:  /listing/delete/{id}
+    defaults: { _controller: ListingBundle:Default:delete }
+    requirements:
+         id: ".+"
+
 listing_test:
     pattern:  /listing
     defaults: { _controller: ListingBundle:Default:test }

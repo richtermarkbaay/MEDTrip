@@ -27,10 +27,15 @@ class ProviderService
 
     public function getProviders()
     {
-    	return $this->doctrine->getEntityManager()->createQueryBuilder()
-				->add('select', 'p')
-				->add('from', 'ProviderBundle:Provider p')
-				->add('where', 'p.status = 1');
+return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'ProviderBundle:Provider p')->add('where', 'p.status=1');
+// 		var_dump(get_class($x));
+
+//     	exit;
+//     	return $this->doctrine->getEntityManager()->createQueryBuilder()
+// 				->add('select', 'p')
+// 				->add('from', 'ProviderBundle:Provider p')
+// 				->add('where', 'p.status = 1');
+
     }
     
     

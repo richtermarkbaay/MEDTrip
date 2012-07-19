@@ -46,6 +46,17 @@ class ListingLocation
     }
 
     /**
+     * Set id
+     *
+     * @return bigint
+     */
+    public function setId($id)
+    {
+    	$this->id = $id;
+    	return $this;
+    }
+
+    /**
      * Set address
      *
      * @param text $address

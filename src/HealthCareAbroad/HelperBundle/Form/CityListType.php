@@ -17,7 +17,7 @@ class CityListType extends AbstractType
     {	
         $resolver->setDefaults(array(
         	'property' => 'name',
-			'class' => 'HelperBundle:City',
+			'class' => 'HealthCareAbroad\HelperBundle\Entity\City',
 			'query_builder' => $this->container->get("services.location")->getActiveCities()
         ));
     }

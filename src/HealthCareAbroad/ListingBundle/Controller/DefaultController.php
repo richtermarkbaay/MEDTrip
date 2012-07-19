@@ -29,32 +29,28 @@ class DefaultController extends Controller
     	$listing = new Listing();
 		$listing->getLocations()->add(new ListingLocation());
 		$form = $this->createForm(new ListingType(), $listing);
-
-		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
+		$params = array('form' => $form->createView());
+		return $this->render('ListingBundle:Default:create.html.twig', $params);
     }    
     
     public function editAction($id)
     {
 		$listing = $this->get("services.listing")->getListing($id);
-		
-		$listing->setLocations(new ArrayCollection()); // TODO - This line should not be necessary
-		
-		$locations = $this->get('services.listing_location')->getLocationByListing($listing);
-		foreach($locations as $each) {
-			$listing->getLocations()->add($each);
-		}
+		$listing = $this->get("services.listing")->populateLocations($listing);
 
 		$form = $this->createForm(new ListingType(), $listing);
-		return $this->render('ListingBundle:Default:create.html.twig', array('form' => $form->createView()));
+		$params = array('form' => $form->createView(), 'id' => $listing->getId());
+		return $this->render('ListingBundle:Default:create.html.twig', $params);
     }
     
     public function saveAction(Request $request)
     {
-    	$listing = new Listing();
-     	$form = $this->createForm(new ListingType(), $listing);
-
 		if ('POST' == $request->getMethod()) {
-			$form->bindRequest($request);
+
+			$listingData = $request->get('listing');
+			$listing = $request->get('id') ? $this->get("services.listing")->getListing($request->get('id')) : new Listing(); 
+			$form = $this->createForm(new ListingType(), $listing);
+			$form->bind($listingData);
 
 			//TODO  Validation Not Working!
 	    	if (!$form->isValid()) {
@@ -62,20 +58,33 @@ class DefaultController extends Controller
 	    		// Saving Listing
 				$listing = $this->get("services.listing")->saveListing($form->getData());
 
-				// Saving Listing Location
-				$listingLocations = $listing->getLocations();
-				foreach($listingLocations as $location) {
-					$this->get("services.listing_location")->saveLocation($location);
+				// Saving Listing Locations
+				$listingLocations = $listingData['locations'];
+				foreach($listingLocations as $each) {
+					$location = $each['id'] ? $this->get("services.listing_location")->getLocation($each['id']) : new ListingLocation();
+					$location->setListing($listing);
+					$locationForm = $this->createForm(new LocationType(), $location);
+					$locationForm->bind($each);
+
+					$this->get("services.listing_location")->saveLocation($locationForm->getData());
 				}
 
-				// Success Message
 				$request->getSession()->setFlash('notice', 'New Listing has been added!');
-
-				// Redirect
 				return $this->redirect($this->generateUrl('listing_homepage'));
 	    	}
 		}
+    }
 
+    public function viewAction($id)
+    {
+    	$listing = $this->get("services.listing")->getListing($id);
+		$locations = $this->get('services.listing_location')->getLocationByListing($listing);
+
+		foreach($locations as $each) {
+			$listing->getLocations()->add($each);
+		}
+
+    	return $this->render('ListingBundle:Default:listing.html.twig', array('listing' => $listing));
     }
 
     public function deleteAction(Request $request)
