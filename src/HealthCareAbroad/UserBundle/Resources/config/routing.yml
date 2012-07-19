@@ -1,3 +1,7 @@
 user_test_only:
     pattern:  /users/test
     defaults: { _controller: UserBundle:Default:test }
+    
+event_test:
+    pattern:  /users/testEvent
+    defaults: { _controller: UserBundle:Default:testEvent }

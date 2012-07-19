@@ -32,4 +32,4 @@ HealthCareAbroad\UserBundle\Entity\ProviderUser:
                 provider_user_type_id:
                     referencedColumnName: id
             orphanRemoval: false
-    lifecycleCallbacks: {  }
+    lifecycleCallbacks: {}
