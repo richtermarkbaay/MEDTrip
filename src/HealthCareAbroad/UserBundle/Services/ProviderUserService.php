@@ -63,6 +63,7 @@ class ProviderUserService extends UserService
      * 
      * @param string $email
      * @param string $password
+     * @return ProviderUser
      */
     public function findByEmailAndPassword($email, $password)
     {
@@ -76,20 +77,32 @@ class ProviderUserService extends UserService
         
         if ($accountData) {
             // find a provider user
-            $providerUser = $this->doctrine->getRepository('UserBundle:ProviderUser')->getActiveUserByAccountId($accountData['id']);
+            $providerUser = $this->doctrine->getRepository('UserBundle:ProviderUser')->findActiveUserById($accountData['id']);
             
             // populate account data to SiteUser
-            foreach ($accountData as $key => $v) {
-                if ($key != 'id') {
-                    $setMethod = 'set'.Inflector::toVariable($key);
-                    $providerUser->{$setMethod}($v);
-                }
-            }
-            
+            $providerUser = $this->hydrateAccountData($providerUser, $accountData);
             
             return $providerUser;
         }
         
         return null;
+    }
+    
+    /**
+     * Find a ProviderUser by accountId
+     * 
+     * @param int $id
+     * @param boolean $activeOnly
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\ProviderUser>
+     */
+    public function findById($id, $activeOnly=true)
+    {
+        // find a providerUser
+        $repository = $this->doctrine->getRepository('UserBundle:ProviderUser');
+        $providerUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
+        
+        return $providerUser 
+            ? $this->getUser($providerUser) // find a matching global account for this ProviderUser 
+            : null; // no providerUser found
     }
 }

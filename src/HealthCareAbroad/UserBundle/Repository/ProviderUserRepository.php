@@ -18,8 +18,8 @@ class ProviderUserRepository extends EntityRepository
      * @param int $accountId
      * @return HealthCareAbroad\UserBundle\Entity\ProviderUser
      */
-    public function getActiveUserByAccountId($accountId)
+    public function findActiveUserById($accountId)
     {
-        return $this->findOneBy(array('accountId' => $accountId, 'status' => 1));
+        return $this->findOneBy(array('accountId' => $accountId, 'status' => SiteUser::STATUS_ACTIVE));
     }
 }

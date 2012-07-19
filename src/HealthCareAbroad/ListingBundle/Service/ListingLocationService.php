@@ -1,17 +1,19 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Service;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 use HealthCareAbroad\ListingBundle\Entity\ListingLocation;
 use HealthCareAbroad\ListingBundle\Entity\Listing;
 
 class ListingLocationService
-{
-	protected $entityManager;
-	
-	public function __construct(EntityManager $entityManager)
-	{
-		$this->entityManager = $entityManager;
+{	
+	private $container;
+	private $entityManager;
+
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
+		$this->entityManager = $this->container->get('doctrine')->getEntityManager();
 	}
 
 	public function getLocation($listingLocationId) 

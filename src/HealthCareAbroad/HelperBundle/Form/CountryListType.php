@@ -17,7 +17,7 @@ class CountryListType extends AbstractType
     {	
         $resolver->setDefaults(array(
         	'property' => 'name',
-			'class' => 'HelperBundle:Country',
+			'class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
 			'query_builder' => $this->container->get("services.location")->getActiveCountries()
         ));
     }

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\ProviderBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Event\UserEvents;
+
+use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
@@ -125,21 +129,21 @@ class ProviderUserController extends Controller
         $providerUser->setStatus(SiteUser::STATUS_ACTIVE);
         $this->get('services.provider_user')->create($providerUser);
         
-        // TODO: fire event regarding provider user creation 
+        // create event regarding provider user creation
+        $event = new CreateProviderUserEvent($providerUser);
+        $event->setTemporaryPassword($temporaryPassword);
+        $event->setUsedInvitation($invitation);
         
-        // delete the invitation
-        // TODO: move this to a listener
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($invitation);
-        $em->flush();
-
+        // dispatch the event
+        $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_PROVIDER_USER, $event);
+        
         // login to provider
         $this->get('services.provider_user')->login($providerUser->getEmail(), $temporaryPassword);
 
         // redirect to provider homepage        
         $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
-        return $this->redirect($this->generateUrl('provider_homepage'));
         
+        return $this->redirect($this->generateUrl('provider_homepage'));
     }
     
 }

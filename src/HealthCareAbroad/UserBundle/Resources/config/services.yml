@@ -25,3 +25,16 @@ services:
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             - [setSession, [@session]]
+            
+    ## listeners below
+    listener.user.provider_user.create:
+        class: HealthCareAbroad\UserBundle\Listener\ProviderUserListener
+        calls:
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.provider_user.create, method: onCreate }
+            
+    listener.mailer.provider_user.create:
+        class: HealthCareAbroad\MailerBundle\Listener\ProviderUserListener
+        tags:
+            - { name: kernel.event_listener, event: event.provider_user.create, method: onCreate }

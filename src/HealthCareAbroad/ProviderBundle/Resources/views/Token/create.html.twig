@@ -1,6 +1,6 @@
-
+{% extends '::base.html.twig' %}
 {% block body %}
-<form action="{{ path('ProviderBundle_create_token') }}" method="post" {{ form_enctype(form) }}>
+<form action="{{ path('ProviderBundle_create_token') }}" method="POST" {{ form_enctype(form) }} class="user">
 	<div class="body">
 		{{ form_widget(form) }}  
         	<p><input type="submit" value="Submit"></p>

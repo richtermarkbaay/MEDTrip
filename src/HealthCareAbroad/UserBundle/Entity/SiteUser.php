@@ -129,4 +129,5 @@ abstract class SiteUser implements UserInterface
     {
         return "{$this->firstName} {$this->lastName}";
     }
+    
 }

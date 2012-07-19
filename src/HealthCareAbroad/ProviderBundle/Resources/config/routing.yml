@@ -1,21 +1,26 @@
 ProviderBundle_create_token:
     pattern:  /createtoken
     defaults: { _controller: ProviderBundle:Token:create }
+    requirements:
+       _method:  GET|POST
 
 provider_accept_user_invitation:
     pattern:  /accounts/acceptInvitation/{providerId}/{token}
     defaults: { _controller: ProviderBundle:ProviderUser:acceptInvitation }
     requirements:    
-        _method:  GET
+       _method:  GET
 
 ProviderBundle_confirmed_token:
     pattern:  /confirm/t={token}
-    defaults: { _controller: ProviderBundle:Token:confirmedTokenInvitation }
+    defaults: { _controller: ProviderBundle:Token:confirmInvitationToken }
+    requirements:
+       _method: GET
 
 ProviderBundle_create_provider:
     pattern:  /provider/create
     defaults: { _controller: ProviderBundle:Provider:create }
-
+    requirements:
+       _method: GET|POST
 provider_invite_user:
     pattern:  /provider/invite-user
     defaults: { _controller: ProviderBundle:ProviderUser:invite }
@@ -25,7 +30,7 @@ provider_invite_user:
 provider_login:
     pattern:  /provider/login
     defaults: { _controller: ProviderBundle:ProviderUser:login }
-    requirements:    
+    requirements:   
         _method:  GET|POST
 
 provider_logout:

@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use ChromediaUtilities\Helpers\Inflector;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 class UserService
@@ -106,7 +108,25 @@ class UserService
     }
     
     /**
-     * Find a user in chromedia global accounts
+     * Hydrate account data to SiteUser instance
+     * 
+     * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
+     * @param array $accountData
+     * @return SiteUser
+     */
+    protected function hydrateAccountData(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountData)
+    {
+        foreach ($accountData as $key => $v) {
+            if ($key != 'id') {
+                $setMethod = 'set'.Inflector::toVariable($key);
+                $user->{$setMethod}($v);
+            }
+        }
+        return $user;
+    }
+    
+    /**
+     * Find user/s in chromedia global accounts based on searchBy options
      * 
      * @param array $searchBy
      * @param array $options
@@ -125,5 +145,25 @@ class UserService
         }
         
         return null;
+    }
+    
+    /**
+     * Find an account in global chromedia by accountId
+     * 
+     * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
+     * @return SiteUser
+     */
+    public function getUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
+    {
+        if ($user->getAccountId()){
+            $response = $this->request->get($this->chromediaAccountsUri.'/'.$user->getAccountId());
+            
+            if (200 == $response->getStatusCode()) {
+                $accountData = \json_decode($response->getBody(true), true);
+                
+                return $this->hydrateAccountData($user, $accountData);
+            }
+        }
+        return NULL;
     }
 }

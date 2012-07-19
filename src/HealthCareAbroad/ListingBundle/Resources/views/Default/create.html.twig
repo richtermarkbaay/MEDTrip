@@ -11,12 +11,17 @@
 		<h2>Create Listing</h2>
 
 		<form action="{{ path('listing_save') }}" method="post" {{ form_enctype(form) }}>
+			{% if id is defined %}
+				<input type="hidden" value="{{ id }}" name="id"/>
+			{% endif %}
+
 			{{ form_row(form.provider) }}
 			{{ form_row(form.procedure) }}
 			{{ form_row(form.title) }}
 			{{ form_row(form.description) }}
 
 			{% for location in form.locations %}
+				{{ form_row(location.id) }}
 				{{ form_row(location.country) }}
 				{{ form_row(location.city) }}
 				{{ form_row(location.address) }}

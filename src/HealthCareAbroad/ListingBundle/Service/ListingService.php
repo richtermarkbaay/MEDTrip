@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\ListingBundle\Service;
 
-use HealthCareAbroad\ListingBundle\Entity\ListingLocation;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use HealthCareAbroad\ListingBundle\Entity\Listing;
 use HealthCareAbroad\ListingBundle\Repository\ListingRepository;
@@ -13,19 +13,19 @@ use Doctrine\ORM\EntityManager;
 
 class ListingService
 {
-	protected $entityManager;
-	
-	public function __construct(EntityManager $entityManager)
-	{
-		$this->entityManager = $entityManager;
+	private $container;
+	private $entityManager;
+
+	public function setContainer(ContainerInterface $container = null) {
+		$this->container = $container;
+		$this->entityManager = $this->container->get('doctrine')->getEntityManager();
 	}
-	
+
 	public function getListing($id)
 	{
-		//$repository = $this->entityManager->getRepository('HealthCareAbroadBundle:Listing');
 		$repository = $this->entityManager->getRepository('ListingBundle:Listing');
 		$listing = $repository->findOneById($id); 
-		
+
 		return $listing;
 	}
 	
@@ -114,5 +114,15 @@ class ListingService
 
 		$this->entityManager->remove($listing);
 		$this->entityManager->flush($listing);
+	}
+	
+	public function populateLocations(Listing $listing) 
+	{
+		$locations = $this->container->get('services.listing_location')->getLocationByListing($listing);
+		foreach($locations as $each) {
+			$listing->getLocations()->add($each);
+		}
+		
+		return $listing;
 	}
 }

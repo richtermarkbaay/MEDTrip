@@ -4,7 +4,13 @@
         <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />       
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+        {% javascripts 
+        	'js/jquery-1.7.2.min.js' 
+        %}
+        	<script src="{{ asset_url }}"></script> 
+        {% endjavascripts %}
+        
         {% block stylesheets %}
             <link href="{{ asset('css/screen.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}

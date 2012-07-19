@@ -43,6 +43,23 @@ class ChromediaGlobalRequest
     }
     
     /**
+     * Send a GET request
+     * 
+     * @param string $uri
+     * @return \Guzzle\Http\Message\Response
+     */
+    public function get($uri)
+    {
+        // add the authorization header
+        $headers['Authorization'] = "Bearer {$this->_generateBearerToken()}";
+        $headers['X-ApplicationId'] = $this->appId;
+        $response = $this->client->get($uri,$headers)->send();
+        
+        return $response;
+    }
+    
+    /**
+     * Send a POST request
      * 
      * @param string $uri
      * @param array $post_data
