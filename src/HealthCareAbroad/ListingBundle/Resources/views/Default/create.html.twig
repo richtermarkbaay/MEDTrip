@@ -1,7 +1,6 @@
-{% extends '::base.html.twig' %}
+{% extends 'ListingBundle::layout.html.twig' %}
 
 {% block body %}
-
 	<style type="text/css">
 		label {width:100px;display:inline-block; margin-bottom: 5px;}
 	</style>
@@ -20,14 +19,14 @@
 			{{ form_row(form.title) }}
 			{{ form_row(form.description) }}
 
-			{% for location in form.locations %}
+			{% for location in form.locations %}				
 				{{ form_row(location.id) }}
 				{{ form_row(location.country) }}
 				{{ form_row(location.city) }}
 				{{ form_row(location.address) }}
 			{% endfor %}
 			
-		    <input type="submit" />
+		    <input type="submit"/>
 		</form>
 	
 	</div>

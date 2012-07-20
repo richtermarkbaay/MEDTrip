@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class ListingType extends AbstractType
 {	
 	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
+	{	
 		$isProvider = false;
 		if(!$isProvider) 
 			$builder->add('provider', 'provider_list');

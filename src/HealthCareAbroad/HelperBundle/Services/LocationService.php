@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
 class LocationService
 {
 	protected $doctrine;
@@ -11,19 +13,42 @@ class LocationService
 		$this->doctrine = $doctrine;
 	}
 
-	public function getActiveCities()
+	public function getActiveCitiesByCountry(Country $country)
 	{
-		return $this->doctrine->getEntityManager()->createQueryBuilder()
-				->add('select', 'c')
-				->add('from', 'HelperBundle:City c')
-				->add('where', 'c.status = 1');
+		$criteria = array('status'=>1, 'country'=>$country);
+		return $this->doctrine->getEntityManager()->getRepository('HelperBundle:City')->findBy($criteria);
 	}
 
+	public function getActiveCitiesByCountryId($countryId)
+	{
+		$country = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->find($countryId);
+		return $this->getActiveCitiesByCountry($country);
+	}
+
+	public function getListActiveCitiesByCountry(Country $country)
+	{
+		$cities = array();
+		$result = $this->getActiveCitiesByCountry($country);
+		foreach($result as $each)
+			$cities[] = array('id' => $each->getId(), 'name' => $each->getName());
+
+		return $cities;
+	}
+
+	public function getListActiveCitiesByCountryId($countryId)
+	{
+		$result = $this->getActiveCitiesByCountryId($countryId);
+		foreach($result as $each)
+			$cities[] = array('id' => $each->getId(), 'name' => $each->getName());
+		
+		return $cities;
+	}
+	
 	public function getActiveCountries()
 	{
 		return $this->doctrine->getEntityManager()->createQueryBuilder()
-				->add('select', 'c')
-				->add('from', 'HelperBundle:Country c')
-				->add('where', 'c.status = 1');
+			->add('select', 'c')
+			->add('from', 'HelperBundle:Country c')
+			->add('where', 'c.status = 1');
 	}
 }

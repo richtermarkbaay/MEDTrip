@@ -1,0 +1,3 @@
+helper_loadCities:
+    pattern:  /location/load-cities/{countryId}
+    defaults: { _controller: HelperBundle:Default:loadCities }
