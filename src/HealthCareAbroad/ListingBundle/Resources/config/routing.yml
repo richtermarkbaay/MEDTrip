@@ -17,7 +17,7 @@ listing_edit:
          id: ".+"
 
 listing_view:
-    pattern:  /listing/{id}
+    pattern:  /listing/view/{id}
     defaults: { _controller: ListingBundle:Default:view }
     requirements:
          id: ".+"

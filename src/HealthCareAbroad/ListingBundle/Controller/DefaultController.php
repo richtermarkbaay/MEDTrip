@@ -54,7 +54,7 @@ class DefaultController extends Controller
 
 			//TODO  Validation Not Working!
 	    	if (!$form->isValid()) {
-
+	    		
 	    		// Saving Listing
 				$listing = $this->get("services.listing")->saveListing($form->getData());
 
@@ -63,8 +63,13 @@ class DefaultController extends Controller
 				foreach($listingLocations as $each) {
 					$location = $each['id'] ? $this->get("services.listing_location")->getLocation($each['id']) : new ListingLocation();
 					$location->setListing($listing);
-					$locationForm = $this->createForm(new LocationType(), $location);
+					
+					$locationForm = $this->createForm(new LocationType($this->get('container')), $location);
 					$locationForm->bind($each);
+
+					// TODO - Temporary Fixed, City should not be fetched again.
+					$city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($each['city']);
+					$locationForm->getData()->setCity($city);
 
 					$this->get("services.listing_location")->saveLocation($locationForm->getData());
 				}
@@ -87,9 +92,12 @@ class DefaultController extends Controller
     	return $this->render('ListingBundle:Default:listing.html.twig', array('listing' => $listing));
     }
 
-    public function deleteAction(Request $request)
+    public function deleteAction($id)
     {
-    	
+		$this->get("services.listing")->deleteListing($id);
+		
+		$this->getRequest()->getSession()->setFlash('notice', 'Listing has been deleted!');
+		return $this->redirect($this->generateUrl('listing_homepage'));
     }
         
     public function testAction()

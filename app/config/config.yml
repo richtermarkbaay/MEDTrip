@@ -26,7 +26,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
+    bundles:        [ListingBundle ]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -60,6 +60,7 @@ swiftmailer:
     spool:     { type: memory }
 
 # ChromediaMediaBundle Configuration
+<<<<<<< HEAD
 chromedia_media:
     adapters:
         default:
@@ -80,3 +81,13 @@ chromedia_media:
         test:
             adapter:    test
             alias:      test_filesystem                
+
+#chromedia_gaufrette:
+#    adapters:
+#        foo:
+#            local:
+#                directory: %media_filesystem_path%
+#    filesystems:
+#        bar:
+#            adapter:    foo
+#            alias:      foo_filesystem                

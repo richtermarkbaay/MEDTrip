@@ -1,0 +1,14 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+  
+<form action="{{ path('provider_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
+ 
+	{{ form_row(form.firstName) }}
+    {{ form_row(form.middleName) }}
+    {{ form_row(form.lastName) }}
+	
+	</br><input type="submit" value="Submit">
+	{{ form_rest(form) }}
+</form>
+{% endblock %}
