@@ -21,6 +21,13 @@ ProviderBundle_create_provider:
     defaults: { _controller: ProviderBundle:Provider:create }
     requirements:
        _method: GET|POST
+
+provider_editAccount:
+    pattern:  /provider/editAccount
+    defaults: { _controller: ProviderBundle:ProviderUser:editAccount }
+    requirements:
+        _method:  GET|POST
+
 provider_invite_user:
     pattern:  /provider/invite-user
     defaults: { _controller: ProviderBundle:ProviderUser:invite }

@@ -11,7 +11,8 @@ Welcome {{ app.security.getToken().getUser() }}!
 
 <div style="margin:10px;">
     <ul style="list-style:disc;">
-	    <li><a href="{{ path('provider_invite_user') }}">Invite users</a> </li>
+	    <li><a href="{{ path('provider_invite_user') }}">Invite users</a> </li><br>
+		<li><a href="{{ path('provider_editAccount') }}">Edit Account</a> </li>
 	</ul>
 </div>
 

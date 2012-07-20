@@ -40,7 +40,7 @@ class ProviderUserController extends Controller
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
                     
                     return $this->redirect($this->generateUrl('provider_homepage'));
-                }
+	            }
                 else {
                     // invalid login
                     $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
@@ -61,6 +61,51 @@ class ProviderUserController extends Controller
         return $this->redirect($this->generateUrl('main_homepage'));
     }
     
+    public function editAccountAction()
+    {
+    	//instantiate providerUser Entity
+    	$user = new ProviderUser();
+    	
+    	//get accountId by sessiondata
+    	$session = $this->getRequest()->getSession();
+    	$accountId = $session->get('UserId');
+    	
+    	//get user account in chromedia global accounts by accountID
+    	$providerUser = $this->get('services.provider_user')->findById($accountId, true);
+    	$user->setFirstName($providerUser->getFirstName());
+    	$user->setLastName($providerUser->getLastName());
+    	$user->setMiddleName($providerUser->getMiddleName());
+    	 
+    	
+    	//$user->setFirstName();
+    	$form = $this->createFormBuilder($user)
+        	->add('firstName', 'text')
+            ->add('middleName', 'text')
+            ->add('lastName', 'text')
+            ->getForm();
+    	
+     	 if ($this->getRequest()->isMethod('POST')) {
+            
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+            		
+            	//set modifieddate to now
+            	$user->setPassword($temporaryPassword);
+            	$user->setFirstName($data["form"]['firstName']);
+            	$user->setMiddleName($data["form"]['middleName']);
+            	$user->setLastName($data["form"]['lastName']);
+            	$user->setModifiedDate(new \Datetime('now'));
+            	$user->setStatus(SiteUser::STATUS_ACTIVE);
+            	
+            	$providerUser = $this->get('services.provider_user')->update($user);
+
+            	
+            }
+            
+     	 }
+    	return $this->render('ProviderBundle:ProviderUser:editAccount.html.twig', array(
+            'form' => $form->createView()));
+    }
     public function inviteAction()
     {
         $provider = $this->get('services.provider')->getCurrentProvider();

@@ -26,7 +26,7 @@ class ProviderUserService extends UserService
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
             $this->session->set('_security_provider_secured_area',  \serialize($securityToken));
             // $this->get("security.context")->setToken($securityToken);
-            
+            $this->session->set('accountId', $user->getAccountId());
             return true;
         }
         
@@ -97,6 +97,7 @@ class ProviderUserService extends UserService
      */
     public function findById($id, $activeOnly=true)
     {
+    	
         // find a providerUser
         $repository = $this->doctrine->getRepository('UserBundle:ProviderUser');
         $providerUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
