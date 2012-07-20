@@ -60,12 +60,23 @@ swiftmailer:
     spool:     { type: memory }
 
 # ChromediaMediaBundle Configuration
-#chromedia_gaufrette:
-#    adapters:
-#        foo:
-#            local:
-#                directory: %media_filesystem_path%
-#    filesystems:
-#        bar:
-#            adapter:    foo
-#            alias:      foo_filesystem                
+chromedia_media:
+    adapters:
+        default:
+            local:
+                directory: %media_filesystem_path%
+        test:
+            in_memory:
+                files:
+                    'file1.txt':    ~
+                    'file2.txt':
+                        content:    Some content
+                        checksum:   abc1efg2hij3
+                        mtime:      123456890123                
+    filesystems:
+        default:
+            adapter:    default
+            alias:      default_filesystem
+        test:
+            adapter:    test
+            alias:      test_filesystem                

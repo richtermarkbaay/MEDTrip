@@ -21,13 +21,17 @@
                 <div class="top">
                     {% block navigation %}{% endblock %}
                 </div>
-
             </header>
 
             <section class="main-col">
-                  {% block body %}{% endblock %}
+                {% block body %}{% endblock %}
             </section>
     
+    		<section class="sidebar">
+    			{% block sidebar %}
+					{% render 'ListingBundle:ListingSearch:showForm' %}  			
+    			{% endblock %}
+    		</section>
 
             <div id="footer">
                 {% block footer %}
@@ -37,6 +41,5 @@
         </section>
 
         {% block javascripts %}{% endblock %}
-    </body>
     </body>
 </html>

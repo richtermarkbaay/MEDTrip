@@ -12,4 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class ListingRepository extends EntityRepository
 {
+	public function search($criteria = array()) {
+		$query = $this->_em->createQuery($this->generateDqlForBasicSearch($criteria));
+
+		return $query->getResult();
+	}
+	
+	private function generateDqlForBasicSearch($criteria) {
+		//TODO: provider id
+		$dql = "SELECT l FROM ListingBundle:Listing l";
+		$whereClause = " WHERE l.title LIKE '%".$criteria['searchTerm']."%' "; 
+		
+		if (isset($criteria['countryId']) && isset($criteria['cityId'])) {
+			
+			//$dql .= " LEFT JOIN l.listing_location ListingBundle:ListingLocation ll ON  ";			
+			
+		} else if (isset($criteria['countryId'])) {
+			
+		} else if (isset($criteria['cityId'])) {
+			
+		}
+
+		$dql .= $whereClause;
+		
+		return $dql;
+	}
 }

@@ -28,6 +28,6 @@ listing_delete:
     requirements:
          id: ".+"
 
-listing_test:
-    pattern:  /listing
-    defaults: { _controller: ListingBundle:Default:test }
+listing_search:
+    pattern:  /listings/search
+    defaults: { _controller: ListingBundle:ListingSearch:search }

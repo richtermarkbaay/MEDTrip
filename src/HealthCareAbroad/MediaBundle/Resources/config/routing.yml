@@ -1,0 +1,3 @@
+media_index:
+    pattern:  /media
+    defaults: { _controller: "MediaBundle:Default:index" }
