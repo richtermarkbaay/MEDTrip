@@ -44,12 +44,13 @@ class ListingService
 	public function getListingsByProviderId($providerId, $criteria)
 	{
 	}
-	
+
 	public function getListings($providerId)
 	{
 		$provider = $this->entityManager->getRepository('ProviderBundle:Provider')->findOneById($providerId);
 		
-		$listings = $this->entityManager->getRepository('ListingBundle:Listing')->findByProvider($provider);
+		$criteria = array('provider' => $provider, 'status' => 1);
+		$listings = $this->entityManager->getRepository('ListingBundle:Listing')->findBy($criteria);
 		
 		return $listings;
 	}
@@ -108,11 +109,11 @@ class ListingService
 		return $listing;
 	}
 	
-	public function deleteListing(ListingData $data)
+	public function deleteListing($id)
 	{
-		$listing = $this->entityManager->getRepository('ListingBundle:Listing')->find($data->get('id'));
-
-		$this->entityManager->remove($listing);
+		$listing = $this->entityManager->getRepository('ListingBundle:Listing')->find($id);
+		$listing->setStatus(0);
+		$this->entityManager->persist($listing);
 		$this->entityManager->flush($listing);
 	}
 	

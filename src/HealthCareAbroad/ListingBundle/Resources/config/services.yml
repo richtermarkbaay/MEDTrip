@@ -2,7 +2,6 @@ parameters:
     services.listing.class: HealthCareAbroad\ListingBundle\Service\ListingService
     services.listing_location.class: HealthCareAbroad\ListingBundle\Service\ListingLocationService
 
-
 services:
     services.listing:
         class: "%services.listing.class%"
