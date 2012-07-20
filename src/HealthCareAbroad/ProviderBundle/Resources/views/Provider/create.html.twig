@@ -1,6 +1,13 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+
+{% if app.session.hasFlash('flash.notice') %}
+    <div class="msg-notice">
+        {{ app.session.flash('flash.notice') }}
+    </div>
+{% endif %}
+
 <div class="body">
 	<form action="{{ path('ProviderBundle_create_provider') }}" method="POST" {{ form_enctype(form) }} class = "user">
 			<div><p>Institution Name: <input type="text" name="providerName"></p>
