@@ -60,7 +60,6 @@ swiftmailer:
     spool:     { type: memory }
 
 # ChromediaMediaBundle Configuration
-<<<<<<< HEAD
 chromedia_media:
     adapters:
         default:
@@ -81,13 +80,3 @@ chromedia_media:
         test:
             adapter:    test
             alias:      test_filesystem                
-
-#chromedia_gaufrette:
-#    adapters:
-#        foo:
-#            local:
-#                directory: %media_filesystem_path%
-#    filesystems:
-#        bar:
-#            adapter:    foo
-#            alias:      foo_filesystem                
