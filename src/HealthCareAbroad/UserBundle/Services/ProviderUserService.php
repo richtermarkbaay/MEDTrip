@@ -20,8 +20,9 @@ class ProviderUserService extends UserService
      */
     public function login($email, $password)
     {
-        $password = SecurityHelper::hash_sha256($password);
+    	$password = SecurityHelper::hash_sha256($password);
         $user = $this->findByEmailAndPassword($email, $password);
+        
         if ($user) {
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
             $this->session->set('_security_provider_secured_area',  \serialize($securityToken));
@@ -65,12 +66,13 @@ class ProviderUserService extends UserService
      * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function update(ProviderUser $providerUser)
+    public function update(ProviderUser $providerUser, $accountId)
     {
+    	//var_dump($providerUser);exit;aa
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->createUser($providerUser)){
+    	if ( $providerUser = $this->updateUser($providerUser)){
         
-    		return 'successful';//$providerUser;
+    		return new Response ('$providerUser');
     	}
     
     	// something went wrong in creating global account
