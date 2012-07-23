@@ -64,7 +64,7 @@ chromedia_media:
     adapters:
         default:
             local:
-                directory: %media_filesystem_path%
+                directory: "%kernel.root_dir%/../web/media"
         test:
             in_memory:
                 files:
