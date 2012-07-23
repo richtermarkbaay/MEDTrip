@@ -1,7 +1,4 @@
 <?php
-
-use Chromedia\Bundle\MediaBundle\ChromediaMediaBundle;
-
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 
@@ -28,10 +25,12 @@ class AppKernel extends Kernel
             new HealthCareAbroad\ListingBundle\ListingBundle(),
             new HealthCareAbroad\ProcedureBundle\ProcedureBundle(),
             new HealthCareAbroad\PageBundle\PageBundle(),
+
         	/* Start MEDIA BUNDLE */
         	//new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
         	//new HealthCareAbroad\MediaBundle\MediaBundle(),
        		/* End   MEDIA BUNDLE */
+
             new HealthCareAbroad\MailerBundle\MailerBundle(),
         );
 
