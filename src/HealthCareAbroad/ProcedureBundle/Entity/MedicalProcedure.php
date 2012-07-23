@@ -96,7 +96,9 @@ class MedicalProcedure
      */
     public function addTag(\HealthCareAbroad\HelperBundle\Entity\Tag $tags)
     {
-        $this->tags[] = $tags;
+    	if(!$this->tags->contains($tags)) {
+        	$this->tags[] = $tags;
+    	}
         return $this;
     }
 

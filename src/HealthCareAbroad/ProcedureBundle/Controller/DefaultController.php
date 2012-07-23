@@ -24,87 +24,68 @@ class DefaultController extends Controller
     	return $this->render('ProcedureBundle:Default:index.html.twig', $data);
     }
 
-
     public function addAction()
     {
+    	$em = $this->getDoctrine()->getEntityManager();
     	$procedure = new MedicalProcedure();
-    	$form = $this->createForm(new ProcedureType(), $procedure);
+    	$form = $this->createForm(new ProcedureType($em), $procedure);
     	$params = array('form' => $form->createView());
     	return $this->render('ProcedureBundle:Default:create.html.twig', $params);
     }
     
     public function editAction($id)
     {
-    	$listing = $this->get("services.listing")->getListing($id);
-    	$listing = $this->get("services.listing")->populateLocations($listing);
-    
-    	$form = $this->createForm(new ListingType(), $listing);
-    	$params = array('form' => $form->createView(), 'id' => $listing->getId());
-    	return $this->render('ListingBundle:Default:create.html.twig', $params);
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$procedure = $em->getRepository('ProcedureBundle:MedicalProcedure')->find($id);
+    	$form = $this->createForm(new ProcedureType($em), $procedure);
+    	$params = array('form' => $form->createView(), 'id' => $procedure->getId());
+    	return $this->render('ProcedureBundle:Default:create.html.twig', $params);
     }
-    
+
     public function saveAction()
     {
     	$request = $this->getRequest();
     	
-    	if ('POST' == $request->getMethod()) {
-    		$data = $request->get('procedure');
+    	if ('POST' == $request->getMethod()) {    		
+    		$em = $this->getDoctrine()->getEntityManager();
 
-			$procedure = $data['id'] 
-				? $this->getDoctrine()->getEntityManager()->getRepository('ProcedureBundle:MedicalProcedure')->find($data['id']) 
+			$procedure = $request->get('id')
+				? $em->getRepository('ProcedureBundle:MedicalProcedure')->find($request->get('id')) 
 				: new MedicalProcedure();
-			
-			$form = $this->createForm(new ProcedureType($this->getDoctrine()->getEntityManager()), $procedure);
+
+			$form = $this->createForm(new ProcedureType($em), $procedure);
     		$form->bind($request);
 
-    		$procedure = $form->getData();
-    		var_dump($procedure); exit;
-     		
-    		//TODO  Validation Not Working!
-    		if (!$form->isValid()) {
-    	   
-    			// Saving Listing
-    			$listing = $this->get("services.listing")->saveListing($form->getData());
-    
-    			// Saving Listing Locations
-    			$listingLocations = $listingData['locations'];
-    			foreach($listingLocations as $each) {
-    				$location = $each['id'] ? $this->get("services.listing_location")->getLocation($each['id']) : new ListingLocation();
-    				$location->setListing($listing);
-    					
-    				$locationForm = $this->createForm(new LocationType($this->get('container')), $location);
-    				$locationForm->bind($each);
-    
-    				// TODO - Temporary Fixed, City should not be fetched again.
-    				$city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($each['city']);
-    				$locationForm->getData()->setCity($city);
-    
-    				$this->get("services.listing_location")->saveLocation($locationForm->getData());
-    			}
-    
-    			$request->getSession()->setFlash('notice', 'New Listing has been added!');
-    			return $this->redirect($this->generateUrl('listing_homepage'));
-    		}
+    		// TODO - Validation Should be enabled!
+    		//if ($form->isValid()) {
+    			$procedure->setStatus(1);
+    			$em->persist($procedure);
+    			$em->flush($procedure);
+
+    			$request->getSession()->setFlash('notice', 'New Procedure has been added!');
+    			return $this->redirect($this->generateUrl('procedure_homepage'));
+			//}
+	
     	}
     }
-    
+
     public function viewAction($id)
     {
-    	$listing = $this->get("services.listing")->getListing($id);
-    	$locations = $this->get('services.listing_location')->getLocationByListing($listing);
-    
-    	foreach($locations as $each) {
-    		$listing->getLocations()->add($each);
-    	}
-    
-    	return $this->render('ListingBundle:Default:listing.html.twig', array('listing' => $listing));
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$procedure = $em->getRepository('ProcedureBundle:MedicalProcedure')->find($id);
+
+    	return $this->render('ProcedureBundle:Default:procedure.html.twig', array('procedure' => $procedure));
     }
     
     public function deleteAction($id)
     {
-    	$this->get("services.listing")->deleteListing($id);
-    
-    	$this->getRequest()->getSession()->setFlash('notice', 'Listing has been deleted!');
-    	return $this->redirect($this->generateUrl('listing_homepage'));
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$procedure = $em->getRepository('ProcedureBundle:MedicalProcedure')->find($id);
+    	$procedure->setStatus(0);
+    	$em->persist($procedure);
+    	$em->flush($procedure);
+    	
+    	$this->getRequest()->getSession()->setFlash('notice', 'Procedure has been deleted!');
+    	return $this->redirect($this->generateUrl('procedure_homepage'));
     }
 }

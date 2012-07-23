@@ -29,13 +29,13 @@ class TagToObjectTransformer implements DataTransformerInterface
     /**
      * Transforms string names to object (tag).
      *
-     * @param $tags
+     * @param ArrayCollection $tags
      * @return string
      */
-    public function transform($procedure)
+    public function transform($tags)
     {
-    	$tags = $procedure->getTags();
 
+    	
     	if(!count($tags)) {
     		return null;
     	}
@@ -43,12 +43,9 @@ class TagToObjectTransformer implements DataTransformerInterface
     	$tagsName = array();
 		foreach($tags as $tag) {
 			$tagsName[] = $tag->getName();
-			$procedure->addTag($tag);
 		}
 		
-		//$procedure->setTag(implode(', ', $tagsName));
-		
-		return $procedure;
+		return implode(', ', $tagsName);
     }
 
     /**
@@ -58,9 +55,8 @@ class TagToObjectTransformer implements DataTransformerInterface
      * @return Issue|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($procedure)
+    public function reverseTransform($stringTags)
     {
-    	$stringTags = $procedure->getTags();
     	$tagObjects = new ArrayCollection();
 
     	if($stringTags == '')
@@ -72,8 +68,6 @@ class TagToObjectTransformer implements DataTransformerInterface
     		$tag = $this->em->getRepository('HelperBundle:Tag')->findOneBy(array('name'=>trim($tagName)));
     		if($tag) $tagObjects->add($tag);
     	}
-    	
-
 
 //         if (null === $issue) {
 //             throw new TransformationFailedException(sprintf(
