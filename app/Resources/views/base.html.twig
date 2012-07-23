@@ -6,13 +6,19 @@
 
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         {% javascripts 
-        	'js/jquery-1.7.2.min.js'
+			'js/jquery/jquery-1.7.2.min.js'
+			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.core.js'
+			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.widget.js'
+			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.position.js'
+			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.autocomplete.js'
         %}
         	<script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
         
         {% block stylesheets %}
+        	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>
+        	
             <link href="{{ asset('css/screen.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}
     </head>

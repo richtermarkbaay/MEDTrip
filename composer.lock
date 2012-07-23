@@ -4,8 +4,8 @@
         {
             "package": "chromedia/media-bundle",
             "version": "dev-master",
-            "source-reference": "695ff508e43620205a8256d7a5a934925ce40535",
-            "commit-date": "1342581104"
+            "source-reference": "3ddb1b97558fa4364e907d2ef5f386b39e3aa9ed",
+            "commit-date": "1342599650"
         },
         {
             "package": "chromedia/utilities",
@@ -82,8 +82,8 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "source-reference": "d6f89a3170c5280ad554347dc113eb25fdf00ad7",
-            "commit-date": "1339515714"
+            "source-reference": "2ab555189d019407e064b26d7f5ce5c9cd6034ac",
+            "commit-date": "1342744934"
         },
         {
             "package": "monolog/monolog",
@@ -122,8 +122,14 @@
         {
             "package": "symfony/assetic-bundle",
             "version": "dev-master",
-            "source-reference": "ed933dcfa45f00b6bc6d7727007403f3ff429e5a",
-            "commit-date": "1342126277"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/assetic-bundle",
+            "version": "dev-master",
+            "source-reference": "fb69c4ea16ea33ba4481637b7cf362ec6ae20a6c",
+            "commit-date": "1342744871"
         },
         {
             "package": "symfony/monolog-bundle",
@@ -134,8 +140,14 @@
         {
             "package": "symfony/swiftmailer-bundle",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA3",
-            "commit-date": "1341509614"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/swiftmailer-bundle",
+            "version": "dev-master",
+            "source-reference": "65e6079443c3cd413012e146aa74307f18671f42",
+            "commit-date": "1342684512"
         },
         {
             "package": "symfony/symfony",
@@ -146,8 +158,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "242a388ea44b8453de2c403fe9e9b74c01ee2112",
-            "commit-date": "1342559161"
+            "source-reference": "4bde2aac416f791bbb0080a051e07de8ae78a107",
+            "commit-date": "1342762453"
         },
         {
             "package": "twig/extensions",
@@ -164,8 +176,8 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "d45664045194ef62573c153c424508527105041e",
-            "commit-date": "1342424564"
+            "source-reference": "7c3b987742ed8512ba70712e0ff8862c52eebbc9",
+            "commit-date": "1342675769"
         }
     ],
     "packages-dev": null,

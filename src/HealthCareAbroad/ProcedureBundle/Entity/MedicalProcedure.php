@@ -24,7 +24,16 @@ class MedicalProcedure
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $tags;
 
+    public function __construct()
+    {
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -77,5 +86,37 @@ class MedicalProcedure
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Tag $tags
+     * @return MedicalProcedure
+     */
+    public function addTag(\HealthCareAbroad\HelperBundle\Entity\Tag $tags)
+    {
+        $this->tags[] = $tags;
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param <variableType$tags
+     */
+    public function removeTag(\HealthCareAbroad\HelperBundle\Entity\Tag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

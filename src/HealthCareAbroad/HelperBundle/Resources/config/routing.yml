@@ -1,3 +1,7 @@
 helper_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
+
+helper_searchTags:
+    pattern:  /tags/search/{term}
+    defaults: { _controller: HelperBundle:Default:searchTags }
