@@ -1,17 +1,14 @@
 <?php 
 
-namespace HealthCareAbroad\ProcedureBundle\Form\DataTransformer;
+namespace HealthCareAbroad\HelperBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use HealthCareAbroad\HelperBundle\Entity\Tag;
+use Doctrine\ORM\EntityManager;
 
-class TagToObjectTransformer implements DataTransformerInterface
+class TagsTransformer implements DataTransformerInterface
 {
     /**
      * @var EntityManager
@@ -27,15 +24,13 @@ class TagToObjectTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms string names to object (tag).
+     * Transforms tags object to string tags separated by comma.
      *
      * @param ArrayCollection $tags
      * @return string
      */
     public function transform($tags)
     {
-
-    	
     	if(!count($tags)) {
     		return null;
     	}
@@ -49,11 +44,10 @@ class TagToObjectTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms a string (number) to an object (issue).
+     * Transforms a string (tags) to an array object (tag).
      *
-     * @param  string $number
-     * @return Issue|null
-     * @throws TransformationFailedException if object (issue) is not found.
+     * @param  string $stringTags
+     * @return ArrayCollection|null
      */
     public function reverseTransform($stringTags)
     {

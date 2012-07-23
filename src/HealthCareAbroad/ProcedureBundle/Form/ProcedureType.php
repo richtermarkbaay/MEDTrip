@@ -1,8 +1,7 @@
 <?php
 namespace HealthCareAbroad\ProcedureBundle\Form;
 
-use HealthCareAbroad\ProcedureBundle\Form\DataTransformer\TagToObjectTransformer;
-
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\TagsTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
@@ -10,16 +9,16 @@ use Symfony\Component\Form\AbstractType;
 class ProcedureType extends AbstractType
 {	
 	private $em;
-	
+
 	public function __construct($em)
 	{
 		$this->em = $em;
 	}
-	
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$transformer = new TagToObjectTransformer($this->em);
-		
+		$transformer = new TagsTransformer($this->em);
+
 		$builder
 			->add('name', 'text')
 			->add($builder->create('tags','textarea')->addModelTransformer($transformer));
