@@ -104,16 +104,24 @@ class UserService
      */
     protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
-        //set data
-    	$response = $this->request->post($this->chromediaAccountsUri.'/find', array(
-    			'searchBy' => \base64_encode(\json_encode($searchBy)),
-    			'option' => \base64_encode(\json_encode($options))
-    	));
     	
-    	if (200 == $response->getStatusCode()) {
-    		$json_data = \json_decode($response->getBody(true), true);
-    		return $json_data;
-    	}
+    	$form_data = array(
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'first_name' => $user->getFirstName(),
+            'last_name' => $user->getLastName(),
+            'middle_name' => $user->getMiddleName()
+        );
+        
+        $response = $this->request->post($this->chromediaAccountsUri,array('data' => \base64_encode(\json_encode($form_data))));
+        if (200 == $response->getStatusCode()) {
+            $account_data = \json_decode($response->getBody(true),true);
+            $user->setAccountId($account_data['id']);
+            return $user;
+        }
+        else {
+            return null;
+        }
     }
     
     /**

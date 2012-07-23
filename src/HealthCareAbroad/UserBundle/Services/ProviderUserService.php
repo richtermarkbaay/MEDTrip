@@ -60,6 +60,24 @@ class ProviderUserService extends UserService
     }
     
     /**
+     * Update Account of provider user
+     *
+     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     */
+    public function update(ProviderUser $providerUser)
+    {
+    	// update user in chromedia global accounts
+    	if ( $providerUser = $this->createUser($providerUser)){
+        
+    		return 'successful';//$providerUser;
+    	}
+    
+    	// something went wrong in creating global account
+    	return NULL;
+    }
+    
+    /**
      * 
      * @param string $email
      * @param string $password
