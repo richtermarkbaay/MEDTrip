@@ -2,11 +2,14 @@
 
 namespace HealthCareAbroad\ProviderBundle\Controller;
 
+use Guzzle\Http\Message\Response;
+
 use HealthCareAbroad\UserBundle\Event\UserEvents;
 
 use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
+use Chromedia\AccountBundle\Entity\Account;
 
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
 
@@ -34,7 +37,6 @@ class ProviderUserController extends Controller
             
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-                
                 if ($this->get('services.provider_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
@@ -63,22 +65,14 @@ class ProviderUserController extends Controller
     
     public function editAccountAction()
     {
-    	//instantiate providerUser Entity
-    	$user = new ProviderUser();
-    	
-    	//get accountId by sessiondata
-    	$session = $this->getRequest()->getSession();
-    	$accountId = $session->get('UserId');
     	
     	//get user account in chromedia global accounts by accountID
+    	$session = $this->getRequest()->getSession();
+    	$accountId = $session->get('accountId');
     	$providerUser = $this->get('services.provider_user')->findById($accountId, true);
-    	$user->setFirstName($providerUser->getFirstName());
-    	$user->setLastName($providerUser->getLastName());
-    	$user->setMiddleName($providerUser->getMiddleName());
-    	 
     	
-    	//$user->setFirstName();
-    	$form = $this->createFormBuilder($user)
+    	//render form
+    	$form = $this->createFormBuilder($providerUser)
         	->add('firstName', 'text')
             ->add('middleName', 'text')
             ->add('lastName', 'text')
@@ -88,17 +82,20 @@ class ProviderUserController extends Controller
             
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-            		
-            	//set modifieddate to now
-            	$user->setPassword($temporaryPassword);
-            	$user->setFirstName($data["form"]['firstName']);
-            	$user->setMiddleName($data["form"]['middleName']);
-            	$user->setLastName($data["form"]['lastName']);
-            	$user->setModifiedDate(new \Datetime('now'));
-            	$user->setStatus(SiteUser::STATUS_ACTIVE);
             	
-            	$providerUser = $this->get('services.provider_user')->update($user);
-
+            	//set new gathered data from form
+            	$providerUser->setFirstName($form->get('firstName')->getData());
+            	$providerUser->setMiddleName($form->get('middleName')->getData());
+            	$providerUser->setLastName($form->get('lastName')->getData());
+            	$providerUser->setStatus(SiteUser::STATUS_ACTIVE);
+            	
+            	$providerUser = $this->get('services.provider_user')->update($providerUser, $accountId);
+            	if ($providerUser) {
+                    $this->get('session')->setFlash('flash.notice', "Successfully updated your account");
+                }
+                else {
+                    $this->get('session')->setFlash('flash.notice', "Failed to update account!");
+                }
             	
             }
             
