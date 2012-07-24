@@ -101,7 +101,7 @@ class ProviderUserService extends UserService
             
             // populate account data to SiteUser
             $providerUser = $this->hydrateAccountData($providerUser, $accountData);
-            
+            echo $providerUser;exit;
             return $providerUser;
         }
         

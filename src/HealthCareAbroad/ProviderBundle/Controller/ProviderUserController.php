@@ -37,7 +37,7 @@ class ProviderUserController extends Controller
             
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-                
+                //echo $form->get('email')->getData() ."/". $form->get('password')->getData();exit;
                 if ($this->get('services.provider_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
