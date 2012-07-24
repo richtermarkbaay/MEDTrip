@@ -114,7 +114,7 @@ class UserService
         if (200 == $response->getStatusCode()) {
     		$account_data = \json_decode($response->getBody(true),true);
     		$user->setAccountId($account_data['id']);
-    		return $user;
+    		return $user;asdasdasdasd
     	}
     	else {
     		return null;
