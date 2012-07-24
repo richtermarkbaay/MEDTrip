@@ -27,11 +27,8 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
-        if (null === $data) {
-            return;
-        }
 
-        $countryId = $data->getCountry() ? $data->getCountry()->getId() : 1;
+        $countryId = !empty($data) && $data->getCountry() ? $data->getCountry()->getId() : 1;
 		$form->add($this->factory->createNamed('city', new CityListType($countryId)));
     }
 }
