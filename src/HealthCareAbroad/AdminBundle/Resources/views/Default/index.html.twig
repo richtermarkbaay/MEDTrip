@@ -8,6 +8,42 @@
     	<h1>{{ site_name }} Admin Panel</h1>
     </div>
     <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <!--  start content-table-inner ...................................................................... START -->
+    		<div id="content-table-inner">
+    		
+    			<!--  start table-content  -->
+    			<div id="table-content">
+    			    <h2>Sub Heading </h2>
+        			<h3>Local Heading</h3>
+        			
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+    			</div>
+    			<!--  end table-content  -->
+    	
+    			<div class="clear"></div>
+    		 
+    		</div>
+    		<!--  end content-table-inner ............................................END  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
