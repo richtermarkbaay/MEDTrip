@@ -9,7 +9,31 @@ admin_logout:
     defaults: { _controller: AdminBundle:AdminUser:logout }
     requirements:    
         _method:  GET
-        
+
+admin_tagHomepage:
+    pattern:  /admin/tags
+    defaults: { _controller: AdminBundle:Tag:index }
+
+admin_tagAdd:
+    pattern:  /admin/tag/add
+    defaults: { _controller: AdminBundle:Tag:add }
+
+admin_tagSave:
+    pattern:  /admin/tag/save
+    defaults: { _controller: AdminBundle:Tag:save }
+
+admin_tagEdit:
+    pattern:  /admin/tag/edit/{id}
+    defaults: { _controller: AdminBundle:Tag:edit }
+    requirements:
+         id: ".+"
+
+admin_tagUpdateStatus:
+    pattern:  /admin/tag/update-status/{id}
+    defaults: { _controller: AdminBundle:Tag:updateStatus }
+    requirements:
+         id: ".+"
+
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }

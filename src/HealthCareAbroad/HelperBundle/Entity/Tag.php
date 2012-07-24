@@ -9,6 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Tag
 {
+	static $TYPES = array(
+		1 => 'MedicalProcedure',
+		2 => 'Listing'
+	);
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_INACTIVE = 0;
+
     /**
      * @var integer $id
      */
