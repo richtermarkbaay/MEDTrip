@@ -37,7 +37,6 @@ class ProviderUserController extends Controller
             
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-                //echo $form->get('email')->getData() ."/". $form->get('password')->getData();exit;
                 if ($this->get('services.provider_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
                     $this->get('session')->setFlash('flash.notice', 'Login successfully!');
@@ -91,7 +90,12 @@ class ProviderUserController extends Controller
             	$providerUser->setStatus(SiteUser::STATUS_ACTIVE);
             	
             	$providerUser = $this->get('services.provider_user')->update($providerUser, $accountId);
-				return new Response($providerUser);
+            	if ($providerUser) {
+                    $this->get('session')->setFlash('flash.notice', "Successfully updated your account");
+                }
+                else {
+                    $this->get('session')->setFlash('flash.notice', "Failed to update account!");
+                }
             	
             }
             

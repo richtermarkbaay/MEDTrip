@@ -1,9 +1,15 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-  
-<form action="{{ path('provider_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
  
+{% if app.session.hasFlash('flash.notice') %}
+    <div class="msg-notice">
+        {{ app.session.flash('flash.notice') }}
+    </div>
+{% endif %}
+
+<form action="{{ path('provider_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
+    {{ form_errors(form) }}
 	{{ form_row(form.firstName) }}
     {{ form_row(form.middleName) }}
     {{ form_row(form.lastName) }}

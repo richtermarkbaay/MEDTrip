@@ -102,7 +102,7 @@ class UserService
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
      */
-    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
+    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountId)
     {
     	//echo $this->chromediaAccountsUri.'/find';exit;
     	$form_data = array(
@@ -114,7 +114,7 @@ class UserService
         if (200 == $response->getStatusCode()) {
     		$account_data = \json_decode($response->getBody(true),true);
     		$user->setAccountId($account_data['id']);
-    		return $user;asdasdasdasd
+    		return $user;
     	}
     	else {
     		return null;

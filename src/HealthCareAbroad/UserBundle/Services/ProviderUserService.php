@@ -68,11 +68,10 @@ class ProviderUserService extends UserService
      */
     public function update(ProviderUser $providerUser, $accountId)
     {
-    	//var_dump($providerUser);exit;aa
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->updateUser($providerUser)){
+    	if ( $providerUser = $this->updateUser($providerUser, $accountId)){
         
-    		return new Response ('$providerUser');
+    		return TRUE;
     	}
     
     	// something went wrong in creating global account
@@ -101,7 +100,6 @@ class ProviderUserService extends UserService
             
             // populate account data to SiteUser
             $providerUser = $this->hydrateAccountData($providerUser, $accountData);
-            echo $providerUser;exit;
             return $providerUser;
         }
         
