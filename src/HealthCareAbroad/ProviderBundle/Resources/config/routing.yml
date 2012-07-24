@@ -28,6 +28,12 @@ provider_editAccount:
     requirements:
         _method:  GET|POST
 
+provider_change_password:
+    pattern:  /provider/change-password
+    defaults: { _controller: ProviderBundle:ProviderUser:changePassword }
+    requirements:
+        _method:  GET|POST
+        
 provider_invite_user:
     pattern:  /provider/invite-user
     defaults: { _controller: ProviderBundle:ProviderUser:invite }

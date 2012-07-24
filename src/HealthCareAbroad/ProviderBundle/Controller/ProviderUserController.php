@@ -63,6 +63,41 @@ class ProviderUserController extends Controller
         return $this->redirect($this->generateUrl('main_homepage'));
     }
     
+    public function changePasswordAction()
+    {
+    	
+    	$providerUser = new ProviderUser();
+    	$defaultData = array('email' => 'Type your message here');
+    	
+    	$form = $this->createFormBuilder($providerUser)
+    			->add('email','password',array('label' => 'Current Password'))
+    			->add( 'password', 'repeated', array( 'type' => 'password', 'invalid_message' => 'Passwords do not match' ))
+    			->getform();
+    	
+    	if ($this->getRequest()->isMethod('POST')) {
+    		
+    		$form->bindRequest($this->getRequest());
+    		if ($form->isValid()) {
+    			//get user account in chromedia global accounts by accountID
+    			$session = $this->getRequest()->getSession();
+    			$accountId = $session->get('accountId');
+    			$oldPassword = $form->get('email')->getData();
+    			$newPassword = $form->get('password')->getData();
+    			
+    			$providerUser = $this->get('services.provider_user')->changePassword($oldPassword, $newPassword, $accountId);
+            	if ($providerUser) {
+    				$this->get('session')->setFlash('flash.notice', "Password changed!");
+    			}
+    			else {
+    				$this->get('session')->setFlash('flash.notice', "Failed to change password,old password isn't correct");
+    			}
+    		}
+    			
+    	}
+    	return $this->render('ProviderBundle:ProviderUser:changePassword.html.twig', array(
+            'form' => $form->createView()));
+    }
+    
     public function editAccountAction()
     {
     	

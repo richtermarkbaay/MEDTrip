@@ -79,6 +79,24 @@ class ProviderUserService extends UserService
     }
     
     /**
+     * change password of provideUser Account|chromedia Accounts
+     *
+     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     */
+    public function changePassword($oldPassword, $newPassword, $accountId)
+    {
+    	// update user in chromedia global accounts
+    	if ( $providerUser = $this->changePassword($oldPassword, $newPassword, $accountId)){
+    
+    		return TRUE;
+    	}
+    
+    	// something went wrong in creating global account
+    	return NULL;
+    }
+    
+    /**
      * 
      * @param string $email
      * @param string $password

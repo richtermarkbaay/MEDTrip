@@ -98,7 +98,7 @@ class UserService
     
     
     /**
-     * Update existing user
+     * Update existing user's
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
      */
@@ -112,6 +112,29 @@ class UserService
     	);
     	$response = $this->request->post($this->chromediaAccountsUri.'/'.$accountId, array('data' => \base64_encode(\json_encode($form_data))));
         if (200 == $response->getStatusCode()) {
+    		$account_data = \json_decode($response->getBody(true),true);
+    		$user->setAccountId($account_data['id']);
+    		return $user;
+    	}
+    	else {
+    		return null;
+    	}
+    }
+    
+    /**
+     * Update existing user's password
+     *
+     * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
+     */
+    protected function changePassword($oldPassword, $newPassword, $accountId)
+    {
+    	//echo $this->chromediaAccountsUri.'/find';exit;
+    	$form_data = array(
+    			'old_password' => $oldPassword,
+    			'new_password' => $newPassword,
+    	);
+    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$accountId, array('data' => \base64_encode(\json_encode($form_data))));
+    	if (200 == $response->getStatusCode()) {
     		$account_data = \json_decode($response->getBody(true),true);
     		$user->setAccountId($account_data['id']);
     		return $user;
