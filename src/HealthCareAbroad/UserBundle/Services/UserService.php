@@ -100,28 +100,25 @@ class UserService
     /**
      * Update existing user
      * 
-     * @param \HealthCareAbroad\UserBundle\Entity\SiteUserInterface $user
+     * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
      */
-    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
+    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountId)
     {
-    	
+    	//echo $this->chromediaAccountsUri.'/find';exit;
     	$form_data = array(
-            'email' => $user->getEmail(),
-            'password' => $user->getPassword(),
-            'first_name' => $user->getFirstName(),
-            'last_name' => $user->getLastName(),
-            'middle_name' => $user->getMiddleName()
-        );
-        
-        $response = $this->request->post($this->chromediaAccountsUri,array('data' => \base64_encode(\json_encode($form_data))));
+    		'first_name' => $user->getFirstName(),
+    		'last_name' => $user->getLastName(),
+    		'middle_name' => $user->getMiddleName(),
+    	);
+    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$accountId, array('data' => \base64_encode(\json_encode($form_data))));
         if (200 == $response->getStatusCode()) {
-            $account_data = \json_decode($response->getBody(true),true);
-            $user->setAccountId($account_data['id']);
-            return $user;
-        }
-        else {
-            return null;
-        }
+    		$account_data = \json_decode($response->getBody(true),true);
+    		$user->setAccountId($account_data['id']);
+    		return $user;
+    	}
+    	else {
+    		return null;
+    	}
     }
     
     /**
