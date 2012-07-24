@@ -1,6 +1,18 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% block body %}
-Welcome to the admin panel, {{ app.security.getToken().getUser() }}!
 
-<a href="{{ path('admin_logout')}}">Logout!</a>
+{% block content %}
+<!-- start content-outer ........................................................................................................................START -->
+<div id="content-outer">
+    <!-- start content -->
+    <div id="content">
+        <!--  start page-heading -->
+        <div id="page-heading">
+        	<h1>{{ site_name }} Admin Panel</h1>
+        </div>
+        <!-- end page-heading -->
+    </div>
+    <!--  end content -->
+    <div class="clear">&nbsp;</div>
+</div>
+<!--  end content-outer........................................................END -->
 {% endblock %}

@@ -21,6 +21,8 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    globals:
+        site_name: HealthCareAbroad.com
 
 # Assetic Configuration
 assetic:
