@@ -22,4 +22,15 @@ class DefaultController extends Controller
 
 		return $response;
     }
+
+
+    public function searchTagsAction($term)
+    {
+		$data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
+
+    	$response = new Response(json_encode($data));
+    	$response->headers->set('Content-Type', 'application/json');
+
+    	return $response;
+    }
 }

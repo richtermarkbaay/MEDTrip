@@ -1,6 +1,6 @@
-MediaBundle:
-    resource: "@MediaBundle/Resources/config/routing.yml"
-    prefix:   /
+#MediaBundle:
+#    resource: "@MediaBundle/Resources/config/routing.yml"
+#    prefix:   /
 MailerBundle:
     resource: "@MailerBundle/Resources/config/routing.yml"
     prefix:   /

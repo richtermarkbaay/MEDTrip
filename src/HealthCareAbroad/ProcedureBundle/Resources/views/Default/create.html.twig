@@ -1,0 +1,30 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script src="{{ asset('bundles/procedure/js/Tag.js') }}"></script>
+	<script type="text/javascript">
+		Tag.assignAutocomplete('procedure_tags');
+	</script>
+{% endblock %}
+
+{% block body %}
+	<style type="text/css">
+		label {width:100px;display:inline-block; margin-bottom: 5px;}
+	</style>
+
+	<div class="create-listing-form" style="margin: 20px;">
+
+		<h2>Create Procedure</h2>
+
+		<form action="{{ path('procedure_save') }}" method="post" {{ form_enctype(form) }}>
+
+ 			{% if id is defined %} 
+ 				<input type="hidden" value="{{ id }}" name="id"/> 
+ 			{% endif %} 
+			{{ form_row(form.name) }}
+			{{ form_row(form.tags) }}
+		    <input type="submit"/>
+		</form>
+	</div>
+{% endblock %}

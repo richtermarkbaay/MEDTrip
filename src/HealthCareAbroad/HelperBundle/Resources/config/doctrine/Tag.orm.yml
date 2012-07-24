@@ -1,0 +1,25 @@
+HealthCareAbroad\HelperBundle\Entity\Tag:
+    type: entity
+    table: tags
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\TagRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false 
+            nullable: false
+        type:
+            type: integer
+            unsigned: true
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }

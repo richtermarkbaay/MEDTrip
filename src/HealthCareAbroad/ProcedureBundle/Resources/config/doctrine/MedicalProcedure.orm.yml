@@ -18,4 +18,21 @@ HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure:
         status:
             type: boolean
             nullable: false
+    manyToMany:
+        tags:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Tag
+            cascade: {  }
+            mappedBy: null
+            inversedBy: medicalProcedure
+            joinTable:
+                name: medical_procedure_tags
+                joinColumns:
+                    -
+                        name: medical_procedure_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: tag_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

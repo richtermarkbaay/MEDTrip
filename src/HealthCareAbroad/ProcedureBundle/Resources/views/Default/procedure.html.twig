@@ -1,0 +1,23 @@
+
+{% extends '::base.html.twig' %}
+
+{% block body %}
+	<div id="content-wrapper">
+		
+		<div id="procedure-wrapper" style="width: 50%; color: #555">
+			<h2>{{ procedure.name }}</h2>
+
+			<p>
+				<label style="color:#aaa">Tags:</label>
+				{% for tag in procedure.tags %}
+					<a href="#" style="color:#0088CC;text-decoration:underline">{{ tag.name }}</a> 
+				{% endfor %}
+			</p>
+			
+			<a href="{{ path('procedure_edit', {id:procedure.id}) }}">edit</a> | 
+			<a href="{{ path('procedure_delete', {id:procedure.id}) }}">delete</a>
+		</div>
+
+	</div>
+	
+{% endblock %}
