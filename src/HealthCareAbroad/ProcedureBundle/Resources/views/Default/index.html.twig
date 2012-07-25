@@ -1,26 +1,38 @@
+{% extends 'AdminBundle::layout.html.twig' %}
 
-{% extends '::base.html.twig' %}
+{% block content %}
+	<div id="content">
 
-{% block body %}
-	<div id="content-wrapper">
-
-		<h2>Procedures</h2>
-		<a style="display:inline-block;margin: 10px 0" href="{{ path('procedure_add') }}">add new</a>
 		{{ app.session.flash('notice') }}
-		
-		<div id="procedures-wrapper" style="border: 1px solid #ddd; width: 50%">
-		{% for procedure in procedures %}
-			<div class="procedures" style="border-bottom: 1px solid #efefef; margin: 10px;">
-				{{ procedure.name }}
-				<div style="float:right">
-				<a href="{{ path('procedure_view', {id:procedure.id}) }}">view</a> | 
-				<a href="{{ path('procedure_edit', {id:procedure.id}) }}">edit</a> | 
-				<a href="{{ path('procedure_delete', {id:procedure.id}) }}">delete</a>
-				</div>
+		<div id="page-heading"><h3>List of Medical Procedures</h3></div>
 
-			</div>
-		{% endfor %}
-		</div>
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
 
+			<table id="product-table" class="mid-size">
+			<tr>
+				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
+				<th class="table-header-repeat line-left"><a href="">Tags</a></th>
+				<th class="table-header-options actions line-left"><a href="">Action</a></th>
+			</tr>
+			
+			{% for procedure in procedures %}
+				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+					<td>{{ procedure.name }}</td>
+					<td>
+						{% for tag in procedure.tags %}
+							<a style="color:#92B22C" href="#">{{ tag.name }}</a> &nbsp; 
+						{% endfor %}
+					</td>
+					<td align="center">
+					<a href="{{ path('procedure_view', {id:procedure.id}) }}" title="view">view</a> <span class="separator" style="color:#ccc">|</span>
+					<a href="{{ path('procedure_edit', {id:procedure.id}) }}" title="edit">edit</a> <span class="separator" style="color:#ccc">|</span>
+					<a href="{{ path('procedure_delete', {id:procedure.id}) }}" title="delete">delete</a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			{% endblock %}
+		{% endembed %}
 	</div>
 {% endblock %}
