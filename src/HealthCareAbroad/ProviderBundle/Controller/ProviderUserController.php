@@ -9,6 +9,7 @@ use HealthCareAbroad\UserBundle\Event\UserEvents;
 use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use Chromedia\AccountBundle\Entity\Account;
 
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
@@ -78,14 +79,20 @@ class ProviderUserController extends Controller
     		
     		$form->bindRequest($this->getRequest());
     		if ($form->isValid()) {
+    			
     			//get user account in chromedia global accounts by accountID
     			$session = $this->getRequest()->getSession();
     			$accountId = $session->get('accountId');
-    			$oldPassword = $form->get('email')->getData();
     			$newPassword = $form->get('password')->getData();
     			
-    			$providerUser = $this->get('services.provider_user')->changePassword($oldPassword, $newPassword, $accountId);
-            	if ($providerUser) {
+    			//check if given oldpassword is match
+    			$user = $this->get('services.provider_user')->findByIdAndPassword($accountId, $form->get('email')->getData());
+            	
+    			////set new password to chromedia accounts
+    			$password = SecurityHelper::hash_sha256($newPassword);
+    			$providerUser = $this->get('services.provider_user')->changePassword($providerUser, $accountId, $password);
+    			
+    			if ($providerUser) {
     				$this->get('session')->setFlash('flash.notice', "Password changed!");
     			}
     			else {

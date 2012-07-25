@@ -69,7 +69,7 @@ class ProviderUserService extends UserService
     public function update(ProviderUser $providerUser, $accountId)
     {
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->updateUser($providerUser, $accountId)){
+    	if ( $providerUser = $this->updateUser($providerUser, $accountId, FALSE)){
         
     		return TRUE;
     	}
@@ -79,15 +79,18 @@ class ProviderUserService extends UserService
     }
     
     /**
-     * change password of provideUser Account|chromedia Accounts
+     * Update Account of provider user
      *
      * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function changePassword($oldPassword, $newPassword, $accountId)
+    public function changePassword(ProviderUser $providerUser, $accountId, $password)
     {
+    	//set new Password
+    	$providerUser->setPassword($password);
+
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->changePassword($oldPassword, $newPassword, $accountId)){
+    	if ( $providerUser = $this->updateUser($providerUser, $accountId, TRUE)){
     
     		return TRUE;
     	}
@@ -123,6 +126,31 @@ class ProviderUserService extends UserService
         
         return null;
     }
+    
+    /**
+     *
+     * @param string $email
+     * @param string $password
+     * @return ProviderUser
+     */
+    public function findByIdAndPassword($id, $password)
+    {
+    	$password = SecurityHelper::hash_sha256($password);
+    	$accountData = $this->find(
+    			array(
+    					'id' => $id,
+    					'password' => $password
+    			),
+    			array('limit' => 1)
+    	);
+    	
+    	if ($accountData) {	
+    		return $accountData;
+    	}
+    	
+    	return null;
+    }
+    	
     
     /**
      * Find a ProviderUser by accountId
