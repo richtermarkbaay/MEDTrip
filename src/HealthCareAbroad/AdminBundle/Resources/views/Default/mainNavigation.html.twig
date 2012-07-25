@@ -32,14 +32,30 @@
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">
-                		<li><a href="#nogo">View all</a></li>
-                		<li><a href="#nogo">Add new procedure</a></li>
+                		<li><a href="{{ path('procedure_homepage') }}">View all</a></li>
+                		<li><a href="{{ path('procedure_add') }}">Add new procedure</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+
+        <div class="nav-divider">&nbsp;</div>
         
+        <ul class="select">
+            <li>
+                <a href="#nogo"><b>Tags</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+                <div class="select_sub">
+                	<ul class="sub">
+                		<li><a href="{{ path('admin_tagHomepage') }}">View all</a></li>
+                		<li><a href="{{ path('admin_tagAdd') }}">Add new tag</a></li>
+                	</ul>
+                </div>
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+            </li>
+        </ul>
+
         <div class="clear"></div>
     </div>
     <div class="clear"></div>
