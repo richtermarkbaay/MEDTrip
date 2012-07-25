@@ -1,19 +1,47 @@
 {% extends 'ProviderBundle::layout.html.twig' %}
-{% block body %}
 
-{% if app.session.hasFlash('flash.notice') %}
-    <div class="msg-notice">
-        {{ app.session.flash('flash.notice') }}
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ site_name }} Provider Panel</h1>
     </div>
-{% endif %}
-
-Welcome {{ app.security.getToken().getUser() }}!
-
-<div style="margin:10px;">
-    <ul style="list-style:disc;">
-	    <li><a href="{{ path('provider_invite_user') }}">Invite users</a> </li><br>
-		<li><a href="{{ path('provider_editAccount') }}">Edit Account</a> </li>
-	</ul>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			    
+			    {% if app.session.hasFlash('flash.notice') %}
+			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('flash.notice') } %}
+		        {% endif %}
+			
+			    <h2>Sub Heading </h2>
+    			<h3>Local Heading</h3>
+    			
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+    			<br />
+    			<br />
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+    			<br />
+    			<br />
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
 </div>
-
+<!--  end content -->
+<div class="clear">&nbsp;</div>
 {% endblock %}
