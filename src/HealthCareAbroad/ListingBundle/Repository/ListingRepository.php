@@ -65,8 +65,8 @@ class ListingRepository extends EntityRepository
 
 		$query = $this->_em->createQuery($dql);
 		$query->setParameter('searchTerm', $searchTerm);
-		if (isset($country)) $query->setParameter('country', $country);
-		if (isset($city)) $query->setParameter('city', $city);
+		if ($country) $query->setParameter('country', $country);
+		if ($city) $query->setParameter('city', $city);
 			
 		return $query;
 	}

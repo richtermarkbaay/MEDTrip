@@ -1,0 +1,21 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: hca-staging
+    database_port: ~
+    database_name: fixtures_healthcareabroad
+    database_user: root
+    database_password: hcadbadmin
+
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: ~
+    mailer_password: ~
+
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+
+    application_id:    1
+    application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
+    chromedia_accounts_uri: http://accounts.chromedia.com/app_dev.php
+
