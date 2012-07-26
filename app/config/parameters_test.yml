@@ -1,25 +1,4 @@
 parameters:
-<<<<<<< HEAD
-    database_driver:   pdo_mysql
-    database_host:     hca-staging
-    database_port:     ~
-    database_name:     fixtures_healthcareabroad
-    database_user:     root
-    database_password: hcadbadmin
-
-    mailer_transport:  gmail
-    mailer_host:       192.168.1.252
-    mailer_user:       alnie.jacobe@chromedia.com
-    mailer_password:   computer@2152012
-    locale:            en
-    secret:            ThisTokenIsNotSoSecretChangeIt
-    
-    chromedia_accounts_uri: http://accounts.chromedia.local/app_dev.php
-    application_id:    1
-    application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
-    media_filesystem_path: /Users/websites/healthcareabroad/hca_draft/web/media
-    
-=======
     database_driver: pdo_mysql
     database_host: hca-staging
     database_port: ~
@@ -39,5 +18,3 @@ parameters:
     application_id:    1
     application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
     chromedia_accounts_uri: http://accounts.chromedia.com/app_dev.php
-
->>>>>>> a92f248805d4c98943fdcf53f308d79547cd1cf6

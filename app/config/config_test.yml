@@ -3,19 +3,11 @@ imports:
     - { resource: security.yml }
 
 framework:
-<<<<<<< HEAD
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    router:
-        resource: "%kernel.root_dir%/config/routing.yml"
-        strict_parameters: %kernel.debug%
-    secret:          %secret%
-=======
     templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_parameters: %kernel.debug%
     secret: %secret%
->>>>>>> a92f248805d4c98943fdcf53f308d79547cd1cf6
     test: ~
     session:
         storage_id: session.storage.mock_file
