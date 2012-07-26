@@ -21,7 +21,7 @@ class ProcedureType extends AbstractType
 
 		$builder
 			->add('name', 'text')
-			->add($builder->create('tags','textarea')->addModelTransformer($transformer));
+			->add($builder->create('tags','textarea', array('attr'=>array('class'=>'tag-autocomplete')))->addModelTransformer($transformer));
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

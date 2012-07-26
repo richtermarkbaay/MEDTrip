@@ -1,32 +1,43 @@
+{% extends 'AdminBundle::layout.html.twig' %}
 
-{% extends '::base.html.twig' %}
+{% block content %}
 
-{% block javascripts %}
-	{{ parent() }}
-	<script src="{{ asset('bundles/procedure/js/Tag.js') }}"></script>
-{% endblock %}
-
-{% block body %}
-	<div id="content-wrapper">
-
-		<h2>Tags</h2>
-		<a style="display:inline-block;margin: 10px 0" href="{{ path('admin_tagAdd') }}">add new</a>
+	<div id="content">
 		{{ app.session.flash('notice') }}
+		<div id="page-heading"><h3>List of Tags</h3></div>
 
-		<div id="tags-wrapper" style="border: 1px solid #ddd; width: 70%">
-		{% for tag in tags %}
-			<div class="tags" style="border-bottom: 1px solid #efefef; margin: 10px;">
-				<span style="display:inline-block;width:150px">{{ tag.name }}</span>
-				<span style="color: #888;"> type: {{ types[tag.type] }}</span>
-				<div style="float:right">
-					<a id="tag-{{tag.id}}" href="javascript:void(0)" onclick="Tag.updateStatus($(this))">
-						{% if tag.status %} deactivate {% else %} activate {% endif %}
-					</a> | 
-					<a href="{{ path('admin_tagEdit', {id:tag.id}) }}">edit</a> 
-				</div>
-			</div>
-		{% endfor %}
-		</div>
-
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+			
+				<table id="product-table" class="mid-size">
+				<tr>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
+					<th class="table-header-repeat line-left"><a href="">Type</a></th>
+					<th class="table-header-options actions line-left"><a href="">Action</a></th>
+				</tr>
+	
+				{% for tag in tags %}
+					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+						<td>{{ tag.name }}</td>
+						<td>{{ types[tag.type] }}</td>
+						<td align="center">
+							<a id="tag-{{tag.id}}" href="javascript:void(0)" onclick="Tag.updateStatus($(this))">
+								{% if tag.status %} deactivate {% else %} activate {% endif %}
+							</a> 
+							<span class="separator" style="color:#ccc">|</span> 
+							<a href="{{ path('admin_tagEdit', {id:tag.id}) }}">edit</a> 
+						</td>
+					</tr>
+				{% endfor %}
+				</table>
+			
+			{% endblock %}
+		{% endembed %}
 	</div>
+	
+	{% block javascripts %}
+		{{ parent() }}
+		<script src="{{ asset('bundles/helper/js/Tag.js') }}"></script>
+	{% endblock %}
+
 {% endblock %}

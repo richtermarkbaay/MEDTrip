@@ -1,31 +1,23 @@
-{% extends '::base.html.twig' %}
+{% extends 'AdminBundle::layout.html.twig' %}
 
-{% block javascripts %}
-	{{ parent() }}
-	<script src="{{ asset('bundles/procedure/js/Tag.js') }}"></script>
-	<script type="text/javascript">
-		Tag.assignAutocomplete('procedure_tags');
-	</script>
-{% endblock %}
+{% block content %}
 
-{% block body %}
-	<style type="text/css">
-		label {width:100px;display:inline-block; margin-bottom: 5px;}
-	</style>
+	<div id="content">
+		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Tag</h3></div>
 
-	<div class="create-tag-form" style="margin: 20px;">
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
 
-		<h2>
-			{% if id is defined %} Edit {% else %} Add {% endif %} Tag
-		</h2>
-
-		<form action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }}>
- 			{% if id is defined %} 
- 				<input type="hidden" value="{{ id }}" name="id"/> 
- 			{% endif %} 
-			{{ form_row(form.name) }}
-			{{ form_row(form.type) }}
-		    <input type="submit"/>
-		</form>
+			<form action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }} class="basic-form">
+	 			{% if id is defined %} 
+	 				<input type="hidden" value="{{ id }}" name="id"/> 
+	 			{% endif %} 
+				{{ form_row(form.name) }}
+				{{ form_row(form.type) }}
+			    <input type="submit" class="form-submit"/>
+			</form>
+			{% endblock %}
+		{% endembed %}
 	</div>
+
 {% endblock %}

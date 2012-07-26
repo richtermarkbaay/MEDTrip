@@ -1,29 +1,29 @@
 procedure_homepage:
-    pattern:  /procedures
+    pattern:  /admin/procedures
     defaults: { _controller: ProcedureBundle:Default:index }
 
 procedure_add:
-    pattern:  /procedure/add
+    pattern:  /admin/procedure/add
     defaults: { _controller: ProcedureBundle:Default:add }
 
 procedure_save:
-    pattern:  /procedure/save
+    pattern:  /admin/procedure/save
     defaults: { _controller: ProcedureBundle:Default:save }
 
 procedure_edit:
-    pattern:  /procedure/edit/{id}
+    pattern:  /admin/procedure/edit/{id}
     defaults: { _controller: ProcedureBundle:Default:edit }
     requirements:
          id: ".+"
 
 procedure_view:
-    pattern:  /procedure/view/{id}
+    pattern:  /admin/procedure/view/{id}
     defaults: { _controller: ProcedureBundle:Default:view }
     requirements:
          id: ".+"
 
 procedure_delete:
-    pattern:  /procedure/delete/{id}
+    pattern:  /admin/procedure/delete/{id}
     defaults: { _controller: ProcedureBundle:Default:delete }
     requirements:
          id: ".+"
