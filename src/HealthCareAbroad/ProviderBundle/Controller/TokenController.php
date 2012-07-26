@@ -14,7 +14,7 @@ class TokenController extends Controller
 
 	public function confirmInvitationTokenAction($token)
     {    	
-     	$invitation = $this->get('services.token')->validateInvitationByToken('ProviderBundle:ProviderInvitation', $token);	
+     	$invitation = $this->get('services.token')->getActiveProviderInvitationByToken($token);	
      	
     	if (!$invitation) {
             throw $this->createNotFoundException('Invalid token');
@@ -58,7 +58,7 @@ class TokenController extends Controller
  				$this->get('mailer')->send($message);
  				
  				//create provider invitation
- 				$this->get('services.invitation')->createProviderInvitation($email,$message, $name, $invitationToken);
+ 				$this->get('services.invitation')->createProviderInvitation($email, $message, $name, $invitationToken);
 				
 				return new Response('Created token! and send invitation token to recipient');
 			}

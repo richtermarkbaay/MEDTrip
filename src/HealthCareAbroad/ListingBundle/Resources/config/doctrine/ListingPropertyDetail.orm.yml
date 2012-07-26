@@ -2,6 +2,25 @@ HealthCareAbroad\ListingBundle\Entity\ListingPropertyDetail:
     type: entity
     table: listing_property_details
     repositoryClass: HealthCareAbroad\ListingBundle\Repository\ListingPropertyDetailRepository
+    id:
+        listingId:
+            type: bigint
+            nullable: false
+            column: listing_id
+            generator:
+                strategy: NONE
+        listingPropertyId:
+            type: bigint
+            nullable: false
+            column: listing_property_id
+            generator:
+                strategy: NONE
+        listingPropertyChoiceId:
+            type: bigint
+            nullable: false
+            column: listing_property_choice_id
+            generator:
+                strategy: NONE
     fields:
         value:
             type: string

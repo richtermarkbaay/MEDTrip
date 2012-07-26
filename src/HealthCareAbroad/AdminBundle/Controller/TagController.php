@@ -1,0 +1,85 @@
+<?php
+
+namespace HealthCareAbroad\AdminBundle\Controller;
+
+use HealthCareAbroad\HelperBundle\Form\TagType;
+
+use HealthCareAbroad\HelperBundle\Form\TagTypeListType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use HealthCareAbroad\HelperBundle\Entity\Tag;
+
+class TagController extends Controller
+{
+    public function indexAction()
+    {
+		$tags = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->findAll();
+    	$data = array('tags'=>$tags, 'types' => Tag::$TYPES);
+    	return $this->render('AdminBundle:Tag:index.html.twig', $data);
+    }
+
+    public function addAction()
+    {
+    	$form = $this->createForm(new TagType(), new Tag());
+    	$params = array('form' => $form->createView());
+    	return $this->render('AdminBundle:Tag:create.html.twig', $params);
+    }
+    
+    public function editAction($id)
+    {
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$tag = $em->getRepository('HelperBundle:Tag')->find($id);
+    	$form = $this->createForm(new TagType(), $tag);
+    	$params = array('form' => $form->createView(), 'id' => $tag->getId());
+    	return $this->render('AdminBundle:Tag:create.html.twig', $params);
+    }
+
+    public function saveAction()
+    {
+    	$request = $this->getRequest();
+
+    	if ('POST' == $request->getMethod()) {    		
+    		$em = $this->getDoctrine()->getEntityManager();
+
+			$tag = $request->get('id')
+				? $em->getRepository('HelperBundle:Tag')->find($request->get('id')) 
+				: new Tag();
+
+			$form = $this->createForm(new TagType(), $tag);
+    		$form->bind($request);
+
+    		// TODO - Should be enabled!
+    		//if ($form->isValid()) {
+    			$tag->setStatus(TAG::STATUS_ACTIVE);
+    			$em->persist($tag);
+    			$em->flush($tag);
+
+    			$msg = $request->get('id') 
+    				? '"' .$tag->getName() . '" tag has been updated!' 
+    				: 'New Tag has been added!'; 
+    			$request->getSession()->setFlash('notice', $msg);
+    			return $this->redirect($this->generateUrl('admin_tagHomepage'));
+			//}
+    	}
+    }
+    
+    public function updateStatusAction($id)
+    {
+    	$result = false;
+    	$em = $this->getDoctrine()->getEntityManager();
+		$tag = $em->getRepository('HelperBundle:Tag')->find($id);
+
+		if($tag) {
+			$status = $tag->getStatus() == TAG::STATUS_ACTIVE ? TAG::STATUS_INACTIVE : TAG::STATUS_ACTIVE;
+			$tag->setStatus($status);
+			$em->persist($tag);
+			$em->flush($tag);
+			$result = true;
+		}
+
+		$response = new Response(json_encode($result));
+		$response->headers->set('Content-Type', 'application/json');
+		
+		return $response;
+    }
+}

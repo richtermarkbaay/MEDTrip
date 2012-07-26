@@ -1,4 +1,13 @@
 <form method="post" action="{{ path('listing_search') }}">
-	<input type="text" name="searchTerm" value="Search">
+
+	{{ form_row(form.searchTerm) }}
+	
+	{{ form_row(form.country) }}
+	{{ form_row(form.city) }}
+	
 	<input type="submit" value="Go">
 </form>
+
+{% block javascripts %}
+	<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+{% endblock %}

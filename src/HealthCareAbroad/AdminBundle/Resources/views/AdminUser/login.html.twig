@@ -1,24 +1,76 @@
-{% extends '::base.html.twig' %}
+{% extends '::base.admin.html.twig' %}
+
+{% block title %}
+{{ parent() }} &raquo; Admin Login
+{% endblock %}
 
 {% block body %}
- <header>
-        <h1>Health Care Abroad Administrator Login Page</h1>
-</header>
-
-{% if app.session.hasFlash('flash.notice') %}
-    <div class="msg-notice">
-        {{ app.session.flash('flash.notice') }}
-    </div>
-{% endif %}
-
-<form action="{{ path('admin_login') }}" method="POST" {{ form_enctype(form) }} class="user">
-    {{ form_errors(form) }}
+<body id="login-bg">
+ 
+    <!-- Start: login-holder -->
+    <div id="login-holder">
     
-    {{ form_row(form.email) }}
-    {{ form_row(form.password) }}
-
-    {{ form_rest(form) }}
-
-    <input type="submit" value="Submit" name="login"/>
-</form>
+        <!-- start logo -->
+        <div  id="logo-login" style="font-size: 14px;color:#ccc;height:15px">
+            {{ site_name }} Admin Panel
+            <a href="index.html">
+                <img style="display:none;" src="{{ asset('images/admin/shared/logo.jpeg')}}" width="156" height="40" alt="" /></a>
+        </div>
+        <!-- end logo -->
+        
+        <div class="clear"></div>
+        
+        <!--  start loginbox ................................................................................. -->
+        <div id="loginbox">
+        
+            <!--  start login-inner -->
+            <div id="login-inner">
+                <form action="{{ path('admin_login') }}" method="POST" >
+                    <table border="0" cellpadding="0" cellspacing="0">
+                    
+                        {% if app.session.hasFlash('flash.notice') %}
+                        <tr>
+                            <td colspan="2">
+                                <div class=login_notice style="color: #CE2700; margin: -20px 0px;">
+                                    {{ app.session.flash('flash.notice') }}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    
+                        <tr>
+                            <th>Email</th>
+                            <td> 
+                                {{ form_widget(form.email, { 'attr': {'class': 'login-inp'} }) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Password</th>
+                            <td>
+                                {{ form_widget(form.password, { 'attr': {'class': 'login-inp'} }) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td valign="top"><input type="checkbox" class="checkbox-size" id="login-check" /><label for="login-check">Remember me</label></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td><input type="submit" class="submit-login"  /></td>
+                        </tr>
+                    </table>
+                    
+                    {{ form_rest(form) }}
+                </form>
+            </div>
+            <!--  end login-inner -->
+            
+            <div class="clear"></div>
+            <a href="" class="forgot-pwd">Forgot Password?</a>
+        </div>
+     <!--  end loginbox -->
+    
+    </div>
+    <!-- End: login-holder -->
+</body>
 {% endblock %}

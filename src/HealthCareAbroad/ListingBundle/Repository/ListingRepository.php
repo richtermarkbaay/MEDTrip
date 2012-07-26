@@ -43,12 +43,11 @@ class ListingRepository extends EntityRepository
 // 			)
 		//TODO: 
 		// 1. provider id
-		// 2. tags
-		// 3. performance tweaks
+		// 2. performance tweaks
 
 		$searchTerm = '%'.$criteria['searchTerm'].'%';		
-		$country = isset($criteria['countryId']) ? $criteria['countryId'] : null;
-		$city = isset($criteria['cityId']) ? $criteria['cityId'] : null;		
+		$country = $criteria['country'];
+		$city = $criteria['city'];		
 		
 		$dql = ' SELECT l FROM ListingBundle:Listing l LEFT JOIN l.procedure p LEFT JOIN p.tags t ';
 		//look in title, description, procedure, or tag for search term

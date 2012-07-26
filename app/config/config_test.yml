@@ -1,10 +1,31 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: parameters_test.yml }
+    - { resource: security.yml }
 
 framework:
+    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_parameters: %kernel.debug%
+    secret:          %secret%
     test: ~
     session:
         storage_id: session.storage.mock_file
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
 
 web_profiler:
     toolbar: false

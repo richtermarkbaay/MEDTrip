@@ -1,21 +1,64 @@
-{% extends '::base.html.twig' %}
+{% extends '::base.admin.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link href="{{ asset('bundles/user/login.css') }}" type="text/css" rel="stylesheet" />
+{% block title %}{{ parent() }} &raquo; Provider Panel{% endblock %}
+
+{% block body %}
+
+<body> 
+    <!-- Start: page-top-outer -->
+    <div id="page-top-outer">    
+    
+        <!-- Start: page-top -->
+        <div id="page-top">
+        
+        	<!-- start logo -->
+        	<div id="logo">
+        	    <a href=""><img src="{{ asset('images/admin/shared/logo.jpg') }}" width="156" height="40" alt="" /></a>
+        	</div>
+        	<!-- end logo -->
+        	
+        	{% block top_search %}
+        	    {% include 'ProviderBundle:Default:searchWidget.html.twig' %}
+        	{% endblock %}
+         	<div class="clear"></div>
+        
+        </div>
+        <!-- End: page-top -->
+    
+    </div>
+    <!-- End: page-top-outer -->
+	
+    <div class="clear">&nbsp;</div>
+ 
+    <!--  start nav-outer-repeat................................................................................................. START -->
+    <div class="nav-outer-repeat"> 
+        <!--  start nav-outer -->
+        <div class="nav-outer"> 
+    
+    		{% block right_navigation %}
+    		    {% include 'ProviderBundle:Default:rightNavigation.html.twig' %}
+    		{% endblock %}
+    		
+    		{% block main_navigation %}
+    		    {% include 'ProviderBundle:Default:mainNavigation.html.twig' %}
+    		{% endblock %}
+        </div>
+        <div class="clear"></div>
+        <!--  end nav-outer -->
+    </div>
+    <!--  end nav-outer-repeat................................................... END -->
+
+    <!-- start content-outer ........................................................................................................................START -->
+    <div id="content-outer"> 
+    {% block content %}{% endblock %}
+    </div>
+    <!--  end content-outer........................................................END -->
+
+    <div class="clear">&nbsp;</div>
+    
+    {% include '::footer.admin.html.twig' %}
+ 
+</body>
+
 {% endblock %}
 
-{% block navigation %}
-    <nav>
-        <ul class="navigation">
-            <li><a href="{{ path('main_homepage') }}">Home</a></li>
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <li>
-                <a href="{{ path('provider_logout')}}">Logout</a>
-            </li>
-            {% else %}
-                <li><a href="{{ path('provider_login') }}">Login</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-{% endblock %}

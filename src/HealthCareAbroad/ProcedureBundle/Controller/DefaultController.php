@@ -2,17 +2,9 @@
 
 namespace HealthCareAbroad\ProcedureBundle\Controller;
 
-
-use HealthCareAbroad\ProcedureBundle\ProcedureBundle;
-
-use HealthCareAbroad\HelperBundle\Entity\Tag;
-
-use HealthCareAbroad\ProcedureBundle\Form\ProcedureType;
-
-use HealthCareAbroad\ProcedureBundle\Form\DataTransformer\TagToObjectTransformer;
-
-use HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use HealthCareAbroad\ProcedureBundle\Form\ProcedureType;
+use HealthCareAbroad\ProcedureBundle\Entity\MedicalProcedure;
 
 class DefaultController extends Controller
 {

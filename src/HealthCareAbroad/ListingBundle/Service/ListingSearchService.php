@@ -25,12 +25,21 @@ class ListingSearchService
 	/**
 	 * @param array $searchCriteria
 	 */
-	public function getListings($criteria = array()) 
+	public function getListings($data = array()) 
 	{
 		$repository = $this->entityManager->getRepository('ListingBundle:Listing');
-		$listings = $repository->search($criteria);
+		$listings = $repository->search($this->normalizeData($data));
 		
 		return $listings;
+	}
+	
+	private function normalizeData($data)
+	{
+		if (!isset($data['searchTerm']) && !$data['searchTerm']) throw new \Exception('No search term found.');
+		if (!isset($data['country'])) $data['country'] = null;
+		if (!isset($data['city'])) $data['city'] = null;
+		
+		return $data;
 	}
 	
 	// Common criteria:
