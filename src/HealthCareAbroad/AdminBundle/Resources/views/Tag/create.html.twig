@@ -9,11 +9,10 @@
 			{% block wrappedContent %}
 
 			<form action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }} class="basic-form">
-	 			{% if id is defined %} 
-	 				<input type="hidden" value="{{ id }}" name="id"/> 
-	 			{% endif %} 
+				{{ form_rest(form) }}
 				{{ form_row(form.name) }}
 				{{ form_row(form.type) }}
+				<textarea></textarea>
 			    <input type="submit" class="form-submit"/>
 			</form>
 			{% endblock %}

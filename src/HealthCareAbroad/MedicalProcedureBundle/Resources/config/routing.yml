@@ -1,0 +1,3 @@
+MedicalProcedureBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: MedicalProcedureBundle:Default:index }

@@ -1,0 +1,25 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedia:
+    type: entity
+    table: institution_media
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMediaRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        type:
+            type: smallint
+            nullable: false
+    manyToOne:
+        media:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,41 @@
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
+    type: entity
+    table: medical_centers
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalCenterRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    manyToMany:
+        medicalProcedureType:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
+            cascade: {  }
+            mappedBy: medicalCenter
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

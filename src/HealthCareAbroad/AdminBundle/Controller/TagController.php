@@ -29,8 +29,10 @@ class TagController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$tag = $em->getRepository('HelperBundle:Tag')->find($id);
-    	$form = $this->createForm(new TagType(), $tag);
-    	$params = array('form' => $form->createView(), 'id' => $tag->getId());
+    	$tagType = new TagType($tag->getId()); 
+    	$form = $this->createForm($tagType, $tag);
+
+    	$params = array('form' => $form->createView());
     	return $this->render('AdminBundle:Tag:create.html.twig', $params);
     }
 
@@ -48,9 +50,8 @@ class TagController extends Controller
 			$form = $this->createForm(new TagType(), $tag);
     		$form->bind($request);
 
-    		// TODO - Should be enabled!
-    		//if ($form->isValid()) {
-    			$tag->setStatus(TAG::STATUS_ACTIVE);
+    		if ($form->isValid()) {
+    			$tag->setStatus(Tag::STATUS_ACTIVE);
     			$em->persist($tag);
     			$em->flush($tag);
 
@@ -59,7 +60,9 @@ class TagController extends Controller
     				: 'New Tag has been added!'; 
     			$request->getSession()->setFlash('notice', $msg);
     			return $this->redirect($this->generateUrl('admin_tagHomepage'));
-			//}
+			} else {
+				return $this->redirect($this->generateUrl('admin_tagAdd'));
+			}
     	}
     }
     
@@ -70,7 +73,7 @@ class TagController extends Controller
 		$tag = $em->getRepository('HelperBundle:Tag')->find($id);
 
 		if($tag) {
-			$status = $tag->getStatus() == TAG::STATUS_ACTIVE ? TAG::STATUS_INACTIVE : TAG::STATUS_ACTIVE;
+			$status = $tag->getStatus() == Tag::STATUS_ACTIVE ? Tag::STATUS_INACTIVE : Tag::STATUS_ACTIVE;
 			$tag->setStatus($status);
 			$em->persist($tag);
 			$em->flush($tag);
