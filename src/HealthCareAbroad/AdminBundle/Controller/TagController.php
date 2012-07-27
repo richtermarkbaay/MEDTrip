@@ -29,8 +29,10 @@ class TagController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$tag = $em->getRepository('HelperBundle:Tag')->find($id);
-    	$form = $this->createForm(new TagType(), $tag);
-    	$params = array('form' => $form->createView(), 'id' => $tag->getId());
+    	$tagType = new TagType($tag->getId()); 
+    	$form = $this->createForm($tagType, $tag);
+
+    	$params = array('form' => $form->createView());
     	return $this->render('AdminBundle:Tag:create.html.twig', $params);
     }
 
