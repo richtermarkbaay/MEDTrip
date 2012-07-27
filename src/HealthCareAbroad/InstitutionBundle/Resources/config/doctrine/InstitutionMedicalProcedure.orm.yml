@@ -1,0 +1,50 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure:
+    type: entity
+    table: institution_medical_procedures
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        description:
+            type: text
+            nullable: false
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        medicalProcedure:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                medical_procedure_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

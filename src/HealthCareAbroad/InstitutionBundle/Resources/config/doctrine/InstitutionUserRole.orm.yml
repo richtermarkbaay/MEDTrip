@@ -1,0 +1,34 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole:
+    type: entity
+    table: institution_user_roles
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionUserRoleRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        description:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    manyToMany:
+        institutionUserType:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+            cascade: {  }
+            mappedBy: institutionUserRole
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

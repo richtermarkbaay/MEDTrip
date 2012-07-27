@@ -1,3 +1,7 @@
+InstitutionBundle:
+    resource: "@InstitutionBundle/Resources/config/routing.yml"
+    prefix:   /
+
 #MediaBundle:
 #    resource: "@MediaBundle/Resources/config/routing.yml"
 #    prefix:   /

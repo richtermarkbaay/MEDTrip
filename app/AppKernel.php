@@ -32,6 +32,7 @@ class AppKernel extends Kernel
        		/* End   MEDIA BUNDLE */
 
             new HealthCareAbroad\MailerBundle\MailerBundle(),
+            new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
