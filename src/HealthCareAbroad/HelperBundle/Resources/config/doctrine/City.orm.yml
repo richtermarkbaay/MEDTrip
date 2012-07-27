@@ -12,12 +12,17 @@ HealthCareAbroad\HelperBundle\Entity\City:
                 strategy: IDENTITY
         name:
             type: string
-            length: 100
+            length: 250
             fixed: false
             nullable: false
-        status:
-            type: boolean
+        slug:
+            type: string
+            length: 100
+            fixed: true
             nullable: false
+        status:
+            type: smallint
+            nullable: false            
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
