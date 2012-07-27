@@ -42,7 +42,7 @@ class ProviderUserService extends UserService
      */
     public function create(ProviderUser $providerUser)
     {
-        // hash first the password
+    	// hash first the password
         $providerUser->setPassword(SecurityHelper::hash_sha256($providerUser->getPassword()));
         
         // create user in chromedia global accounts
@@ -114,7 +114,6 @@ class ProviderUserService extends UserService
             ), 
             array('limit' => 1)
         );
-        
         if ($accountData) {
             // find a provider user
             $providerUser = $this->doctrine->getRepository('UserBundle:ProviderUser')->findActiveUserById($accountData['id']);
