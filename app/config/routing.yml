@@ -13,6 +13,7 @@ PageBundle:
     resource: "@PageBundle/Resources/config/routing.yml"
     prefix:   /
 
+
 #ProcedureBundle:
 #    resource: "@ProcedureBundle/Resources/config/routing.yml"
 #    prefix:   /

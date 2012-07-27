@@ -12,14 +12,19 @@ HealthCareAbroad\HelperBundle\Entity\Tag:
                 strategy: IDENTITY
         name:
             type: string
-            length: 100
+            length: 50
             fixed: false 
             nullable: false
         type:
             type: integer
             unsigned: true
             nullable: false
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false            
         status:
-            type: boolean
+            type: smallint
             nullable: false
     lifecycleCallbacks: {  }

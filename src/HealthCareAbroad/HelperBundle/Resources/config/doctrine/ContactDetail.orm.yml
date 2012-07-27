@@ -1,0 +1,31 @@
+HealthCareAbroad\HelperBundle\Entity\ContactDetail:
+    type: entity
+    table: contact_details
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\ContactDetailRepository:
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        type:
+            type: smallint
+            nullable: false
+        value:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    manyToMany:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: contactDetail
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

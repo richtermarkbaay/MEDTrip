@@ -5,9 +5,9 @@ namespace HealthCareAbroad\HelperBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\HelperBundle\Entity\Photo
+ * HealthCareAbroad\HelperBundle\Entity\Media
  */
-class Photo
+class Media
 {
     /**
      * @var bigint $id
@@ -25,12 +25,22 @@ class Photo
     private $caption;
 
     /**
+     * @var smallint $type
+     */
+    private $type;
+
+    /**
      * @var datetime $dateCreated
      */
     private $dateCreated;
 
     /**
-     * @var boolean $status
+     * @var string $slug
+     */
+    private $slug;
+
+    /**
+     * @var smallint $status
      */
     private $status;
 
@@ -49,7 +59,7 @@ class Photo
      * Set filename
      *
      * @param string $filename
-     * @return Photo
+     * @return Media
      */
     public function setFilename($filename)
     {
@@ -71,7 +81,7 @@ class Photo
      * Set caption
      *
      * @param string $caption
-     * @return Photo
+     * @return Media
      */
     public function setCaption($caption)
     {
@@ -90,10 +100,32 @@ class Photo
     }
 
     /**
+     * Set type
+     *
+     * @param smallint $type
+     * @return Media
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return smallint 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set dateCreated
      *
      * @param datetime $dateCreated
-     * @return Photo
+     * @return Media
      */
     public function setDateCreated($dateCreated)
     {
@@ -112,10 +144,32 @@ class Photo
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Media
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set status
      *
-     * @param boolean $status
-     * @return Photo
+     * @param smallint $status
+     * @return Media
      */
     public function setStatus($status)
     {
@@ -126,7 +180,7 @@ class Photo
     /**
      * Get status
      *
-     * @return boolean 
+     * @return smallint 
      */
     public function getStatus()
     {
