@@ -14,17 +14,27 @@ class TokenService
 		$this->doctrine = $doctrine;
 	}
 	
-	public function validateInvitationByToken($entity, $token)
+	
+	protected function getQueryForValidToken($entity, $token)
 	{
 		// find a valid token
 		$dql = "SELECT a FROM ". $entity ." a JOIN a.invitationToken b WHERE b.token = :token AND b.status=:token_status";
-		$providerInvitation = $this->doctrine->getEntityManager()->createQuery($dql)
+		$query = $this->doctrine->getEntityManager()->createQuery($dql)
 			->setParameter('token', $token)
-			->setParameter('token_status', 1)
-			->getOneOrNullResult();
-		 
-		return $providerInvitation;
-
+			->setParameter('token_status', 1);
+		return $query;		
+	}
+	
+	/**
+	 * Validate if the string token is still valid
+	 *
+	 * @param string $token
+	 * @return NULL | HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation
+	 */
+	public function getActiveProviderInvitationByToken($token)
+	{
+		return $this->getQueryForValidToken('ProviderBundle:ProviderInvitation', $token)
+		->getOneOrNullResult();
 	}
 	
 	/**
@@ -35,13 +45,7 @@ class TokenService
 	 */
 	public function getActiveProviderUserInvitatinByToken($token)
 	{
-	    // find a valid token
-	    $dql = "SELECT a FROM ProviderBundle:ProviderUserInvitation a JOIN a.invitationToken b WHERE b.token = :token AND b.status=:token_status";
-	    $providerInvitation = $this->doctrine->getEntityManager()->createQuery($dql)
-	        ->setParameter('token', $token)
-	        ->setParameter('token_status', 1)
-	        ->getOneOrNullResult();
-	    
-	    return $providerInvitation;
+	    return $this->getQueryForValidToken('ProviderBundle:ProviderUserInvitation', $token)
+			->getOneOrNullResult();
 	}
 }

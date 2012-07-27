@@ -7,6 +7,16 @@
     <div id="page-heading">
     	<h1>{{ site_name }} Provider Panel</h1>
     </div>
+
+Welcome {{ app.security.getToken().getUser() }}!
+
+<div style="margin:10px;">
+    <ul style="list-style:disc;">
+	    <li><a href="{{ path('provider_invite_user') }}">Invite users</a> </li><br>
+		<li><a href="{{ path('provider_editAccount') }}">Edit Account</a> </li><br>
+		<li><a href="{{ path('provider_change_password') }}">Change Password</a> </li>
+	</ul>
+
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
@@ -40,7 +50,7 @@
         {% endblock %}
         
     {% endembed %}
-    
+
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>

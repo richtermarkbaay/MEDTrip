@@ -144,4 +144,85 @@ class ListingPropertyDetail
     {
         return $this->listingPropertyChoice;
     }
+    /**
+     * @var bigint $listingId
+     */
+    private $listingId;
+
+    /**
+     * @var bigint $listingPropertyId
+     */
+    private $listingPropertyId;
+
+    /**
+     * @var bigint $listingPropertyChoiceId
+     */
+    private $listingPropertyChoiceId;
+
+
+    /**
+     * Set listingId
+     *
+     * @param bigint $listingId
+     * @return ListingPropertyDetail
+     */
+    public function setListingId($listingId)
+    {
+        $this->listingId = $listingId;
+        return $this;
+    }
+
+    /**
+     * Get listingId
+     *
+     * @return bigint 
+     */
+    public function getListingId()
+    {
+        return $this->listingId;
+    }
+
+    /**
+     * Set listingPropertyId
+     *
+     * @param bigint $listingPropertyId
+     * @return ListingPropertyDetail
+     */
+    public function setListingPropertyId($listingPropertyId)
+    {
+        $this->listingPropertyId = $listingPropertyId;
+        return $this;
+    }
+
+    /**
+     * Get listingPropertyId
+     *
+     * @return bigint 
+     */
+    public function getListingPropertyId()
+    {
+        return $this->listingPropertyId;
+    }
+
+    /**
+     * Set listingPropertyChoiceId
+     *
+     * @param bigint $listingPropertyChoiceId
+     * @return ListingPropertyDetail
+     */
+    public function setListingPropertyChoiceId($listingPropertyChoiceId)
+    {
+        $this->listingPropertyChoiceId = $listingPropertyChoiceId;
+        return $this;
+    }
+
+    /**
+     * Get listingPropertyChoiceId
+     *
+     * @return bigint 
+     */
+    public function getListingPropertyChoiceId()
+    {
+        return $this->listingPropertyChoiceId;
+    }
 }

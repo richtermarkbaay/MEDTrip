@@ -11,6 +11,7 @@ use HealthCareAbroad\UserBundle\Event\UserEvents;
 use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use Chromedia\AccountBundle\Entity\Account;
 
 use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
@@ -63,6 +64,47 @@ class ProviderUserController extends Controller
         $this->get('security.context')->setToken(null);
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('main_homepage'));
+    }
+    
+    public function changePasswordAction()
+    {
+    	
+    	$providerUser = new ProviderUser();
+    	$defaultData = array('email' => 'Type your message here');
+    	
+    	$form = $this->createFormBuilder($providerUser)
+    			->add('email','password',array('label' => 'Current Password'))
+    			->add( 'password', 'repeated', array( 'type' => 'password', 'invalid_message' => 'Passwords do not match' ))
+    			->getform();
+    	
+    	if ($this->getRequest()->isMethod('POST')) {
+    		
+    		$form->bindRequest($this->getRequest());
+    		if ($form->isValid()) {
+    			
+    			//get user account in chromedia global accounts by accountID
+    			$session = $this->getRequest()->getSession();
+    			$accountId = $session->get('accountId');
+    			$newPassword = $form->get('password')->getData();
+    			
+    			//check if given oldpassword is match
+    			$user = $this->get('services.provider_user')->findByIdAndPassword($accountId, $form->get('email')->getData());
+            	
+    			////set new password to chromedia accounts
+    			$password = SecurityHelper::hash_sha256($newPassword);
+    			$providerUser = $this->get('services.provider_user')->changePassword($providerUser, $accountId, $password);
+    			
+    			if ($providerUser) {
+    				$this->get('session')->setFlash('flash.notice', "Password changed!");
+    			}
+    			else {
+    				$this->get('session')->setFlash('flash.notice', "Failed to change password,old password isn't correct");
+    			}
+    		}
+    			
+    	}
+    	return $this->render('ProviderBundle:ProviderUser:changePassword.html.twig', array(
+            'form' => $form->createView()));
     }
     
     public function editAccountAction()
