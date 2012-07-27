@@ -23,16 +23,12 @@ class AppKernel extends Kernel
             new HealthCareAbroad\ProviderBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
             new HealthCareAbroad\ListingBundle\ListingBundle(),
-            new HealthCareAbroad\ProcedureBundle\ProcedureBundle(),
             new HealthCareAbroad\PageBundle\PageBundle(),
-
-        	/* Start MEDIA BUNDLE */
         	new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
         	new HealthCareAbroad\MediaBundle\MediaBundle(),
-       		/* End   MEDIA BUNDLE */
-
             new HealthCareAbroad\MailerBundle\MailerBundle(),
             new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
+            new HealthCareAbroad\MedicalProcedureBundle\MedicalProcedureBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
