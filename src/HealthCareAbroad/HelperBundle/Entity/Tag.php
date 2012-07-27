@@ -13,7 +13,7 @@ class Tag
 		1 => 'MedicalProcedure',
 		2 => 'Listing'
 	);
-	
+
 	const STATUS_ACTIVE = 1;
 	const STATUS_INACTIVE = 0;
 
@@ -112,5 +112,32 @@ class Tag
     public function getStatus()
     {
         return $this->status;
+    }
+    /**
+     * @var string $slug
+     */
+    private $slug;
+
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Tag
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

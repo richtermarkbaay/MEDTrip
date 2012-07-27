@@ -1,7 +1,7 @@
-HealthCareAbroad\HelperBundle\Entity\City:
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalTermSuggestionDetail:
     type: entity
-    table: cities
-    repositoryClass: HealthCareAbroad\HelperBundle\Repository\CityRepository
+    table: medical_term_suggestion_details
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalTermSuggestionDetailRepository    
     fields:
         id:
             id: true
@@ -10,27 +10,28 @@ HealthCareAbroad\HelperBundle\Entity\City:
             nullable: false
             generator:
                 strategy: IDENTITY
+        type:
+            type: smallint
+            nullable: false
         name:
             type: string
             length: 250
             fixed: false
             nullable: false
-        slug:
-            type: string
-            length: 100
-            fixed: true
+        description:
+            type: text
             nullable: false
         status:
             type: smallint
-            nullable: false            
+            nullable: false
     manyToOne:
-        country:
-            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+        medicalTermSuggestion:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalTermSuggestion
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                country_id:
+                medical_term_suggestion_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

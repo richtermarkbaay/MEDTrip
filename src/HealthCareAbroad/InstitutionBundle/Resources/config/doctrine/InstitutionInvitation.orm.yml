@@ -1,0 +1,43 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
+    type: entity
+    table: institution_invitations
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionInvitationRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        email:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        message:
+            type: text
+            nullable: false
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        invitationToken:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\InvitationToken
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                invitation_token_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

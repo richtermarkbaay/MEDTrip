@@ -1,7 +1,7 @@
-HealthCareAbroad\HelperBundle\Entity\Country:
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionGroup:
     type: entity
-    table: countries
-    repositoryClass: HealthCareAbroad\HelperBundle\Repository\CountryRepository
+    table: institution_groups
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionGroupRepository
     fields:
         id:
             id: true
@@ -12,14 +12,16 @@ HealthCareAbroad\HelperBundle\Entity\Country:
                 strategy: IDENTITY
         name:
             type: string
-            length: 250
+            length: 100
             fixed: false
             nullable: false
-        slug:
-            type: string
-            length: 100
-            fixed: true
-            nullable: false            
+        description:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
         status:
             type: smallint
             nullable: false

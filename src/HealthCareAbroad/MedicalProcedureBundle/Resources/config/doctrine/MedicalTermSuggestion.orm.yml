@@ -1,0 +1,22 @@
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalTermSuggestion:
+    type: entity
+    table: medical_term_suggestions
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalTermSuggestionRepository    
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        institutionId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: institution_id
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    lifecycleCallbacks: {  }

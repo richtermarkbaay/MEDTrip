@@ -1,0 +1,39 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionUser:
+    type: entity
+    table: institution_users
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionUserRepository
+    fields:
+        accountId:
+            id: true
+            type: bigint
+            nullable: false
+            column: account_id
+            generator:
+                strategy: IDENTITY
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institutionUserType:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_user_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

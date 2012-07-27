@@ -1,3 +1,7 @@
+InstitutionBundle:
+    resource: "@InstitutionBundle/Resources/config/routing.yml"
+    prefix:   /
+
 #MediaBundle:
 #    resource: "@MediaBundle/Resources/config/routing.yml"
 #    prefix:   /
@@ -7,10 +11,6 @@ MailerBundle:
 
 PageBundle:
     resource: "@PageBundle/Resources/config/routing.yml"
-    prefix:   /
-
-ProcedureBundle:
-    resource: "@ProcedureBundle/Resources/config/routing.yml"
     prefix:   /
 
 ListingBundle:

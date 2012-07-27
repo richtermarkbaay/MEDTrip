@@ -8,12 +8,14 @@
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			<form action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }} class="basic-form">
+			<form novalidate="novalidate" action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }} class="basic-form">
 	 			{% if id is defined %} 
 	 				<input type="hidden" value="{{ id }}" name="id"/> 
 	 			{% endif %} 
 				{{ form_row(form.name) }}
 				{{ form_row(form.type) }}
+				{{ form_rest(form) }}
+
 			    <input type="submit" class="form-submit"/>
 			</form>
 			{% endblock %}
