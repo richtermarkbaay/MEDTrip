@@ -8,8 +8,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TagType extends AbstractType
 {
+	private $id;
+
+	public function __construct($id = '')
+	{
+		$this->id = $id;
+	}
+	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$builder->add('id', 'hidden', array('virtual'=>true, 'attr' => array('value' => $this->id)));
 		$builder->add('name', 'text');
 		$builder->add('type', 'tagtype_list');
 	}

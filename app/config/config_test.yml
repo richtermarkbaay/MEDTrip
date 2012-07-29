@@ -12,6 +12,13 @@ framework:
     session:
         storage_id: session.storage.mock_file
 
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+    globals:
+        site_name: HealthCareAbroad.com
+        
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -31,20 +38,11 @@ web_profiler:
     toolbar: false
     intercept_redirects: false
     
-# Doctrine Configuration
-doctrine:
-    dbal:
-        driver: %database_driver%
-        host: %database_host%
-        port: %database_port%
-        dbname: %database_name%
-        user: %database_user%
-        password: %database_password%
-        charset: UTF8
-
-    orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        auto_mapping: true
-
+# Swiftmailer Configuration
 swiftmailer:
-    disable_delivery: true
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
