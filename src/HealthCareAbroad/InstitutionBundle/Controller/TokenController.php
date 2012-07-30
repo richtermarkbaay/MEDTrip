@@ -56,7 +56,7 @@ class TokenController extends Controller
  				if ($sendingResult) {
  					
  					//create institution invitation
- 					$institutionInvitation = $this->get('services.invitation')->createInstitutionInvitation($providerInvitation, $message, $invitationToken);
+ 					$institutionInvitation = $this->get('services.invitation')->createInstitutionInvitation($institutionInvitation, $message, $invitationToken);
  					
  					// failed to save
  					if (!$institutionInvitation) {
