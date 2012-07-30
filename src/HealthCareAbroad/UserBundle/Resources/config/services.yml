@@ -1,6 +1,6 @@
 parameters:
     services.user_class: HealthCareAbroad\UserBundle\Services\UserService
-    services.provider_user_class: HealthCareAbroad\UserBundle\Services\ProviderUserService
+    services.institution_user_class: HealthCareAbroad\UserBundle\Services\InstitutionUserService
     services.admin_user_class: HealthCareAbroad\UserBundle\Services\AdminUserService
 
 services:
@@ -10,8 +10,8 @@ services:
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             
-    services.provider_user:
-        class: %services.provider_user_class%
+    services.institution_user:
+        class: %services.institution_user_class%
         calls:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
@@ -27,14 +27,14 @@ services:
             - [setSession, [@session]]
             
     ## listeners below
-    listener.user.provider_user.create:
-        class: HealthCareAbroad\UserBundle\Listener\ProviderUserListener
+    listener.user.institution_user.create:
+        class: HealthCareAbroad\UserBundle\Listener\InstitutionUserListener
         calls:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.provider_user.create, method: onCreate }
+            - { name: kernel.event_listener, event: event.institution_user.create, method: onCreate }
             
-    listener.mailer.provider_user.create:
-        class: HealthCareAbroad\MailerBundle\Listener\ProviderUserListener
+    listener.mailer.institution_user.create:
+        class: HealthCareAbroad\MailerBundle\Listener\InstitutionUserListener
         tags:
-            - { name: kernel.event_listener, event: event.provider_user.create, method: onCreate }
+            - { name: kernel.event_listener, event: event.institution_user.create, method: onCreate }
