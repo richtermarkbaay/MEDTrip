@@ -1,0 +1,43 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+
+	<div id="content">
+		{{ app.session.flash('notice') }}
+		<div id="page-heading"><h3>List of Medical Centers</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+			
+				<table id="product-table" class="mid-size">
+				<tr>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
+					<th class="table-header-repeat line-left"><a href="">Description</a></th>
+					<th class="table-header-options actions line-left"><a href="">Action</a></th>
+				</tr>
+
+				{% for center in medicalCenters %}
+					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+						<td>{{ center.name }}</td>
+						<td>{{ center.description }}</td>
+						<td align="center">
+							<a id="tag-{{center.id}}" href="javascript:void(0)" onclick="Tag.updateStatus($(this))">
+								{% if center.status %} deactivate {% else %} activate {% endif %}
+							</a> 
+							<span class="separator" style="color:#ccc">|</span> 
+							<a href="{{ path('admin_medicalCenter_edit', {id:center.id}) }}">edit</a> 
+						</td>
+					</tr>
+				{% endfor %}
+				</table>
+			
+			{% endblock %}
+		{% endembed %}
+	</div>
+	
+	{% block javascripts %}
+		{{ parent() }}
+		<script src=""></script>
+	{% endblock %}
+
+{% endblock %}
