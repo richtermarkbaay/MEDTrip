@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\UserBundle\Tests\Services;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -19,6 +21,9 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 {
     protected $service;
 	
+    private $nonFixedEmailUser = 'test.institution-user-non-fixed@chromedia.com';
+    private $commonPassword = '123456';
+    
 	public function setUp()
 	{
 		$this->service = new InstitutionUserService();
@@ -32,9 +37,41 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->service = null;
 	}
 	
+	/**
+	 * @author Allejo Chris Velarde
+	 */
+	public function testCreate()
+	{
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+	    $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
+	    
+	    $user = new InstitutionUser();
+	    
+	    $user->setEmail($this->nonFixedEmailUser);
+	    $user->setPassword('123456');
+	    $user->setFirstName('Test Institution');
+	    $user->setMiddleName('M.');
+	    $user->setLastName('User');
+	    $user->setInstitution($institution);
+	    $user->setInstitutionUserType($institutionUserType);
+	    
+	    $user = $this->service->create($user);
+	    
+	    return $user;
+	}
 	
+	/**
+	 * @author Allejo Chris Velarde
+	 */
+	public function testLogin()
+	{
+	    $this->markTestIncomplete();
+	}
 	
-	public function testUpdate()
+	/**
+	 * @depends testCreate
+	 */
+	public function testUpdate($user)
 	{
 	    // create temporary 10 character password
 		$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);

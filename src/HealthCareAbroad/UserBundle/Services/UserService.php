@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequest;
+
 use ChromediaUtilities\Helpers\Inflector;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -86,13 +88,14 @@ class UserService
         );
         
         $response = $this->request->post($this->chromediaAccountsUri,array('data' => \base64_encode(\json_encode($form_data))));
+        
         if (200 == $response->getStatusCode()) {
             $account_data = \json_decode($response->getBody(true),true);
             $user->setAccountId($account_data['id']);
             return $user;
         }
         else {
-            return null;
+            throw new FailedAccountRequest($response->getBody());
         }
     }
     
