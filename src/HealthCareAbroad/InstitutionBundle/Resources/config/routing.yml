@@ -1,3 +1,60 @@
-InstitutionBundle_homepage:
-    pattern:  /hello/{name}
+InstitutionBundle_create_token:
+    pattern:  /createtoken
+    defaults: { _controller: InstitutionBundle:Token:create }
+    requirements:
+       _method:  GET|POST
+
+institution_accept_user_invitation:
+    pattern:  /accounts/acceptInvitation/{institutionId}/{token}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
+    requirements:    
+       _method:  GET
+
+InstitutionBundle_confirmed_token:
+    pattern:  /confirm/t={token}
+    defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
+    requirements:
+       _method: GET
+
+InstitutionBundle_create_institution:
+    pattern:  /institution/create
+    defaults: { _controller: InstitutionBundle:Institution:create }
+    requirements:
+       _method: GET|POST
+
+institution_editAccount:
+    pattern:  /institution/editAccount
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount }
+    requirements:
+        _method:  GET|POST
+
+institution_change_password:
+    pattern:  /institution/change-password
+    defaults: { _controller: InstitutionBundle:InstitutionUser:changePassword }
+    requirements:
+        _method:  GET|POST
+        
+institution_invite_user:
+    pattern:  /institution/invite-user
+    defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
+    requirements:    
+        _method:  GET|POST
+        
+institution_login:
+    pattern:  /institution/login
+    defaults: { _controller: InstitutionBundle:InstitutionUser:login }
+    requirements:   
+        _method:  GET|POST
+
+institution_logout:
+    pattern:  /institution/logout
+    defaults: { _controller: InstitutionBundle:InstitutionUser:logout }
+    requirements:    
+        _method:  GET
+
+institution_homepage:
+    pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
+
+
+    

@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\UserBundle\Tests\Services;
 
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
 use ChromediaUtilities\Helpers\SecurityHelper;
 
 use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
@@ -19,9 +21,10 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	
 	public function setUp()
 	{
-		$this->service = new InstitutionUserService($this->getDoctrine());
+		$this->service = new InstitutionUserService();
+		$this->service->setDoctrine($this->getDoctrine());
 		$this->service->setChromediaRequest($this->getServiceContainer()->get('services.chromedia_request'));
-		$this->service->setChromediaAccountsUri('http://accounts.chromedia.local/app_dev.php');
+		$this->service->setChromediaAccountsUri($this->getServiceContainer()->getParameter('chromedia_accounts_uri'));
 	}
 	
 	public function tearDown()
@@ -29,9 +32,11 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->service = null;
 	}
 	
+	
+	
 	public function testUpdate()
 	{
-		// create temporary 10 character password
+	    // create temporary 10 character password
 		$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
 		
 		// get data for institution
@@ -52,7 +57,6 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$returnValue = $this->service->update($user, 4);
 		$this->assertTrue($returnValue);
 		return $returnValue;
-		
 	}
 	
 	public function testChangePassword()

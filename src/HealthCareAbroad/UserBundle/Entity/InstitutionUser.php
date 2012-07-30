@@ -7,8 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\UserBundle\Entity\InstitutionUser
  */
-class InstitutionUser
+class InstitutionUser extends SiteUser 
 {
+    private $status;
     
     /**
      * @var datetime $dateCreated

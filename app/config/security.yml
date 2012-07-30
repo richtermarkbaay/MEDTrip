@@ -11,8 +11,8 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     
     providers:
-        providerUsers:
-            entity: {class: UserBundle:ProviderUser, property: username}
+        institutionUsers:
+            entity: {class: UserBundle:InstitutionUser, property: username}
     
     firewalls:
         main:
@@ -28,14 +28,14 @@ security:
             form_login:
                 login_path: /admin/login
 
-        provider_login:
-            pattern:  ^/provider/login$
+        institution_login:
+            pattern:  ^/institution/login$
             security: false
 
-        provider_secured_area:
-            pattern:    ^/provider
+        institution_secured_area:
+            pattern:    ^/institution
             form_login:
-                login_path: /provider/login
+                login_path: /institution/login
             #logout:
             #    path:   /demo/secured/logout
             #    target: /demo/

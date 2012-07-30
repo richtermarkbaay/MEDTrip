@@ -1,16 +1,16 @@
 <?php
 
 namespace HealthCareAbroad\HelperBundle\Services;
-use HealthCareAbroad\UserBundle\Entity\ProviderUser;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use Doctrine\Tests\DBAL\Types\VarDateTimeTest;
 
-use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
-use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use Doctrine\ORM\EntityManager;
 
@@ -71,6 +71,7 @@ class InvitationService
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($invitationToken);
 		$em->flush();
+		
 		// failed to save
 		if (!$invitationToken) {
 			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
@@ -79,7 +80,7 @@ class InvitationService
  		return $invitationToken;
 	}
 	
-	public function createProviderInvitation(ProviderInvitation $invitation, $message, InvitationToken $token)
+	public function createInstitutionInvitation(InstitutionInvitation $invitation, $message, InvitationToken $token)
 	{	
 		$invitation->setMessage($message);
 		$invitation->setStatus('0');
@@ -97,13 +98,13 @@ class InvitationService
 		return $invitation;
 	}
 	
-	//send email to provider user for his user and password
-	public function sendProviderUserLoginCredentials(ProviderUser $user, $password)
+	//send email to institution user for his user and password
+	public function sendInstitutionUserLoginCredentials(InstitutionUser $user, $password)
 	{
 		
-		$messageBody = $this->twig->render('ProviderBundle:Email:loginInformation.html.twig', array(
+		$messageBody = $this->twig->render('InstitutionBundle:Email:loginInformation.html.twig', array(
 
-				'providerName' => $user->getProvider()->getName(),
+				'institutionName' => $user->getInstitution()->getName(),
 				
 				'firstName' => $user->getFirstName(),
 		
@@ -113,10 +114,10 @@ class InvitationService
 				
 		));
 		
-		// send email to newly created chromedia accounts|provider user
+		// send email to newly created chromedia accounts|institution user
 		$message = \Swift_Message::newInstance()
 	
-		->setSubject('Provider User Invitation for Health Care Abroad')
+		->setSubject('Institution User Invitation for Health Care Abroad')
 	
 		->setFrom('alnie.jacobe@chromedia.com')
 	
@@ -127,7 +128,7 @@ class InvitationService
 		return $this->mailer->send($message);
 	}
 	
-	public function sendProviderUserInvitation(Provider $provider, ProviderUserInvitation $invitation)
+	public function sendInstitutionUserInvitation(Institution $institution, InstitutionUserInvitation $invitation)
 	{
 	    if (!$token = $invitation->getInvitationToken()) {
 
@@ -142,19 +143,19 @@ class InvitationService
 	    $em = $this->doctrine->getEntityManager();
 	    $em->persist($invitation);
 	    $em->flush();
-	    $messageBody = $this->twig->render('ProviderBundle:Email:invite.email.twig', array(
-            'providerUserInvitation' => $invitation,
+	    $messageBody = $this->twig->render('InstitutionBundle:Email:invite.email.twig', array(
+            'institutionUserInvitation' => $invitation,
 
             'token' => $token,
 
-            'provider' => $provider
+            'institution' => $institution
         ));
 	    //echo $messageBody; exit;
 
 	    // send to email
 	    $message = \Swift_Message::newInstance()
 
-    	    ->setSubject('Provider User Invitation for Health Care Abroad')
+    	    ->setSubject('Institution User Invitation for Health Care Abroad')
 
     	    ->setFrom('chaztine.blance@chromedia.com')
 

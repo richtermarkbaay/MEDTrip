@@ -1,0 +1,15 @@
+{% block body %}
+	
+	Dear {{name}},
+	
+	To complete your registration, please click on this link to verify your email address:
+	http://healthcareabroad.local{{ path('InstitutionBundle_confirmed_token', { 'token': token}) }}
+	
+	Note: The link will be valid until {{expirationDate|date("F d Y")}}. After this period, your registration will be cancelled and no account will be created in our system.
+	
+	If you did not sign-up for healhCareAbroad.com account, your email cannot be used to register without your verification.
+	
+	Thank you,
+	HealthCareAbroad
+
+{% endblock %}	

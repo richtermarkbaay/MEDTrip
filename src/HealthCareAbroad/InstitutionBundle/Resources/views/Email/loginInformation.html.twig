@@ -1,0 +1,17 @@
+{% block body %}
+	
+Howdy {{firstName}}!
+You have been invited by {{institutionName}}
+
+Your Login Credentials;
+	username: {{email}}
+	password: {{password}}
+
+	Please go to the link provided below to login. <br>
+	<a href="{{ path('institution_homepage') }}">Click to Activate</a>
+
+Thank you, 
+Health Care Abroad
+
+
+{% endblock %}	

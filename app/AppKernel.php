@@ -21,7 +21,6 @@ class AppKernel extends Kernel
         	new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
             new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
-            new HealthCareAbroad\ProviderBundle\ProviderBundle(),
         	//new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
             new HealthCareAbroad\ListingBundle\ListingBundle(),
