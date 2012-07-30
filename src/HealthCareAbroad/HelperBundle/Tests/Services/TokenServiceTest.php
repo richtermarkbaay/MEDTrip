@@ -8,7 +8,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Tests\Services;
 
-use HealthCareAbroad\ProviderBundle\Entity\Provider;
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
 
@@ -36,21 +36,21 @@ class TokenServiceTest extends HelperBundleTestCase
 		$this->service = null;
 	}
 	
-	public function testGetActiveProviderInvitationByToken()
+	public function testGetActiveInstitutionInvitationByToken()
 	{
 		$token = "46eff89e1b51895f101e56c71ff12f9cfbc9fd98b582adfb4dd21848ab564e6c";
-		$provider = $this->service->getActiveProviderInvitationByToken($token);
-		$this->assertNotEmpty($provider);
+		$institution = $this->service->getActiveInstitutionInvitationByToken($token);
+		$this->assertNotEmpty($institution);
 		
-		return $provider;
+		return $institution;
 	}
 	
-	public function testGetActiveProviderUserInvitatinByToken()
+	public function testGetActiveInstitutionUserInvitatinByToken()
 	{
 		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
-		$providerUser = $this->service->getActiveProviderUserInvitatinByToken($token);
-		$this->assertEmpty($providerUser);
+		$institutionUser = $this->service->getActiveInstitutionUserInvitatinByToken($token);
+		$this->assertEmpty($institutionUser);
 	
-		return $providerUser;
+		return $institutionUser;
 	}
 }

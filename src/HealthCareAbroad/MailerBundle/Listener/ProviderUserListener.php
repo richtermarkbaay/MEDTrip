@@ -1,11 +1,11 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
-use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
+use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
 
-class ProviderUserListener
+class InstitutionUserListener
 {
-    public function onCreate(CreateProviderUserEvent $event)
+    public function onCreate(CreateInstitutionUserEvent $event)
     {
         //TODO: add a mail to sending queue
     }
