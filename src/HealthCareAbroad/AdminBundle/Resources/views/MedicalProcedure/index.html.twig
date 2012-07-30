@@ -1,0 +1,42 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+	<div id="content">
+
+		{{ app.session.flash('notice') }}
+		<div id="page-heading"><h3>List of Medical Procedures</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			<table id="product-table" class="mid-size">
+			<tr>
+				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
+				<th class="table-header-repeat line-left"><a href="">Procedure Type</a></th>
+				<th class="table-header-options actions line-left"><a href="">Actions</a></th>
+			</tr>
+			
+			{% for procedure in procedures %}
+				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+					<td>{{ procedure.name }}</td>
+					<td>{{ procedure.MedicalProcedureType.name }}</td>
+					<td align="center">
+						<a id="procedure-{{procedure.id}}" href="javascript:void(0)" onclick="MedicalProcedure.updateStatus($(this))">
+							{% if procedure.status %} deactivate {% else %} activate {% endif %}
+						</a> 
+					<span class="separator" style="color:#ccc">|</span>
+					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% endfor %}
+			</table>
+			{% endblock %}
+		{% endembed %}
+	</div>
+	
+	{% block javascripts %}
+		{{ parent() }}
+		<script src="{{ asset('bundles/medicalprocedure/js/MedicalProcedure.js') }}"></script>
+	{% endblock %}
+
+{% endblock %}

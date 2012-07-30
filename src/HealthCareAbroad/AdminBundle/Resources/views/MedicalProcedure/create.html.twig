@@ -3,18 +3,19 @@
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Tag</h3></div>
+
+		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Medical Procedure</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
-
-			<form action="{{ path('admin_tagSave') }}" method="post" {{ form_enctype(form) }} class="basic-form">
-				{{ form_rest(form) }}
+			<form class="basic-form" action="{{ path('admin_medicalProcedure_save') }}" method="post" {{ form_enctype(form) }}>
 				{{ form_row(form.name) }}
-				{{ form_row(form.type) }}
+				{{ form_row(form.medical_procedure_type) }}
+				{{ form_rest(form) }}
 			    <input type="submit" class="form-submit"/>
 			</form>
 			{% endblock %}
+
 		{% endembed %}
 	</div>
 
