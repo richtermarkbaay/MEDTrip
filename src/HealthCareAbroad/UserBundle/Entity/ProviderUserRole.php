@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\UserBundle\Entity\ProviderUserRole
  */
-class ProviderUserRole
+class ProviderUserRole2
 {
     /**
      * @var integer $id

@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\ProviderBundle\Entity\ProviderUser
  */
-class ProviderUser extends SiteUser
+class ProviderUser2 extends SiteUser
 {
     
 

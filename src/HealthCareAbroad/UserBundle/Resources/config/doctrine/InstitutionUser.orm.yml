@@ -1,7 +1,7 @@
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionUser:
+HealthCareAbroad\UserBundle\Entity\InstitutionUser:
     type: entity
     table: institution_users
-    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionUserRepository
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\InstitutionUserRepository
     fields:
         accountId:
             id: true
@@ -28,7 +28,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionUser:
                     referencedColumnName: id
             orphanRemoval: false
         institutionUserType:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+            targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUserType
             cascade: {  }
             mappedBy: null
             inversedBy: null
