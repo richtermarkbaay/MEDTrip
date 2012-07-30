@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,6 +22,7 @@ class MedicalProcedureType extends AbstractType
 		$builder->add('id', 'hidden', array('virtual'=>true, 'attr' => array('value' => $this->id)));
 		$builder->add('name', 'text');
 		$builder->add('medical_procedure_type', 'medicalproceduretype_list');
+		$builder->add('status', 'choice', array('choices' => array_keys(MedicalProcedure::$STATUS)));
 	}
 
 	// How does it work?

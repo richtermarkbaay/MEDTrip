@@ -1,0 +1,50 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+	<div id="content">
+
+		{{ app.session.flash('notice') }}
+		<div id="page-heading"><h3>List of Medical Procedure Types</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			<table id="product-table" class="mid-size">
+			<tr>
+				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
+				<th class="table-header-repeat line-left" width="250"><a href="">Description</a></th>
+				<th class="table-header-repeat line-left" width="250"><a href="">Medical Centers</a></th>
+				<th class="table-header-options actions line-left"><a href="">Actions</a></th>
+			</tr>
+
+			{% for type in procedureTypes %}
+				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+					<td>{{ type.name }}</td>
+					<td>{{ type.description }}</td>
+					<td>
+						{% for center in type.medicalCenter%}
+						<a href="#">{{ center.name }}</a>&nbsp;
+						{% endfor %}
+					</td>
+					<td align="center">
+						<a id="proceduretype-{{type.id}}" href="javascript:void(0)" onclick="MedicalProcedureType.updateStatus($(this))">
+							{% if type.status %} deactivate {% else %} activate {% endif %}
+						</a> 
+					<span class="separator" style="color:#ccc">|</span>
+					<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else  %}
+				<tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+			{% endfor %}
+			</table>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+	{% block javascripts %}
+		{{ parent() }}
+		<script src="{{ asset('bundles/medicalprocedure/js/MedicalProcedureType.js') }}"></script>
+	{% endblock %}
+
+{% endblock %}
