@@ -21,9 +21,9 @@ HelperBundle:
     resource: "@HelperBundle/Resources/config/routing.yml"
     prefix:   /
 
-ProviderBundle:
-    resource: "@ProviderBundle/Resources/config/routing.yml"
-    prefix:   /
+#ProviderBundle:
+#    resource: "@ProviderBundle/Resources/config/routing.yml"
+#    prefix:   /
 
 UserBundle:
     resource: "@UserBundle/Resources/config/routing.yml"

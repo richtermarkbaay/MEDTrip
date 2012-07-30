@@ -28,12 +28,28 @@
         
         <ul class="select">
             <li>
+                <a href="#nogo"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+                <div class="select_sub">
+                	<ul class="sub">
+                		<li><a href="{{ path('admin_medicalCenter_index') }}">View all</a></li>
+                		<li><a href="{{ path('admin_medicalCenter_add') }}">Add new medical center</a></li>
+                	</ul>
+                </div>
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+            </li>
+        </ul>    
+    
+        <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="select">
+            <li>
                 <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">
-                		<li><a href="{{ path('procedure_homepage') }}">View all</a></li>
-                		<li><a href="{{ path('procedure_add') }}">Add new procedure</a></li>
+                		<li><a href="">View all</a></li>
+                		<li><a href="">Add new procedure</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
