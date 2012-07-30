@@ -1,29 +1,24 @@
 <?php
 
-namespace HealthCareAbroad\InstitutionBundle\Entity;
+namespace HealthCareAbroad\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\InstitutionBundle\Entity\InstitutionUser
+ * HealthCareAbroad\UserBundle\Entity\InstitutionUser
  */
 class InstitutionUser
 {
-    /**
-     * @var bigint $accountId
-     */
-    private $accountId;
-
+    protected $accountId;
+    
+    private $status;
+    
     /**
      * @var datetime $dateCreated
      */
     private $dateCreated;
 
-    /**
-     * @var smallint $status
-     */
-    private $status;
-
+    
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
@@ -114,10 +109,10 @@ class InstitutionUser
     /**
      * Set institutionUserType
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType $institutionUserType
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserType $institutionUserType
      * @return InstitutionUser
      */
-    public function setInstitutionUserType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType $institutionUserType = null)
+    public function setInstitutionUserType(\HealthCareAbroad\UserBundle\Entity\InstitutionUserType $institutionUserType = null)
     {
         $this->institutionUserType = $institutionUserType;
         return $this;
@@ -126,7 +121,7 @@ class InstitutionUser
     /**
      * Get institutionUserType
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType 
+     * @return HealthCareAbroad\UserBundle\Entity\InstitutionUserType 
      */
     public function getInstitutionUserType()
     {

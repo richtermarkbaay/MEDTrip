@@ -20,14 +20,15 @@ class ProviderController extends Controller
 {
 	public function createAction(Request $request)
     {
-    	$providerUser = new ProviderUser();
-        $form = $this->createFormBuilder($providerUser)
+    	$user = new ProviderUser();
+        $form = $this->createFormBuilder($user)
         	->add('email', 'text')
             ->add('firstName', 'text')
             ->add('middleName', 'text')
             ->add('lastName', 'text')
             ->getForm();
-            
+        
+        
     	if ($this->getRequest()->isMethod('POST')) {
             
             $form->bindRequest($this->getRequest());
@@ -52,20 +53,16 @@ class ProviderController extends Controller
 					$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
 					 
 					// create a provider user and accounts on global
-	 				$user = new ProviderUser();
 	 				$user->setProvider($provider);
 	 				$user->setProviderUserType($providerUserType);
-	 				$user->setEmail($data["form"]['email']);
 	 				$user->setPassword($temporaryPassword);
-	 				$user->setFirstName($data["form"]['firstName']);
-	 				$user->setMiddleName($data["form"]['middleName']);
-	 				$user->setLastName($data["form"]['lastName']);
 	 				$user->setStatus(SiteUser::STATUS_ACTIVE);
 	 				
 	 				
-	 				//call service to create provider user by ProviderUser object
+	 				//call service to create provider user by ProviderUser
 					$providerUser = $this->get('services.provider_user')->create($user);	
 					if ( count($providerUser) > 0 ) {
+						
 						$sendingResult = $this->get('services.invitation')->sendProviderUserLoginCredentials($user,$temporaryPassword);
 						if ($sendingResult) {
 		                    $this->get('session')->setFlash('flash.notice', "Invitation sent to {$user->getEmail()}");

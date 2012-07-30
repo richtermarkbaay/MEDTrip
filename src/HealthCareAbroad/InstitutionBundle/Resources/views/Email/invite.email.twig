@@ -1,0 +1,16 @@
+Howdy {{ institutionUserInvitation.firstName }}!
+You have been invited by {{ institution.name }}
+<br />
+
+Message:
+
+<strong>{{ institutionUserInvitation.message }}</strong>
+
+<br>
+<p>
+Please go to the link provided below to activate your account. <br>
+<a href="{{ path('institution_accept_user_invitation', { 'institutionId': institution.id, 'token': token.token }) }}">Click to Activate</a>
+</p>
+
+Thank you, <br>
+Health Care Abroad

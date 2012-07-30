@@ -3,7 +3,7 @@ namespace HealthCareAbroad\UserBundle\Services;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-use HealthCareAbroad\UserBundle\Entity\ProviderUser;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use ChromediaUtilities\Helpers\Inflector;
 
@@ -11,7 +11,7 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 use HealthCareAbroad\UserBundle\Services\UserService;
 
-class ProviderUserService extends UserService
+class InstitutionUserService extends UserService
 {
     /**
      * 
@@ -24,8 +24,8 @@ class ProviderUserService extends UserService
         $user = $this->findByEmailAndPassword($email, $password);
         
         if ($user) {
-            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'provider_secured_area', array('ROLE_ADMIN'));
-            $this->session->set('_security_provider_secured_area',  \serialize($securityToken));
+            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', array('ROLE_ADMIN'));
+            $this->session->set('_security_institution_secured_area',  \serialize($securityToken));
             // $this->get("security.context")->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
             return true;
@@ -35,25 +35,25 @@ class ProviderUserService extends UserService
     }
     
     /**
-     * Create a provider user
+     * Create a institution user
      *
-     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function create(ProviderUser $providerUser)
+    public function create(InstitutionUser $institutionUser)
     {
-        // hash first the password
-        $providerUser->setPassword(SecurityHelper::hash_sha256($providerUser->getPassword()));
+    	// hash first the password
+        $institutionUser->setPassword(SecurityHelper::hash_sha256($institutionUser->getPassword()));
         
         // create user in chromedia global accounts
-        if ( $providerUser = $this->createUser($providerUser)){
+        if ( $institutionUser = $this->createUser($institutionUser)){
         
-            // persist to provider_users table
+            // persist to institution_users table
             $em = $this->doctrine->getEntityManager();
-            $em->persist($providerUser);
+            $em->persist($institutionUser);
             $em->flush();
         
-            return $providerUser;
+            return $institutionUser;
         }
         
         // something went wrong in creating global account
@@ -61,15 +61,15 @@ class ProviderUserService extends UserService
     }
     
     /**
-     * Update Account of provider user
+     * Update Account of institution user
      *
-     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function update(ProviderUser $providerUser, $accountId)
+    public function update(InstitutionUser $institutionUser, $accountId)
     {
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->updateUser($providerUser, $accountId, FALSE)){
+    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, FALSE)){
         
     		return TRUE;
     	}
@@ -79,18 +79,18 @@ class ProviderUserService extends UserService
     }
     
     /**
-     * Update Account of provider user
+     * Update Account of institution user
      *
-     * @param \HealthCareAbroad\UserBundle\Entity\ProviderUser $providerUser
+     * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function changePassword(ProviderUser $providerUser, $accountId, $password)
+    public function changePassword(InstitutionUser $institutionUser, $accountId, $password)
     {
     	//set new Password
-    	$providerUser->setPassword($password);
+    	$institutionUser->setPassword($password);
 
     	// update user in chromedia global accounts
-    	if ( $providerUser = $this->updateUser($providerUser, $accountId, TRUE)){
+    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, TRUE)){
     
     		return TRUE;
     	}
@@ -103,7 +103,7 @@ class ProviderUserService extends UserService
      * 
      * @param string $email
      * @param string $password
-     * @return ProviderUser
+     * @return InstitutionUser
      */
     public function findByEmailAndPassword($email, $password)
     {
@@ -114,14 +114,13 @@ class ProviderUserService extends UserService
             ), 
             array('limit' => 1)
         );
-        
         if ($accountData) {
-            // find a provider user
-            $providerUser = $this->doctrine->getRepository('UserBundle:ProviderUser')->findActiveUserById($accountData['id']);
+            // find a institution user
+            $institutionUser = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findActiveUserById($accountData['id']);
             
             // populate account data to SiteUser
-            $providerUser = $this->hydrateAccountData($providerUser, $accountData);
-            return $providerUser;
+            $institutionUser = $this->hydrateAccountData($institutionUser, $accountData);
+            return $institutionUser;
         }
         
         return null;
@@ -131,7 +130,7 @@ class ProviderUserService extends UserService
      *
      * @param string $email
      * @param string $password
-     * @return ProviderUser
+     * @return InstitutionUser
      */
     public function findByIdAndPassword($id, $password)
     {
@@ -153,21 +152,21 @@ class ProviderUserService extends UserService
     	
     
     /**
-     * Find a ProviderUser by accountId
+     * Find a InstitutionUser by accountId
      * 
      * @param int $id
      * @param boolean $activeOnly
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\ProviderUser>
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\InstitutionUser>
      */
     public function findById($id, $activeOnly=true)
     {
     	
-        // find a providerUser
-        $repository = $this->doctrine->getRepository('UserBundle:ProviderUser');
-        $providerUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
+        // find a institutionUser
+        $repository = $this->doctrine->getRepository('UserBundle:InstitutionUser');
+        $institutionUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
         
-        return $providerUser 
-            ? $this->getUser($providerUser) // find a matching global account for this ProviderUser 
-            : null; // no providerUser found
+        return $institutionUser 
+            ? $this->getUser($institutionUser) // find a matching global account for this InstitutionUser 
+            : null; // no InstitutionUser found
     }
 }
