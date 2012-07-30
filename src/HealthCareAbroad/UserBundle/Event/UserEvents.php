@@ -3,9 +3,9 @@ namespace HealthCareAbroad\UserBundle\Event;
 
 final class UserEvents
 {
-    const ON_CREATE_PROVIDER_USER = 'event.provider_user.create';
+    const ON_CREATE_INSTITUTION_USER = 'event.institution_user.create';
     
-    const ON_UPDATE_PROVIDER_USER = 'event.provider_user.update';
+    const ON_UPDATE_INSTITUTION_USER = 'event.institution_user.update';
     
-    const ON_DELETE_PROVIDER_USER = 'event.provider_user.delete';
+    const ON_DELETE_INSTITUTION_USER = 'event.institution_user.delete';
 }
