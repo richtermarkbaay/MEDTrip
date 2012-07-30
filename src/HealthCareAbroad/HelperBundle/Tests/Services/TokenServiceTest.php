@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Tests\Services;
 
+use HealthCareAbroad\ProviderBundle\Entity\Provider;
+
 use ChromediaUtilities\Helpers\SecurityHelper;
 
 use HealthCareAbroad\HelperBundle\Tests\HelperBundleTestCase;
@@ -20,7 +22,7 @@ class TokenServiceTest extends HelperBundleTestCase
 {
 	/**
 	 *
-	 * @var Chromedia\AccountBundle\Services\AccountService
+	 * @var HealthCareAbroad\HelperBundle\Services\TokenService
 	 */
 	protected $service;
 	
@@ -36,19 +38,19 @@ class TokenServiceTest extends HelperBundleTestCase
 	
 	public function testGetActiveProviderInvitationByToken()
 	{
-		$token = "c1913a1ed7780224b505aed516e021f7b9220550a63593bedbdb4ed29c7a18b1";
+		$token = "46eff89e1b51895f101e56c71ff12f9cfbc9fd98b582adfb4dd21848ab564e6c";
 		$provider = $this->service->getActiveProviderInvitationByToken($token);
-		$this->assertNotNull($this->service->getActiveProviderInvitationByToken($token));
+		$this->assertNotEmpty($provider);
 		
 		return $provider;
 	}
 	
 	public function testGetActiveProviderUserInvitatinByToken()
 	{
-		$token = "c1913a1ed7780224b505aed516e021f7b9220550a63593bedbdb4ed29c7a18b1";
-		$provider = $this->service->getActiveProviderUserInvitatinByToken($token);
-		$this->assertNotNull($this->service->getActiveProviderUserInvitatinByToken($token));
+		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
+		$providerUser = $this->service->getActiveProviderUserInvitatinByToken($token);
+		$this->assertEmpty($providerUser);
 	
-		return $provider;
+		return $providerUser;
 	}
 }

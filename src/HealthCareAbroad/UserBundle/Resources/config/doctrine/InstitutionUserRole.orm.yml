@@ -1,7 +1,7 @@
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole:
+HealthCareAbroad\UserBundle\Entity\InstitutionUserRole:
     type: entity
     table: institution_user_roles
-    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionUserRoleRepository
+    repositoryClass: HealthCareAbroad\UserBundle\Repository\InstitutionUserRoleRepository
     fields:
         id:
             id: true
@@ -25,7 +25,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole:
             nullable: false
     manyToMany:
         institutionUserType:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+            targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUserType
             cascade: {  }
             mappedBy: institutionUserRole
             inversedBy: null

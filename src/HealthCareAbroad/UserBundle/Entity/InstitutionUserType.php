@@ -1,11 +1,11 @@
 <?php
 
-namespace HealthCareAbroad\InstitutionBundle\Entity;
+namespace HealthCareAbroad\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+ * HealthCareAbroad\UserBundle\Entity\InstitutionUserType
  */
 class InstitutionUserType
 {
@@ -118,10 +118,10 @@ class InstitutionUserType
     /**
      * Add institutionUserRole
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole $institutionUserRole
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole
      * @return InstitutionUserType
      */
-    public function addInstitutionUserRole(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function addInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
     {
         $this->institutionUserRole[] = $institutionUserRole;
         return $this;
@@ -132,7 +132,7 @@ class InstitutionUserType
      *
      * @param <variableType$institutionUserRole
      */
-    public function removeInstitutionUserRole(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function removeInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
     {
         $this->institutionUserRole->removeElement($institutionUserRole);
     }

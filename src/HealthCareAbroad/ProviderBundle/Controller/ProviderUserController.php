@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ProviderBundle\Controller;
 
+use HealthCareAbroad\ProviderBundle\Form\ProviderUserInvitationType;
+
 use Guzzle\Http\Message\Response;
 
 use HealthCareAbroad\UserBundle\Event\UserEvents;
@@ -150,25 +152,21 @@ class ProviderUserController extends Controller
         $provider = $this->get('services.provider')->getCurrentProvider();
         
         $providerUserInvitation = new ProviderUserInvitation();
-        $providerUserInvitation->setProvider($provider);
-        $providerUserInvitation->setDateCreated(new \DateTime('now'));
+//         $providerUserInvitation->setProvider($provider);
+//         $providerUserInvitation->setDateCreated(new \DateTime('now'));
         
-        $form = $this->createFormBuilder($providerUserInvitation)
-            ->add('email', 'email')
-            ->add('message', 'textarea')
-            ->add('firstName', 'text')
-            ->add('middleName', 'text')
-            ->add('lastName', 'text')
-            ->getForm();
+        $form = $this->createForm(new ProviderUserInvitationType(), $providerUserInvitation);
         
         if ($this->getRequest()->isMethod('POST')) {
             
-            $form->bindRequest($this->getRequest());
+            $form->bind($this->getRequest());
+            
+            var_dump($form->isValid()); exit;
             
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendProviderUserInvitation($provider, $providerUserInvitation);
-                var_dump($sendingResult); exit;
+                
                 if ($sendingResult) {
                     $this->get('session')->setFlash('flash.notice', "Invitation sent to {$providerUserInvitation->getEmail()}");
                 }

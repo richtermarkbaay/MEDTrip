@@ -36,9 +36,6 @@ class TokenController extends Controller
 			$form->bindRequest($request);	
 			
 			if ($form->isValid()){
-				$data = $request->request->all();
-				$name = $data['form']['name'];
-				$email = $data['form']['email'];
 				
 				//generate token
 				$invitationToken = $this->get('services.invitation')->createInvitationToken(0);	
@@ -47,22 +44,31 @@ class TokenController extends Controller
 				$message = \Swift_Message::newInstance()
  					->setSubject('Activate your account with HealthCareAbroad')
  					->setFrom('alnie.jacobe@chromedia.com')
- 					->setTo($email)
+ 					->setTo($providerInvitation->getEmail())
  					->setBody($this->renderView('ProviderBundle:Email:providerInvitationEmail.html.twig', array(
- 								'name' => $name,
+ 								'name' => $providerInvitation->getName(),
  								'expirationDate' => $invitationToken->getExpirationDate(),
- 					 			'email' => $email,
+ 					 			'email' => $providerInvitation->getEmail(),
  					 			'token' => $invitationToken->getToken()
  							)));
+ 				$sendingResult = $this->get('mailer')->send($message);
  				
- 				$this->get('mailer')->send($message);
- 				
- 				//create provider invitation
- 				$this->get('services.invitation')->createProviderInvitation($email, $message, $name, $invitationToken);
-				
-				return new Response('Created token! and send invitation token to recipient');
+ 				if ($sendingResult) {
+ 					
+ 					//create provider invitation
+ 					$providerInvitation = $this->get('services.invitation')->createProviderInvitation($providerInvitation, $message, $invitationToken);
+ 					
+ 					// failed to save
+ 					if (!$providerInvitation) {
+ 						return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
+ 					}
+ 					$this->get('session')->setFlash('flash.notice', "Invitation sent to ".$providerInvitation->getEmail());
+ 					
+ 				}
+ 				else {
+ 					$this->get('session')->setFlash('flash.notice', "Failed to send invitation to ".$providerInvitation->getEmail());
+ 				}
 			}
-			
 		}
     	return $this->render('ProviderBundle:Token:create.html.twig', array(
             'form' => $form->createView(),
