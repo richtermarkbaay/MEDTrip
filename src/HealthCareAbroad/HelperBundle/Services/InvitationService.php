@@ -133,7 +133,6 @@ class InvitationService
 	    if (!$token = $invitation->getInvitationToken()) {
 
 	        // generate a token
-
 	        $token = $this->createInvitationToken(30);
 	        $invitation->setInvitationToken($token);
 
