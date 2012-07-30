@@ -11,12 +11,14 @@ class MedicalCenterType extends AbstractType
 	{
 		$builder->add('name');
 		$builder->add('description');
-		//$builder->add('slug');
-		$builder->add('status', 'checkbox', array(
-			'label'     => 'Activate medical center?',
-			'required'  => false
-		));		
+		$builder->add('status');
 		
+		//$builder->add('slug');
+		//$builder->add('status', 'checkbox', array(
+		//		'label'     => 'Activate medical center?',
+		//		'required'  => false
+		//));
+	
 		//no mapping to entity
 		//$builder->add('dueDate', null, array('property_path' => false));
 	}
