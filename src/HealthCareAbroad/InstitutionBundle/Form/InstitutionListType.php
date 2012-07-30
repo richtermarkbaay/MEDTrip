@@ -19,7 +19,7 @@ class InstitutionListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
 			'class' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution',
-			'query_builder' => $this->container->get("services.provider")->getInstitutions()
+			'query_builder' => $this->container->get("services.institution")->getInstitutions()
         ));
     }
    
