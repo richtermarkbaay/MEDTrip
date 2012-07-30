@@ -19,7 +19,8 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	
 	public function setUp()
 	{
-		$this->service = new InstitutionUserService($this->getDoctrine());
+		$this->service = new InstitutionUserService();
+		$this->service->setDoctrine($this->getDoctrine());
 		$this->service->setChromediaRequest($this->getServiceContainer()->get('services.chromedia_request'));
 		$this->service->setChromediaAccountsUri('http://accounts.chromedia.local/app_dev.php');
 	}

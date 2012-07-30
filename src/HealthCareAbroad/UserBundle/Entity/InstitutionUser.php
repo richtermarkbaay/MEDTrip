@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUser
 {
+    protected $accountId;
+    
+    private $status;
     
     /**
      * @var datetime $dateCreated

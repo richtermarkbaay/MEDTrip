@@ -6,9 +6,9 @@ use \HCA_DatabaseManager;
 
 abstract class UserBundleTestCase extends \PHPUnit_Framework_TestCase
 {
-    private $doctrine = null;
+    protected $doctrine = null;
     
-    private $container = null;
+    protected $container = null;
     
     public static function setUpBeforeClass()
     {
