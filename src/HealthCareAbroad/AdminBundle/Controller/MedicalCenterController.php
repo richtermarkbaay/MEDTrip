@@ -85,4 +85,14 @@ class MedicalCenterController extends Controller
 		
 		return $response;
     }
+    
+    public function searchMedicalCentersAction($term)
+    {
+    	$data = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->searchMedicalCenters($term);
+
+    	$response = new Response(json_encode($data));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    }
 }

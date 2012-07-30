@@ -67,9 +67,9 @@ class MedicalProcedureController extends Controller
 
 		if($procedure) {
 			$em = $this->getDoctrine()->getEntityManager();
-			$status = $procedure->getStatus() == MedicalProcedure::STATUS_ACTIVE 
-					? MedicalProcedure::STATUS_INACTIVE 
-					: MedicalProcedure::STATUS_ACTIVE;
+			$status = $procedure->getStatus() == MedicalProcedure::$STATUS['active'] 
+					? MedicalProcedure::$STATUS['inactive'] 
+					: MedicalProcedure::$STATUS['active'];
 
 			$procedure->setStatus($status);
 			$em->persist($procedure);
