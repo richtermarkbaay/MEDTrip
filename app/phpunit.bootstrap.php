@@ -12,8 +12,6 @@ class HCA_PHPUnitBootstrap
     
     private static $kernel;
     
-    private static $container;
-    
     static public function boot()
     {
         if (self::$isBooted) {
@@ -22,17 +20,53 @@ class HCA_PHPUnitBootstrap
         
         self::$kernel =  new \AppKernel('test', false);
         self::$kernel->boot();
-        self::$container = self::$kernel->getContainer();
         
         if (!ini_get('display_errors')) {
             ini_set('display_errors', '1');
         }
         
-        HCA_DatabaseManager::getInstance()->setDoctrine(self::$container->get('doctrine'))->restoreDatabaseState();
+        HCA_ServiceManager::getInstance()->setContainer(self::$kernel->getContainer());
+        
+        // init database state
+        HCA_DatabaseManager::getInstance()->setDoctrine(HCA_ServiceManager::getInstance()->getContainer()->get('doctrine'))->restoreDatabaseState();
         
         
         self::$isBooted = true;
         return true;
+    }
+}
+
+class HCA_ServiceManager
+{
+    private static $instance;
+    
+    private $container;
+    
+    private function __construct()
+    {
+    
+    }
+    
+    /**
+     * @return HCA_ServiceManager
+     */
+    static public function getInstance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new HCA_ServiceManager;
+        }
+        return self::$instance;
+    }
+    
+    public function setContainer($container)
+    {
+        $this->container = $container;
+        return $this;
+    }
+    
+    public function getContainer()
+    {
+        return $this->container;
     }
 }
 
@@ -68,6 +102,15 @@ class HCA_DatabaseManager
     {
         $this->doctrine = $doctrine;
         return $this;
+    }
+    
+    /**
+     * 
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry
+     */
+    public function getDoctrine()
+    {
+        return $this->doctrine;
     }
     
     public function restoreDatabaseState()

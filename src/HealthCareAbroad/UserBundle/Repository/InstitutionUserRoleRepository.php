@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthCareAbroad\InstitutionBundle\Repository;
+namespace HealthCareAbroad\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

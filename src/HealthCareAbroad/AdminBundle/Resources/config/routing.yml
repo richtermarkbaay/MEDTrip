@@ -34,6 +34,22 @@ admin_tagUpdateStatus:
     requirements:
          id: ".+"
 
+admin_medicalCenter_index:
+    pattern:  /admin/medical-centers
+    defaults: { _controller: AdminBundle:MedicalCenter:index }
+
+admin_medicalCenter_add:
+    pattern:  /admin/medical-center/add
+    defaults: { _controller: AdminBundle:MedicalCenter:add }
+
+admin_medicalCenter_edit:
+    pattern:  /admin/medical-center/edit
+    defaults: { _controller: AdminBundle:MedicalCenter:edit }
+
+admin_medicalCenter_save:
+    pattern:  /admin/medical-center/save
+    defaults: { _controller: AdminBundle:MedicalCenter:save }
+
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }
