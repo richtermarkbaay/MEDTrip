@@ -1,5 +1,5 @@
 <?php
-namespace HealthCareAbroad\HelperBundle\Form;
+namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

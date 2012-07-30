@@ -1,5 +1,5 @@
 <?php
-namespace HealthCareAbroad\HelperBundle\Form;
+namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
 

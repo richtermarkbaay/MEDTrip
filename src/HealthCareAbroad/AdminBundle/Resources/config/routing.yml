@@ -34,6 +34,30 @@ admin_tagUpdateStatus:
     requirements:
          id: ".+"
 
+admin_medicalProcedureIndex:
+    pattern:  /admin/medical-procedures
+    defaults: { _controller: AdminBundle:MedicalProcedure:index }
+
+admin_medicalProcedureAdd:
+    pattern:  /admin/medical-procedure/add
+    defaults: { _controller: AdminBundle:MedicalProcedure:add }
+
+admin_medicalProcedureSave:
+    pattern:  /admin/medical-procedure/save
+    defaults: { _controller: AdminBundle:MedicalProcedure:save }
+
+admin_medicalProcedureEdit:
+    pattern:  /admin/medical-procedure/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedure:edit }
+    requirements:
+         id: ".+"
+
+admin_medicalProcedureUpdateStatus:
+    pattern:  /admin/medical-procedure/update-status/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedure:updateStatus }
+    requirements:
+         id: ".+"
+
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }

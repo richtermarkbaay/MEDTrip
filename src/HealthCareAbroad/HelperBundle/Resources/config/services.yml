@@ -4,9 +4,9 @@ parameters:
     services.location_class: HealthCareAbroad\HelperBundle\Services\LocationService
     services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
-    services.country_list: HealthCareAbroad\HelperBundle\Form\CountryListType
-    services.city_list: HealthCareAbroad\HelperBundle\Form\CityListType
-    services.tagtype_list: HealthCareAbroad\HelperBundle\Form\TagTypeListType
+    services.country_list: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
+    services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
+    services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
 
 
 services:
