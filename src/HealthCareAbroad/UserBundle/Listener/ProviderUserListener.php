@@ -1,15 +1,15 @@
 <?php
 /**
- * Common listener for provider user events
+ * Common listener for institution user events
  * 
  * @author Allejo Chris G. Velarde
  */
 
 namespace HealthCareAbroad\UserBundle\Listener;
 
-use HealthCareAbroad\UserBundle\Event\CreateProviderUserEvent;
+use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
 
-class ProviderUserListener
+class InstitutionUserListener
 {
     /**
      * 
@@ -22,7 +22,7 @@ class ProviderUserListener
         $this->em = $em;
     }
     
-    public function onCreate(CreateProviderUserEvent $event)
+    public function onCreate(CreateInstitutionUserEvent $event)
     {
         if ($invitation = $event->getUsedInvitation()) {
             // delete the used invitation
