@@ -1,7 +1,15 @@
 parameters:
-#    institution.example.class: HealthCareAbroad\InstitutionBundle\Example
-
+    services.institution_class: HealthCareAbroad\InstitutionBundle\Services\InstitutionService
+    services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
+  
 services:
-#    institution.example:
-#        class: %institution.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.institution:
+        class: %services.institution_class%
+        calls:
+            - [setDoctrine, [@doctrine]]
+    form.institution_list:
+        class: "%services.institution_list%"
+        calls:
+          - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: institution_list }

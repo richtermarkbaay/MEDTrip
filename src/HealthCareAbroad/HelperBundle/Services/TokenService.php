@@ -3,7 +3,7 @@
 namespace HealthCareAbroad\HelperBundle\Services;
 
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
-use HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 
 class TokenService
 {
@@ -29,11 +29,11 @@ class TokenService
 	 * Validate if the string token is still valid
 	 *
 	 * @param string $token
-	 * @return NULL | HealthCareAbroad\ProviderBundle\Entity\ProviderInvitation
+	 * @return NULL | HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation
 	 */
-	public function getActiveProviderInvitationByToken($token)
+	public function getActiveInstitutionInvitationByToken($token)
 	{
-		return $this->getQueryForValidToken('ProviderBundle:ProviderInvitation', $token)
+		return $this->getQueryForValidToken('InstitutionBundle:InstitutionInvitation', $token)
 		->getOneOrNullResult();
 	}
 	
@@ -41,11 +41,11 @@ class TokenService
 	 * Validate if the string token is still valid
 	 *
 	 * @param string $token
-	 * @return NULL | HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation
+	 * @return NULL | HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation
 	 */
-	public function getActiveProviderUserInvitatinByToken($token)
+	public function getActiveInstitutionUserInvitationByToken($token)
 	{
-	    return $this->getQueryForValidToken('ProviderBundle:ProviderUserInvitation', $token)
+	    return $this->getQueryForValidToken('InstitutionBundle:InstitutionUserInvitation', $token)
 			->getOneOrNullResult();
 	}
 }

@@ -1,0 +1,21 @@
+{# we may want to move this to the listing bundle #}
+<!--  start top-search -->
+<div id="top-search">
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td>
+                <input type="text" value="Search" onblur="if (this.value=='') { this.value='Search'; }" onfocus="if (this.value=='Search') { this.value=''; }" class="top-search-inp" />
+            </td>
+            <td>
+                <select  class="styledselect">
+                    <option value="">Procedures</option>
+                    <option value="">Staff</option>
+                </select> 
+            </td>
+            <td>
+                <input type="image" src="{{ asset('images/admin/shared/top_search_btn.gif') }}"  />
+            </td>
+        </tr>
+    </table>
+</div>
+<!--  end top-search -->

@@ -2,9 +2,9 @@
 
 namespace HealthCareAbroad\UserBundle\Event;
 
-use HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation;
+use HealthCareAbroad\ProviderBundle\Entity\InstitutionUserInvitation;
 
-class CreateProviderUserEvent extends ProviderUserEvent
+class CreateInstitutionUserEvent extends InstitutionUserEvent
 {
     private $temporaryPassword;
     
@@ -14,7 +14,7 @@ class CreateProviderUserEvent extends ProviderUserEvent
      * Set the temporary password created upon creation of account
      * 
      * @param string $password
-     * @return CreateProviderUserEvent
+     * @return CreateInstitutionUserEvent
      */
     public function setTemporaryPassword($password)
     {
@@ -29,12 +29,12 @@ class CreateProviderUserEvent extends ProviderUserEvent
     }
     
     /**
-     * Set the used ProviderUserInvitation
+     * Set the used InstitutionUserInvitation
      * 
-     * @param ProviderUserInvitation $invitation
-     * @return CreateProviderUserEvent
+     * @param InstitutionUserInvitation $invitation
+     * @return CreateInstitutionUserEvent
      */
-    public function setUsedInvitation(ProviderUserInvitation $invitation)
+    public function setUsedInvitation(InstitutionUserInvitation $invitation)
     {
         $this->usedInvitation = $invitation;
         
@@ -42,7 +42,7 @@ class CreateProviderUserEvent extends ProviderUserEvent
     }
     
     /**
-     * @return HealthCareAbroad\ProviderBundle\Entity\ProviderUserInvitation
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation
      */
     public function getUsedInvitation()
     {
