@@ -21,15 +21,38 @@
 						<td>{{ center.name }}</td>
 						<td>{{ center.description }}</td>
 						<td align="center">
-							<a id="tag-{{center.id}}" href="javascript:void(0)" onclick="Tag.updateStatus($(this))">
-								{% if center.status %} deactivate {% else %} activate {% endif %}
-							</a> 
+							<form name="form-activate-{{ center.id }}" action="" method="post">
+								<a href="{{ path('admin_medicalCenter_updateStatus') }}" onclick="updateStatus({{ center.id }}, {{ center.status }}); return false;">
+									{% if center.status %} deactivate {% else %} activate {% endif %}
+								</a> 
+							</form>
 							<span class="separator" style="color:#ccc">|</span> 
-							<a href="{{ path('admin_medicalCenter_edit', {id:center.id}) }}">edit</a> 
+							<a href="{{ path('admin_medicalCenter_edit', {'id':center.id}) }}">edit</a> 
 						</td>
 					</tr>
 				{% endfor %}
 				</table>
+			
+				<script>
+				function updateStatus(id, status) {
+					if (status == 1) status = 0;
+					else if(status == 0) status = 1;
+					
+					var form = document.forms['form-activate-'+id];
+					var fieldId = document.createElement('input'), fieldStatus = document.createElement('input');
+					fieldId.name = 'id';
+					fieldStatus.name = 'status';
+					fieldId.type = fieldStatus.type = 'hidden';
+					form.appendChild(fieldId);
+					form.appendChild(fieldStatus);
+
+					form.action = "{{ path('admin_medicalCenter_updateStatus') }}";
+				    form.elements.id.value = id;
+				    form.elements.status.value = status;
+
+				    form.submit();
+				}
+				</script>
 			
 			{% endblock %}
 		{% endembed %}

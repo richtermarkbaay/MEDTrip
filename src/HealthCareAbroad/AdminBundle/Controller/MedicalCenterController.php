@@ -29,13 +29,13 @@ class MedicalCenterController extends Controller
     	
     	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
     	
-    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView()));
+    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView(), 'id' => $id));
     }
 
     public function saveAction()
     {
     	$request = $this->getRequest();
-
+    	
     	if ('POST' == $request->getMethod()) {
     		$em = $this->getDoctrine()->getEntityManager();
 
@@ -47,7 +47,7 @@ class MedicalCenterController extends Controller
     		$form->bind($request);
 
     		if ($form->isValid()) {
-    			$medicalCenter->setStatus(1);
+    			//$medicalCenter->setStatus($request->get('status'));
     			$em->persist($medicalCenter);
     			$em->flush($medicalCenter);
 
@@ -59,31 +59,28 @@ class MedicalCenterController extends Controller
     			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
     			
 			} else {
-				
-				return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
-				
+				$parameters = array('form' => $form->createView());
+				if ($request->get('id')) {
+					$parameters['id'] = $request->get('id'); 					
+				}
+				return $this->render('AdminBundle:MedicalCenter:form.html.twig', $parameters);				
 			}
     	}
     }
     
-    public function updateStatusAction($id)
+    public function updateStatusAction()
     {
-    	$result = false;
+    	$request = $this->getRequest();
     	$em = $this->getDoctrine()->getEntityManager();
-		$tag = $em->getRepository('HelperBundle:Tag')->find($id);
+    	$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('id'));
 
-		if($tag) {
-			$status = $tag->getStatus() == Tag::STATUS_ACTIVE ? Tag::STATUS_INACTIVE : Tag::STATUS_ACTIVE;
-			$tag->setStatus($status);
-			$em->persist($tag);
-			$em->flush($tag);
-			$result = true;
+		if ($medicalCenter) {
+			$medicalCenter->setStatus($request->get('status'));
+			$em->persist($medicalCenter);
+			$em->flush($medicalCenter);
 		}
 
-		$response = new Response(json_encode($result));
-		$response->headers->set('Content-Type', 'application/json');
-		
-		return $response;
+		return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
     }
     
     public function searchMedicalCentersAction($term)

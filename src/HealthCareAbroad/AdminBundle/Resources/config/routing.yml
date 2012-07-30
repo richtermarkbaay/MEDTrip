@@ -61,18 +61,32 @@ admin_medicalProcedure_updateStatus:
 admin_medicalCenter_index:
     pattern:  /admin/medical-centers
     defaults: { _controller: AdminBundle:MedicalCenter:index }
+    requirements:    
+        _method:  GET
 
 admin_medicalCenter_add:
     pattern:  /admin/medical-center/add
     defaults: { _controller: AdminBundle:MedicalCenter:add }
+    requirements:    
+        _method:  GET
 
 admin_medicalCenter_edit:
-    pattern:  /admin/medical-center/edit
+    pattern:  /admin/medical-center/edit/{id}
     defaults: { _controller: AdminBundle:MedicalCenter:edit }
+    requirements:    
+        _method:  GET
 
 admin_medicalCenter_save:
     pattern:  /admin/medical-center/save
     defaults: { _controller: AdminBundle:MedicalCenter:save }
+    requirements:    
+        _method:  POST
+
+admin_medicalCenter_updateStatus:
+    pattern:  /admin/medical-center/updateStatus
+    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus }
+    requirements:    
+        _method:  POST
 
 admin_medicalCenter_search:
     pattern:  /admin/medical-centers/search/{term}

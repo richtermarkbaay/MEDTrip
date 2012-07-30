@@ -1,0 +1,4 @@
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
+    properties:
+        name:
+            - NotBlank: ~

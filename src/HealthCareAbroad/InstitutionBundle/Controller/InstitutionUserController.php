@@ -92,9 +92,9 @@ class InstitutionUserController extends Controller
             	
     			////set new password to chromedia accounts
     			$password = SecurityHelper::hash_sha256($newPassword);
-    			$institutionUser = $this->get('services.institution_user')->changePassword($institutionUser, $accountId, $password);
+    			$hasChangedPassword = $this->get('services.institution_user')->changePassword($institutionUser, $accountId, $password);
     			
-    			if ($institutionUser) {
+    			if ($hasChangedPassword) {
     				$this->get('session')->setFlash('flash.notice', "Password changed!");
     			}
     			else {
