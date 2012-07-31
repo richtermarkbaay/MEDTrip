@@ -11,79 +11,69 @@ class MedicalCenterController extends Controller
 {
     public function indexAction()
     {
-		$medicalCenters = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findAll();
+		$medicalCenters = $this->getDoctrine()->getEntityManager()
+				->getRepository('MedicalProcedureBundle:MedicalCenter')->findAll();
     	
-    	return $this->render('AdminBundle:MedicalCenter:index.html.twig', array('medicalCenters' => $medicalCenters));
+    	return $this->render('AdminBundle:MedicalCenter:index.html.twig', array(
+    			'medicalCenters' => $medicalCenters
+    	));
     }
 
     public function addAction()
     {
     	$form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
 
-    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView()));
+    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+    			'id' => null,
+    			'form' => $form->createView(),  
+    			'formAction' => $this->generateUrl('admin_medicalCenter_create')
+    	));
     }
     
     public function editAction($id)
     {
-    	$medicalCenter = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
+    	$medicalCenter = $this->getDoctrine()->getEntityManager()
+    			->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
     	
     	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
     	
-    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView()));
-    }
-
-    private function saveForm(MedicalCenter $medicalCenter, $msg)
-    {
-    	$success = false;
-    	
-		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
-   		$form->bind($this->getRequest());
-   		
-		if ($form->isValid()) {
-			$em = $this->getDoctrine()->getEntityManager();
-			$em->persist($medicalCenter);
-			$em->flush($medicalCenter);
-			
-			$this->getRequest()->getSession()->setFlash('notice', $msg);
-			$success = true;
-		}
-		
-		return $success; 
+    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+    			'id' => $id,
+    			'form' => $form->createView(), 
+    			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
+    	));
     }
     
     public function saveAction()
     {
-    	$request = $this->getRequest();
-    	
-    	if ('POST' == $request->getMethod()) {
-    		$em = $this->getDoctrine()->getEntityManager();
-    		$data = $request->get('medicalCenter');
+    	$id = $this->getRequest()->get('id', null);
+    	$em = $this->getDoctrine()->getEntityManager();
 
-
-			$medicalCenter = $data['id']
-				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($data['id']) 
+		$medicalCenter = $id
+				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
 				: new MedicalCenter();
 
-			$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
-    		$form->bind($data);
+		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+   		$form->bind($this->getRequest());
 
-    		if ($form->isValid()) {
-    			//$medicalCenter->setStatus($request->get('status'));
-    			$em->persist($medicalCenter);
-    			$em->flush($medicalCenter);
+   		if ($form->isValid()) {
+   			$em->persist($medicalCenter);
+   			$em->flush($medicalCenter);
+   			
+   			$this->getRequest()->getSession()->setFlash('notice', 'Medical center saved!');
+    			
+   			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
+		}
 
-    			$msg = $data['id']
-    				? '"' .$medicalCenter->getName() . '" has been updated!' 
-    				: 'New medica center has been added!'; 
-    			$request->getSession()->setFlash('notice', $msg);
-    			
-    			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
-    			
-			} else {
-				$parameters = array('form' => $form->createView());
-				return $this->render('AdminBundle:MedicalCenter:form.html.twig', $parameters);				
-			}
-    	}
+		$formAction = $id 
+			? $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
+			: $this->generateUrl('admin_medicalCenter_create');
+		
+		return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+				'id' => $id,
+				'form' => $form->createView(),
+				'formAction' => $formAction 
+		));				
     }
     
     public function updateStatusAction()
