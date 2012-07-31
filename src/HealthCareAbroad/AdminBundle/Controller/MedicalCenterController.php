@@ -29,7 +29,7 @@ class MedicalCenterController extends Controller
     	
     	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
     	
-    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView(), 'id' => $id));
+    	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView()));
     }
 
     private function saveForm(MedicalCenter $medicalCenter, $msg)
@@ -57,20 +57,22 @@ class MedicalCenterController extends Controller
     	
     	if ('POST' == $request->getMethod()) {
     		$em = $this->getDoctrine()->getEntityManager();
+    		$data = $request->get('medicalCenter');
 
-			$medicalCenter = $request->get('id')
-				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('id')) 
+
+			$medicalCenter = $data['id']
+				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($data['id']) 
 				: new MedicalCenter();
 
 			$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
-    		$form->bind($request);
+    		$form->bind($data);
 
     		if ($form->isValid()) {
     			//$medicalCenter->setStatus($request->get('status'));
     			$em->persist($medicalCenter);
     			$em->flush($medicalCenter);
 
-    			$msg = $request->get('id') 
+    			$msg = $data['id']
     				? '"' .$medicalCenter->getName() . '" has been updated!' 
     				: 'New medica center has been added!'; 
     			$request->getSession()->setFlash('notice', $msg);
@@ -79,9 +81,6 @@ class MedicalCenterController extends Controller
     			
 			} else {
 				$parameters = array('form' => $form->createView());
-				if ($request->get('id')) {
-					$parameters['id'] = $request->get('id'); 					
-				}
 				return $this->render('AdminBundle:MedicalCenter:form.html.twig', $parameters);				
 			}
     	}
