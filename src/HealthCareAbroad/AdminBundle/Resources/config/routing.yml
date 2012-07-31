@@ -34,30 +34,7 @@ admin_tagUpdateStatus:
     requirements:
          id: ".+"
 
-admin_medicalProcedure_index:
-    pattern:  /admin/medical-procedures
-    defaults: { _controller: AdminBundle:MedicalProcedure:index }
-
-admin_medicalProcedure_add:
-    pattern:  /admin/medical-procedure/add
-    defaults: { _controller: AdminBundle:MedicalProcedure:add }
-
-admin_medicalProcedure_save:
-    pattern:  /admin/medical-procedure/save
-    defaults: { _controller: AdminBundle:MedicalProcedure:save }
-
-admin_medicalProcedure_edit:
-    pattern:  /admin/medical-procedure/edit/{id}
-    defaults: { _controller: AdminBundle:MedicalProcedure:edit }
-    requirements:
-         id: ".+"
-
-admin_medicalProcedure_updateStatus:
-    pattern:  /admin/medical-procedure/update-status/{id}
-    defaults: { _controller: AdminBundle:MedicalProcedure:updateStatus }
-    requirements:
-         id: ".+"
-
+# Routes for MedicalCenter #
 admin_medicalCenter_index:
     pattern:  /admin/medical-centers
     defaults: { _controller: AdminBundle:MedicalCenter:index }
@@ -92,6 +69,10 @@ admin_medicalCenter_search:
     pattern:  /admin/medical-centers/search/{term}
     defaults: { _controller: AdminBundle:MedicalCenter:searchMedicalCenters }
 
+# End of MedicalCenter Routes #
+
+
+# Routes for ProcedureTypes #
 admin_procedureType_index:
     pattern:  /admin/procedure-types
     defaults: { _controller: AdminBundle:MedicalProcedureType:index }
@@ -99,22 +80,74 @@ admin_procedureType_index:
 admin_procedureType_add:
     pattern:  /admin/procedure-type/add
     defaults: { _controller: AdminBundle:MedicalProcedureType:add }
+    requirements:
+         _method: GET
 
-admin_procedureType_save:
-    pattern:  /admin/procedure-type/save
+admin_procedureType_create:
+    pattern:  /admin/procedure-type/add
     defaults: { _controller: AdminBundle:MedicalProcedureType:save }
-
+    requirements:
+         _method: POST
+         
 admin_procedureType_edit:
     pattern:  /admin/procedure-type/edit/{id}
     defaults: { _controller: AdminBundle:MedicalProcedureType:edit }
     requirements:
-         id: ".+"
+         id: \d+
+         _method: GET
+
+admin_procedureType_update:
+    pattern:  /admin/procedure-type/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedureType:save}
+    requirements:
+         id: \d+
+         _method: POST
 
 admin_procedureType_updateStatus:
     pattern:  /admin/procedure-type/update-status/{id}
     defaults: { _controller: AdminBundle:MedicalProcedureType:updateStatus }
     requirements:
          id: ".+"
+# End of ProcedureTypes Routes #
+
+
+# Routes for MedicalProcedure #
+admin_medicalProcedure_index:
+    pattern:  /admin/medical-procedures
+    defaults: { _controller: AdminBundle:MedicalProcedure:index }
+
+admin_medicalProcedure_add:
+    pattern:  /admin/medical-procedure/add
+    defaults: { _controller: AdminBundle:MedicalProcedure:add }
+    requirements:
+         _method: GET
+
+admin_medicalProcedure_create:
+    pattern:  /admin/medical-procedure/add
+    defaults: { _controller: AdminBundle:MedicalProcedure:save }
+    requirements:
+         _method: POST
+
+admin_medicalProcedure_edit:
+    pattern:  /admin/medical-procedure/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedure:edit }
+    requirements:
+         id: \d+
+         _method: GET
+
+admin_medicalProcedure_update:
+    pattern:  /admin/medical-procedure/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedure:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_medicalProcedure_updateStatus:
+    pattern:  /admin/medical-procedure/update-status/{id}
+    defaults: { _controller: AdminBundle:MedicalProcedure:updateStatus }
+    requirements:
+         id: ".+"
+# End of MedicalProcedure Routes #
 
 admin_homepage:
     pattern:  /admin

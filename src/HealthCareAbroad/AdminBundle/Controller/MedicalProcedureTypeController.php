@@ -22,9 +22,9 @@ class MedicalProcedureTypeController extends Controller
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = new MedicalProcedureType();
     	$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
-    	$params = array('form' => $form->createView());
+    	$params = array('form' => $form->createView(), 'id' => null);
 
-    	return $this->render('AdminBundle:MedicalProcedureType:create.html.twig', $params);
+    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
     
     public function editAction($id)
@@ -32,20 +32,20 @@ class MedicalProcedureTypeController extends Controller
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = $this->get('services.medical_procedure')->getMedicalProcedureType($id);
     	$form = $this->createForm(new MedicalProcedureTypeForm($em, $id), $procedureType);
-    	$params = array('form' => $form->createView());
-    	return $this->render('AdminBundle:MedicalProcedureType:create.html.twig', $params);
+    	$params = array('form' => $form->createView(), 'id' => $id);
+    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
 
     public function saveAction()
     {
     	$request = $this->getRequest();
-    	
+    	$id = $request->get('id', null);
+
     	if ('POST' == $request->getMethod()) {
-    		$data = $request->get('medicalProcedureType');
     		$em = $this->getDoctrine()->getEntityManager();
 
-			$procedureType = $data['id']
-				? $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($data) 
+			$procedureType = $id
+				? $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id) 
 				: new MedicalProcedureType();
 
 			$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
@@ -53,12 +53,14 @@ class MedicalProcedureTypeController extends Controller
 
 			if ($form->isValid()) {
 				$procedureType = $form->getData();
-				$procedureType->setSlug('');
 				$em->persist($procedureType);
 				$em->flush($procedureType);
 
     			$request->getSession()->setFlash('notice', 'New Procedure Type has been added!');
     			return $this->redirect($this->generateUrl('admin_procedureType_index'));
+			} else {
+		    	$params = array('form' => $form->createView(), 'id' => $id);
+		    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
 			}
     	}
     }
