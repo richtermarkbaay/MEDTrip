@@ -9,7 +9,7 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUser:
             nullable: false
             column: account_id
             generator:
-                strategy: IDENTITY
+                strategy: NONE
         dateCreated:
             type: datetime
             nullable: false

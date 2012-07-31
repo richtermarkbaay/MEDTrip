@@ -105,30 +105,24 @@ class UserService
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
      */
-    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountId, $isChangePassword)
+    protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
+    	$form_data = array(
+			'first_name' => $user->getFirstName(),
+			'last_name' => $user->getLastName(),
+			'middle_name' => $user->getMiddleName(),
+            'password' => $user->getPassword()
+		);
     	
-    	if($isChangePassword) {
-    		$form_data = array(
-    				'password' => $user->getPassword(),
-    		);
-    	}
-    	else{
-    		$form_data = array(
-    				'first_name' => $user->getFirstName(),
-    				'last_name' => $user->getLastName(),
-    				'middle_name' => $user->getMiddleName(),
-    				 
-    		);
-    	}
-    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$accountId, array('data' => \base64_encode(\json_encode($form_data))));
-        if (200 == $response->getStatusCode()) {
-    		$account_data = \json_decode($response->getBody(true),true);
-    		$user->setAccountId($account_data['id']);
+    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$user->getAccountId(), array('data' => \base64_encode(\json_encode($form_data))));
+    	if (200 == $response->getStatusCode()) {
+    		$accountData = \json_decode($response->getBody(true),true);
+    		$user = $this->hydrateAccountData($user, $accountData);
+    		
     		return $user;
     	}
     	else {
-    		return null;
+    		throw new FailedAccountRequest($response->getBody());
     	}
     }
     
