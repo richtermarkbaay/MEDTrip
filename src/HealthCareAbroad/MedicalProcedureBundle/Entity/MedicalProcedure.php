@@ -138,4 +138,16 @@ class MedicalProcedure
     {
         return $this->medicalProcedureType;
     }
+    
+//     public static function loadValidatorMetadata(ClassMetadata $metadata)
+//     {
+//     	$metadata->addPropertyConstraint('name', new NotBlank());
+    
+//     	$metadata->addPropertyConstraint('email', new Email());
+    
+//     	$metadata->addPropertyConstraint('subject', new NotBlank());
+//     	$metadata->addPropertyConstraint('subject', new MaxLength(50));
+    
+//     	$metadata->addPropertyConstraint('body', new MinLength(50));
+//     }
 }

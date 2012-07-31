@@ -22,32 +22,32 @@ class MedicalProcedureController extends Controller
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedure = new MedicalProcedure();
     	$form = $this->createForm(new MedicalProcedureForm(), $procedure);
-    	$params = array('form' => $form->createView());
+    	$params = array('form' => $form->createView(), 'id' => null);
 
-    	return $this->render('AdminBundle:MedicalProcedure:create.html.twig', $params);
+    	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
     
     public function editAction($id)
     {
     	$procedure = $this->get('services.medical_procedure')->getMedicalProcedure($id);
-    	$form = $this->createForm(new MedicalProcedureForm($id), $procedure);
-    	$params = array('form' => $form->createView());
-    	return $this->render('AdminBundle:MedicalProcedure:create.html.twig', $params);
+    	$form = $this->createForm(new MedicalProcedureForm(), $procedure);
+    	$params = array('form' => $form->createView(), 'id' => $id);
+    	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
 
     public function saveAction()
     {
     	$request = $this->getRequest();
-    	
+    	$id = $request->get('id', null);
+
     	if ('POST' == $request->getMethod()) {
-    		$data = $request->get('medicalProcedure');
     		$em = $this->getDoctrine()->getEntityManager();
 
-			$procedure = $data['id']
-				? $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($data) 
+			$procedure = $id
+				? $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id) 
 				: new MedicalProcedure();
 
-			$form = $this->createForm(new MedicalProcedureForm($em), $procedure);
+			$form = $this->createForm(new MedicalProcedureForm(), $procedure);
     		$form->bind($request);
 
 			if ($form->isValid()) {
@@ -55,6 +55,9 @@ class MedicalProcedureController extends Controller
 
     			$request->getSession()->setFlash('notice', 'New Procedure has been added!');
     			return $this->redirect($this->generateUrl('admin_medicalProcedure_index'));
+			} else {
+				$params = array('form' => $form->createView(), 'id' => $id);
+				return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
 			}
 	
     	}
