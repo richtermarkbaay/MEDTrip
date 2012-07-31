@@ -40,7 +40,13 @@ class DefaultController extends Controller
     
     
     public function testAction()
-    {
+    {  
+        $user = $this->get('services.institution_user')->findByIdAndPassword(2, '123456');
+        
+        var_dump($user);
+        
+         EXIT;   
+        
 //         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
 //         $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
 

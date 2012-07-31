@@ -48,7 +48,7 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $user = new InstitutionUser();
 	    
 	    $user->setEmail($this->nonFixedEmailUser);
-	    $user->setPassword('123456');
+	    $user->setPassword($this->commonPassword);
 	    $user->setFirstName('Test Institution');
 	    $user->setMiddleName('M.');
 	    $user->setLastName('User');
@@ -57,96 +57,76 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $user->setStatus(SiteUser::STATUS_ACTIVE);
 	    
 	    $user = $this->service->create($user);
-	    
 	    return $user;
 	}
 	
 	/**
 	 * @author Allejo Chris Velarde
+	 * @depends testCreate
+	 * @param 
 	 */
-	public function testLogin()
+	public function testLogin(InstitutionUser $user)
 	{
-	    $this->markTestIncomplete('Login test is not yet implemented.');
+	    // set the session
+	    $this->service->setSession($this->getServiceContainer()->get('session'));
+	    
+	    $isLoginOk = $this->service->login($user->getEmail(), $this->commonPassword);
+	    $this->assertTrue($isLoginOk, 'Unable to login as InstitutionUser using credential '."{$user->getEmail()}::{$this->commonPassword}");
 	}
 	
 	/**
 	 * @depends testCreate
+	 * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser
 	 */
-	public function testUpdate($user)
+	public function testUpdate(InstitutionUser $user)
 	{
-	    // create temporary 10 character password
-		$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
+	    
+	    $user->setFirstName($user->getFirstName().' - Updated');
+		$user->setMiddleName($user->getMiddleName(). ' - Updated');
+		$user->setLastName($user->getLastName(). '- Updated');
 		
-		// get data for institution
-		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(4);
+		$updatedUser = $this->service->update($user);
 		
-		//get data for institutionUserType
-		$institutionUserType = $this->doctrine->getRepository('UserBundle:InstitutionUserType')->find(1);
+		$this->assertEquals($updatedUser->getFirstName(), $user->getFirstName(), "Update of first name failed");
+		$this->assertEquals($updatedUser->getMiddleName(), $user->getMiddleName(), "Update of middle name failed");
+		$this->assertEquals($updatedUser->getLastName(), $user->getLastName(), "Update of last name failed");
 		
-		$user = new InstitutionUser();
-		$user->setInstitution($institution);
-		$user->setInstitutionUserType($institutionUserType);
-		$user->setEmail('updated-'.$user->getEmail());
-		$user->setPassword($temporaryPassword);
-		$user->setFirstName('alnie');
-		$user->setMiddleName('leones');
-		$user->setLastName('jacobe');
-		$user->setStatus('1');
-		$returnValue = $this->service->update($user, $user->getAccountId());
-		$this->assertTrue($returnValue);
-		return $returnValue;
+		
 	}
 	
-	public function testChangePassword()
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindIdAndPassword(InstitutionUser $user)
 	{
-	    /**
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
+		$retrievedUser = $this->service->findByIdAndPassword($user->getAccountId(), $this->commonPassword);
 		
-		// get data for institution
-		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(4);
-		
-		//get data for institutionUserType
-		$institutionUserType = $this->doctrine->getRepository('UserBundle:InstitutionUserType')->find(1);
-		
-		$user = new InstitutionUser();
-		$user->setInstitution($institution);
-		$user->setInstitutionUserType($institutionUserType);
-		$user->setEmail('aj@chromedia.com');
-		$user->setFirstName('alnie');
-		$user->setMiddleName('leones');
-		$user->setLastName('jacobe');
-		$user->setStatus('1');
-		
-		$returnValue = $this->service->changePassword($user, 4, $password);
-		$this->assertTrue($returnValue);
-		return $returnValue;
-		**/
+		$this->assertEquals($retrievedUser->getAccountId(), $user->getAccountId());
+		$this->assertEquals($retrievedUser->getPassword(), SecurityHelper::hash_sha256($this->commonPassword));
 	}
 	
-	public function testFindIdandPassword()
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindEmailandPassword(InstitutionUser $user)
 	{
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
+		$email = $user->getEmail();
 		
-		$returnValue = $this->service->findByIdAndPassword('4', $password);
-		$this->assertNotEmpty($returnValue);
-		return $returnValue;
+		$retrievedUser = $this->service->findByEmailAndPassword($email, $this->commonPassword);
+		
+		$this->assertNotNull($retrievedUser, "No InstitutionUser with email = {$email} and password = {$this->commonPassword}");
 	}
 	
-	public function testFindEmailandPassword()
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindbyId(InstitutionUser $user)
 	{
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
-		
-		$returnValue = $this->service->findByEmailAndPassword('alnie.jacobe@chromedia.com', $password);
-		$this->assertNotEmpty($returnValue);
-		return $returnValue;
-	}
-	
-	public function testFindbyId()
-	{
-		$returnValue = $this->service->findById('4',TRUE);
-		$this->assertNotEmpty($returnValue);
+	    $id = $user->getAccountId();
+		$retrievedUser = $this->service->findById($id);
+		$this->assertNotNull($retrievedUser, "No InstitutionUser with AccountId = {$id}");
 	}
 }

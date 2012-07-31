@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -20,8 +22,7 @@ class InstitutionUserService extends UserService
      */
     public function login($email, $password)
     {
-    	$password = SecurityHelper::hash_sha256($password);
-        $user = $this->findByEmailAndPassword($email, $password);
+    	$user = $this->findByEmailAndPassword($email, $password);
         
         if ($user) {
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', array('ROLE_ADMIN'));
@@ -52,7 +53,7 @@ class InstitutionUserService extends UserService
             $em = $this->doctrine->getEntityManager();
             $em->persist($institutionUser);
             $em->flush();
-        
+            
             return $institutionUser;
         }
         
@@ -64,18 +65,18 @@ class InstitutionUserService extends UserService
      * Update Account of institution user
      *
      * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     * @return \HealthCareAbroad\UserBundle\Entity\SiteUser
      */
     public function update(InstitutionUser $institutionUser)
     {
         if (!$institutionUser->getAccountId()) {
-            
+            throw InvalidInstitutionUserOperationException::illegalUpdateWithNoAccountId();
         }
         
     	// update user in chromedia global accounts
-    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, FALSE)){
+    	if ( $institutionUser = $this->updateUser($institutionUser)){
         
-    		return TRUE;
+    		return $institutionUser;
     	}
     
     	// something went wrong in creating global account
@@ -88,7 +89,7 @@ class InstitutionUserService extends UserService
      * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function changePassword(InstitutionUser $institutionUser, $accountId, $password)
+    /**public function changePassword(InstitutionUser $institutionUser, $accountId, $password)
     {
     	//set new Password
     	$institutionUser->setPassword($password);
@@ -101,7 +102,7 @@ class InstitutionUserService extends UserService
     
     	// something went wrong in creating global account
     	return NULL;
-    }
+    }**/
     
     /**
      * 
@@ -111,6 +112,7 @@ class InstitutionUserService extends UserService
      */
     public function findByEmailAndPassword($email, $password)
     {
+        $password = SecurityHelper::hash_sha256($password);
         $accountData = $this->find(
             array(
                 'email' => $email, 
@@ -119,12 +121,15 @@ class InstitutionUserService extends UserService
             array('limit' => 1)
         );
         if ($accountData) {
-            // find a institution user
+            // find an institution user
             $institutionUser = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findActiveUserById($accountData['id']);
             
-            // populate account data to SiteUser
-            $institutionUser = $this->hydrateAccountData($institutionUser, $accountData);
-            return $institutionUser;
+            if ($institutionUser) {
+                // populate account data to SiteUser
+                $institutionUser = $this->hydrateAccountData($institutionUser, $accountData);
+                
+                return $institutionUser;
+            }
         }
         
         return null;
@@ -140,15 +145,21 @@ class InstitutionUserService extends UserService
     {
     	$password = SecurityHelper::hash_sha256($password);
     	$accountData = $this->find(
-    			array(
-    					'id' => $id,
-    					'password' => $password
-    			),
-    			array('limit' => 1)
+			array(
+				'id' => $id,
+				'password' => $password
+			),
+			array('limit' => 1)
     	);
     	
     	if ($accountData) {	
-    		return $accountData;
+    		//return $accountData;
+    	    // find a institution user
+    	    $institutionUser = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findActiveUserById($accountData['id']);
+    	    
+    	    // populate account data to SiteUser
+    	    $institutionUser = $this->hydrateAccountData($institutionUser, $accountData);
+    	    return $institutionUser;
     	}
     	
     	return null;
