@@ -28,6 +28,7 @@ class MedicalCenterType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
+			'validation_groups' => array('default')
 		));
 	}	
 	

@@ -32,6 +32,25 @@ class MedicalCenterController extends Controller
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array('form' => $form->createView(), 'id' => $id));
     }
 
+    private function saveForm(MedicalCenter $medicalCenter, $msg)
+    {
+    	$success = false;
+    	
+		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+   		$form->bind($this->getRequest());
+   		
+		if ($form->isValid()) {
+			$em = $this->getDoctrine()->getEntityManager();
+			$em->persist($medicalCenter);
+			$em->flush($medicalCenter);
+			
+			$this->getRequest()->getSession()->setFlash('notice', $msg);
+			$success = true;
+		}
+		
+		return $success; 
+    }
+    
     public function saveAction()
     {
     	$request = $this->getRequest();
