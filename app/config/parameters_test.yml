@@ -1,6 +1,6 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: hca-staging
+    database_host: healthcare-dev
     database_port: ~
     database_name: fixtures_healthcareabroad
     database_user: root
