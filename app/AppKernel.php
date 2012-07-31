@@ -23,7 +23,6 @@ class AppKernel extends Kernel
             new HealthCareAbroad\UserBundle\UserBundle(),
         	//new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
-            new HealthCareAbroad\ListingBundle\ListingBundle(),
             new HealthCareAbroad\PageBundle\PageBundle(),
         	new HealthCareAbroad\MediaBundle\MediaBundle(),
             new HealthCareAbroad\MailerBundle\MailerBundle(),
