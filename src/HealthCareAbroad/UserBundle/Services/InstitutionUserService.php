@@ -66,8 +66,12 @@ class InstitutionUserService extends UserService
      * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
      */
-    public function update(InstitutionUser $institutionUser, $accountId)
+    public function update(InstitutionUser $institutionUser)
     {
+        if (!$institutionUser->getAccountId()) {
+            
+        }
+        
     	// update user in chromedia global accounts
     	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, FALSE)){
         
