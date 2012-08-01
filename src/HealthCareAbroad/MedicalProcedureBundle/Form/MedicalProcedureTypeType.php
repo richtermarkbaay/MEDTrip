@@ -3,7 +3,7 @@ namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType as MedicalProcedureTypeEntity;
 
 use Doctrine\ORM\EntityManager;
 
@@ -31,7 +31,7 @@ class MedicalProcedureTypeType extends AbstractType
 		$builder->add('name', 'text', array('constraints'=> $commonConstraints));
 		$builder->add('description', 'textarea', array('constraints'=> $commonConstraints));
 		$builder->add($builder->create('medical_center','textarea', array('attr'=>array('class'=>'center-autocomplete')))->addModelTransformer($transformer));
-		$builder->add('status', 'choice', array('choices' => array_flip(MedicalProcedureType::$STATUS)));
+		$builder->add('status', 'choice', array('choices' => array_flip(MedicalProcedureTypeEntity::$STATUS)));
 	}
 
 	// How does it work?
