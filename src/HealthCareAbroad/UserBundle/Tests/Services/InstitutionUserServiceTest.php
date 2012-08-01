@@ -58,6 +58,29 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	}
 	
 	/**
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+	 */
+	public function testCreateWithMissingFields()
+	{
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+	    $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
+	     
+	    $user = new InstitutionUser();
+	     
+	    $user->setEmail(null);
+	    $user->setPassword($this->commonPassword);
+	    $user->setFirstName('');
+	    $user->setMiddleName('');
+	    $user->setLastName('User');
+	    $user->setInstitution($institution);
+	    $user->setInstitutionUserType($institutionUserType);
+	    $user->setStatus(SiteUser::STATUS_ACTIVE);
+	     
+	    $user = $this->service->create($user);
+	    return $user;
+	}
+	
+	/**
 	 * @depends testCreate
 	 * @param 
 	 */
@@ -165,5 +188,9 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $id = $user->getAccountId();
 		$retrievedUser = $this->service->findById($id);
 		$this->assertNotNull($retrievedUser, "No InstitutionUser with AccountId = {$id}");
+		
+		// test invalid id 
+		$retrievedUser = $this->service->findById(time());
+		$this->assertNull($retrievedUser);
 	}
 }
