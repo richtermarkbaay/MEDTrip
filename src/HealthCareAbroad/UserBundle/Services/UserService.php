@@ -8,7 +8,9 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
-use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequest;
+use HealthCareAbroad\UserBundle\Services\Exception\InvalidSiteUserOperationException;
+
+use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException;
 
 use ChromediaUtilities\Helpers\Inflector;
 
@@ -75,7 +77,8 @@ class UserService
      * Create new user in the global chromedia accounts
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
-     * @return NULL | SiteUser
+     * @throws \HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+     * @return SiteUser
      */
     protected function createUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
@@ -95,7 +98,7 @@ class UserService
             return $user;
         }
         else {
-            throw new FailedAccountRequest($response->getBody());
+            throw new FailedAccountRequestException($response->getBody());
         }
     }
     
@@ -104,17 +107,20 @@ class UserService
      * Update existing user's basic information|Password
      * 
      * @param \HealthCareAbroad\UserBundle\Entity\SiteUser $user
+     * @throws \HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+     * @return SiteUser
      */
     protected function updateUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
-    	$form_data = array(
+    	$formData = array(
+            'email' => $user->getEmail(),
 			'first_name' => $user->getFirstName(),
 			'last_name' => $user->getLastName(),
 			'middle_name' => $user->getMiddleName(),
             'password' => $user->getPassword()
 		);
     	
-    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$user->getAccountId(), array('data' => \base64_encode(\json_encode($form_data))));
+    	$response = $this->request->post($this->chromediaAccountsUri.'/'.$user->getAccountId(), array('data' => \base64_encode(\json_encode($formData))));
     	if (200 == $response->getStatusCode()) {
     		$accountData = \json_decode($response->getBody(true),true);
     		$user = $this->hydrateAccountData($user, $accountData);
@@ -122,7 +128,7 @@ class UserService
     		return $user;
     	}
     	else {
-    		throw new FailedAccountRequest($response->getBody());
+    		throw new FailedAccountRequestException($response->getBody());
     	}
     }
     

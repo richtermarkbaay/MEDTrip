@@ -49,6 +49,13 @@ CREATE TABLE IF NOT EXISTS `admin_user_roles` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `admin_users`
+--
+
+INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
+(2, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -62,6 +69,14 @@ CREATE TABLE IF NOT EXISTS `admin_user_types` (
   `status` smallint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_user_types`
+--
+
+INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
+(1, 'Content Editor', 1);
+
 
 -- --------------------------------------------------------
 

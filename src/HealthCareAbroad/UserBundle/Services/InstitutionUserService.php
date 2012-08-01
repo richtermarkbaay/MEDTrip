@@ -39,7 +39,7 @@ class InstitutionUserService extends UserService
      * Create a institution user
      *
      * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     * @return \HealthCareAbroad\UserBundle\Entity\SiteUser
      */
     public function create(InstitutionUser $institutionUser)
     {
@@ -47,18 +47,14 @@ class InstitutionUserService extends UserService
         $institutionUser->setPassword(SecurityHelper::hash_sha256($institutionUser->getPassword()));
         
         // create user in chromedia global accounts
-        if ( $institutionUser = $this->createUser($institutionUser)){
+        $institutionUser = $this->createUser($institutionUser);
+                
+        // persist to institution_users table
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionUser);
+        $em->flush();
         
-            // persist to institution_users table
-            $em = $this->doctrine->getEntityManager();
-            $em->persist($institutionUser);
-            $em->flush();
-            
-            return $institutionUser;
-        }
-        
-        // something went wrong in creating global account
-        return NULL;
+        return $institutionUser;
     }
     
     /**
@@ -74,13 +70,8 @@ class InstitutionUserService extends UserService
         }
         
     	// update user in chromedia global accounts
-    	if ( $institutionUser = $this->updateUser($institutionUser)){
-        
-    		return $institutionUser;
-    	}
-    
-    	// something went wrong in creating global account
-    	return NULL;
+        $institutionUser = $this->updateUser($institutionUser);
+        return $institutionUser;
     }
     
     /**

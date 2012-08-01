@@ -2,6 +2,7 @@
 namespace HealthCareAbroad\UserBundle\Services\Exception;
 
 use \Exception;
+
 class InvalidInstitutionUserOperationException extends \Exception
 {
     public static function illegalUpdateWithNoAccountId()

@@ -37,9 +37,6 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->service = null;
 	}
 	
-	/**
-	 * @author Allejo Chris Velarde
-	 */
 	public function testCreate()
 	{
 	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
@@ -61,7 +58,6 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	}
 	
 	/**
-	 * @author Allejo Chris Velarde
 	 * @depends testCreate
 	 * @param 
 	 */
@@ -72,6 +68,21 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    
 	    $isLoginOk = $this->service->login($user->getEmail(), $this->commonPassword);
 	    $this->assertTrue($isLoginOk, 'Unable to login as InstitutionUser using credential '."{$user->getEmail()}::{$this->commonPassword}");
+	    
+	    return $user;
+	}
+	
+	/**
+	 * @depends testLogin
+	 * @param InstitutionUser $user
+	 */
+	public function testFailedLogin(InstitutionUser $user)
+	{
+	    // set the session
+	    $this->service->setSession($this->getServiceContainer()->get('session'));
+	    
+	    $isLoginOk = $this->service->login($user->getEmail(), $this->commonPassword.'123456');
+	    $this->assertFalse($isLoginOk);
 	}
 	
 	/**
@@ -90,8 +101,26 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->assertEquals($updatedUser->getFirstName(), $user->getFirstName(), "Update of first name failed");
 		$this->assertEquals($updatedUser->getMiddleName(), $user->getMiddleName(), "Update of middle name failed");
 		$this->assertEquals($updatedUser->getLastName(), $user->getLastName(), "Update of last name failed");
-		
-		
+	}
+	
+	/**
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException
+	 */
+	public function testUpdateWithNoAccountId()
+	{
+	    $user = new InstitutionUser();
+	    $this->service->update($user);
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+	 * @param InstitutionUser $user
+	 */
+	public function testUpdateWithFailedRequest(InstitutionUser $institutionUser)
+	{
+	    $institutionUser->setFirstName('');
+	    $updatedUser = $this->service->update($institutionUser);
 	}
 	
 	/**
@@ -104,6 +133,10 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		
 		$this->assertEquals($retrievedUser->getAccountId(), $user->getAccountId());
 		$this->assertEquals($retrievedUser->getPassword(), SecurityHelper::hash_sha256($this->commonPassword));
+		
+		// test for wrong password
+		$retrievedUser = $this->service->findByIdAndPassword($user->getAccountId(), $this->commonPassword.'1232143244');
+		$this->assertNull($retrievedUser);
 	}
 	
 	/**
@@ -116,7 +149,11 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		
 		$retrievedUser = $this->service->findByEmailAndPassword($email, $this->commonPassword);
 		
-		$this->assertNotNull($retrievedUser, "No InstitutionUser with email = {$email} and password = {$this->commonPassword}");
+		$this->assertNotNull($retrievedUser);
+		
+        // test for an admin user email
+        $retrievedUser = $this->service->findByEmailAndPassword('test.adminuser@chromedia.com', $this->commonPassword);
+        $this->assertNull($retrievedUser); // this should be null since retrieved user is not InstitutionUser
 	}
 	
 	/**
