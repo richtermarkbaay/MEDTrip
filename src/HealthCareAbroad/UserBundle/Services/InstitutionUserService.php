@@ -84,27 +84,6 @@ class InstitutionUserService extends UserService
     }
     
     /**
-     * Update Account of institution user
-     *
-     * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
-     */
-    /**public function changePassword(InstitutionUser $institutionUser, $accountId, $password)
-    {
-    	//set new Password
-    	$institutionUser->setPassword($password);
-
-    	// update user in chromedia global accounts
-    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, TRUE)){
-    
-    		return TRUE;
-    	}
-    
-    	// something went wrong in creating global account
-    	return NULL;
-    }**/
-    
-    /**
      * 
      * @param string $email
      * @param string $password

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserInvitationType;
 
 use Guzzle\Http\Message\Response;
@@ -63,43 +67,27 @@ class InstitutionUserController extends Controller
     {
         $this->get('security.context')->setToken(null);
         $this->getRequest()->getSession()->invalidate();
-        return $this->redirect($this->generateUrl('main_homepage'));
+        return $this->redirect($this->generateUrl('institution_login'));
     }
     
     public function changePasswordAction()
     {
-    	
-    	$institutionUser = new InstitutionUser();
-    	$defaultData = array('email' => 'Type your message here');
-    	
-    	$form = $this->createFormBuilder($institutionUser)
-    			->add('email','password',array('label' => 'Current Password'))
-    			->add( 'password', 'repeated', array( 'type' => 'password', 'invalid_message' => 'Passwords do not match' ))
-    			->getform();
+        //get user account in chromedia global accounts by accountID
+        $session = $this->getRequest()->getSession();
+        $institutionUserService = $this->get('services.institution_user');
+        $institutionUser = $institutionUserService->findById($session->get('accountId'));
+        
+        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
     	
     	if ($this->getRequest()->isMethod('POST')) {
     		
     		$form->bindRequest($this->getRequest());
+    		
     		if ($form->isValid()) {
+    			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+    			$institutionUserService->update($institutionUser);
     			
-    			//get user account in chromedia global accounts by accountID
-    			$session = $this->getRequest()->getSession();
-    			$accountId = $session->get('accountId');
-    			$newPassword = $form->get('password')->getData();
-    			
-    			//check if given oldpassword is match
-    			$user = $this->get('services.institution_user')->findByIdAndPassword($accountId, $form->get('email')->getData());
-            	
-    			////set new password to chromedia accounts
-    			$password = SecurityHelper::hash_sha256($newPassword);
-    			$hasChangedPassword = $this->get('services.institution_user')->changePassword($institutionUser, $accountId, $password);
-    			
-    			if ($hasChangedPassword) {
-    				$this->get('session')->setFlash('flash.notice', "Password changed!");
-    			}
-    			else {
-    				$this->get('session')->setFlash('flash.notice', "Failed to change password,old password isn't correct");
-    			}
+    			$this->get('session')->setFlash('flash.notice', "Password changed!");
     		}
     			
     	}
@@ -117,9 +105,9 @@ class InstitutionUserController extends Controller
     	
     	//render form
     	$form = $this->createFormBuilder($institutionUser)
-        	->add('firstName', 'text')
-            ->add('middleName', 'text')
-            ->add('lastName', 'text')
+        	->add('firstName', 'text', array('constraints' => array(new NotBlank())))
+            ->add('middleName', 'text', array('constraints' => array(new NotBlank())))
+            ->add('lastName', 'text', array('constraints' => array(new NotBlank())))
             ->getForm();
     	
      	 if ($this->getRequest()->isMethod('POST')) {
@@ -133,7 +121,7 @@ class InstitutionUserController extends Controller
             	$institutionUser->setLastName($form->get('lastName')->getData());
             	$institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
             	
-            	$institutionUser = $this->get('services.institution_user')->update($institutionUser, $accountId);
+            	$institutionUser = $this->get('services.institution_user')->update($institutionUser);
             	if ($institutionUser) {
                     $this->get('session')->setFlash('flash.notice', "Successfully updated your account");
                 }
@@ -158,8 +146,6 @@ class InstitutionUserController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             
             $form->bind($this->getRequest());
-            
-            var_dump($form->isValid()); exit;
             
             if ($form->isValid()){
                 
