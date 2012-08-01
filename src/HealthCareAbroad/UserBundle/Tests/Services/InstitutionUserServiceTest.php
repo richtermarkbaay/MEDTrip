@@ -54,6 +54,11 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $user->setStatus(SiteUser::STATUS_ACTIVE);
 	    
 	    $user = $this->service->create($user);
+	    $this->assertTrue($user->getAccountId() != 0);
+	    
+	    $savedUser = $this->getDoctrine()->getRepository('UserBundle:InstitutionUser')->find($user->getAccountId());
+	    $this->assertNotNull($savedUser);
+	    
 	    return $user;
 	}
 	
@@ -173,6 +178,8 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$retrievedUser = $this->service->findByEmailAndPassword($email, $this->commonPassword);
 		
 		$this->assertNotNull($retrievedUser);
+		$this->assertEquals($user->getEmail(), $user->getEmail());
+		$this->assertEquals($user->getPassword(), $user->getPassword());
 		
         // test for an admin user email
         $retrievedUser = $this->service->findByEmailAndPassword('test.adminuser@chromedia.com', $this->commonPassword);

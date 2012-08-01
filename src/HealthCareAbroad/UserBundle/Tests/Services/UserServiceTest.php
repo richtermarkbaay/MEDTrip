@@ -17,7 +17,6 @@ use HealthCareAbroad\UserBundle\Tests\UserBundleTestCase;
 class UserServiceTest extends UserBundleTestCase
 {
     /**
-     * 
      * @var UserService
      */
     protected $service;

@@ -168,8 +168,9 @@ class UserService
             $json_data = \json_decode($response->getBody(true), true);
             return $json_data;
         }
-        
-        return null;
+        else {
+            throw new FailedAccountRequestException($response->getBody(true));
+        }
     }
     
     /**
