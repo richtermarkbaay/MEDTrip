@@ -4,6 +4,7 @@ namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use HealthCareAbroad\MedicalProcedureBundle\Form\DataTransformer\MedicalCenterStatusToBooleanTransformer;
 
 class MedicalCenterType extends AbstractType
 {
@@ -11,7 +12,7 @@ class MedicalCenterType extends AbstractType
 	{
 		$builder->add('name');
 		$builder->add('description');
-		$builder->add('status');
+		$builder->add('status', 'medicalCenterStatusSelector');
 	}
 	
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

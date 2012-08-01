@@ -13,3 +13,9 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: medicalproceduretype_list }
+            
+    form.medical_center.type.status_selector:
+        class: HealthCareAbroad\MedicalProcedureBundle\Form\MedicalCenterStatusSelectorType
+        tags:
+            - { name: form.type, alias: medicalCenterStatusSelector }
+            
