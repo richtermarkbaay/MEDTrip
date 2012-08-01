@@ -1,4 +1,4 @@
 HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
     properties:
         name:
-            - NotBlank: ~
+            - NotBlank: { groups: [default] }            
