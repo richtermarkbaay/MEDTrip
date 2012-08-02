@@ -37,11 +37,6 @@ class InstitutionUserController extends Controller
     public function loginAction()
     {
         $user = new InstitutionUser();
-        /**$form = $this->createFormBuilder($user)
-            ->add('email', 'email', array('property_path'=> false))
-            ->add('password', 'password', array('property_path'=> false))
-            ->getForm();**/
-        
         $form = $this->createForm(new UserLoginType());
         
         if ($this->getRequest()->isMethod('POST')) {
@@ -56,10 +51,14 @@ class InstitutionUserController extends Controller
 	            }
                 else {
                     // invalid login
-                    $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
+                    $this->get('session')->setFlash('flash.notice', 'Email and password is invalid.');
                     
                     return $this->redirect($this->generateUrl('institution_login'));
                 }
+            }
+            else {
+                // invalid login
+                $this->get('session')->setFlash('flash.notice', 'Email and password are required.');
             }
         }
         return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
