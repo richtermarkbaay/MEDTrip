@@ -10,9 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 class MedicalProcedure
 {
 	
-	const STATUS_ACTIVE = 1;
-	const STATUS_INACTIVE = 0;
-	
+	static $STATUS = array(
+		'inactive' => 0,
+		'active' => 1
+	);
+
     /**
      * @var integer $id
      */
@@ -136,4 +138,16 @@ class MedicalProcedure
     {
         return $this->medicalProcedureType;
     }
+    
+//     public static function loadValidatorMetadata(ClassMetadata $metadata)
+//     {
+//     	$metadata->addPropertyConstraint('name', new NotBlank());
+    
+//     	$metadata->addPropertyConstraint('email', new Email());
+    
+//     	$metadata->addPropertyConstraint('subject', new NotBlank());
+//     	$metadata->addPropertyConstraint('subject', new MaxLength(50));
+    
+//     	$metadata->addPropertyConstraint('body', new MinLength(50));
+//     }
 }

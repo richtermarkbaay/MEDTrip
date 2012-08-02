@@ -1,0 +1,29 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+
+	<div id="content">
+
+		<div id="page-heading"><h3>{{ id  ? 'Edit' : 'Add' }} Procedure Type</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+			<form class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
+				{{ form_row(form.name) }}
+				{{ form_row(form.description) }}
+				{{ form_row(form.medical_center) }}
+				{{ form_row(form.status) }}
+				{{ form_rest(form) }}
+			    <input type="submit" class="form-submit"/>
+			</form>
+			{% endblock %}
+
+		{% endembed %}
+	</div>
+
+	{% block javascripts %}
+		{{ parent() }}
+		<script src="{{ asset('bundles/medicalprocedure/js/MedicalProcedureType.js') }}"></script>
+	{% endblock %}
+
+{% endblock %}

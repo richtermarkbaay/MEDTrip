@@ -49,6 +49,13 @@ CREATE TABLE IF NOT EXISTS `admin_user_roles` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `admin_users`
+--
+
+INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
+(2, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -62,6 +69,14 @@ CREATE TABLE IF NOT EXISTS `admin_user_types` (
   `status` smallint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_user_types`
+--
+
+INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
+(1, 'Content Editor', 1);
+
 
 -- --------------------------------------------------------
 
@@ -146,6 +161,13 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `institutions`
+--
+
+INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 0, 0, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1);
 
 -- --------------------------------------------------------
 
@@ -318,6 +340,13 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_roles`
+--
+
+INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VALUES
+(1, 'add_medical_procedure', 'Add medical procedure', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -334,6 +363,14 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+
+--
+-- Dumping data for table `institution_user_types`
+--
+
+INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
+(1, 1, 'Content Staff', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -347,6 +384,15 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
   PRIMARY KEY (`institution_user_type_id`,`institution_user_role_id`),
   KEY `institution_user_role_id` (`institution_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Dumping data for table `institution_user_type_roles`
+--
+
+INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
+(1, 1);
+
 
 -- --------------------------------------------------------
 

@@ -12,12 +12,17 @@ abstract class UserBundleTestCase extends \PHPUnit_Framework_TestCase
     
     public static function setUpBeforeClass()
     {
-        \HCA_DatabaseManager::getInstance()->restoreDatabaseState();
+        \HCA_DatabaseManager::getInstance()
+            ->restoreDatabaseState()
+            ->restoreGlobalAccountsDatabaseState();
     }
     
     public static function tearDownAfterClass()
     {
-        \HCA_DatabaseManager::getInstance()->restoreDatabaseState();
+        /**
+        \HCA_DatabaseManager::getInstance()
+            ->restoreDatabaseState()
+            ->restoreGlobalAccountsDatabaseState();**/
     }
     
     /**

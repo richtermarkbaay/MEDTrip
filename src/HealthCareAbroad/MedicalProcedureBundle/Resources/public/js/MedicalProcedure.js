@@ -4,7 +4,7 @@ var MedicalProcedure = {
 	updateStatus : function(elem)
 	{
 		elemId = elem.attr('id').split('-').pop();
-		$.getJSON(Tag.baseUrl + "admin/medical-procedure/update-status/" + elemId, function(result){
+		$.getJSON(MedicalProcedure.baseUrl + "admin/medical-procedure/update-status/" + elemId, function(result){
 			if(result) {
 				var status = $.trim(elem.html()) == 'activate';
 				elem.html(status ? 'deactivate' : 'activate');				
@@ -13,4 +13,4 @@ var MedicalProcedure = {
 	}
 }
 
-Tag.init();
+MedicalProcedure.init();

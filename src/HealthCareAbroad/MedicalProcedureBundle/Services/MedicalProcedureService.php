@@ -25,17 +25,23 @@ class MedicalProcedureService
 		$result = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id);
 		return $result;
 	}
+	
+	public function getMedicalProcedureType($id)
+	{
+		$result = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id);
+		return $result;
+		
+	}
 
 	public function saveMedicalProcedure(MedicalProcedure $entity)
 	{
 		$entity->setSlug('');
-		$entity->setStatus(1);
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
 
 		return $entity;
 	}
-
+	
 	public function deleteMedicalProcedure($id)
 	{
 		$entity = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id);

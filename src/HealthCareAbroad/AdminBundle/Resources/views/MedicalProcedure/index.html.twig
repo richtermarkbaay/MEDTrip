@@ -28,6 +28,8 @@
 					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}">edit</a>
 					</td>
 				</tr>
+			{% else  %}
+				<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
 			{% endfor %}
 			</table>
 			{% endblock %}

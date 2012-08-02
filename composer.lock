@@ -1,5 +1,5 @@
 {
-    "hash": "eb8c68bb5105c7740530bffbeed0b5e7",
+    "hash": "5784203f1b0927a3dda0251ff9896f2a",
     "packages": [
         {
             "package": "chromedia/media-bundle",
@@ -26,14 +26,8 @@
         {
             "package": "doctrine/doctrine-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "1.0.x-dev",
-            "alias-version": "1.0.9999999.9999999-dev"
-        },
-        {
-            "package": "doctrine/doctrine-bundle",
-            "version": "dev-master",
-            "source-reference": "62134e6a8dd3f330131ee6a970f0cee1d7760c1d",
-            "commit-date": "1343203511"
+            "source-reference": "ed8d02b491512f947fdb2f8b665dc8fd72b5879c",
+            "commit-date": "1343657020"
         },
         {
             "package": "doctrine/orm",
@@ -42,10 +36,16 @@
             "commit-date": "1343560954"
         },
         {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "3881e19cc9497efa132a55e44aebbc62405a05b1",
+            "commit-date": "1343672222"
+        },
+        {
             "package": "guzzle/guzzle",
             "version": "dev-master",
-            "source-reference": "64758d8041144f154e432dbde011dd799dd1bfa7",
-            "commit-date": "1343420927"
+            "source-reference": "v2.8.3",
+            "commit-date": "1343680042"
         },
         {
             "package": "imagine/Imagine",
@@ -88,8 +88,8 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "source-reference": "c518a48ddc26af898191410cc35f7f30aaed448e",
-            "commit-date": "1343084248"
+            "source-reference": "11324294acf2dcf6b7f7cb0c4f35fd77e6f01cb7",
+            "commit-date": "1343684910"
         },
         {
             "package": "monolog/monolog",
@@ -104,20 +104,8 @@
         {
             "package": "sensio/framework-extra-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
-            "source-reference": "a0d76a65aeb70be6f25754a4482e84a9a28fb614",
-            "commit-date": "1343456386"
-        },
-        {
-            "package": "sensio/generator-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "dbe4432742e16ee9ca550a2f953b059f0a80c53d",
+            "commit-date": "1343637454"
         },
         {
             "package": "sensio/generator-bundle",
@@ -140,14 +128,8 @@
         {
             "package": "symfony/assetic-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/assetic-bundle",
-            "version": "dev-master",
-            "source-reference": "a5daf7ca4588f88105c808de9a28ba1e66bfa082",
-            "commit-date": "1343161458"
+            "source-reference": "24df9ede95084be882aeb557eaef5b761cfa00e0",
+            "commit-date": "1343684934"
         },
         {
             "package": "symfony/monolog-bundle",
@@ -170,8 +152,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "6b39ebc4f8b4d5e3bb7ba4350cd5175f12fc8510",
-            "commit-date": "1343572385"
+            "source-reference": "a172a812960d060cd5dd13e4dcf3b2bc4043a18f",
+            "commit-date": "1343639879"
         },
         {
             "package": "twig/extensions",
@@ -199,6 +181,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "doctrine/doctrine-bundle": 20,
+        "gedmo/doctrine-extensions": 20,
         "twig/extensions": 20,
         "symfony/assetic-bundle": 20,
         "symfony/monolog-bundle": 20,

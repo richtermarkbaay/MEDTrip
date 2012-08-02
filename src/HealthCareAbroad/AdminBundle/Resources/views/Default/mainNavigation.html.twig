@@ -28,7 +28,7 @@
         
         <ul class="select">
             <li>
-                <a href="#nogo"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_medicalCenter_index') }}"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">
@@ -41,7 +41,23 @@
         </ul>    
     
         <div class="nav-divider">&nbsp;</div>
-        
+
+        <ul class="select">
+            <li>
+                <a href="#nogo"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+                <div class="select_sub">
+                	<ul class="sub">
+                		<li><a href="{{ path('admin_procedureType_index') }}">View all</a></li>
+                		<li><a href="{{ path('admin_procedureType_add') }}">Add new procedure type</a></li>
+                	</ul>
+                </div>
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+            </li>
+        </ul>    
+    
+        <div class="nav-divider">&nbsp;</div>
+
         <ul class="select">
             <li>
                 <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->

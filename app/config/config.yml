@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: @ListingBundle/Resources/config/services.yml }
+    - { resource: doctrine_extensions.yml }
 
 framework:
     #esi:             ~
@@ -28,7 +28,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ListingBundle ]
+    bundles:        []
     #java: /usr/bin/java
     filters:
         cssrewrite: ~

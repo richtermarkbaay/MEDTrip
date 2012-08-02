@@ -8,14 +8,9 @@
     	<h1>{{ site_name }} Institution Panel</h1>
     </div>
 
-Welcome {{ app.security.getToken().getUser() }}!
+    
 
-<div style="margin:10px;">
-    <ul style="list-style:disc;">
-	    <li><a href="{{ path('institution_invite_user') }}">Invite users</a> </li><br>
-		<li><a href="{{ path('institution_editAccount') }}">Edit Account</a> </li><br>
-		<li><a href="{{ path('institution_change_password') }}">Change Password</a> </li>
-	</ul>
+
 
     <!-- end page-heading -->
     
@@ -29,7 +24,7 @@ Welcome {{ app.security.getToken().getUser() }}!
 			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('flash.notice') } %}
 		        {% endif %}
 			
-			    <h2>Sub Heading </h2>
+			    <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
     			<h3>Local Heading</h3>
     			
     			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 

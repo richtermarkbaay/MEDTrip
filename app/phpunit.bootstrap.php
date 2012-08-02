@@ -133,6 +133,28 @@ class HCA_DatabaseManager
         $sql = file_get_contents($fixturesSqlFile);
         $stmt = $connection->prepare($sql);
         $r = $stmt->execute();
+        
+        return $this;
+    }
+    
+    public function restoreGlobalAccountsDatabaseState()
+    {
+        $connection = $this->doctrine->getConnection();
+        $databaseName = 'fixtures_chromedia_global';
+        
+        // drop and create fixtures db
+        $connection->getSchemaManager()->dropAndCreateDatabase($databaseName);
+        $connection->exec("USE `{$databaseName}`");
+        $fixturesSqlFile = realpath(dirname(__DIR__).'/data/fixtures_chromedia_global.sql');
+        $sql = file_get_contents($fixturesSqlFile);
+        $stmt = $connection->prepare($sql);
+        $r = $stmt->execute();
+        $connection->close(); // close the connection
+        
+        // reconnect
+        $connection->connect();
+        
+        return $this;
     }
     
 }

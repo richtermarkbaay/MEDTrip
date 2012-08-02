@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\UserBundle\Tests\Services;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -19,7 +21,10 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 {
     protected $service;
 	
-	public function setUp()
+    private $nonFixedEmailUser = 'test.institution-user-non-fixed@chromedia.com';
+    private $commonPassword = '123456';
+    
+    public function setUp()
 	{
 		$this->service = new InstitutionUserService();
 		$this->service->setDoctrine($this->getDoctrine());
@@ -32,81 +37,133 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->service = null;
 	}
 	
-	
-	
-	public function testUpdate()
+	public function testCreate()
 	{
-	    // create temporary 10 character password
-		$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
-		
-		// get data for institution
-		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(4);
-		
-		//get data for institutionUserType
-		$institutionUserType = $this->doctrine->getRepository('UserBundle:InstitutionUserType')->find(1);
-		
-		$user = new InstitutionUser();
-		$user->setInstitution($institution);
-		$user->setInstitutionUserType($institutionUserType);
-		$user->setEmail('aj@chromedia.com');
-		$user->setPassword($temporaryPassword);
-		$user->setFirstName('alnie');
-		$user->setMiddleName('leones');
-		$user->setLastName('jacobe');
-		$user->setStatus('1');
-		$returnValue = $this->service->update($user, 4);
-		$this->assertTrue($returnValue);
-		return $returnValue;
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+	    $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
+	    
+	    $user = new InstitutionUser();
+	    
+	    $user->setEmail($this->nonFixedEmailUser);
+	    $user->setPassword($this->commonPassword);
+	    $user->setFirstName('Test Institution');
+	    $user->setMiddleName('M.');
+	    $user->setLastName('User');
+	    $user->setInstitution($institution);
+	    $user->setInstitutionUserType($institutionUserType);
+	    $user->setStatus(SiteUser::STATUS_ACTIVE);
+	    
+	    $user = $this->service->create($user);
+	    return $user;
 	}
 	
-	public function testChangePassword()
+	/**
+	 * @depends testCreate
+	 * @param 
+	 */
+	public function testLogin(InstitutionUser $user)
 	{
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
-		
-		// get data for institution
-		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(4);
-		
-		//get data for institutionUserType
-		$institutionUserType = $this->doctrine->getRepository('UserBundle:InstitutionUserType')->find(1);
-		
-		$user = new InstitutionUser();
-		$user->setInstitution($institution);
-		$user->setInstitutionUserType($institutionUserType);
-		$user->setEmail('aj@chromedia.com');
-		$user->setFirstName('alnie');
-		$user->setMiddleName('leones');
-		$user->setLastName('jacobe');
-		$user->setStatus('1');
-		
-		$returnValue = $this->service->changePassword($user, 4, $password);
-		$this->assertTrue($returnValue);
-		return $returnValue;
+	    // set the session
+	    $this->service->setSession($this->getServiceContainer()->get('session'));
+	    
+	    $isLoginOk = $this->service->login($user->getEmail(), $this->commonPassword);
+	    $this->assertTrue($isLoginOk, 'Unable to login as InstitutionUser using credential '."{$user->getEmail()}::{$this->commonPassword}");
+	    
+	    return $user;
 	}
 	
-	public function testFindIdandPassword()
+	/**
+	 * @depends testLogin
+	 * @param InstitutionUser $user
+	 */
+	public function testFailedLogin(InstitutionUser $user)
 	{
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
-		
-		$returnValue = $this->service->findByIdAndPassword('4', $password);
-		$this->assertNotEmpty($returnValue);
-		return $returnValue;
+	    // set the session
+	    $this->service->setSession($this->getServiceContainer()->get('session'));
+	    
+	    $isLoginOk = $this->service->login($user->getEmail(), $this->commonPassword.'123456');
+	    $this->assertFalse($isLoginOk);
 	}
 	
-	public function testFindEmailandPassword()
+	/**
+	 * @depends testCreate
+	 * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser
+	 */
+	public function testUpdate(InstitutionUser $user)
 	{
-		// create password
-		$password = SecurityHelper::hash_sha256('123456');
+	    
+	    $user->setFirstName($user->getFirstName().' - Updated');
+		$user->setMiddleName($user->getMiddleName(). ' - Updated');
+		$user->setLastName($user->getLastName(). '- Updated');
 		
-		$returnValue = $this->service->findByEmailAndPassword('alnie.jacobe@chromedia.com', $password);
-		$this->assertNotEmpty($returnValue);
-		return $returnValue;
+		$updatedUser = $this->service->update($user);
+		
+		$this->assertEquals($updatedUser->getFirstName(), $user->getFirstName(), "Update of first name failed");
+		$this->assertEquals($updatedUser->getMiddleName(), $user->getMiddleName(), "Update of middle name failed");
+		$this->assertEquals($updatedUser->getLastName(), $user->getLastName(), "Update of last name failed");
 	}
 	
-	public function testFindbyId()
+	/**
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException
+	 */
+	public function testUpdateWithNoAccountId()
 	{
-		$returnValue = $this->service->findById('4',TRUE);
-		$this->assertNotEmpty($returnValue);
+	    $user = new InstitutionUser();
+	    $this->service->update($user);
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+	 * @param InstitutionUser $user
+	 */
+	public function testUpdateWithFailedRequest(InstitutionUser $institutionUser)
+	{
+	    $institutionUser->setFirstName('');
+	    $updatedUser = $this->service->update($institutionUser);
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindIdAndPassword(InstitutionUser $user)
+	{
+		$retrievedUser = $this->service->findByIdAndPassword($user->getAccountId(), $this->commonPassword);
+		
+		$this->assertEquals($retrievedUser->getAccountId(), $user->getAccountId());
+		$this->assertEquals($retrievedUser->getPassword(), SecurityHelper::hash_sha256($this->commonPassword));
+		
+		// test for wrong password
+		$retrievedUser = $this->service->findByIdAndPassword($user->getAccountId(), $this->commonPassword.'1232143244');
+		$this->assertNull($retrievedUser);
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindEmailandPassword(InstitutionUser $user)
+	{
+		$email = $user->getEmail();
+		
+		$retrievedUser = $this->service->findByEmailAndPassword($email, $this->commonPassword);
+		
+		$this->assertNotNull($retrievedUser);
+		
+        // test for an admin user email
+        $retrievedUser = $this->service->findByEmailAndPassword('test.adminuser@chromedia.com', $this->commonPassword);
+        $this->assertNull($retrievedUser); // this should be null since retrieved user is not InstitutionUser
+	}
+	
+	/**
+	 * @depends testCreate
+	 * @param InstitutionUser $user
+	 */
+	public function testFindbyId(InstitutionUser $user)
+	{
+	    $id = $user->getAccountId();
+		$retrievedUser = $this->service->findById($id);
+		$this->assertNotNull($retrievedUser, "No InstitutionUser with AccountId = {$id}");
 	}
 }
