@@ -35,10 +35,10 @@ class InvitationServiceTest extends HelperBundleTestCase
 	protected $twig;
 	public function setUp()
 	{
-		$this->service = new InvitationService(parent::$container->get('doctrine'));
-		$this->doctrine = parent::$container->get('doctrine');
-		$this->service->setTwig(parent::$container->get('twig'));
-		$this->service->setMailer(parent::$container->get('mailer'));
+		$this->service = new InvitationService($this->getDoctrine());
+		$this->doctrine = $this->getDoctrine();
+		$this->service->setTwig($this->getServiceContainer()->get('twig'));
+		$this->service->setMailer($this->getServiceContainer()->get('mailer'));
 		
 	}
 	
@@ -74,7 +74,7 @@ class InvitationServiceTest extends HelperBundleTestCase
 		$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
 		
 		// get data for institution
-		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(8);
+		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(1);
 		
 		//get data for institutionUserType
 		$institutionUserType = $this->doctrine->getRepository('UserBundle:InstitutionUserType')->find(1);
@@ -96,7 +96,7 @@ class InvitationServiceTest extends HelperBundleTestCase
 		public function testSendInstitutionUserInvitation()
 		{
 			// get data for institution
-			$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(8);
+			$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(1);
 	
 			//get data for institutionUserType
 			$institutionInvitation = $this->doctrine->getRepository('InstitutionBundle:InstitutionUserInvitation')->find(1);
