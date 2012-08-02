@@ -54,4 +54,24 @@ return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 
 		return $institution;
 		
     }
+    
+    public function updateInstitutionMedicalCenters($institutionId, $newMedicalCenterIds = array(), $medicalCenterIdsWithProcedureType = array()) 
+    {
+		$conn = $this->doctrine->getConnection();
+
+		// DELETE ALL institution_medical_centers without procedure types
+		$deleteQry = "DELETE FROM institution_medical_centers WHERE institution_id = $institutionId AND medical_center_id NOT IN(".implode(',', $medicalCenterIdsWithProcedureType).")";
+		$conn->exec($deleteQry);
+
+
+		// ADD new institution_midical_centers
+		if(!empty($newMedicalCenterIds)) {
+			foreach($newMedicalCenterIds as $centerId) {
+				$values[] = "($institutionId, $centerId)";
+			}
+
+			$addQry = "INSERT INTO institution_medical_centers(institution_id, medical_center_id) VALUES" . implode(',', $values);
+			$conn->exec($addQry);
+		}    	
+    }
 }

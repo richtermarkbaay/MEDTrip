@@ -35,10 +35,17 @@ class MedicalProcedureService
 
 	public function saveMedicalProcedure(MedicalProcedure $entity)
 	{
-		$entity->setSlug('');
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
 
+		return $entity;
+	}
+
+	public function saveMedicalProcedureType(MedicalProcedureType $entity)
+	{
+		$this->entityManager->persist($entity);
+		$this->entityManager->flush($entity);
+	
 		return $entity;
 	}
 	

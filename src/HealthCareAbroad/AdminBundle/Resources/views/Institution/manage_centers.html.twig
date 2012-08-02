@@ -1,0 +1,30 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+
+	<div id="content">
+		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Institution Medical Center</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+				<form action="{{ path('admin_institution_manageCenters', {id:id}) }}" method="POST">
+				<ul style="list-style:none">
+					{% for center in centers %}
+						{% if center.id in centerIdsWithProcedureType %}
+							{% set disabled = 'disabled' %}
+						{% else %}
+							{% set disabled = '' %}
+						{% endif %}
+						<li>
+							<input type="checkbox" id="center-{{ center.id }}" name="centers[]" value="{{ center.id }}" {{ center.id in selectedCenterIds ? 'checked="checked"' : '' }} {{ disabled }}/>
+							<label for="center-{{ center.id }}">{{ center.name }}</label>
+						</li>
+					{% endfor %}
+				</ul>
+				<input type="submit" class="form-submit"/>
+				</form>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

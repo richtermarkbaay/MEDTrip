@@ -154,8 +154,34 @@ admin_medicalProcedure_updateStatus:
     pattern:  /admin/medical-procedure/update-status/{id}
     defaults: { _controller: AdminBundle:MedicalProcedure:updateStatus }
     requirements:
-         id: ".+"
+         id: \d+
 # End of MedicalProcedure Routes #
+
+
+# Routes for Institution #
+admin_institution_index:
+    pattern:  /admin/institutions
+    defaults: { _controller: AdminBundle:Institution:index }
+
+admin_institution_manageCenters:
+    pattern:  /admin/institution/manage-centers/{id}
+    defaults: { _controller: AdminBundle:Institution:manageCenters }
+    requirements:
+         id: \d+
+
+admin_institution_manageProcedureTypes:
+    pattern:  /admin/institution/manage-procedure-types/{id}
+    defaults: { _controller: AdminBundle:Institution:manageProcedureTypes }
+    requirements:
+         id: \d+
+
+admin_institution_manageProcedures:
+    pattern:  /admin/institution/manage-procedures/{id}
+    defaults: { _controller: AdminBundle:Institution:manageProcedures }
+    requirements:
+         id: \d+
+
+# End of Institution Routes #
 
 admin_homepage:
     pattern:  /admin

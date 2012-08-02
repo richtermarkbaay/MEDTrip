@@ -74,9 +74,15 @@ class Institution
      */
     private $contactDetail;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $medicalCenters;
+
     public function __construct()
     {
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -346,7 +352,7 @@ class Institution
     /**
      * Remove contactDetail
      *
-     * @param <variableType$contactDetail
+     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
      */
     public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
     {
@@ -361,5 +367,37 @@ class Institution
     public function getContactDetail()
     {
         return $this->contactDetail;
+    }
+
+    /**
+     * Add medicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters
+     * @return Institution
+     */
+    public function addMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters)
+    {
+        $this->medicalCenters[] = $medicalCenters;
+        return $this;
+    }
+
+    /**
+     * Remove medicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters
+     */
+    public function removeMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters)
+    {
+        $this->medicalCenters->removeElement($medicalCenters);
+    }
+
+    /**
+     * Get medicalCenters
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMedicalCenters()
+    {
+        return $this->medicalCenters;
     }
 }

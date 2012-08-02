@@ -72,4 +72,21 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                         name: contact_detail_id
                         referencedColumnName: id
             orderBy: null
+        medicalCenters:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            cascade: {  }
+            mappedBy: null
+            inversedBy: institution
+            joinTable:
+                name: institution_medical_centers
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: id
+                        referencedColumnName: id
+            orderBy: null
+
     lifecycleCallbacks: {  }
