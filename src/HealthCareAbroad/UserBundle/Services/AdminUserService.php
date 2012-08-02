@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+use ChromediaUtilities\Helpers\SecurityHelper;
+
 use ChromediaUtilities\Helpers\Inflector;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -9,27 +13,40 @@ use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 class AdminUserService extends UserService
 {
+    public function login($email, $password)
+    {
+        $user = $this->findByEmailAndPassword($email, $password);
+        if ($user) {
+            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', array('ROLE_ADMIN'));
+            $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
+            // $this->get("security.context")->setToken($securityToken);
+            $this->session->set('accountId', $user->getAccountId());
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    
     /**
      * Create an AdminUser
      * 
      * @param AdminUser $user
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
+     * @return HealthCareAbroad\UserBundle\Entity\SiteUser
      */
     public function create(AdminUser $user)
     {
         // create user in chromedia global accounts
-        if ( $user = $this->createUser($user)){
+        $user->setPassword(SecurityHelper::hash_sha256($user->getPassword()));// hash the password
+        $user = $this->createUser($user);
         
-            // persist to admin_users table
-            $em = $this->doctrine->getEntityManager();
-            $em->persist($user);
-            $em->flush();
+        // persist to admin_users table
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($user);
+        $em->flush();
         
-            return $user;
-        }
-        
-        // something went wrong in creating global account
-        return NULL;
+        return $user;
     }
     
     /**
@@ -37,11 +54,12 @@ class AdminUserService extends UserService
      * 
      * @param string $email
      * @param string $password
-     * @return NULL|HealthCareAbroad\UserBundle\Entity\AdminUser
+     * @return HealthCareAbroad\UserBundle\Entity\AdminUser
      */
     public function findByEmailAndPassword($email, $password)
     {
         // find the account in the global chromedia accounts
+        $password = SecurityHelper::hash_sha256($password);
         $accountData = $this->find(
             array(
                 'email' => $email,
@@ -50,25 +68,17 @@ class AdminUserService extends UserService
             array('limit' => 1)
         );
         
-        if (!$accountData) {
-            return null;
-        }
+        if ($accountData) {
+            // find an institution user
+            $adminUser = $this->doctrine->getRepository('UserBundle:AdminUser')->findActiveUserById($accountData['id']);
         
-        // get the active admin user for this account
-        $accountId = \array_key_exists('id', $accountData) ? $accountData['id'] : 0;
-        $adminUser = $this->doctrine->getRepository('UserBundle:AdminUser')->findOneBy(array('accountId' => $accountId, 'status' => SiteUser::STATUS_ACTIVE));
-        if (!$adminUser) {
-            return null;
-        }
+            if ($adminUser) {
+                // populate account data to SiteUser
+                $adminUser = $this->hydrateAccountData($adminUser, $accountData);
         
-        // populate account data to SiteUser
-        foreach ($accountData as $key => $v) {
-            if ($key != 'id') {
-                $setMethod = 'set'.Inflector::toVariable($key);
-                $adminUser->{$setMethod}($v);
+                return $adminUser;
             }
         }
-        
-        return $adminUser;
+        return null;
     }
 }

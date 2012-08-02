@@ -3,15 +3,13 @@
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Medical Center</h3></div>
+		<div id="page-heading"><h3>{{ id ? 'Edit' : 'Add' }} Medical Center</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			<form novalidate="novalidate" action="{{ path('admin_medicalCenter_save') }}" method="post" {{ form_enctype(form) }} class="basic-form">
-	 			{% if id is defined %} 
-	 				<input type="hidden" value="{{ id }}" name="id"/> 
-	 			{% endif %} 
+			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+
 				{{ form_row(form.name) }}
 				{{ form_row(form.description) }}
 				{{ form_rest(form) }}

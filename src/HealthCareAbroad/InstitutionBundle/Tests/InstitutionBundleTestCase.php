@@ -38,21 +38,21 @@ abstract class HelperBundleTestCase extends \PHPUnit_Framework_TestCase
         $doctrine = self::$container->get('doctrine');
         $connection = $doctrine->getConnection();
         $databaseName = $connection->getDatabase();
-        
-         // extra check that we are indeed using fixtures_chromedia_global database
+        echo $databaseName;exit;
+        // extra check that we are indeed using fixtures_healthcareabroad database
         if ($databaseName != 'fixtures_healthcareabroad'){
             throw new \Exception("You must use `fixtures_healthcareabroad` database for testing instead of `{$databaseName}`");
         }
         
         // drop and create fixtures db
-        //$connection->getSchemaManager()->dropAndCreateDatabase($databaseName);
+        $connection->getSchemaManager()->dropAndCreateDatabase($databaseName);
         
-       // $connection->exec("USE `{$databaseName}`");
-        //$fixturesSqlFile = realpath(dirname(__DIR__).'/../../../data/healthcareabroad.sql');
+        $connection->exec("USE `{$databaseName}`");
+        $fixturesSqlFile = realpath(dirname(__DIR__).'/../../../data/healthcareabroad.sql');
         
         // import fixtures dump
-       // $sql = file_get_contents($fixturesSqlFile);
-        //$stmt = $connection->prepare($sql);
-        //$r = $stmt->execute();
+        $sql = file_get_contents($fixturesSqlFile);
+        $stmt = $connection->prepare($sql);
+        $r = $stmt->execute();
     }
 }
