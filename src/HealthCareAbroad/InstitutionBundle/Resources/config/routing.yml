@@ -22,6 +22,12 @@ InstitutionBundle_create_institution:
     requirements:
        _method: GET|POST
 
+institution_signUp:
+    pattern:  /signUp
+    defaults: {_controller: InstitutionBundle:Institution:signUp }
+    requirements:
+        _method: GET|POST
+       
 institution_editAccount:
     pattern:  /institution/editAccount
     defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount }
@@ -39,7 +45,6 @@ institution_invite_user:
     defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
     requirements:    
         _method:  GET|POST
-        
 institution_login:
     pattern:  /institution/login
     defaults: { _controller: InstitutionBundle:InstitutionUser:login }
@@ -55,6 +60,3 @@ institution_logout:
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
-
-
-    
