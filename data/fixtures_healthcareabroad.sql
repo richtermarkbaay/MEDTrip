@@ -302,6 +302,14 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
   KEY `institution_user_type_id` (`institution_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_users`
+--
+
+INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
+(1, 1, 1, '2012-08-02 03:43:12', 1);
+
+
 -- --------------------------------------------------------
 
 --
