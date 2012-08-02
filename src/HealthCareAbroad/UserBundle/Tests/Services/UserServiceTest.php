@@ -45,4 +45,11 @@ class UserServiceTest extends UserBundleTestCase
         $result = $this->service->getUser($user);
         $this->assertNull($result);
     }
+    
+    public function testFindWithInvalidSearchByOptions()
+    {
+        $searchBy = array('this-is-an-invalid-key-for-sure' => 1, 'email' => 'test.user@chromedia.com');
+        $options = array('limit' => 1);
+        $this->service->find($searchBy, $options);
+    }
 } 
