@@ -94,6 +94,8 @@ class InstitutionUserService extends UserService
     
     		return TRUE;
     	}
+    	$this->service->get('InstitutionBundle:institutionUser');
+    	
     
     	// something went wrong in creating global account
     	return NULL;
