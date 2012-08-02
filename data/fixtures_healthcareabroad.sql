@@ -333,6 +333,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_invitations` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `institution_user_invitations` (`id`, `institution_id`, `invitation_token_id`, `email`, `message`, `first_name`, `middle_name`, `last_name`, `date_created`, `status`) VALUES
+(1, 1, 1, 'test-invited-institution-user@chromedia.com', 'lorem ipsum', 'Test', 'Invited', 'User', '2012-08-02 06:21:36', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -417,6 +420,13 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `invitation_tokens`
+--
+
+INSERT INTO `invitation_tokens` (`id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
+(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1)
 
 -- --------------------------------------------------------
 
