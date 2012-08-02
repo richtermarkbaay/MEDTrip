@@ -50,7 +50,7 @@ class InstitutionUserInvitation
     private $status;
 
     /**
-     * @var HealthCareAbroad\HelperBundle\Entity\InvitationTokens
+     * @var HealthCareAbroad\HelperBundle\Entity\InvitationToken
      */
     private $invitationToken;
 
@@ -227,10 +227,10 @@ class InstitutionUserInvitation
     /**
      * Set invitationToken
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\InvitationTokens $invitationToken
+     * @param HealthCareAbroad\HelperBundle\Entity\InvitationToken $invitationToken
      * @return InstitutionUserInvitation
      */
-    public function setInvitationToken(\HealthCareAbroad\HelperBundle\Entity\InvitationTokens $invitationToken = null)
+    public function setInvitationToken(\HealthCareAbroad\HelperBundle\Entity\InvitationToken $invitationToken = null)
     {
         $this->invitationToken = $invitationToken;
         return $this;
@@ -239,7 +239,7 @@ class InstitutionUserInvitation
     /**
      * Get invitationToken
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\InvitationTokens 
+     * @return HealthCareAbroad\HelperBundle\Entity\InvitationToken 
      */
     public function getInvitationToken()
     {

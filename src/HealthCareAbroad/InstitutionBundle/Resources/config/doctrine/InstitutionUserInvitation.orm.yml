@@ -45,7 +45,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
             nullable: false
     manyToOne:
         invitationToken:
-            targetEntity: HealthCareAbroad\HelperBundle\Entity\InvitationTokens
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\InvitationToken
             cascade: {  }
             mappedBy: null
             inversedBy: null
