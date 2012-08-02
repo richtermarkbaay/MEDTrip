@@ -3,6 +3,7 @@
 namespace HealthCareAbroad\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 /**
  * AdminUserRepository
@@ -12,4 +13,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class AdminUserRepository extends EntityRepository
 {
+    public function findActiveUserById($accountId)
+    {
+        return $this->findOneBy(array('accountId' => $accountId, 'status' => SiteUser::STATUS_ACTIVE));
+    }
 }

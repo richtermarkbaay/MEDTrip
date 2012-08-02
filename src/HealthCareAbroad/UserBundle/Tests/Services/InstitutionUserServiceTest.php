@@ -54,6 +54,34 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $user->setStatus(SiteUser::STATUS_ACTIVE);
 	    
 	    $user = $this->service->create($user);
+	    $this->assertTrue($user->getAccountId() != 0);
+	    
+	    $savedUser = $this->getDoctrine()->getRepository('UserBundle:InstitutionUser')->find($user->getAccountId());
+	    $this->assertNotNull($savedUser);
+	    
+	    return $user;
+	}
+	
+	/**
+	 * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+	 */
+	public function testCreateWithMissingFields()
+	{
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+	    $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
+	     
+	    $user = new InstitutionUser();
+	     
+	    $user->setEmail(null);
+	    $user->setPassword($this->commonPassword);
+	    $user->setFirstName('');
+	    $user->setMiddleName('');
+	    $user->setLastName('User');
+	    $user->setInstitution($institution);
+	    $user->setInstitutionUserType($institutionUserType);
+	    $user->setStatus(SiteUser::STATUS_ACTIVE);
+	     
+	    $user = $this->service->create($user);
 	    return $user;
 	}
 	
@@ -150,6 +178,8 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$retrievedUser = $this->service->findByEmailAndPassword($email, $this->commonPassword);
 		
 		$this->assertNotNull($retrievedUser);
+		$this->assertEquals($user->getEmail(), $user->getEmail());
+		$this->assertEquals($user->getPassword(), $user->getPassword());
 		
         // test for an admin user email
         $retrievedUser = $this->service->findByEmailAndPassword('test.adminuser@chromedia.com', $this->commonPassword);
@@ -165,5 +195,9 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 	    $id = $user->getAccountId();
 		$retrievedUser = $this->service->findById($id);
 		$this->assertNotNull($retrievedUser, "No InstitutionUser with AccountId = {$id}");
+		
+		// test invalid id 
+		$retrievedUser = $this->service->findById(time());
+		$this->assertNull($retrievedUser);
 	}
 }
