@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\UserLoginType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,10 +37,12 @@ class InstitutionUserController extends Controller
     public function loginAction()
     {
         $user = new InstitutionUser();
-        $form = $this->createFormBuilder($user)
+        /**$form = $this->createFormBuilder($user)
             ->add('email', 'email', array('property_path'=> false))
             ->add('password', 'password', array('property_path'=> false))
-            ->getForm();
+            ->getForm();**/
+        
+        $form = $this->createForm(new UserLoginType());
         
         if ($this->getRequest()->isMethod('POST')) {
             
