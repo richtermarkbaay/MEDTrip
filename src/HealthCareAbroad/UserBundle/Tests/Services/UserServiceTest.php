@@ -46,6 +46,9 @@ class UserServiceTest extends UserBundleTestCase
         $this->assertNull($result);
     }
     
+    /**
+     * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+     */
     public function testFindWithInvalidSearchByOptions()
     {
         $searchBy = array('this-is-an-invalid-key-for-sure' => 1, 'email' => 'test.user@chromedia.com');

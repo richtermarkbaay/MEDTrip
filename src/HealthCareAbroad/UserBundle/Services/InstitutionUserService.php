@@ -65,46 +65,13 @@ class InstitutionUserService extends UserService
      */
     public function update(InstitutionUser $institutionUser)
     {
-
-    	// update user in chromedia global accounts
-    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, FALSE)){
-        
-    		return TRUE;
-    	}
-    
-    	// something went wrong in creating global account
-    	return NULL;
-    }
-    
-    /**
-     * Update Account of institution user
-     *
-     * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
-     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\SiteUser>|NULL
-     */
-    public function changePassword(InstitutionUser $institutionUser, $accountId, $password)
-    {
-    	//set new Password
-    	$institutionUser->setPassword($password);
-
-    	// update user in chromedia global accounts
-    	if ( $institutionUser = $this->updateUser($institutionUser, $accountId, TRUE)){
-    
-    		return TRUE;
-    	}
-    	$this->service->get('InstitutionBundle:institutionUser');
-    	
-    
-    	// something went wrong in creating global account
-    	return NULL;
-
         if (!$institutionUser->getAccountId()) {
             throw InvalidInstitutionUserOperationException::illegalUpdateWithNoAccountId();
         }
         
     	// update user in chromedia global accounts
         $institutionUser = $this->updateUser($institutionUser);
-        return $institutionUser;
+    	return $institutionUser;
     }
     
     /**
