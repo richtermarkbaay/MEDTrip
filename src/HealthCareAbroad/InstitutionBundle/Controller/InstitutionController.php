@@ -4,6 +4,10 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use Assetic\Exception\Exception;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
+
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -21,17 +25,16 @@ class InstitutionController extends Controller
 	public function signUpAction()
 	{
 		$user = new InstitutionUser();
-		$form = $this->createFormBuilder()
+		$form = $this->createForm(new InstitutionType());
+		//getActiveCitiesByCountryId($countryId)
 		
-		->add('email', 'text')
-		->add('firstName', 'text')
-		->add('middleName', 'text')
-		->add('lastName', 'text')
-		->getForm();
 		
-		if($this->getRequest()->isMethod('POST'))
-		{
-			echo "check";
+		if ($this->getRequest()->isMethod('POST')) {
+            
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+               echo  $form->get('firstName')->getData();exit;
+            }
 		}
 		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
 				'form' => $form->createView(),
