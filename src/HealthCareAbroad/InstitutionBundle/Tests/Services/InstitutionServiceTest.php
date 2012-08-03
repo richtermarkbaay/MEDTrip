@@ -5,12 +5,13 @@
  * @author Alnie Jacobe
  *
  */
-namespace HealthCareAbroad\HelperBundle\Tests\Services;
+namespace HealthCareAbroad\InstitutionBundle\Tests\Services;
 
-use HealthCareAbroad\HelperBundle\Tests\HelperBundleTestCase;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleTestCase;
 
-class InstitutionServiceTest extends HelperBundleTestCase
+class InstitutionServiceTest extends InstitutionBundleTestCase
 {
 	/**
 	 *
@@ -19,7 +20,8 @@ class InstitutionServiceTest extends HelperBundleTestCase
 	protected $service;
 	public function setUp()
 	{
-		$this->service = new InstitutionService(parent::$container->get('doctrine'));
+		$this->service = new InstitutionService();
+		$this->service->setDoctrine($this->getDoctrine());
 		
 	}
 	

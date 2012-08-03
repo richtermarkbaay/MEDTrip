@@ -7,13 +7,15 @@
  */
 
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class InstitutionUserControllerTest extends WebTestCase
+
+use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
+
+class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
 {
-    private $userEmail = 'test.user@chromedia.com';
-    private $userPassword = '123456';
-    
+    /**
+     * Functional test for login and logout flow
+     */
     public function testLoginAndLogoutFlow()
     {
         $client = static::createClient();
@@ -54,9 +56,8 @@ class InstitutionUserControllerTest extends WebTestCase
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
         
-        // assert that it was redirected to /institution/login after clicking the submitting wrong login
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/institution/login', $client->getResponse()->headers->get('location'));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Either your email or password is wrong.")')->count()); // look for the text "Email and password are required."
         //---- end login with invalid credentials
         
         //---- login with missing required fields
@@ -70,7 +71,27 @@ class InstitutionUserControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0,$crawler->filter('html:contains("Email and password are required.")')->count()); // look for the text "Email and password are required."
         //---- end login with missing required fields -->
+    }
+    
+    /**
+     * Functional test for change password flow
+     */
+    public function testChangePasswordFlow()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/institution/change-password');
         
-        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Current Password")')->count()); // look for the Current Password text
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("New Password")')->count()); // look for the New Password text
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm Password")')->count()); // look for the Confirm Password text
+
+        $form = $crawler->selectButton('submit')->form();
+        $formValues = array(
+            'institutionUserChangePasswordType[current_password]' => $this->userPassword,
+            'institutionUserChangePasswordType[new_password]' => $this->userPassword.'1',
+            'institutionUserChangePasswordType[confirm_password]' => $this->userPassword.'1',
+        );
+        $crawler = $client->submit($form, $formValues);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Password changed!")')->count());
     }
 }

@@ -51,9 +51,7 @@ class InstitutionUserController extends Controller
 	            }
                 else {
                     // invalid login
-                    $this->get('session')->setFlash('flash.notice', 'Email and password is invalid.');
-                    
-                    return $this->redirect($this->generateUrl('institution_login'));
+                    $this->get('session')->setFlash('flash.notice', 'Either your email or password is wrong.');
                 }
             }
             else {
@@ -79,7 +77,6 @@ class InstitutionUserController extends Controller
         $session = $this->getRequest()->getSession();
         $institutionUserService = $this->get('services.institution_user');
         $institutionUser = $institutionUserService->findById($session->get('accountId'));
-        
         $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
     	
     	if ($this->getRequest()->isMethod('POST')) {
