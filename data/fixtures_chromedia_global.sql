@@ -66,6 +66,13 @@ CREATE TABLE IF NOT EXISTS `account_applications` (
   KEY `application_id` (`application_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `account_applications`
+--
+
+INSERT INTO `account_applications` (`account_id`, `application_id`, `token`, `status`) VALUES
+(1, 1, '213423sdfadsfasdfasdfdasfasdf', 1);
+
 -- --------------------------------------------------------
 
 --
