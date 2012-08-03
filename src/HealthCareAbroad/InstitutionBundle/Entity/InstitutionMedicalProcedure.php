@@ -9,6 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalProcedure
 {
+	
+	static $STATUS = array(
+			'inactive' => 0,
+			'active' => 1
+	);
+
     /**
      * @var bigint $id
      */

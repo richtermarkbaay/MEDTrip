@@ -1,0 +1,79 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+	<div id="content">
+
+		<div id="page-heading"><h3>List of Institutions Medical Procedures</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			{% if app.session.hasFlash('notice') %}
+				{% include '::notice.admin.html.twig' with {'class': 'success', 'message': app.session.flash('notice') } %}
+			{% endif %}
+
+			<div id="filter-wrapper">
+				<label>Filter: </label>
+				<select id="procedure_filter" class="styledselect_form_1">
+					{% for filter in filters|keys %}
+						<option value="{{ filter }}" {% if filter == selectedFilter %} selected {% endif %}>{{ filter }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			
+			<table id="product-table" class="mid-size">
+			<tr>
+				<th class="table-header-repeat line-left minwidth-1" width="200"><a href="">Procedure</a></th>
+				<th class="table-header-repeat line-left" width="200"><a href="">Procedure Type</a></th>
+				<th class="table-header-repeat line-left" width="300"><a href="">Description</a></th>
+				<th class="table-header-options actions line-left"><a href="">Actions</a></th>
+			</tr>
+
+			{% for procedure in institutionProcedures %}
+				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+					<td>{{ procedure.medicalProcedure.name }}</td>
+					<td>{{ procedure.medicalProcedure.medicalProcedureType.name }}</td>
+					<td>{{ procedure.description }}</td>
+					<td align="center">
+						<a id="institutionProcedure-{{procedure.id}}" href="javascript:void(0)" onclick="InstitutionMedicalProcedure.updateStatus($(this))">
+							{% if procedure.status %} deactivate {% else %} activate {% endif %}
+						</a> 
+
+					</td>
+				</tr>
+			{% else  %}
+				<tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+			{% endfor %}
+			</table>
+
+			<h2 style="padding-top: 20px">Add New Medical Procedure</h2>
+			<div style="border-top: 2px dashed #ddd;"></div>			
+			<form novalidate="novalidate" action="{{ path('admin_institution_saveMedicalProcedure', {id:id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
+				{{ form_row(form.medical_center) }}
+				{{ form_row(form.procedure_type) }}
+				{{ form_row(form.medical_procedure) }}
+				{{ form_row(form.description) }}
+				{{ form_row(form.status) }}
+				{{ form_rest(form) }}
+			    <input type="submit" class="form-submit"/>
+			</form>
+
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+	{% block javascripts %}
+		{{ parent() }}
+		<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+		<script type="text/javascript">
+			var params = {
+				manageProceduresUrl : "{{ path('admin_institution_manageProcedures', {id:id}) }}",
+				loadProcedureTypesUrl : "{{ path('admin_loadMedicalProcedureTypes') }}",
+				loadProceduresUrl : "{{ path('admin_loadMedicalProcedures', {id:id}) }}",
+				updateProcedureStatusUrl : "{{ path('admin_institution_updateProcedureStatus') }}"
+			};
+			InstitutionMedicalProcedure.init(params);
+		</script>	
+	{% endblock %}
+
+{% endblock %}

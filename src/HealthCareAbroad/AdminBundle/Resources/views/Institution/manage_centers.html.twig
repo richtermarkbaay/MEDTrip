@@ -3,20 +3,24 @@
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h3>{{ id is defined ? 'Edit' : 'Add' }} Institution Medical Center</h3></div>
+
+		<div id="page-heading"><h3>Manage Institution Medical Center</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
+
 			{% block wrappedContent %}
+
+				{% if app.session.hasFlash('notice') %}
+					{% include '::notice.admin.html.twig' with {'class': 'success', 'message': app.session.flash('notice') } %}
+				{% endif %}
+
 				<form action="{{ path('admin_institution_manageCenters', {id:id}) }}" method="POST">
 				<ul style="list-style:none">
 					{% for center in centers %}
-						{% if center.id in centerIdsWithProcedureType %}
-							{% set disabled = 'disabled' %}
-						{% else %}
-							{% set disabled = '' %}
-						{% endif %}
+						{% set checked = center.id in selectedCenterIds ? 'checked=checked' : '' %}
+						{% set disabled = center.id in centerIdsWithProcedureType ? 'disabled' : '' %}
 						<li>
-							<input type="checkbox" id="center-{{ center.id }}" name="centers[]" value="{{ center.id }}" {{ center.id in selectedCenterIds ? 'checked="checked"' : '' }} {{ disabled }}/>
+							<input type="checkbox" id="center-{{ center.id }}" name="centers[]" value="{{ center.id }}" {{ checked }} {{ disabled }}/>
 							<label for="center-{{ center.id }}">{{ center.name }}</label>
 						</li>
 					{% endfor %}
