@@ -19,23 +19,17 @@
 			    <form novalidate="novalidate" action="{{ path('institution_invite_user') }}" method="post" {{ form_enctype(form) }} >
     			    <!-- start id-form -->
             		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-            		    
-            		    {{ form_errors(form) }}                                    		
             		
-                		{{ form_row(form.firstName) }}
-                			
+            		    {{ form_row(form.firstName) }}
                 		{{ form_row(form.middleName) }}
-                				
-                        {{ form_row(form.lastName) }}
-                        
+                		{{ form_row(form.lastName) }}
                         {{ form_row(form.email) }}
-                        
                         {{ form_row(form.message) }}
                         
                         <tr>
                     		<th>&nbsp;</th>
                     		<td valign="top">
-                    			<input type="submit" value="" class="form-submit" />
+                    			<input type="submit" name="submit" value="" class="form-submit" />
                     			<input type="reset" value="" class="form-reset"  />
                     		</td>
                     		<td></td>

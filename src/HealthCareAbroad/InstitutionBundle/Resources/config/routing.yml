@@ -41,7 +41,7 @@ institution_change_password:
         _method:  GET|POST
         
 institution_invite_user:
-    pattern:  /institution/invite-user
+    pattern:  /institution/invite-staff
     defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
     requirements:    
         _method:  GET|POST

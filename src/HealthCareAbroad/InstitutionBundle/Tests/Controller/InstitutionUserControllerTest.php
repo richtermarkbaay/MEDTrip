@@ -8,7 +8,7 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
-
+use \HCA_DatabaseManager;
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
@@ -93,5 +93,47 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         );
         $crawler = $client->submit($form, $formValues);
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Password changed!")')->count());
+        
+        // revert the chromedia global accounts fixtures after changing the password
+        \HCA_DatabaseManager::getInstance()->restoreGlobalAccountsDatabaseState();
+    }
+    
+    
+    public function testInviteFlow()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/institution/invite-staff');
+        
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Invite staff")')->count(), 'No "Invite staff string found"'); // look for the Current Password text
+        
+        $formValues = array(
+            'institutionUserInvitation[firstName]' => 'AAA',
+            'institutionUserInvitation[middleName]' => 'BBB',
+            'institutionUserInvitation[lastName]' => 'CCC',
+            'institutionUserInvitation[firstName]' => 'AAA',
+            'institutionUserInvitation[email]' => 'aaa@chromedia.com',
+            'institutionUserInvitation[message]' => 'this is the message',
+        );
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals('/institution/view-all-staff', $client->getResponse()->headers->get('location'));
+        
+        // test for missing fields flow
+        $crawler = $client->request('GET', '/institution/invite-staff');
+        $formValues = array(
+                        'institutionUserInvitation[firstName]' => 'AAA',
+                        'institutionUserInvitation[middleName]' => 'BBB',
+                        'institutionUserInvitation[lastName]' => 'CCC',
+                        'institutionUserInvitation[firstName]' => 'AAA',
+                        'institutionUserInvitation[email]' => '',
+                        'institutionUserInvitation[message]' => 'this is the message',
+        );
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
     }
 }

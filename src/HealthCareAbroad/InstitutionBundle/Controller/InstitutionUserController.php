@@ -138,32 +138,27 @@ class InstitutionUserController extends Controller
     public function inviteAction()
     {
         $institution = $this->get('services.institution')->getCurrentInstitution();
-        
         $institutionUserInvitation = new InstitutionUserInvitation();
-      
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
         
         if ($this->getRequest()->isMethod('POST')) {
             
             $form->bind($this->getRequest());
-            
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
-                
                 if ($sendingResult) {
-                    $this->get('session')->setFlash('flash.notice', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('notice', "Invitation sent to {$institutionUserInvitation->getEmail()}");
                 }
                 else {
-                    $this->get('session')->setFlash('flash.notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
                 }
-                
                 return $this->redirect($this->generateUrl('institution_invite_user'));
             }
         }
         
-        return $this->render('InstitutionBundle:Default:invite.html.twig', array(
-                        'form' => $form->createView(),
+        return $this->render('InstitutionBundle:InstitutionUser:invite.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
     

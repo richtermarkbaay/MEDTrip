@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUserInvitation
 {
+    const STATUS_PENDING_SENDING = 0;
+    const STATUS_SENT = 1;
+    const STATUS_ACCEPTED = 2;
+    
     /**
      * @var integer $id
      */
