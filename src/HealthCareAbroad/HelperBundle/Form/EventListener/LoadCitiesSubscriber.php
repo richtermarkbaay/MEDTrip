@@ -1,7 +1,9 @@
 <?php 
 namespace HealthCareAbroad\HelperBundle\Form\EventListener;
 
-use HealthCareAbroad\HelperBundle\Form\CityListType;
+use Doctrine\Tests\DBAL\Types\VarDateTimeTest;
+
+use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
 
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,10 +27,15 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
     public function preSetData(DataEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
+        $form = $event->getForm();	
+		if($data) 
+        {
+        	var_dump($form);
+        	var_dump($data);exit;
+        
+        }
 
-
-        $countryId = !empty($data) && $data->getCountry() ? $data->getCountry()->getId() : 1;
+        $countryId = !empty($data) && $data->getCountry() ? $data->getCountryId() : 1;
 		$form->add($this->factory->createNamed('city', new CityListType($countryId)));
     }
 }

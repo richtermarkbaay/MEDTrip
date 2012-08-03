@@ -5,6 +5,7 @@ parameters:
 services:
     services.institution:
         class: %services.institution_class%
+        arguments: [@doctrine]]
         calls:
             - [setDoctrine, [@doctrine]]
     form.institution_list:

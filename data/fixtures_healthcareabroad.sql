@@ -109,6 +109,11 @@ CREATE TABLE IF NOT EXISTS `cities` (
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `cities`
+--
+
+INSERT INTO `cities` (`id`, `country_id`, `name`, `slug`, `status`) VALUES(1, 1, 'cebu', 'test', 1);
 -- --------------------------------------------------------
 
 --
@@ -139,6 +144,11 @@ CREATE TABLE IF NOT EXISTS `countries` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 -- --------------------------------------------------------
 
 --

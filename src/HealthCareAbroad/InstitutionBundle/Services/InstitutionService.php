@@ -5,16 +5,26 @@ namespace HealthCareAbroad\InstitutionBundle\Services;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\Country;
 class InstitutionService
 {
+	
     protected $doctrine;
-
-	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+    /**
+     *
+     * @var Doctrine\ORM\EntityManager
+     */
+    
+    protected $em;
+// 	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+//     {
+//     	$this->doctrine = $doctrine;
+//     }
+    public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
     	$this->doctrine = $doctrine;
     }
-    
     /**
      * Get the current institution set in the session
      * 
@@ -39,18 +49,23 @@ return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 
     }
     
     
-    public function createInstitution($name, $description, $slug)
+    public function createInstitution(Institution $institution)
     {
-    	$institution = new Institution();
-		$institution->setName($name);
-		$institution->setDescription($description);
-		$institution->setSlug($slug);
-		$institution->setStatus(1);
+//    	$institution = new Institution();
+// 		$institution->setName($name);
+// 		$institution->setDescription($description);
+// 		$institution->setSlug($slug);
+// 		$institution->setStatus(1);
+// 		$institution->setAddress1($address);
+// 		$institution->setAddress2($address);
+		$institution->setDateCreated(new \DateTime('now'));
 		
+//		$institution->setLogo($logo);
+//		$institution->setCityId($city);
+//		$institution->setCountryId($country);
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($institution);
 		$em->flush();
-		
 		return $institution;
 		
     }
