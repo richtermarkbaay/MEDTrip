@@ -29,6 +29,8 @@ class InstitutionUserService extends UserService
             $this->session->set('_security_institution_secured_area',  \serialize($securityToken));
             // $this->get("security.context")->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
+            $this->session->set('institutionId', $user->getInstitution()->getId());
+            $this->session->set('institutionName', $user->getInstitution()->getName());
             return true;
         }
         
@@ -151,7 +153,12 @@ class InstitutionUserService extends UserService
         $institutionUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
         
         return $institutionUser 
-            ? $this->getUser($institutionUser) // find a matching global account for this InstitutionUser 
+            ? $this->getAccountData($institutionUser) // find a matching global account for this InstitutionUser 
             : null; // no InstitutionUser found
+    }
+    
+    public function getAccountData(InstitutionUser $institutionUser)
+    {
+        return $this->getUser($institutionUser);
     }
 }

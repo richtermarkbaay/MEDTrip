@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -9,10 +11,20 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 class InstitutionService
 {
     protected $doctrine;
+    
+    /**
+     * @var HealthCareAbroad\UserBundle\Services\InstitutionUserService
+     */
+    protected $institutionUserService;
 
 	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    public function setInstitutionUserService(InstitutionUserService $institutionUserService)
+    {
+        $this->institutionUserService = $institutionUserService;
     }
     
     /**
@@ -27,15 +39,7 @@ class InstitutionService
 
     public function getInstitutions()
     {
-return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'InstitutionBundle:Institution p')->add('where', 'p.status=1');
-// 		var_dump(get_class($x));
-
-//     	exit;
-//     	return $this->doctrine->getEntityManager()->createQueryBuilder()
-// 				->add('select', 'p')
-// 				->add('from', 'ProviderBundle:Provider p')
-// 				->add('where', 'p.status = 1');
-
+        return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'InstitutionBundle:Institution p')->add('where', 'p.status=1');
     }
     
     
@@ -106,5 +110,16 @@ return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 
     		$addQry = "INSERT INTO institution_medical_procedure_types(institution_medical_center_id, medical_procedure_type_id) VALUES" . implode(',', $values);
     		$conn->exec($addQry);
     	}
+    }
+    
+    public function getAllStaffOfInstitution(Institution $institution)
+    {
+        $users = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findByInstitution($institution);
+        
+        $returnValue = array();
+        foreach($users as $user) {
+            $returnValue[] = $this->institutionUserService->getAccountData($user);
+        }
+        return $returnValue;
     }
 }

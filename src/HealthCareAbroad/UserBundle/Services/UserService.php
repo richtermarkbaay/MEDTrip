@@ -181,14 +181,18 @@ class UserService
      */
     public function getUser(\HealthCareAbroad\UserBundle\Entity\SiteUser $user)
     {
+        
         if ($user->getAccountId()){
-            $response = $this->request->get($this->chromediaAccountsUri.'/'.$user->getAccountId());
             
+            $response = $this->request->get($this->chromediaAccountsUri.'/'.$user->getAccountId());
             if (200 == $response->getStatusCode()) {
                 $accountData = \json_decode($response->getBody(true), true);
                 
                 return $this->hydrateAccountData($user, $accountData);
             }
+        }
+        else {
+            throw new FailedAccountRequestException("Cannot get Account with no id");
         }
         return NULL;
     }

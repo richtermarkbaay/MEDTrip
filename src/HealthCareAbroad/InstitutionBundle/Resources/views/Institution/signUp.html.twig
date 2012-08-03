@@ -1,0 +1,71 @@
+{% extends 'InstitutionBundle::signUpheader.html.twig' %}
+
+{% form_theme form '::form.admin.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1> Institution Details</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <!--  start table-content  -->
+            <div id="table-content">
+                {% if app.session.hasFlash('flash.notice') %}
+                    {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('flash.notice') } %}
+                {% endif %}
+                
+                <form novalidate="novalidate" action="{{ path('institution_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
+                    <!-- start id-form -->
+                    <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                        <tr>
+                            <th valign="top"><label for="form_Name" class="required">Name</label></th>
+                            <td>
+                                <input type="text" id="form_Name" name="form[Name]" required="required" class="inp-form"/>
+                            </td>
+                            <td style="display: block; "/>
+                        </tr>
+                        <tr>
+                            <th valign="top"><label for="form_Description" class="required">Description</label></th>
+                            <td>
+                                <textarea rows="15" cols="40" id="form_Description" required="required" ></textarea>
+                            </td>
+                            <td style="display: block; "/>
+                        </tr>
+                        
+                        <tr><th>Admin Accounts</th></tr>
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.middleName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.email) }}
+                        {{ form_rest(form) }}
+                        
+                        <tr>
+                            <th>&nbsp;</th>
+                            <td valign="top">
+                                <input type="submit" value="" class="form-submit" />
+                                <input type="reset" value="" class="form-reset"  />
+                            </td>
+                            <td></td>
+                        </tr>
+                        
+                        {{ form_rest(form) }}
+                        
+                    </table>
+                    <!-- end id-form  -->
+                </form>
+            </div>
+            <!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

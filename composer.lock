@@ -38,8 +38,8 @@
         {
             "package": "gedmo/doctrine-extensions",
             "version": "dev-master",
-            "source-reference": "3881e19cc9497efa132a55e44aebbc62405a05b1",
-            "commit-date": "1343672222"
+            "source-reference": "c801d6f5d9f768680a7f71dc4f27c8cb11acd0af",
+            "commit-date": "1343804719"
         },
         {
             "package": "guzzle/guzzle",
@@ -76,8 +76,8 @@
         {
             "package": "knplabs/gaufrette",
             "version": "dev-master",
-            "source-reference": "67df02e98ac63e28670c2032f15331276869c89e",
-            "commit-date": "1340261986"
+            "source-reference": "e2382038d69dca517a3b8976a2de855da956ce12",
+            "commit-date": "1343735447"
         },
         {
             "package": "kriswallsmith/assetic",
@@ -128,8 +128,8 @@
         {
             "package": "symfony/assetic-bundle",
             "version": "dev-master",
-            "source-reference": "24df9ede95084be882aeb557eaef5b761cfa00e0",
-            "commit-date": "1343684934"
+            "source-reference": "0c09207be07b044e06d28a4111f554f071e5b658",
+            "commit-date": "1343812720"
         },
         {
             "package": "symfony/monolog-bundle",
@@ -152,8 +152,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "a172a812960d060cd5dd13e4dcf3b2bc4043a18f",
-            "commit-date": "1343639879"
+            "source-reference": "b1618d210cb7e27036edcea9c163a94167e7df59",
+            "commit-date": "1343747192"
         },
         {
             "package": "twig/extensions",

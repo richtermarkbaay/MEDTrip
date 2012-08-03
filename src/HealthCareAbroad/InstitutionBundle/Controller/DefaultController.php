@@ -20,24 +20,4 @@ class DefaultController extends Controller
     {
         return $this->render('InstitutionBundle:Default:index.html.twig');
     }
-    
-    
-    public function Accounts_Accept_Invitation($token,$id)
-    {
-    	$em = $this->getDoctrine()->getEntityManager();
-    	
-    	$Invitationtoken = $this->getDoctrine()->getRepository('HelperBundle:InvitationToken')
-        			->find($token);
-      
-    	if (!$Invitationtoken) {
-            throw $this->createNotFoundException('Invalid Token.');
-        }
-        
-        $InstitutionUserInvitation = $em->getRepository('InstitutionBundle:InstitutionUserInvitation')
-                       ->getId($id);
-        
-        return $this->render('BloggerBlogBundle:Blog:show.html.twig', array(
-            'InstitutionUserInvitation'      => $InstitutionUserInvitation
-        ));
-    }
 }

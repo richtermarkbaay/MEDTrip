@@ -25,7 +25,8 @@
         
             <!--  start login-inner -->
             <div id="login-inner">
-                <form action="{{ path('institution_login') }}" method="POST" >
+                <form novalidate="novalidate" action="{{ path('institution_login') }}" method="POST" >
+                    {{ form_errors(form)  }}
                     <table border="0" cellpadding="0" cellspacing="0">
                         
                         {% if app.session.hasFlash('flash.notice') %}
@@ -37,7 +38,7 @@
                             </td>
                         </tr>
                         {% endif %}
-                    
+                        
                         <tr>
                             <th>Email</th>
                             <td> 
@@ -56,7 +57,7 @@
                         </tr>
                         <tr>
                             <th></th>
-                            <td><input type="submit" class="submit-login"  /></td>
+                            <td><input type="submit" name="submit" class="submit-login"  /></td>
                         </tr>
                         
                         

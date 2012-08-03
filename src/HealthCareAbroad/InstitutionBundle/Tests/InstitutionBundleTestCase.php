@@ -1,58 +1,45 @@
 <?php
 
+namespace HealthCareAbroad\InstitutionBundle\Tests;
 
-namespace HealthCareAbroad\HelperBundle\Tests;
+use \HCA_DatabaseManager;
 
-use Symfony\Component\Console\Helper\HelperSet;
-
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-
-require_once realpath(dirname(__DIR__).'/../../../app/AppKernel.php');
-
-abstract class HelperBundleTestCase extends \PHPUnit_Framework_TestCase
+abstract class InstitutionBundleTestCase extends \PHPUnit_Framework_TestCase
 {
-    protected static $kernel;
+    protected $doctrine = null;
     
-    protected static $container;
+    protected $container = null;
     
     public static function setUpBeforeClass()
     {
-        self::$kernel =  new \AppKernel('test', false);
-        self::$kernel->boot();
-        self::$container = self::$kernel->getContainer();
-        
-        if (!ini_get('display_errors')) {
-            ini_set('display_errors', '1');
-        }
-        self::restoreDatabaseState();
+        \HCA_DatabaseManager::getInstance()
+        ->restoreDatabaseState()
+        ->restoreGlobalAccountsDatabaseState();
     }
     
     public static function tearDownAfterClass()
     {
-        self::restoreDatabaseState();
+         \HCA_DatabaseManager::getInstance()
+         ->restoreDatabaseState()
+         ->restoreGlobalAccountsDatabaseState();
     }
     
-    protected static function restoreDatabaseState()
+    /**
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry
+     */
+    public function getDoctrine()
     {
-        
-        $doctrine = self::$container->get('doctrine');
-        $connection = $doctrine->getConnection();
-        $databaseName = $connection->getDatabase();
-        echo $databaseName;exit;
-        // extra check that we are indeed using fixtures_healthcareabroad database
-        if ($databaseName != 'fixtures_healthcareabroad'){
-            throw new \Exception("You must use `fixtures_healthcareabroad` database for testing instead of `{$databaseName}`");
+        if (\is_null($this->doctrine)) {
+            $this->doctrine = HCA_DatabaseManager::getInstance()->getDoctrine();
         }
-        
-        // drop and create fixtures db
-        $connection->getSchemaManager()->dropAndCreateDatabase($databaseName);
-        
-        $connection->exec("USE `{$databaseName}`");
-        $fixturesSqlFile = realpath(dirname(__DIR__).'/../../../data/healthcareabroad.sql');
-        
-        // import fixtures dump
-        $sql = file_get_contents($fixturesSqlFile);
-        $stmt = $connection->prepare($sql);
-        $r = $stmt->execute();
+        return $this->doctrine;
+    }
+    
+    public function getServiceContainer()
+    {
+        if (\is_null($this->container)) {
+            $this->container = \HCA_ServiceManager::getInstance()->getContainer();
+        }
+        return $this->container;
     }
 }

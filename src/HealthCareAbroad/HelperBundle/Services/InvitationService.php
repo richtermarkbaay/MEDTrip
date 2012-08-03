@@ -131,38 +131,33 @@ class InvitationService
 	public function sendInstitutionUserInvitation(Institution $institution, InstitutionUserInvitation $invitation)
 	{
 	    if (!$token = $invitation->getInvitationToken()) {
-
 	        // generate a token
 	        $token = $this->createInvitationToken(30);
 	        $invitation->setInvitationToken($token);
-
 	    }
+	    $invitation->setInstitution($institution);
 	    
-	    // persist invitation to database
-	    $em = $this->doctrine->getEntityManager();
-	    $em->persist($invitation);
-	    $em->flush();
 	    $messageBody = $this->twig->render('InstitutionBundle:Email:invite.email.twig', array(
             'institutionUserInvitation' => $invitation,
-
             'token' => $token,
-
             'institution' => $institution
         ));
-	    //echo $messageBody; exit;
 
 	    // send to email
 	    $message = \Swift_Message::newInstance()
-
     	    ->setSubject('Institution User Invitation for Health Care Abroad')
-
     	    ->setFrom('chaztine.blance@chromedia.com')
-
     	    ->setTo($invitation->getEmail())
-
     	    ->setBody($messageBody);
+	    $sendResult = $this->mailer->send($message);
 	    
-        return $this->mailer->send($message);
+	    // persist invitation to database
+	    $invitation->setStatus($sendResult ? InstitutionUserInvitation::STATUS_SENT : InstitutionUserInvitation::STATUS_PENDING_SENDING);
+	    $em = $this->doctrine->getEntityManager();
+	    $em->persist($invitation);
+	    $em->flush();
+	    
+        return $sendResult;
 	}
 
 }
