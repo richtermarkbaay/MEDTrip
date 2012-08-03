@@ -2,9 +2,13 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Doctrine\ORM\EntityRepository;
+
+use \Exception;
 
 /**
  * InstitutionUserRepository
@@ -17,5 +21,18 @@ class InstitutionUserRepository extends EntityRepository
     public function findActiveUserById($id)
     {
         return $this->findOneBy(array('accountId' => $id, 'status' => SiteUser::STATUS_ACTIVE));
+    }
+    
+    public function findByInstitutionId(Institution $institution, $status=null)
+    {
+        if (!$institution->getId()) {
+            throw new \Exception("Cannot find users of invalid institution.");
+        }
+        
+        $criteria = array('institutionId' => $institutionId);
+        if (!\is_null($status)) {
+            $criteria['status'] = $status;
+        }
+        return $this->findBy($criteria); 
     }
 }

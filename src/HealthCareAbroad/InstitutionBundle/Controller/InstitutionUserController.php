@@ -153,7 +153,7 @@ class InstitutionUserController extends Controller
                 else {
                     $this->get('session')->setFlash('notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
                 }
-                return $this->redirect($this->generateUrl('institution_invite_user'));
+                return $this->redirect($this->generateUrl('institution_view_all_staff'));
             }
         }
         
@@ -205,6 +205,16 @@ class InstitutionUserController extends Controller
         $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
         
         return $this->redirect($this->generateUrl('institution_homepage'));
+    }
+    
+    public function viewAllAction()
+    {
+        $institutionService = $this->get('services.institution');
+        $institution = $institutionService->getCurrentInstitution();
+        
+        $users = $institutionService->getAllStaffOfInstitution($institution);
+        
+        return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
     
 }

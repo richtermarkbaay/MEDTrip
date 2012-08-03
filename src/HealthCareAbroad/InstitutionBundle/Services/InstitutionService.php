@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -9,10 +11,20 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 class InstitutionService
 {
     protected $doctrine;
+    
+    /**
+     * @var HealthCareAbroad\UserBundle\Services\InstitutionUserService
+     */
+    protected $institutionUserService;
 
 	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    public function setInstitutionUserService(InstitutionUserService $institutionUserService)
+    {
+        $this->institutionUserService = $institutionUserService;
     }
     
     /**
@@ -65,5 +77,16 @@ class InstitutionService
 			$addQry = "INSERT INTO institution_medical_centers(institution_id, medical_center_id) VALUES" . implode(',', $values);
 			$conn->exec($addQry);
 		}    	
+    }
+    
+    public function getAllStaffOfInstitution(Institution $institution)
+    {
+        $users = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findByInstitution($institution);
+        
+        $returnValue = array();
+        foreach($users as $user) {
+            $returnValue[] = $this->institutionUserService->getAccountData($user);
+        }
+        return $returnValue;
     }
 }

@@ -136,4 +136,12 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
     }
+    
+    public function testViewAllStaffFlow()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/institution/view-all-staff');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Staff")')->count(), 'Cannot find string "List of Staff"');
+    }
 }

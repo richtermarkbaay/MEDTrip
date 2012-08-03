@@ -1,0 +1,57 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} Staff {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ app.session.get('institutionName') }} List of Staff</h1>
+    </div>
+
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			
+			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
+    				<tr>
+    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
+    					<th class="table-header-repeat line-left minwidth-1"><a href="#">First Name</a></th>
+    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Middle Name</a></th>
+    					<th class="table-header-repeat line-left"><a href="#">Email</a></th>
+    					<th class="table-header-options line-left"><a href="#">Options</a> </th>
+    				</tr>
+    				
+    				{% set even = false %}
+    				{% for staff in users %}
+    				    <tr class="{{ even ? 'alternate-row' : ''}}">
+        					<td>{{ staff.lastName | title }}</td>
+        					<td>{{ staff.firstName | title }}</td>
+        					<td>{{ staff.middleName | title }}</td>
+        					<td>{{ staff.email }}</td>
+        					<td class="options-width">
+            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+            					<a href="#" title="Activate {{ staff.fullName | title}}" class="icon-5 info-tooltip"></a>
+        					</td>
+        				</tr>
+        				{% set even = even ? false : true %}    
+    				{% endfor %}
+    				
+				</table>
+				<!--  end staff-list................................... --> 
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
