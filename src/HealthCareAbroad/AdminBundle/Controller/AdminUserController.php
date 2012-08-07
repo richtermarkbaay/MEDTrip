@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\UserLoginType;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -13,12 +15,7 @@ class AdminUserController extends Controller
 {
     public function loginAction()
     {
-        $user = new AdminUser();
-        $form = $this->createFormBuilder($user)
-        ->add('email', 'email', array('property_path'=> false))
-        ->add('password', 'password', array('property_path'=> false))
-        ->getForm();
-        
+        $form = $this->createForm(new UserLoginType());
         if ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
@@ -30,10 +27,11 @@ class AdminUserController extends Controller
                 }
                 else {
                     // invalid login
-                    $this->get('session')->setFlash('notice', 'Email and Password is invalid.');
-            
-                    return $this->redirect($this->generateUrl('admin_login'));
+                    $this->get('session')->setFlash('notice', 'Either your email or password is wrong.');
                 }
+            }
+            else {
+                $this->get('session')->setFlash('notice', 'Email and password are required.');
             }
         }
         
