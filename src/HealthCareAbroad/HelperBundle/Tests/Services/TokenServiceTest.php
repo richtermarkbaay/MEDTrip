@@ -28,7 +28,7 @@ class TokenServiceTest extends HelperBundleTestCase
 	
 	public function setUp()
 	{
-		$this->service = new TokenService(parent::$container->get('doctrine'));
+		$this->service = new TokenService($this->getDoctrine());
 	}
 	
 	public function tearDown()
@@ -48,7 +48,7 @@ class TokenServiceTest extends HelperBundleTestCase
 	public function testGetActiveInstitutionUserInvitatinByToken()
 	{
 		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
-		$institutionUser = $this->service->getActiveInstitutionUserInvitatinByToken($token);
+		$institutionUser = $this->service->getActiveInstitutionUserInvitationByToken($token);
 		$this->assertEmpty($institutionUser);
 	
 		return $institutionUser;

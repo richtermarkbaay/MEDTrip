@@ -137,6 +137,14 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
     }
     
+    /**
+     * @depends testInviteFlow
+     */
+    /**public function testAcceptInvitation()
+    {
+        
+    }**/
+    
     public function testViewAllStaffFlow()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
