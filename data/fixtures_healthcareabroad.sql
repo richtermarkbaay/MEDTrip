@@ -519,6 +519,7 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
 --
 -- Dumping data for table `medical_procedure_types`
 --
