@@ -40,7 +40,6 @@ class TokenServiceTest extends HelperBundleTestCase
 	{			  
 		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
 		$institution = $this->service->getActiveInstitutionInvitationByToken($token);
-		//var_dump($institution);exit;
 		$this->assertNotEmpty($institution);
 		
 		return $institution;

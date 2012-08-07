@@ -26,6 +26,13 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
         );
     }
     
+    protected function requestUrlWithNoLoggedInUser($uri, $method="GET")
+    {
+        $client = static::createClient();
+        $client->request($method, $uri);
+        return $client;
+    }
+    
     protected function getBrowserWithActualLoggedInUser()
     {
         $client = static::createClient();
