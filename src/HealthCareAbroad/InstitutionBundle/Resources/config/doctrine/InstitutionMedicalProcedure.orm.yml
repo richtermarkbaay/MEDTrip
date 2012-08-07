@@ -1,7 +1,7 @@
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure:
     type: entity
     table: institution_medical_procedures
-    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionRepository
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalProcedureRepository
     fields:
         id:
             id: true
