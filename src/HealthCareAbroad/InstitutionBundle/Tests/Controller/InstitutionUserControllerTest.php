@@ -137,13 +137,29 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
     }
     
-    /**
-     * @depends testInviteFlow
-     */
-    /**public function testAcceptInvitation()
+    
+    public function testAcceptInvitation()
     {
+        $client = static::createClient();
+        $uri = '/accounts/accept-invitation/94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7';
+        $crawler = $client->request('GET', $uri);
+
+        $this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to homepage
+        $this->assertEquals('/institution', $client->getResponse()->headers->get('location'));
+    }
+    
+    /**
+     * @depends testAcceptInvitation
+     */
+    public function testAcceptInvalidInvitation()
+    {
+        $client = static::createClient();
+        $uri = '/accounts/accept-invitation/94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7';
+        $crawler = $client->request('GET', $uri);
         
-    }**/
+        // test that it should be a 404 error code since this token has already been accepted
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
     
     public function testViewAllStaffFlow()
     {

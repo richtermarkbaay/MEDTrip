@@ -21,8 +21,9 @@ abstract class HelperBundleTestCase extends \PHPUnit_Framework_TestCase
 	public static function tearDownAfterClass()
 	{
 		 \HCA_DatabaseManager::getInstance()
-		 ->restoreDatabaseState()
-		 ->restoreGlobalAccountsDatabaseState();
+		 //->restoreDatabaseState()
+		 //->restoreGlobalAccountsDatabaseState();
+		 ;
 	}
 	
 	/**

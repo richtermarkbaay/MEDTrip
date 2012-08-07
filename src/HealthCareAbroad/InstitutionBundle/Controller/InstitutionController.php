@@ -1,5 +1,4 @@
 <?php
-
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use Assetic\Exception\Exception;
