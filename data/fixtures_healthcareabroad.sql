@@ -262,14 +262,6 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   KEY `medical_center_id` (`medical_center_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
---
--- Dumping data for table `medical_centers`
---
-
-INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1);
-
 -- --------------------------------------------------------
 
 --
