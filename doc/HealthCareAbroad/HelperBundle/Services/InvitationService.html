@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>HealthCareAbroad\HelperBundle\Services\InvitationService | HealthCareAbroad API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">HealthCareAbroad API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../HealthCareAbroad/HelperBundle/Services.html">HealthCareAbroad\HelperBundle\Services</a>\InvitationService</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>InvitationService</strong></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(<abbr title="HealthCareAbroad\HelperBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr> $doctrine)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setTwig">setTwig</a>(<abbr title="HealthCareAbroad\HelperBundle\Services\Twig_Environment">Twig_Environment</abbr> $twig)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setMailer">setMailer</a>($mailer)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_createInvitationToken">createInvitationToken</a>($daysofExpiration)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_createInstitutionInvitation">createInstitutionInvitation</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation, $message, <a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a> $token)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_sendInstitutionUserLoginCredentials">sendInstitutionUserLoginCredentials</a>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $user, $password)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_sendInstitutionUserInvitation">sendInstitutionUserInvitation</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution, <a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionUserInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation">InstitutionUserInvitation</abbr></a> $invitation)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 34</div>
+        <code>            public            
+    <strong>__construct</strong>(<abbr title="HealthCareAbroad\HelperBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr> $doctrine)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\HelperBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr></td>
+                <td>$doctrine</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setTwig">
+        <div class="location">at line 39</div>
+        <code>            public            
+    <strong>setTwig</strong>(<abbr title="HealthCareAbroad\HelperBundle\Services\Twig_Environment">Twig_Environment</abbr> $twig)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\HelperBundle\Services\Twig_Environment">Twig_Environment</abbr></td>
+                <td>$twig</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setMailer">
+        <div class="location">at line 44</div>
+        <code>            public            
+    <strong>setMailer</strong>($mailer)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$mailer</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_createInvitationToken">
+        <div class="location">at line 49</div>
+        <code>            public            
+    <strong>createInvitationToken</strong>($daysofExpiration)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$daysofExpiration</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_createInstitutionInvitation">
+        <div class="location">at line 83</div>
+        <code>            public            
+    <strong>createInstitutionInvitation</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation, $message, <a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a> $token)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a></td>
+                <td>$invitation</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$message</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a></td>
+                <td>$token</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_sendInstitutionUserLoginCredentials">
+        <div class="location">at line 102</div>
+        <code>            public            
+    <strong>sendInstitutionUserLoginCredentials</strong>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $user, $password)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+                <td>$user</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$password</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_sendInstitutionUserInvitation">
+        <div class="location">at line 131</div>
+        <code>            public            
+    <strong>sendInstitutionUserInvitation</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution, <a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionUserInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation">InstitutionUserInvitation</abbr></a> $invitation)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a></td>
+                <td>$institution</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionUserInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation">InstitutionUserInvitation</abbr></a></td>
+                <td>$invitation</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

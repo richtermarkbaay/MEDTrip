@@ -5,7 +5,7 @@ InstitutionBundle_create_token:
        _method:  GET|POST
 
 institution_accept_user_invitation:
-    pattern:  /accounts/acceptInvitation/{institutionId}/{token}
+    pattern:  /accounts/accept-invitation/{token}
     defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
     requirements:    
        _method:  GET
