@@ -16,8 +16,8 @@
         {% block wrappedContent %}
             <!--  start table-content  -->
             <div id="table-content">
-                {% if app.session.hasFlash('flash.notice') %}
-                    {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('flash.notice') } %}
+                {% if app.session.hasFlash('notice') %}
+                    {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
                 {% endif %}
                 
                 <form novalidate="novalidate" action="{{ path('institution_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">

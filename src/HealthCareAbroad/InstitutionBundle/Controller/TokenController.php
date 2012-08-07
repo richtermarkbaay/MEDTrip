@@ -62,11 +62,11 @@ class TokenController extends Controller
  					if (!$institutionInvitation) {
  						return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
  					}
- 					$this->get('session')->setFlash('flash.notice', "Invitation sent to ".$institutionInvitation->getEmail());
+ 					$this->get('session')->setFlash('notice', "Invitation sent to ".$institutionInvitation->getEmail());
  					
  				}
  				else {
- 					$this->get('session')->setFlash('flash.notice', "Failed to send invitation to ".$institutionInvitation->getEmail());
+ 					$this->get('session')->setFlash('notice', "Failed to send invitation to ".$institutionInvitation->getEmail());
  				}
 			}
 		}

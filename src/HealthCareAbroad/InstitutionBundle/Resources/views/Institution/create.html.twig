@@ -2,9 +2,9 @@
 
 {% block body %}
 
-{% if app.session.hasFlash('flash.notice') %}
+{% if app.session.hasFlash('notice') %}
     <div class="msg-notice">
-        {{ app.session.flash('flash.notice') }}
+        {{ app.session.flash('notice') }}
     </div>
 {% endif %}
 

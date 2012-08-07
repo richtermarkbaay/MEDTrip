@@ -58,7 +58,7 @@ class InstitutionController extends Controller
 				$email = $this->get('services.user')->find(array('email' => $data["form"]["email"]),  array('limit' => 1));
 				
 				if (count($email) > 0) {
-					$this->get('session')->setFlash('flash.notice', "Email already registered!");
+					$this->get('session')->setFlash('notice', "Email already registered!");
 				}
 				else {
 					
@@ -84,10 +84,10 @@ class InstitutionController extends Controller
 						
 						$sendingResult = $this->get('services.invitation')->sendInstitutionUserLoginCredentials($user,$temporaryPassword);
 						if ($sendingResult) {
-		                    $this->get('session')->setFlash('flash.notice', "Invitation sent to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('notice', "Invitation sent to {$user->getEmail()}");
 		                }
 		                else {
-		                    $this->get('session')->setFlash('flash.notice', "Failed to send invitation to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$user->getEmail()}");
 		                }
 		                
 		                return $this->redirect($this->generateUrl('institution_homepage'));
