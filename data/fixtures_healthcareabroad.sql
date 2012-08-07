@@ -297,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -- --------------------------------------------------------
 
 --
@@ -439,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
 --
 
 INSERT INTO `invitation_tokens` (`id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
-(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1)
+(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1);
 
 -- --------------------------------------------------------
 
@@ -510,6 +511,13 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `medical_procedure_types`
+--
+
+INSERT INTO `medical_procedure_types` (`id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -660,9 +668,9 @@ ALTER TABLE `institution_user_type_roles`
 --
 -- Constraints for table `medical_procedures`
 --
+ALTER TABLE `medical_procedures` ADD UNIQUE (`medical_procedure_type_id` , `name`);
 ALTER TABLE `medical_procedures`
   ADD CONSTRAINT `medical_procedures_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`);
-
 --
 -- Constraints for table `medical_procedure_type_centers`
 --

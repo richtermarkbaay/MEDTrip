@@ -17,3 +17,5 @@ src/.DS_Store
 src/HealthCareAbroad/.DS_Store
 web/.DS_Store
 MAMP.webarchive
+bin/
+cache/
