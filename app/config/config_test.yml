@@ -1,12 +1,13 @@
 imports:
     - { resource: parameters_test.yml }
-    - { resource: security.yml }
+    - { resource: security_test.yml }
 
 framework:
     templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_parameters: %kernel.debug%
+        #strict_parameters: %kernel.debug%
+    form: true
     secret: %secret%
     test: ~
     session:

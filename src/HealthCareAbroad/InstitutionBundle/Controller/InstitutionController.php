@@ -18,6 +18,25 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
+	public function signUpAction()
+	{
+		$user = new InstitutionUser();
+		$form = $this->createFormBuilder()
+		
+		->add('email', 'text')
+		->add('firstName', 'text')
+		->add('middleName', 'text')
+		->add('lastName', 'text')
+		->getForm();
+		
+		if($this->getRequest()->isMethod('POST'))
+		{
+			echo "check";
+		}
+		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
+				'form' => $form->createView(),
+		));
+	}
 	public function createAction(Request $request)
     {
     	$user = new InstitutionUser();

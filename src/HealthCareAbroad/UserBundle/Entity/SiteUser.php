@@ -127,7 +127,12 @@ abstract class SiteUser implements UserInterface
     
     public function __toString()
     {
-        return "{$this->firstName} {$this->lastName}";
+        return $this->getFullName();
+    }
+    
+    public function getFullName()
+    {
+       return "{$this->firstName} {$this->lastName}";
     }
     
 }

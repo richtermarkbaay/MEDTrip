@@ -1,8 +1,11 @@
 <!--  start nav -->
 <div class="nav">
     <div class="table">
-    
-        <ul class="current">
+        {% if selectedTab is not defined %}
+            {% set selectedTab = 'dashboard' %}
+        {% endif %}
+        
+        <ul class="{{ selectedTab == 'dashboard' ? 'current' : 'select' }}">
             <li>
                 <a href="#nogo"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
             </li>
@@ -10,11 +13,11 @@
     
         <div class="nav-divider">&nbsp;</div>
                         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
             <li>
                 <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'medical_procedures' ? 'show' : '' }}">
                 	<ul class="sub">
                 		<li><a href="#nogo">View all</a></li>
                 		<li><a href="#nogo">Add new procedure</a></li>
@@ -26,13 +29,13 @@
         
         <div class="nav-divider">&nbsp;</div>
                         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'staff' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Staff</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('institution_view_all_staff')}}"><b>Staff</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'staff' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="#nogo">View all staff</a></li>
+                		<li><a href="{{ path('institution_view_all_staff')}}">View all staff</a></li>
                 		<li><a href="{{ path('institution_invite_user') }}">Invite staff</a></li>
                 	</ul>
                 </div>

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\UserLoginType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -35,10 +37,7 @@ class InstitutionUserController extends Controller
     public function loginAction()
     {
         $user = new InstitutionUser();
-        $form = $this->createFormBuilder($user)
-            ->add('email', 'email', array('property_path'=> false))
-            ->add('password', 'password', array('property_path'=> false))
-            ->getForm();
+        $form = $this->createForm(new UserLoginType());
         
         if ($this->getRequest()->isMethod('POST')) {
             
@@ -52,10 +51,12 @@ class InstitutionUserController extends Controller
 	            }
                 else {
                     // invalid login
-                    $this->get('session')->setFlash('flash.notice', 'Email and Password is invalid.');
-                    
-                    return $this->redirect($this->generateUrl('institution_login'));
+                    $this->get('session')->setFlash('flash.notice', 'Either your email or password is wrong.');
                 }
+            }
+            else {
+                // invalid login
+                $this->get('session')->setFlash('flash.notice', 'Email and password are required.');
             }
         }
         return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
@@ -76,7 +77,6 @@ class InstitutionUserController extends Controller
         $session = $this->getRequest()->getSession();
         $institutionUserService = $this->get('services.institution_user');
         $institutionUser = $institutionUserService->findById($session->get('accountId'));
-        
         $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
     	
     	if ($this->getRequest()->isMethod('POST')) {
@@ -138,32 +138,27 @@ class InstitutionUserController extends Controller
     public function inviteAction()
     {
         $institution = $this->get('services.institution')->getCurrentInstitution();
-        
         $institutionUserInvitation = new InstitutionUserInvitation();
-      
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
         
         if ($this->getRequest()->isMethod('POST')) {
             
             $form->bind($this->getRequest());
-            
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
-                
                 if ($sendingResult) {
-                    $this->get('session')->setFlash('flash.notice', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('notice', "Invitation sent to {$institutionUserInvitation->getEmail()}");
                 }
                 else {
-                    $this->get('session')->setFlash('flash.notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
                 }
-                
-                return $this->redirect($this->generateUrl('institution_invite_user'));
+                return $this->redirect($this->generateUrl('institution_view_all_staff'));
             }
         }
         
-        return $this->render('InstitutionBundle:Default:invite.html.twig', array(
-                        'form' => $form->createView(),
+        return $this->render('InstitutionBundle:InstitutionUser:invite.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
     
@@ -210,6 +205,16 @@ class InstitutionUserController extends Controller
         $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
         
         return $this->redirect($this->generateUrl('institution_homepage'));
+    }
+    
+    public function viewAllAction()
+    {
+        $institutionService = $this->get('services.institution');
+        $institution = $institutionService->getCurrentInstitution();
+        
+        $users = $institutionService->getAllStaffOfInstitution($institution);
+        
+        return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
     
 }

@@ -7,6 +7,7 @@ services:
         class: %services.institution_class%
         calls:
             - [setDoctrine, [@doctrine]]
+            - [setInstitutionUserService, [@services.institution_user]]
     form.institution_list:
         class: "%services.institution_list%"
         calls:

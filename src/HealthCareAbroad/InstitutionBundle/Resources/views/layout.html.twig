@@ -1,6 +1,6 @@
 {% extends '::base.admin.html.twig' %}
 
-{% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
+{% block title %}{{ parent() }} &raquo; {{ app.session.has('institutionName') ? app.session.get('institutionName') : 'Institution Panel'}} {% endblock %}
 
 {% block body %}
 

@@ -1,0 +1,53 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+
+	<div id="content">
+
+		<div id="page-heading"><h3>Manage Institution Procedure Types</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+
+			{% block wrappedContent %}
+
+				{% if app.session.hasFlash('notice') %}
+					{% include '::notice.admin.html.twig' with {'class': 'success', 'message': app.session.flash('notice') } %}
+				{% endif %}
+
+				<form action="{{ path('admin_institution_manageProcedureTypes', {id:id, medical_center_id: selectedCenter.id}) }}" method="POST">
+
+				<select id="medical_center" onchange="reloadSelectedProcedureTypes('{{ path('admin_institution_manageProcedureTypes', {id:id}) }}')">
+					{% for center in medicalCenters %}
+						
+						<option value="{{ center.id }}" {{ center.id == selectedCenter.id ? 'selected' : '' }}>
+							{{ center.medicalCenter.name }}
+						</option>
+					{% endfor %}
+				</select>
+				
+				
+				<ul style="list-style:none">
+					{% for type in procedureTypes %}
+						{% set checked = type.id in selectedProcedureTypeIds ? 'checked=checked' : '' %}
+						{% set disabled = type.id in procedureTypeIdsWithProcedure ? 'disabled' : '' %}
+						<li>
+							<input type="checkbox" id="type-{{ type.id }}" name="procedure_types[]" value="{{ type.id }}" {{ checked }} {{ disabled }}/>
+							<label for="type-{{ type.id }}">{{ type.name }}</label>
+						</li>
+					{% endfor %}
+				</ul>
+				<input type="submit" class="form-submit"/>
+				</form>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+	<script type="text/javascript">
+		function reloadSelectedProcedureTypes(url)
+		{
+			window.location = url + '/' + $('#medical_center').val();
+		}
+	</script>
+	
+	
+{% endblock %}
