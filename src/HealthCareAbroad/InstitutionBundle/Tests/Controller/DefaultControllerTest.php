@@ -2,12 +2,17 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerTest extends InstitutionBundleWebTestCase
 {
     public function testIndex()
     {
-        $this->markTestIncomplete();
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/institution'); // request with no logged in user
+        
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());// expecting a redirect to login form
+        $redirectLocation = $client->getResponse()->headers->get('location');
+        $this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
     }
 }
