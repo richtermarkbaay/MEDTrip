@@ -1,5 +1,5 @@
 {
-    "hash": "5784203f1b0927a3dda0251ff9896f2a",
+    "hash": "8fb768bc252139e7b6bd127f0f537cf9",
     "packages": [
         {
             "package": "chromedia/media-bundle",
@@ -96,6 +96,22 @@
             "version": "1.1.0"
         },
         {
+            "package": "nikic/php-parser",
+            "version": "dev-master",
+            "source-reference": "5a947e984391e26b5d9252cebb1d1498ccaffb45",
+            "commit-date": "1343036207"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "1.0.0"
+        },
+        {
+            "package": "sami/sami",
+            "version": "dev-master",
+            "source-reference": "80efb05509e7d217465036e40089ccff75f56551",
+            "commit-date": "1342704443"
+        },
+        {
             "package": "sensio/distribution-bundle",
             "version": "dev-master",
             "source-reference": "57190e5baa0cc1d8ef6095ce57e6719a5eae2b79",
@@ -104,20 +120,8 @@
         {
             "package": "sensio/framework-extra-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
             "source-reference": "ade2d53b20a9fc3428f04c863b3fd4fca0b62181",
             "commit-date": "1344072374"
-        },
-        {
-            "package": "sensio/generator-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "sensio/generator-bundle",
@@ -152,12 +156,6 @@
         {
             "package": "symfony/swiftmailer-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/swiftmailer-bundle",
-            "version": "dev-master",
             "source-reference": "v2.1.0-RC1",
             "commit-date": "1342684512"
         },
@@ -170,8 +168,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "842b599c50552125f1ae1e0463ea2b102254d701",
-            "commit-date": "1344264516"
+            "source-reference": "ca3aa9c3050f94436778970b65db34142a50d158",
+            "commit-date": "1344318018"
         },
         {
             "package": "twig/extensions",
@@ -207,6 +205,8 @@
         "sensio/framework-extra-bundle": 20,
         "sensio/generator-bundle": 20,
         "chromedia/utilities": 20,
-        "chromedia/media-bundle": 20
+        "chromedia/media-bundle": 20,
+        "nikic/php-parser": 20,
+        "sami/sami": 20
     }
 }

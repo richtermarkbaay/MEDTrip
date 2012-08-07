@@ -21,7 +21,9 @@
         "jms/di-extra-bundle": "1.0.*",
         "guzzle/guzzle": "*",
         "chromedia/utilities": "dev-master",
-        "chromedia/media-bundle": "dev-master"
+        "chromedia/media-bundle": "dev-master",
+        "nikic/php-parser": "dev-master",
+        "sami/sami": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
