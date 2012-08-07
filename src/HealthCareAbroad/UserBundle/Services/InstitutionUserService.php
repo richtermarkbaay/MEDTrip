@@ -33,7 +33,6 @@ class InstitutionUserService extends UserService
             $this->session->set('institutionName', $user->getInstitution()->getName());
             return true;
         }
-        
         return false;
     }
     

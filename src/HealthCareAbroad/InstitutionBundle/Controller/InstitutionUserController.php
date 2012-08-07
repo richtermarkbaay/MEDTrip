@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
+
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
@@ -45,18 +47,18 @@ class InstitutionUserController extends Controller
             if ($form->isValid()) {
                 if ($this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
-                    $this->get('session')->setFlash('flash.notice', 'Login successfully!');
+                    $this->get('session')->setFlash('notice', 'Login successfully!');
                     
                     return $this->redirect($this->generateUrl('institution_homepage'));
 	            }
                 else {
                     // invalid login
-                    $this->get('session')->setFlash('flash.notice', 'Either your email or password is wrong.');
+                    $this->get('session')->setFlash('notice', 'Either your email or password is wrong.');
                 }
             }
             else {
                 // invalid login
-                $this->get('session')->setFlash('flash.notice', 'Email and password are required.');
+                $this->get('session')->setFlash('notice', 'Email and password are required.');
             }
         }
         return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
@@ -87,7 +89,7 @@ class InstitutionUserController extends Controller
     			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
     			$institutionUserService->update($institutionUser);
     			
-    			$this->get('session')->setFlash('flash.notice', "Password changed!");
+    			$this->get('session')->setFlash('notice', "Password changed!");
     		}
     			
     	}
@@ -97,43 +99,34 @@ class InstitutionUserController extends Controller
     
     public function editAccountAction()
     {
+        $accountId = $this->getRequest()->get('accountId', null);
+        if (!$accountId){
+            // no account id in parameter, editing currently logged in account
+            $session = $this->getRequest()->getSession();
+            $accountId = $session->get('accountId');
+        }
+        $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        
+        if (!$institutionUser) {
+            throw $this->createNotFoundException('Cannot update invalid account.');
+        }
+    	$form = $this->createForm(new UserAccountDetailType(), $institutionUser);
     	
-    	//get user account in chromedia global accounts by accountID
-    	$session = $this->getRequest()->getSession();
-    	$accountId = $session->get('accountId');
-    	$institutionUser = $this->get('services.institution_user')->findById($accountId, true);
-    	
-    	//render form
-    	$form = $this->createFormBuilder($institutionUser)
-        	->add('firstName', 'text', array('constraints' => array(new NotBlank())))
-            ->add('middleName', 'text', array('constraints' => array(new NotBlank())))
-            ->add('lastName', 'text', array('constraints' => array(new NotBlank())))
-            ->getForm();
-    	
-     	 if ($this->getRequest()->isMethod('POST')) {
-            
+    	if ($this->getRequest()->isMethod('GET')) {
+    	    $this->get('session')->setFlash('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
+        }
+        elseif ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
-            	
-            	//set new gathered data from form
-            	$institutionUser->setFirstName($form->get('firstName')->getData());
-            	$institutionUser->setMiddleName($form->get('middleName')->getData());
-            	$institutionUser->setLastName($form->get('lastName')->getData());
-            	$institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
-            	
-            	$institutionUser = $this->get('services.institution_user')->update($institutionUser);
-            	if ($institutionUser) {
-                    $this->get('session')->setFlash('flash.notice', "Successfully updated your account");
-                }
-                else {
-                    $this->get('session')->setFlash('flash.notice', "Failed to update account!");
-                }
-            	
+                $institutionUser = $this->get('services.institution_user')->update($institutionUser);
+                $this->get('session')->setFlash('notice', "Successfully updated account");
+                return $this->redirect($this->get('session')->getFlash('referer'));
             }
-            
-     	 }
-    	return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
-            'form' => $form->createView()));
+        }
+        
+        return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
+            'form' => $form->createView(),
+            'institutionUser' => $institutionUser ));
     }
     public function inviteAction()
     {
@@ -202,7 +195,7 @@ class InstitutionUserController extends Controller
         $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
         // redirect to institution homepage        
-        $this->get('session')->setFlash('flash.notice', 'You have successfuly accepted the invitation.');
+        $this->get('session')->setFlash('notice', 'You have successfuly accepted the invitation.');
         
         return $this->redirect($this->generateUrl('institution_homepage'));
     }

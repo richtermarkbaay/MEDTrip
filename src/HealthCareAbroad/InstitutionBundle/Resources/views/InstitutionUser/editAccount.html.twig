@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-
+{% set selectedTab = 'staff'%}
 {% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
@@ -7,7 +7,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ site_name }} Institution Panel</h1>
+    	<h1>Edit {{ app.session.get('accountId') == institutionUser.getAccountId() ? 'my account' : institutionUser.getFullName() }}</h1>
     </div>
     <!-- end page-heading -->
     
@@ -17,11 +17,11 @@
 			<!--  start table-content  -->
 			<div id="table-content">
 			
-			    {% if app.session.hasFlash('flash.notice') %}
-			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('flash.notice') } %}
+			    {% if app.session.hasFlash('notice') %}
+			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
 		        {% endif %}
 			
-			    <form novalidate="novalidate" action="{{ path('institution_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
+			    <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
     			    <!-- start id-form -->
             		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
             		    
@@ -32,7 +32,7 @@
                         <tr>
                     		<th>&nbsp;</th>
                     		<td valign="top">
-                    			<input type="submit" value="" class="form-submit" />
+                    			<input type="submit" name="submit" value="" class="form-submit" />
                     			<input type="reset" value="" class="form-reset"  />
                     		</td>
                     		<td></td>

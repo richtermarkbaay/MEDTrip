@@ -18,6 +18,10 @@
 			<!--  start table-content  -->
 			<div id="table-content">
 			
+			    {% if app.session.hasFlash('notice') %}
+			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+		        {% endif %}
+			
 			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
     				<tr>
     					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
@@ -35,7 +39,7 @@
         					<td>{{ staff.middleName | title }}</td>
         					<td>{{ staff.email }}</td>
         					<td class="options-width">
-            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+            					<a href="{{ path('institution_editAccount', {accountId: staff.accountId }) }}" title="Edit" class="icon-1 info-tooltip"></a>
             					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
             					<a href="#" title="Activate {{ staff.fullName | title}}" class="icon-5 info-tooltip"></a>
         					</td>

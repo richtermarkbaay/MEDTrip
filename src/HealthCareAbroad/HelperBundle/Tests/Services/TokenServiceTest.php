@@ -28,7 +28,7 @@ class TokenServiceTest extends HelperBundleTestCase
 	
 	public function setUp()
 	{
-		$this->service = new TokenService(parent::$container->get('doctrine'));
+		$this->service = new TokenService($this->getServiceContainer()->get('doctrine'));
 	}
 	
 	public function tearDown()
@@ -37,8 +37,8 @@ class TokenServiceTest extends HelperBundleTestCase
 	}
 	
 	public function testGetActiveInstitutionInvitationByToken()
-	{
-		$token = "46eff89e1b51895f101e56c71ff12f9cfbc9fd98b582adfb4dd21848ab564e6c";
+	{			  
+		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
 		$institution = $this->service->getActiveInstitutionInvitationByToken($token);
 		$this->assertNotEmpty($institution);
 		
@@ -47,9 +47,9 @@ class TokenServiceTest extends HelperBundleTestCase
 	
 	public function testGetActiveInstitutionUserInvitatinByToken()
 	{
-		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
-		$institutionUser = $this->service->getActiveInstitutionUserInvitatinByToken($token);
-		$this->assertEmpty($institutionUser);
+		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
+		$institutionUser = $this->service->getActiveInstitutionUserInvitationByToken($token);
+		$this->assertNotEmpty($institutionUser);
 	
 		return $institutionUser;
 	}

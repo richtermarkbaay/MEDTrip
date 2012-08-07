@@ -29,10 +29,11 @@ institution_signUp:
         _method: GET|POST
        
 institution_editAccount:
-    pattern:  /institution/editAccount
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount }
+    pattern:  /institution/edit-account/{accountId}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
     requirements:
         _method:  GET|POST
+        accountId: \d+
 
 institution_change_password:
     pattern:  /institution/change-password
