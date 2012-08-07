@@ -440,7 +440,7 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
 --
 
 INSERT INTO `invitation_tokens` (`id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
-(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1)
+(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1);
 
 -- --------------------------------------------------------
 
