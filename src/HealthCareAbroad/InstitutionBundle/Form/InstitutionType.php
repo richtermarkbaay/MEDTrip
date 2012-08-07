@@ -6,9 +6,6 @@ use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 
 use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
 
-//use HealthCareAbroad\HelperBundle\Entity\Country;
-
-//use HealthCareAbroad\HelperBundle\Services\LocationService;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,10 +28,16 @@ class InstitutionType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+    	//var_dump($options);
     	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
     	$builder->addEventSubscriber($subscriber);
     	
     	$builder
+    		->add('name', 'text', array('constraints' => new NotBlank()))
+    		->add('description', 'textarea', array('constraints' => new NotBlank()))
+    		->add('country', 'country_list', array('attr'=>array('onchange'=>'Institution.loadCities($(this))')))
+    		->add('address1','text', array('constraints' => new NotBlank()))
+    		
     		->add('firstName', 'text', array('constraints' => new NotBlank()))
     		->add('middleName', 'text', array('constraints' => new NotBlank()))
     		->add('lastName', 'text', array('constraints' => new NotBlank()))
@@ -49,8 +52,7 @@ class InstitutionType extends AbstractType
                     'virtual' => true, 
                     'constraints' => array(
                         new EqualFieldValue(array('field' => 'new_password', 'message' => 'Passwords do not match')))
-                ))
-    		->add('country', 'country_list', array('attr'=>array('onselect'=>'Institution.loadCities($(this))')));
+                ));
     }
     
     public function getName()

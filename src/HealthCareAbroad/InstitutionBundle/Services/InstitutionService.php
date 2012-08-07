@@ -49,6 +49,12 @@ class InstitutionService
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($institution);
 		$em->flush();
+		
+		// failed to save
+		if (!$institution) {
+			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
+		}
+		
 		return $institution;
 		
     }

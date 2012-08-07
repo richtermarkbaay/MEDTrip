@@ -37,9 +37,10 @@ class TokenServiceTest extends HelperBundleTestCase
 	}
 	
 	public function testGetActiveInstitutionInvitationByToken()
-	{
-		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
+	{			  
+		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
 		$institution = $this->service->getActiveInstitutionInvitationByToken($token);
+		//var_dump($institution);exit;
 		$this->assertNotEmpty($institution);
 		
 		return $institution;
@@ -47,7 +48,7 @@ class TokenServiceTest extends HelperBundleTestCase
 	
 	public function testGetActiveInstitutionUserInvitatinByToken()
 	{
-		$token = "7778a0cb59cf98c794b3300f77a3d79a6d75bdcebe1ce13aecab741f1f02e958";
+		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
 		$institutionUser = $this->service->getActiveInstitutionUserInvitationByToken($token);
 		$this->assertEmpty($institutionUser);
 	

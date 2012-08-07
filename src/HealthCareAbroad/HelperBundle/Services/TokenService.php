@@ -18,10 +18,12 @@ class TokenService
 	protected function getQueryForValidToken($entity, $token)
 	{
 		// find a valid token
+		echo $token;exit;
 		$dql = "SELECT a FROM ". $entity ." a JOIN a.invitationToken b WHERE b.token = :token AND b.status=:token_status";
 		$query = $this->doctrine->getEntityManager()->createQuery($dql)
 			->setParameter('token', $token)
 			->setParameter('token_status', 1);
+		
 		return $query;		
 	}
 	

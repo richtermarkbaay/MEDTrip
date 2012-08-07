@@ -228,6 +228,9 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
   KEY `invitation_token_id` (`invitation_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `institution_invitations` (`id`, `email`, `message`, `name`, `invitation_token_id`, `date_created`, `status`) VALUES
+(1, 'test-invited-institution-user@chromedia.com', 'lorem ipsum', 'Test', '1', '2012-08-02 06:21:36', 1);
+
 -- --------------------------------------------------------
 
 --
