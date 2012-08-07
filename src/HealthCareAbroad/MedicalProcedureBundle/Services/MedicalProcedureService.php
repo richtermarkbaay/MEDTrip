@@ -35,6 +35,8 @@ class MedicalProcedureService
 
 	public function saveMedicalProcedure(MedicalProcedure $entity)
 	{
+		if(!$entity->getSlug())
+			$entity->setSlug('');
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
 
