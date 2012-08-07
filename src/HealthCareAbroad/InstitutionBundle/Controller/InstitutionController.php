@@ -26,6 +26,15 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
+	public function loadCitiesAction($countryId)
+	{
+		$data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
+	
+		$response = new Response(json_encode($data));
+		$response->headers->set('Content-Type', 'application/json');
+	
+		return $response;
+	}
 	
 	public function signUpAction()
 	{
