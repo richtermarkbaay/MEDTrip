@@ -4,7 +4,7 @@
 
 	<div id="content">
 
-		<div id="page-heading"><h3>{{ id  ? 'Edit' : 'Add' }} Procedure Type</h3></div>
+		<div id="page-heading"><h3>{{ id  ? 'Edit' : 'Add' }} Medical Procedure Type</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -14,7 +14,7 @@
 				{{ form_row(form.medical_center) }}
 				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
-			    <input type="submit" class="form-submit"/>
+			    <input type="submit" class="form-submit" name="submit"/>
 			</form>
 			{% endblock %}
 

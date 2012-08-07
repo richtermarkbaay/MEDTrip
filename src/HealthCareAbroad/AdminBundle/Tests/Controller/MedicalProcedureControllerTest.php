@@ -1,6 +1,6 @@
 <?php
 /**
- * Functional test for InstitutionUserController
+ * Functional test for Admin MedicalProceduController
  *
  * @author Adelbert Silla
  *

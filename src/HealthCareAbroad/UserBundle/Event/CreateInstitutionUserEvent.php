@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\UserBundle\Event;
 
-use HealthCareAbroad\ProviderBundle\Entity\InstitutionUserInvitation;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
 class CreateInstitutionUserEvent extends InstitutionUserEvent
 {
