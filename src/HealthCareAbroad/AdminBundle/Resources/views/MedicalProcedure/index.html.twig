@@ -21,7 +21,7 @@
 					<td>{{ procedure.name }}</td>
 					<td>{{ procedure.MedicalProcedureType.name }}</td>
 					<td align="center">
-						<a id="procedure-{{procedure.id}}" href="javascript:void(0)" onclick="MedicalProcedure.updateStatus($(this))">
+						<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" class="update-status">
 							{% if procedure.status %} deactivate {% else %} activate {% endif %}
 						</a> 
 					<span class="separator" style="color:#ccc">|</span>
@@ -35,10 +35,4 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
-	
-	{% block javascripts %}
-		{{ parent() }}
-		<script src="{{ asset('bundles/medicalprocedure/js/MedicalProcedure.js') }}"></script>
-	{% endblock %}
-
 {% endblock %}

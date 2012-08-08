@@ -76,28 +76,23 @@ class MedicalCenterController extends Controller
 		));				
     }
     
-    public function updateStatusAction()
+    public function updateStatusAction($id)
     {
-    	$request = $this->getRequest();
+    	$result = false;
     	$em = $this->getDoctrine()->getEntityManager();
-    	$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('id'));
+    	$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
 
 		if ($medicalCenter) {
-			$medicalCenter->setStatus($request->get('status'));
+			$medicalCenter->setStatus($medicalCenter->getStatus() ? 0 : 1);
 			$em->persist($medicalCenter);
 			$em->flush($medicalCenter);
+			$result = true;
 		}
 
-		return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
-    }
-    
-    public function searchMedicalCentersAction($term)
-    {
-    	$data = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->searchMedicalCenters($term);
+		$response = new Response(json_encode($result));
+		$response->headers->set('Content-Type', 'application/json');
 
-    	$response = new Response(json_encode($data));
-    	$response->headers->set('Content-Type', 'application/json');
-    
-    	return $response;
+		return $response;
     }
+    
 }
