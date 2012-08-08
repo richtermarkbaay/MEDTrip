@@ -62,7 +62,7 @@ class MedicalProcedureController extends Controller
 	
     	}
     }
-    
+
     public function updateStatusAction($id)
     {
     	$result = false;

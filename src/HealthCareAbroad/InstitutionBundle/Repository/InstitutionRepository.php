@@ -12,4 +12,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionRepository extends EntityRepository
 {
+	public function search($term = '', $limit = 10)
+	{
+		$dql = "
+			SELECT i
+			FROM InstitutionBundle:Institution AS i
+			WHERE i.name LIKE :term
+			ORDER BY i.name ASC"
+		;
+	
+		$query = $this->_em->createQuery($dql);
+		$query->setParameter('term', "%$term%");
+		$query->setMaxResults($limit);
+	
+		return $query->getResult();
+	}	
 }

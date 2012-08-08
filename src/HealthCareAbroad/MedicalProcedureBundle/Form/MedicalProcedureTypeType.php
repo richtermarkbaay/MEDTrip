@@ -30,7 +30,7 @@ class MedicalProcedureTypeType extends AbstractType
 		$transformer = new MedicalCentersTransformer($this->em);
 		$builder->add('name', 'text', array('constraints'=> $commonConstraints));
 		$builder->add('description', 'textarea', array('constraints'=> $commonConstraints));
-		$builder->add($builder->create('medical_center','textarea', array('attr'=>array('class'=>'center-autocomplete')))->addModelTransformer($transformer));
+		$builder->add($builder->create('medical_center','textarea', array('attr'=>array('class'=>'autocomplete-medical-center')))->addModelTransformer($transformer));
 		$builder->add('status', 'choice', array('choices' => array_flip(MedicalProcedureTypeEntity::$STATUS)));
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthCareAbroad\MedicalProcedureBundle\Tests\Controller;
+namespace HealthCareAbroad\SearchBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

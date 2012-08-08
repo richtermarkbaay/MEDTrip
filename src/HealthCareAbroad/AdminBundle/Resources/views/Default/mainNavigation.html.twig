@@ -46,7 +46,7 @@
 
         <ul class="{{ selectedTab == 'procedure_types' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_procedureType_index') }}"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">
@@ -62,7 +62,7 @@
 
         <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_medicalProcedure_index') }}"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">

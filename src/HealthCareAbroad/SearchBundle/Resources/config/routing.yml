@@ -1,0 +1,7 @@
+search_showWidget:
+    pattern:  /search/widget
+    defaults: { _controller: SearchBundle:Default:showWidget }
+    
+search_initiate:
+    pattern: /search
+    defaults: { _controller: SearchBundle:Default:initiate }

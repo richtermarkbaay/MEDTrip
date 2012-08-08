@@ -84,13 +84,13 @@ admin_tagEdit:
     pattern:  /admin/tag/edit/{id}
     defaults: { _controller: AdminBundle:Tag:edit }
     requirements:
-         id: ".+"
+         id: \d+
 
 admin_tagUpdateStatus:
     pattern:  /admin/tag/update-status/{id}
     defaults: { _controller: AdminBundle:Tag:updateStatus }
     requirements:
-         id: ".+"
+         id: \d+
 
 # Routes for MedicalCenter #
 admin_medicalCenter_index:
@@ -126,15 +126,10 @@ admin_medicalCenter_update:
          _method: POST
 
 admin_medicalCenter_updateStatus:
-    pattern:  /admin/medical-center/updateStatus
-    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus }
-    requirements:    
-        _method:  POST
-
-admin_medicalCenter_search:
-    pattern:  /admin/medical-centers/search/{term}
-    defaults: { _controller: AdminBundle:MedicalCenter:searchMedicalCenters }
-
+    pattern:  /admin/medical-center/updateStatus/{id}
+    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus, id: ~ }
+    requirements:
+        id: \d+
 # End of MedicalCenter Routes #
 
 
@@ -173,7 +168,7 @@ admin_procedureType_updateStatus:
     pattern:  /admin/procedure-type/update-status/{id}
     defaults: { _controller: AdminBundle:MedicalProcedureType:updateStatus }
     requirements:
-         id: ".+"
+         id: \d+
 # End of ProcedureTypes Routes #
 
 
@@ -220,6 +215,12 @@ admin_medicalProcedure_updateStatus:
 admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
+
+admin_institution_updateStatus:
+    pattern:  /admin/institution/{id}/update-status
+    defaults: { _controller: AdminBundle:Institution:updateStatus }
+    requirements:
+        id: \d+
 
 admin_institution_manageCenters:
     pattern:  /admin/institution/{id}/manage-centers

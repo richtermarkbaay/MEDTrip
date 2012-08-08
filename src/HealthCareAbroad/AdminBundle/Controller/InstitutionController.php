@@ -24,6 +24,29 @@ class InstitutionController extends Controller
 		return $this->render('AdminBundle:Institution:index.html.twig', array('institutions' => $institutions));
 	}
 
+	public function updateStatusAction($id)
+	{
+		$result = false;
+		$em = $this->getDoctrine()->getEntityManager();
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+
+		if($institution) {
+			$status = $institution->getStatus() == Institution::$STATUS['active']
+			? Institution::$STATUS['inactive']
+			: Institution::$STATUS['active'];
+
+			$institution->setStatus($status);
+			$em->persist($institution);
+			$em->flush($institution);
+			$result = true;
+		}
+
+		$response = new Response(json_encode($result));
+		$response->headers->set('Content-Type', 'application/json');
+	
+		return $response;
+	}
+
 	public function manageCentersAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();

@@ -1,10 +1,17 @@
-var MedicalProcedureType = {
-	baseUrl : '/app_dev.php/',
+var HCA = {
+
+	init : function(params)
+	{
+		HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
+	}
+};
+
+HCA.autocomplete = {
 
 	init : function()
 	{
-		$('.center-autocomplete').each(function(){
-			MedicalProcedureType.assignAutocomplete($(this));
+		$('.autocomplete-medical-center, .autocomplete-procedure-type, .autocomplete-procedure').each(function(){
+			HCA.autocomplete.assignAutocomplete($(this));
 		});
 	},
 
@@ -15,7 +22,7 @@ var MedicalProcedureType = {
 
 	extractLast : function(term)
 	{
-		return MedicalProcedureType.split(term).pop();
+		return HCA.autocomplete.split(term).pop();
 	},
 
 	assignAutocomplete : function(elem)
@@ -29,11 +36,15 @@ var MedicalProcedureType = {
 		})
 		.autocomplete({
 			source: function( request, response ) {
-				$.getJSON( MedicalProcedureType.baseUrl + "admin/medical-centers/search/" + MedicalProcedureType.extractLast(elem.val()) , response );
+				var params = {
+					section: elem.attr('class').split(' ').shift().replace('autocomplete-',''),
+					term: HCA.autocomplete.extractLast(elem.val())
+				}
+				$.getJSON(HCA.autocompleteSearchUrl, params, response);
 			},
 			search: function() {
 				// custom minLength
-				var term = MedicalProcedureType.extractLast( this.value );
+				var term = HCA.autocomplete.extractLast( this.value );
 				if ( term.length < 2 ) {
 					return false;
 				}
@@ -43,7 +54,7 @@ var MedicalProcedureType = {
 				return false;
 			},
 			select: function( event, ui ) {
-				var terms = MedicalProcedureType.split( this.value );
+				var terms = HCA.autocomplete.split( this.value );
 				// remove the current input
 				terms.pop();
 				// add the selected item
@@ -54,18 +65,31 @@ var MedicalProcedureType = {
 				return false;
 			}
 		});
-	},
-	
-	updateStatus : function(elem)
-	{
-		elemId = elem.attr('id').split('-').pop();
-		$.getJSON(MedicalProcedureType.baseUrl + "admin/procedure-type/update-status/" + elemId, function(result){
-			if(result) {
-				var status = $.trim(elem.html()) == 'activate';
-				elem.html(status ? 'deactivate' : 'activate');				
-			}
-		});
 	}
 }
 
-MedicalProcedureType.init();
+$(function(){
+
+	// Initialize HCA autocomplete object.
+	HCA.autocomplete.init();
+	
+
+	// activate/deactivate status of current record 
+	$('a.update-status').click(function(){
+		var elem = $(this);
+		var url = elem.attr('href');
+		elem.attr('href', 'javascript:void(0)');
+
+		$.getJSON(url, function(result){
+			if(result) {
+				var status = $.trim(elem.html()) == 'activate';
+				elem.html(status ? 'deactivate' : 'activate');				
+			} else {
+				alert('Unable to activate or deactivate.');
+			}
+			elem.attr('href', url);
+		});
+	});	
+
+
+});

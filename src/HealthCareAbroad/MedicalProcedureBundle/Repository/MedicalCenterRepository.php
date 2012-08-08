@@ -12,19 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class MedicalCenterRepository extends EntityRepository
 {
-	function searchMedicalCenters($term = '', $limit = 10)
+	public function search($term = '', $limit = 10)
 	{
-		$query = $this->_em->createQuery("SELECT MedicalCenter.id, MedicalCenter.name FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter WHERE MedicalCenter.name LIKE '%$term%' AND MedicalCenter.status = 1 ORDER BY MedicalCenter.name ASC");
-		$result = $query->setMaxResults($limit)->getArrayResult();
-		$data = array();
-	
-		foreach($result as $centers) {
-			$data[] = array(
-					'id' => $centers['id'],
-					'value' => $centers['name']
-			);
-		}
+		$dql = "
+			SELECT c
+			FROM MedicalProcedureBundle:MedicalCenter AS c
+			WHERE c.name LIKE :term
+			ORDER BY c.name ASC"
+		;
+		
+		$query = $this->_em->createQuery($dql);
+		$query->setParameter('term', "%$term%");
+		$query->setMaxResults($limit);
 
-		return $data;
+		return $query->getResult();
+	}
+	
+	function autoCompleteSearch($term = '', $limit = 10)
+	{
+		$query = $this->_em->createQuery("SELECT MedicalCenter.id, MedicalCenter.name as value FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter WHERE MedicalCenter.name LIKE '%$term%' AND MedicalCenter.status = 1 ORDER BY MedicalCenter.name ASC");
+		return $query->setMaxResults($limit)->getArrayResult();
 	}
 }

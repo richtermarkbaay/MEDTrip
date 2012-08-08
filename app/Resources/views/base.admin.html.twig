@@ -10,10 +10,15 @@
 			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.widget.js'
 			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.position.js'
 			'js/jquery/jquery-ui-1.8.21.custom/jquery.ui.autocomplete.js'
+			'bundles/helper/js/Common.js'
         %}
         	<script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-
+			<script type="text/javascript">
+				HCA.init({
+					autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}"
+				});
+			</script>
         
         {% block stylesheets %}
         	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>

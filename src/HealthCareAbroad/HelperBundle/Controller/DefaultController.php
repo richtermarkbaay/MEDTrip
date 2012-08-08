@@ -33,4 +33,28 @@ class DefaultController extends Controller
 
     	return $response;
     }
+    
+    public function autoCompleteSearchAction()
+    {
+    	$data = array();
+		$request = $this->getRequest();
+		$section = $request->get('section', null);
+		$term = $request->get('term', null);
+
+		switch($section) {
+			case 'medical-center' :
+				$data = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->autoCompleteSearch($term);
+				break;
+			case 'procedure-type' :
+				$data = array(); // TODO - Get Array Result
+				break;
+			case 'procedure' :
+				$data = array(); // TODO - Get Array Result
+				break;
+		}
+
+		$response = new Response(json_encode($data));
+		$response->headers->set('Content-Type', 'application/json');		
+		return $response;
+    }
 }
