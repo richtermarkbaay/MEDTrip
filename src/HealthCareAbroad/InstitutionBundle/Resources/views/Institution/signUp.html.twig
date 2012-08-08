@@ -8,7 +8,7 @@
     <!--  start page-heading -->
     <div id="page-heading">
        
-        <h1> Institution Details</h1>
+        <h1> Institution Panel</h1>
     </div>
     <!-- end page-heading -->
     
@@ -24,15 +24,15 @@
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" {{ form_enctype(form) }} class="user">
                     <!-- start id-form -->
                     <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-                        <tr><th>Institution Details</th></tr>
+                        <tr><h2>Institution Details</h2></tr>
                         {{ form_row(form.name) }}
                         {{ form_row(form.description) }}
                         {{ form_row( form.country ) }}
-                         {{ form_row( form.city ) }}
+                        {{ form_row( form.city ) }}
                         {{ form_row( form.address1 ) }}
                         
-                        
-                        <tr><th>Admin Accounts</th></tr>
+                        </br></br>
+                        <tr><th>Admin Accounts:</th></tr>
                         {{ form_row(form.firstName) }}
                         {{ form_row(form.middleName) }}
                         {{ form_row(form.lastName) }}
@@ -40,12 +40,10 @@
                         {{ form_row( form.new_password ) }}
                         {{ form_row( form.confirm_password ) }}
                        
-                        {{ form_rest(form) }}
-                        
                         <tr>
                             <th>&nbsp;</th>
                             <td valign="top">
-                                <input type="submit" value="" class="form-submit" />
+                                <input type="submit" value="submit" class="form-submit" />
                                 <input type="reset" value="" class="form-reset"  />
                             </td>
                             <td></td>
