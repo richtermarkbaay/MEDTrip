@@ -14,7 +14,11 @@
         %}
         	<script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-
+			<script type="text/javascript">
+				HCA.init({
+					autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}"
+				});
+			</script>
         
         {% block stylesheets %}
         	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>

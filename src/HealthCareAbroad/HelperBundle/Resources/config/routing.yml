@@ -1,3 +1,10 @@
+helper_autoCompleteSearch:
+    pattern:  /autocomplete-search
+    defaults: { _controller: HelperBundle:Default:autoCompleteSearch, section: ~, term: ~ }
+    requirements:
+         section: ".+"
+         term: ".+"
+
 helper_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
