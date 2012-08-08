@@ -1,8 +1,10 @@
+{% if selectedTab is not defined %}
+    {% set selectedTab = 'dashboard' %}
+{% endif %}
 <!--  start nav -->
 <div class="nav">
     <div class="table">
-    
-        <ul class="current">
+        <ul class="{{ selectedTab == 'dashboard' ? 'current' : 'select' }}">
             <li>
                 <a href="#nogo"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
             </li>
@@ -10,7 +12,7 @@
     
         <div class="nav-divider">&nbsp;</div>
                         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'institutions' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_institution_index') }}"><b>Institutions</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
@@ -26,7 +28,7 @@
     
         <div class="nav-divider">&nbsp;</div>
         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'medical_centers' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_medicalCenter_index') }}"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
@@ -42,7 +44,7 @@
     
         <div class="nav-divider">&nbsp;</div>
 
-        <ul class="select">
+        <ul class="{{ selectedTab == 'procedure_types' ? 'current' : 'select' }}">
             <li>
                 <a href="#nogo"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
@@ -58,7 +60,7 @@
     
         <div class="nav-divider">&nbsp;</div>
 
-        <ul class="select">
+        <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
             <li>
                 <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
@@ -71,17 +73,17 @@
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
-
+        
         <div class="nav-divider">&nbsp;</div>
         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'settings' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Tags</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_settings') }}"><b>Settings</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_tagHomepage') }}">View all</a></li>
-                		<li><a href="{{ path('admin_tagAdd') }}">Add new tag</a></li>
+                		<li><a href="#">Users</a></li>
+                		<li><a href="{{ path('admin_userType_index') }}">User types</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
