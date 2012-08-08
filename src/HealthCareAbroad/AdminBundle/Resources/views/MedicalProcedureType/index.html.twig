@@ -27,7 +27,7 @@
 						{% endfor %}
 					</td>
 					<td align="center">
-						<a id="proceduretype-{{type.id}}" href="javascript:void(0)" onclick="MedicalProcedureType.updateStatus($(this))">
+						<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" class="update-status">
 							{% if type.status %} deactivate {% else %} activate {% endif %}
 						</a> 
 					<span class="separator" style="color:#ccc">|</span>
@@ -41,10 +41,5 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
-
-	{% block javascripts %}
-		{{ parent() }}
-		<script src="{{ asset('bundles/medicalprocedure/js/MedicalProcedureType.js') }}"></script>
-	{% endblock %}
 
 {% endblock %}

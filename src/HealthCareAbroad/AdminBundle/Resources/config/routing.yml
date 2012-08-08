@@ -68,10 +68,10 @@ admin_medicalCenter_update:
          _method: POST
 
 admin_medicalCenter_updateStatus:
-    pattern:  /admin/medical-center/updateStatus
-    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus }
-    requirements:    
-        _method:  POST
+    pattern:  /admin/medical-center/updateStatus/{id}
+    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus, id: ~ }
+    requirements:
+        id: \d+
 
 admin_medicalCenter_search:
     pattern:  /admin/medical-centers/search/{term}
@@ -162,6 +162,12 @@ admin_medicalProcedure_updateStatus:
 admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
+
+admin_institution_updateStatus:
+    pattern:  /admin/institution/{id}/update-status
+    defaults: { _controller: AdminBundle:Institution:updateStatus }
+    requirements:
+        id: \d+
 
 admin_institution_manageCenters:
     pattern:  /admin/institution/{id}/manage-centers

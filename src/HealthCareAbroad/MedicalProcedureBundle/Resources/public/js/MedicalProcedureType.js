@@ -54,17 +54,6 @@ var MedicalProcedureType = {
 				return false;
 			}
 		});
-	},
-	
-	updateStatus : function(elem)
-	{
-		elemId = elem.attr('id').split('-').pop();
-		$.getJSON(MedicalProcedureType.baseUrl + "admin/procedure-type/update-status/" + elemId, function(result){
-			if(result) {
-				var status = $.trim(elem.html()) == 'activate';
-				elem.html(status ? 'deactivate' : 'activate');				
-			}
-		});
 	}
 }
 

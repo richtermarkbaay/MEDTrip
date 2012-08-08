@@ -21,7 +21,7 @@
 					<td>{{ institution.name }}</td>
 					<td>{{ institution.description }}</td>
 					<td align="center">
-						<a id="institution-{{institution.id}}" href="javascript:void(0)" onclick="Institution.updateStatus($(this))">
+						<a href="{{ path('admin_institution_updateStatus', {id:institution.id}) }}" class="update-status">
 							{% if institution.status %} deactivate {% else %} activate {% endif %}
 						</a> 
 					<span class="bar">|</span>
@@ -39,10 +39,5 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
-	
-	{% block javascripts %}
-		{{ parent() }}
-		<script src="{{ asset('bundles/institution/js/Institution.js') }}"></script>
-	{% endblock %}
 
 {% endblock %}
