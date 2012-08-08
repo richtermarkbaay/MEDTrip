@@ -109,6 +109,11 @@ CREATE TABLE IF NOT EXISTS `cities` (
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `cities`
+--
+
+INSERT INTO `cities` (`id`, `country_id`, `name`, `slug`, `status`) VALUES(1, 1, 'cebu', 'test', 1);
 -- --------------------------------------------------------
 
 --
@@ -139,6 +144,11 @@ CREATE TABLE IF NOT EXISTS `countries` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 -- --------------------------------------------------------
 
 --
@@ -218,6 +228,9 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
   KEY `invitation_token_id` (`invitation_token_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `institution_invitations` (`id`, `email`, `message`, `name`, `invitation_token_id`, `date_created`, `status`) VALUES
+(1, 'test-invited-institution-user@chromedia.com', 'lorem ipsum', 'Test', '1', '2012-08-02 06:21:36', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -284,6 +297,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -- --------------------------------------------------------
 
 --
@@ -332,6 +346,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_invitations` (
   KEY `invitation_token_id` (`invitation_token_id`),
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+INSERT INTO `institution_user_invitations` (`id`, `institution_id`, `invitation_token_id`, `email`, `message`, `first_name`, `middle_name`, `last_name`, `date_created`, `status`) VALUES
+(1, 1, 1, 'test-invited-institution-user@chromedia.com', 'lorem ipsum', 'Test', 'Invited', 'User', '2012-08-02 06:21:36', 1);
 
 -- --------------------------------------------------------
 
@@ -418,6 +435,13 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `invitation_tokens`
+--
+
+INSERT INTO `invitation_tokens` (`id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
+(1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -453,6 +477,13 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `medical_centers`
+--
+
+INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
+(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -487,6 +518,14 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
+--
+-- Dumping data for table `medical_procedure_types`
+--
+
+INSERT INTO `medical_procedure_types` (`id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -637,9 +676,9 @@ ALTER TABLE `institution_user_type_roles`
 --
 -- Constraints for table `medical_procedures`
 --
+ALTER TABLE `medical_procedures` ADD UNIQUE (`medical_procedure_type_id` , `name`);
 ALTER TABLE `medical_procedures`
   ADD CONSTRAINT `medical_procedures_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`);
-
 --
 -- Constraints for table `medical_procedure_type_centers`
 --

@@ -91,20 +91,19 @@ class InvitationServiceTest extends HelperBundleTestCase
 		$sendingResult = $this->service->sendInstitutionUserLoginCredentials($user, $temporaryPassword);
 		$this->assertEquals(1,$sendingResult);
 		return $sendingResult;
-		
 	}
-		public function testSendInstitutionUserInvitation()
-		{
-			// get data for institution
-			$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(1);
-	
-			//get data for institutionUserType
-			$institutionInvitation = $this->doctrine->getRepository('InstitutionBundle:InstitutionUserInvitation')->find(1);
-	
-			$sendingResult = $this->service->sendInstitutionUserInvitation($institution, $institutionInvitation);
-			$this->assertEquals(1,$sendingResult);
-			return $sendingResult;
-	
-		}
+	public function testSendInstitutionUserInvitation()
+	{
+		// get data for institution
+		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(1);
+
+		//get data for institutionUserType
+		$institutionInvitation = $this->doctrine->getRepository('InstitutionBundle:InstitutionUserInvitation')->find(1);
+
+		$sendingResult = $this->service->sendInstitutionUserInvitation($institution, $institutionInvitation);
+		$this->assertEquals(1,$sendingResult);
+		return $sendingResult;
+
+	}
 	
 }

@@ -15,8 +15,8 @@ class MedicalProcedureType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('medical_procedure_type', 'medicalproceduretype_list');
-		$builder->add('status', 'choice', array('choices' => array_keys(MedicalProcedure::$STATUS)));
+		$builder->add('medical_procedure_type', 'medicalproceduretype_list', array('constraints'=>array(new NotBlank())));
+		$builder->add('status', 'choice', array('choices' => array_keys(MedicalProcedure::$STATUS)), array('constraints'=>array(new NotBlank())));
 	}
 
 	// How does it work?

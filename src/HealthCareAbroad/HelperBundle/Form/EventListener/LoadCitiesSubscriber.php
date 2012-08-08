@@ -1,7 +1,7 @@
 <?php 
 namespace HealthCareAbroad\HelperBundle\Form\EventListener;
 
-use HealthCareAbroad\HelperBundle\Form\CityListType;
+use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
 
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -26,7 +26,6 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
         $form = $event->getForm();
-
 
         $countryId = !empty($data) && $data->getCountry() ? $data->getCountry()->getId() : 1;
 		$form->add($this->factory->createNamed('city', new CityListType($countryId)));

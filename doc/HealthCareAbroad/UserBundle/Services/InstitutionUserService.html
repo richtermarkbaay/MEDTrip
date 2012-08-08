@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>HealthCareAbroad\UserBundle\Services\InstitutionUserService | HealthCareAbroad API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">HealthCareAbroad API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../HealthCareAbroad/UserBundle/Services.html">HealthCareAbroad\UserBundle\Services</a>\InstitutionUserService</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>InstitutionUserService</strong>        extends <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>()
+                    <p></p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method___construct"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setSession">setSession</a>($session)
+                    <p></p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setSession"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setDoctrine">setDoctrine</a>(<abbr title="HealthCareAbroad\UserBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr> $doctrine)
+                    <p></p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setDoctrine"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setChromediaRequest">setChromediaRequest</a>(<abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest">ChromediaGlobalRequest</abbr> $request)
+                    <p></p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setChromediaRequest"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_setChromediaAccountsUri">setChromediaAccountsUri</a>($uri)
+                    <p></p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setChromediaAccountsUri"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_find">find</a>(array $searchBy, array $options)
+                    <p>Find user/s in chromedia global accounts based on searchBy options</p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_find"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getUser">getUser</a>(<abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr> $user)
+                    <p>Find an account in global chromedia by accountId</p>
+                </td>
+                <td><small>from&nbsp;<a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_getUser"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a></small></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_login">login</a>(string $email, <abbr title="HealthCareAbroad\UserBundle\Services\password">password</abbr> $password)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_create">create</a>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)
+                    <p>Create a institution user</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_update">update</a>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)
+                    <p>Update Account of institution user</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_findByEmailAndPassword">findByEmailAndPassword</a>(string $email, string $password)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_findByIdAndPassword">findByIdAndPassword</a>($id, $password)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="HealthCareAbroad\UserBundle\Services\Ambigous">Ambigous</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_findById">findById</a>(int $id, boolean $activeOnly = true)
+                    <p>Find a InstitutionUser by accountId</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_getAccountData">getAccountData</a>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method___construct"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 41</div>
+        <code>            public            
+    <strong>__construct</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setSession">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setSession"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 46</div>
+        <code>            public            
+    <strong>setSession</strong>($session)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$session</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setDoctrine">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setDoctrine"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 55</div>
+        <code>            public            
+    <strong>setDoctrine</strong>(<abbr title="HealthCareAbroad\UserBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr> $doctrine)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\UserBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr></td>
+                <td>$doctrine</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setChromediaRequest">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setChromediaRequest"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 66</div>
+        <code>            public            
+    <strong>setChromediaRequest</strong>(<abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest">ChromediaGlobalRequest</abbr> $request)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest">ChromediaGlobalRequest</abbr></td>
+                <td>$request</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setChromediaAccountsUri">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_setChromediaAccountsUri"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 71</div>
+        <code>            public            
+    <strong>setChromediaAccountsUri</strong>($uri)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$uri</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_find">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_find"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 160</div>
+        <code>            public            array
+    <strong>find</strong>(array $searchBy, array $options)</code>
+    </h3>
+    <div class="details">
+        <p>Find user/s in chromedia global accounts based on searchBy options</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$searchBy</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getUser">
+        <div class="location">in <a href="../../../HealthCareAbroad/UserBundle/Services/UserService.html#method_getUser"><abbr title="HealthCareAbroad\UserBundle\Services\UserService">UserService</abbr></a> at line 182</div>
+        <code>            public            <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+    <strong>getUser</strong>(<abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr> $user)</code>
+    </h3>
+    <div class="details">
+        <p>Find an account in global chromedia by accountId</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\UserBundle\Services\HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></td>
+                <td>$user</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_login">
+        <div class="location">at line 23</div>
+        <code>            public            
+    <strong>login</strong>(string $email, <abbr title="HealthCareAbroad\UserBundle\Services\password">password</abbr> $password)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$email</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="HealthCareAbroad\UserBundle\Services\password">password</abbr></td>
+                <td>$password</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_create">
+        <div class="location">at line 45</div>
+        <code>            public            <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+    <strong>create</strong>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)</code>
+    </h3>
+    <div class="details">
+        <p>Create a institution user</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+                <td>$institutionUser</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_update">
+        <div class="location">at line 67</div>
+        <code>            public            <a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a>
+    <strong>update</strong>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)</code>
+    </h3>
+    <div class="details">
+        <p>Update Account of institution user</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+                <td>$institutionUser</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../HealthCareAbroad/UserBundle/Entity/SiteUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\SiteUser">SiteUser</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_findByEmailAndPassword">
+        <div class="location">at line 84</div>
+        <code>            public            <a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a>
+    <strong>findByEmailAndPassword</strong>(string $email, string $password)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$email</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$password</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_findByIdAndPassword">
+        <div class="location">at line 115</div>
+        <code>            public            <a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a>
+    <strong>findByIdAndPassword</strong>($id, $password)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$password</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_findById">
+        <div class="location">at line 147</div>
+        <code>            public            <abbr title="HealthCareAbroad\UserBundle\Services\Ambigous">Ambigous</abbr>
+    <strong>findById</strong>(int $id, boolean $activeOnly = true)</code>
+    </h3>
+    <div class="details">
+        <p>Find a InstitutionUser by accountId</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>int</td>
+                <td>$id</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>boolean</td>
+                <td>$activeOnly</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="HealthCareAbroad\UserBundle\Services\Ambigous">Ambigous</abbr></td>
+            <td>&lt;NULL, \HealthCareAbroad\UserBundle\Entity\InstitutionUser&gt;</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getAccountData">
+        <div class="location">at line 159</div>
+        <code>            public            
+    <strong>getAccountData</strong>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $institutionUser)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a></td>
+                <td>$institutionUser</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

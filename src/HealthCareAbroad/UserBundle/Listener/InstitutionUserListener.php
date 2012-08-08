@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\UserBundle\Listener;
 
+use Doctrine\ORM\EntityManager;
+
 use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
 
 class InstitutionUserListener
@@ -17,7 +19,7 @@ class InstitutionUserListener
      */
     private $em;
     
-    public function setEntityManager(\Doctrine\ORM\EntityManager $em)
+    public function setEntityManager(EntityManager $em)
     {
         $this->em = $em;
     }

@@ -28,11 +28,11 @@
                 <form action="{{ path('admin_login') }}" method="POST" >
                     <table border="0" cellpadding="0" cellspacing="0">
                     
-                        {% if app.session.hasFlash('flash.notice') %}
+                        {% if app.session.hasFlash('notice') %}
                         <tr>
                             <td colspan="2">
                                 <div class=login_notice style="color: #CE2700; margin: -20px 0px;">
-                                    {{ app.session.flash('flash.notice') }}
+                                    {{ app.session.flash('notice') }}
                                 </div>
                             </td>
                         </tr>
@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <th></th>
-                            <td><input type="submit" class="submit-login"  /></td>
+                            <td><input type="submit" class="submit-login" name="submit"/></td>
                         </tr>
                     </table>
                     

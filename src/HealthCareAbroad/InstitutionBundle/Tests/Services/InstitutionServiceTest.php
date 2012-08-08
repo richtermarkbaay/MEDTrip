@@ -9,6 +9,9 @@ namespace HealthCareAbroad\InstitutionBundle\Tests\Services;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\Country;
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleTestCase;
 
 class InstitutionServiceTest extends InstitutionBundleTestCase
@@ -20,9 +23,7 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 	protected $service;
 	public function setUp()
 	{
-		$this->service = new InstitutionService();
-		$this->service->setDoctrine($this->getDoctrine());
-		
+		$this->service = new InstitutionService($this->getDoctrine());
 	}
 	
 	public function tearDown()
@@ -32,8 +33,18 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 	
 	public function testCreateInstitution()
 	{
+		$institution = new Institution();
+		$institution->setName('alnie');
+		$institution->setDescription('test');
+		$institution->setSlug('test');
+		$institution->setStatus(1);
+		$institution->setAddress1('cebu');
+		$institution->setAddress2('compostela');
+		$institution->setLogo('logo.jpg');
+		$institution->setCityId('1');
+		$institution->setCountryId('1');
 		
-		$result = $this->service->createInstitution('Vickiii Bellooo', 'whitening', 'slug');
+		$result = $this->service->createInstitution($institution);
 		$this->assertNotEmpty($result);
 	}
 	

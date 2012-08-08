@@ -1,5 +1,5 @@
 {
-    "hash": "5784203f1b0927a3dda0251ff9896f2a",
+    "hash": "8fb768bc252139e7b6bd127f0f537cf9",
     "packages": [
         {
             "package": "chromedia/media-bundle",
@@ -44,8 +44,8 @@
         {
             "package": "guzzle/guzzle",
             "version": "dev-master",
-            "source-reference": "v2.8.3",
-            "commit-date": "1343680042"
+            "source-reference": "6cd3ae1f9cd8f0255c6d6d14dabe647bc8f54bf3",
+            "commit-date": "1344228287"
         },
         {
             "package": "imagine/Imagine",
@@ -88,30 +88,46 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "source-reference": "11324294acf2dcf6b7f7cb0c4f35fd77e6f01cb7",
-            "commit-date": "1343684910"
+            "source-reference": "ce9c557989f95abffe792c63f84f404a2f019ef8",
+            "commit-date": "1344261272"
         },
         {
             "package": "monolog/monolog",
             "version": "1.1.0"
         },
         {
+            "package": "nikic/php-parser",
+            "version": "dev-master",
+            "source-reference": "5a947e984391e26b5d9252cebb1d1498ccaffb45",
+            "commit-date": "1343036207"
+        },
+        {
+            "package": "pimple/pimple",
+            "version": "1.0.0"
+        },
+        {
+            "package": "sami/sami",
+            "version": "dev-master",
+            "source-reference": "80efb05509e7d217465036e40089ccff75f56551",
+            "commit-date": "1342704443"
+        },
+        {
             "package": "sensio/distribution-bundle",
             "version": "dev-master",
-            "source-reference": "5886adae1613c0a72fbb95259a83ae798e86c0d3",
-            "commit-date": "1342347850"
+            "source-reference": "57190e5baa0cc1d8ef6095ce57e6719a5eae2b79",
+            "commit-date": "1344240835"
         },
         {
             "package": "sensio/framework-extra-bundle",
             "version": "dev-master",
-            "source-reference": "dbe4432742e16ee9ca550a2f953b059f0a80c53d",
-            "commit-date": "1343637454"
+            "source-reference": "ade2d53b20a9fc3428f04c863b3fd4fca0b62181",
+            "commit-date": "1344072374"
         },
         {
             "package": "sensio/generator-bundle",
             "version": "dev-master",
-            "source-reference": "4436c2e24301123fb413baf3f78cd93bbc016c07",
-            "commit-date": "1343291371"
+            "source-reference": "d8fc1666f3cdb403f1b2d4320c45ddd6adbdf6a5",
+            "commit-date": "1343980150"
         },
         {
             "package": "swiftmailer/swiftmailer",
@@ -122,8 +138,8 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "8b2aa953f87da228ba413e8fb1372e49c1374050",
-            "commit-date": "1342198037"
+            "source-reference": "19045c3692f6f6ddb4abc5ebfaf3f86f1c57d265",
+            "commit-date": "1343980916"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -140,7 +156,7 @@
         {
             "package": "symfony/swiftmailer-bundle",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
+            "source-reference": "v2.1.0-RC1",
             "commit-date": "1342684512"
         },
         {
@@ -152,8 +168,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "b1618d210cb7e27036edcea9c163a94167e7df59",
-            "commit-date": "1343747192"
+            "source-reference": "ca3aa9c3050f94436778970b65db34142a50d158",
+            "commit-date": "1344318018"
         },
         {
             "package": "twig/extensions",
@@ -189,6 +205,8 @@
         "sensio/framework-extra-bundle": 20,
         "sensio/generator-bundle": 20,
         "chromedia/utilities": 20,
-        "chromedia/media-bundle": 20
+        "chromedia/media-bundle": 20,
+        "nikic/php-parser": 20,
+        "sami/sami": 20
     }
 }

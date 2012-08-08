@@ -5,7 +5,7 @@ InstitutionBundle_create_token:
        _method:  GET|POST
 
 institution_accept_user_invitation:
-    pattern:  /accounts/acceptInvitation/{institutionId}/{token}
+    pattern:  /accounts/accept-invitation/{token}
     defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
     requirements:    
        _method:  GET
@@ -27,12 +27,17 @@ institution_signUp:
     defaults: {_controller: InstitutionBundle:Institution:signUp }
     requirements:
         _method: GET|POST
-       
+
+institution_loadCities:
+    pattern:  /location/load-cities/{countryId}
+    defaults: { _controller: InstitutionBundle:Institution:loadCities }
+        
 institution_editAccount:
-    pattern:  /institution/editAccount
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount }
+    pattern:  /institution/edit-account/{accountId}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
     requirements:
         _method:  GET|POST
+        accountId: \d+
 
 institution_change_password:
     pattern:  /institution/change-password
@@ -67,3 +72,5 @@ institution_logout:
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
+
+
