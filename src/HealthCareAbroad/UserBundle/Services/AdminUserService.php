@@ -19,7 +19,7 @@ class AdminUserService extends UserService
         if ($user) {
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', array('ROLE_ADMIN'));
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
-            // $this->get("security.context")->setToken($securityToken);
+            //$this->get("security.context")->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
             
             return true;

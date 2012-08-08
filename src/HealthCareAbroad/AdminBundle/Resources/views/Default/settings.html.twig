@@ -1,0 +1,65 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab='settings' %}
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ site_name }} Admin Settings</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <table>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <!--  start table-content  -->
+            			<div id="table-content">
+            			    
+            			    {% if app.session.hasFlash('notice') %}
+            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+            		        {% endif %}
+            			
+            			    <h2>Sub Heading </h2>
+                			<h3>Local Heading</h3>
+                			
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+                			<br />
+                			<br />
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+                			<br />
+                			<br />
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+                			
+            			</div>
+                    </td>
+                    <td>
+                        {% block related_tasks %}
+                            {% include 'AdminBundle:Default:settingsTasks.html.twig' %}
+                        {% endblock %}
+                    </td>
+                </tr>
+            
+            </table>
+			
+			<!--  end table-content  -->
+			
+			
+			
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+

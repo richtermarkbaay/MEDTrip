@@ -16,7 +16,7 @@ HealthCareAbroad\UserBundle\Entity\AdminUserType:
             fixed: false
             nullable: false
         status:
-            type: boolean
+            type: integer
             nullable: false
     manyToMany:
         adminUserRoles:

@@ -15,8 +15,13 @@ HealthCareAbroad\UserBundle\Entity\AdminUserRole:
             length: 250
             fixed: false
             nullable: false
+        label:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
         status:
-            type: boolean
+            type: integer
             nullable: false
     manyToMany:
         adminUserTypes:
