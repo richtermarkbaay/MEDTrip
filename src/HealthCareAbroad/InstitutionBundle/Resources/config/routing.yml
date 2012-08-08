@@ -27,7 +27,11 @@ institution_signUp:
     defaults: {_controller: InstitutionBundle:Institution:signUp }
     requirements:
         _method: GET|POST
-       
+
+institution_loadCities:
+    pattern:  /location/load-cities/{countryId}
+    defaults: { _controller: InstitutionBundle:Institution:loadCities }
+        
 institution_editAccount:
     pattern:  /institution/edit-account/{accountId}
     defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
@@ -68,3 +72,5 @@ institution_logout:
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
+
+

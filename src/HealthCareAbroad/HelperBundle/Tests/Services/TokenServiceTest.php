@@ -45,7 +45,7 @@ class TokenServiceTest extends HelperBundleTestCase
 		return $institution;
 	}
 	
-	public function testGetActiveInstitutionUserInvitatinByToken()
+	public function testGetActiveInstitutionUserInvitationByToken()
 	{
 		$token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
 		$institutionUser = $this->service->getActiveInstitutionUserInvitationByToken($token);
