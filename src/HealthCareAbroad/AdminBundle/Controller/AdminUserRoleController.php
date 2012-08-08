@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use \PDOException;
+
 class AdminUserRoleController extends Controller 
 {
     public function indexAction()
@@ -24,11 +26,19 @@ class AdminUserRoleController extends Controller
     public function viewByUserTypeAction()
     {
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
-        $userRoles = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole')->getAssignablePermissions();
+        
+        if (!$userType) {
+            throw $this->createNotFoundException();
+        }
+        
+        $userRoleRepo = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole');
+        $assignableUserRoles = $userRoleRepo->getAssignablePermissionsByUserType($userType);
+        $currentRoles = $userType->getAdminUserRoles();
         
         return $this->render('AdminBundle:AdminUserRole:viewByUserType.html.twig', array(
-            'userRoles' => $userRoles,
-            'userType' => $userType
+            'assignableUserRoles' => $assignableUserRoles,
+            'userType' => $userType,
+            'currentRoles' => $currentRoles
         ));
     }
     
@@ -43,10 +53,50 @@ class AdminUserRoleController extends Controller
         $userType->addAdminUserRole($userRole);
         
         $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($userType);
-        $em->flush();
+        
+        try {
+            $em->persist($userType);
+            $em->flush();
+        }
+        catch (\PDOException $e) {
+            return $this->_errorResponse(500, $e->getMessage());
+        }
         
         return $this->_jsonResponse(array('success' => 1));
+    }
+    
+    public function removeRoleFromUserTypeAction()
+    {
+        $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
+        $userRole = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole')->find($this->getRequest()->get('userRoleId', 0));
+        
+        if (!$userType || !$userRole) {
+            throw $this->createNotFoundException();
+        }
+        $userType->removeAdminUserRole($userRole);
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        try {
+            $em->persist($userType);
+            $em->flush();
+        }
+        catch (\PDOException $e) {
+            return $this->_errorResponse(500, $e->getMessage());
+        }
+        
+        return $this->_jsonResponse(array('success' => 1));
+    }
+    
+    private function _errorResponse($code=400, $message=null)
+    {
+        $response = new Response();
+        $response->setStatusCode($code);
+        if ($message != null){
+            $response->setContent($message);
+        }
+    
+        return $response;
     }
     
     private function _jsonResponse($data=array(), $code=200)

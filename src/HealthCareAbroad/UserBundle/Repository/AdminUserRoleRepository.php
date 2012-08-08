@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUserType;
+
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use HealthCareAbroad\UserBundle\Entity\AdminUserRole;
@@ -24,6 +26,22 @@ class AdminUserRoleRepository extends EntityRepository
     public function getAssignablePermissions()
     {
         $dql = "SELECT a FROM UserBundle:AdminUserRole a WHERE a.status = :active";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameter('active', AdminUserRole::STATUS_ACTIVE);
+        return $query->getResult();
+    }
+    
+    public function getAssignablePermissionsByUserType(AdminUserType $userType)
+    {
+        $currentUserRoles = $userType->getAdminUserRoles();
+        
+        $ids = array();
+        foreach ($currentUserRoles as $each) {
+            $ids[] = $each->getId();
+        }
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+        
+        $dql = "SELECT a FROM UserBundle:AdminUserRole a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
         $query = $this->getEntityManager()->createQuery($dql)
             ->setParameter('active', AdminUserRole::STATUS_ACTIVE);
         return $query->getResult();

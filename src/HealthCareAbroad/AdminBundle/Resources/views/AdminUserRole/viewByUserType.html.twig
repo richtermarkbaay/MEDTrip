@@ -32,7 +32,15 @@
                 				</tr>
                 				
                 				{% set even = false %}
-                				{% for userRole in userRoles %}
+                				{% for userRole in currentRoles %}
+                				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                				        <td> <input id="userRole:{{ userRole.id }}" checked="checked" class="assing_permission_checkbox" type="checkbox" /> </td>
+                				        <td>{{ userRole.label | title }}</td>
+                    				</tr>
+                    				{% set even = even ? false : true %}    
+                				{% endfor %}
+                				
+                				{% for userRole in assignableUserRoles %}
                 				    <tr class="{{ even ? 'alternate-row' : ''}}">
                 				        <td> <input id="userRole:{{ userRole.id }}" class="assing_permission_checkbox" type="checkbox" /> </td>
                 				        <td>{{ userRole.label | title }}</td>
@@ -70,11 +78,25 @@
 	$(function(){
 	    $('input.assing_permission_checkbox').change(function(){
 		    var self = $(this);
+		    self.attr('disabled', true)
 	        if (this.checked) {
 		        $.ajax({
 			        url: "{{ path('admin_userRole_addToUserType') }}",
 			        data: {'userRoleId': self.attr('id').split(':')[1], 'userTypeId': '{{ userType.id }}'},
-			        type: 'post'
+			        type: 'post',
+			        success: function(){
+			        	self.attr('disabled', false)
+			        }
+		        });
+	        }
+	        else {
+	        	$.ajax({
+			        url: "{{ path('admin_userRole_removeRoleFromUserType') }}",
+			        data: {'userRoleId': self.attr('id').split(':')[1], 'userTypeId': '{{ userType.id }}'},
+			        type: 'post',
+			        success: function(){
+			        	self.attr('disabled', false)
+			        }
 		        });
 	        }
 	    });

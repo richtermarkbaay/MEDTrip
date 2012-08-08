@@ -50,6 +50,14 @@ admin_userRole_addToUserType:
         userRoleId: \d+
         userTypeId: \d+
         
+admin_userRole_removeRoleFromUserType:
+    pattern: /admin/settings/user-roles/remove-role-from-user-type
+    defaults: { _controller: AdminBundle:AdminUserRole:removeRoleFromUserType }
+    requirements:    
+        _method: POST
+        userRoleId: \d+
+        userTypeId: \d+
+        
 admin_userRole_index:
     pattern: /admin/settings/user-roles
     defaults: { _controller: AdminBundle:AdminUserRole:index }
