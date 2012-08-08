@@ -1,4 +1,9 @@
-{% extends '::base.html.twig' %}
+{% if app.session.hasFlash('notice') %}
+    <div class="msg-notice">
+        {{ app.session.flash('notice') }}
+    </div>
+{% endif %}
+
 {% block body %}
     
             Your account is successfully verified!

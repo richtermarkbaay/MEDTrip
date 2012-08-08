@@ -10,7 +10,7 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected $userEmail = 'test.user@chromedia.com';
     protected $userPassword = '123456';
     protected $formValues = array();
-    
+   
     public static function setUpBeforeClass()
     {
         \HCA_DatabaseManager::getInstance()
