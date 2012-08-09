@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="robots" content="index, follow, all" />
-        <title>HealthCareAbroad\InstitutionBundle\Form\InstitutionType | HealthCareAbroad API</title>
+        <title>HealthCareAbroad\SearchBundle\Services\SearchService | HealthCareAbroad API</title>
                     <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
                             </head>
         <body id="class">
@@ -19,10 +19,10 @@
         <div id="title">HealthCareAbroad API</div>
 
             <div class="type">Class</div>
-    <h1><a href="../../../HealthCareAbroad/InstitutionBundle/Form.html">HealthCareAbroad\InstitutionBundle\Form</a>\InstitutionType</h1>
+    <h1><a href="../../../HealthCareAbroad/SearchBundle/Services.html">HealthCareAbroad\SearchBundle\Services</a>\SearchService</h1>
     </div>
         <div class="content">
-                <p>class    <strong>InstitutionType</strong>        extends <abbr title="Symfony\Component\Form\AbstractType">AbstractType</abbr></p>
+                <p>class    <strong>SearchService</strong></p>
 
     
     
@@ -35,7 +35,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_setContainer">setContainer</a>(<abbr title="Symfony\Component\DependencyInjection\ContainerInterface">ContainerInterface</abbr> $container = null)
+                    <a href="#method___construct">__construct</a>(<abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)
                     <p></p>
                 </td>
                 <td></td>
@@ -45,17 +45,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_buildForm">buildForm</a>(<abbr title="Symfony\Component\Form\FormBuilderInterface">FormBuilderInterface</abbr> $builder, array $options)
-                    <p></p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    
-                </td>
-                <td class="last">
-                    <a href="#method_getName">getName</a>()
+                    <a href="#method_initiate">initiate</a>($searchCriteria = array())
                     <p></p>
                 </td>
                 <td></td>
@@ -65,10 +55,10 @@
 
         <h2>Details</h2>
 
-                        <h3 id="method_setContainer">
-        <div class="location">at line 20</div>
+                        <h3 id="method___construct">
+        <div class="location">at line 12</div>
         <code>            public            
-    <strong>setContainer</strong>(<abbr title="Symfony\Component\DependencyInjection\ContainerInterface">ContainerInterface</abbr> $container = null)</code>
+    <strong>__construct</strong>(<abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -78,8 +68,8 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Symfony\Component\DependencyInjection\ContainerInterface">ContainerInterface</abbr></td>
-                <td>$container</td>
+                <td><abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr></td>
+                <td>$entityManager</td>
                 <td></td>
             </tr>
             </table>
@@ -90,10 +80,10 @@
                     </div>
     </div>
 
-                <h3 id="method_buildForm">
+                <h3 id="method_initiate">
         <div class="location">at line 24</div>
         <code>            public            
-    <strong>buildForm</strong>(<abbr title="Symfony\Component\Form\FormBuilderInterface">FormBuilderInterface</abbr> $builder, array $options)</code>
+    <strong>initiate</strong>($searchCriteria = array())</code>
     </h3>
     <div class="details">
         <p></p>
@@ -103,32 +93,12 @@
 
                     <table>
                     <tr>
-                <td><abbr title="Symfony\Component\Form\FormBuilderInterface">FormBuilderInterface</abbr></td>
-                <td>$builder</td>
                 <td></td>
-            </tr>
-                    <tr>
-                <td>array</td>
-                <td>$options</td>
+                <td>$searchCriteria</td>
                 <td></td>
             </tr>
             </table>
 
-            
-            
-            
-                    </div>
-    </div>
-
-                <h3 id="method_getName">
-        <div class="location">at line 52</div>
-        <code>            public            
-    <strong>getName</strong>()</code>
-    </h3>
-    <div class="details">
-        <p></p>
-        <p></p>
-        <div class="tags">
             
             
             
