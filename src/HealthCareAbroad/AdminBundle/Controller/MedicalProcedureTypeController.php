@@ -6,10 +6,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureTypeType as MedicalProcedureTypeForm;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureTypeController extends Controller
 {
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES')")
+     */
     public function indexAction()
     {
 		$procedureTypes = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findAll();
@@ -17,6 +21,9 @@ class MedicalProcedureTypeController extends Controller
     	return $this->render('AdminBundle:MedicalProcedureType:index.html.twig', $data);
     }
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPE')")
+     */
     public function addAction()
     {
     	$em = $this->getDoctrine()->getEntityManager();
@@ -27,6 +34,12 @@ class MedicalProcedureTypeController extends Controller
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
     
+    /**
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPE')")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction($id)
     {
     	$em = $this->getDoctrine()->getEntityManager();
@@ -36,6 +49,9 @@ class MedicalProcedureTypeController extends Controller
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPE')")
+     */
     public function saveAction()
     {
     	$request = $this->getRequest();
@@ -69,6 +85,11 @@ class MedicalProcedureTypeController extends Controller
     	}
     }
     
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_PROCEDURE_TYPE')")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function updateStatusAction($id)
     {
     	$result = false;
