@@ -27,8 +27,8 @@
         </ul>
         {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS', 'CAN_MANAGE_MEDICAL_CENTER')") %}
         <div class="nav-divider">&nbsp;</div>
-        
         <ul class="{{ selectedTab == 'medical_centers' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_medicalCenter_index') }}"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
@@ -41,10 +41,11 @@
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
-        </ul>    
+        </ul>
+        {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES', 'CAN_MANAGE_PROCEDURE_TYPE')") %}
         <div class="nav-divider">&nbsp;</div>
-
         <ul class="{{ selectedTab == 'procedure_types' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_procedureType_index') }}"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
@@ -57,10 +58,11 @@
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
-        </ul>    
+        </ul>
+        {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_PROCEDURES', 'CAN_MANAGE_MEDICAL_PROCEDURE')") %}
         <div class="nav-divider">&nbsp;</div>
-
         <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_medicalProcedure_index') }}"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
@@ -74,6 +76,7 @@
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+        {% endif %}
         
         {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %} 
         <div class="nav-divider">&nbsp;</div>
