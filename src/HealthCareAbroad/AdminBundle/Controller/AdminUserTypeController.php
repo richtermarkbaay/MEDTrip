@@ -12,8 +12,15 @@ use HealthCareAbroad\UserBundle\Entity\AdminUserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 class AdminUserTypeController extends Controller 
 {
+    /**
+     * View all user types
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function indexAction()
     {
         $userTypes = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->getAllEditable();
@@ -22,6 +29,11 @@ class AdminUserTypeController extends Controller
         ));
     }
     
+    /**
+     * Create new user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function addAction()
     {
         $userType = new AdminUserType();
@@ -33,6 +45,11 @@ class AdminUserTypeController extends Controller
         ));
     }
     
+    /**
+     * Edit a user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function editAction()
     {
         $id = $this->getRequest()->get('id', 0);
@@ -50,6 +67,11 @@ class AdminUserTypeController extends Controller
         ));
     }
     
+    /**
+     * Do save changes to user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function saveAction()
     {
         $request = $this->getRequest();
