@@ -57,8 +57,16 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 		$procedure->setName('medProdTest FromUnitTest');
 		$procedure->setSlug('medprodtest-fromunittest');
 		$procedure->setStatus(1);
-
-	    $procedure = $this->service->saveMedicalProcedure($procedure);
+        
+        try {
+            $procedure = $this->service->saveMedicalProcedure($procedure);
+        }
+        catch (\Exception $e)
+        {
+            $this->getDoctrine()->resetEntityManager();
+            throw $e;
+        }
+	    
 	    
 	    $this->assertNotEmpty($procedure);
 	    

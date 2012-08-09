@@ -75,6 +75,12 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0,$crawler->filter('html:contains("Admin users")')->count());
-        //$r = $client->getContainer()->get('security.context')->getToken();
+        
+        // test that 403 must be returned when an authenticated user with no valid roles acesses the page
+        $client = $this->getBrowserWithMockLoggedUser();
+        $token = $client->getContainer()->get('security.context')->getToken();
+        $crawler = $client->request('GET', '/admin/settings/users');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        
     }
 }

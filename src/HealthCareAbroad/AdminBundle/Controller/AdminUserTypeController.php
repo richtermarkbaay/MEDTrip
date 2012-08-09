@@ -75,9 +75,6 @@ class AdminUserTypeController extends Controller
     public function saveAction()
     {
         $request = $this->getRequest();
-        if (!$request->isMethod('POST')) {
-            throw $this->createNotFoundException();
-        }
         
         $id = $request->get('id', 0);
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($id);
@@ -99,7 +96,7 @@ class AdminUserTypeController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            $request->getSession()->setFlash("notice", "{$userType->getName()} access group saved.");
+            $request->getSession()->setFlash("notice", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('admin_userType_index'));
         }
         else {

@@ -18,7 +18,7 @@ class AdminUserTypeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name','text', array('label' => 'Access group name:','constraints' => new NotBlank()));
+        $builder->add('name','text', array('label' => 'User type name:','constraints' => new NotBlank()));
         
     
     }
