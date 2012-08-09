@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use Symfony\Component\Security\Core\SecurityContext;
+
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidSiteUserOperationException;
 
 use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException;
@@ -34,6 +36,12 @@ class UserService
     
     /**
      * 
+     * @var Symfony\Component\Security\Core\SecurityContext
+     */
+    protected $securityContext;
+    
+    /**
+     * 
      * @var Symfony\Component\HttpFoundation\Session\Session
      */
     protected $session;
@@ -55,6 +63,11 @@ class UserService
     public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    public function setSecurityContext(SecurityContext $context)
+    {
+        $this->securityContext = $context;
     }
     
     
@@ -190,10 +203,12 @@ class UserService
                 
                 return $this->hydrateAccountData($user, $accountData);
             }
+            else {
+                throw new FailedAccountRequestException($response->getBody(true));
+            }
         }
         else {
             throw new FailedAccountRequestException("Cannot get Account with no id");
         }
-        return NULL;
     }
 }
