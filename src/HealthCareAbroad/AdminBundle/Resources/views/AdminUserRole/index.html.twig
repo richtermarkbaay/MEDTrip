@@ -28,12 +28,20 @@
             			    <table style="width:100%;" border="0" cellpadding="0" cellspacing="0" class="generic-table" id="table-list">
                 				<tr>
                 				    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Permission</a></th>
+                				    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Linked user types</a></th>
                 				</tr>
                 				
                 				{% set even = false %}
                 				{% for userRole in userRoles %}
                 				    <tr class="{{ even ? 'alternate-row' : ''}}">
                 				        <td>{{ userRole.label | title }}</td>
+                				        <td>
+                				            <ul style="list-style:none; padding: 0 15px;">
+                    					        {% for userType in userRole.adminUserTypes %}
+                    					        <li> <a href="{{ path('admin_userRole_viewByUserType', {'userTypeId': userType.id}) }}">{{ userType.name | title }}</a></li>
+                    					        {% endfor %}
+                    					    </ul>
+                				        </td>
                     				</tr>
                     				{% set even = even ? false : true %}    
                 				{% endfor %}
