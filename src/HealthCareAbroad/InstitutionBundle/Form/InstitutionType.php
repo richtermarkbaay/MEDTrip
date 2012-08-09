@@ -44,7 +44,7 @@ class InstitutionType extends AbstractType
                     'constraints' => array(
                         new EqualFieldValue(array('field' => 'new_password', 'message' => 'Passwords do not match')))
                 ))
-    		->add('country', 'country_list', array('attr'=>array('onchange'=>'Location.loadCities($(this))')))
+    		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
     		->add('address1','text', array('constraints' => new NotBlank()))
     		;
     }

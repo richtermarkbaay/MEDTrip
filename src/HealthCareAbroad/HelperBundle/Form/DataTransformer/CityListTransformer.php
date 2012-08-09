@@ -23,42 +23,48 @@ class CityListTransformer implements DataTransformerInterface
 	}
 	
 	/**
-	 * Transforms cityList object to string cities separated by comma.
-	 *
-	 * @param ArrayCollection $cities
-	 * @return string
-	 */
-	public function transform($cities)
-	{
-		if(!count($cities)) {
-			return null;
-		}
-		 
-		$centersName = array();
+     * Transforms tags object to string tags separated by comma.
+     *
+     * @param ArrayCollection $tags
+     * @return string
+     */
+    public function transform($cities)
+    {
+    	if(!count($cities)) {
+    		return null;
+    	}
+    	
+    	$cityName = array();
 		foreach($cities as $city) {
 			$cityName[] = $city->getName();
 		}
-	
-		return implode(', ', $cityName);
-	}
-	
-	/**
-	 * Transforms a string (cities) to an array object (cities).
-	 *
-	 * @param  string $stringCities
-	 * @return ArrayCollection|null
-	 */
-	public function reverseTransform($countryId)
-	{
-		if (!$countryId) {
-			return null;
-		}
 		
-		$cityObjects = $this->em
-			->getRepository('InstitutionBundle:City')
-			->findBy(array('countryId' => $countryId))
-		;
+		return implode(', ', $cityName);
+    }
+
+    /**
+     * Transforms a string (tags) to an array object (tag).
+     *
+     * @param  string $stringTags
+     * @return ArrayCollection|null
+     */
+    public function reverseTransform($stringCities)
+    {
+    	$cityObjects = new ArrayCollection();
+
+    	if($stringCities == '')
+    		return $cityObjects;
+
+    	$cities = explode(',', $stringCities);
+
+    	foreach($cities as $cityName) {
+    		$city = $this->em->getRepository('HelperBundle:City')->findOneBy(array('name'=>trim($cityName)));
+    		if($city) $cityObjects->add($city);
+    	}
+
 		return $cityObjects;
-	}
+    }
+    
+    
 }
 
