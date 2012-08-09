@@ -6,10 +6,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureType as MedicalProcedureForm;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureController extends Controller
 {
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_PROCEDURES')")
+     */
     public function indexAction()
     {
 		$procedures = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedure')->findAll();
@@ -17,6 +21,11 @@ class MedicalProcedureController extends Controller
     	return $this->render('AdminBundle:MedicalProcedure:index.html.twig', $data);
     }
 
+    /**
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_PROCEDURE')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function addAction()
     {
     	$em = $this->getDoctrine()->getEntityManager();
@@ -27,6 +36,12 @@ class MedicalProcedureController extends Controller
     	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
     
+    /**
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_PROCEDURE')")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction($id)
     {
     	$procedure = $this->get('services.medical_procedure')->getMedicalProcedure($id);
@@ -35,6 +50,9 @@ class MedicalProcedureController extends Controller
     	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_PROCEDURE')")
+     */
     public function saveAction()
     {
     	$request = $this->getRequest();
@@ -63,6 +81,12 @@ class MedicalProcedureController extends Controller
     	}
     }
 
+    /**
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MEDICAL_PROCEDURE')")
+     * @param int $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function updateStatusAction($id)
     {
     	$result = false;
