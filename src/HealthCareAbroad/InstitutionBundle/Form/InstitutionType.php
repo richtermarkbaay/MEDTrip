@@ -32,7 +32,7 @@ class InstitutionType extends AbstractType
     		->add('firstName', 'text', array('constraints' => new NotBlank()))
     		->add('middleName', 'text', array('constraints' => new NotBlank()))
     		->add('lastName', 'text', array('constraints' => new NotBlank()))
-    		->add('email','email', array('constraints' => new Email()))
+    		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
     		->add( 'new_password', 'password', array(
                     'label' => 'New Password', 
                     'virtual' => true, 

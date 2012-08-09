@@ -38,11 +38,12 @@ class InstitutionController extends Controller
 	public function signUpAction()
 	{
 		$form = $this->createForm(new InstitutionType());
-		//getActiveCitiesByCountryId($countryId)
-		
 		if ($this->getRequest()->isMethod('POST')) {
-            
-            $form->bindRequest($this->getRequest());
+			$form->bindRequest($this->getRequest());
+			$allFormValues = $form->getData();
+			$value = $allFormValues["city"];
+			var_dump($allFormValues);exit;
+			
             if ($form->isValid()) {
             	
             	//create institution
@@ -74,14 +75,13 @@ class InstitutionController extends Controller
            	    
            	    $user->setStatus(SiteUser::STATUS_ACTIVE);
            	    $institutionUser = $this->get('services.institution_user')->create($user);
-           	    
            	    if ( count($institutionUser) > 0 ) {
            	    	$this->get('session')->setFlash('flash.notice', "Successfully created account to HealthCareaAbroad");
            	    }
            	    else {
            	    	$this->get('session')->setFlash('flash.notice', "Failed to create account on HealthCareAbroad");
            	    }
-           	    $form = null;
+           	    
            	    return $this->redirect($this->generateUrl('institution_homepage'));
             }
 		}
@@ -98,7 +98,6 @@ class InstitutionController extends Controller
             ->add('middleName', 'text')
             ->add('lastName', 'text')
             ->getForm();
-        
         
     	if ($this->getRequest()->isMethod('POST')) {
             
