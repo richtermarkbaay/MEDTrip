@@ -14,8 +14,7 @@ security:
         in_memory:
             memory:
                 users:
-                    ryan:  { password: ryanpass, roles: 'ROLE_USER' }
-                    admin: { password: kitten, roles: 'ROLE_ADMIN' }
+                    admin: { password: testadmin, roles: 'ROLE_ADMIN' }
     
     firewalls:
         main:
@@ -30,6 +29,8 @@ security:
             pattern: ^/admin
             form_login:
                 login_path: /admin/login
+            http_basic:
+                realm: "Secured Admin Area"
 
         institution_login:
             pattern:  ^/institution/login$

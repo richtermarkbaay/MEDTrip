@@ -27,4 +27,5 @@ class SearchService
 		
 		return $repository->search($searchCriteria['term']); 
 	}
+
 }

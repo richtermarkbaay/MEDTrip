@@ -63,25 +63,4 @@ class AdminUserController extends Controller
             'users' => $users    
         ));
     }
-    
-    public function addAction()
-    {
-        $adminUser = new AdminUser();
-        $form = $this->createForm(new AdminUserFormType(), $adminUser);
-        
-        return $this->render('AdminBundle:AdminUser:form.html.twig', array(
-            'form' => $form->createView(),
-            'user' => $adminUser
-        ));
-    }
-    
-    public function editAction()
-    {
-        
-    }
-    
-    public function saveAction()
-    {
-        
-    }
 }
