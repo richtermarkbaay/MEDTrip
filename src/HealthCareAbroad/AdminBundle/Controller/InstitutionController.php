@@ -14,9 +14,13 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
 {
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
 	public function indexAction()
 	{
 		$institutions = $this->getDoctrine()->getEntityManager()->getRepository('InstitutionBundle:Institution')->findAll();
@@ -24,6 +28,12 @@ class InstitutionController extends Controller
 		return $this->render('AdminBundle:Institution:index.html.twig', array('institutions' => $institutions));
 	}
 
+	
+	/**
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_INSTITUTION')")
+	 * @param int $id
+	 */
 	public function updateStatusAction($id)
 	{
 		$result = false;
@@ -47,6 +57,11 @@ class InstitutionController extends Controller
 		return $response;
 	}
 
+	/**
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
 	public function manageCentersAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
@@ -83,6 +98,11 @@ class InstitutionController extends Controller
 		return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
 	}
 	
+	/**
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
 	public function manageProcedureTypesAction($id)
 	{
 		$request = $this->getRequest();
@@ -124,6 +144,11 @@ class InstitutionController extends Controller
 		return $this->render('AdminBundle:Institution:manage_proceduretypes.html.twig', $params);
 	}
 	
+	/**
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
 	public function manageProceduresAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
@@ -150,7 +175,11 @@ class InstitutionController extends Controller
 		return $this->render('AdminBundle:Institution:manage_procedures.html.twig', $params);
 	}
 	
-	// TODO - Move it to InstitutionMedicalProcedureController 
+
+	/**
+	 * TODO - Move it to InstitutionMedicalProcedureController
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 */
 	public function updateProcedureStatusAction()
 	{
 		$em = $this->getDoctrine()->getEntityManager();
@@ -174,7 +203,10 @@ class InstitutionController extends Controller
 		return $response;
 	}
 	
-	// TODO - Move it to InstitutionMedicalProcedureController
+	/**
+	 * TODO - Move it to InstitutionMedicalProcedureController 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 */
 	function saveMedicalProcedureAction($id)
 	{
 		$request = $this->getRequest();
@@ -204,7 +236,11 @@ class InstitutionController extends Controller
 		return $this->redirect($this->generateUrl('admin_institution_manageProcedures', array('id'=>$id)));
 	}
 	
-	// TODO - Move it to InstitutionMedicalProcedureController
+	/**
+	 * TODO - Move it to InstitutionMedicalProcedureController
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 */
 	function loadProcedureTypesAction($medical_center_id)
 	{
 		$data = array();
@@ -224,7 +260,11 @@ class InstitutionController extends Controller
 		return $response;
 	}
 	
-	// TODO - Move it to InstitutionMedicalProcedureController
+	/**
+	 * TODO - Move it to InstitutionMedicalProcedureController
+	 * 
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 */
 	function loadProceduresAction($id, $procedure_type_id)
 	{
 		$data = array();
