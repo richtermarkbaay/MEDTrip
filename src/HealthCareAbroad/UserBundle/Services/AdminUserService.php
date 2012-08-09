@@ -49,7 +49,7 @@ class AdminUserService extends UserService
             
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', $roles);
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
-            //$this->get("security.context")->setToken($securityToken);
+            $this->securityContext->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
             
             return true;
