@@ -106,13 +106,19 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 -- Table structure for table `admin_user_type_roles`
 --
 
-DROP TABLE IF EXISTS `admin_user_type_roles`;
 CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
   `admin_user_type_id` int(3) unsigned NOT NULL,
   `admin_user_role_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`admin_user_type_id`,`admin_user_role_id`),
   KEY `admin_user_role_id` (`admin_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_user_type_roles`
+--
+
+INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -621,6 +627,13 @@ CREATE TABLE IF NOT EXISTS `tags` (
 --
 ALTER TABLE `admin_users`
   ADD CONSTRAINT `admin_users_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`);
+  
+--
+-- Constraints for table `admin_user_type_roles`
+--
+ALTER TABLE `admin_user_type_roles`
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cities`
