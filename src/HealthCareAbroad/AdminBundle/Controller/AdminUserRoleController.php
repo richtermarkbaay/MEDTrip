@@ -12,8 +12,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use \PDOException;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 class AdminUserRoleController extends Controller 
 {
+    /**
+     * View all user roles
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function indexAction()
     {
         $userRoles = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole')->getAssignablePermissions();
@@ -23,6 +30,11 @@ class AdminUserRoleController extends Controller
         ));
     }
     
+    /**
+     * View user roles of a user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function viewByUserTypeAction()
     {
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
@@ -42,6 +54,11 @@ class AdminUserRoleController extends Controller
         ));
     }
     
+    /**
+     * Add a role to a user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function addRoleToUserTypeAction()
     {
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
@@ -65,6 +82,11 @@ class AdminUserRoleController extends Controller
         return $this->_jsonResponse(array('success' => 1));
     }
     
+    /**
+     * Remove a role from a user type
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function removeRoleFromUserTypeAction()
     {
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
