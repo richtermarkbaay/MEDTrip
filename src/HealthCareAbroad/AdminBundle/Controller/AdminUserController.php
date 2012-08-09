@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\AdminUserFormType;
+
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -60,5 +62,26 @@ class AdminUserController extends Controller
         return $this->render('AdminBundle:AdminUser:index.html.twig', array(
             'users' => $users    
         ));
+    }
+    
+    public function addAction()
+    {
+        $adminUser = new AdminUser();
+        $form = $this->createForm(new AdminUserFormType(), $adminUser);
+        
+        return $this->render('AdminBundle:AdminUser:form.html.twig', array(
+            'form' => $form->createView(),
+            'user' => $adminUser
+        ));
+    }
+    
+    public function editAction()
+    {
+        
+    }
+    
+    public function saveAction()
+    {
+        
     }
 }

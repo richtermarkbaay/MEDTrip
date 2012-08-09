@@ -6,7 +6,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ site_name }}Admin users</h1>
+    	<h1>{{ site_name }} Admin users</h1>
     </div>
 
     <!-- end page-heading -->
@@ -42,8 +42,7 @@
                     					<td>{{ user.email }}</td>
                     					<td>{{ user.adminUserType.name | title }}</td>
                     					<td class="options-width">
-                        					<a href="{{ path('admin_user_index', {id: user.accountId }) }}" title="Edit {{ user.fullName | title }}" class="icon-1 info-tooltip"></a>
-                        					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+                    					    
                     					</td>
                     				</tr>
                     				{% set even = even ? false : true %}    
@@ -56,7 +55,7 @@
         			</td>
     			<td style="vertical-align: top; width: 20%">
     			    {% block related_tasks %}
-    			        {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
+    			        {% include 'AdminBundle:AdminUser:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
     			    {% endblock %}
     			</td>
 			</tr>
