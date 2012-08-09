@@ -34,9 +34,9 @@
                 					<th class="table-header-options line-left"><a href="#">Options</a> </th>
                 				</tr>
                 				
-                				{% set even = false %}
+                				
                 				{% for user in users %}
-                				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
                 				        <td></td>
                     					<td>{{ user.fullName | title }}</td>
                     					<td>{{ user.email }}</td>
@@ -45,7 +45,7 @@
                     					    
                     					</td>
                     				</tr>
-                    				{% set even = even ? false : true %}    
+                    				    
                 				{% endfor %}
                 				
             				</table>

@@ -31,9 +31,8 @@
                 				    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Linked user types</a></th>
                 				</tr>
                 				
-                				{% set even = false %}
                 				{% for userRole in userRoles %}
-                				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
                 				        <td>{{ userRole.label | title }}</td>
                 				        <td>
                 				            <ul style="list-style:none; padding: 0 15px;">
@@ -43,7 +42,6 @@
                     					    </ul>
                 				        </td>
                     				</tr>
-                    				{% set even = even ? false : true %}    
                 				{% endfor %}
                 				
             				</table>
