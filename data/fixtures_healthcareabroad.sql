@@ -35,26 +35,47 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   KEY `admin_user_type_id` (`admin_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `admin_user_roles`
---
-
-DROP TABLE IF EXISTS `admin_user_roles`;
-CREATE TABLE IF NOT EXISTS `admin_user_roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  `status` smallint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
 --
 -- Dumping data for table `admin_users`
 --
 
 INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
 (2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_user_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `admin_user_roles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `label` varchar(250) NOT NULL,
+  `status` smallint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `admin_user_roles`
+--
+
+INSERT INTO `admin_user_roles` (`id`, `name`, `label`, `status`) VALUES
+(1, 'SUPER_ADMIN', 'Owner/Super Admin', 3),
+(2, 'CAN_VIEW_INSTITUTIONS', 'View all institutions', 2),
+(3, 'CAN_MANAGE_INSTITUTION', 'Add or edit an institution', 2),
+(4, 'CAN_DELETE_INSTITUTION', 'Delete or deactivate an institution', 2),
+(5, 'CAN_VIEW_MEDICAL_CENTERS', 'View all medical centers', 2),
+(6, 'CAN_MANAGE_MEDICAL_CENTER', 'Add or edit a medical center', 2),
+(7, 'CAN_DELETE_MEDICAL_CENTER', 'Delete or deactivate a medical center', 2),
+(8, 'CAN_VIEW_PROCEDURE_TYPES', 'View all medical procedure types', 2),
+(9, 'CAN_MANAGE_PROCEDURE_TYPE', 'Add or edit a medical procedure type', 2),
+(10, 'CAN_DELETE_PROCEDURE_TYPE', 'Delete or deactivate a procedure type', 2),
+(11, 'CAN_VIEW_MEDICAL_PROCEDURES', 'View all medical procedures', 2),
+(12, 'CAN_MANAGE_MEDICAL_PROCEDURE', 'Add or edit a medical procedure', 2),
+(13, 'CAN_DELETE_MEDICAL_PROCEDURE', 'Delete or deactivate a medical procedure', 2);
+
 
 -- --------------------------------------------------------
 
@@ -75,7 +96,8 @@ CREATE TABLE IF NOT EXISTS `admin_user_types` (
 --
 
 INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
-(1, 'Content Editor', 1);
+(1, 'Test User Type with super admin role', 3),
+(2, 'Normal user type', 2);
 
 
 -- --------------------------------------------------------
