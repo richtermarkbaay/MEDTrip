@@ -3,12 +3,15 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalCenterType;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalCenterController extends Controller
 {
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
+     */
     public function indexAction()
     {
 		$medicalCenters = $this->getDoctrine()->getEntityManager()
@@ -19,6 +22,9 @@ class MedicalCenterController extends Controller
     	));
     }
 
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function addAction()
     {
     	$form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
@@ -30,6 +36,9 @@ class MedicalCenterController extends Controller
     	));
     }
     
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function editAction($id)
     {
     	$medicalCenter = $this->getDoctrine()->getEntityManager()
@@ -44,6 +53,9 @@ class MedicalCenterController extends Controller
     	));
     }
     
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function saveAction()
     {
     	$id = $this->getRequest()->get('id', null);
@@ -76,6 +88,9 @@ class MedicalCenterController extends Controller
 		));				
     }
     
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_MEDICAL_CENTER')")
+     */
     public function updateStatusAction($id)
     {
     	$result = false;

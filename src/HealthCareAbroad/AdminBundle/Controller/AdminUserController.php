@@ -11,8 +11,6 @@ use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use JMS\SecurityExtraBundle\Annotation\Secure;
-
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class AdminUserController extends Controller
