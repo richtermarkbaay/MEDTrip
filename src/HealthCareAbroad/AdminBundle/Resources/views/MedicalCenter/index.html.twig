@@ -1,10 +1,12 @@
 {% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers' %}
+{% set selectedSubTab = 'medical_centers_index'%}
 
 {% block content %}
 
 	<div id="content">
 		{{ app.session.flash('notice') }}
-		<div id="page-heading"><h3>List of Medical Centers</h3></div>
+		<div id="page-heading"><h1>List of Medical Centers</h1></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}

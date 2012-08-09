@@ -1,9 +1,11 @@
 {% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers' %}
+{% set selectedSubTab = id ? '' : 'medical_centers_add'%}
 
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h3>{{ id ? 'Edit' : 'Add' }} Medical Center</h3></div>
+		<div id="page-heading"><h1>{{ id ? 'Edit' : 'Add' }} Medical Center</h1></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
