@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use HealthCareAbroad\HelperBundle\Form\DataTransformer\CityListTransformer;
 
 class CityListType extends AbstractType 
 {	

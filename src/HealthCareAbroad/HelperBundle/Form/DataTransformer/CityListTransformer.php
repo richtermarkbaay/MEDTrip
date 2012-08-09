@@ -1,5 +1,5 @@
 <?php 
-namespace HealthCareAbroad\MedicalProcedureBundle\Form\DataTransformer;
+namespace HealthCareAbroad\HelperBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -48,26 +48,16 @@ class CityListTransformer implements DataTransformerInterface
 	 * @param  string $stringCities
 	 * @return ArrayCollection|null
 	 */
-	public function reverseTransform($stringCities)
+	public function reverseTransform($countryId)
 	{
-		$cityObjects = new ArrayCollection();
-	
-		if($stringCities == '')
-			return $cityObjects;
-	
-		$centers = explode(',', $stringCities);
-		foreach($cities as $cityName) {
-			$city = $this->em->getRepository('HelperBundle:City')->findOneBy(array('name'=>trim($cityName)));
-			if($city) $cityObjects->add($city);
+		if (!$countryId) {
+			return null;
 		}
-	
-		//         if (null === $issue) {
-		//             throw new TransformationFailedException(sprintf(
-		//                 'An issue with number "%s" does not exist!',
-		//                 $number
-		//             ));
-		//         }
-	
+		
+		$cityObjects = $this->em
+			->getRepository('InstitutionBundle:City')
+			->findBy(array('countryId' => $countryId))
+		;
 		return $cityObjects;
 	}
 }

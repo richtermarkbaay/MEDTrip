@@ -14,7 +14,7 @@ var Location = {
 				citiesElem.append('<option value="'+ cities[i].id +'">' + cities[i].name + '</option>');
 			}
 			citiesElem.attr('disabled', false);
-
+			citiesElem.empty();
 		});
 	}
 }
