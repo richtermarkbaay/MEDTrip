@@ -10,8 +10,8 @@
             </li>
         </ul>
     
-        <div class="nav-divider">&nbsp;</div>
-                        
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
+        <div class="nav-divider">&nbsp;</div>                
         <ul class="{{ selectedTab == 'institutions' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_institution_index') }}"><b>Institutions</b><!--[if IE 7]><!--></a><!--<![endif]-->
@@ -25,6 +25,7 @@
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+        {% endif %}
     
         <div class="nav-divider">&nbsp;</div>
         
@@ -74,21 +75,23 @@
             </li>
         </ul>
         
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %} 
         <div class="nav-divider">&nbsp;</div>
         
         <ul class="{{ selectedTab == 'settings' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_settings') }}"><b>Settings</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'settings' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="#">Users</a></li>
+                		<li><a href="{{ path('admin_user_index') }}">Users</a></li>
                 		<li><a href="{{ path('admin_userType_index') }}">User types</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+        {% endif %}
 
         <div class="clear"></div>
     </div>

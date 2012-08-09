@@ -6,7 +6,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>Admin user types</h1>
+    	<h1>{{ site_name }}Admin users</h1>
     </div>
 
     <!-- end page-heading -->
@@ -28,25 +28,21 @@
             			    <table style="width:100%;" border="0" cellpadding="0" cellspacing="0" class="generic-table" id="table-list">
                 				<tr>
                 				    <th class="table-header-check"></th>
+                					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Full name</a></th>
+                					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Email</a></th>
                 					<th class="table-header-repeat line-left minwidth-1"> <a href="#">User type</a></th>
-                					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Permissions</a></th>
                 					<th class="table-header-options line-left"><a href="#">Options</a> </th>
                 				</tr>
                 				
                 				{% set even = false %}
-                				{% for userType in userTypes %}
+                				{% for user in users %}
                 				    <tr class="{{ even ? 'alternate-row' : ''}}">
                 				        <td></td>
-                    					<td>{{ userType.name | title }}</td>
-                    					<td>
-                    					    <ul style="list-style:decimal; padding: 0 15px;">
-                    					        {% for role in userType.adminUserRoles %}
-                    					        <li> {{ role.label | title }}</li>
-                    					        {% endfor %}
-                    					    </ul>
-                					    </td>
+                    					<td>{{ user.fullName | title }}</td>
+                    					<td>{{ user.email }}</td>
+                    					<td>{{ user.adminUserType.name | title }}</td>
                     					<td class="options-width">
-                        					<a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>
+                        					<a href="{{ path('admin_user_index', {id: user.accountId }) }}" title="Edit {{ user.fullName | title }}" class="icon-1 info-tooltip"></a>
                         					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
                     					</td>
                     				</tr>

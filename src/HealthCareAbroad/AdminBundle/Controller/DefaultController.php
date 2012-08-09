@@ -3,18 +3,21 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use JMS\SecurityExtraBundle\Annotation\Secure;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class DefaultController extends Controller
 {
     /**
-     * @Secure(roles="ROLE_ADMIN")
+     * @PreAuthorize("hasRole('ROLE_ADMIN')")
      */
     public function indexAction()
     {
         return $this->render('AdminBundle:Default:index.html.twig');
     }
     
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
     public function settingsAction()
     {
         return $this->render('AdminBundle:Default:settings.html.twig');

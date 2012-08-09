@@ -64,6 +64,12 @@ admin_userRole_index:
     requirements:    
         _method: GET
         
+admin_user_index:
+    pattern: /admin/settings/users
+    defaults: { _controller: AdminBundle:AdminUser:index }
+    requirements:    
+        _method: GET
+        
 admin_login:
     pattern: /admin/login
     defaults: { _controller: AdminBundle:AdminUser:login }

@@ -47,7 +47,7 @@
 				Manage access roles
 				<ul class="greyarrow">
 				    {% if userType.id is defined and userType.name is defined and userType.id %}
-				    <li><a href="{{ path('admin_userRole_viewByUserType', {'userTypeId':userType.id}) }}">View permissions tied to {{ userType.name | title}}</a></li>
+				    <li><a href="{{ path('admin_userRole_viewByUserType', {'userTypeId':userType.id}) }}">Manage permissions of {{ userType.name | title}} user type</a></li>
 				    {% endif%}
 					<li><a href="{{ path('admin_userRole_index') }}">Click here to view all permissions</a></li>
 				</ul>
