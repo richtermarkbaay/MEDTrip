@@ -84,6 +84,7 @@ class InstitutionController extends Controller
 			$this->get('services.institution')->updateInstitutionMedicalCenters($id, $newMedicalCenterIds, $centerIdsWithProcedureType);
 
 			$selectedCenterIds = array_merge($newMedicalCenterIds, $centerIdsWithProcedureType);
+			$request->getSession()->setFlash('noticeType', 'success');
 			$request->getSession()->setFlash('notice', 'Institution Medical Centers has been updated!');
 			//return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
 		}
@@ -130,6 +131,8 @@ class InstitutionController extends Controller
 			$this->get('services.institution')->updateInstitutionProcedureTypes($medicalCenterId, $procedureTypeIds, $procedureTypeIdsWithProcedure);
 
 			$selectedProcedureTypeIds = array_merge($procedureTypeIds, $procedureTypeIdsWithProcedure);
+
+			$request->getSession()->setFlash('noticeType', 'success');
 			$request->getSession()->setFlash('notice', 'Institution Medical Procedure Types has been updated!');
 		}
 
@@ -174,7 +177,6 @@ class InstitutionController extends Controller
 
 		return $this->render('AdminBundle:Institution:manage_procedures.html.twig', $params);
 	}
-	
 
 	/**
 	 * TODO - Move it to InstitutionMedicalProcedureController
@@ -183,23 +185,11 @@ class InstitutionController extends Controller
 	public function updateProcedureStatusAction()
 	{
 		$em = $this->getDoctrine()->getEntityManager();
-		$institutionMedicalProcedureId = $this->getRequest()->get('institution_medical_procedure_id');
-		$procedure = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->find($institutionMedicalProcedureId);
+		$id = $this->getRequest()->get('institution_medical_procedure_id');
+		$result = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->updateStatus($id);
 
-		if($procedure) {
-			$status = $procedure->getStatus() == InstitutionMedicalProcedure::$STATUS['active']
-			? InstitutionMedicalProcedure::$STATUS['inactive']
-			: InstitutionMedicalProcedure::$STATUS['active'];
-		
-			$procedure->setStatus($status);
-			$em->persist($procedure);
-			$em->flush($procedure);
-			$result = true;
-		}
-		
 		$response = new Response(json_encode($result));
 		$response->headers->set('Content-Type', 'application/json');
-
 		return $response;
 	}
 	
@@ -215,22 +205,30 @@ class InstitutionController extends Controller
 			$data = $request->get('institutionMedicalProcedure');
 			$em = $this->getDoctrine()->getEntityManager();
 
-			$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-			$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($data['medical_procedure']);
+			try {
+				$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+				$criteria = array('id' => $data['medical_procedure'], 'status' => MedicalProcedure::$STATUS['active']);
+				$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findOneBy($criteria);
 
-			$instMedicalProcedure = new InstitutionMedicalProcedure();
-			$instMedicalProcedure->setSlug('');
-			$instMedicalProcedure->setStatus($data['status']);
-			$instMedicalProcedure->setInstitution($institution);
-			$instMedicalProcedure->setMedicalProcedure($medicalProcedure);			
-			$instMedicalProcedure->setDescription($data['description']);
-			$instMedicalProcedure->setDateCreated(new \DateTime());
-			$instMedicalProcedure->setDateModified($instMedicalProcedure->getDateCreated());
+				$instMedicalProcedure = new InstitutionMedicalProcedure();
+				$instMedicalProcedure->setSlug('');
+				$instMedicalProcedure->setStatus($data['status']);
+				$instMedicalProcedure->setInstitution($institution);
+				$instMedicalProcedure->setMedicalProcedure($medicalProcedure);
+				$instMedicalProcedure->setDescription($data['description']);
+				$instMedicalProcedure->setDateCreated(new \DateTime());
+				$instMedicalProcedure->setDateModified($instMedicalProcedure->getDateCreated());
 
-			$em->persist($instMedicalProcedure);
-			$em->flush($instMedicalProcedure);
+				$em->persist($instMedicalProcedure);
+				$em->flush($instMedicalProcedure);
 
-			$request->getSession()->setFlash('notice', 'Institution Medical Procedure has been added!');			
+				$request->getSession()->setFlash('noticeType', 'success');
+				$request->getSession()->setFlash('notice', 'Institution Medical Procedure has been added!');
+
+			} catch(\ErrorException $e) {
+				$request->getSession()->setFlash('noticeType', 'error');
+				$request->getSession()->setFlash('notice', "Medical Procedure does not exists or already inactive!");
+			}
 		}
 
 		return $this->redirect($this->generateUrl('admin_institution_manageProcedures', array('id'=>$id)));
@@ -246,7 +244,7 @@ class InstitutionController extends Controller
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
 		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($medical_center_id);
-		
+
 		if($institutionMedicalCenter && count($institutionMedicalCenter->getMedicalProcedureType())) {
 			$procedureTypes = $institutionMedicalCenter->getMedicalProcedureType();
 			foreach($procedureTypes as $each) {
@@ -270,7 +268,9 @@ class InstitutionController extends Controller
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
 		$procedureType = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedure_type_id);
-		$procedures = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findByMedicalProcedureType($procedureType);
+
+		$criteria = array('medicalProcedureType' => $procedureType, 'status' => 1);
+		$procedures = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findBy($criteria);
 
 		$activeProcedureIds = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->getProcedureIdsByTypeId($id, $procedure_type_id);
 		

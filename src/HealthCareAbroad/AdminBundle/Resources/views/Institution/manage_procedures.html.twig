@@ -9,7 +9,7 @@
 			{% block wrappedContent %}
 
 			{% if app.session.hasFlash('notice') %}
-				{% include '::notice.admin.html.twig' with {'class': 'success', 'message': app.session.flash('notice') } %}
+				{% include '::notice.admin.html.twig' %}
 			{% endif %}
 
 			<div id="filter-wrapper">
@@ -21,7 +21,7 @@
 				</select>
 			</div>
 			
-			<table class="generic-table mid-size">
+			<table id="institution-procedure-list" class="generic-table mid-size">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1" width="200"><a href="">Procedure</a></th>
 				<th class="table-header-repeat line-left" width="200"><a href="">Procedure Type</a></th>
@@ -35,10 +35,9 @@
 					<td>{{ procedure.medicalProcedure.medicalProcedureType.name }}</td>
 					<td>{{ procedure.description }}</td>
 					<td align="center">
-						<a id="institutionProcedure-{{procedure.id}}" href="javascript:void(0)" onclick="InstitutionMedicalProcedure.updateStatus($(this))">
+						<a href="{{ path('admin_institution_updateProcedureStatus', {institution_medical_procedure_id:procedure.id}) }}" class="update-status">
 							{% if procedure.status %} deactivate {% else %} activate {% endif %}
 						</a> 
-
 					</td>
 				</tr>
 			{% else  %}
@@ -48,14 +47,14 @@
 
 			<h2 style="padding-top: 20px">Add New Medical Procedure</h2>
 			<div style="border-top: 2px dashed #ddd;"></div>			
-			<form novalidate="novalidate" action="{{ path('admin_institution_saveMedicalProcedure', {id:id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
+			<form action="{{ path('admin_institution_saveMedicalProcedure', {id:id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
 				{{ form_row(form.medical_center) }}
 				{{ form_row(form.procedure_type) }}
 				{{ form_row(form.medical_procedure) }}
 				{{ form_row(form.description) }}
 				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
-			    <input type="submit" class="form-submit"/>
+			    <input type="submit" class="form-submit" name="submit"/>
 			</form>
 
 			{% endblock %}

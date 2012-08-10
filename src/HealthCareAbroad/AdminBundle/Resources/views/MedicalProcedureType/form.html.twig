@@ -10,7 +10,7 @@
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
-			<form class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
+			<form novalidate="novalidate" class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
 				{{ form_row(form.name) }}
 				{{ form_row(form.description) }}
 				{{ form_row(form.medical_center) }}

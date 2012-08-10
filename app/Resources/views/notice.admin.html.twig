@@ -1,4 +1,6 @@
-
+	{% set class = class is defined ? class : app.session.flash('noticeType') %}
+	{% set message = message is defined ? message : app.session.flash('notice') %}
+	
 	{% if class == 'warning' %}
 	    {% set msg_color = 'yellow' %}
 	{% elseif class == 'error' %}
@@ -8,7 +10,7 @@
 	{% elseif class == 'notice' %}
 	    {% set msg_color = 'blue' %}
 	{% else %}
-	    {% set msg_color = 'blue' %}
+	    {% set msg_color = 'green' %}
 	{% endif %}
 	
 	<div id="message-{{ msg_color }}">

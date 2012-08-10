@@ -273,7 +273,7 @@ admin_institution_saveMedicalProcedure:
         id: \d+
 
 admin_institution_updateProcedureStatus:
-    pattern:  /admin/institution/update-procedure-status
+    pattern:  /admin/institution/update-procedure-status/{institution_medical_procedure_id}
     defaults: { _controller: AdminBundle:Institution:updateProcedureStatus, institution_medical_procedure_id: ~ }
     requirements:
         institution_medical_procedure_id: \d+
@@ -292,6 +292,10 @@ admin_loadMedicalProcedures:
          procedure_type_id: \d+
 
 # End of Institution Routes #
+
+admin_error403:
+    pattern: /admin/access-denied
+    defaults: { _controller: AdminBundle:Default:error403 }
 
 admin_homepage:
     pattern:  /admin
