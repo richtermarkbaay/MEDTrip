@@ -11,7 +11,6 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 {
 	public function setUp()
 	{
-		//TODO: setup database; this is as of now dependent on the test fixtures set up by another test suite
 		$this->service = $this->get('services.search');
 		$this->time = \time();
 	}
@@ -118,7 +117,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 	
 	public function testInitiateShouldReturnArrayOfProcedureTypeObjects()
 	{
-		$term = "testtype";
+		$term = "Test Medical Procedure Type";
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
@@ -129,14 +128,14 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 				'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\MedicalProcedureType', $actual[0], 
 				'Method initiate() should return an array of ProcedureType objects');
 	
-		$term = "TestTYPE";
+		$term = "TEST medical ProCEDure Type";
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
 		));
 		$this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
 	
-		$term = "estty";
+		$term = "edical Pr";
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
@@ -167,7 +166,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 	
 	public function testInitiateShouldReturnArrayOfProcedureObjects()
 	{
-		$term = '';
+		$term = 'Test Medical Procedure';
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE
@@ -181,14 +180,14 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 		
 		
 		
-		$term = "TEstProCEDure1";
+		$term = "Test medicaL PrOcedure";
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE
 		));
 		$this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
 	
-		$term = "tProce";
+		$term = "cal Pr";
 		$actual = $this->service->initiate(array(
 				'term' => $term,
 				'category' => Constants::SEARCH_CATEGORY_PROCEDURE
