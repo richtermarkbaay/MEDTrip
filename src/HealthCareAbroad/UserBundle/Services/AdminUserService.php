@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUserRole;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -13,13 +15,41 @@ use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 class AdminUserService extends UserService
 {
+    public function getAccountData(AdminUser $user)
+    {
+        return $this->getUser($user);
+    }
+    
+    public function getActiveUsers()
+    {
+        $users = $this->doctrine->getRepository('UserBundle:AdminUser')->getActiveUsers();
+        $returnVal = array();
+        foreach ($users as $user) {
+            $returnVal[] = $this->getAccountData($user);
+        }
+        
+        return $returnVal;
+    }
+    
     public function login($email, $password)
     {
         $user = $this->findByEmailAndPassword($email, $password);
         if ($user) {
-            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', array('ROLE_ADMIN'));
+            $userRoles = $user->getAdminUserType()->getAdminUserRoles();
+            $roles = array();
+            foreach ($userRoles as $userRole) {
+                // compare bitwise status for active
+                if ($userRole->getStatus() & AdminUserRole::STATUS_ACTIVE) {
+                    $roles[] = $userRole->getName();
+                }
+            }
+            
+            // add generic role for an admin user
+            $roles[] = 'ROLE_ADMIN';
+            
+            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', $roles);
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
-            // $this->get("security.context")->setToken($securityToken);
+            $this->securityContext->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
             
             return true;

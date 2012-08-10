@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class MedicalProcedureRepository extends EntityRepository
 {
+	public function search($term = '', $limit = 10)
+	{
+		$dql = "
+			SELECT p
+			FROM MedicalProcedureBundle:MedicalProcedure AS p
+			WHERE p.name LIKE :term
+			ORDER BY p.name ASC"
+		;
+	
+		$query = $this->_em->createQuery($dql);
+		$query->setParameter('term', "%$term%");
+		$query->setMaxResults($limit);
+	
+		return $query->getResult();
+	}
+	
+	
 }

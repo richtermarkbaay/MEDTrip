@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\AdminUserFormType;
+
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -10,6 +12,8 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class AdminUserController extends Controller
 {
@@ -45,5 +49,18 @@ class AdminUserController extends Controller
         $this->get('security.context')->setToken(null);
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('admin_login'));
+    }
+    
+    /**
+     * View all admin users
+     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
+    public function indexAction()
+    {
+        $users = $this->get('services.admin_user')->getActiveUsers();
+        return $this->render('AdminBundle:AdminUser:index.html.twig', array(
+            'users' => $users    
+        ));
     }
 }

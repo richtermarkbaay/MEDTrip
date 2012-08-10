@@ -1,0 +1,72 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'settings' %}
+{% form_theme form '::form.admin.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>
+    	    {% if userType.id %} 
+    	        Edit {{ userType.name | title }}   user type
+	        {% else %}
+	            Create new user type
+            {% endif %} 
+        </h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+             <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+            			<!--  start table-content  -->
+            			<div id="table-content">
+            			
+            			    {% if app.session.hasFlash('notice') %}
+            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+            		        {% endif %}
+            			
+            			    <form novalidate="novalidate" action="{{ userType.id ? path('admin_userType_edit_save', {id: userType.id}) : path('admin_userType_add_save') }}" method="POST" {{ form_enctype(form) }} class="user">
+                			    <!-- start id-form -->
+                        		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                        		    
+                        		    {{ form_row(form.name) }}
+                                    
+                                    <tr>
+                                		<th>&nbsp;</th>
+                                		<td valign="top">
+                                			<input type="submit" name="submit" value="" class="form-submit" />
+                                			<input type="reset" value="" class="form-reset"  />
+                                		</td>
+                                		<td></td>
+                                	</tr>
+                                    
+                                    {{ form_rest(form) }}
+                                    
+                            	</table>
+                            	<!-- end id-form  -->
+                        	</form>
+            			</div>
+            			<!--  end table-content  -->
+        			</td>
+        			<td style="vertical-align: top; ">
+        			    {% block relatedTasks %}
+                            {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showList': true, 'showAdd': false, 'showRoles': true, 'userType' : userType}%}
+                        {% endblock %}
+        			</td>
+    			</tr>
+			</table>
+        {% endblock %}
+        
+        
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

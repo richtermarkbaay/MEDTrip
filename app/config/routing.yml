@@ -1,3 +1,7 @@
+SearchBundle:
+    resource: "@SearchBundle/Resources/config/routing.yml"
+    prefix:   /
+
 InstitutionBundle:
     resource: "@InstitutionBundle/Resources/config/routing.yml"
     prefix:   /

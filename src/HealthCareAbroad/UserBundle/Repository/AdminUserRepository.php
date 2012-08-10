@@ -2,7 +2,10 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUser;
+
 use Doctrine\ORM\EntityRepository;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 /**
@@ -13,8 +16,28 @@ use HealthCareAbroad\UserBundle\Entity\SiteUser;
  */
 class AdminUserRepository extends EntityRepository
 {
+    /**
+     * Get active user by accountId
+     * 
+     * @param integer $accountId
+     * @return AdminUser
+     */
     public function findActiveUserById($accountId)
     {
         return $this->findOneBy(array('accountId' => $accountId, 'status' => SiteUser::STATUS_ACTIVE));
+    }
+    
+    /**
+     * Get all active admin users
+     * 
+     * @return AdminUser[]
+     */
+    public function getActiveUsers()
+    {
+        $dql = "SELECT a, b FROM UserBundle:AdminUser a JOIN a.adminUserType b WHERE a.status != :inactive_user_status";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameter('inactive_user_status', SiteUser::STATUS_INACTIVE);
+        
+        return $query->getResult();
     }
 }

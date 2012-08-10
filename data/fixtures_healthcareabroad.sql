@@ -35,26 +35,47 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   KEY `admin_user_type_id` (`admin_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `admin_user_roles`
---
-
-DROP TABLE IF EXISTS `admin_user_roles`;
-CREATE TABLE IF NOT EXISTS `admin_user_roles` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  `status` smallint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
 --
 -- Dumping data for table `admin_users`
 --
 
 INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
 (2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_user_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `admin_user_roles` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `label` varchar(250) NOT NULL,
+  `status` smallint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `admin_user_roles`
+--
+
+INSERT INTO `admin_user_roles` (`id`, `name`, `label`, `status`) VALUES
+(1, 'SUPER_ADMIN', 'Owner/Super Admin', 3),
+(2, 'CAN_VIEW_INSTITUTIONS', 'View all institutions', 2),
+(3, 'CAN_MANAGE_INSTITUTION', 'Add or edit an institution', 2),
+(4, 'CAN_DELETE_INSTITUTION', 'Delete or deactivate an institution', 2),
+(5, 'CAN_VIEW_MEDICAL_CENTERS', 'View all medical centers', 2),
+(6, 'CAN_MANAGE_MEDICAL_CENTER', 'Add or edit a medical center', 2),
+(7, 'CAN_DELETE_MEDICAL_CENTER', 'Delete or deactivate a medical center', 2),
+(8, 'CAN_VIEW_PROCEDURE_TYPES', 'View all medical procedure types', 2),
+(9, 'CAN_MANAGE_PROCEDURE_TYPE', 'Add or edit a medical procedure type', 2),
+(10, 'CAN_DELETE_PROCEDURE_TYPE', 'Delete or deactivate a procedure type', 2),
+(11, 'CAN_VIEW_MEDICAL_PROCEDURES', 'View all medical procedures', 2),
+(12, 'CAN_MANAGE_MEDICAL_PROCEDURE', 'Add or edit a medical procedure', 2),
+(13, 'CAN_DELETE_MEDICAL_PROCEDURE', 'Delete or deactivate a medical procedure', 2);
+
 
 -- --------------------------------------------------------
 
@@ -75,7 +96,8 @@ CREATE TABLE IF NOT EXISTS `admin_user_types` (
 --
 
 INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
-(1, 'Content Editor', 1);
+(1, 'Test User Type with super admin role', 3),
+(2, 'Normal user type', 2);
 
 
 -- --------------------------------------------------------
@@ -84,13 +106,19 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 -- Table structure for table `admin_user_type_roles`
 --
 
-DROP TABLE IF EXISTS `admin_user_type_roles`;
 CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
   `admin_user_type_id` int(3) unsigned NOT NULL,
   `admin_user_role_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`admin_user_type_id`,`admin_user_role_id`),
   KEY `admin_user_role_id` (`admin_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_user_type_roles`
+--
+
+INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
@@ -523,8 +551,8 @@ CREATE TABLE IF NOT EXISTS `medical_procedures` (
 INSERT INTO `medical_procedures` (`id`, `medical_procedure_type_id`, `name`, `slug`, `status`) VALUES
 (1, 1, 'testProcedure1', 'testprocedure1', 1),
 (2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
-(3, 2, 'testProcedure2', 'testprocedure2', 1);
-
+(3, 2, 'testProcedure2', 'testprocedure2', 1),
+(4, 1, 'Test Medical Procedure', 'test-medical-procedure', 1);
 -- --------------------------------------------------------
 
 --
@@ -540,10 +568,9 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
 
 --
 -- Dumping data for table `medical_procedure_types`
@@ -552,7 +579,8 @@ ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
 INSERT INTO `medical_procedure_types` (`id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1),
 (2, 'testType2', 'sfd dff sdaf sadf sdfsd fsdaf sdf', '2012-08-09 00:56:01', '2012-08-08 16:00:00', '', 1),
-(3, 'testInactiveType1', 'sdf sdf sdaf sadfsa fsd sdf sdf', '2012-08-09 00:56:01', '2012-08-08 16:00:00', '', 0);
+(3, 'testInactiveType1', 'sdf sdf sdaf sadfsa fsd sdf sdf', '2012-08-09 00:56:01', '2012-08-08 16:00:00', '', 0),
+(4, 'Test Medical Procedure Type', 'For testing purposes', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -626,6 +654,13 @@ CREATE TABLE IF NOT EXISTS `tags` (
 --
 ALTER TABLE `admin_users`
   ADD CONSTRAINT `admin_users_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`);
+  
+--
+-- Constraints for table `admin_user_type_roles`
+--
+ALTER TABLE `admin_user_type_roles`
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cities`

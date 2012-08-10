@@ -13,12 +13,13 @@ class TokenController extends Controller
 {
 
 	public function confirmInvitationTokenAction($token)
-    {    	
+    {    	 
      	$invitation = $this->get('services.token')->getActiveInstitutionInvitationByToken($token);	
      	
     	if (!$invitation) {
             throw $this->createNotFoundException('Invalid token');
         }
+        $this->get('session')->setFlash('notice', "Successfully confirm token!");
 		return $this->render('InstitutionBundle:Token:confirmInvitationToken.html.twig', array('token' => $token));
     }
 	

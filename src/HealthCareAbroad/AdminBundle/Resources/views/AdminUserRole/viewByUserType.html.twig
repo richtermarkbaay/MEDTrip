@@ -1,0 +1,106 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'settings'%}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>Manage permissions for {{ userType.name | title }} user type</h1>
+    </div>
+
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+        
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+            			<!--  start table-content  -->
+            			<div id="table-content">
+            			
+            			    {% if app.session.hasFlash('notice') %}
+            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+            		        {% endif %}
+            			
+            			    <table style="width:100%;" border="0" cellpadding="0" cellspacing="0" class="generic-table" id="table-list">
+                				<tr>
+                				    <th class="table-header-check"></th>
+                				    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Permission</a></th>
+                				</tr>
+                				
+                				{% set even = false %}
+                				{% for userRole in currentRoles %}
+                				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                				        <td> <input id="userRole:{{ userRole.id }}" checked="checked" class="assing_permission_checkbox" type="checkbox" /> </td>
+                				        <td>{{ userRole.label | title }}</td>
+                    				</tr>
+                    				{% set even = even ? false : true %}    
+                				{% endfor %}
+                				
+                				{% for userRole in assignableUserRoles %}
+                				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                				        <td> <input id="userRole:{{ userRole.id }}" class="assing_permission_checkbox" type="checkbox" /> </td>
+                				        <td>{{ userRole.label | title }}</td>
+                    				</tr>
+                    				{% set even = even ? false : true %}    
+                				{% endfor %}
+                				
+            				</table>
+            				<!--  end table-list................................... --> 
+            			</div>
+            			<!--  end table-content  -->
+        			</td>
+    			<td style="vertical-align: top; width: 20%">
+    			    {% block related_tasks %}
+    			        {% include 'AdminBundle:AdminUserRole:relatedTasks.html.twig' %}
+    			    {% endblock %}
+    			</td>
+			</tr>
+		</table>
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+
+
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+(function($){
+	$(function(){
+	    $('input.assing_permission_checkbox').change(function(){
+		    var self = $(this);
+		    self.attr('disabled', true)
+	        if (this.checked) {
+		        $.ajax({
+			        url: "{{ path('admin_userRole_addToUserType') }}",
+			        data: {'userRoleId': self.attr('id').split(':')[1], 'userTypeId': '{{ userType.id }}'},
+			        type: 'post',
+			        success: function(){
+			        	self.attr('disabled', false)
+			        }
+		        });
+	        }
+	        else {
+	        	$.ajax({
+			        url: "{{ path('admin_userRole_removeRoleFromUserType') }}",
+			        data: {'userRoleId': self.attr('id').split(':')[1], 'userTypeId': '{{ userType.id }}'},
+			        type: 'post',
+			        success: function(){
+			        	self.attr('disabled', false)
+			        }
+		        });
+	        }
+	    });
+	});
+})(jQuery);
+</script>
+{% endblock %}

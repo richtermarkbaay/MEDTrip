@@ -1,6 +1,8 @@
 <?php 
 namespace HealthCareAbroad\HelperBundle\Form\EventListener;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
 
 use Symfony\Component\Form\Event\DataEvent;
@@ -19,15 +21,16 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return array(FormEvents::PRE_BIND => 'preSetData');
     }
 
     public function preSetData(DataEvent $event)
     {
-        $data = $event->getData();
+    	$data = $event->getData();
         $form = $event->getForm();
-
-        $countryId = !empty($data) && $data->getCountry() ? $data->getCountry()->getId() : 1;
-		$form->add($this->factory->createNamed('city', new CityListType($countryId)));
+        $countryId = !empty($data) && $data['country'] ? $data['country'] : 1;
+        $form->add($this->factory->createNamed('city', new CityListType($countryId)));
+    	
+       
     }
 }

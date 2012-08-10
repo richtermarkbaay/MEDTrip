@@ -32,7 +32,7 @@ class InstitutionType extends AbstractType
     		->add('firstName', 'text', array('constraints' => new NotBlank()))
     		->add('middleName', 'text', array('constraints' => new NotBlank()))
     		->add('lastName', 'text', array('constraints' => new NotBlank()))
-    		->add('email','email', array('constraints' => new Email()))
+    		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
     		->add( 'new_password', 'password', array(
                     'label' => 'New Password', 
                     'virtual' => true, 
@@ -44,7 +44,8 @@ class InstitutionType extends AbstractType
                     'constraints' => array(
                         new EqualFieldValue(array('field' => 'new_password', 'message' => 'Passwords do not match')))
                 ))
-    		->add('country', 'country_list', array('attr'=>array('onchange'=>'Location.loadCities($(this))')))
+    		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
+    		->add('city', new CityListType(1))
     		->add('address1','text', array('constraints' => new NotBlank()))
     		;
     }

@@ -1,92 +1,126 @@
+{% if selectedTab is not defined %}
+    {% set selectedTab = 'dashboard' %}
+{% endif %}
+
+{% if selectedSubTab is not defined %}
+    {% set selectedSubTab = '' %}
+{% endif %}
+
 <!--  start nav -->
 <div class="nav">
     <div class="table">
-    
-        <ul class="current">
+        <ul class="{{ selectedTab == 'dashboard' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_homepage') }}"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
             </li>
         </ul>
     
-        <div class="nav-divider">&nbsp;</div>
-                        
-        <ul class="select">
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
+        <div class="nav-divider">&nbsp;</div>                
+        <ul class="{{ selectedTab == 'institutions' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_institution_index') }}"><b>Institutions</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub show">
+                <div class="select_sub {{ selectedTab == 'institutions' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_institution_index') }}">View all institutions</a></li>
-                		<li class="sub_show"><a href="#nogo">Invite new institution</a></li>
+                		<li class="{{ selectedSubTab == 'institutions_index' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_institution_index') }}">View all institutions</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'institutions_add' ? 'sub_show' : '' }}"><a href="#nogo">Invite new institution</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+        {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS', 'CAN_MANAGE_MEDICAL_CENTER')") %}
         <div class="nav-divider">&nbsp;</div>
-        
-        <ul class="select">
+        <ul class="{{ selectedTab == 'medical_centers' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_medicalCenter_index') }}"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'medical_centers' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_medicalCenter_index') }}">View all</a></li>
-                		<li><a href="{{ path('admin_medicalCenter_add') }}">Add new medical center</a></li>
+                		<li class="{{ selectedSubTab == 'medical_centers_index' ? 'sub_show' : '' }}" >
+                		    <a href="{{ path('admin_medicalCenter_index') }}">View all</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'medical_centers_add' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_medicalCenter_add') }}">Add new medical center</a>
+            		    </li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
-        </ul>    
+        </ul>
+        {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES', 'CAN_MANAGE_PROCEDURE_TYPE')") %}
         <div class="nav-divider">&nbsp;</div>
-
-        <ul class="select">
+        <ul class="{{ selectedTab == 'procedure_types' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_procedureType_index') }}"><b>Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'procedure_types' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_procedureType_index') }}">View all</a></li>
-                		<li><a href="{{ path('admin_procedureType_add') }}">Add new procedure type</a></li>
+                		<li class="{{ selectedSubTab == 'procedure_types_index' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_procedureType_index') }}">View all</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'procedure_types_add' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_procedureType_add') }}">Add new procedure type</a>
+            		    </li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
-        </ul>    
+        </ul>
+        {% endif %}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_PROCEDURES', 'CAN_MANAGE_MEDICAL_PROCEDURE')") %}
         <div class="nav-divider">&nbsp;</div>
-
-        <ul class="select">
+        <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
             <li>
                 <a href="{{ path('admin_medicalProcedure_index') }}"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'medical_procedures' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_medicalProcedure_index') }}">View all</a></li>
-                		<li><a href="{{ path('admin_medicalProcedure_add') }}">Add new procedure</a></li>
+                		<li class="{{ selectedSubTab == 'medical_procedures_index' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_medicalProcedure_index') }}">View all</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'medical_procedures_add' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_medicalProcedure_add') }}">Add new procedure</a>
+            		    </li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
-
+        {% endif %}
+        
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %} 
         <div class="nav-divider">&nbsp;</div>
         
-        <ul class="select">
+        <ul class="{{ selectedTab == 'settings' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Tags</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('admin_settings') }}"><b>Settings</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub">
+                <div class="select_sub {{ selectedTab == 'settings' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('admin_tagHomepage') }}">View all</a></li>
-                		<li><a href="{{ path('admin_tagAdd') }}">Add new tag</a></li>
+                		<li class="{{ selectedSubTab == 'settings_users' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_user_index') }}">Users</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'settings_user_types' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_userType_index') }}">User types</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'settings_user_permissions' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_userRole_index') }}">User permissions</a>
+            		    </li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
             </li>
         </ul>
+        {% endif %}
 
         <div class="clear"></div>
     </div>

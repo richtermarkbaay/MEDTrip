@@ -1,0 +1,66 @@
+<!--  start related-activities -->
+<div id="related-activities">
+	
+	<!--  start related-act-top -->
+	<div id="related-act-top">
+	<img src="/images/admin/forms/header_related_act.gif" width="271" height="43" alt="" />
+	</div>
+	<!-- end related-act-top -->
+	
+	<!--  start related-act-bottom -->
+	<div id="related-act-bottom">
+	
+		<!--  start related-act-inner -->
+		<div id="related-act-inner">
+		    
+		    {% if showAdd %}
+    			<div class="left"><a href="{{ path('admin_userType_add') }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
+    			<div class="right">
+    				<h5>Add user type</h5>
+    				Create new user type
+    				<ul class="greyarrow">
+    					<li><a href="{{ path('admin_userType_add') }}">Click here to add user type</a></li>
+    				</ul>
+    			</div>
+    			<div class="clear"></div>
+			    {%if showList or showRoles %}<div class="lines-dotted-short"></div>{% endif %}
+			{% endif %}
+			
+			
+			{% if showList %}
+    			<div class="left"><a href=""><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+    			<div class="right">
+    				<h5>User types list</h5>
+    				View list of all user types.
+    				<ul class="greyarrow">
+    					<li><a href="{{ path('admin_userType_index') }}">Click here to view list</a></li>
+    				</ul>
+    			</div>
+    			<div class="clear"></div>
+    			{%if showRoles %}<div class="lines-dotted-short"></div>{% endif %}
+			{% endif %}
+			
+			{% if showRoles %}
+			<div class="left"><a href="{{ path('admin_userRole_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+			<div class="right">
+				<h5>Access roles list</h5>
+				Manage access roles
+				<ul class="greyarrow">
+				    {% if userType.id is defined and userType.name is defined and userType.id %}
+				    <li><a href="{{ path('admin_userRole_viewByUserType', {'userTypeId':userType.id}) }}">Manage permissions of {{ userType.name | title}} user type</a></li>
+				    {% endif%}
+					<li><a href="{{ path('admin_userRole_index') }}">Click here to view all permissions</a></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+			{% endif %}
+			
+		</div>
+		<!-- end related-act-inner -->
+		<div class="clear"></div>
+	
+	</div>
+	<!-- end related-act-bottom -->
+
+</div>
+<!-- end related-activities -->

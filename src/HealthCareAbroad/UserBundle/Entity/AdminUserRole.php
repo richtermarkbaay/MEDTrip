@@ -10,6 +10,21 @@ use Doctrine\ORM\Mapping as ORM;
 class AdminUserRole
 {
     /**
+     * Roles that are built-in to the system and can only be assigned to user types by directly editing in db
+     */
+    const STATUS_BUILT_IN_ROLE = 1;
+    
+    /**
+     * Active roles that can be assigned to a user type
+     */
+    const STATUS_ACTIVE = 2;
+    
+    /**
+     * Inactive user roles and cannot be assigned to a user type
+     */
+    const STATUS_INACTIVE = 4;
+    
+    /**
      * @var integer $id
      */
     private $id;
@@ -20,9 +35,14 @@ class AdminUserRole
     private $name;
 
     /**
-     * @var boolean $status
+     * @var integer $status
      */
     private $status;
+    
+    /**
+     * @var unknown_type
+     */
+    private $bitMask;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -64,6 +84,28 @@ class AdminUserRole
     public function getName()
     {
         return $this->name;
+    }
+    
+    /**
+     * Set bitMask
+     * 
+     * @param integer $bitMask
+     * @return AdminUserRole
+     */
+    public function setBitMask($bitMask)
+    {
+        $this->bitMask = $bitMask;
+        return $this;
+    }
+    
+    /**
+     * Get bitMask
+     * 
+     * @return integer
+     */
+    public function getBitMask()
+    {
+        return $this->bitMask;
     }
 
     /**
@@ -118,5 +160,32 @@ class AdminUserRole
     public function getAdminUserTypes()
     {
         return $this->adminUserTypes;
+    }
+    /**
+     * @var string $label
+     */
+    private $label;
+
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     * @return AdminUserRole
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string 
+     */
+    public function getLabel()
+    {
+        return $this->label;
     }
 }

@@ -67,4 +67,20 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         $this->assertGreaterThan(0,$crawler->filter('html:contains("Email and password are required.")')->count()); // look for the text "Email and password are required."
         //---- end login with missing required fields -->
     }
+    
+    public function testViewAllUsers()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/settings/users');
+        
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Admin users")')->count());
+        
+        // test that 403 must be returned when an authenticated user with no valid roles acesses the page
+        $client = $this->getBrowserWithMockLoggedUser();
+        $token = $client->getContainer()->get('security.context')->getToken();
+        $crawler = $client->request('GET', '/admin/settings/users');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        
+    }
 }

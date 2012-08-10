@@ -1,8 +1,11 @@
 {% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers' %}
+{% set selectedSubTab = 'medical_centers_index'%}
 
 {% block content %}
 
 	<div id="content">
+
 		<div id="page-heading"><h3>List of Medical Centers</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}

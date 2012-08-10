@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AdminUser extends SiteUser
 {
     /**
-     * @var boolean $status
+     * @var integer $status
      */
     private $status;
 

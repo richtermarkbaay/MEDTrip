@@ -13,12 +13,12 @@
         
         	<!-- start logo -->
         	<div id="logo">
-        	    <a href=""><img src="{{ asset('images/admin/shared/logo.jpg') }}" width="156" height="40" alt="" /></a>
+        	    <a href=""><img src="{{ asset('/images/admin/shared/logo.jpeg') }}" width="156" height="40" alt="" /></a>
         	</div>
         	<!-- end logo -->
         	
         	{% block top_search %}
-        	    {% include 'AdminBundle:Default:searchWidget.html.twig' %}
+				{% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %}        	    
         	{% endblock %}
          	<div class="clear"></div>
         
@@ -58,6 +58,8 @@
     
     {% include '::footer.admin.html.twig' %}
  
+     {% block inlineJavascriptCode %}
+     {% endblock %}
 </body>
 
 {% endblock %}

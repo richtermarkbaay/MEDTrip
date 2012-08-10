@@ -37,13 +37,12 @@ class InstitutionController extends Controller
 	
 	public function signUpAction()
 	{
-		
 		$form = $this->createForm(new InstitutionType());
-		//getActiveCitiesByCountryId($countryId)
 		
 		if ($this->getRequest()->isMethod('POST')) {
             
             $form->bindRequest($this->getRequest());
+            
             if ($form->isValid()) {
             	
             	//create institution
@@ -82,7 +81,6 @@ class InstitutionController extends Controller
            	    else {
            	    	$this->get('session')->setFlash('flash.notice', "Failed to create account on HealthCareAbroad");
            	    }
-           	    
            	    return $this->redirect($this->generateUrl('institution_homepage'));
             }
 		}
