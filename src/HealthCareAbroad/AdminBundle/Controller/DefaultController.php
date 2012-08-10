@@ -22,4 +22,9 @@ class DefaultController extends Controller
     {
         return $this->render('AdminBundle:Default:settings.html.twig');
     }
+    
+    public function error403Action()
+    {
+        return $this->render('AdminBundle:Default:error403.html.twig');
+    }
 }

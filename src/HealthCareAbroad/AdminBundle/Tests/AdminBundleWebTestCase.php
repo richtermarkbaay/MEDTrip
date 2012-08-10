@@ -15,7 +15,7 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	private $defaultClientOptions = array(
 			'environment'	=> 'test',
-			'debug'			=> true,
+			'debug'			=> false,
 	);
 	
 	public static function setUpBeforeClass()

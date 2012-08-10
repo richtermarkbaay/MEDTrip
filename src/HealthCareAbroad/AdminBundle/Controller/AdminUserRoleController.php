@@ -99,13 +99,8 @@ class AdminUserRoleController extends Controller
         
         $em = $this->getDoctrine()->getEntityManager();
         
-        try {
-            $em->persist($userType);
-            $em->flush();
-        }
-        catch (\PDOException $e) {
-            return $this->_errorResponse(500, $e->getMessage());
-        }
+        $em->persist($userType);
+        $em->flush();
         
         return $this->_jsonResponse(array('success' => 1));
     }
