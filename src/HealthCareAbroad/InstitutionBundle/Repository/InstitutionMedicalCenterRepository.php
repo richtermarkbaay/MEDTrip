@@ -15,10 +15,11 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 	function getProcedureTypeIdsWithProcedure($medicalCenterId)
 	{
 		$conn = $this->_em->getConnection();
-		$qry = "SELECT a.medical_procedure_type_id FROM institution_medical_procedure_types AS a " .
+		$qry = "SELECT a.medical_procedure_type_id, b.id FROM institution_medical_procedure_types AS a " .
 				"JOIN medical_procedures AS b ON a.medical_procedure_type_id = b.medical_procedure_type_id " .
 				"JOIN institution_medical_procedures AS c ON b.id = c.medical_procedure_id ".
-				"WHERE institution_medical_center_id = $medicalCenterId";
+				"WHERE institution_medical_center_id = $medicalCenterId AND b.status = 1 AND c.status = 1 " .
+				"GROUP BY a.medical_procedure_type_id";
 
 		$result = $conn->executeQuery($qry)->fetchAll();
 

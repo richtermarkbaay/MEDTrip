@@ -53,6 +53,7 @@ class MedicalProcedureController extends Controller
 			if ($form->isValid()) {
 				$this->get('services.medical_procedure')->saveMedicalProcedure($form->getData());
 
+				$request->getSession()->setFlash('noticeType', 'success');
     			$request->getSession()->setFlash('notice', 'New Procedure has been added!');
     			return $this->redirect($this->generateUrl('admin_medicalProcedure_index'));
 			} else {

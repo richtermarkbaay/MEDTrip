@@ -189,7 +189,7 @@ admin_institution_saveMedicalProcedure:
         id: \d+
 
 admin_institution_updateProcedureStatus:
-    pattern:  /admin/institution/update-procedure-status
+    pattern:  /admin/institution/update-procedure-status/{institution_medical_procedure_id}
     defaults: { _controller: AdminBundle:Institution:updateProcedureStatus, institution_medical_procedure_id: ~ }
     requirements:
         institution_medical_procedure_id: \d+

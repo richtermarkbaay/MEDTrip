@@ -99,7 +99,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertTrue($isAdded);
     }
 
-    public function testUpdateStatusAction(){
+    public function testUpdateStatus(){
     	$client = $this->getBrowserWithActualLoggedInUser();
     	$crawler = $client->request('GET', '/admin/procedure-type/update-status/1');
 

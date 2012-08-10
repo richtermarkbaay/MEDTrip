@@ -59,7 +59,8 @@ class MedicalCenterController extends Controller
    		if ($form->isValid()) {
    			$em->persist($medicalCenter);
    			$em->flush($medicalCenter);
-   			
+
+   			$request->getSession()->setFlash('noticeType', 'success');
    			$this->getRequest()->getSession()->setFlash('notice', 'Medical center saved!');
     			
    			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));

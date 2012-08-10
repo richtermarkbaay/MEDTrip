@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,7 +15,25 @@ use Doctrine\ORM\EntityRepository;
 class InstitutionMedicalProcedureRepository extends EntityRepository
 {
 	
+	public function updateStatus($id)
+	{
+		$result = false;
+		$procedure = $this->_em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->find($id);
+
+		if($procedure) {
+			$status = $procedure->getStatus() == InstitutionMedicalProcedure::$STATUS['active']
+			? InstitutionMedicalProcedure::$STATUS['inactive']
+			: InstitutionMedicalProcedure::$STATUS['active'];
 	
+			$procedure->setStatus($status);
+			$this->_em->persist($procedure);
+			$this->_em->flush($procedure);
+			$result = true;
+		}
+	
+		return $result;
+	}
+
 	function getProcedureIdsByTypeId($institutionId, $procedureTypeId)
 	{
 		$conn = $this->_em->getConnection();

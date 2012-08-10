@@ -3,12 +3,15 @@
 {% block content %}
 
 	<div id="content">
-		{{ app.session.flash('notice') }}
 		<div id="page-heading"><h3>List of Medical Centers</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
-			
+
+				{% if app.session.hasFlash('notice') %}
+					{% include '::notice.admin.html.twig' %}
+				{% endif %}
+
 				<table class="generic-table mid-size">
 				<tr>
 					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
