@@ -30,7 +30,16 @@ class MedicalCenterRepository extends EntityRepository
 	
 	function autoCompleteSearch($term = '', $limit = 10)
 	{
-		$query = $this->_em->createQuery("SELECT MedicalCenter.id, MedicalCenter.name as value FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter WHERE MedicalCenter.name LIKE '%$term%' AND MedicalCenter.status = 1 ORDER BY MedicalCenter.name ASC");
-		return $query->setMaxResults($limit)->getArrayResult();
+		$dql = "SELECT MedicalCenter.id, MedicalCenter.name as value 
+				FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter 
+				WHERE MedicalCenter.name LIKE :term 
+				AND MedicalCenter.status = 1 
+				ORDER BY MedicalCenter.name ASC";
+
+		$query = $this->_em->createQuery($dql);
+		$query->setMaxResults($limit);
+		$query->setParameter('term', "%$term%");
+
+		return $query->getArrayResult();
 	}
 }

@@ -69,8 +69,19 @@ institution_logout:
     requirements:    
         _method:  GET
 
+institution_loadMedicalProcedureTypes:
+    pattern:  /institution/medical-center/load-procedure-types
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
+    requirements:
+        medical_center_id: \d+
+
+institution_loadMedicalProcedures:
+    pattern:  /institution/procedure-type/load-procedures
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
+    requirements:
+         institution_id: \d+
+         procedure_type_id: \d+
+
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
-
-

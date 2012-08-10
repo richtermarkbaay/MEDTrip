@@ -55,34 +55,34 @@ class MedicalProcedureTypeController extends Controller
     public function saveAction()
     {
     	$request = $this->getRequest();
-    	$id = $request->get('id', null);
-
-    	if ('POST' == $request->getMethod()) {
-    		$em = $this->getDoctrine()->getEntityManager();
-
-			$procedureType = $id
-				? $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id) 
-				: new MedicalProcedureType();
-
-			$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
-    		$form->bind($request);
-
-			if ($form->isValid()) {
-				$procedureType = $form->getData();
-
-				if(!$procedureType->getSlug())
-					$procedureType->setSlug('');
-
-				$em->persist($procedureType);
-				$em->flush($procedureType);
-
-    			$request->getSession()->setFlash('notice', 'New Procedure Type has been added!');
-    			return $this->redirect($this->generateUrl('admin_procedureType_index'));
-			} else {
-		    	$params = array('form' => $form->createView(), 'id' => $id);
-		    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
-			}
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
     	}
+
+    	$id = $request->get('id', null);
+		$em = $this->getDoctrine()->getEntityManager();
+
+		$procedureType = $id
+			? $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id) 
+			: new MedicalProcedureType();
+
+		$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
+		$form->bind($request);
+
+		if ($form->isValid()) {
+			$procedureType = $form->getData();
+
+			if(!$procedureType->getSlug())
+				$procedureType->setSlug('');
+			$em->persist($procedureType);
+			$em->flush($procedureType);
+
+			$request->getSession()->setFlash('notice', 'New Procedure Type has been added!');
+			return $this->redirect($this->generateUrl('admin_procedureType_index'));
+		} else {
+	    	$params = array('form' => $form->createView(), 'id' => $id);
+	    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
+		}
     }
     
     /**

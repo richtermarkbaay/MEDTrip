@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
+	
 	function getProcedureTypeIdsWithProcedure($medicalCenterId)
 	{
 		$conn = $this->_em->getConnection();

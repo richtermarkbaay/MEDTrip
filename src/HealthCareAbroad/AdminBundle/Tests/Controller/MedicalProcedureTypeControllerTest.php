@@ -41,6 +41,21 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Medical Procedure Type")')->count(), '"Edit Medical Procedure Type" string not found!');
     }
 
+    public function testSave()
+    {
+    	$formData = array(
+			'medicalProcedureType[name]' => '1st TestNewlyAdded MedProcType',
+			'medicalProcedureType[description]' => 'Lorem Lorem ipsum dolor sit amit!',
+			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[status]' => 1
+    	);
+    
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('POST', '/admin/medical-procedure/add', $formData);
+    
+    	$this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
 	public function testAddSave()
 	{
 		$client = $this->getBrowserWithActualLoggedInUser();
@@ -107,6 +122,39 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals("Response code: 200", "Response code: " . $response->getStatusCode());
     }
     
+    public function testSaveInvalidData()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('GET', '/admin/procedure-type/add');
+    
+		$formData = array(
+			'medicalProcedureType[name]' => '',
+			'medicalProcedureType[description]' => 'the description',
+			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[status]' => 1
+		);
+
+    	$form = $crawler->selectButton('submit')->form();
+    	$crawler = $client->submit($form, $formData);
+
+    	$this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
+    	$this->assertGreaterThan(0, $crawler->filter('form.basic-form > div ul')->count(), 'No validation message!');
+    }
+    
+    public function testSaveInvalidMethod()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    
+    	$formData = array(
+			'medicalProcedureType[name]' => '',
+			'medicalProcedureType[description]' => 'the description',
+			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[status]' => 1
+    	);
+
+    	$crawler = $client->request('GET', '/admin/procedure-type/test-save', $formData);
+    	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
+    }
 }
 
 

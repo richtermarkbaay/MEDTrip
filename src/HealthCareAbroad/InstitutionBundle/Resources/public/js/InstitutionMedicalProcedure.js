@@ -19,15 +19,29 @@ var InstitutionMedicalProcedure = {
 		$('#procedure_filter').change(function(){
 			window.location = InstitutionMedicalProcedure.manageProceduresUrl + '?filter=' + $(this).val();
 		});
+		
+		$('#institutionMedicalProcedure_procedure_type').click(function(){
+			if(!$('#institutionMedicalProcedure_medical_center').val()) {
+				alert('Please choose Medical Center first.');
+			}
+		});
+		
+		$('#institutionMedicalProcedure_medical_procedure').click(function(){
+			if(!$('#institutionMedicalProcedure_procedure_type').val()) {
+				alert('Please choose Procedure Type first.');
+			}
+		})
 	},
 
 	initMedicalCenterOnChangeEvent : function()
 	{
 		$('#institutionMedicalProcedure_medical_center').change(function(){
+			if($(this).val()) {
+				$(this).prev('ul').hide();
+			}
 			var $procedureTypeElem = $('#institutionMedicalProcedure_procedure_type');
-			$procedureTypeElem.attr('disabled', true);
 
-			$.getJSON(InstitutionMedicalProcedure.loadProcedureTypesUrl + '/' + $(this).val(), function(types){
+			$.getJSON(InstitutionMedicalProcedure.loadProcedureTypesUrl, {medical_center_id: $(this).val()}, function(types){
 
 				if(!types.length) {
 					alert('No Procedure Types yet for this center!');
@@ -35,7 +49,7 @@ var InstitutionMedicalProcedure = {
 				}
 
 				var options = InstitutionMedicalProcedure.convertToOptionsString(types);
-				$procedureTypeElem.html(options).attr('disabled', false);
+				$procedureTypeElem.html(options);
 				$('#institutionMedicalProcedure_procedure_type').change();
 			});
 		});	
@@ -44,12 +58,21 @@ var InstitutionMedicalProcedure = {
 	initMedicalProcedurTypeOnChangeEvent : function()
 	{
 		$('#institutionMedicalProcedure_procedure_type').change(function(){
-			var $procedureElem = $('#institutionMedicalProcedure_medical_procedure');
-			$procedureElem.attr('disabled', true);
+			if($(this).val()) {
+				$(this).prev('ul').hide();
+			}
 
-			$.getJSON(InstitutionMedicalProcedure.loadProceduresUrl + '/' + $(this).val(), function(procedures){
+			var $procedureElem = $('#institutionMedicalProcedure_medical_procedure');
+
+			$.getJSON(InstitutionMedicalProcedure.loadProceduresUrl, {procedure_type_id: $(this).val()}, function(procedures){
+				
+				if(!procedures.length) {
+					alert('No Procedures yet for this type!.');
+					return false;
+				}
+
 				var options = InstitutionMedicalProcedure.convertToOptionsString(procedures);
-				$procedureElem.html(options).attr('disabled', false);
+				$procedureElem.html(options).prev('ul').hide();
 			});
 		});
 	},
@@ -62,15 +85,4 @@ var InstitutionMedicalProcedure = {
 		}
 		return options;
 	},
-
-	updateStatus : function(elem)
-	{
-		id = elem.attr('id').split('-').pop();
-		$.getJSON(InstitutionMedicalProcedure.updateProcedureStatusUrl, {institution_medical_procedure_id:id}, function(result){
-			if(result) {
-				var status = $.trim(elem.html()) == 'activate';
-				elem.html(status ? 'deactivate' : 'activate');				
-			}
-		});
-	}
 }

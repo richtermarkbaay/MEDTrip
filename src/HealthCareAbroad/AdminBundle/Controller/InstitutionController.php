@@ -65,6 +65,7 @@ class InstitutionController extends Controller
 	public function manageCentersAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
+		$centers = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
 		$institutionMedicalCenters = $institution->getMedicalCenters();
 
@@ -80,16 +81,14 @@ class InstitutionController extends Controller
 		$request = $this->getRequest();
 		if ('POST' == $request->getMethod()) {
 			$newMedicalCenterIds = $request->get('centers', array());
-			
+
 			$this->get('services.institution')->updateInstitutionMedicalCenters($id, $newMedicalCenterIds, $centerIdsWithProcedureType);
 
 			$selectedCenterIds = array_merge($newMedicalCenterIds, $centerIdsWithProcedureType);
-			$request->getSession()->setFlash('noticeType', 'success');
 			$request->getSession()->setFlash('notice', 'Institution Medical Centers has been updated!');
 			//return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
 		}
 
-		$centers = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
 		$params = array(
 			'id' => $id,
 			'centers' => $centers,
@@ -179,7 +178,7 @@ class InstitutionController extends Controller
 	}
 
 	/**
-	 * TODO - Move it to InstitutionMedicalProcedureController
+	 * 
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 */
 	public function updateProcedureStatusAction()
@@ -194,7 +193,7 @@ class InstitutionController extends Controller
 	}
 	
 	/**
-	 * TODO - Move it to InstitutionMedicalProcedureController 
+	 * 
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 */
 	function saveMedicalProcedureAction($id)
@@ -232,57 +231,5 @@ class InstitutionController extends Controller
 		}
 
 		return $this->redirect($this->generateUrl('admin_institution_manageProcedures', array('id'=>$id)));
-	}
-	
-	/**
-	 * TODO - Move it to InstitutionMedicalProcedureController
-	 * 
-	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-	 */
-	function loadProcedureTypesAction($medical_center_id)
-	{
-		$data = array();
-		$em = $this->getDoctrine()->getEntityManager();
-		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($medical_center_id);
-
-		if($institutionMedicalCenter && count($institutionMedicalCenter->getMedicalProcedureType())) {
-			$procedureTypes = $institutionMedicalCenter->getMedicalProcedureType();
-			foreach($procedureTypes as $each) {
-				$data[] = array('id' => $each->getId(), 'name' => $each->getName());
-			}
-		}
-
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');
-
-		return $response;
-	}
-	
-	/**
-	 * TODO - Move it to InstitutionMedicalProcedureController
-	 * 
-	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-	 */
-	function loadProceduresAction($id, $procedure_type_id)
-	{
-		$data = array();
-		$em = $this->getDoctrine()->getEntityManager();
-		$procedureType = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedure_type_id);
-
-		$criteria = array('medicalProcedureType' => $procedureType, 'status' => 1);
-		$procedures = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findBy($criteria);
-
-		$activeProcedureIds = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->getProcedureIdsByTypeId($id, $procedure_type_id);
-		
-		foreach($procedures as $each) {
-			if(!in_array($each->getId(), $activeProcedureIds)) {
-				$data[] = array('id' => $each->getId(), 'name' => $each->getName());				
-			}
-		}
-
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');
-	
-		return $response;
 	}
 }

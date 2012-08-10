@@ -1,0 +1,16 @@
+admin_medicalProcedure_testSave:
+    pattern:  /admin/medical-procedure/test-save
+    defaults: { _controller: AdminBundle:MedicalProcedure:save }
+    requirements:
+         id: \d+
+         _method: GET
+  
+admin_procedureType_testSave:
+    pattern:  /admin/procedure-type/test-save
+    defaults: { _controller: AdminBundle:MedicalProcedureType:save }
+    requirements:
+         id: \d+
+         _method: GET
+
+_main:
+    resource: routing.yml

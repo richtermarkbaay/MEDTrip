@@ -134,7 +134,6 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
   
 		// Redirect result
 		$crawler = $client->followRedirect(true);
-		var_dump($crawler->filter('#content-table-inner > #message-red')->text());
 
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
@@ -197,5 +196,22 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$this->assertEquals("true", $client->getResponse()->getContent(), "Unable to update procedure status.");
 		$this->assertEquals("Response code: 200", "Response code: " . $client->getResponse()->getStatusCode());
 	}
+	
+	public function testLoadProcedureTypes()
+	{
+		$client = $this->getBrowserWithActualLoggedInUser();
+		$params = array('medical_center_id' => 1);
+		$crawler = $client->request('GET', '/admin/medical-center/load-procedure-types', $params);
 
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	}
+	
+	public function testLoadProcedures()
+	{
+		$client = $this->getBrowserWithActualLoggedInUser();
+		$params = array('institution_id' => 1, 'procedure_type_id' => 1);
+		$crawler = $client->request('GET', '/admin/procedure-type/load-procedures', $params);
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	}
 }

@@ -68,7 +68,7 @@
 			var params = {
 				manageProceduresUrl : "{{ path('admin_institution_manageProcedures', {id:id}) }}",
 				loadProcedureTypesUrl : "{{ path('admin_loadMedicalProcedureTypes') }}",
-				loadProceduresUrl : "{{ path('admin_loadMedicalProcedures', {id:id}) }}",
+				loadProceduresUrl : "{{ path('admin_loadMedicalProcedures', {institution_id:id}) }}",
 				updateProcedureStatusUrl : "{{ path('admin_institution_updateProcedureStatus') }}"
 			};
 			InstitutionMedicalProcedure.init(params);

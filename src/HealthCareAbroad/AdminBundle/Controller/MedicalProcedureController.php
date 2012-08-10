@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
@@ -55,31 +57,31 @@ class MedicalProcedureController extends Controller
      */
     public function saveAction()
     {
-    	$request = $this->getRequest();
+		$request = $this->getRequest();
+		if('POST' != $request->getMethod()) {
+			return new Response("Save requires POST method!", 405);
+		}
+
     	$id = $request->get('id', null);
+		$em = $this->getDoctrine()->getEntityManager();
 
-    	if ('POST' == $request->getMethod()) {
-    		$em = $this->getDoctrine()->getEntityManager();
+		$procedure = $id
+			? $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id) 
+			: new MedicalProcedure();
 
-			$procedure = $id
-				? $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id) 
-				: new MedicalProcedure();
+		$form = $this->createForm(new MedicalProcedureForm(), $procedure);
+		$form->bind($request);
 
-			$form = $this->createForm(new MedicalProcedureForm(), $procedure);
-    		$form->bind($request);
+		if ($form->isValid()) {
+			$this->get('services.medical_procedure')->saveMedicalProcedure($form->getData());
 
-			if ($form->isValid()) {
-				$this->get('services.medical_procedure')->saveMedicalProcedure($form->getData());
-
-				$request->getSession()->setFlash('noticeType', 'success');
-    			$request->getSession()->setFlash('notice', 'New Procedure has been added!');
-    			return $this->redirect($this->generateUrl('admin_medicalProcedure_index'));
-			} else {
-				$params = array('form' => $form->createView(), 'id' => $id);
-				return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
-			}
-	
-    	}
+			$request->getSession()->setFlash('noticeType', 'success');
+			$request->getSession()->setFlash('notice', 'New Procedure has been added!');
+			return $this->redirect($this->generateUrl('admin_medicalProcedure_index'));
+		} else {
+			$params = array('form' => $form->createView(), 'id' => $id);
+			return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
+		}
     }
 
     /**
