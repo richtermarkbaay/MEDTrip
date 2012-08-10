@@ -541,6 +541,7 @@ CREATE TABLE IF NOT EXISTS `medical_procedures` (
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `medical_procedure_type_id_2` (`medical_procedure_type_id`,`name`),
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
