@@ -73,7 +73,31 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-        }
+    
+        //test for existing email provided
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/signUp');
+        $formValues = array(
+        		'institution[name]' => 'alnie jacobe',
+        		'institution[description]' => 'test test',
+        		'institution[country]' => '1',
+        		'institution[city]' => '1',
+        		'institution[address1]' => 'ohuket city',
+        		'institution[firstName]' => 'test name',
+        		'institution[middleName]' => 'middle',
+        		'institution[lastName]' => 'jacobe',
+        		'institution[email]' => 'kristenstewart@yahoo.com',
+        		'institution[new_password]' => $this->userPassword,
+        		'institution[confirm_password]' => $this->userPassword,
+        );
+        
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        //$this->assertGreaterThan(0, $crawler->filter('html:contains("Integrity constraint violation: 1062 Duplicate entry ")')->count());
+    
+        
+	}
 	
 // 	public function testCreate()
 // 	{

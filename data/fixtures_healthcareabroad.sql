@@ -311,6 +311,13 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedures` (
   KEY `medical_procedure_id` (`medical_procedure_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `institution_medical_procedures`
+--
+
+INSERT INTO `institution_medical_procedures` (`id`, `institution_id`, `medical_procedure_id`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 1, 1, 'test for active procedureType1', '2012-08-09 01:28:55', '2012-08-08 16:00:00', '', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -325,6 +332,12 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_medical_procedure_types`
+--
+
+INSERT INTO `institution_medical_procedure_types` (`institution_medical_center_id`, `medical_procedure_type_id`) VALUES
+(1, 1), (2, 1);
 
 -- --------------------------------------------------------
 
@@ -510,7 +523,9 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
 --
 
 INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1);
+(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1),
+(2, 'centerAddedFromAdminTest1', 'the quick brown fox is very slow.', '2012-08-08 08:42:47', '', 1),
+(3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:47', '1', 1);
 
 -- --------------------------------------------------------
 
@@ -526,9 +541,19 @@ CREATE TABLE IF NOT EXISTS `medical_procedures` (
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `medical_procedure_type_id_2` (`medical_procedure_type_id`,`name`),
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `medical_procedures`
+--
+
+INSERT INTO `medical_procedures` (`id`, `medical_procedure_type_id`, `name`, `slug`, `status`) VALUES
+(1, 1, 'testProcedure1', 'testprocedure1', 1),
+(2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
+(3, 2, 'testProcedure2', 'testprocedure2', 1),
+(4, 1, 'Test Medical Procedure', 'test-medical-procedure', 1);
 -- --------------------------------------------------------
 
 --
@@ -544,16 +569,19 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
 --
 -- Dumping data for table `medical_procedure_types`
 --
 
 INSERT INTO `medical_procedure_types` (`id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
+(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1),
+(2, 'testType2', 'sfd dff sdaf sadf sdfsd fsdaf sdf', '2012-08-09 00:56:01', '2012-08-08 16:00:00', '', 1),
+(3, 'testInactiveType1', 'sdf sdf sdaf sadfsa fsd sdf sdf', '2012-08-09 00:56:01', '2012-08-08 16:00:00', '', 0),
+(4, 'Test Medical Procedure Type', 'For testing purposes', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
 
 -- --------------------------------------------------------
 

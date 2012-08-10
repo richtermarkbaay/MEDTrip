@@ -31,20 +31,26 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 
 	public function testCreateMedicalProcedureType()
 	{
-		for($i = 0; $i< 3; $i++) {
-		
-			$procedureType = new MedicalProcedureType();
-			$procedureType->setDateCreated(new \DateTime())
-			->setDateModified($procedureType->getDateCreated())
-			->setName('ProcedureTypeTestUnit')
-			->setDescription('this is a test description')
-			->setSlug('ProcedureTypeTestUnit')
-			->setStatus(1);
+		try {
 			
-			$procedureType = $this->service->saveMedicalProcedureType($procedureType);
+			for($i = 0; $i< 3; $i++) {
+			
+				$procedureType = new MedicalProcedureType();
+				$procedureType->setDateCreated(new \DateTime())
+				->setDateModified($procedureType->getDateCreated())
+				->setName('ProcedureTypeTestUnit ' . $i)
+				->setDescription('this is a test description')
+				->setSlug('ProcedureTypeTestUnit')
+				->setStatus(1);
+
+				$procedureType = $this->service->saveMedicalProcedureType($procedureType);
+			}
+		} catch (\Exception $e) {
+			$this->getDoctrine()->resetEntityManager();
+			throw $e;
+		}
 
 		$this->assertNotEmpty($procedureType);
-		}
 	}
 	
 	public function testSaveMedicalProcedure()

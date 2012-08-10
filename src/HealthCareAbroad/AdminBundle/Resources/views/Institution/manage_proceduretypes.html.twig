@@ -11,7 +11,7 @@
 			{% block wrappedContent %}
 
 				{% if app.session.hasFlash('notice') %}
-					{% include '::notice.admin.html.twig' with {'class': 'success', 'message': app.session.flash('notice') } %}
+					{% include '::notice.admin.html.twig' %}
 				{% endif %}
 
 				<form action="{{ path('admin_institution_manageProcedureTypes', {id:id, medical_center_id: selectedCenter.id}) }}" method="POST">
@@ -36,7 +36,7 @@
 						</li>
 					{% endfor %}
 				</ul>
-				<input type="submit" class="form-submit"/>
+				<input type="submit" class="form-submit" name="submit"/>
 				</form>
 			{% endblock %}
 		{% endembed %}
