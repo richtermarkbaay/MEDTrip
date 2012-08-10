@@ -557,7 +557,7 @@ ALTER TABLE `medical_procedure_types` ADD UNIQUE (`name`);
 --
 
 INSERT INTO `medical_procedure_types` (`id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
+(1, 'testtype', 'sdf sdf sdf sdfsd f', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1),
 (2, 'Test Medical Procedure Type', 'For testing purposes', '2012-08-07 02:05:43', '2012-08-06 16:00:00', '', 1);
 
 -- --------------------------------------------------------
