@@ -26,5 +26,7 @@ class MedicalProcedureRepository extends EntityRepository
 		$query->setMaxResults($limit);
 	
 		return $query->getResult();
-	}	
+	}
+	
+	
 }
