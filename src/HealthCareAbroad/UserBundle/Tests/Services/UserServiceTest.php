@@ -44,13 +44,15 @@ class UserServiceTest extends UserBundleTestCase
         $this->assertNull($result);
     }
     
+    /**
+     * @expectedException HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException
+     */
     public function testGetUserForInvalidAccountId()
     {
         // test invalid accountId
         $user = new InstitutionUser();
         $user->setAccountId(99999999);
         $result = $this->service->getUser($user);
-        $this->assertNull($result);
     }
     
     /**
