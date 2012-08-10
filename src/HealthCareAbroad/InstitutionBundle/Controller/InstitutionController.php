@@ -38,7 +38,6 @@ class InstitutionController extends Controller
 	public function signUpAction()
 	{
 		$form = $this->createForm(new InstitutionType());
-		//getActiveCitiesByCountryId($countryId)
 		
 		if ($this->getRequest()->isMethod('POST')) {
             
