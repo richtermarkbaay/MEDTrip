@@ -22,6 +22,18 @@ class DefaultController extends Controller
     	} else {
     		throw new Exception('Undefined context.');
     	}
+    	/*
+    	<form action="/admin/search" method="post">
+    		<table border="0" cellpadding="0" cellspacing="0">
+    			<tr>
+    				<td>
+    					<input type="text" id="adminDefaultSearch_term" name="adminDefaultSearch[term]" required="required" class="top-search-inp" onblur="if (this.value==&quot;&quot;) {
+    	this.value=&quot;Search&quot;;
+    	}" onfocus="if (this.value==&quot;Search&quot;) {
+    		this.value=&quot;&quot;;
+    	}" value="Search" />
+    	</td>\t\n\t\t\t<td><select id="adminDefaultSearch_    	
+    	*/
     }
     
     /**

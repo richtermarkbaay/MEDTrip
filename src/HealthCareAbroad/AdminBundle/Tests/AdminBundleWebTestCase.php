@@ -13,6 +13,11 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	protected $userPassword = '123456';
 	protected $formValues = array();
 	
+	private $defaultClientOptions = array(
+			'environment'	=> 'test',
+			'debug'			=> false,
+	);
+	
 	public static function setUpBeforeClass()
 	{
 		\HCA_DatabaseManager::getInstance()
@@ -28,9 +33,9 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 		);
 	}
 	
-	protected function getBrowserWithActualLoggedInUser()
+	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
-		$client = static::createClient();
+		$client = static::createClient(\array_merge($this->defaultClientOptions, $options));
 		$crawler = $client->request('GET', '/admin/login');
 		$form = $crawler->selectButton('submit')->form();
 		$client->submit($form, $this->formValues);
@@ -38,9 +43,9 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 		return $client;
 	}
 	
-	protected function getBrowserWithMockLoggedUser()
+	protected function getBrowserWithMockLoggedUser($options = array())
 	{
-		$client = static::createClient(array(), array(
+		$client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
 				'PHP_AUTH_USER' => 'admin',
 				'PHP_AUTH_PW'   => 'testadmin',
 		));

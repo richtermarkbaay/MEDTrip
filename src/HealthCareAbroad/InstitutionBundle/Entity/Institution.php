@@ -9,11 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-	static $STATUS = array(
-		'inactive' => 0,
-		'active' => 1
-	);
-
     /**
      * @var integer $id
      */
@@ -45,16 +40,6 @@ class Institution
     private $address2;
 
     /**
-     * @var integer $cityId
-     */
-    private $cityId;
-
-    /**
-     * @var integer $countryId
-     */
-    private $countryId;
-
-    /**
      * @var datetime $dateModified
      */
     private $dateModified;
@@ -73,6 +58,16 @@ class Institution
      * @var smallint $status
      */
     private $status;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\City
+     */
+    private $city;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -211,50 +206,6 @@ class Institution
     }
 
     /**
-     * Set cityId
-     *
-     * @param integer $cityId
-     * @return Institution
-     */
-    public function setCityId($cityId)
-    {
-        $this->cityId = $cityId;
-        return $this;
-    }
-
-    /**
-     * Get cityId
-     *
-     * @return integer 
-     */
-    public function getCityId()
-    {
-        return $this->cityId;
-    }
-
-    /**
-     * Set countryId
-     *
-     * @param integer $countryId
-     * @return Institution
-     */
-    public function setCountryId($countryId)
-    {
-        $this->countryId = $countryId;
-        return $this;
-    }
-
-    /**
-     * Get countryId
-     *
-     * @return integer 
-     */
-    public function getCountryId()
-    {
-        return $this->countryId;
-    }
-
-    /**
      * Set dateModified
      *
      * @param datetime $dateModified
@@ -340,6 +291,50 @@ class Institution
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return Institution
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set city
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\City $city
+     * @return Institution
+     */
+    public function setCity(\HealthCareAbroad\HelperBundle\Entity\City $city = null)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\City 
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 
     /**

@@ -293,6 +293,10 @@ admin_loadMedicalProcedures:
 
 # End of Institution Routes #
 
+admin_error403:
+    pattern: /admin/access-denied
+    defaults: { _controller: AdminBundle:Default:error403 }
+
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }
