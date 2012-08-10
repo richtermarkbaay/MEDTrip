@@ -29,16 +29,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         address2:
             type: text
             nullable: false
-        cityId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: city_id
-        countryId:
-            type: integer
-            unsigned: false
-            nullable: false
-            column: country_id
         dateModified:
             type: datetime
             nullable: false
@@ -88,5 +78,23 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                         name: id
                         referencedColumnName: id
             orderBy: null
-
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        city:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\City
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                city_id:
+                    referencedColumnName: id
+            orphanRemoval: false
     lifecycleCallbacks: {  }

@@ -4,27 +4,41 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 use Assetic\Exception\Exception;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
-
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\HelperBundle\Services\LocationService;
-
 use HealthCareAbroad\HelperBundle\Entity\Country;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
-use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Component\HttpFoundation\Request;
-
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
+	public function editInstitutionAction()
+	{
+		$institutionId = $this->getRequest()->get('institutionId', null);
+		
+		if (!$institutionId){
+			// no account id in parameter, editing currently logged in account
+			$session = $this->getRequest()->getSession();
+			$institutionId = $session->get('institutionId');
+		}
+		
+		//TODO: get the matching institution user type
+		$institutionDetails = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+echo  $institutionDetails->getCountry()->getName(); exit;
+		$form = $this->createForm(new InstitutionDetailType(), $institutionDetails);
+		
+		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
+				'form' => $form->createView(),
+				'institutionDetails' => $institutionDetails
+		));
+		
+	}
 	public function loadCitiesAction($countryId)
 	{
 		$data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
