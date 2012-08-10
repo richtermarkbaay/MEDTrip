@@ -1,4 +1,7 @@
 {% extends 'AdminBundle::layout.html.twig' %}
+
+{% block title %}{{ parent() }} &raquo; {{ userType.id ? 'Edit user type' : 'Create new user type' }} {% endblock %}
+
 {% set selectedTab = 'settings' %}
 {% form_theme form '::form.admin.html.twig' %}
 
