@@ -25,7 +25,7 @@ class AdminUserController extends Controller
             if ($form->isValid()) {
                 if ($this->get('services.admin_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
-                    $this->get('session')->setFlash('notice', 'Login successfully!');
+                    $this->get('session')->setFlash('success', 'Login successfully!');
             
                     return $this->redirect($this->generateUrl('admin_homepage'));
                 }

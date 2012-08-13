@@ -19,7 +19,7 @@ class TokenController extends Controller
     	if (!$invitation) {
             throw $this->createNotFoundException('Invalid token');
         }
-        $this->get('session')->setFlash('notice', "Successfully confirm token!");
+        $this->get('session')->setFlash('success', "Successfully confirm token!");
 		return $this->render('InstitutionBundle:Token:confirmInvitationToken.html.twig', array('token' => $token));
     }
 	
@@ -63,11 +63,11 @@ class TokenController extends Controller
  					if (!$institutionInvitation) {
  						return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
  					}
- 					$this->get('session')->setFlash('notice', "Invitation sent to ".$institutionInvitation->getEmail());
+ 					$this->get('session')->setFlash('success', "Invitation sent to ".$institutionInvitation->getEmail());
  					
  				}
  				else {
- 					$this->get('session')->setFlash('notice', "Failed to send invitation to ".$institutionInvitation->getEmail());
+ 					$this->get('session')->setFlash('error', "Failed to send invitation to ".$institutionInvitation->getEmail());
  				}
 			}
 		}

@@ -90,10 +90,10 @@ echo  $institutionDetails->getCountry()->getName(); exit;
            	    $institutionUser = $this->get('services.institution_user')->create($user);
            	    
            	    if ( count($institutionUser) > 0 ) {
-           	    	$this->get('session')->setFlash('flash.notice', "Successfully created account to HealthCareaAbroad");
+           	    	$this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    }
            	    else {
-           	    	$this->get('session')->setFlash('flash.notice', "Failed to create account on HealthCareAbroad");
+           	    	$this->get('session')->setFlash('error', "Failed to create account on HealthCareAbroad");
            	    }
            	    return $this->redirect($this->generateUrl('institution_homepage'));
             }
@@ -123,7 +123,7 @@ echo  $institutionDetails->getCountry()->getName(); exit;
 				$email = $this->get('services.user')->find(array('email' => $data["form"]["email"]),  array('limit' => 1));
 				
 				if (count($email) > 0) {
-					$this->get('session')->setFlash('notice', "Email already registered!");
+					$this->get('session')->setFlash('success', "Email already registered!");
 				}
 				else {
 					
@@ -154,10 +154,10 @@ echo  $institutionDetails->getCountry()->getName(); exit;
 						
 						$sendingResult = $this->get('services.invitation')->sendInstitutionUserLoginCredentials($user,$temporaryPassword);
 						if ($sendingResult) {
-		                    $this->get('session')->setFlash('notice', "Invitation sent to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('success', "Invitation sent to {$user->getEmail()}");
 		                }
 		                else {
-		                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('error', "Failed to send invitation to {$user->getEmail()}");
 		                }
 		                
 		                return $this->redirect($this->generateUrl('institution_homepage'));
