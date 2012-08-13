@@ -28,7 +28,8 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 	{
 		$this->assertCount(1, $this->crawler->filter('form'));
 		$this->assertEquals('POST', $this->form->getMethod());
-		$this->assertRegExp('/\/admin\/search/', $this->form->getUri());
+		//$this->assertRegExp('/\/admin\/search/', $this->form->getUri());
+		$this->assertContains('/admin/search', $this->form->getUri());
 		
 		$inputElements = $this->crawler->filter('input');
 		$this->assertCount(2, $inputElements);
@@ -66,7 +67,8 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 		$this->assertTrue($response->isSuccessful());
 		
 		$content = $response->getContent();
-		$this->assertRegExp('/'.$searchTerm.'/', $content);
+		//$this->assertRegExp('/'.$searchTerm.'/', $content);
+		$this->assertContains($searchTerm, $content);
 	}
 	
 	public function testInitiateAction_SearchForCenter()
@@ -81,7 +83,8 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 		$this->assertTrue($response->isSuccessful());
 	
 		$content = $response->getContent();
-		$this->assertRegExp('/'.$searchTerm.'/', $content);
+		//$this->assertRegExp('/'.$searchTerm.'/', $content);
+		$this->assertContains($searchTerm, $content);
 	}	
 	
 	public function testInitiateAction_SearchForProcedureType()
@@ -96,7 +99,8 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 		$this->assertTrue($response->isSuccessful());
 	
 		$content = $response->getContent();
-		$this->assertRegExp('/'.$searchTerm.'/', $content);
+		//$this->assertRegExp('/'.$searchTerm.'/', $content);
+		$this->assertContains($searchTerm, $content);
 	}	
 	
 	public function testInitiateAction_SearchForProcedure()
@@ -111,6 +115,6 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 		$this->assertTrue($response->isSuccessful());
 	
 		$content = $response->getContent();
-		$this->assertRegExp('/'.$searchTerm.'/', $content);
+		$this->assertContains($searchTerm, $content);
 	}	
 }
