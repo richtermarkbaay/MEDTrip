@@ -11,7 +11,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             generator:
                 strategy: IDENTITY
     manyToMany:
-        medicalProcedureType:
+        medicalProcedureTypes:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
             cascade: {  }
             mappedBy: null
@@ -30,20 +30,14 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     manyToOne:
         medicalCenter:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                medical_center_id:
-                    referencedColumnName: id
-            orphanRemoval: false
+            inversedBy: medicalCenters
+            joinColumn:
+                name: medical_center_id
+                referencedColumnName: id
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
-            joinColumns:
-                institution_id:
-                    referencedColumnName: id
-            orphanRemoval: false
+            inversedBy: institutions
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
     lifecycleCallbacks: {  }
