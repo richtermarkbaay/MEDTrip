@@ -47,6 +47,7 @@ class InstitutionType extends AbstractType
     		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
     		->add('city', new CityListType(1))
     		->add('address1','text', array('constraints' => new NotBlank()))
+    		->add('address2','text', array('constraints' => new NotBlank()))
     		;
     }
     
