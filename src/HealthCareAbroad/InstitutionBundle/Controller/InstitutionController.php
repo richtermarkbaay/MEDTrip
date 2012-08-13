@@ -53,7 +53,6 @@ class InstitutionController extends Controller
 				
 				if ( count($institution) > 0 ) {
 					$this->get('session')->setFlash('notice', "Successfully updated account");
-					
 				}
 				else
 				{
@@ -62,8 +61,6 @@ class InstitutionController extends Controller
 				}
 			}
 		}
-		
-		
 		
 		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
 				'form' => $form->createView(),
