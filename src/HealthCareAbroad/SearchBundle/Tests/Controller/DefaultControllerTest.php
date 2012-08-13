@@ -47,6 +47,13 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 		$this->assertEquals('adminDefaultSearch[category]', $selectCategory->attr('name'));
 	}
 	
+	public function testShowWidgetAction_NonExistentContext()
+	{
+		$crawler = $this->client->request('GET', '/admin/search/widget/nonexistentContext');
+		
+		$this->assertEquals(500, $this->client->getResponse()->getStatusCode());
+	}	
+	
 	public function testInitiateAction_SearchForInstitution()
 	{
 		$searchTerm = $this->searchTerms[Constants::SEARCH_CATEGORY_INSTITUTION];
