@@ -2,13 +2,12 @@
 {% set selectedTab = 'staff'%}
 {% form_theme form '::form.admin.html.twig' %}
 
-
 {% block content %}
 <!-- start content -->
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-        <h1>Edit {{ institutionDetails.getName() }}</h1>
+        <h1>Edit {{ institution.getName() }} Details</h1>
     </div>
     <!-- end page-heading -->
     
@@ -26,10 +25,12 @@
                         
                         <tr><h2>Institution Details</h2></tr>
                         {{ form_row(form.name) }}
-                        {{ form_row(form.country) }}
-                        
                         {{ form_row(form.description) }}
+                        {{ form_row(form.country) }}
+                        {{ form_row(form.city)}}
+                        
                         {{ form_row( form.address1 ) }}
+                        {{ form_row( form.address2 ) }}
                         
                         <tr>
                             <th>&nbsp;</th>
@@ -52,6 +53,7 @@
     {% endembed %}
     
 </div>
+
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 {% endblock %}
