@@ -191,7 +191,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 	{
 		$client = $this->getBrowserWithActualLoggedInUser();
 		$params = array('institution_medical_procedure_id' => 1);
-		$crawler = $client->request('GET', '/admin/institution/update-procedure-status/1', $params);
+		$crawler = $client->request('GET', '/admin/institution/update-procedure-status', $params);
 
 		$this->assertEquals("true", $client->getResponse()->getContent(), "Unable to update procedure status.");
 		$this->assertEquals("Response code: 200", "Response code: " . $client->getResponse()->getStatusCode());
