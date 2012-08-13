@@ -42,9 +42,18 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 100
             fixed: true
             nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
         status:
             type: smallint
             nullable: false
+    oneToMany:
+        institutionMedicalCenters:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            mappedBy: institution
     manyToMany:
         contactDetail:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
@@ -60,22 +69,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 inverseJoinColumns:
                     -
                         name: contact_detail_id
-                        referencedColumnName: id
-            orderBy: null
-        medicalCenters:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            cascade: {  }
-            mappedBy: null
-            inversedBy: institution
-            joinTable:
-                name: institution_medical_centers
-                joinColumns:
-                    -
-                        name: institution_id
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    -
-                        name: id
                         referencedColumnName: id
             orderBy: null
     manyToOne:

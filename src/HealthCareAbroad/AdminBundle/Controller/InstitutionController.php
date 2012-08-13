@@ -67,14 +67,14 @@ class InstitutionController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
 		$centers = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-		$institutionMedicalCenters = $institution->getMedicalCenters();
+		$institutionMedicalCenters = $institution->getInstitutionMedicalCenters();
 
 		$centerIdsWithProcedureType = $selectedCenterIds = array();
 		foreach($institutionMedicalCenters as $each) {
 			$medicalCenterId = $each->getMedicalCenter()->getId();
 			$selectedCenterIds[] = $medicalCenterId;
 
-			if(count($each->getMedicalProcedureType()))
+			if(count($each->getMedicalProcedureTypes()))
 				$centerIdsWithProcedureType[] = $medicalCenterId;
 		}
 
@@ -210,7 +210,6 @@ class InstitutionController extends Controller
 				$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findOneBy($criteria);
 
 				$instMedicalProcedure = new InstitutionMedicalProcedure();
-				$instMedicalProcedure->setSlug('');
 				$instMedicalProcedure->setStatus($data['status']);
 				$instMedicalProcedure->setInstitution($institution);
 				$instMedicalProcedure->setMedicalProcedure($medicalProcedure);

@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
+	static $STATUS = array('active'=>1, 'inactive' => 0);
+	
+	
     /**
      * @var integer $id
      */
@@ -60,6 +63,11 @@ class Institution
     private $status;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalCenters;
+
+    /**
      * @var HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
@@ -74,15 +82,10 @@ class Institution
      */
     private $contactDetail;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $medicalCenters;
-
     public function __construct()
     {
+        $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->medicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -294,6 +297,38 @@ class Institution
     }
 
     /**
+     * Add institutionMedicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     * @return Institution
+     */
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
+    {
+        $this->institutionMedicalCenters[] = $institutionMedicalCenters;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     */
+    public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
+    {
+        $this->institutionMedicalCenters->removeElement($institutionMedicalCenters);
+    }
+
+    /**
+     * Get institutionMedicalCenters
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalCenters()
+    {
+        return $this->institutionMedicalCenters;
+    }
+
+    /**
      * Set country
      *
      * @param HealthCareAbroad\HelperBundle\Entity\Country $country
@@ -367,37 +402,5 @@ class Institution
     public function getContactDetail()
     {
         return $this->contactDetail;
-    }
-
-    /**
-     * Add medicalCenters
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters
-     * @return Institution
-     */
-    public function addMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters)
-    {
-        $this->medicalCenters[] = $medicalCenters;
-        return $this;
-    }
-
-    /**
-     * Remove medicalCenters
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters
-     */
-    public function removeMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $medicalCenters)
-    {
-        $this->medicalCenters->removeElement($medicalCenters);
-    }
-
-    /**
-     * Get medicalCenters
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getMedicalCenters()
-    {
-        return $this->medicalCenters;
     }
 }

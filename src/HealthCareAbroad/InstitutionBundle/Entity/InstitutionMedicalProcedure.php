@@ -36,11 +36,6 @@ class InstitutionMedicalProcedure
     private $dateCreated;
 
     /**
-     * @var string $slug
-     */
-    private $slug;
-
-    /**
      * @var smallint $status
      */
     private $status;
@@ -130,28 +125,6 @@ class InstitutionMedicalProcedure
     public function getDateCreated()
     {
         return $this->dateCreated;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return InstitutionMedicalProcedure
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 
     /**

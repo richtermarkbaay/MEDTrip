@@ -24,16 +24,7 @@ class InstitutionMedicalCenter
      */
     private $institution;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $medicalProcedureType;
 
-    public function __construct()
-    {
-        $this->medicalProcedureType = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
     /**
      * Get id
      *
@@ -87,36 +78,45 @@ class InstitutionMedicalCenter
     {
         return $this->institution;
     }
-
     /**
-     * Add medicalProcedureType
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $medicalProcedureTypes;
+
+    public function __construct()
+    {
+        $this->medicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add medicalProcedureTypes
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
      * @return InstitutionMedicalCenter
      */
-    public function addMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType)
+    public function addMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
     {
-        $this->medicalProcedureType[] = $medicalProcedureType;
+        $this->medicalProcedureTypes[] = $medicalProcedureTypes;
         return $this;
     }
 
     /**
-     * Remove medicalProcedureType
+     * Remove medicalProcedureTypes
      *
-     * @param <variableType$medicalProcedureType
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
      */
-    public function removeMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType)
+    public function removeMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
     {
-        $this->medicalProcedureType->removeElement($medicalProcedureType);
+        $this->medicalProcedureTypes->removeElement($medicalProcedureTypes);
     }
 
     /**
-     * Get medicalProcedureType
+     * Get medicalProcedureTypes
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMedicalProcedureType()
+    public function getMedicalProcedureTypes()
     {
-        return $this->medicalProcedureType;
+        return $this->medicalProcedureTypes;
     }
 }
