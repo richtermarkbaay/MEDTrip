@@ -75,6 +75,18 @@ institution_logout:
     defaults: { _controller: InstitutionBundle:InstitutionUser:logout }
     requirements:    
         _method:  GET
+        
+institution_medical_center_index:
+    pattern: /institution/medical-centers
+    defaults: { _controller: InstitutionBundle:MedicalCenter:index }
+    requirements:    
+        _method:  GET
+        
+institution_medical_center_add_save:
+    pattern: /institution/medical-center/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method:  POST
 
 institution_loadMedicalProcedureTypes:
     pattern:  /institution/medical-center/load-procedure-types

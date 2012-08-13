@@ -8,9 +8,7 @@
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			{% if app.session.hasFlash('notice') %}
-				{% include '::notice.admin.html.twig' %}
-			{% endif %}
+			{% include '::notice.admin.html.twig' %}
 
 			<div id="filter-wrapper">
 				<label>Filter: </label>

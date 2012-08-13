@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalCenter
 {
+    const STATUS_ACTIVE = 1;
+    
+    const STATUS_INACTIVE = 0;
+    
     /**
      * @var integer $id
      */
@@ -199,5 +203,10 @@ class MedicalCenter
     public function getMedicalProcedureType()
     {
         return $this->medicalProcedureType;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

@@ -10,9 +10,7 @@
 
 			{% block wrappedContent %}
 
-				{% if app.session.hasFlash('notice') %}
-					{% include '::notice.admin.html.twig' %}
-				{% endif %}
+				{% include '::notice.admin.html.twig' %}
 
 				<form action="{{ path('admin_institution_manageCenters', {id:id}) }}" method="POST">
 				<ul style="list-style:none">

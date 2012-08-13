@@ -85,7 +85,7 @@ class InstitutionController extends Controller
 			$this->get('services.institution')->updateInstitutionMedicalCenters($id, $newMedicalCenterIds, $centerIdsWithProcedureType);
 
 			$selectedCenterIds = array_merge($newMedicalCenterIds, $centerIdsWithProcedureType);
-			$request->getSession()->setFlash('notice', 'Institution Medical Centers has been updated!');
+			$request->getSession()->setFlash('success', 'Institution Medical Centers has been updated!');
 			//return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
 		}
 
@@ -110,7 +110,7 @@ class InstitutionController extends Controller
 
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-		$institutionMedicalCenters = $institution->getMedicalCenters();
+		$institutionMedicalCenters = $institution->getInstitutionMedicalCenters();
 		$medicalProcedureTypes = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
 
 		$selectedInstitutionMedicalCenter = $medicalCenterId
@@ -118,7 +118,7 @@ class InstitutionController extends Controller
 			: $institutionMedicalCenters[0];
 
 		$selectedProcedureTypeIds = array();
-		$selectedProcedureType = $selectedInstitutionMedicalCenter->getMedicalProcedureType();
+		$selectedProcedureType = $selectedInstitutionMedicalCenter->getMedicalProcedureTypes();
 		foreach($selectedProcedureType as $each) {
 			$selectedProcedureTypeIds[] = $each->getId();
 		}
@@ -128,11 +128,9 @@ class InstitutionController extends Controller
 		if ('POST' == $this->getRequest()->getMethod()) {
 			$procedureTypeIds = $request->get('procedure_types', array());
 			$this->get('services.institution')->updateInstitutionProcedureTypes($medicalCenterId, $procedureTypeIds, $procedureTypeIdsWithProcedure);
-
 			$selectedProcedureTypeIds = array_merge($procedureTypeIds, $procedureTypeIdsWithProcedure);
 
-			$request->getSession()->setFlash('noticeType', 'success');
-			$request->getSession()->setFlash('notice', 'Institution Medical Procedure Types has been updated!');
+			$request->getSession()->setFlash('success', 'Institution Medical Procedure Types has been updated!');
 		}
 
 		$params = array(
@@ -220,12 +218,10 @@ class InstitutionController extends Controller
 				$em->persist($instMedicalProcedure);
 				$em->flush($instMedicalProcedure);
 
-				$request->getSession()->setFlash('noticeType', 'success');
-				$request->getSession()->setFlash('notice', 'Institution Medical Procedure has been added!');
+				$request->getSession()->setFlash('success', 'Institution Medical Procedure has been added!');
 
 			} catch(\ErrorException $e) {
-				$request->getSession()->setFlash('noticeType', 'error');
-				$request->getSession()->setFlash('notice', "Medical Procedure does not exists or already inactive!");
+				$request->getSession()->setFlash('error', "Medical Procedure does not exists or already inactive!");
 			}
 		}
 

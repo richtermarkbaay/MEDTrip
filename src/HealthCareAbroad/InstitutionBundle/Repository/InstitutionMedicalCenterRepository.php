@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\ORM\EntityRepository;
 
 /**

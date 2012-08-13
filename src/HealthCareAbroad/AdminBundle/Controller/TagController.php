@@ -58,7 +58,7 @@ class TagController extends Controller
     			$msg = $request->get('id') 
     				? '"' .$tag->getName() . '" tag has been updated!' 
     				: 'New Tag has been added!'; 
-    			$request->getSession()->setFlash('notice', $msg);
+    			$request->getSession()->setFlash('success', $msg);
     			return $this->redirect($this->generateUrl('admin_tagHomepage'));
 			} else {
 				return $this->redirect($this->generateUrl('admin_tagAdd'));
