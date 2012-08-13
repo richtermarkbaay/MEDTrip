@@ -82,6 +82,12 @@ institution_medical_center_index:
     requirements:    
         _method:  GET
         
+institution_medical_center_delete:
+    pattern: /institution/medical-centers/delete/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:delete }
+    requirements:    
+        _method:  GET
+        
 institution_medical_center_add_save:
     pattern: /institution/medical-center/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }

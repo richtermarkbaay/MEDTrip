@@ -53,7 +53,7 @@ class MedicalCenterController extends Controller
         $form->bind($request);
         
         if ($form->isValid()) {
-            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($form->get('medical_center_id')->getData());
+            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($form->get('medical_center')->getData());
             if (!$medicalCenter) {
                 throw new \Exception("Invalid MedicalCenter");
             }
@@ -66,6 +66,8 @@ class MedicalCenterController extends Controller
             } catch (\Exception $e) {
                 return $this->_errorResponse($e->getMessage(), 500);
             }
+            $request->getSession()->setFlash('success', "Successfully added {$medicalCenter->getName()} medical center.");
+            return $this->redirect($this->generateUrl('institution_medical_center_index'));
         }
         else {
             if ($request->request->get('fromIndex', false)) {
@@ -73,6 +75,16 @@ class MedicalCenterController extends Controller
                 return $this->redirect($this->generateUrl('institution_medical_center_index'));   
             }
         }
+    }
+    
+    public function deleteAction()
+    {
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
+        if (!$institution) {
+            throw $this->createNotFoundException('Invalid institution');
+        }
+        
+        
     }
 
 	function loadProcedureTypesAction()

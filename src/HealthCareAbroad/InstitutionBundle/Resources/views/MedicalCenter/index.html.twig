@@ -43,13 +43,16 @@
         					</td>
         					<td class="options-width">
             					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
-            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+            					{% if center.medicalProcedureTypes is empty %}
+            					    <a href="#" title="Delete {{ center.medicalCenter | title }}" class="icon-2 info-tooltip" onclick="return confirm('Are you sure you want to remove {{ center.medicalCenter | title }}?')"></a>
+            					{% endif %}
         					</td>
         				</tr>    
     				{% endfor %}
     				
 				</table>
 				<!--  end medical-centers-list................................... --> 
+				
 				<hr />
 				
 				<div style="margin: 15px 0px;">
