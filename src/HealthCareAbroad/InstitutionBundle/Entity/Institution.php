@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
+	static $STATUS = array('active'=>1, 'inactive' => 0);
+	
+	
     /**
      * @var integer $id
      */

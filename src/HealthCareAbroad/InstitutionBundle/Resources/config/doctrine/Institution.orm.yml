@@ -42,6 +42,11 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 100
             fixed: true
             nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
         status:
             type: smallint
             nullable: false

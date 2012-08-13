@@ -210,7 +210,6 @@ class InstitutionController extends Controller
 				$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->findOneBy($criteria);
 
 				$instMedicalProcedure = new InstitutionMedicalProcedure();
-				$instMedicalProcedure->setSlug('');
 				$instMedicalProcedure->setStatus($data['status']);
 				$instMedicalProcedure->setInstitution($institution);
 				$instMedicalProcedure->setMedicalProcedure($medicalProcedure);

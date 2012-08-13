@@ -71,9 +71,6 @@ class MedicalProcedureTypeController extends Controller
 
 		if ($form->isValid()) {
 			$procedureType = $form->getData();
-
-			if(!$procedureType->getSlug())
-				$procedureType->setSlug('');
 			$em->persist($procedureType);
 			$em->flush($procedureType);
 
