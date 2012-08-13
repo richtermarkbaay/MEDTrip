@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -41,5 +45,27 @@ class MedicalCenterRepository extends EntityRepository
 		$query->setParameter('term', "%$term%");
 
 		return $query->getArrayResult();
+	}
+	
+	/**
+	 * Get MedicalCenters that are not yet linked to a specific institution
+	 *
+	 * @param Institution $institution
+	 * @return Doctrine\ORM\QueryBuilder
+	 */
+	public function getQueryBuilderForUnselectedInstitutionMedicalCenters(Institution $institution)
+	{
+	    $usedMedicalCenterIds = array();
+	    foreach ($institution->getInstitutionMedicalCenters() as $e) {
+	        $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
+	    }
+	     
+	    $qb = $this->createQueryBuilder('a');
+	    $qb->add('where', $qb->expr()->notIn('a.id', $usedMedicalCenterIds))
+	    ->andWhere('a.status = :active')
+	    ->orderBy('a.name', 'ASC')
+	    ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
+	     
+	    return $qb;
 	}
 }
