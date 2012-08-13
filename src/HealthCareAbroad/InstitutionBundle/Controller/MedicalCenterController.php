@@ -83,8 +83,8 @@ class MedicalCenterController extends Controller
 		$centerId = $this->getRequest()->get('medical_center_id');
 		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($centerId);
 
-		if($institutionMedicalCenter && count($institutionMedicalCenter->getMedicalProcedureType())) {
-			$procedureTypes = $institutionMedicalCenter->getMedicalProcedureType();
+		if($institutionMedicalCenter && count($institutionMedicalCenter->getMedicalProcedureTypes())) {
+			$procedureTypes = $institutionMedicalCenter->getMedicalProcedureTypes();
 			foreach($procedureTypes as $each) {
 				$data[] = array('id' => $each->getId(), 'name' => $each->getName());
 			}

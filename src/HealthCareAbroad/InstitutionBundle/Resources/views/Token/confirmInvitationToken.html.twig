@@ -1,8 +1,4 @@
-{% if app.session.hasFlash('notice') %}
-    <div class="msg-notice">
-        {{ app.session.flash('notice') }}
-    </div>
-{% endif %}
+{% include '::notice.admin.html.twig' %}
 
 {% block body %}
     

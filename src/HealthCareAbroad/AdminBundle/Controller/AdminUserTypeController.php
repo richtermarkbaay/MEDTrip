@@ -96,7 +96,7 @@ class AdminUserTypeController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            $request->getSession()->setFlash("notice", "{$userType->getName()} user type saved.");
+            $request->getSession()->setFlash("success", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('admin_userType_index'));
         }
         else {

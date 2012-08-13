@@ -11,10 +11,8 @@
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			{% if app.session.hasFlash('notice') %}
-				{% include '::notice.admin.html.twig' %}
-			{% endif %}
-			
+			{% include '::notice.admin.html.twig' %}
+
 			<table id="medical-procedure-list" class="generic-table mid-size">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
