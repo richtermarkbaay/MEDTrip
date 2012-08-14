@@ -49,11 +49,6 @@ class MedicalProcedureType
      */
     private $status;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $medicalCenter;
-
     public function __construct()
     {
         $this->medicalCenter = new \Doctrine\Common\Collections\ArrayCollection();
@@ -200,33 +195,28 @@ class MedicalProcedureType
     {
         return $this->status;
     }
+    /**
+     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
+     */
+    private $medicalCenter;
+
 
     /**
-     * Add medicalCenter
+     * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
      * @return MedicalProcedureType
      */
-    public function addMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter)
+    public function setMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter = null)
     {
-        $this->medicalCenter[] = $medicalCenter;
+        $this->medicalCenter = $medicalCenter;
         return $this;
-    }
-
-    /**
-     * Remove medicalCenter
-     *
-     * @param <variableType$medicalCenter
-     */
-    public function removeMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter)
-    {
-        $this->medicalCenter->removeElement($medicalCenter);
     }
 
     /**
      * Get medicalCenter
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter 
      */
     public function getMedicalCenter()
     {
