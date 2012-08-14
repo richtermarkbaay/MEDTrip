@@ -15,71 +15,42 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 {
 	public function testEditInformation()
 	{
+		$client = static::createClient();
 		$editAccountUrl = '/institution/edit-information';
-        //---- test that this should not be accessed by anonymous user
-        $client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $redirectLocation = $client->getResponse()->headers->get('location');
-        $this->assertTrue($redirectLocation==$editAccountUrl || $redirectLocation == 'http://localhost/institution/login');
-        //---- end test that this should not be accessed by anonymous user
-        
-		//---- test edit logged in account
-		$client = $this->getBrowserWithActualLoggedInUser();
-		$crawler = $client->request('GET', $editAccountUrl);
-		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
+		//---- test that this should not be accessed by anonymous user
+		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
+		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+		$redirectLocation = $client->getResponse()->headers->get('location');
+		$this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
+		//---- end test that this should not be accessed by anonymous user
 		
-		//test for successfully updating information
-		$formValues = array(
-				'userAccountDetail[firstName]' => 'Edited firstName',
-				'userAccountDetail[middleName]' => 'Edited middleName',
-				'userAccountDetail[lastName]' => 'Edited lastName',
-				'institution[name]' => 'Edited InstitutionName',
-				'institution[description]' => 'Edit Description',
-				'institution[country]' => '1',
-				'institution[city]' => '1',
-				'institution[address1]' => 'edit addressy',
-				'institution[firstName]' => 'test name',
-				'institution[middleName]' => 'middle',
-				'institution[lastName]' => 'last',
-				'institution[email]' => 'test@yahoo.com',
-				'institution[new_password]' => $this->userPassword,
-				'institution[confirm_password]' => $this->userPassword,
-		);
-		$crawler = $client->submit($form, $formValues);
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully updated account.")')->count(), 'Expecting the validation message "Successfully updated account.."');
+		 //---- test edit logged in account
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $editAccountUrl);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
-		//test for missing fields
-		$formValues = array(
-				'userAccountDetail[firstName]' => 'Edited firstName',
-				'userAccountDetail[middleName]' => 'Edited middleName',
-				'userAccountDetail[lastName]' => 'Edited lastName',
-				'institution[name]' => 'Edited InstitutionName',
-				'institution[description]' => 'Edit Description',
-				'institution[country]' => '1',
-				'institution[city]' => '1',
-				'institution[address1]' => 'edit addressy',
-				'institution[firstName]' => 'test name',
-				'institution[middleName]' => 'middle',
-				'institution[lastName]' => 'last',
-				'institution[email]' => 'test@yahoo.com',
-				'institution[new_password]' => $this->userPassword,
-				'institution[confirm_password]' => $this->userPassword,
-		);
-		$crawler = $client->submit($form, $formValues);
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-    
+        $formValues = array(
+        		'institutionDetails[name]' => 'edit name',
+        		'institutionDetails[description]' => 'edit desc',
+        		'institutionDetails[country]' => '1',
+        		'institutionDetails[city]' => '1',
+        		'institutionDetails[address1]' => 'edit address1',
+        		'institutionDetails[address2]' => 'edit address2',
+        );
 		
-		//---- test edit invalid account
-		$client->request('GET', $editAccountUrl.'/12345678234');
-		$this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $invalidFormValues = $formValues;
+        $invalidFormValues['institutionDetails[name]'] = null;
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+            
 	}
 		
 	public function testSignUp()
 	{
 		$client = static::createClient();
 		$crawler = $client->request('GET', '/signUp');
-		
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name")')->count()); // look for the Current name text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description")')->count()); // look for the New email text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Country")')->count()); // look for the Current name text
@@ -100,6 +71,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 				'institution[country]' => '1',
 				'institution[city]' => '1',
 				'institution[address1]' => 'ohuket city',
+				'institution[address2]' => 'ohuket city',
 				'institution[firstName]' => 'test name',
 				'institution[middleName]' => 'middle',
 				'institution[lastName]' => 'last',
@@ -119,6 +91,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         		'institution[country]' => '1',
         		'institution[city]' => '1',
         		'institution[address1]' => 'ohuket city',
+        		'institution[address2]' => 'ohuket city',
         		'institution[firstName]' => 'test name',
         		'institution[middleName]' => 'middle',
         		'institution[lastName]' => '',
@@ -140,6 +113,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         		'institution[country]' => '1',
         		'institution[city]' => '1',
         		'institution[address1]' => 'ohuket city',
+        		'institution[address2]' => 'ohuket city',
         		'institution[firstName]' => 'test name',
         		'institution[middleName]' => 'middle',
         		'institution[lastName]' => 'jacobe',
@@ -151,7 +125,13 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
         $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        //$this->assertGreaterThan(0, $crawler->filter('html:contains("Integrity constraint violation: 1062 Duplicate entry ")')->count());
+    
         
 	}
-
+	
+// 	public function testCreate()
+// 	{
+		
+// 	}
 }

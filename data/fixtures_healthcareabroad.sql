@@ -42,12 +42,33 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
 (2, 1, 1);
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin_user_type_roles`
+--
+DROP TABLE IF EXISTS `admin_user_type_roles`;
+CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
+  `admin_user_type_id` int(3) unsigned NOT NULL,
+  `admin_user_role_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`admin_user_type_id`,`admin_user_role_id`),
+  KEY `admin_user_role_id` (`admin_user_role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `admin_user_type_roles`
+--
+
+INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`) VALUES
+(1, 1);
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `admin_user_roles`
 --
-
+DROP TABLE IF EXISTS `admin_user_roles`;
 CREATE TABLE IF NOT EXISTS `admin_user_roles` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
@@ -103,22 +124,34 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_user_type_roles`
+-- Table structure for table `institutions`
 --
 
-CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
-  `admin_user_type_id` int(3) unsigned NOT NULL,
-  `admin_user_role_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`admin_user_type_id`,`admin_user_role_id`),
-  KEY `admin_user_role_id` (`admin_user_role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `institutions`;
+CREATE TABLE IF NOT EXISTS `institutions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `logo` varchar(100) NOT NULL,
+  `address1` text NOT NULL,
+  `address2` text NOT NULL,
+  `city_id` int(10) unsigned NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `city_id` (`city_id`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `admin_user_type_roles`
+-- Dumping data for table `institutions`
 --
-
-INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`) VALUES
-(1, 1);
+INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1),
+(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -177,48 +210,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
 --
 
 INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
--- --------------------------------------------------------
-
---
--- Table structure for table `institutions`
---
-
-DROP TABLE IF EXISTS `institutions`;
-CREATE TABLE IF NOT EXISTS `institutions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  `description` text NOT NULL,
-  `logo` varchar(100) NOT NULL,
-  `address1` text NOT NULL,
-  `address2` text NOT NULL,
-  `city_id` int(10) unsigned NOT NULL,
-  `country_id` int(10) unsigned NOT NULL,
-  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `slug` char(100) NOT NULL,
-  `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-  KEY `city_id` (`city_id`),
-  KEY `country_id` (`country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `institutions`
---
-
---
--- Constraints for table `institutions`
---
-ALTER TABLE `institutions`
-  ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE;
-
-INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 0, 0, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1);
 
 
-INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES(1, 'Belo Churvaness', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', '/pathtologo/filename.jpg', '', '', 1, 1, '2012-08-10 08:22:55', '0000-00-00 00:00:00', '', 0);
-INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
 -- --------------------------------------------------------
 
 --
@@ -374,9 +367,9 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 --
 
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
-(1, 1, 1, '2012-08-02 03:43:12', 1);
+(1, 1, 1, '2012-08-02 03:43:12', 1),
+(4, 1, 1, '2012-08-02 03:43:12', 1);
 
-INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES(2, 2, 1, '2012-08-13 00:28:23', 1);
 
 -- --------------------------------------------------------
 
@@ -681,6 +674,15 @@ ALTER TABLE `admin_user_type_roles`
 --
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
+
+
+--
+-- Constraints for table `institutions`
+--
+ALTER TABLE `institutions`
+  ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `institution_contact_details`
