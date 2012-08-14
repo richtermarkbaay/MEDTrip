@@ -8,13 +8,13 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             nullable: false
             column: institution_id
             generator:
-                strategy: AUTO
+                strategy: NONE
         medicalCenterId:
             type: integer
             nullable: false
             column: medical_center_id
             generator:
-                strategy: AUTO
+                strategy: NONE
     fields:
         description:
             type: text

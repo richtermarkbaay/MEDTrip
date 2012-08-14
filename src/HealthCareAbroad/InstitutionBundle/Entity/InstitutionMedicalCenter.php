@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
+    const STATUS_ACTIVE = 1;
     
+    const STATUS_INACTIVE = 0;
     /**
      * @var integer $institutionId
      */
@@ -47,6 +49,18 @@ class InstitutionMedicalCenter
 
 
     /**
+     * Set institutionId
+     *
+     * @param integer $institutionId
+     * @return InstitutionMedicalCenter
+     */
+    public function setInstitutionId($institutionId)
+    {
+        $this->institutionId = $institutionId;
+        return $this;
+    }
+
+    /**
      * Get institutionId
      *
      * @return integer 
@@ -54,6 +68,18 @@ class InstitutionMedicalCenter
     public function getInstitutionId()
     {
         return $this->institutionId;
+    }
+
+    /**
+     * Set medicalCenterId
+     *
+     * @param integer $medicalCenterId
+     * @return InstitutionMedicalCenter
+     */
+    public function setMedicalCenterId($medicalCenterId)
+    {
+        $this->medicalCenterId = $medicalCenterId;
+        return $this;
     }
 
     /**
@@ -141,6 +167,7 @@ class InstitutionMedicalCenter
     public function setMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter = null)
     {
         $this->medicalCenter = $medicalCenter;
+        $this->setMedicalCenterId($medicalCenter->getId());
         return $this;
     }
 
@@ -163,6 +190,7 @@ class InstitutionMedicalCenter
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
+        $this->setInstitutionId($institution->getId());
         return $this;
     }
 
