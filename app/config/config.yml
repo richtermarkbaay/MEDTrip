@@ -62,23 +62,23 @@ swiftmailer:
     spool:     { type: memory }
 
 # ChromediaMediaBundle Configuration
-chromedia_media:
-    adapters:
-        default:
-            local:
-                directory: "%kernel.root_dir%/../web/media"
-        test:
-            in_memory:
-                files:
-                    'file1.txt':    ~
-                    'file2.txt':
-                        content:    Some content
-                        checksum:   abc1efg2hij3
-                        mtime:      123456890123                
-    filesystems:
-        default:
-            adapter:    default
-            alias:      default_filesystem
-        test:
-            adapter:    test
-            alias:      test_filesystem                
+#chromedia_media:
+#    adapters:
+#        default:
+#            local:
+#                directory: "%kernel.root_dir%/../web/media"
+#        test:
+#            in_memory:
+#                files:
+#                    'file1.txt':    ~
+#                    'file2.txt':
+#                        content:    Some content
+#                        checksum:   abc1efg2hij3
+#                        mtime:      123456890123                
+#    filesystems:
+#        default:
+#            adapter:    default
+#            alias:      default_filesystem
+#        test:
+#            adapter:    test
+#            alias:      test_filesystem                
