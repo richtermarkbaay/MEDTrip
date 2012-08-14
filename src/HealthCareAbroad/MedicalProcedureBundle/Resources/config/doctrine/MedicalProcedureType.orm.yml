@@ -46,7 +46,7 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
             mappedBy: null
             inversedBy: null
             joinColumns:
-                medical_procedure_type_id:
+                medical_center_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
