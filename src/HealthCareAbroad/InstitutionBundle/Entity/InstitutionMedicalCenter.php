@@ -9,10 +9,31 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
+    
     /**
-     * @var integer $id
+     * @var integer $institutionId
      */
-    private $id;
+    private $institutionId;
+
+    /**
+     * @var integer $medicalCenterId
+     */
+    private $medicalCenterId;
+
+    /**
+     * @var text $description
+     */
+    private $description;
+
+    /**
+     * @var datetime $dateModified
+     */
+    private $dateModified;
+
+    /**
+     * @var datetime $dateCreated
+     */
+    private $dateCreated;
 
     /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
@@ -26,13 +47,89 @@ class InstitutionMedicalCenter
 
 
     /**
-     * Get id
+     * Get institutionId
      *
      * @return integer 
      */
-    public function getId()
+    public function getInstitutionId()
     {
-        return $this->id;
+        return $this->institutionId;
+    }
+
+    /**
+     * Get medicalCenterId
+     *
+     * @return integer 
+     */
+    public function getMedicalCenterId()
+    {
+        return $this->medicalCenterId;
+    }
+
+    /**
+     * Set description
+     *
+     * @param text $description
+     * @return InstitutionMedicalCenter
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return text 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set dateModified
+     *
+     * @param datetime $dateModified
+     * @return InstitutionMedicalCenter
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->dateModified = $dateModified;
+        return $this;
+    }
+
+    /**
+     * Get dateModified
+     *
+     * @return datetime 
+     */
+    public function getDateModified()
+    {
+        return $this->dateModified;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param datetime $dateCreated
+     * @return InstitutionMedicalCenter
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return datetime 
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
     }
 
     /**
@@ -77,46 +174,5 @@ class InstitutionMedicalCenter
     public function getInstitution()
     {
         return $this->institution;
-    }
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $medicalProcedureTypes;
-
-    public function __construct()
-    {
-        $this->medicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add medicalProcedureTypes
-     *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
-     * @return InstitutionMedicalCenter
-     */
-    public function addMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
-    {
-        $this->medicalProcedureTypes[] = $medicalProcedureTypes;
-        return $this;
-    }
-
-    /**
-     * Remove medicalProcedureTypes
-     *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
-     */
-    public function removeMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
-    {
-        $this->medicalProcedureTypes->removeElement($medicalProcedureTypes);
-    }
-
-    /**
-     * Get medicalProcedureTypes
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getMedicalProcedureTypes()
-    {
-        return $this->medicalProcedureTypes;
     }
 }
