@@ -25,6 +25,7 @@ class InstitutionMedicalCenterType extends AbstractType
         }
         
         $builder->add('medical_center', new AvailableMedicalCenterListType($institutionMedicalCenter->getInstitution()), array('empty_value' => 'Please select one','constraints'=>array(new NotBlank())));
+        $builder->add('description', 'textarea', array('constraints' => new NotBlank()));
     }
     
     public function getName()
