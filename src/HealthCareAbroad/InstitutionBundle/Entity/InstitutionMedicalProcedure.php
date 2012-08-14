@@ -171,6 +171,7 @@ class InstitutionMedicalProcedure
     public function setMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedure = null)
     {
         $this->medicalProcedure = $medicalProcedure;
+        $this->setMedicalProcedureId($medicalProcedure->getId());
         return $this;
     }
 
@@ -193,6 +194,7 @@ class InstitutionMedicalProcedure
     public function setInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureType = null)
     {
         $this->institutionMedicalProcedureType = $institutionMedicalProcedureType;
+        $this->setInstitutionMedicalProcedureTypeId($institutionMedicalProcedureType->getId());
         return $this;
     }
 
@@ -204,5 +206,29 @@ class InstitutionMedicalProcedure
     public function getInstitutionMedicalProcedureType()
     {
         return $this->institutionMedicalProcedureType;
+    }
+
+    /**
+     * Set institutionMedicalProcedureTypeId
+     *
+     * @param integer $institutionMedicalProcedureTypeId
+     * @return InstitutionMedicalProcedure
+     */
+    public function setInstitutionMedicalProcedureTypeId($institutionMedicalProcedureTypeId)
+    {
+        $this->institutionMedicalProcedureTypeId = $institutionMedicalProcedureTypeId;
+        return $this;
+    }
+
+    /**
+     * Set medicalProcedureId
+     *
+     * @param integer $medicalProcedureId
+     * @return InstitutionMedicalProcedure
+     */
+    public function setMedicalProcedureId($medicalProcedureId)
+    {
+        $this->medicalProcedureId = $medicalProcedureId;
+        return $this;
     }
 }

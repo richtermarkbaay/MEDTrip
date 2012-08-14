@@ -8,13 +8,13 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure:
             nullable: false
             column: institution_medical_procedure_type_id
             generator:
-                strategy: AUTO
+                strategy: NONE
         medicalProcedureId:
             type: integer
             nullable: false
             column: medical_procedure_id
             generator:
-                strategy: AUTO
+                strategy: NONE
     fields:
         description:
             type: text
