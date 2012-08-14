@@ -36,12 +36,9 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
         status:
             type: smallint
             nullable: false
-    manyToMany:
-        medicalProcedureType:
+    oneToMany:
+        medicalProcedureTypes:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
-            cascade: {  }
             mappedBy: medicalCenter
-            inversedBy: null
-            joinTable: null
-            orderBy: null
+        
     lifecycleCallbacks: {  }
