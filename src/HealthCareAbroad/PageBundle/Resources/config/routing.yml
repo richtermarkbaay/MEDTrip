@@ -1,3 +1,9 @@
 main_homepage:
     pattern:  /
     defaults: { _controller: PageBundle:Default:index }
+    
+page_inquire:
+    pattern:  /inquire
+    defaults: { _controller: PageBundle:Inquire:index }
+    requirements:
+       _method:  GET|POST
