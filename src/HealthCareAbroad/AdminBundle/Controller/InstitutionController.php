@@ -7,13 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+//use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
+//use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -103,45 +103,22 @@ class InstitutionController extends Controller
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $id
 	 */
-	public function manageProcedureTypesAction($id)
+	public function manageListingsAction($id)
 	{
 		$request = $this->getRequest();
-		$medicalCenterId = $request->get('medical_center_id');
-
 		$em = $this->getDoctrine()->getEntityManager();
+
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+
+		$medicalCenterId = $request->get('medical_center_id');
 		$institutionMedicalCenters = $institution->getInstitutionMedicalCenters();
-		$medicalProcedureTypes = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
 
-		$selectedInstitutionMedicalCenter = $medicalCenterId
-			? $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($medicalCenterId)
-			: $institutionMedicalCenters[0];
-
-		$selectedProcedureTypeIds = array();
-		$selectedProcedureType = $selectedInstitutionMedicalCenter->getMedicalProcedureTypes();
-		foreach($selectedProcedureType as $each) {
-			$selectedProcedureTypeIds[] = $each->getId();
-		}
-
-		$procedureTypeIdsWithProcedure = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getProcedureTypeIdsWithProcedure($selectedInstitutionMedicalCenter->getId());
-
-		if ('POST' == $this->getRequest()->getMethod()) {
-			$procedureTypeIds = $request->get('procedure_types', array());
-			$this->get('services.institution')->updateInstitutionProcedureTypes($medicalCenterId, $procedureTypeIds, $procedureTypeIdsWithProcedure);
-			$selectedProcedureTypeIds = array_merge($procedureTypeIds, $procedureTypeIdsWithProcedure);
-
-			$request->getSession()->setFlash('success', 'Institution Medical Procedure Types has been updated!');
-		}
-
-		$params = array(
-			'id' => $id,
-			'medicalCenters' => $institutionMedicalCenters,
-			'selectedCenter' => $selectedInstitutionMedicalCenter,
-			'procedureTypes' => $medicalProcedureTypes,
-			'selectedProcedureTypeIds' => $selectedProcedureTypeIds,
-			'procedureTypeIdsWithProcedure' => $procedureTypeIdsWithProcedure
-		);
-		return $this->render('AdminBundle:Institution:manage_proceduretypes.html.twig', $params);
+		$criteria = array('medicalProcedureType' => 1);
+ 		$medicalProcedureTypes = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findAll();
+ 
+		$params = array('id' => $id, 'medicalProcedureTypes' => $medicalProcedureTypes);
+		//return $this->render('AdminBundle:Institution:manage_listings.html.twig', $params);
+		return $this->render('AdminBundle:Institution:manage_listings.html.twig', $params);
 	}
 	
 	/**
@@ -149,30 +126,17 @@ class InstitutionController extends Controller
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $id
 	 */
-	public function manageProceduresAction($id)
+	public function addProceduresAction($id)
 	{
-		$em = $this->getDoctrine()->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-		$filters = array('Active' => 1, 'Inactive' => 0, 'All' => -1);
+	}
 
-		$selectedFilter = $this->getRequest()->get('filter', 'Active');
-		if($selectedFilter != 'All') {
-			$criteria['status'] = $filters[$selectedFilter];
-		}
-
-		$criteria['institution'] = $institution;
-		$institutionProcedures = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->findBy($criteria);
-		$form = $this->createForm(new InstitutionMedicalProcedureType($id), new InstitutionMedicalProcedure());
-
-		$params = array(
-			'id' => $id, 
-			'filters' => $filters,
-			'selectedFilter' => $selectedFilter,
-			'institutionProcedures' => $institutionProcedures,
-			'form' => $form->createView()
-		);
-
-		return $this->render('AdminBundle:Institution:manage_procedures.html.twig', $params);
+	/**
+	 *
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
+	public function editProceduresAction($id)
+	{
 	}
 
 	/**
