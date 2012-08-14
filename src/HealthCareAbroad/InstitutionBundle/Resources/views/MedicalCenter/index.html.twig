@@ -1,0 +1,69 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Medical Centers {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ app.session.get('institutionName') }} Medical Centers</h1>
+    </div>
+
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			    
+			    {% include '::notice.admin.html.twig' %}
+			
+			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+    				<tr>
+    				    <th class="table-header-check"></th>
+    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Medical Centers</a></th>
+    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Available Procedure Types</a></th>
+    					<th class="table-header-options line-left"><a href="#">Options</a> </th>
+    				</tr>
+    				
+    				
+    				{% for center in institutionMedicalCenters %}
+    				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+    				        <td></td>
+        					<td>{{ center.medicalCenter | title }}</td>
+        					<td>
+        					    <ul style="list-style:none;">
+        					        {% for procedureType in center.medicalProcedureTypes %}
+        					        <li>
+        					            <a href="#">{{ procedureType.name | title }}</a>
+        					        </li>
+        					        {% endfor %}
+        					    </ul>
+        					</td>
+        					<td class="options-width">
+            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+        					</td>
+        				</tr>    
+    				{% endfor %}
+    				
+				</table>
+				<!--  end medical-centers-list................................... --> 
+				<hr />
+				
+				<div style="margin: 15px 0px;">
+				    <h3>Add new medical center</h3>
+				</div>
+				{% include 'InstitutionBundle:MedicalCenter:addMedicalCenterForm.html.twig' with {'form': form, 'fromIndex': true} %}
+				
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

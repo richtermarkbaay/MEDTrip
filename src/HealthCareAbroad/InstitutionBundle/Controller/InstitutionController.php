@@ -20,6 +20,7 @@ class InstitutionController extends Controller
 {
 	public function editInstitutionAction()
 	{
+		
 		$institutionId = $this->getRequest()->get('institutionId', null);
 		
 		if (!$institutionId){
@@ -29,13 +30,41 @@ class InstitutionController extends Controller
 		}
 		
 		//TODO: get the matching institution user type
-		$institutionDetails = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-echo  $institutionDetails->getCountry()->getName(); exit;
-		$form = $this->createForm(new InstitutionDetailType(), $institutionDetails);
+		$institution = new Institution();
+		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+		
+		//render data to template
+		$form = $this->createForm(new InstitutionDetailType(), $institution);
+		
+		//update institution details
+		if ($this->getRequest()->isMethod('POST')) {
+			$form->bindRequest($this->getRequest());
+			if ($form->isValid()) {
+				$institution->setName($form->get('name')->getData());
+           	    $institution->setDescription($form->get('description')->getData());
+           	    $institution->setSlug('test');
+           	    $institution->setStatus(SiteUser::STATUS_ACTIVE);
+           	    $institution->setAddress1($form->get('address1')->getData());
+           	    $institution->setAddress2($form->get('address2')->getData());
+           	    $institution->setLogo('logo.jpg');
+           	    $institution->setCity($form->get('city')->getData());
+           	    $institution->setCountry($form->get('country')->getData());
+				$institution = $this->get('services.institution')->updateInstitution($institution);
+				
+				if ( count($institution) > 0 ) {
+					$this->get('session')->setFlash('notice', "Successfully updated account");
+				}
+				else
+				{
+					$this->get('session')->setFlash('notice', "Unable to update account!");
+					
+				}
+			}
+		}
 		
 		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
 				'form' => $form->createView(),
-				'institutionDetails' => $institutionDetails
+				'institution' => $institution
 		));
 		
 	}
@@ -66,10 +95,10 @@ echo  $institutionDetails->getCountry()->getName(); exit;
            	    $institution->setSlug('test');
            	    $institution->setStatus(SiteUser::STATUS_ACTIVE);
            	    $institution->setAddress1($form->get('address1')->getData());
-           	    $institution->setAddress2($form->get('address1')->getData());
+           	    $institution->setAddress2($form->get('address2')->getData());
            	    $institution->setLogo('logo.jpg');
-           	    $institution->setCityId($form->get('city')->getData()->getId());
-           	    $institution->setCountryId($form->get('country')->getData()->getId());
+           	    $institution->setCity($form->get('city')->getData());
+           	    $institution->setCountry($form->get('country')->getData());
            	    
            	    $institution = $this->get('services.institution')->createInstitution($institution);
            	    
@@ -90,10 +119,10 @@ echo  $institutionDetails->getCountry()->getName(); exit;
            	    $institutionUser = $this->get('services.institution_user')->create($user);
            	    
            	    if ( count($institutionUser) > 0 ) {
-           	    	$this->get('session')->setFlash('flash.notice', "Successfully created account to HealthCareaAbroad");
+           	    	$this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    }
            	    else {
-           	    	$this->get('session')->setFlash('flash.notice', "Failed to create account on HealthCareAbroad");
+           	    	$this->get('session')->setFlash('error', "Failed to create account on HealthCareAbroad");
            	    }
            	    return $this->redirect($this->generateUrl('institution_homepage'));
             }
@@ -123,7 +152,7 @@ echo  $institutionDetails->getCountry()->getName(); exit;
 				$email = $this->get('services.user')->find(array('email' => $data["form"]["email"]),  array('limit' => 1));
 				
 				if (count($email) > 0) {
-					$this->get('session')->setFlash('notice', "Email already registered!");
+					$this->get('session')->setFlash('success', "Email already registered!");
 				}
 				else {
 					
@@ -154,10 +183,10 @@ echo  $institutionDetails->getCountry()->getName(); exit;
 						
 						$sendingResult = $this->get('services.invitation')->sendInstitutionUserLoginCredentials($user,$temporaryPassword);
 						if ($sendingResult) {
-		                    $this->get('session')->setFlash('notice', "Invitation sent to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('success', "Invitation sent to {$user->getEmail()}");
 		                }
 		                else {
-		                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$user->getEmail()}");
+		                    $this->get('session')->setFlash('error', "Failed to send invitation to {$user->getEmail()}");
 		                }
 		                
 		                return $this->redirect($this->generateUrl('institution_homepage'));

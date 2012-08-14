@@ -47,7 +47,7 @@ class InstitutionUserController extends Controller
             if ($form->isValid()) {
                 if ($this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
-                    $this->get('session')->setFlash('notice', 'Login successfully!');
+                    $this->get('session')->setFlash('success', 'Login successfully!');
                     
                     return $this->redirect($this->generateUrl('institution_homepage'));
 	            }
@@ -89,7 +89,7 @@ class InstitutionUserController extends Controller
     			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
     			$institutionUserService->update($institutionUser);
     			
-    			$this->get('session')->setFlash('notice', "Password changed!");
+    			$this->get('session')->setFlash('success', "Password changed!");
     		}
     			
     	}
@@ -113,14 +113,16 @@ class InstitutionUserController extends Controller
     	$form = $this->createForm(new UserAccountDetailType(), $institutionUser);
     	
     	if ($this->getRequest()->isMethod('GET')) {
-    	    $this->get('session')->setFlash('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
+    	    $this->get('session')->set('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
         }
         elseif ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
                 $institutionUser = $this->get('services.institution_user')->update($institutionUser);
-                $this->get('session')->setFlash('notice', "Successfully updated account");
-                return $this->redirect($this->get('session')->getFlash('referer'));
+                $this->get('session')->setFlash('success', "Successfully updated account");
+                $refer = $this->get('session')->get('referer');
+                $this->getRequest()->getSession()->remove('referer');
+                return $this->redirect($refer);
             }
         }
         
@@ -141,10 +143,10 @@ class InstitutionUserController extends Controller
                 
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
                 if ($sendingResult) {
-                    $this->get('session')->setFlash('notice', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
                 }
                 else {
-                    $this->get('session')->setFlash('notice', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
+                    $this->get('session')->setFlash('error', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
                 }
                 return $this->redirect($this->generateUrl('institution_view_all_staff'));
             }
@@ -195,7 +197,7 @@ class InstitutionUserController extends Controller
         $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
         // redirect to institution homepage        
-        $this->get('session')->setFlash('notice', 'You have successfuly accepted the invitation.');
+        $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');
         
         return $this->redirect($this->generateUrl('institution_homepage'));
     }

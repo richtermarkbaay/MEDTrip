@@ -2,11 +2,7 @@
 
 {% block body %}
 
-{% if app.session.hasFlash('notice') %}
-    <div class="msg-notice">
-        {{ app.session.flash('notice') }}
-    </div>
-{% endif %}
+{% include '::notice.admin.html.twig' %}
 
 <div class="body">
 	<form action="{{ path('InstitutionBundle_create_institution') }}" method="POST" {{ form_enctype(form) }} class = "user">

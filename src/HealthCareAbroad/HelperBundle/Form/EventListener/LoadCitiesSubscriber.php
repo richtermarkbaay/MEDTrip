@@ -21,10 +21,10 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_BIND => 'preSetData');
+        return array(FormEvents::PRE_BIND => 'prebindSetData');
     }
 
-    public function preSetData(DataEvent $event)
+    public function prebindSetData(DataEvent $event)
     {
     	$data = $event->getData();
         $form = $event->getForm();

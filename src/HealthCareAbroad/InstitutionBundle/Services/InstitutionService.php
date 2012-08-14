@@ -43,6 +43,19 @@ class InstitutionService
         return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'InstitutionBundle:Institution p')->add('where', 'p.status=1');
     }
     
+    public function updateInstitution(Institution $institution)
+    {
+    	$em = $this->doctrine->getEntityManager();
+    	$em->persist($institution);
+    	$em->flush();
+    	
+    	// failed to save
+    	if (!$institution) {
+    		return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
+    	}
+    	
+    	return $institution;
+    }
     
     public function createInstitution(Institution $institution)
     {

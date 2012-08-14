@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -26,5 +32,21 @@ class InstitutionRepository extends EntityRepository
 		$query->setMaxResults($limit);
 	
 		return $query->getResult();
-	}	
+	}
+
+	/**
+	 * Get active institution medical centers
+	 * 
+	 * @param Institution $institution
+	 * @param QueryOptionBag $queryOptions
+	 * @return InstitutionMedicalCenter
+	 */
+	public function getActiveInstitutionMedicalCenters(Institution $institution, QueryOptionBag $queryOptions=null)
+	{
+	    $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId ";
+	    $query = $this->_em->createQuery($dql)
+	        ->setParameter('institutionId', $institution->getId());
+	    
+	    return $query->getResult();
+	}
 }

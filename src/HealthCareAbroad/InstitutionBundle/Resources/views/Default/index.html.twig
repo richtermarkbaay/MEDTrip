@@ -5,7 +5,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ site_name }} Institution Panel</h1>
+    	<h1>{{ app.session.get('institutionName') }} Dashboard</h1>
     </div>
 
     
@@ -17,31 +17,42 @@
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-			<!--  start table-content  -->
-			<div id="table-content">
-			    
-			    {% if app.session.hasFlash('notice') %}
-			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-		        {% endif %}
-			
-			    <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
-    			<h3>Local Heading</h3>
-    			
-    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
-    			<br />
-    			<br />
-    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
-    			<br />
-    			<br />
-    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-			</div>
-			<!--  end table-content  -->
+        <table>
+                <tr>
+                    <td style="vertical-align: top;">
+            			<!--  start table-content  -->
+            			<div id="table-content">
+            			    
+            			    {% if app.session.hasFlash('notice') %}
+            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+            		        {% endif %}
+            			
+            			    <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
+                			<h3>Local Heading</h3>
+                			
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+                			<br />
+                			<br />
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+                			<br />
+                			<br />
+                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+            			</div>
+            			<!--  end table-content  -->
+        			</td>
+        			<td style="vertical-align: top;">
+        			    {% block relatedTasks %}
+                            {% include 'InstitutionBundle:Default:dashboardRelatedTasks.html.twig' %}
+                        {% endblock %}
+        			</td>
+    			</tr>
+			</table>
         {% endblock %}
         
     {% endembed %}
