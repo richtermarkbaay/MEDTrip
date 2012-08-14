@@ -1,14 +1,10 @@
 {% extends '::base.admin.html.twig' %}
 
-{% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
+{% block title %}{{ parent() }} &raquo; Provider Panel{% endblock %}
 
 {% block body %}
 
 <body> 
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}  
-    
     <!-- Start: page-top-outer -->
     <div id="page-top-outer">    
     
@@ -22,7 +18,7 @@
             <!-- end logo -->
             
             {% block top_search %}
-                {% include 'InstitutionBundle:Default:searchWidget.html.twig' %}
+                {% include 'ProviderBundle:Default:searchWidget.html.twig' %}
             {% endblock %}
             <div class="clear"></div>
         
@@ -34,7 +30,23 @@
     
     <div class="clear">&nbsp;</div>
  
-   
+    <!--  start nav-outer-repeat................................................................................................. START -->
+    <div class="nav-outer-repeat"> 
+        <!--  start nav-outer -->
+        <div class="nav-outer"> 
+    
+            {% block right_navigation %}
+                {% include 'ProviderBundle:Default:rightNavigation.html.twig' %}
+            {% endblock %}
+            
+            {% block main_navigation %}
+                {% include 'ProviderBundle:Default:mainNavigation.html.twig' %}
+            {% endblock %}
+        </div>
+        <div class="clear"></div>
+        <!--  end nav-outer -->
+    </div>
+    <!--  end nav-outer-repeat................................................... END -->
 
     <!-- start content-outer ........................................................................................................................START -->
     <div id="content-outer"> 
@@ -49,3 +61,4 @@
 </body>
 
 {% endblock %}
+
