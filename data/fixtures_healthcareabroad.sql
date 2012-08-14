@@ -198,15 +198,27 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
+  KEY `city_id` (`city_id`),
+  KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `institutions`
 --
 
+--
+-- Constraints for table `institutions`
+--
+ALTER TABLE `institutions`
+  ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE;
+
 INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 0, 0, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1);
 
+
+INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES(1, 'Belo Churvaness', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', '/pathtologo/filename.jpg', '', '', 1, 1, '2012-08-10 08:22:55', '0000-00-00 00:00:00', '', 0);
+INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
 -- --------------------------------------------------------
 
 --
@@ -364,6 +376,7 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
 (1, 1, 1, '2012-08-02 03:43:12', 1);
 
+INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES(2, 2, 1, '2012-08-13 00:28:23', 1);
 
 -- --------------------------------------------------------
 

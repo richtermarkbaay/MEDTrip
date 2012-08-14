@@ -16,38 +16,59 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 	public function testEditInformation()
 	{
 		$editAccountUrl = '/institution/edit-information';
-		//---- test that this should not be accessed by anonymous user
-		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
-		$this->assertEquals(302, $client->getResponse()->getStatusCode());
-		$redirectLocation = $client->getResponse()->headers->get('location');
-		$this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
-		//---- end test that this should not be accessed by anonymous user
-		
+        //---- test that this should not be accessed by anonymous user
+        $client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $redirectLocation = $client->getResponse()->headers->get('location');
+        $this->assertTrue($redirectLocation==$editAccountUrl || $redirectLocation == 'http://localhost/institution/login');
+        //---- end test that this should not be accessed by anonymous user
+        
 		//---- test edit logged in account
 		$client = $this->getBrowserWithActualLoggedInUser();
 		$crawler = $client->request('GET', $editAccountUrl);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-		$this->assertGreaterThan(0, $crawler->filter('h1:contains("Edit my account")')->count(), "Cannot find the 'Edit my account' header text");
 		
+		
+		//test for successfully updating information
 		$formValues = array(
 				'userAccountDetail[firstName]' => 'Edited firstName',
 				'userAccountDetail[middleName]' => 'Edited middleName',
 				'userAccountDetail[lastName]' => 'Edited lastName',
+				'institution[name]' => 'Edited InstitutionName',
+				'institution[description]' => 'Edit Description',
+				'institution[country]' => '1',
+				'institution[city]' => '1',
+				'institution[address1]' => 'edit addressy',
+				'institution[firstName]' => 'test name',
+				'institution[middleName]' => 'middle',
+				'institution[lastName]' => 'last',
+				'institution[email]' => 'test@yahoo.com',
+				'institution[new_password]' => $this->userPassword,
+				'institution[confirm_password]' => $this->userPassword,
 		);
-		
-		$invalidFormValues = $formValues;
-		$invalidFormValues['userAccountDetail[firstName]'] = null;
-		$form = $crawler->selectButton('submit')->form();
-		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-		
-		$crawler = $client->request('GET', $editAccountUrl);
-		$referer = $client->getRequest()->headers->get('referer');
-		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $formValues);
-		$this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to the referer
-		$this->assertEquals($referer, $client->getResponse()->headers->get('location'));
-		//---- end test edit logged in account
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully updated account.")')->count(), 'Expecting the validation message "Successfully updated account.."');
+		
+		//test for missing fields
+		$formValues = array(
+				'userAccountDetail[firstName]' => 'Edited firstName',
+				'userAccountDetail[middleName]' => 'Edited middleName',
+				'userAccountDetail[lastName]' => 'Edited lastName',
+				'institution[name]' => 'Edited InstitutionName',
+				'institution[description]' => 'Edit Description',
+				'institution[country]' => '1',
+				'institution[city]' => '1',
+				'institution[address1]' => 'edit addressy',
+				'institution[firstName]' => 'test name',
+				'institution[middleName]' => 'middle',
+				'institution[lastName]' => 'last',
+				'institution[email]' => 'test@yahoo.com',
+				'institution[new_password]' => $this->userPassword,
+				'institution[confirm_password]' => $this->userPassword,
+		);
+		$crawler = $client->submit($form, $formValues);
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+    
 		
 		//---- test edit invalid account
 		$client->request('GET', $editAccountUrl.'/12345678234');
