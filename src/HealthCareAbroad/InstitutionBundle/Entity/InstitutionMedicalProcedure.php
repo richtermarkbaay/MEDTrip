@@ -9,16 +9,19 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalProcedure
 {
+	const STATUS_ACTIVE = 1;
 	
-	static $STATUS = array(
-			'inactive' => 0,
-			'active' => 1
-	);
+	const STATUS_INACTIVE = 0;
+	
+    /**
+     * @var integer $institutionMedicalProcedureTypeId
+     */
+    private $institutionMedicalProcedureTypeId;
 
     /**
-     * @var bigint $id
+     * @var integer $medicalProcedureId
      */
-    private $id;
+    private $medicalProcedureId;
 
     /**
      * @var text $description
@@ -46,19 +49,29 @@ class InstitutionMedicalProcedure
     private $medicalProcedure;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
      */
-    private $institution;
+    private $institutionMedicalProcedureType;
 
 
     /**
-     * Get id
+     * Get institutionMedicalProcedureTypeId
      *
-     * @return bigint 
+     * @return integer 
      */
-    public function getId()
+    public function getInstitutionMedicalProcedureTypeId()
     {
-        return $this->id;
+        return $this->institutionMedicalProcedureTypeId;
+    }
+
+    /**
+     * Get medicalProcedureId
+     *
+     * @return integer 
+     */
+    public function getMedicalProcedureId()
+    {
+        return $this->medicalProcedureId;
     }
 
     /**
@@ -172,24 +185,24 @@ class InstitutionMedicalProcedure
     }
 
     /**
-     * Set institution
+     * Set institutionMedicalProcedureType
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureType
      * @return InstitutionMedicalProcedure
      */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    public function setInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureType = null)
     {
-        $this->institution = $institution;
+        $this->institutionMedicalProcedureType = $institutionMedicalProcedureType;
         return $this;
     }
 
     /**
-     * Get institution
+     * Get institutionMedicalProcedureType
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType 
      */
-    public function getInstitution()
+    public function getInstitutionMedicalProcedureType()
     {
-        return $this->institution;
+        return $this->institutionMedicalProcedureType;
     }
 }

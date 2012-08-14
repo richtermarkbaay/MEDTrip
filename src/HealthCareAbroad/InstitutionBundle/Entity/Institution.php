@@ -403,4 +403,41 @@ class Institution
     {
         return $this->contactDetail;
     }
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedureTypes;
+
+
+    /**
+     * Add institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     * @return Institution
+     */
+    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     */
+    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
+    }
+
+    /**
+     * Get institutionMedicalProcedureTypes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalProcedureTypes()
+    {
+        return $this->institutionMedicalProcedureTypes;
+    }
 }
