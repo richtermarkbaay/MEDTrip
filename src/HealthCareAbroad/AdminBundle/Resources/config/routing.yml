@@ -1,3 +1,9 @@
+admin_inquire:
+    pattern: /admin/inquire
+    defaults: { _controller: AdminBundle:Inquiry:index }
+    requirements:    
+        _method:  GET
+
 admin_settings:
     pattern: /admin/settings
     defaults: { _controller: AdminBundle:Default:settings }
