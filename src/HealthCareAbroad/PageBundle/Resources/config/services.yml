@@ -1,17 +1,17 @@
 parameters:
-    services.inquire_list: HealthCareAbroad\PageBundle\Form\ListType\InquireAboutListType
-    services.inquire_class: HealthCareAbroad\PageBundle\Services\InquireService
+    services.inquiry_list: HealthCareAbroad\PageBundle\Form\ListType\InquirySubjectListType
+    services.inquiry_class: HealthCareAbroad\PageBundle\Services\InquireService
 
 services:
     services.inquire:
-        class: %services.inquire_class%
+        class: %services.inquiry_class%
         calls:
             - [setDoctrine, [@doctrine]]
-    form.inquire_about_list:
-        class: "%services.inquire_list%"
+    form.inquiry_subject_list:
+        class: "%services.inquiry_list%"
         calls:
             - [setContainer, [@service_container]]
         tags:
-            - { name: form.type, alias: inquire_about_list }
+            - { name: form.type, alias: inquiry_subject_list }
 
 

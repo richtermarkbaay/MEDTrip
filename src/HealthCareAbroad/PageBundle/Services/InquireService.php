@@ -2,8 +2,8 @@
 
 namespace HealthCareAbroad\PageBundle\Services;
 
-use HealthCareAbroad\AdminBundle\Entity\InquireAbout;
-use HealthCareAbroad\AdminBundle\Entity\Inquire;
+use HealthCareAbroad\AdminBundle\Entity\InquirySubject;
+use HealthCareAbroad\AdminBundle\Entity\Inquiry;
 
 class InquireService
 {
@@ -14,25 +14,25 @@ class InquireService
 		$this->doctrine = $doctrine;
 	}
 
-	public function getActiveInquireAbouts()
+	public function getActiveInquirySubjects()
 	{
 		return $this->doctrine->getEntityManager()->createQueryBuilder()
 		->add('select', 'a')
-		->add('from', 'AdminBundle:InquireAbout a')
+		->add('from', 'AdminBundle:InquirySubject a')
 		->add('where', 'a.status = 1');
 	}
 	
-	public function createInquire(Inquire $inquire)
+	public function createInquiry(Inquiry $inquiry)
 	{
 		$em = $this->doctrine->getEntityManager();
-		$em->persist($inquire);
+		$em->persist($inquiry);
 		$em->flush();
 		
 		// failed to save
-		if (!$inquire) {
+		if (!$inquiry) {
 			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
 		}
 		
-		return $inquire;
+		return $inquiry;
 	}
 }

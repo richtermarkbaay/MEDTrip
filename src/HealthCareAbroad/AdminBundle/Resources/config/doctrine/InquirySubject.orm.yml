@@ -1,0 +1,26 @@
+HealthCareAbroad\AdminBundle\Entity\InquirySubject:
+    type: entity
+    table: inquiry_subjects
+    repositoryClass: HealthCareAbroad\AdminBundle\Repository\InquirySubjectRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }
