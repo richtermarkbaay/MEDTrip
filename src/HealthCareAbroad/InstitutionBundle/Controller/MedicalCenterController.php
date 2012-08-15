@@ -53,7 +53,7 @@ class MedicalCenterController extends Controller
         $form->bind($request);
         
         if ($form->isValid()) {
-            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($form->get('medical_center')->getData());
+            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($form->get('medicalCenter')->getData());
             if (!$medicalCenter) {
                 throw new \Exception("Invalid MedicalCenter");
             }

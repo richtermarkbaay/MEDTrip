@@ -26,7 +26,12 @@ class MedicalProcedureTypeController extends Controller
             throw $this->createNotFoundException('Invalid institution');
         }
         
-        return $this->render('InstitutionBundle:MedicalProcedureType:index.html.twig');
+        $institutionMedicalProcedureTypes = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findAll();
+        
+        $params = array(
+            'institutionMedicalProcedureTypes' => $institutionMedicalProcedureTypes
+        );
+        return $this->render('InstitutionBundle:MedicalProcedureType:index.html.twig', $params);
     }
     
     public function addAction(Request $request)

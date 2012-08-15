@@ -47,7 +47,7 @@
 			    <div class="lines-dotted-short"></div>
 			{% endif %}
 			
-			
+			{% if hideBackToList is not defined %}
 			<div class="left"><a href="{{ path('institution_medicalProcedureType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
 			<div class="right">
 				<h5>Manage Listings</h5>
@@ -56,7 +56,7 @@
 					<li><a href="{{ path('institution_medicalProcedureType_index') }}">Back to listing management</a></li>
 				</ul>
 			</div>
-			
+			{% endif %}
 			<div class="clear"></div>
 			
 		</div>
