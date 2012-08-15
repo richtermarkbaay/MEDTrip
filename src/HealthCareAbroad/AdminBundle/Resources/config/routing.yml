@@ -254,6 +254,25 @@ admin_institution_manageCenters:
     requirements:
          id: \d+
 
+admin_institution_addMedicalCenter:
+    pattern:  /admin/institution/{id}/add-center
+    defaults: { _controller: AdminBundle:Institution:addMedicalCenter }
+    requirements:
+        id: \d+
+        
+admin_institution_saveMedicalCenter:
+    pattern:  /admin/institution/{id}/save-center
+    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
+    requirements:
+        id: \d+
+
+admin_institution_updateMedicalCenterStatus:
+    pattern:  /admin/institution/{id}/manage-centers/update-status
+    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
+    requirements:
+         id: \d+
+         medical_center_id: \d+
+
 admin_institution_manageListings:
     pattern:  /admin/institution/{id}/manage-listings
     defaults: { _controller: AdminBundle:Institution:manageListings }
