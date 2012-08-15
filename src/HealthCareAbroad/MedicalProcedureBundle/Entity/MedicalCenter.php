@@ -210,4 +210,41 @@ class MedicalCenter
     {
         return $this->medicalProcedureTypes;
     }
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalCenters;
+
+
+    /**
+     * Add institutionMedicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     * @return MedicalCenter
+     */
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
+    {
+        $this->institutionMedicalCenters[] = $institutionMedicalCenters;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalCenters
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     */
+    public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
+    {
+        $this->institutionMedicalCenters->removeElement($institutionMedicalCenters);
+    }
+
+    /**
+     * Get institutionMedicalCenters
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalCenters()
+    {
+        return $this->institutionMedicalCenters;
+    }
 }

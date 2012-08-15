@@ -9,10 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalProcedureType
 {
-	static $STATUS = array(
-		'inactive' => 0,
-		'active' => 1
-	);
+    const STATUS_ACTIVE = 1;
+    
+    const STATUS_INACTIVE = 0;
 
     /**
      * @var integer $id

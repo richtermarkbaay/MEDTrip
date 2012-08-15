@@ -1,0 +1,69 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'listings'%}
+{% block title %}{{ parent() }} {{ newListing ? "Add Listing" : "Edit Listing"}} {% endblock %}
+{% form_theme form '::form.admin.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ newListing ? "Creat a new listing" : "Edit a listing"}}</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			
+			    {% include '::notice.admin.html.twig' %}
+			
+			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'medicalProcedureTypeId': institutionMedicalProcedureType.medicalProcedureTypeId}) }}" method="POST" {{ form_enctype(form) }} class="user">
+    			    
+    			    <!-- start id-form -->
+            		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+            		    
+            		    {{ form_row(form.medicalCenter) }}
+                        {{ form_row(form.medicalProcedureType) }}
+                        {{ form_row(form.description) }}
+                        
+                        <tr>
+                    		<th>&nbsp;</th>
+                    		<td valign="top">
+                    			<input type="submit" name="submit" value="" class="form-submit" />
+                    			<input type="reset" value="" class="form-reset"  />
+                    		</td>
+                    		<td></td>
+                    	</tr>
+                        
+                        {{ form_rest(form) }}
+                        
+                	</table>
+                	<!-- end id-form  -->
+            	</form>
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+	<script type="text/javascript">
+        $(function(){
+        	var params = {
+    			loadProcedureTypesUrl : "{{ path('institution_loadMedicalProcedureTypes') }}",
+    			medicalCenterDropdown: $("#institutionMedicalProcedureTypeForm_medicalCenter"),
+    			medicalProcedureTypeDropdown: $("#institutionMedicalProcedureTypeForm_medicalProcedureType")
+    		};
+    		InstitutionMedicalProcedure.init(params);
+        });
+	</script>	
+{% endblock %}

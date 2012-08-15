@@ -274,15 +274,23 @@ admin_institution_saveListing:
         id: \d+
         _method: POST
 
-admin_institution_addProcedure:
+admin_institution_addMedicalProcedure:
     pattern:  /admin/institution/{id}/add-procedure
-    defaults: { _controller: AdminBundle:Institution:addListing }
+    defaults: { _controller: AdminBundle:Institution:addProcedure }
     requirements:
         id: \d+
         institution_medical_procedure_type_id: \d+
 
-admin_institution_editProcedure:
+admin_institution_editMedicalProcedure:
     pattern:  /admin/institution/{id}/edit-procedure
+    defaults: { _controller: AdminBundle:Institution:editListing }
+    requirements:
+        id: \d+
+        medical_procedure_id: \d+
+        institution_medical_procedure_type_id: \d+
+
+admin_institution_saveMedicalProcedure:
+    pattern:  /admin/institution/{id}/save-procedure
     defaults: { _controller: AdminBundle:Institution:editListing }
     requirements:
         id: \d+

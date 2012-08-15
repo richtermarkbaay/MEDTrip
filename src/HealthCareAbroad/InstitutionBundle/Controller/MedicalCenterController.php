@@ -87,21 +87,27 @@ class MedicalCenterController extends Controller
         
     }
 
-	function loadProcedureTypesAction()
+	function loadProcedureTypesAction(Request $request)
 	{
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
+	    if (!$institution) {
+	        throw $this->createNotFoundException('Invalid institution');
+	    }
+	    
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
-
-		$centerId = $this->getRequest()->get('medical_center_id');
-		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($centerId);
-
-		if($institutionMedicalCenter && count($institutionMedicalCenter->getMedicalProcedureTypes())) {
-			$procedureTypes = $institutionMedicalCenter->getMedicalProcedureTypes();
-			foreach($procedureTypes as $each) {
-				$data[] = array('id' => $each->getId(), 'name' => $each->getName());
-			}
+		$repo = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+		$institutionMedicalCenter = $repo->findOneBy(array('institutionId' => $institution->getId(), 'medicalCenterId' => $request->get('medical_center_id')));
+		
+		if (!$institutionMedicalCenter) {
+		    throw $this->createNotFoundException('No InstitutionMedicalCenter found.');
 		}
-
+		
+		$procedureTypes =  $repo->getAvailableMedicalProcedureTypes($institutionMedicalCenter);
+		foreach($procedureTypes as $each) {
+		    $data[] = array('id' => $each->getId(), 'name' => $each->getName());
+		}
+		
 		$response = new Response(json_encode($data));
 		$response->headers->set('Content-Type', 'application/json');
 	

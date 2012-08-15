@@ -1,0 +1,42 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Listing Management {% endblock %}
+{% set selectedTab = 'listings '%}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>{{ app.session.get('institutionName') }} Listing Managment</h1>
+    </div>
+
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+            			<!--  start table-content  -->
+            			<div id="table-content">
+            			    
+            			    {% include '::notice.admin.html.twig' %}
+            				
+            			</div>
+            			<!--  end table-content  -->
+        			</td>
+        			<td style="vertical-align: top; ">
+        			    {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' %}
+        			</td>
+    			</tr>
+			</table>
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

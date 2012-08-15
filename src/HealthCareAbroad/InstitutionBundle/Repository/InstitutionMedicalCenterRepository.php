@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+
+use Doctrine\ORM\Query\ResultSetMapping;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -34,5 +40,44 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 		}
 
 		return $ids;
+	}
+	
+	/**
+	 * Get the available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
+	 * 
+	 * @param InstitutionMedicalCenter $institutionMedicalCenter
+	 */
+	public function getAvailableMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
+	{
+	    //$dql = "SELECT p FROM InstitutionBundle:InstitutionMedicalCenter"
+	    $sql = "SELECT a.* FROM medical_procedure_types a, institution_medical_centers b ".
+       	    "WHERE b.medical_center_id = :medical_center_id ".
+   	        "AND b.institution_id = :institution_id ".
+   	        "AND a.medical_center_id = b.medical_center_id ".
+	        "AND a.status = :active_medical_procedure_type";
+	    
+	    $rsm = new ResultSetMapping();
+	    $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
+	        ->addFieldResult("a", "id", "id")
+	        ->addFieldResult("a", "medicalCenterId", "medical_center_id")
+	        ->addFieldResult("a", "name", "name")
+	        ->addFieldResult("a", "description", "description")
+	        ->addFieldResult("a", "dateModified", "date_modified")
+	        ->addFieldResult("a", "dateCreated", "date_created")
+	        ->addFieldResult("a", "slug", "slug")
+	        ->addFieldResult("a", "status", "status");
+	    
+
+	    $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
+	        ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenterId())
+	        ->setParameter('institution_id', $institutionMedicalCenter->getInstitutionId())
+	        ->setParameter('active_medical_procedure_type', MedicalProcedureType::STATUS_ACTIVE);
+	    
+	    return $query->getResult();
+	}
+	
+	private function _getCommonRSM()
+	{
+	    
 	}
 }
