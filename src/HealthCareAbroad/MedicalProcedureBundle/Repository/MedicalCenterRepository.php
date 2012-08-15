@@ -61,9 +61,12 @@ class MedicalCenterRepository extends EntityRepository
 	    }
 	     
 	    $qb = $this->createQueryBuilder('a');
-	    $qb->add('where', $qb->expr()->notIn('a.id', $usedMedicalCenterIds))
-	    ->andWhere('a.status = :active')
-	    ->orderBy('a.name', 'ASC')
+	    $qb->add('where', 'a.status = :active');
+	    if (!empty($usedMedicalCenterIds)) {
+	        $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
+	    }
+	    
+	    $qb->orderBy('a.name', 'ASC')
 	    ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
 	     
 	    return $qb;

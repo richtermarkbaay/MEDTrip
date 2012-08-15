@@ -27,25 +27,21 @@
     					<th class="table-header-options line-left"><a href="#">Options</a> </th>
     				</tr>
     				
-    				
+    				{% if institutionMedicalCenters is empty %}
+    				    <tr class="">
+    				        <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
+    				    </tr>
+    				{% endif %}
     				{% for center in institutionMedicalCenters %}
     				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
     				        <td></td>
         					<td>{{ center.medicalCenter | title }}</td>
         					<td>
-        					    <ul style="list-style:none;">
-        					        {% for procedureType in center.medicalProcedureTypes %}
-        					        <li>
-        					            <a href="#">{{ procedureType.name | title }}</a>
-        					        </li>
-        					        {% endfor %}
-        					    </ul>
+        					    
         					</td>
         					<td class="options-width">
             					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
-            					{% if center.medicalProcedureTypes is empty %}
-            					    <a href="#" title="Delete {{ center.medicalCenter | title }}" class="icon-2 info-tooltip" onclick="return confirm('Are you sure you want to remove {{ center.medicalCenter | title }}?')"></a>
-            					{% endif %}
+            					<a href="#" title="Delete {{ center.medicalCenter | title }}" class="icon-2 info-tooltip" onclick="return confirm('Are you sure you want to remove {{ center.medicalCenter | title }}?')"></a>
         					</td>
         				</tr>    
     				{% endfor %}

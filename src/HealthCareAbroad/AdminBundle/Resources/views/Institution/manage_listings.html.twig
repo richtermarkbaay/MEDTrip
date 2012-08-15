@@ -1,0 +1,99 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+	<div id="content">
+
+		<div id="page-heading"><h3>List of Listings</h3></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			{% include '::notice.admin.html.twig' %}
+
+			<div id="filter-wrapper">
+				<label>Filter by Center: </label>
+				<select id="procedure_filter" class="styledselect_form_1">
+					<option>Center1</option>
+				</select>
+			</div>
+			
+			<div id="institution-listings" style="width:70%">
+
+			{% for procedureType in medicalProcedureTypes %}	 
+				<h3>
+					<a>{{ procedureType.medicalProcedureType.name }}</a>
+					<!-- a class="add-procedure" href="#" style="float: right;margin-right: 20px;">add procedure</a -->
+				</h3>
+				<div class="procedures">
+					{% if procedureType.institutionMedicalProcedures|length %}
+						<ul style="list-style:none;margin: 20px;border-top: 1px solid #ddd;border-left: 1px solid #ddd; border-right: 1px solid #ddd">
+							{% set procedures = procedureType.institutionMedicalProcedures %}
+							{% for procedure in procedures %}
+							{% set medicalProcedure = procedure.medicalProcedure %}
+								<li style="padding: 5px;border-bottom: 1px solid #ddd">
+									<p style="display: inline-block;">{{ medicalProcedure.name }}</p>  
+									<div style="display:inline-block;float:right;margin-right:20px">
+										<a href="#">activate</a>
+										<span class="bar">|</span>
+										<a href="{{ path('admin_institution_editProcedure', {id:id, institution_medical_procedure_type_id:procedureType.id, medical_procedure_id:medicalProcedure.id} ) }}">edit</a>
+									</div>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			{% else  %}
+				<div class="empty-list" colspan="4">No records yet!</div>
+			{% endfor %}
+			</div>
+
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+	<div id="dialog-form" title="Create new user">
+		<p class="validateTips">All form fields are required.</p>
+		<form>
+		<fieldset>
+			<label for="name">Name</label>
+			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+			<label for="email">Email</label>
+			<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
+			<label for="password">Password</label>
+			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
+		</fieldset>
+		</form>
+	</div>
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+			$( "#dialog-form" ).dialog({
+				autoOpen: false,
+				height: 300,
+				width: 350,
+				modal: true,
+				buttons: {
+					"Save": function() {
+						var bValid = true;
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+				},
+				close: function() {
+					alert('close');
+				}
+			});
+
+			$( "a.add-procedure" ).click(function() {
+				$( "#dialog-form" ).dialog( "open" );
+			});
+
+			$("#institution-listings").accordion();			
+		});
+	</script>
+{% endblock %}
