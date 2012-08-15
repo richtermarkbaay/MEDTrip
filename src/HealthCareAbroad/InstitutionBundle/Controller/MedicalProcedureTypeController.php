@@ -31,8 +31,8 @@ class MedicalProcedureTypeController extends Controller
         if (!$institution) {
             throw $this->createNotFoundException('Invalid institution');
         }
-        
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),new InstitutionMedicalProcedureType(), array('institution' => $institution));
+        $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $institution));
         
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
@@ -62,7 +62,28 @@ class MedicalProcedureTypeController extends Controller
             $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
         }
         
-        //$form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType)
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType, array('institution' => $institution));
+        $form->bindRequest($request);
+        $isNew = $institutionMedicalProcedureType->getId() == 0;
+        if ($form->isValid()){
+            $institutionMedicalProcedureType = $form->getData();
+            $institutionMedicalProcedureType->setInstitution($institution);
+            $institutionMedicalProcedureType->setStatus(InstitutionMedicalProcedureType::STATUS_ACTIVE);
+            
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($institutionMedicalProcedureType);
+            $em->flush($institutionMedicalProcedureType);
+            
+            $request->getSession()->setFlash('success', 'Successfully saved listing.');
+            
+            return $this->redirect($this->generateUrl('institution_medicalProcedureType_edit', array('id' => $institutionMedicalProcedureType->getId())));
+        }
+        
+        return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
+            'form' => $form->createView(),
+            'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
+            'newListing' => $isNew
+        )); 
     }
 
 	function loadProceduresAction()
