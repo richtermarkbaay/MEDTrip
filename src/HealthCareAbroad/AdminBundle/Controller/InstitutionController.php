@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
+
 use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureType;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -67,39 +69,101 @@ class InstitutionController extends Controller
 	public function manageCentersAction($id)
 	{
 		$em = $this->getDoctrine()->getEntityManager();
-		$centers = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-		$institutionMedicalCenters = $institution->getInstitutionMedicalCenters();
-
-		$centerIdsWithProcedureType = $selectedCenterIds = array();
-		foreach($institutionMedicalCenters as $each) {
-			$medicalCenterId = $each->getMedicalCenter()->getId();
-			$selectedCenterIds[] = $medicalCenterId;
-
-			if(count($each->getMedicalProcedureTypes()))
-				$centerIdsWithProcedureType[] = $medicalCenterId;
-		}
-
-		$request = $this->getRequest();
-		if ('POST' == $request->getMethod()) {
-			$newMedicalCenterIds = $request->get('centers', array());
-
-			$this->get('services.institution')->updateInstitutionMedicalCenters($id, $newMedicalCenterIds, $centerIdsWithProcedureType);
-
-			$selectedCenterIds = array_merge($newMedicalCenterIds, $centerIdsWithProcedureType);
-			$request->getSession()->setFlash('success', 'Institution Medical Centers has been updated!');
-			//return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
-		}
 
 		$params = array(
 			'id' => $id,
-			'centers' => $centers,
-			'selectedCenterIds' => $selectedCenterIds,
-			'centerIdsWithProcedureType' => $centerIdsWithProcedureType
+			'institutionName' => $institution->getName(),
+			'institutionMedicalCenters' => $institution->getInstitutionMedicalCenters(),
 		);
 		return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
 	}
+
+	/**
+	 *
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
+	public function addMedicalCenterAction()
+	{
+		$request = $this->getRequest();
+		$id = $request->get('id');
 	
+		$em = $this->getDoctrine()->getEntityManager();
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+
+		$newInstitutionMedicalCenter = new InstitutionMedicalCenter;
+		$newInstitutionMedicalCenter->setInstitution($institution);
+		$form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter);
+
+		$params = array(
+				'id' => $id,
+				'form' => $form->createView()
+		);
+		return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+	
+	}
+
+	/**
+	 *
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
+	public function saveMedicalCenterAction($id)
+	{
+		$request = $this->getRequest();
+		
+		if('POST' != $request->getMethod()) {
+			
+		} else {
+			$em = $this->getDoctrine()->getEntityManager();
+			$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+
+			$newInstitutionMedicalCenter = new InstitutionMedicalCenter;
+			$newInstitutionMedicalCenter->setInstitution($institution);
+			$form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter);
+			$form->bind($request);
+
+			if($form->isValid()) {
+				$em->persist($newInstitutionMedicalCenter);
+				$em->flush($newInstitutionMedicalCenter);
+				
+				$request->getSession()->setFlash('success', 'Medical center has been added!');
+			}
+		}
+
+		return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
+	}
+	/**
+	 *
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 * @param int $id
+	 */
+	public function updateMedicalCenterStatusAction()
+	{
+		$request = $this->getRequest();
+		$result = false;
+		$em = $this->getDoctrine()->getEntityManager();
+		
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($request->get('id'));
+		$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('medical_center_id'));
+		
+		$criteria = array('institution' => $institution, 'medicalCenter'=> $medicalCenter);
+		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
+	
+		if ($institutionMedicalCenter) {
+			$institutionMedicalCenter->setStatus($institutionMedicalCenter->getStatus() ? 0 : 1);
+			$em->persist($institutionMedicalCenter);
+			$em->flush($institutionMedicalCenter);
+			$result = true;
+		}
+
+		$response = new Response(json_encode($result));
+		$response->headers->set('Content-Type', 'application/json');
+	
+		return $response;
+	}
+
 	/**
 	 * 
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")

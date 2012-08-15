@@ -17,6 +17,11 @@ class InstitutionMedicalCenterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$status = array(
+			InstitutionMedicalCenter::STATUS_ACTIVE => 'active',
+			InstitutionMedicalCenter::STATUS_INACTIVE => 'inactive'
+		);
+
         // we are expecting only an InstitutionMedicalCenter as data
         $institutionMedicalCenter = $options['data'];
         
@@ -24,8 +29,9 @@ class InstitutionMedicalCenterType extends AbstractType
             throw new \Exception("Expecting an instance of HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter as data. ".\get_class($institutionMedicalCenter)." given.");
         }
         
-        $builder->add('medical_center', new AvailableMedicalCenterListType($institutionMedicalCenter->getInstitution()), array('empty_value' => 'Please select one','constraints'=>array(new NotBlank())));
+        $builder->add('medicalCenter', new AvailableMedicalCenterListType($institutionMedicalCenter->getInstitution()), array('empty_value' => 'Please select one','constraints'=>array(new NotBlank())));
         $builder->add('description', 'textarea', array('constraints' => new NotBlank()));
+        $builder->add('status', 'choice', array('choices' => $status));
     }
     
     public function getName()
