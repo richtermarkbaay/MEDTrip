@@ -78,7 +78,7 @@ class MedicalCenterRepository extends EntityRepository
 	 * @param Institution $institution
 	 * @return Doctrine\ORM\QueryBuilder
 	 */
-	public function getCreateBuilderForMedicalCentersOfInstitution(Institution $institution)
+	public function getBuilderForMedicalCentersOfInstitution(Institution $institution)
 	{
 	    $qb = $this->getEntityManager()->createQueryBuilder();
 	    $qb->select('a')

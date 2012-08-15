@@ -1,5 +1,7 @@
 var InstitutionMedicalProcedure = {
-		
+	
+	selectedMedicalCenter: 0,
+	selectedMedicalProcedureType: 0,
 	manageProceduresUrl : "",
 	loadProcedureTypesUrl : "",
 	loadProceduresUrl : "",
@@ -18,6 +20,17 @@ var InstitutionMedicalProcedure = {
 		// init containers
 		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('#institutionMedicalProcedure_medical_center');
 		this.medicalProcedureTypeDropdown = params.medicalProcedureTypeDropdown ? params.medicalProcedureTypeDropdown: $('#institutionMedicalProcedure_procedure_type');
+		this.selectedMedicalCenter = params.selectedMedicalCenter ? params.selectedMedicalCenter : 0;
+		this.selectedMedicalProcedureType = params.selectedMedicalProcedureType ? params.selectedMedicalProcedureType : 0;
+		
+		if (InstitutionMedicalProcedure.selectedMedicalCenter) {
+			
+			InstitutionMedicalProcedure.medicalCenterDropdown.find('option').each(function(){
+				if (this.value == InstitutionMedicalProcedure.selectedMedicalCenter) {
+					this.selected = "selected";
+				}
+			});
+		}
 		
 		this.initMedicalCenterOnChangeEvent();
 		//this.initMedicalProcedurTypeOnChangeEvent();
@@ -76,7 +89,7 @@ var InstitutionMedicalProcedure = {
 				}
 			});
 		})
-		.change();	
+		.change();
 	},
 	/**
 	initMedicalProcedurTypeOnChangeEvent : function()
@@ -105,7 +118,7 @@ var InstitutionMedicalProcedure = {
 	{
 		var len = data.length, options = '';
 		for(var i=0; i< len; i++) {
-			options += '<option value="'+ data[i].id +'">' + data[i].name + '</option>';
+			options += '<option value="'+ data[i].id +'" ' + (InstitutionMedicalProcedure.selectedMedicalProcedureType==data[i].id?'selected': '') + '>' + data[i].name + '</option>';
 		}
 		return options;
 	}

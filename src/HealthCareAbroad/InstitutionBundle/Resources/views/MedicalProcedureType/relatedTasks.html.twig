@@ -13,17 +13,39 @@
 		<!--  start related-act-inner -->
 		<div id="related-act-inner">
 		    
-		    <div class="left"><a href="{{ path('institution_medicalProcedureType_add') }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
-			<div class="right">
-				<h5>Add Listing</h5>
-				Create a new listing
-				<ul class="greyarrow">
-					<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add listing</a></li>
-				</ul>
-			</div>
+		    {% if showAddListing %}
+    		    <div class="left"><a href="{{ path('institution_medicalProcedureType_add') }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
+    			<div class="right">
+    				<h5>Add new listing</h5>
+    				Create a new listing
+    				<ul class="greyarrow">
+    					<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add listing</a></li>
+    				</ul>
+    			</div>
+    			
+    			{% if showAddProcedure %}
+    			<div class="clear"></div>
+    			<div class="lines-dotted-short"></div>
+    			{% endif %}
+			{% endif %}
 			
-			<div class="clear"></div>
-			<div class="lines-dotted-short"></div>
+			
+			{% if showAddProcedure %}
+    			<div class="left">
+    			    <a class="add-procedure" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': id}) }}">
+    			        <img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" />
+			        </a>
+		        </div>
+    			<div class="right">
+    				<h5>Add medical procedure</h5>
+    				Add medical procedure to this listing
+    				<ul class="greyarrow">
+    					<li><a class="add-procedure" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': id}) }}">Add a medical procedure</a></li>
+    				</ul>
+    			</div>
+    			<div class="clear"></div>
+			    <div class="lines-dotted-short"></div>
+			{% endif %}
 			
 			
 			<div class="left"><a href="{{ path('institution_medicalProcedureType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
