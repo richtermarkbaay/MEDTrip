@@ -132,7 +132,7 @@ institution_medicalProcedureType_addMedicalProcedure:
         
 institution_medicalProcedureType_addMedicalProcedure_save:
     pattern: /institution/listing/{id}/add-procedure
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
     requirements:
         _method: POST
 

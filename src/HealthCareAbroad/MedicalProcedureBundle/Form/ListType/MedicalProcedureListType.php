@@ -11,7 +11,7 @@ class MedicalProcedureListType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'virtual' => true,
+            'virtual' => false,
             'empty_value' => 'Please select one',
             'property' => 'name',
             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure',
