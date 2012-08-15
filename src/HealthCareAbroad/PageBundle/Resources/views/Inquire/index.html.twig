@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
+{% extends 'PageBundle::layout.html.twig' %}
 
 {% form_theme form '::form.admin.html.twig' %}
 
@@ -26,7 +26,7 @@
                         {{ form_row(form.firstName) }}
                         {{ form_row(form.lastName) }}
                         {{ form_row(form.email) }}
-                        {{ form_row(form.subject) }}
+                        {{ form_row(form.inquire_about) }}
                         {{ form_row(form.message) }}
                         
                         <tr>

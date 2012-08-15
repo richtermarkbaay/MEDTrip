@@ -1,7 +1,17 @@
 parameters:
-#    page.example.class: HealthCareAbroad\PageBundle\Example
+    services.inquire_list: HealthCareAbroad\PageBundle\Form\ListType\InquireAboutListType
+    services.inquire_class: HealthCareAbroad\PageBundle\Services\InquireService
 
 services:
-#    page.example:
-#        class: %page.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.inquire:
+        class: %services.inquire_class%
+        calls:
+            - [setDoctrine, [@doctrine]]
+    form.inquire_about_list:
+        class: "%services.inquire_list%"
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: inquire_about_list }
+
+
