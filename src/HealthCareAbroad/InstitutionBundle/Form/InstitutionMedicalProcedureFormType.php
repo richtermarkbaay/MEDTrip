@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalProcedureListType;
+
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
@@ -20,15 +24,25 @@ class InstitutionMedicalProcedureFormType extends AbstractType
     		InstitutionMedicalProcedure::STATUS_ACTIVE => 'active',
     		InstitutionMedicalProcedure::STATUS_INACTIVE => 'inactive'
     	);
-
-        $builder
-			->add('medical_procedure', 'choice', array('label'=>'Procedure', 'required'=>true, 'constraints'=>array(new NotBlank())))
-			->add('description', 'textarea')
+    	
+    	$institutionMedicalProcedureType = $options['institutionMedicalProcedureType'];
+    	
+    	$builder->add('medicalProcedure', new MedicalProcedureListType(), array(
+            'query_builder' => function (EntityRepository $er) use ($institutionMedicalProcedureType) {
+    	        return $er->getQueryBuilderForAvailableInstitutionMedicalProcedures($institutionMedicalProcedureType);
+            },
+            'label'=>'Procedure', 
+            'required'=>true, 
+            'constraints'=>array(new NotBlank())
+        ));
+    	
+        $builder->add('description', 'textarea')
 			->add('status', 'choice', array('choices' => $status));
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setRequired(array('institutionMedicalProcedureType'));
         $resolver->setDefaults(array(
             'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure',
         ));

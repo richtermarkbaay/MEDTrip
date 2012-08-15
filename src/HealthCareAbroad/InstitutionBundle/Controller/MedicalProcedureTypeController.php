@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
@@ -38,6 +42,26 @@ class MedicalProcedureTypeController extends Controller
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
             'newListing' => true
+        ));
+    }
+    
+    public function editAction(Request $request)
+    {
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
+        if (!$institution) {
+            throw $this->createNotFoundException('Invalid institution');
+        }
+        
+        $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('id', 0));
+        if (!$institutionMedicalProcedureType) {
+            throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
+        }
+        
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $institution));
+        return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
+            'form' => $form->createView(),
+            'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
+            'newListing' => false
         ));
     }
     
@@ -83,7 +107,26 @@ class MedicalProcedureTypeController extends Controller
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
             'newListing' => $isNew
-        )); 
+        ));
+    }
+    
+    public function addMedicalProcedureAction(Request $request)
+    {
+        $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('id', 0));
+        
+        if (!$institutionMedicalProcedureType) {
+            throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
+        }
+        
+        $form = $this->createForm(new InstitutionMedicalProcedureFormType(), new InstitutionMedicalProcedure(), array('institutionMedicalProcedureType' => $institutionMedicalProcedureType));
+        $params = array(
+            'id' => $institutionMedicalProcedureType->getId(),
+            'procedureTypeName' => $institutionMedicalProcedureType->getMedicalProcedureType()->getName(),
+            'medicalCenterName' => $institutionMedicalProcedureType->getMedicalProcedureType()->getMedicalCenter()->getName(),
+            'form' => $form->createView()
+        );
+        return $this->render('InstitutionBundle:MedicalProcedureType:form.procedure.html.twig', $params);
+        //return $this->render('InstitutionBundle:Default:index.html.twig');
     }
 
 	function loadProceduresAction()

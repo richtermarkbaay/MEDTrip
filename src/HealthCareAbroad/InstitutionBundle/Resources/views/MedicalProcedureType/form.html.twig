@@ -8,48 +8,65 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ newListing ? "Creat a new listing" : "Edit a listing"}}</h1>
+    	<h1>
+    	    {% if newListing %} 
+    	        Creat a new listing
+	        {% else %}
+	            Edit listing {{ institutionMedicalProcedureType.medicalProcedureType.name }}
+	         {% endif %}       
+        </h1>
     </div>
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-			<!--  start table-content  -->
-			<div id="table-content">
-			
-			    {% include '::notice.admin.html.twig' %}
-			
-			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'id': institutionMedicalProcedureType.id}) }}" method="POST" {{ form_enctype(form) }} class="user">
-    			    
-    			    <!-- start id-form -->
-            		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-            		    
-            		    {{ form_row(form.medicalCenter) }}
-                        {{ form_row(form.medicalProcedureType) }}
-                        {{ form_row(form.description) }}
-                        
-                        <tr>
-                    		<th>&nbsp;</th>
-                    		<td valign="top">
-                    			<input type="submit" name="submit" value="" class="form-submit" />
-                    			<input type="reset" value="" class="form-reset"  />
-                    		</td>
-                    		<td></td>
-                    	</tr>
-                        
-                        {{ form_rest(form) }}
-                        
-                	</table>
-                	<!-- end id-form  -->
-            	</form>
-			</div>
-			<!--  end table-content  -->
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+            			<!--  start table-content  -->
+            			<div id="table-content">
+            			
+            			    {% include '::notice.admin.html.twig' %}
+            			
+            			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'id': institutionMedicalProcedureType.id}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                			    
+                			    <!-- start id-form -->
+                        		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                        		    
+                        		    {{ form_row(form.medicalCenter) }}
+                                    {{ form_row(form.medicalProcedureType) }}
+                                    {{ form_row(form.description) }}
+                                    
+                                    <tr>
+                                		<th>&nbsp;</th>
+                                		<td valign="top">
+                                			<input type="submit" name="submit" value="" class="form-submit" />
+                                			<input type="reset" value="" class="form-reset"  />
+                                		</td>
+                                		<td></td>
+                                	</tr>
+                                    
+                                    {{ form_rest(form) }}
+                                    
+                            	</table>
+                            	<!-- end id-form  -->
+                        	</form>
+            			</div>
+            			<!--  end table-content  -->
+        			</td>
+        			<td style="vertical-align: top; ">
+        			    {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {'id': institutionMedicalProcedureType.id, 'showAddListing': false, 'showAddProcedure' : newListing ? false:true}%}
+        			</td>
+    			</tr>
+			</table>
         {% endblock %}
         
     {% endembed %}
     
 </div>
+
+<div id="dialog-container"></div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 {% endblock %}
@@ -58,7 +75,38 @@
     <script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
 	<script type="text/javascript">
         $(function(){
+
+        	$("#dialog-container").dialog({
+				autoOpen: false,
+				height: 580,
+				width: 700,
+				modal: true,
+				resizable: false,
+				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
+				close: function() {}
+			});
+
+        	$("a.add-procedure").click(function() {
+				var elem = $(this);
+				var addProcedureUrl = elem.attr('href');
+				elem.attr('href', 'javascript:void(0)');
+
+				$("#dialog-container").empty();
+				$("#dialog-container").dialog({
+					open: function() {
+						$.ajax(addProcedureUrl)
+							.done(function (data) {
+								elem.attr('href', addProcedureUrl);
+								$('#dialog-container').html(data);
+							});
+					},
+				});
+				$("#dialog-container").dialog("open");
+			});
+            
         	var params = {
+            	selectedMedicalCenter: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
+            	selectedMedicalProcedureType: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
     			loadProcedureTypesUrl : "{{ path('institution_loadMedicalProcedureTypes') }}",
     			medicalCenterDropdown: $("#institutionMedicalProcedureTypeForm_medicalCenter"),
     			medicalProcedureTypeDropdown: $("#institutionMedicalProcedureTypeForm_medicalProcedureType")
