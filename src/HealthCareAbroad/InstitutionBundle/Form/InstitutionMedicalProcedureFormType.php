@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class InstitutionMedicalProcedureType extends AbstractType 
+class InstitutionMedicalProcedureFormType extends AbstractType 
 {	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -36,7 +36,7 @@ class InstitutionMedicalProcedureType extends AbstractType
     
     public function getName()
     {
-        return 'institutionMedicalProcedure';
+        return 'institutionMedicalProcedureForm';
     }
 
 }
