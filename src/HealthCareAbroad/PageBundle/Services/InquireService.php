@@ -9,10 +9,10 @@ class InquireService
 {
 	protected $doctrine;
 
-	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
-	{
-		$this->doctrine = $doctrine;
-	}
+	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
+    {
+    	$this->doctrine = $doctrine;
+    }
 
 	public function getActiveInquirySubjects()
 	{
