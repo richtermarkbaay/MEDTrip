@@ -34,11 +34,7 @@ class InstitutionMedicalCenterListType extends AbstractType
 			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
             'query_builder' => function(EntityRepository $er) use ($institution) {
                 // $er is a HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalCenterRepository 
-                return $er->getCreateBuilderForMedicalCentersOfInstitution($institution); 
-//         		return $er->createQueryBuilder('c')
-//         			->add('where', 'c.institution = :institution')
-//         			->setParameter('institution', $institutionId)
-//         			->orderBy('c.medicalCenter', 'ASC');
+                return $er->getBuilderForMedicalCentersOfInstitution($institution);
         	}
         ));
     }

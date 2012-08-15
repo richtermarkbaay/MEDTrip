@@ -45,12 +45,14 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         // valid form values
         $formValues = array(
-            'institutionMedicalProcedureTypeForm[medical_procedure_type]' => '1',
+            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => 'Test listing',
         );
         
         $invalidFormValues = array(
-            'institutionMedicalProcedureTypeForm[medical_procedure_type]' => '',
+            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '',
             'institutionMedicalProcedureTypeForm[description]' => '',
         );
         

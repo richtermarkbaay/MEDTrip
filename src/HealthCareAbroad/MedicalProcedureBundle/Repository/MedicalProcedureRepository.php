@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -28,5 +32,29 @@ class MedicalProcedureRepository extends EntityRepository
 		return $query->getResult();
 	}
 	
+	/**
+	 * Get query builder for getting available MedicalProcedures that can be used by InstitutionMedicalProcedureType 
+	 * 
+	 * @param InstitutionMedicalProcedureType $institutionMedicalProcedureType
+	 */
+	public function getQueryBuilderForAvailableInstitutionMedicalProcedures(InstitutionMedicalProcedureType $institutionMedicalProcedureType)
+	{
+	    $qbInner = $this->getEntityManager()->createQueryBuilder();
+	    $qbInner->select('i.medicalProcedureId')
+	        ->from('InstitutionBundle:InstitutionMedicalProcedure', 'i')
+	        ->where('i.institutionMedicalProcedureTypeId = :institutionMedicalProcedureTypeId');
+	    
+	    $qb = $this->getEntityManager()->createQueryBuilder();
+	    $qb->select('a')
+	        ->from('MedicalProcedureBundle:MedicalProcedure', 'a')
+	        ->add('where', 'a.status = :active')
+	        ->andWhere('a.medicalProcedureType = :medicalProcedureTypeId')
+	        ->andWhere($qb->expr()->notIn('a.id', $qbInner->getDQL()))
+	        ->setParameter('active', MedicalProcedure::STATUS_ACTIVE)
+	        ->setParameter('medicalProcedureTypeId', $institutionMedicalProcedureType->getMedicalProcedureType()->getId())
+	        ->setParameter('institutionMedicalProcedureTypeId', $institutionMedicalProcedureType->getId());
+	    
+	    return $qb;
+	}
 	
 }
