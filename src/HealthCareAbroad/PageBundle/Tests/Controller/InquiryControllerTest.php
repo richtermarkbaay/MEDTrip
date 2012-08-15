@@ -1,6 +1,6 @@
 <?php
 /**
- * Functional test for InstitutionController
+ * Functional test for InquiryController
  * 
  * @author Alnie Jacobe
  *

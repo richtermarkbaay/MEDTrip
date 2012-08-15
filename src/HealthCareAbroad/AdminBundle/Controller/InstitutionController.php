@@ -17,7 +17,7 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -202,7 +202,7 @@ class InstitutionController extends Controller
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
 		$instMedicalProcedureType = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($instMedicalProcedureTypeId);
 		
-		$form = $this->createForm(new InstitutionMedicalProcedureType(), new InstitutionMedicalProcedure());
+		$form = $this->createForm(new InstitutionMedicalProcedureFormType(), new InstitutionMedicalProcedure());
 
 		$params = array(
 			'id' => $id,
@@ -229,9 +229,30 @@ class InstitutionController extends Controller
 	 */
 	public function updateProcedureStatusAction()
 	{
+		$result = false;
 		$em = $this->getDoctrine()->getEntityManager();
-		$id = $this->getRequest()->get('institution_medical_procedure_id');
-		$result = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->updateStatus($id);
+		$institutionProcedureTypeId = $this->getRequest()->get('institution_medical_procedure_type_id');
+		$institutionProcedureType = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($institutionProcedureTypeId);
+		
+		$medicalProcedureId = $this->getRequest()->get('medical_procedure_id');
+		$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($medicalProcedureId);
+		
+		$criteria = array('institutionMedicalProcedureType' => $institutionProcedureType, 'medicalProcedure' => $medicalProcedure);
+		
+		$institutionProcedure = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->findOneBy($criteria);
+		
+		if($institutionProcedure) {
+
+			$status = $institutionProcedure->getStatus() == $institutionProcedure::STATUS_ACTIVE
+			? $institutionProcedure::STATUS_INACTIVE
+			: $institutionProcedure::STATUS_ACTIVE;
+			
+			$institutionProcedure->setStatus($status);
+			$em->persist($institutionProcedure);
+			$em->flush($institutionProcedure);
+			$result = true;			
+		}
+
 
 		$response = new Response(json_encode($result));
 		$response->headers->set('Content-Type', 'application/json');
