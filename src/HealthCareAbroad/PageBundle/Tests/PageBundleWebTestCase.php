@@ -1,11 +1,11 @@
 <?php
-namespace HealthCareAbroad\AdminBundle\Tests;
+namespace HealthCareAbroad\PageBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use \HCA_DatabaseManager;
 
-abstract class InstitutionBundleWebTestCase extends WebTestCase
+abstract class PageBundleWebTestCase extends WebTestCase
 {
     public static function setUpBeforeClass()
     {
@@ -14,29 +14,13 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
         ->restoreGlobalAccountsDatabaseState();
     }
     
-    protected function requestUrlWithNoLoggedInUser($uri, $method="GET")
+    /**
+     * Convenience function to get location response headers
+     *
+     * @param unknown_type $client
+     */
+    protected function getLocationResponseHeader($client)
     {
-        $client = static::createClient();
-        $client->request($method, $uri);
-        return $client;
-    }
-    
-    protected function getBrowserWithActualLoggedInUser()
-    {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/institution/login');
-        
-        $form = $crawler->selectButton('submit')->form();
-        $client->submit($form, $this->formValues);
-        return $client;
-        
-    }
-    
-    protected function getBrowserWithMockLoggedUser()
-    {
-        $client = static::createClient(array(), array(
-                        'PHP_AUTH_USER' => 'ryan',
-                        'PHP_AUTH_PW'   => 'ryanpass',
-        ));
+    	return $client->getResponse()->headers->get('location');
     }
 }
