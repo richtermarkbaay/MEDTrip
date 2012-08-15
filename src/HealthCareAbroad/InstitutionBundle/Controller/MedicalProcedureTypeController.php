@@ -62,7 +62,7 @@ class MedicalProcedureTypeController extends Controller
             $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
         }
         
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType)
+        //$form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType)
     }
 
 	function loadProceduresAction()
