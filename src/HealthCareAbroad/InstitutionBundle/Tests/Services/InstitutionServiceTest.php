@@ -33,6 +33,12 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 	
 	public function testCreateInstitution()
 	{
+		//get data for city
+		$city = $this->doctrine->getRepository('HelperBundle:City')->find(1);
+		
+		//get data for country
+		$country = $this->doctrine->getRepository('HelperBundle:Country')->find(1);
+		
 		$institution = new Institution();
 		$institution->setName('alnie');
 		$institution->setDescription('test');
@@ -41,8 +47,8 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 		$institution->setAddress1('cebu');
 		$institution->setAddress2('compostela');
 		$institution->setLogo('logo.jpg');
-		$institution->setCityId('1');
-		$institution->setCountryId('1');
+		$institution->setCity($city);
+		$institution->setCountry($country);
 		
 		$result = $this->service->createInstitution($institution);
 		$this->assertNotEmpty($result);
