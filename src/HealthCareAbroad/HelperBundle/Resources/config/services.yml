@@ -31,6 +31,11 @@ services:
         class: %services.location_class%
         calls:
             - [setDoctrine, [@doctrine]]
+    
+    services.inquire:
+        class: %services.inquire_class%
+        calls:
+            - [setDoctrine, [@doctrine]]
 
     form.country_list:
         class: "%services.country_list%"

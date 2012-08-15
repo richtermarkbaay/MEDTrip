@@ -4,19 +4,19 @@ namespace HealthCareAbroad\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use HealthCareAbroad\PageBundle\Form\InquireType;
-use HealthCareAbroad\AdminBundle\Entity\Inquire;
+use HealthCareAbroad\PageBundle\Form\InquiryType;
+use HealthCareAbroad\AdminBundle\Entity\Inquiry;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
 
-class InquireController extends Controller
+class InquiryController extends Controller
 {
     public function indexAction()
     {
-    	$form = $this->createForm(new InquireType());
+    	$form = $this->createForm(new InquiryType());
     	
     	if ($this->getRequest()->isMethod('POST')) {
     	
@@ -25,14 +25,14 @@ class InquireController extends Controller
     		if ($form->isValid()) {
     			 
     			//create inquire
-    			$inquire = new Inquire();
+    			$inquire = new Inquiry();
     			$inquire->setFirstName($form->get('firstName')->getData());
     			$inquire->setLastName($form->get('lastName')->getData());
     			$inquire->setEmail($form->get('email')->getData());
-    			$inquire->setInquireAbout($form->get('inquire_about')->getData());
+    			$inquire->setInquirySubject($form->get('inquiry_subject')->getData());
     			$inquire->setMessage($form->get('message')->getData());
     			$inquire->setStatus(SiteUser::STATUS_ACTIVE);
-    			$inquire = $this->get('services.inquire')->createInquire($inquire);
+    			$inquire = $this->get('services.inquire')->createInquiry($inquire);
     			
     			if ( count($inquire) > 0 ) {
     				$this->get('session')->setFlash('notice', "Successfully submitted.");
@@ -45,7 +45,7 @@ class InquireController extends Controller
     		}
     	}
     	
-        return $this->render('PageBundle:Inquire:index.html.twig', array(
+        return $this->render('PageBundle:Inquiry:index.html.twig', array(
         		'form' => $form->createView(),
         ));
     }
