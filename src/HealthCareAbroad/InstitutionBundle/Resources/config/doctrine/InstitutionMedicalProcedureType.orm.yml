@@ -21,6 +21,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType:
             type: datetime
             nullable: false
             column: date_created
+        status:
+            type: smallint
+            nullable: false
     oneToMany:
         institutionMedicalProcedures:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure

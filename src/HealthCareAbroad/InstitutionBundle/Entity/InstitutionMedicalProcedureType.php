@@ -202,4 +202,31 @@ class InstitutionMedicalProcedureType
     {
         return $this->medicalProcedureType;
     }
+    /**
+     * @var smallint $status
+     */
+    private $status;
+
+
+    /**
+     * Set status
+     *
+     * @param smallint $status
+     * @return InstitutionMedicalProcedureType
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return smallint 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }

@@ -124,6 +124,45 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inquiries`
+--
+
+CREATE TABLE IF NOT EXISTS `inquiries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `email` char(100) NOT NULL,
+  `message` text NOT NULL,
+  `inquiry_subject_id` int(10) unsigned DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `inquiry_subject_id` (`inquiry_subject_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inquiry_subjects`
+--
+
+CREATE TABLE IF NOT EXISTS `inquiry_subjects` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+--
+-- Dumping data for table `inquiry_subjects`
+--
+
+INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(1, 'membership', 'test', 1);
+INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(2, 'fees', 'saf', 1);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institutions`
 --
 
@@ -662,6 +701,11 @@ ALTER TABLE `admin_user_type_roles`
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
+--
+-- Constraints for table `inquiries`
+--
+ALTER TABLE `inquiries`
+  ADD CONSTRAINT `inquiries_ibfk_1` FOREIGN KEY (`inquiry_subject_id`) REFERENCES `inquiry_subjects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institutions`

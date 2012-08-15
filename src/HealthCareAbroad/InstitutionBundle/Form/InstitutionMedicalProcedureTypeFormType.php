@@ -38,7 +38,7 @@ class InstitutionMedicalProcedureTypeFormType extends AbstractType
             $builder->add('medicalCenter', 'hidden', array('label' => 'Medical Center:', 'value' => $medicalCenterId));
         }
         
-        $builder->add('medicalProcedureType', 'medicalproceduretype_list', array('label' => 'Procedure Type:'));
+        $builder->add('medicalProcedureType', 'medicalproceduretype_list', array('label' => 'Procedure Type:', 'constraints' => new NotBlank()));
         $builder->add('description', 'textarea', array('label' => 'Description:', 'constraints' => new NotBlank()));
         
     }

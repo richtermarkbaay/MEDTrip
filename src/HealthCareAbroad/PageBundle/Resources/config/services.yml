@@ -5,8 +5,9 @@ parameters:
 services:
     services.inquire:
         class: %services.inquiry_class%
+        arguments: [@doctrine]]
         calls:
-            - [setDoctrine, [@doctrine]]
+            
     form.inquiry_subject_list:
         class: "%services.inquiry_list%"
         calls:

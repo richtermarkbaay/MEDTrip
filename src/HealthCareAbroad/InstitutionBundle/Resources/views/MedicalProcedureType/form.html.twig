@@ -20,7 +20,7 @@
 			
 			    {% include '::notice.admin.html.twig' %}
 			
-			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'medicalProcedureTypeId': institutionMedicalProcedureType.medicalProcedureTypeId}) }}" method="POST" {{ form_enctype(form) }} class="user">
+			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'id': institutionMedicalProcedureType.id}) }}" method="POST" {{ form_enctype(form) }} class="user">
     			    
     			    <!-- start id-form -->
             		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
