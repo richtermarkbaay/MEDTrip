@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\PageBundle\Form;
 
-use HealthCareAbroad\PageBundle\Form\ListType\InquireAboutListType;
+use HealthCareAbroad\PageBundle\Form\ListType\InquirySubjectListType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class InquireType extends AbstractType
+class InquiryType extends AbstractType
 {
 	private $container;
 	
@@ -24,7 +24,7 @@ class InquireType extends AbstractType
     		->add('firstName', 'text', array('constraints' => new NotBlank()))
     		->add('lastName', 'text', array('constraints' => new NotBlank()))
     		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
-    		->add('inquire_about', 'inquire_about_list')
+    		->add('inquiry_subject', 'inquiry_subject_list')
     		->add('message', 'textarea', array('constraints' => new NotBlank()))
     		;
     }
