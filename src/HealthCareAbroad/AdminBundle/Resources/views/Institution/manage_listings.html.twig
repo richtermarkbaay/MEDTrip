@@ -20,13 +20,11 @@
 			<div id="institution-listings" style="width:70%">
 
 			{% for procedureType in medicalProcedureTypes %}	 
-				<h3>
-					<a>{{ procedureType.medicalProcedureType.name }}</a>
-					<!-- a class="add-procedure" href="#" style="float: right;margin-right: 20px;">add procedure</a -->
-				</h3>
+				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
 				<div class="procedures">
+					<a class="add-procedure" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" style="float: right;margin-right: 20px;color: #92B22C;text-decoration:underline">add procedure</a>
 					{% if procedureType.institutionMedicalProcedures|length %}
-						<ul style="list-style:none;margin: 20px;border-top: 1px solid #ddd;border-left: 1px solid #ddd; border-right: 1px solid #ddd">
+						<ul style="list-style:none;margin:40px 20px;border-top: 1px solid #ddd;border-left: 1px solid #ddd; border-right: 1px solid #ddd">
 							{% set procedures = procedureType.institutionMedicalProcedures %}
 							{% for procedure in procedures %}
 							{% set medicalProcedure = procedure.medicalProcedure %}
@@ -35,7 +33,7 @@
 									<div style="display:inline-block;float:right;margin-right:20px">
 										<a href="#">activate</a>
 										<span class="bar">|</span>
-										<a href="{{ path('admin_institution_editProcedure', {id:id, institution_medical_procedure_type_id:procedureType.id, medical_procedure_id:medicalProcedure.id} ) }}">edit</a>
+										<a href="{{ path('admin_institution_editMedicalProcedure', {id:id, institution_medical_procedure_type_id:procedureType.id, medical_procedure_id:medicalProcedure.id} ) }}">edit</a>
 									</div>
 								</li>
 							{% endfor %}
@@ -51,18 +49,8 @@
 		{% endembed %}
 	</div>
 
-	<div id="dialog-form" title="Create new user">
-		<p class="validateTips">All form fields are required.</p>
-		<form>
-		<fieldset>
-			<label for="name">Name</label>
-			<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-			<label for="email">Email</label>
-			<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all" />
-			<label for="password">Password</label>
-			<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-		</form>
+	<div id="dialog-container">
+		
 	</div>
 
 {% endblock %}
@@ -71,26 +59,33 @@
 	<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
 	<script type="text/javascript">
 		$(function(){
-			$( "#dialog-form" ).dialog({
+
+			$("#dialog-container").dialog({
 				autoOpen: false,
-				height: 300,
-				width: 350,
+				height: 580,
+				width: 700,
 				modal: true,
-				buttons: {
-					"Save": function() {
-						var bValid = true;
-					},
-					Cancel: function() {
-						$( this ).dialog( "close" );
-					}
-				},
-				close: function() {
-					alert('close');
-				}
+				resizable: false,
+				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
+				close: function() {}
 			});
 
-			$( "a.add-procedure" ).click(function() {
-				$( "#dialog-form" ).dialog( "open" );
+			$("a.add-procedure").click(function() {
+				var elem = $(this);
+				var addProcedureUrl = elem.attr('href');
+				elem.attr('href', 'javascript:void(0)');
+
+				$("#dialog-container").empty();
+				$("#dialog-container").dialog({
+					open: function() {
+						$.ajax(addProcedureUrl)
+							.done(function (data) {
+								elem.attr('href', addProcedureUrl);
+								$('#dialog-container').html(data);
+							});
+					},
+				});
+				$("#dialog-container").dialog("open");
 			});
 
 			$("#institution-listings").accordion();			
