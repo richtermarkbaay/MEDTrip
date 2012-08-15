@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureType;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,7 +15,7 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
-//use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -126,8 +128,26 @@ class InstitutionController extends Controller
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $id
 	 */
-	public function addProceduresAction($id)
+	public function addProcedureAction()
 	{
+		$request = $this->getRequest();
+		$id = $request->get('id');
+		$instMedicalProcedureTypeId = $request->get('institution_medical_procedure_type_id');
+
+		$em = $this->getDoctrine()->getEntityManager();
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+		$instMedicalProcedureType = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($instMedicalProcedureTypeId);
+		
+		$form = $this->createForm(new InstitutionMedicalProcedureType(), new InstitutionMedicalProcedure());
+
+		$params = array(
+			'id' => $id,
+			'procedureTypeName' => $instMedicalProcedureType->getMedicalProcedureType()->getName(),
+			'medicalCenterName' => $instMedicalProcedureType->getMedicalProcedureType()->getMedicalCenter()->getName(),
+			'form' => $form->createView()
+		);
+		return $this->render('AdminBundle:Institution:form.procedure.html.twig', $params);
+		
 	}
 
 	/**

@@ -14,21 +14,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class InstitutionMedicalProcedureType extends AbstractType 
 {	
-	private $institutionId;
-
-	public function __construct($institutionId)
-	{
-		$this->institutionId = $institutionId;	
-	}
-	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+    	$status = array(
+    		InstitutionMedicalProcedure::STATUS_ACTIVE => 'active',
+    		InstitutionMedicalProcedure::STATUS_INACTIVE => 'inactive'
+    	);
+
         $builder
-			->add('medical_center', new InstitutionMedicalCenterListType($this->institutionId), array('constraints'=>array(new NotBlank())))
-			->add('procedure_type', 'choice', array('virtual' =>true, 'required'=>true, 'constraints'=>array(new NotBlank())))
 			->add('medical_procedure', 'choice', array('label'=>'Procedure', 'required'=>true, 'constraints'=>array(new NotBlank())))
 			->add('description', 'textarea')
-			->add('status', 'choice', array('choices' => array_flip(InstitutionMedicalProcedure::$STATUS)));
+			->add('status', 'choice', array('choices' => $status));
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
