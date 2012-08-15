@@ -18,17 +18,60 @@
             
             <table style="width:100%;">
                 <tr>
-                    <td style="vertical-align: top; ">
+                    <td style="vertical-align: top;width:100%; ">
             			<!--  start table-content  -->
             			<div id="table-content">
-            			    
             			    {% include '::notice.admin.html.twig' %}
+            			    
+            			    <div id="institution-listings" style="width:100%">
+            			    
+                			    {% for procedureType in institutionMedicalProcedureTypes %}	 
+                    				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
+                    				<div class="procedures">
+                    					<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': procedureType.id}) }}">Add Procedure</a>
+                        				
+                    
+                    				    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+                    	    				<tr>
+                    	    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+                    	    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+                    	    					<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+                    	    				</tr>
+                    
+                    						{% set procedures = procedureType.institutionMedicalProcedures %}
+                    
+                    						{% for procedure in procedures %}
+                    							{% set medicalProcedure = procedure.medicalProcedure %}
+                    							<tr>
+                    								<td>{{ medicalProcedure.name }}</td>
+                    								<td>{{ procedure.description }}</td>  
+                    								<td>
+                    	            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+                    	            					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
+                    	            					<a href="#"
+                    	            						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+                    	            						class="update-status {{ class }} info-tooltip">
+                    	            					</a>
+                    								</td>
+                    							</tr>
+                    						{% else  %}
+                    							<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+                    						{% endfor %}
+                    					</table>
+                    
+                    				</div>
+                    			{% else  %}
+                    				<div class="empty-list">No records yet!</div>
+                    			{% endfor %}
+            			    
+            			    </div>
+                            <!-- end institution-listings  -->            			    
             				
             			</div>
             			<!--  end table-content  -->
         			</td>
         			<td style="vertical-align: top; ">
-        			    {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' %}
+        			    {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {'id': 0, 'showAddListing': true, 'showAddProcedure' : false, 'hideBackToList':true } %}
         			</td>
     			</tr>
 			</table>
@@ -39,4 +82,42 @@
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+			$("#dialog-container").dialog({
+				autoOpen: false,
+				height: 580,
+				width: 700,
+				modal: true,
+				resizable: false,
+				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
+				close: function() {}
+			});
+
+			$("a.add-procedure").click(function() {
+				var elem = $(this);
+				var addProcedureUrl = elem.attr('href');
+
+				$("#dialog-container").empty();
+				$("#dialog-container").dialog({
+					open: function() {
+						$.ajax(addProcedureUrl)
+							.done(function (data) {
+								elem.attr('href', addProcedureUrl);
+								$('#dialog-container').html(data);
+							});
+					},
+				});
+				$("#dialog-container").dialog("open");
+				return false;
+			});
+
+			$("#institution-listings").accordion();			
+		});
+	</script>
 {% endblock %}
