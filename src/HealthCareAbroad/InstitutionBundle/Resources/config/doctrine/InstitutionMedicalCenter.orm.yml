@@ -27,6 +27,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             type: datetime
             nullable: false
             column: date_created
+        status:
+            type: smallint
+            nullable: false
     manyToOne:
         medicalCenter:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter

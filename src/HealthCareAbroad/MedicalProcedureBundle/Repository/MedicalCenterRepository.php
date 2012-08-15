@@ -71,4 +71,22 @@ class MedicalCenterRepository extends EntityRepository
 	     
 	    return $qb;
 	}
+	
+	/**
+	 * Get MedicalCenters that are linked to a specific institution. This is used in the InstitutionMedicalCenterListType
+	 *
+	 * @param Institution $institution
+	 * @return Doctrine\ORM\QueryBuilder
+	 */
+	public function getCreateBuilderForMedicalCentersOfInstitution(Institution $institution)
+	{
+	    $qb = $this->getEntityManager()->createQueryBuilder();
+	    $qb->select('a')
+	        ->from('MedicalProcedureBundle:MedicalCenter', 'a')
+	        ->innerJoin('a.institutionMedicalCenters', 'b')
+	        ->add('where', 'b.institutionId = :institutionId')
+	        ->setParameter('institutionId', $institution->getId());
+	        
+        return $qb;	    
+	}
 }

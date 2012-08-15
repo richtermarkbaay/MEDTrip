@@ -4,6 +4,8 @@ var InstitutionMedicalProcedure = {
 	loadProcedureTypesUrl : "",
 	loadProceduresUrl : "",
 	updateProcedureStatusUrl : "",
+	medicalCenterDropdown: null,
+	medicalProcedureTypeDropdown: null,
 
 	init : function(params)
 	{
@@ -13,9 +15,14 @@ var InstitutionMedicalProcedure = {
 		this.loadProceduresUrl = params.loadProceduresUrl;
 		this.updateProcedureStatusUrl = params.updateProcedureStatusUrl;
 		
-		this.initMedicalCenterOnChangeEvent();
-		this.initMedicalProcedurTypeOnChangeEvent();
+		// init containers
+		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('#institutionMedicalProcedure_medical_center');
+		this.medicalProcedureTypeDropdown = params.medicalProcedureTypeDropdown ? params.medicalProcedureTypeDropdown: $('#institutionMedicalProcedure_procedure_type');
 		
+		this.initMedicalCenterOnChangeEvent();
+		//this.initMedicalProcedurTypeOnChangeEvent();
+		
+		/**
 		$('#procedure_filter').change(function(){
 			window.location = InstitutionMedicalProcedure.manageProceduresUrl + '?filter=' + $(this).val();
 		});
@@ -30,34 +37,51 @@ var InstitutionMedicalProcedure = {
 			if(!$('#institutionMedicalProcedure_procedure_type').val()) {
 				alert('Please choose Procedure Type first.');
 			}
-		})
+		})**/
 	},
 
 	initMedicalCenterOnChangeEvent : function()
 	{
-		$('#institutionMedicalProcedure_medical_center').change(function(){
-			if($(this).val()) {
-				$(this).prev('ul').hide();
+		InstitutionMedicalProcedure.medicalCenterDropdown.change(function(){
+			
+			medicalCenterId = $(this).val() ? $(this).val() : 0;
+			
+			// no medical center id, do not request ajax anymore
+			if (!medicalCenterId) {
+				InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("");
+				return false;
 			}
-			var $procedureTypeElem = $('#institutionMedicalProcedure_procedure_type');
+			
+			InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("<option><i>Loading choices...</i></option>");
+			
+			$.ajax({
+				url: InstitutionMedicalProcedure.loadProcedureTypesUrl,
+				data: {medical_center_id: medicalCenterId},
+				type: 'get',
+				dataType: 'json',
+				success: function(types) {
+					if(!types.length) {
+						InstitutionMedicalProcedure.medicalProcedureTypeDropdown.html("")
+							.attr('disabled', true);
+						return false;
+					}
 
-			$.getJSON(InstitutionMedicalProcedure.loadProcedureTypesUrl, {medical_center_id: $(this).val()}, function(types){
-
-				if(!types.length) {
-					alert('No Procedure Types yet for this center!');
-					return false;
+					var options = InstitutionMedicalProcedure.convertToOptionsString(types);
+					InstitutionMedicalProcedure.medicalProcedureTypeDropdown.html(options)
+						.attr('disabled', false)
+						.change();
+				},
+				error: function() {
+					InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("");
 				}
-
-				var options = InstitutionMedicalProcedure.convertToOptionsString(types);
-				$procedureTypeElem.html(options);
-				$('#institutionMedicalProcedure_procedure_type').change();
 			});
-		});	
+		})
+		.change();	
 	},
-	
+	/**
 	initMedicalProcedurTypeOnChangeEvent : function()
 	{
-		$('#institutionMedicalProcedure_procedure_type').change(function(){
+		InstitutionMedicalProcedure.medicalProcedureTypeDropdown.change(function(){
 			if($(this).val()) {
 				$(this).prev('ul').hide();
 			}
@@ -75,7 +99,7 @@ var InstitutionMedicalProcedure = {
 				$procedureElem.html(options).prev('ul').hide();
 			});
 		});
-	},
+	},**/
 
 	convertToOptionsString : function(data)
 	{
@@ -84,5 +108,5 @@ var InstitutionMedicalProcedure = {
 			options += '<option value="'+ data[i].id +'">' + data[i].name + '</option>';
 		}
 		return options;
-	},
+	}
 }

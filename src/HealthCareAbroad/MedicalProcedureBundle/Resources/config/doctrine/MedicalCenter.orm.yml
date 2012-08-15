@@ -40,5 +40,8 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
         medicalProcedureTypes:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
             mappedBy: medicalCenter
+        institutionMedicalCenters:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            mappedBy: medicalCenter
         
     lifecycleCallbacks: {  }
