@@ -323,10 +323,11 @@ admin_institution_saveMedicalProcedure:
         institution_medical_procedure_type_id: \d+
 
 admin_institution_updateProcedureStatus:
-    pattern:  /admin/institution/update-procedure-status/{institution_medical_procedure_id}
-    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus, institution_medical_procedure_id: ~ }
+    pattern:  /admin/institution/update-procedure-status
+    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus }
     requirements:
-        institution_medical_procedure_id: \d+
+        medical_procedure_id: \d+
+        institution_medical_procedure_type_id: \d+
 
 admin_loadMedicalProcedureTypes:
     pattern:  /admin/medical-center/load-procedure-types
