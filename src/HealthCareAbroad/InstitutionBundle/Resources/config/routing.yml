@@ -93,6 +93,36 @@ institution_medical_center_add_save:
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:    
         _method:  POST
+        
+institution_medicalProcedureType_index:
+    pattern: /institution/listings
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
+    requirements:    
+        _method:  GET
+        
+institution_medicalProcedureType_add:
+    pattern: /institution/listing/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
+    requirements:    
+        _method:  GET
+        
+institution_medicalProcedureType_add_save:
+    pattern: /institution/listing/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
+
+institution_medicalProcedureType_edit:
+    pattern: /institution/listing/edit/{id}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
+    requirements:    
+        _method: GET
+        
+institution_medicalProcedureType_edit_save:
+    pattern: /institution/listing/edit/{id}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
 
 institution_loadMedicalProcedureTypes:
     pattern:  /institution/medical-center/load-procedure-types

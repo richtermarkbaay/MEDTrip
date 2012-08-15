@@ -10,6 +10,9 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected $userEmail = 'test.user@chromedia.com';
     protected $userPassword = '123456';
     protected $formValues = array();
+    
+    protected $loginAbsoluteUri = 'http://localhost/institution/login';
+    protected $loginRelativeUri = '/institution/login';
    
     public static function setUpBeforeClass()
     {
@@ -50,5 +53,15 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
                         'PHP_AUTH_USER' => 'ryan',
                         'PHP_AUTH_PW'   => 'ryanpass',
         ));
+    }
+    
+    /**
+     * Convenience function to get location response headers
+     * 
+     * @param unknown_type $client
+     */
+    protected function getLocationResponseHeader($client)
+    {
+        return $client->getResponse()->headers->get('location');
     }
 }

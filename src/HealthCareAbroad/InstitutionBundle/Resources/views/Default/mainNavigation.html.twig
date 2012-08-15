@@ -7,20 +7,20 @@
         
         <ul class="{{ selectedTab == 'dashboard' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('institution_homepage') }}"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
             </li>
         </ul>
     
         <div class="nav-divider">&nbsp;</div>
                         
-        <ul class="{{ selectedTab == 'medical_procedures' ? 'current' : 'select' }}">
+        <ul class="{{ selectedTab == 'listings' ? 'current' : 'select' }}">
             <li>
-                <a href="#nogo"><b>Medical Procedures</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <a href="{{ path('institution_medicalProcedureType_index') }}"><b>Listings</b><!--[if IE 7]><!--></a><!--<![endif]-->
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'medical_procedures' ? 'show' : '' }}">
+                <div class="select_sub {{ selectedTab == 'listings' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="#nogo">View all</a></li>
-                		<li><a href="#nogo">Add new procedure</a></li>
+                		<li><a href="{{ path('institution_medicalProcedureType_index') }}">View all</a></li>
+                		<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add new listing</a></li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
