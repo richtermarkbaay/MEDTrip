@@ -7,14 +7,13 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\AdminBundle\Entity\Inquiry;
-use HealthCareAbroad\PageBundle\Form\InquiryType as InquiryForm;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InquiryController extends Controller
 {
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_PROCEDURES')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRIES')")
      */
     public function indexAction()
     {
