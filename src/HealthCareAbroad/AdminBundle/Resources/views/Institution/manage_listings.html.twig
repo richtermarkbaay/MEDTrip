@@ -22,26 +22,44 @@
 			{% for procedureType in medicalProcedureTypes %}	 
 				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
 				<div class="procedures">
-					<a class="add-procedure" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" style="float: right;margin-right: 20px;color: #92B22C;text-decoration:underline">add procedure</a>
-					{% if procedureType.institutionMedicalProcedures|length %}
-						<ul style="list-style:none;margin:40px 20px;border-top: 1px solid #ddd;border-left: 1px solid #ddd; border-right: 1px solid #ddd">
-							{% set procedures = procedureType.institutionMedicalProcedures %}
-							{% for procedure in procedures %}
+					<a class="add-procedure button-type" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}">Add Procedure</a>
+    				
+
+				    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+	    				<tr>
+	    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+	    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+	    					<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+	    				</tr>
+
+						{% set procedures = procedureType.institutionMedicalProcedures %}
+
+						{% for procedure in procedures %}
 							{% set medicalProcedure = procedure.medicalProcedure %}
-								<li style="padding: 5px;border-bottom: 1px solid #ddd">
-									<p style="display: inline-block;">{{ medicalProcedure.name }}</p>  
-									<div style="display:inline-block;float:right;margin-right:20px">
-										<a href="#">activate</a>
-										<span class="bar">|</span>
-										<a href="{{ path('admin_institution_editMedicalProcedure', {id:id, institution_medical_procedure_type_id:procedureType.id, medical_procedure_id:medicalProcedure.id} ) }}">edit</a>
-									</div>
-								</li>
-							{% endfor %}
-						</ul>
-					{% endif %}
+							<tr>
+								<td>{{ medicalProcedure.name }}</td>
+								<td>{{ procedure.description }}</td>  
+								<td>
+	            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+	            					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
+	            					<a href="{{ path('admin_institution_updateProcedureStatus', {
+	            								id: id, 
+	            								medical_procedure_id: medicalProcedure.id,
+	            								institution_medical_procedure_type_id: procedureType.id
+	            						}) }}"
+	            						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+	            						class="update-status {{ class }} info-tooltip">
+	            					</a>
+								</td>
+							</tr>
+						{% else  %}
+							<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+						{% endfor %}
+					</table>
+
 				</div>
 			{% else  %}
-				<div class="empty-list" colspan="4">No records yet!</div>
+				<div class="empty-list">No records yet!</div>
 			{% endfor %}
 			</div>
 
