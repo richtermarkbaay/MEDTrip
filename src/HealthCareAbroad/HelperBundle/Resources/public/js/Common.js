@@ -82,8 +82,10 @@ $(function(){
 
 		$.getJSON(url, function(result){
 			if(result) {
-				var status = $.trim(elem.html()) == 'activate';
-				elem.html(status ? 'deactivate' : 'activate');				
+				elem.hasClass('icon-2') 
+					? elem.removeClass('icon-2').addClass('icon-5').attr('title', 'Activate')
+					: elem.removeClass('icon-5').addClass('icon-2').attr('title', 'Delete');
+
 			} else {
 				alert('Unable to activate or deactivate.');
 			}
