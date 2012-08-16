@@ -54,7 +54,8 @@ class InstitutionMedicalCenterRepository extends EntityRepository
        	    "WHERE b.medical_center_id = :medical_center_id ".
    	        "AND b.institution_id = :institution_id ".
    	        "AND a.medical_center_id = b.medical_center_id ".
-	        "AND a.status = :active_medical_procedure_type";
+	        "AND a.status = :active_medical_procedure_type ".
+	        "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_id = :institution_id)";
 	    
 	    $rsm = new ResultSetMapping();
 	    $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
