@@ -9,11 +9,12 @@ services:
             - [setContainer, [@service_container]]
     form.medical_procedure_type_list:
         class: "%services.medical_procedure_type_list%"
-        #calls:
-        #    - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: medicalproceduretype_list }
-            
+    form.medicalCenter_list:
+        class: HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalCenterListType
+        tags:
+            - { name: form.type, alias: medicalCenter_list }
     form.medical_center.type.status_selector:
         class: HealthCareAbroad\MedicalProcedureBundle\Form\MedicalCenterStatusSelectorType
         tags:
