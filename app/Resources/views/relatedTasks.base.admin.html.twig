@@ -14,25 +14,25 @@
 		<div id="related-act-inner">
 		    
 		    {% for eachContent in contents %}
-		    
-		    <div class="{{ cycle(['lines-dotted-short', ''], loop.index) }}"></div>
-		    
-		    <div class="left"><a class="{{ eachContent.class is defined ? eachContent.class : '' }}" href="{{ eachContent.href }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
-			<div class="right">
-				<h5>{{ eachContent.title }}</h5>
-				{{ eachContent.description }}
-				
-				<ul class="greyarrow">
-				{% for subLink in eachContent.links %}
-				    <li>
-				        <a class="{{ subLink.class is defined ? subLink.class : '' }}" href="{{ subLink.href }}">{{ subLink.title }}</a>
-			        </li>
-	            {% endfor %}
-				</ul>
-				
-			</div>
-			<div class="clear"></div>
-			
+    		    {% if eachContent.isVisible is defined and eachContent.isVisible %}
+        		    <div class="{{ cycle(['lines-dotted-short', ''], loop.index) }}"></div>
+        		    
+        		    <div class="left"><a class="{{ eachContent.class is defined ? eachContent.class : '' }}" href="{{ eachContent.href }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
+        			<div class="right">
+        				<h5>{{ eachContent.title }}</h5>
+        				{{ eachContent.description }}
+        				
+        				<ul class="greyarrow">
+        				{% for subLink in eachContent.links %}
+        				    <li>
+        				        <a class="{{ subLink.class is defined ? subLink.class : '' }}" href="{{ subLink.href }}">{{ subLink.title is defined ? subLink.title : 'Click here to visit' }}</a>
+        			        </li>
+        	            {% endfor %}
+        				</ul>
+        				
+        			</div>
+        			<div class="clear"></div>
+			    {% endif %}
 			{% endfor %}
 		</div>
 		<!-- end related-act-inner -->
