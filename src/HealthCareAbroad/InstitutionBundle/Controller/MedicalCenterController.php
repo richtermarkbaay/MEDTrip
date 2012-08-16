@@ -25,13 +25,50 @@ class MedicalCenterController extends Controller
         }
         $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($institution);
         
-        $newInstitutionMedicalCenter = new InstitutionMedicalCenter();
-        $newInstitutionMedicalCenter->setInstitution($institution);
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter);
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
             'institutionMedicalCenters' => $institutionMedicalCenters,
-            'form' => $form->createView()
+        ));
+    }
+    
+    public function editAction(Request $request)
+    {
+        $institutionId = $request->getSession()->get('institutionId');
+        $medicalCenterId = $request->get('medicalCenterId', 0);
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find(array('institutionId' => $institutionId, 'medicalCenterId' => $medicalCenterId));
+        
+        if (!$institutionMedicalCenter) {
+            throw $this->createNotFoundException("Invalid institution medical center.");
+        }
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institutionMedicalCenter->getInstitution(), 'medicalCenterId' => $medicalCenterId));
+        
+        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+            'form' => $form->createView(),
+            'medicalCenter' => $institutionMedicalCenter->getMedicalCenter(),
+            'isNew' => false
+        ));
+    }
+    
+    public function addAction(Request $request)
+    {
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
+        if (!$institution) {
+            throw $this->createNotFoundException('Invalid institution');
+        }
+        
+        $newInstitutionMedicalCenter = new InstitutionMedicalCenter();
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter, array('institution' => $institution));
+        
+        if ($request->isXmlHttpRequest()) {
+            return $this->render('InstitutionBundle:MedicalCenter:modalForm.html.twig', array(
+                'form' => $form->createView()
+            ));
+        }
+        
+        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+            'form' => $form->createView(),
+            'medicalCenter' => null,
+            'isNew' => true
         ));
     }
     
@@ -42,22 +79,14 @@ class MedicalCenterController extends Controller
         }
         
         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        
         if (!$institution) {
             throw $this->createNotFoundException('Invalid institution');
         }
-        
         $newInstitutionMedicalCenter = new InstitutionMedicalCenter();
-        $newInstitutionMedicalCenter->setInstitution($institution);
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter, array('institution' => $institution));
         $form->bind($request);
         
         if ($form->isValid()) {
-            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($form->get('medicalCenter')->getData());
-            if (!$medicalCenter) {
-                throw new \Exception("Invalid MedicalCenter");
-            }
-            $newInstitutionMedicalCenter->setMedicalCenter($medicalCenter);
             
             try {
                 $em = $this->getDoctrine()->getEntityManager();
@@ -66,13 +95,14 @@ class MedicalCenterController extends Controller
             } catch (\Exception $e) {
                 return $this->_errorResponse($e->getMessage(), 500);
             }
-            $request->getSession()->setFlash('success', "Successfully added {$medicalCenter->getName()} medical center.");
-            return $this->redirect($this->generateUrl('institution_medical_center_index'));
+            
+            $request->getSession()->setFlash('success', "Successfully added {$newInstitutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
+            return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
         }
         else {
             if ($request->request->get('fromIndex', false)) {
                 $request->getSession()->setFlash('error', 'Invalid medical center.');
-                return $this->redirect($this->generateUrl('institution_medical_center_index'));   
+                return $this->redirect($this->generateUrl('institution_medicalCenter_index'));   
             }
         }
     }

@@ -1,0 +1,81 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers'%}
+{% block title %}{{ parent() }} {{ isNew ? "Add Medical Center" : "Edit Medical Center"}} {% endblock %}
+{% form_theme form '::form.admin.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>
+    	    {% if isNew %} 
+    	        Add a new medical center
+	        {% else %}
+	            Edit {{ medicalCenter.name }} medical center
+	         {% endif %}       
+        </h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            
+            {# ----- Related tasks ----- #}
+            {% set dashboardTask = {"title": 'Back to dashboard', 'class': 'list-icon', 'description': 'Go back to your dashboard', 'href': path('institution_homepage'), 'links': [{'href': path('institution_homepage')}]} %}
+            {% set medicalCenterIndexUrl = path('institution_medicalCenter_index') %}
+            {% set otherMedicalCenterTask = {title: 'Manage Medical Centers', 'description': 'Go to manage medical centers page to view all your centers', 'href': medicalCenterIndexUrl, 'links': [] } %}
+		    {% if not isNew  %}
+		        {% set addMedicalProcedureTypeUrl = path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenter.id}) %}
+		        {% set addMedicalProcedureTask = {"title": 'Add medical procedure', 'class': 'add-icon', 'description': 'Add a medical procedure type to this center', 'href': addMedicalProcedureTypeUrl, 'links': [{'href': addMedicalProcedureTypeUrl}]} %}
+		        {% set otherMedicalCenterTask = otherMedicalCenterTask | merge ({'links': [{'title': 'Click here to add center', href: path('institution_medicalCenter_add')}, {title: "Click here to manage centers", href: medicalCenterIndexUrl}] }) %}
+		        {% include '::relatedTasks.base.admin.html.twig' with 
+			        {'contents': [addMedicalProcedureTask, otherMedicalCenterTask, dashboardTask]} 
+		        %}
+	        {% else %}
+	            {% set otherMedicalCenterTask = otherMedicalCenterTask | merge ({'links': [{title: "Click here to manage centers", href: medicalCenterIndexUrl}] }) %}
+	            {% include '::relatedTasks.base.admin.html.twig' with 
+			        {'contents': [otherMedicalCenterTask, dashboardTask]} 
+		        %}
+		    {% endif %}
+            {# ----- end Related tasks ----- #}
+            
+			<!--  start table-content  -->
+			<div id="table-content">
+			
+			    {% include '::notice.admin.html.twig' %}
+			
+			    <form novalidate="novalidate" action="{{ isNew ? path('institution_medicalCenter_add') : path('institution_medicalCenter_edit', {'medicalCenterId': medicalCenter.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+    			    
+    			    <!-- start id-form -->
+            		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+            		    
+            		    {{ form_row(form.medicalCenter) }}
+                	    {{ form_row(form.description) }}
+                	    {{ form_rest(form) }}
+                        
+                        <tr>
+                    		<th>&nbsp;</th>
+                    		<td valign="top">
+                    			<input type="submit" name="submit" value="" class="form-submit" />
+                    			<input type="reset" value="" class="form-reset"  />
+                    		</td>
+                    		<td></td>
+                    	</tr>
+                        
+                	</table>
+                	<!-- end id-form  -->
+            	</form>
+			</div>
+			<!--  end table-content  -->
+        			
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

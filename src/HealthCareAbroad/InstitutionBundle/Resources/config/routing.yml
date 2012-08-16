@@ -87,19 +87,31 @@ institution_logout:
     requirements:    
         _method:  GET
         
-institution_medical_center_index:
+institution_medicalCenter_index:
     pattern: /institution/medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
     requirements:    
         _method:  GET
         
-institution_medical_center_delete:
+institution_medicalCenter_delete:
     pattern: /institution/medical-centers/delete/{medicalCenterId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:delete }
     requirements:    
         _method:  GET
         
-institution_medical_center_add_save:
+institution_medicalCenter_add:
+    pattern: /institution/medical-center/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:add }
+    requirements:    
+        _method: GET
+        
+institution_medicalCenter_edit:
+    pattern: /institution/medical-center/edit/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
+    requirements:    
+        _method: GET
+        
+institution_medicalCenter_add_save:
     pattern: /institution/medical-center/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:    

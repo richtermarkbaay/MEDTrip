@@ -19,7 +19,6 @@
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub {{ selectedTab == 'listings' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li><a href="{{ path('institution_medicalProcedureType_index') }}">View all</a></li>
                 		<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add new listing</a></li>
                 	</ul>
                 </div>
@@ -28,6 +27,13 @@
         </ul>
         
         <div class="nav-divider">&nbsp;</div>
+        
+        <ul class="{{ selectedTab == 'medical_centers' ? 'current' : 'select' }}">
+            <li>
+                <a href="{{ path('institution_medicalCenter_index') }}"><b>Medical Centers</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                
+            </li>
+        </ul>
                         
         <ul class="{{ selectedTab == 'staff' ? 'current' : 'select' }}">
             <li>
