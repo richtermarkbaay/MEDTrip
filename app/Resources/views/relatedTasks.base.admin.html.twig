@@ -14,7 +14,8 @@
 		<div id="related-act-inner">
 		    
 		    {% for eachContent in contents %}
-    		    {% if eachContent.isVisible is defined and eachContent.isVisible %}
+		        {% set isVisible = eachContent.isVisible is defined ? eachContent.isVisible : true %}
+    		    {% if isVisible %}
         		    <div class="{{ cycle(['lines-dotted-short', ''], loop.index) }}"></div>
         		    
         		    <div class="left"><a class="{{ eachContent.class is defined ? eachContent.class : '' }}" href="{{ eachContent.href }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
