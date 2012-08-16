@@ -13,14 +13,15 @@
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
-        
         {% block wrappedContent %}
+			
+			{% include '::notice.admin.html.twig' %}
+			
 			<!--  start table-content  -->
-			<div id="table-content">
-			
-			    {% include '::notice.admin.html.twig' %}
-			
-			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
+			    <div style="margin-left:10px;">
+			    <table border="0" width="70%" cellpadding="0" cellspacing="0" class="generic-table mid-size" id="staff-list">
+    			<tr  border="0"><td  border="0"><table border="0">
+    			
     				<tr>
     					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
     					<th class="table-header-repeat line-left minwidth-1"><a href="#">First Name</a></th>
@@ -45,9 +46,16 @@
         				{% set even = even ? false : true %}    
     				{% endfor %}
     				
-				</table>
+                </table>
+                </td><td  border="0">
+                {% block related_tasks %}
+                     {% include 'InstitutionBundle:InstitutionUser:institutionTasks.html.twig' %}
+                {% endblock %}
+                    </td>
+                    </tr>
+                </table>
+                </div>
 				<!--  end staff-list................................... --> 
-			</div>
 			<!--  end table-content  -->
         {% endblock %}
         

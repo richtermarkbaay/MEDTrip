@@ -1,0 +1,72 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} &raquo; User types{% endblock %}
+
+{% set selectedTab = 'staff'%}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>{{ app.session.get('institutionName') }} | List of UserTypes</h1>
+    </div>
+
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+        
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+                        <!--  start table-content  -->
+                        <div id="table-content">
+                        
+                            {% if app.session.hasFlash('notice') %}
+                                {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+                            {% endif %}
+                        
+                            <table style="width:100%;" border="0" cellpadding="0" cellspacing="0" class="generic-table" id="table-list">
+                                <tr>
+                                    <th class="table-header-check"></th>
+                                    <th class="table-header-repeat line-left minwidth-1"> <a href="#">User type</a></th>
+                                    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Permissions</a></th>
+                                    <th class="table-header-options line-left"><a href="#">Options</a> </th>
+                                </tr>
+                                
+                                {% for userType in userTypes %}
+                                    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                                        <td></td>
+                                        <td>{{ userType.name | title }}</td>
+                                        <td>
+                                            <ul style="list-style:decimal; padding: 0 15px;">
+                                                {% for role in userType.adminUserRoles %}
+                                                <li> {{ role.label | title }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td class="options-width">
+                                            <a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>
+                                            <a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+                                        </td>
+                                        
+                                    </tr>    
+                                {% endfor %}
+                                
+                            </table>
+                            <!--  end table-list................................... --> 
+                        </div>
+                        <!--  end table-content  -->
+                    </td>
+                
+            </tr>
+        </table>
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

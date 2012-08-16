@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\AdminBundle\Entity\Inquiry;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+
 class InquiryController extends Controller
 {
 

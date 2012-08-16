@@ -12,4 +12,28 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionUserTypeRepository extends EntityRepository
 {
+	/**
+	 * Get all institution user types that are editable
+	 */
+	function getAllUserTypes() {
+		$userTypes = $this->_em->getRepository('UserBundle:InstitutionUserTypes')->findByStatus(1);
+		$arrUserTypes = array();
+		foreach($userTypes as $each){
+			$arrUserTypes[$each->getId()] = $each->getName();
+		}
+	
+		return $arrUserTypes;
+	}
+	
+	function getUserTypesByInstitutionId($institutionId) {
+		$criteria = array('status'=>1);
+		$userTypes = $this->_em->getRepository('UserBundle:InstitutionUserTypes')->findBy($criteria);
+		$arrUserTypes = array();
+		foreach($userTypes as $each){
+			$arrUserTypes[$each->getId()] = $each->getName();
+		}
+	
+		return $arrUserTypes;
+	}
+	
 }
