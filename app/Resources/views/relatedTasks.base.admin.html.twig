@@ -3,18 +3,20 @@
 	{% for section in contents %}
 	
 		{% set isVisible = section.isVisible is defined ? section.isVisible : true %}
-    	{% if isVisible %}
 
-		<div class="section">
-			<a class="title {{ section.class is defined ? section.class : '' }}" href="{{ section.href }}">{{ section.title }}</a>
-			<p>{{ section.description }}</p>
-			<ul class="links">
-				{% for link in section.links %}
-				    <li>
-				        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title }}</a>
-			        </li>
-	            {% endfor %}
-			</ul>
-		</div>
+    	{% if isVisible %}
+			<div class="section">
+				<a class="title {{ section.class is defined ? section.class : '' }}" href="{{ section.href }}">{{ section.title }}</a>
+				<p>{{ section.description }}</p>
+				<ul class="links">
+					{% for link in section.links %}
+					    <li>
+					        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title }}</a>
+				        </li>
+		            {% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+
 	{% endfor %}
 </div>
