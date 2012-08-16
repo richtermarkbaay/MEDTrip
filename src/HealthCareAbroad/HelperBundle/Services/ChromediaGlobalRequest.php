@@ -53,7 +53,9 @@ class ChromediaGlobalRequest
         // add the authorization header
         $headers['Authorization'] = "Bearer {$this->_generateBearerToken()}";
         $headers['X-ApplicationId'] = $this->appId;
-        $response = $this->client->get($uri,$headers)->send();
+        $response = $this->client->get($uri,$headers)
+            ->setAuth('developers.chromedia', 'cfe-developers', 'Bearer')
+            ->send();
         
         return $response;
     }
@@ -71,7 +73,9 @@ class ChromediaGlobalRequest
         // add the authorization header
         $headers['Authorization'] = "Bearer {$this->_generateBearerToken()}";
         $headers['X-ApplicationId'] = $this->appId;
-        $response = $this->client->post($uri,$headers,$post_data)->send();
+        $response = $this->client->post($uri,$headers,$post_data)
+            ->setAuth('developers.chromedia', 'cfe-developers', 'Bearer')
+            ->send();
         
         return $response;
     }
