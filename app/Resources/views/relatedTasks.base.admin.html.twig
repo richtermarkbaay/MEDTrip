@@ -11,7 +11,7 @@
 				<ul class="links">
 					{% for link in section.links %}
 					    <li>
-					        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title }}</a>
+					        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title is defined ? link.title : 'Click here'}}</a>
 				        </li>
 		            {% endfor %}
 				</ul>
