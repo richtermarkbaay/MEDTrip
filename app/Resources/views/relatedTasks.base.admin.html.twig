@@ -1,45 +1,17 @@
 <!--  start related-activities -->
-<div id="related-activities">
-	
-	<!--  start related-act-top -->
-	<div id="related-act-top">
-	<img src="/images/admin/forms/header_related_act.gif" width="271" height="43" alt="" />
-	</div>
-	<!-- end related-act-top -->
-	
-	<!--  start related-act-bottom -->
-	<div id="related-act-bottom">
-	
-		<!--  start related-act-inner -->
-		<div id="related-act-inner">
-		    
-		    {% for eachContent in contents %}
-		    
-		    <div class="{{ cycle(['lines-dotted-short', ''], loop.index) }}"></div>
-		    
-		    <div class="left"><a class="{{ eachContent.class is defined ? eachContent.class : '' }}" href="{{ eachContent.href }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
-			<div class="right">
-				<h5>{{ eachContent.title }}</h5>
-				{{ eachContent.description }}
-				
-				<ul class="greyarrow">
-				{% for subLink in eachContent.links %}
+<div class="admin-sidebar">
+	<h3 class="heading">{{ headerTitle is defined ? headerTitle : 'Related Activities' }}</h3>
+	{% for section in contents %}
+		<div class="section">
+			<a class="title {{ section.class is defined ? section.class : '' }}" href="{{ section.href }}">{{ section.title }}</a>
+			<p>{{ section.description }}</p>
+			<ul class="links">
+				{% for link in section.links %}
 				    <li>
-				        <a class="{{ subLink.class is defined ? subLink.class : '' }}" href="{{ subLink.href }}">{{ subLink.title }}</a>
+				        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title }}</a>
 			        </li>
 	            {% endfor %}
-				</ul>
-				
-			</div>
-			<div class="clear"></div>
-			
-			{% endfor %}
+			</ul>
 		</div>
-		<!-- end related-act-inner -->
-		<div class="clear"></div>
-	
-	</div>
-	<!-- end related-act-bottom -->
-
+	{% endfor %}
 </div>
-<!-- end related-activities -->
