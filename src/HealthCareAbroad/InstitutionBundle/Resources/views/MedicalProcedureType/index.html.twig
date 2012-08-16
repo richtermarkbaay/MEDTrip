@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% block title %}{{ parent() }} Listing Management {% endblock %}
-{% set selectedTab = 'listings '%}
+{% set selectedTab = 'listings'%}
 
 {% block content %}
 <!-- start content -->
@@ -26,7 +26,7 @@
             			    <div id="institution-listings" style="width:100%">
             			    
                 			    {% for procedureType in institutionMedicalProcedureTypes %}	 
-                    				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
+                    				<h3><a href="#">Listing #{{ procedureType.id }} &raquo; {{ procedureType.medicalProcedureType.name }}</a></h3>
                     				<div class="procedures">
                     					<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': procedureType.id}) }}">Add Procedure</a>
                         				
