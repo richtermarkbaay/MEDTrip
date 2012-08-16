@@ -1,7 +1,10 @@
-<!--  start related-activities -->
 <div class="admin-sidebar">
 	<h3 class="heading">{{ headerTitle is defined ? headerTitle : 'Related Activities' }}</h3>
 	{% for section in contents %}
+	
+		{% set isVisible = section.isVisible is defined ? section.isVisible : true %}
+    	{% if isVisible %}
+
 		<div class="section">
 			<a class="title {{ section.class is defined ? section.class : '' }}" href="{{ section.href }}">{{ section.title }}</a>
 			<p>{{ section.description }}</p>
