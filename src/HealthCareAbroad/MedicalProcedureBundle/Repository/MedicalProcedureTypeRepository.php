@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -26,5 +28,19 @@ class MedicalProcedureTypeRepository extends EntityRepository
 		$query->setMaxResults($limit);
 	
 		return $query->getResult();
-	}	
+	}
+	
+	/**
+	 * Get QueryBuilder for getting active medical procedure types that can be used for dropdown field types
+	 * 
+	 * @return Doctrine\ORM\QueryBuilder
+	 */
+	public function getQueryBuilderForGettingAvailableMedicalProcedureTypes()
+	{
+	    return $this->getEntityManager()->createQueryBuilder()
+            ->add('select', 't')
+            ->add('from', 'MedicalProcedureBundle:MedicalProcedureType t')
+            ->add('where', 't.status = :active')
+	        ->setParameter('active', MedicalProcedureType::STATUS_ACTIVE);
+	}
 }

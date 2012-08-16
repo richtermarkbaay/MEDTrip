@@ -28,6 +28,7 @@
                 			    {% for procedureType in institutionMedicalProcedureTypes %}	 
                     				<h3><a href="#">Listing #{{ procedureType.id }} &raquo; {{ procedureType.medicalProcedureType.name }}</a></h3>
                     				<div class="procedures">
+                    				    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalProcedureType_edit', {'id': procedureType.id}) }}">Edit Listing</a>
                     					<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': procedureType.id}) }}">Add Procedure</a>
                         				
                     

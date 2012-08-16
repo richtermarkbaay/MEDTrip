@@ -8,10 +8,6 @@
     	<h1>{{ app.session.get('institutionName') }} Dashboard</h1>
     </div>
 
-    
-
-
-
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
@@ -23,9 +19,7 @@
             			<!--  start table-content  -->
             			<div id="table-content">
             			    
-            			    {% if app.session.hasFlash('notice') %}
-            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-            		        {% endif %}
+            			    {% include '::notice.admin.html.twig' %}
             			
             			    <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
                 			<h3>Local Heading</h3>

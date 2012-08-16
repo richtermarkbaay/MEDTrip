@@ -12,7 +12,7 @@
     	    {% if newListing %} 
     	        Creat a new listing
 	        {% else %}
-	            Edit listing {{ institutionMedicalProcedureType.medicalProcedureType.name }}
+	            Edit listing {# institutionMedicalProcedureType.medicalProcedureType.name #}
 	         {% endif %}       
         </h1>
     </div>
@@ -107,8 +107,8 @@
             	selectedMedicalCenter: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
             	selectedMedicalProcedureType: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
     			loadProcedureTypesUrl : "{{ path('institution_loadMedicalProcedureTypes') }}",
-    			medicalCenterDropdown: $("#institutionMedicalProcedureTypeForm_medicalCenter"),
-    			medicalProcedureTypeDropdown: $("#institutionMedicalProcedureTypeForm_medicalProcedureType")
+    			medicalCenterDropdown: $("select#institutionMedicalProcedureTypeForm_medicalCenter"),
+    			medicalProcedureTypeDropdown: $("select#institutionMedicalProcedureTypeForm_medicalProcedureType")
     		};
     		InstitutionMedicalProcedure.init(params);
         });

@@ -56,14 +56,4 @@ class MedicalProcedureService
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
 	}
-	
-	
-	// Methods which returns Query Builder
-	public function getMedicalProcedureTypes()
-	{
-		return $this->entityManager->createQueryBuilder()
-		->add('select', 't')
-		->add('from', 'MedicalProcedureBundle:MedicalProcedureType t')
-		->add('where', 't.status = 1');
-	}
 }

@@ -1,17 +1,12 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Form\ListType;
-
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MedicalProcedureTypeListType extends AbstractType 
-{	
-	private $container;
-
-	public function setContainer(ContainerInterface $container = null) {
-		$this->container = $container;
-	}
+{
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {	
@@ -19,7 +14,9 @@ class MedicalProcedureTypeListType extends AbstractType
         	'property' => 'name',
         	'label' => 'Procedure Type',
 			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType',
-			'query_builder' => $this->container->get("services.medical_procedure")->getMedicalProcedureTypes()
+			'query_builder' => function(EntityRepository $er) {
+			    return $er->getQueryBuilderForGettingAvailableMedicalProcedureTypes();
+            }
         ));
     }
    
