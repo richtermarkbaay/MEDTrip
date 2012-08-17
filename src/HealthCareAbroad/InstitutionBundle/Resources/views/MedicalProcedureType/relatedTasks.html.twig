@@ -1,70 +1,26 @@
-<!--  start related-activities -->
-<div id="related-activities">
-	
-	<!--  start related-act-top -->
-	<div id="related-act-top">
-	<img src="/images/admin/forms/header_related_act.gif" width="271" height="43" alt="" />
-	</div>
-	<!-- end related-act-top -->
-	
-	<!--  start related-act-bottom -->
-	<div id="related-act-bottom">
-	
-		<!--  start related-act-inner -->
-		<div id="related-act-inner">
-		    
-		    {% if showAddListing %}
-    		    <div class="left"><a href="{{ path('institution_medicalProcedureType_add') }}"><img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" /></a></div>
-    			<div class="right">
-    				<h5>Add new listing</h5>
-    				Create a new listing
-    				<ul class="greyarrow">
-    					<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add listing</a></li>
-    				</ul>
-    			</div>
-    			
-    			{% if showAddProcedure %}
-    			<div class="clear"></div>
-    			<div class="lines-dotted-short"></div>
-    			{% endif %}
-			{% endif %}
-			
-			
-			{% if showAddProcedure %}
-    			<div class="left">
-    			    <a class="add-procedure" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': id}) }}">
-    			        <img src="/images/admin/forms/icon_plus.gif" width="21" height="21" alt="" />
-			        </a>
-		        </div>
-    			<div class="right">
-    				<h5>Add medical procedure</h5>
-    				Add medical procedure to this listing
-    				<ul class="greyarrow">
-    					<li><a class="add-procedure" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': id}) }}">Add a medical procedure</a></li>
-    				</ul>
-    			</div>
-    			<div class="clear"></div>
-			    <div class="lines-dotted-short"></div>
-			{% endif %}
-			
-			{% if hideBackToList is not defined %}
-			<div class="left"><a href="{{ path('institution_medicalProcedureType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
-			<div class="right">
-				<h5>Manage Listings</h5>
-				Go back to listing management page
-				<ul class="greyarrow">
-					<li><a href="{{ path('institution_medicalProcedureType_index') }}">Back to listing management</a></li>
-				</ul>
-			</div>
-			{% endif %}
-			<div class="clear"></div>
-			
-		</div>
-		<!-- end related-act-inner -->
-		<div class="clear"></div>
-	
-	</div>
-	<!-- end related-act-bottom -->
+{% set addMedicalProcedureTypeTask = {
+    title: 'Add new listing', 
+    isVisible: hideAddListing is defined and hideAddListing ? false: true,
+    class: 'add-icon', 
+    description: 'Add a new medical procedure type that is offered in your institution', 
+    href: path('institution_medicalProcedureType_add'), 
+    links: [{'href': path('institution_medicalProcedureType_add')}]} 
+%}
 
-</div>
-<!-- end related-activities -->
+{% set manageListingsTask = {
+    title: "Listing Management", 
+    isVisible: hideListingManagement is defined and hideListingManagement ? false : true, 
+    description: "Go back to your listings management page to view all your listings.", 
+    href: path('institution_medicalProcedureType_index'),
+    links: [{href: path('institution_medicalProcedureType_index')}]}
+%}
+
+{% set dashboardTask = {
+    title: 'Jump to dashboard', 
+    class: 'list-icon', 
+    description: 'Go back to your dashboard', 
+    href: path('institution_homepage'), 
+    links: [{'href': path('institution_homepage')}]} %}
+{% include '::relatedTasks.base.admin.html.twig' with 
+    {'contents': [addMedicalProcedureTypeTask, manageListingsTask, dashboardTask]} 
+%}

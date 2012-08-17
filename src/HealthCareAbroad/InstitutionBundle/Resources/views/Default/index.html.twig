@@ -13,40 +13,61 @@
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-        <table>
-                <tr>
-                    <td style="vertical-align: top;">
-            			<!--  start table-content  -->
-            			<div id="table-content">
-            			    
-            			    {% include '::notice.admin.html.twig' %}
-            			
-            			    <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
-                			<h3>Local Heading</h3>
-                			
-                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
-                			<br />
-                			<br />
-                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
-                			<br />
-                			<br />
-                			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
-                			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-            			</div>
-            			<!--  end table-content  -->
-        			</td>
-        			<td style="vertical-align: top;">
-        			    {% block relatedTasks %}
-                            {% include 'InstitutionBundle:Default:dashboardRelatedTasks.html.twig' %}
-                        {% endblock %}
-        			</td>
-    			</tr>
-			</table>
+        
+            {# ----- Related tasks ----- #}
+            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
+            {% set manageListingsTask = {title: 'Listing Management', 'description': 'Go to listing management page to view all your listings, or add a new one', 'href': path('institution_medicalProcedureType_index'), 'links': [{title:'Click here to view all listings',href: path('institution_medicalProcedureType_index')}, {title:'Click here to add listing', href: path('institution_medicalProcedureType_add')}] } %}
+		    
+            {% include '::relatedTasks.base.admin.html.twig' with 
+		        {'contents': [manageCentersTask, manageListingsTask]} 
+	        %}
+            {# ----- end Related tasks ----- #}
+        
+			<!--  start table-content  -->
+			<div id="table-content">
+			    
+			    {% include '::notice.admin.html.twig' %}
+			
+			    <div style="width:70%">
+			         <h2>Welcome {{ app.security.getToken().getUser() }}!</h2>
+			        <h3>Alerts</h3>
+    			
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+        			<br />
+        			<br />
+        			<h3>News</h3>
+        			
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+        			<br />
+        			<br />
+        			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+        			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+			    
+			    </div>
+    			
+    			
+			</div>
+			<!--  end table-content  -->
         {% endblock %}
         
     {% endembed %}
