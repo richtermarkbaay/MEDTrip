@@ -1,16 +1,13 @@
 <div id="page-heading"><h3>Add Medical Center</h3></div>
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
-        <form action="{{ path('institution_medicalCenter_add_save') }}" method="POST" class="basic-form">
+        <form novalidate="novalidate" action="{{ path('institution_medicalCenter_add_save') }}" method="POST" class="basic-form">
             <!-- start id-form -->
         	    {{ form_row(form.medicalCenter) }}
         	    {{ form_row(form.description) }}
         	    {{ form_rest(form) }}
         	    
         	    <input type="submit" class="form-submit" name="submit"/>
-        	
-        	{# flag to identify that this form is rendered from manage medical centers page  #}
-        	<input type="hidden" name="fromIndex" value="{{ fromIndex is defined and fromIndex ? 1 : 0 }}" />
         	<!-- end id-form  -->
         </form>
     {% endblock %}

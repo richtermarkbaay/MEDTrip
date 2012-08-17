@@ -23,25 +23,10 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% set dashboardTask = {"title": 'Back to dashboard', 'class': 'list-icon', 'description': 'Go back to your dashboard', 'href': path('institution_homepage'), 'links': [{'href': path('institution_homepage')}]} %}
-            {% set medicalCenterIndexUrl = path('institution_medicalCenter_index') %}
-            {% set otherMedicalCenterTask = {title: 'Manage Medical Centers', 'description': 'Go to manage medical centers page to view all your centers', 'href': medicalCenterIndexUrl, 'links': [] } %}
-		    {% if not isNew  %}
-		        {% set addMedicalProcedureTypeUrl = path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenter.id}) %}
-		        {% set addMedicalProcedureTask = {"title": 'Add medical procedure', 'class': 'add-icon', 'description': 'Add a medical procedure type to this center', 'href': addMedicalProcedureTypeUrl, 'links': [{'href': addMedicalProcedureTypeUrl}]} %}
-		        {% set otherMedicalCenterTask = otherMedicalCenterTask | merge ({'links': [{'title': 'Click here to add center', href: path('institution_medicalCenter_add')}, {title: "Click here to manage centers", href: medicalCenterIndexUrl}] }) %}
-		        {% include '::relatedTasks.base.admin.html.twig' with 
-			        {'contents': [addMedicalProcedureTask, otherMedicalCenterTask, dashboardTask]} 
-		        %}
-	        {% else %}
-	            {% set otherMedicalCenterTask = otherMedicalCenterTask | merge ({'links': [{title: "Click here to manage centers", href: medicalCenterIndexUrl}] }) %}
-	            {% include '::relatedTasks.base.admin.html.twig' with 
-			        {'contents': [otherMedicalCenterTask, dashboardTask]} 
-		        %}
-		    {% endif %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: isNew?true:false,hideAddListing: isNew?true:false, 'medicalCenterId': medicalCenter ? medicalCenter.id : 0} %}
             {# ----- end Related tasks ----- #}
             
-			<!--  start table-content  -->
+            <!--  start table-content  -->
 			<div id="table-content">
 			
 			    {% include '::notice.admin.html.twig' %}

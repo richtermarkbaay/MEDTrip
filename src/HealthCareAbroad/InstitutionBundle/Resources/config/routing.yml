@@ -132,6 +132,12 @@ institution_medicalCenter_edit:
     requirements:    
         _method: GET
         
+institution_medicalCenter_edit_save:
+    pattern: /institution/medical-center/edit/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method: POST
+        
 institution_medicalCenter_add_save:
     pattern: /institution/medical-center/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
