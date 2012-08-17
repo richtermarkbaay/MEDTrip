@@ -14,7 +14,15 @@ class DefaultController extends Controller
     {
         return $this->render('AdminBundle:Default:index.html.twig');
     }
-    
+
+    /**
+     * @PreAuthorize("hasRole('ROLE_ADMIN')")
+     */
+    public function manageHcaDataAction()
+    {
+    	return $this->render('AdminBundle:Default:manageHcaDataDashboard.html.twig');
+    }
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
      */

@@ -124,6 +124,10 @@ admin_tagUpdateStatus:
     requirements:
          id: \d+
 
+admin_manageHcaData:
+    pattern:  /admin/manage-hca-data
+    defaults: { _controller: AdminBundle:Default:manageHcaData }
+
 admin_error403:
     pattern: /admin/access-denied
     defaults: { _controller: AdminBundle:Default:error403 }

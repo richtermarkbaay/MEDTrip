@@ -1,11 +1,11 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-
+{% set selectedTab = 'manageHcaData' %}
 {% block content %}
 <!-- start content -->
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ site_name }} Admin Panel</h1>
+    	<h1>Manage Health Care Abroad Data</h1>
     </div>
     <!-- end page-heading -->
     
@@ -14,11 +14,11 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
-            {% set manageListingsTask = {title: 'Listing Management', 'description': 'Go to listing management page to view all your listings, or add a new one', 'href': path('institution_medicalProcedureType_index'), 'links': [{title:'Click here to view all listings',href: path('institution_medicalProcedureType_index')}, {title:'Click here to add listing', href: path('institution_medicalProcedureType_add')}] } %}
+            {% set manageCentersTask = {"title": 'Medical Center Management', 'class': 'list-icon', 'description': 'View all available Medical Centers or add new one.', 'href': path('admin_medicalCenter_index'), 'links': [{title:'View Medical Centers',href: path('admin_medicalCenter_index')}, {title:'Add Medical Center', href: path('admin_medicalCenter_add')}]} %}
+            {% set manageProcedureTypesTasks = {title: 'Procedure Type Management', 'description': 'View all available Medical Procedure Types or add new one.', 'href': path('admin_procedureType_index'), 'links': [{title:'View Medical Procedure Types',href: path('admin_procedureType_index')}, {title:'Add Medical Procedure Type', href: path('admin_procedureType_add')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'contents': [manageCentersTask, manageListingsTask]} 
+		        {'contents': [manageCentersTask, manageProcedureTypesTasks]} 
 	        %}
         
 			<div id="table-content" style="width: 70%">
