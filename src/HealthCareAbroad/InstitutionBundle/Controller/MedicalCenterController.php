@@ -95,7 +95,7 @@ class MedicalCenterController extends Controller
             $institutionMedicalCenter = new InstitutionMedicalCenter();
             $isNew = true;
         }
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institution));
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institution, 'medicalCenterId' => $medicalCenterId));
         $form->bind($request);
         
         if ($form->isValid()) {
@@ -108,7 +108,7 @@ class MedicalCenterController extends Controller
                 return $this->_errorResponse($e->getMessage(), 500);
             }
             
-            $request->getSession()->setFlash('success', "Successfully added {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
+            $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
             return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
         }
         else {
