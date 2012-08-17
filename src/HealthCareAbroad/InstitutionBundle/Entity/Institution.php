@@ -9,10 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-	static $STATUS = array('active'=>1, 'inactive' => 0);
-	
-	
-    /**
+    const ACTIVE = 1;
+    
+    const INACTIVE = 2;
+    
+    const UNAPPROVED = 4;
+    
+    const APPROVED = 8;
+    
+    const SUSPENDED = 16;
+    
+	/**
      * @var integer $id
      */
     private $id;
@@ -87,6 +94,84 @@ class Institution
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
+    
+    //---- status operations
+    public function setAsActive()
+    {
+        $this->status = self::ACTIVE;
+    }
+    
+    public function setAsInactive()
+    {
+        $this->status = self::INACTIVE;
+    }
+    
+    public function setAsUnapproved()
+    {
+        $this->status = self::ACTIVE + self::UNAPPROVED;   
+    }
+    
+    public function setAsApproved()
+    {
+        $this->status = self::ACTIVE + self::APPROVED;
+    }
+    
+    public function setAsSuspended()
+    {
+        $this->status = self::ACTIVE + self::SUSPENDED;
+    }
+    
+    /**
+     * Check if this is institution is active
+     * 
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return self::ACTIVE == ($this->status & self::ACTIVE);
+    }
+    
+    /**
+     * Check if the institution is inactive
+     * 
+     * @return boolean
+     */
+    public function isInactive()
+    {
+        return $this->status == self::INACTIVE;
+    }
+    
+    /**
+     * Check if the institution is unapproved
+     *
+     * @return boolean
+     */
+    public function isUnapproved()
+    {
+        return $this->status == self::ACTIVE + self::UNAPPROVED;
+    }
+    
+    /**
+     * Check if the institution is approved
+     *
+     * @return boolean
+     */
+    public function isApproved()
+    {
+        return $this->status == self::ACTIVE + self::APPROVED;
+    }
+    
+    /**
+     * Check if the institution is suspended
+     *
+     * @return boolean
+     */
+    public function isSuspended()
+    {
+        return $this->status == self::ACTIVE + self::SUSPENDED;
+    }
+    //---- end status operations
+    
     
     /**
      * Get id
