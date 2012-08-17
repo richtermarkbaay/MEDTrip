@@ -1,10 +1,25 @@
- <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
 	<tr>
-	    <th class="table-header-check"></th>
-		<th class="table-header-repeat line-left minwidth-1"> <a href="#">Medical Procedure</a></th>
-		<th class="table-header-options line-left"><a href="#">Options</a> </th>
+		<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+		<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+		<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
 	</tr>
-	{% for procedure in institutionMedicalProcedures %}
-	    
+
+    {% for procedure in procedures %}
+		{% set medicalProcedure = procedure.medicalProcedure %}
+		<tr>
+			<td>{{ medicalProcedure.name }}</td>
+			<td>{{ procedure.description }}</td>  
+			<td>
+				<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+				{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
+				<a href="#"
+					title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+					class="update-status {{ class }} info-tooltip">
+				</a>
+			</td>
+		</tr>
+	{% else  %}
+		<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
 	{% endfor %}
 </table>

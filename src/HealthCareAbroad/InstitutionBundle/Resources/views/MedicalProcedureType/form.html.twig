@@ -54,6 +54,15 @@
                 	</table>
                 	<!-- end id-form  -->
             	</form>
+            	
+            	{% if not newListing %}
+                	<div class="divider" style="margin: 15px 0px; border-top: 1px dashed #aaa;"></div>
+                	
+                	<div class="procedures">
+                	    <h3>Medical Procedures</h3>
+                	    {% include 'InstitutionBundle:MedicalProcedureType:listingProcedures.html.twig' with {'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
+                	</div>
+            	{% endif %}
 			</div>
 			<!--  end table-content  -->
         {% endblock %}
