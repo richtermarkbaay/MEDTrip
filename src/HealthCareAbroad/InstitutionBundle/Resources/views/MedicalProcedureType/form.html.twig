@@ -60,6 +60,9 @@
                 	
                 	<div class="procedures">
                 	    <h3>Medical Procedures</h3>
+                	    
+                	    <a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
+                	    
                 	    {% include 'InstitutionBundle:MedicalProcedureType:listingProcedures.html.twig' with {'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
                 	</div>
             	{% endif %}
