@@ -14,3 +14,11 @@ services:
           - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: institution_list }
+
+     ##listeners
+    listener.user.institution.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+        - { name: kernel.event_listener, event: event.institution.create, method: onCreate }

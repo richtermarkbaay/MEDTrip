@@ -19,6 +19,7 @@ class Institution
     
     const SUSPENDED = 16;
     
+    const USER_TYPE = "SUPER_ADMIN";
 	/**
      * @var integer $id
      */

@@ -23,8 +23,6 @@ class InstitutionUserTypeController extends Controller
     		$session = $this->getRequest()->getSession();
     		$institutionId = $session->get('institutionId');
     	}
-    	//$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-    	
     	$userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($institutionId);
     	
         return $this->render('InstitutionBundle:InstitutionUserType:index.html.twig', array(

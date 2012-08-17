@@ -10,6 +10,9 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
+
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,8 +105,20 @@ class InstitutionController extends Controller
            	    
            	    $institution = $this->get('services.institution')->createInstitution($institution);
            	    
+           	    // create Institution event and dispatch
+           	    $event = new CreateInstitutionEvent($institution);
+           	    $institutionUserType = $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
+           	    
+           	    $this->get('services.institution_user_type')->create();
+           	    $this->get('services.institution_user')->create();
+           	    $this->get('services.mailer')->send();
+           	    
+           	    var_dump($institutionUserType);exit;
+           	    $data->bindRequest($this->getRequest());
+           	    var_dump($data->get("institution"));exit;
+           	    
            	    //TODO: get the matching institution user type
-           	    $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find('1');
+           	    //$institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find('1');
            	    	
            	    // create a institution user and accounts on global
            	    $user = new InstitutionUser();
