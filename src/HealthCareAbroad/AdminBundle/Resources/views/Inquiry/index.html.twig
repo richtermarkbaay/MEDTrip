@@ -21,7 +21,7 @@
                 <th class="table-header-options actions line-left"><a href="">Email</a></th>
                 <th class="table-header-options actions line-left"><a href="">Date Created</a></th>
             </tr>
-            
+                
             {% for inquiry in inquiries %}
                 <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
                     <td align="center">{{ inquiry.firstName }} {{ inquiry.lastName }}</td>

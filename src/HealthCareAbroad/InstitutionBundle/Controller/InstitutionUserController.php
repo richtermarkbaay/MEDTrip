@@ -36,6 +36,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InstitutionUserController extends Controller
 {
+	public function settingsAction()
+	{
+		return $this->render('AdminBundle:Default:settings.html.twig');
+	}
     public function loginAction()
     {
         $user = new InstitutionUser();
@@ -132,6 +136,7 @@ class InstitutionUserController extends Controller
     }
     public function inviteAction()
     {
+    	
         $institution = $this->get('services.institution')->getCurrentInstitution();
         $institutionUserInvitation = new InstitutionUserInvitation();
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
@@ -208,7 +213,6 @@ class InstitutionUserController extends Controller
         $institution = $institutionService->getCurrentInstitution();
         
         $users = $institutionService->getAllStaffOfInstitution($institution);
-        
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
     

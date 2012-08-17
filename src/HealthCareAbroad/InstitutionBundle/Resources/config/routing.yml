@@ -59,11 +59,43 @@ institution_invite_user:
         _method:  GET|POST
 
 institution_view_all_staff:
-    pattern: /institution/view-all-staff
+    pattern: /institution/staff
     defaults: {_controller: InstitutionBundle:InstitutionUser:viewAll}
     requirements:
+
+institution_userType_index:
+    pattern: /institution/staff/designations
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
+    requirements:    
+        _method:  GET
+
+institution_userType_add:
+    pattern: /institution/staff/add
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:add }
+    requirements:    
+        _method:  GET
+
+institution_userType_add_save:
+    pattern: /institution/staff/add
+    defaults: { _controller: AdminBundle:AdminUserType:save }
+    requirements:    
+        _method:  POST
+        id: \d+
+        
+institution_userType_edit:
+    pattern: /institution/staff/edit/{id}
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:edit }
+    requirements:    
+        _method:  GET
         
 
+institution_userType_edit_save:
+    pattern: /institution/staff/edit/{id}
+    defaults: { _controller: AdminBundle:AdminUserType:save }
+    requirements:    
+        _method:  POST
+        id: \d+
+        
 institution_login:
     pattern:  /institution/login
     defaults: { _controller: InstitutionBundle:InstitutionUser:login }
@@ -99,6 +131,12 @@ institution_medicalCenter_edit:
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
     requirements:    
         _method: GET
+        
+institution_medicalCenter_edit_save:
+    pattern: /institution/medical-center/edit/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method: POST
         
 institution_medicalCenter_add_save:
     pattern: /institution/medical-center/add

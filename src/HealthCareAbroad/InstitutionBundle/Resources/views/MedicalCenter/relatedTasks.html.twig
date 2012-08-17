@@ -1,0 +1,38 @@
+{% set addMedicalProcedureTypeTask = {
+    title: 'Add new listing', 
+    isVisible: hideAddListing is defined and hideAddListing ? false: true,
+    class: 'add-icon', 
+    description: medicalCenterId is defined and medicalCenterId ? 'Create a new listing for this medical center': 'Add a new listing', 
+    href: path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0}), 
+    links: [{title: 'Click here to add listing', 'href': path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})}]} 
+%}
+
+{% set addMedicalCenterTask = {
+    title: "Add Medical Center", 
+    class: 'add-medical-center add-icon',
+    isVisible: hideAddMedicalCenter is defined and hideAddMedicalCenter ? false : true, 
+    description: "Add a new medical center that is available in your institution", 
+    href: path('institution_medicalCenter_add'),
+    links: [{title:'Click here to add a medical center',href: path('institution_medicalCenter_add')}]}
+%}
+
+{% set manageMedicalCentersTask = {
+    title: "Manage Medical Centers", 
+    isVisible: hideManageMedicalCenters is defined and hideManageMedicalCenters ? false : true, 
+    description: "Go back to manage medical centers page to view all your available centers.", 
+    href: path('institution_medicalCenter_index'),
+    links: [{title:'Click here to go to manage medical centers',href: path('institution_medicalCenter_index')}]}
+%}
+
+{% set dashboardTask = {
+    title: 'Jump to dashboard', 
+    class: 'list-icon', 
+    description: 'Go back to your dashboard', 
+    href: path('institution_homepage'), 
+    links: [{'href': path('institution_homepage')}]} 
+%}
+
+{% include '::relatedTasks.base.admin.html.twig' with 
+    {'contents': [addMedicalCenterTask, addMedicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
+%}
+            
