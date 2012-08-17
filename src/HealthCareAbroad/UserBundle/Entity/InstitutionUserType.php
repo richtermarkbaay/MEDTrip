@@ -9,6 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUserType
 {
+	/**
+	 * User types that are built-in to the system and therefore not editable
+	 */
+	const STATUS_BUILT_IN = 1;
+	
+	/**
+	 * User types that are active
+	 */
+	const STATUS_ACTIVE = 2;
+	
+	/**
+	 * User types that are inactive
+	 */
+	const STATUS_INACTIVE = 4;
     /**
      * @var integer $id
      */

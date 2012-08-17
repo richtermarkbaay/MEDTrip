@@ -70,11 +70,32 @@ institution_userType_index:
         _method:  GET
 
 institution_userType_add:
-    pattern: /institution/user-types/add
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
+    pattern: /institution/staff/add
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:add }
     requirements:    
         _method:  GET
 
+institution_userType_add_save:
+    pattern: /institution/staff/add
+    defaults: { _controller: AdminBundle:AdminUserType:save }
+    requirements:    
+        _method:  POST
+        id: \d+
+        
+institution_userType_edit:
+    pattern: /institution/staff/edit/{id}
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:edit }
+    requirements:    
+        _method:  GET
+        
+
+institution_userType_edit_save:
+    pattern: /institution/staff/edit/{id}
+    defaults: { _controller: AdminBundle:AdminUserType:save }
+    requirements:    
+        _method:  POST
+        id: \d+
+        
 institution_login:
     pattern:  /institution/login
     defaults: { _controller: InstitutionBundle:InstitutionUser:login }

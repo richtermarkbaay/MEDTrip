@@ -1,7 +1,7 @@
 <?php
 
 namespace HealthCareAbroad\UserBundle\Repository;
-
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -13,27 +13,16 @@ use Doctrine\ORM\EntityRepository;
 class InstitutionUserTypeRepository extends EntityRepository
 {
 	/**
-	 * Get all institution user types that are editable
+	 * Get all admin user types that are editable
 	 */
-	function getAllUserTypes() {
-		$userTypes = $this->_em->getRepository('UserBundle:InstitutionUserTypes')->findByStatus(1);
-		$arrUserTypes = array();
-		foreach($userTypes as $each){
-			$arrUserTypes[$each->getId()] = $each->getName();
-		}
-	
-		return $arrUserTypes;
+	public function getAllEditable($userTypeId)
+	{
+		$dql = "SELECT a FROM UserBundle:InstitutionUserType a WHERE a.institution = :userId AND a.status = :active OR a.status = :inactive ";
+		
+		$query = $this->getEntityManager()->createQuery($dql)
+		->setParameter('active', InstitutionUserType::STATUS_ACTIVE)
+		->setParameter('inactive', InstitutionUserType::STATUS_INACTIVE)
+		->setParameter('userId', $userTypeId);
+		return $query->getResult();
 	}
-	
-	function getUserTypesByInstitutionId($institutionId) {
-		$criteria = array('status'=>1);
-		$userTypes = $this->_em->getRepository('UserBundle:InstitutionUserTypes')->findBy($criteria);
-		$arrUserTypes = array();
-		foreach($userTypes as $each){
-			$arrUserTypes[$each->getId()] = $each->getName();
-		}
-	
-		return $arrUserTypes;
-	}
-	
 }

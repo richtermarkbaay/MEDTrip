@@ -19,7 +19,7 @@
         
             <table style="width:100%;">
                 <tr>
-                    <td style="vertical-align: top; ">
+                    <td style="vertical-align: top;width:100%; ">
                         <!--  start table-content  -->
                         <div id="table-content">
                         
@@ -40,14 +40,10 @@
                                         <td></td>
                                         <td>{{ userType.name | title }}</td>
                                         <td>
-                                            <ul style="list-style:decimal; padding: 0 15px;">
-                                                {% for role in userType.adminUserRoles %}
-                                                <li> {{ role.label | title }}</li>
-                                                {% endfor %}
-                                            </ul>
+                                            
                                         </td>
                                         <td class="options-width">
-                                            <a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>
+                                            <a href="{{ path('institution_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>
                                             <a href="#" title="Delete" class="icon-2 info-tooltip"></a>
                                         </td>
                                         
@@ -59,9 +55,11 @@
                         </div>
                         <!--  end table-content  -->
                     </td>
-                
-            </tr>
-        </table>
+                    <td style="vertical-align: top;width:100%; ">
+                        {% include 'InstitutionBundle:InstitutionUserType:relatedTasks.html.twig' %}
+                    </td>
+                </tr>
+            </table>
         {% endblock %}
         
     {% endembed %}

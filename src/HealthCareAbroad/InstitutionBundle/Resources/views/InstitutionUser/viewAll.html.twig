@@ -13,50 +13,56 @@
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
+        
         {% block wrappedContent %}
+			<table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top;width:100%; ">
+                        <!--  start table-content  -->
+                        <div id="table-content">
+			                 
+			                {% if app.session.hasFlash('notice') %}
+                                {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+                            {% endif %}
 			
-			{% include '::notice.admin.html.twig' %}
-			
-			<!--  start table-content  -->
-			    <div style="margin-left:10px;">
-			    <table border="0" width="70%" cellpadding="0" cellspacing="0" class="generic-table mid-size" id="staff-list">
-    			<tr  border="0"><td  border="0"><table border="0">
-    			
-    				<tr>
-    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
-    					<th class="table-header-repeat line-left minwidth-1"><a href="#">First Name</a></th>
-    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Middle Name</a></th>
-    					<th class="table-header-repeat line-left"><a href="#">Email</a></th>
-    					<th class="table-header-options line-left"><a href="#">Options</a> </th>
-    				</tr>
-    				
-    				{% set even = false %}
-    				{% for staff in users %}
-    				    <tr class="{{ even ? 'alternate-row' : ''}}">
-        					<td>{{ staff.lastName | title }}</td>
-        					<td>{{ staff.firstName | title }}</td>
-        					<td>{{ staff.middleName | title }}</td>
-        					<td>{{ staff.email }}</td>
-        					<td class="options-width">
-            					<a href="{{ path('institution_editAccount', {accountId: staff.accountId }) }}" title="Edit" class="icon-1 info-tooltip"></a>
-            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
-            					<a href="#" title="Activate {{ staff.fullName | title}}" class="icon-5 info-tooltip"></a>
-        					</td>
-        				</tr>
-        				{% set even = even ? false : true %}    
-    				{% endfor %}
-    				
-                </table>
-                </td><td  border="0">
-                {% block related_tasks %}
-                     {% include 'InstitutionBundle:InstitutionUser:institutionTasks.html.twig' %}
-                {% endblock %}
+                			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
+                    				<tr>
+                    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
+                    					<th class="table-header-repeat line-left minwidth-1"><a href="#">First Name</a></th>
+                    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Middle Name</a></th>
+                    					<th class="table-header-repeat line-left"><a href="#">Email</a></th>
+                    					<th class="table-header-options line-left"><a href="#">Options</a> </th>
+                    				</tr>
+                    				
+                    				{% set even = false %}
+                    				{% for staff in users %}
+                    				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                        					<td>{{ staff.lastName | title }}</td>
+                        					<td>{{ staff.firstName | title }}</td>
+                        					<td>{{ staff.middleName | title }}</td>
+                        					<td>{{ staff.email }}</td>
+                        					<td class="options-width">
+                            					<a href="{{ path('institution_editAccount', {accountId: staff.accountId }) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
+                            					<a href="#" title="Activate {{ staff.fullName | title}}" class="icon-5 info-tooltip"></a>
+                        					</td>
+                        				</tr>
+                        				{% set even = even ? false : true %}    
+                    				{% endfor %}
+                    				
+                                </table>
+                                <!--  end staff-list................................... --> 
+                                
+                          </div>
+                          <!--  end table-content  -->
+                          
                     </td>
-                    </tr>
-                </table>
-                </div>
-				<!--  end staff-list................................... --> 
-			<!--  end table-content  -->
+                    <td style="vertical-align: top;width:100%; ">
+                        {% include 'InstitutionBundle:InstitutionUser:relatedTasks.html.twig' %}
+                    </td>
+                </tr>
+            </table>
+                               
         {% endblock %}
         
     {% endembed %}

@@ -41,7 +41,6 @@ security:
 
         institution_secured_area:
             pattern:    ^/institution
-            access_denied_url: /admin/access-denied
             form_login:
                 login_path: /institution/login
             #logout:
