@@ -23,11 +23,11 @@
         {% block wrappedContent %}
         
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideAddListing: newListing?true:false} %}
+            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideAddListing: newListing?true:false, medicalProcedureTypeId: institutionMedicalProcedureType.id } %}
             {# ----- end Related tasks ----- #}
 			
 			<!--  start table-content  -->
-			<div id="table-content">
+			<div id="table-content" style="width:75%;">
 			
 			    {% include '::notice.admin.html.twig' %}
 			

@@ -34,10 +34,10 @@
         				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
         				        <td></td>
             					<td><a href="{{ path('institution_medicalCenter_edit', {'medicalCenterId': center.medicalCenterId}) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
-            					<td>{{ center.description | title }}</td>
+            					<td>{{ center.description }}</td>
             					<td class="options-width">
-                					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
-                					<a href="#" title="Delete {{ center.medicalCenter | title }}" class="icon-2 info-tooltip" onclick="return confirm('Are you sure you want to remove {{ center.medicalCenter | title }}?')"></a>
+                					[<a href="{{ path('institution_medicalCenter_edit', {'medicalCenterId': center.medicalCenterId}) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
+                					[<a href="{{ path('institution_medicalProcedureType_add')}}" title="Add listing for {{ center.medicalCenter | title }}">Add Listing</a>]
             					</td>
             				</tr>
         				{% else %}

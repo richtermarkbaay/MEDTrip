@@ -7,6 +7,15 @@
     links: [{'href': path('institution_medicalProcedureType_add')}]} 
 %}
 
+{% set addMedicalProcedureTask = {
+    title: 'Add Medical Procedure', 
+    isVisible: hideAddMedicalProcedure is defined and hideAddMedicalProcedure ? false: medicalProcedureTypeId is defined and medicalProcedureTypeId ,
+    class: 'add-procedure add-icon', 
+    description: 'Add a medical procedure for this listing', 
+    href: path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0}), 
+    links: [{title:'Click here to add a medical procedure', class: 'add-procedure','href': path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0})}]} 
+%}
+
 {% set manageListingsTask = {
     title: "Listing Management", 
     isVisible: hideListingManagement is defined and hideListingManagement ? false : true, 
@@ -20,7 +29,9 @@
     class: 'list-icon', 
     description: 'Go back to your dashboard', 
     href: path('institution_homepage'), 
-    links: [{'href': path('institution_homepage')}]} %}
+    links: [{'href': path('institution_homepage')}]} 
+%}
+
 {% include '::relatedTasks.base.admin.html.twig' with 
-    {'contents': [addMedicalProcedureTypeTask, manageListingsTask, dashboardTask]} 
+    {'contents': [addMedicalProcedureTypeTask, addMedicalProcedureTask, manageListingsTask, dashboardTask]} 
 %}
