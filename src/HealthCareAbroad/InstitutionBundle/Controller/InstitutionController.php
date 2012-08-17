@@ -22,14 +22,14 @@ class InstitutionController extends Controller
 	{
 		
 		$institutionId = $this->getRequest()->get('institutionId', null);
-		
+		echo $institutionId;exit;
 		if (!$institutionId){
 			// no account id in parameter, editing currently logged in account
 			$session = $this->getRequest()->getSession();
 			$institutionId = $session->get('institutionId');
 		}
 		
-		//TODO: get the matching institution user type
+		//TODO: get the matching institution
 		$institution = new Institution();
 		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 		
