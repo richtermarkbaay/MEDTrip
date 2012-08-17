@@ -10,9 +10,12 @@
 				<p>{{ section.description }}</p>
 				<ul class="links">
 					{% for link in section.links %}
-					    <li>
-					        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title is defined ? link.title : 'Click here'}}</a>
-				        </li>
+						{% set isVisible = link.isVisible is defined ? link.isVisible : true %}
+						{% if isVisible %}
+						    <li>
+						        <a class="{{ link.class is defined ? link.class : '' }}" href="{{ link.href }}">{{ link.title is defined ? link.title : 'Click here'}}</a>
+					        </li>
+				        {% endif %}
 		            {% endfor %}
 				</ul>
 			</div>

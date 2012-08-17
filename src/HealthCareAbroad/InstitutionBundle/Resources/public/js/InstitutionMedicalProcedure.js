@@ -18,8 +18,8 @@ var InstitutionMedicalProcedure = {
 		this.updateProcedureStatusUrl = params.updateProcedureStatusUrl;
 		
 		// init containers
-		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('#institutionMedicalProcedure_medical_center');
-		this.medicalProcedureTypeDropdown = params.medicalProcedureTypeDropdown ? params.medicalProcedureTypeDropdown: $('#institutionMedicalProcedure_procedure_type');
+		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('select#institutionMedicalProcedureTypeForm_medicalCenter');
+		this.medicalProcedureTypeDropdown = params.medicalProcedureTypeDropdown ? params.medicalProcedureTypeDropdown: $('select#institutionMedicalProcedureTypeForm_medicalProcedureType');
 		this.selectedMedicalCenter = params.selectedMedicalCenter ? params.selectedMedicalCenter : 0;
 		this.selectedMedicalProcedureType = params.selectedMedicalProcedureType ? params.selectedMedicalProcedureType : 0;
 		

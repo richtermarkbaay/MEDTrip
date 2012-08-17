@@ -132,7 +132,8 @@ class MedicalCenterController extends Controller
 
 	function loadProcedureTypesAction(Request $request)
 	{
-	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
+		$institutionId = $request->get('id', $request->getSession()->get('institutionId')); 
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 	    if (!$institution) {
 	        throw $this->createNotFoundException('Invalid institution');
 	    }

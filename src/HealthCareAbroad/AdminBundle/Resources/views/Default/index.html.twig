@@ -15,9 +15,8 @@
 			<!--  start table-content  -->
 			<div id="table-content">
 			    
-			    {% if app.session.hasFlash('notice') %}
-			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-		        {% endif %}
+
+		        {% include '::notice.admin.html.twig' %}
 			
 			    <h2>Sub Heading </h2>
     			<h3>Local Heading</h3>
