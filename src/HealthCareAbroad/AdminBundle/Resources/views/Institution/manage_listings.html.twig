@@ -3,7 +3,7 @@
 {% block content %}
 	<div id="content">
 
-		<div id="page-heading"><h3>List of Listings</h3></div>
+		<div id="page-heading"><h3>{{ institutionName }} Listing Management</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -17,14 +17,30 @@
 				</select>
 			</div>
 			
+			{% include '::relatedTasks.base.admin.html.twig' with 
+				{'contents': [
+					{
+						'title': 'Add new listing', 
+						'description': 'Create a new listing',
+						'class' : 'add-icon',
+						'href': path('admin_institution_addListing', {id:id}), 
+						'links': [{
+							'title' : 'Add listing',
+							'href': path('admin_institution_addListing', {id:id})
+						}]
+					}
+    			]} 
+			%}
+
 			<div id="institution-listings" style="width:70%">
 
 			{% for procedureType in medicalProcedureTypes %}	 
-				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
+				<h3>
+					<a href="#">{{ procedureType.medicalProcedureType.name }}</a>
+				</h3>
 				<div class="procedures">
 					<a class="add-procedure button-type" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}">Add Procedure</a>
-    				
-
+					<a href="{{ path('admin_institution_editListing', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" class="button-type">Edit Listing</a>
 				    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
 	    				<tr>
 	    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
@@ -102,7 +118,7 @@
 				$("#dialog-container").dialog("open");
 			});
 
-			$("#institution-listings").accordion();			
+			$("#institution-listings").accordion();
 		});
 	</script>
 {% endblock %}

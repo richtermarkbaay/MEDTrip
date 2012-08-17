@@ -1,0 +1,130 @@
+admin_institution_index:
+    pattern:  /admin/institutions
+    defaults: { _controller: AdminBundle:Institution:index }
+
+admin_institution_updateStatus:
+    pattern:  /admin/institution/{id}/update-status
+    defaults: { _controller: AdminBundle:Institution:updateStatus }
+    requirements:
+        id: \d+
+
+
+# Manage Centers #
+admin_institution_manageCenters:
+    pattern:  /admin/institution/{id}/manage-centers
+    defaults: { _controller: AdminBundle:Institution:manageCenters }
+    requirements:
+         id: \d+
+
+admin_institution_addMedicalCenter:
+    pattern:  /admin/institution/{id}/add-center
+    defaults: { _controller: AdminBundle:Institution:addMedicalCenter }
+    requirements:
+        id: \d+
+        
+admin_institution_saveMedicalCenter:
+    pattern:  /admin/institution/{id}/save-center
+    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
+    requirements:
+        id: \d+
+
+admin_institution_updateMedicalCenterStatus:
+    pattern:  /admin/institution/{id}/manage-centers/update-status
+    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
+    requirements:
+         id: \d+
+         medical_center_id: \d+
+# End of Manage Centers Routes #
+
+
+# Manage Listings Routes #
+admin_institution_manageListings:
+    pattern:  /admin/institution/{id}/manage-listings
+    defaults: { _controller: AdminBundle:Institution:manageProcedureTypes }
+    requirements:
+         id: \d+
+
+admin_institution_addListing:
+    pattern:  /admin/institution/{id}/add-listing
+    defaults: { _controller: AdminBundle:Institution:addProcedureType }
+    requirements:
+        id: \d+
+        _method: GET
+
+admin_institution_createListing:
+    pattern:  /admin/institution/{id}/add-listing
+    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_institution_editListing:
+    pattern:  /admin/institution/{id}/edit-listing
+    defaults: { _controller: AdminBundle:Institution:editProcedureType }
+    requirements:
+        id: \d+
+        institution_medical_procedure_type_id: \d+
+        _method: GET         
+
+admin_institution_updateListing:
+    pattern:  /admin/institution/{id}/edit-listing
+    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
+    requirements:
+         id: \d+
+         institution_medical_procedure_type_id: \d+
+         _method: POST
+
+admin_institution_saveListing:
+    pattern:  /admin/institution/{id}/save-listing
+    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
+    requirements:
+        id: \d+
+        _method: POST
+# End of Manage Listings Routes #
+
+
+# Medical Procedure Routes #
+admin_institution_addMedicalProcedure:
+    pattern:  /admin/institution/{id}/add-procedure
+    defaults: { _controller: AdminBundle:Institution:addProcedure }
+    requirements:
+        id: \d+
+        institution_medical_procedure_type_id: \d+
+
+admin_institution_editMedicalProcedure:
+    pattern:  /admin/institution/{id}/edit-procedure
+    defaults: { _controller: AdminBundle:Institution:editListing }
+    requirements:
+        id: \d+
+        medical_procedure_id: \d+
+        institution_medical_procedure_type_id: \d+
+
+admin_institution_saveMedicalProcedure:
+    pattern:  /admin/institution/{id}/save-procedure
+    defaults: { _controller: AdminBundle:Institution:saveProcedure }
+    requirements:
+        id: \d+
+        medical_procedure_id: \d+
+        institution_medical_procedure_type_id: \d+
+
+admin_institution_updateProcedureStatus:
+    pattern:  /admin/institution/update-procedure-status
+    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus }
+    requirements:
+        medical_procedure_id: \d+
+        institution_medical_procedure_type_id: \d+
+# End of Medical Procedure Routes #
+
+
+admin_loadMedicalProcedureTypes:
+    pattern:  /admin/medical-center/load-procedure-types
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
+    requirements:
+        medical_center_id: \d+
+
+admin_loadMedicalProcedures:
+    pattern:  /admin/procedure-type/load-procedures
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
+    requirements:
+         institution_id: \d+
+         procedure_type_id: \d+

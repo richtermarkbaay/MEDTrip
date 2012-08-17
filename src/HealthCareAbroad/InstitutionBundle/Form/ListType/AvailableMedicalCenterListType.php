@@ -32,7 +32,6 @@ class AvailableMedicalCenterListType extends AbstractType
         
         $institution = $this->institution;   
         $resolver->setDefaults(array(
-            'virtual' => true,
             'empty_value' => '<-- select center -->',
             'property' => 'name',
             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',

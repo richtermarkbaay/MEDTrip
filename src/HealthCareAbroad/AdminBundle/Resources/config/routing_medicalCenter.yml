@@ -1,0 +1,37 @@
+admin_medicalCenter_index:
+    pattern:  /admin/medical-centers
+    defaults: { _controller: AdminBundle:MedicalCenter:index }
+    requirements:    
+        _method:  GET
+
+admin_medicalCenter_add:
+    pattern:  /admin/medical-center/add
+    defaults: { _controller: AdminBundle:MedicalCenter:add }
+    requirements:    
+        _method:  GET
+        
+admin_medicalCenter_create:
+    pattern:  /admin/medical-center/add
+    defaults: { _controller: AdminBundle:MedicalCenter:save }
+    requirements:
+         _method: POST
+         
+admin_medicalCenter_edit:
+    pattern:  /admin/medical-center/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalCenter:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_medicalCenter_update:
+    pattern:  /admin/medical-center/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalCenter:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_medicalCenter_updateStatus:
+    pattern:  /admin/medical-center/updateStatus/{id}
+    defaults: { _controller: AdminBundle:MedicalCenter:updateStatus, id: ~ }
+    requirements:
+        id: \d+
