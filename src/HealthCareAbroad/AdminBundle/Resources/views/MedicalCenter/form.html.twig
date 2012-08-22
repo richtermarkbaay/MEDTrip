@@ -1,15 +1,25 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'medical_centers' %}
-{% set selectedSubTab = id ? '' : 'medical_centers_add'%}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_centers' %}
 
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h1>{{ id ? 'Edit' : 'Add' }} Medical Center</h1></div>
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Center</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
+            {% set contents = [{
+					'title': 'View all centers', 
+					'description': 'View the list available medical centers',
+					'href': path('admin_medicalCenter_index'), 
+					'links': [{'title': 'View medical centers', 'href': path('admin_medicalCenter_index')}]
+				}]
+            %}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
 				{{ form_row(form.name) }}

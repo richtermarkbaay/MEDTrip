@@ -11,11 +11,6 @@ class MedicalProcedure
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-	
-	static $STATUS = array(
-		'inactive' => 0,
-		'active' => 1
-	);
 
     /**
      * @var integer $id
