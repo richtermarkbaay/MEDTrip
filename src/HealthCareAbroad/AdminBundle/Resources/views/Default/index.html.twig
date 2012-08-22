@@ -14,11 +14,11 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
-            {% set manageListingsTask = {title: 'Listing Management', 'description': 'Go to listing management page to view all your listings, or add a new one', 'href': path('institution_medicalProcedureType_index'), 'links': [{title:'Click here to view all listings',href: path('institution_medicalProcedureType_index')}, {title:'Click here to add listing', href: path('institution_medicalProcedureType_add')}] } %}
+            {% set manageHCADataTask = {"title": 'Manage HCA Data', 'class': 'list-icon', 'description': 'Manage global data on medical centers, medical procedures, countries and cities', 'href': path('admin_manageHcaData'), 'links': [{title:'View all centers',href: path('admin_medicalCenter_index')}, {title:'View all medical procedure types', href: path('admin_procedureType_index')}]} %}
+            {% set manageInstitutions = {title: 'Manage Institutions', 'description': 'View all institutions, or add a new one', 'href': path('admin_institution_index'), 'links': [{title:'Click here to view all institutions',href: path('admin_institution_index')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'contents': [manageCentersTask, manageListingsTask]} 
+		        {'contents': [manageHCADataTask, manageInstitutions]} 
 	        %}
         
 			<div id="table-content" style="width: 70%">
