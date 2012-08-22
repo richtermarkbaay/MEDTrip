@@ -1,0 +1,51 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_countries' %}
+
+{% block content %}
+
+	<div id="content">
+
+		<div id="page-heading"><h2>List of Countries</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+				{% include '::notice.admin.html.twig' %}
+
+            	{% set contents = [{
+						'title': 'Add country', 
+						'description': 'Add new country',
+						'class': 'add-icon',
+						'href': path('admin_country_add'), 
+						'links': [{'title': 'Add a country', 'href': path('admin_country_add')}]
+					}]
+            	%}
+
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<table class="generic-table" width="70%">
+				<tr>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
+					<th class="table-header-repeat line-left"><a href="">Status</a></th>
+					<th class="table-header-options actions line-left"><a href="">Action</a></th>
+				</tr>
+
+				{% for country in countries %}
+					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+						<td>{{ country.name }}</td>
+						<td>{{ country.status ? 'Active' : 'Inactive' }}</td>
+						<td align="center">
+							<a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+							{% set class = country.status ? 'icon-2' : 'icon-5' %}
+							<a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+						</td>
+					</tr>
+				{% endfor %}
+				</table>
+						
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

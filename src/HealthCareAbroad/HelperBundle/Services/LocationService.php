@@ -44,11 +44,8 @@ class LocationService
 		return $cities;
 	}
 	
-	public function getActiveCountries()
+	public function getQueryBuilderForCountries()
 	{
-		return $this->doctrine->getEntityManager()->createQueryBuilder()
-			->add('select', 'c')
-			->add('from', 'HelperBundle:Country c')
-			->add('where', 'c.status = 1');
+		return $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->getQueryBuilderForCountries();
 	}
 }

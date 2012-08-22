@@ -1,0 +1,51 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_cities' %}
+
+{% block content %}
+
+	<div id="content">
+
+		<div id="page-heading"><h2>List of Cities</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+				{% include '::notice.admin.html.twig' %}
+
+            	{% set contents = [{
+						'title': 'Add city', 
+						'description': 'Add new city',
+						'class': 'add-icon',
+						'href': path('admin_city_add'), 
+						'links': [{'title': 'Add a city', 'href': path('admin_city_add')}]
+					}]
+            	%}
+
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<table class="generic-table" width="70%">
+				<tr>
+					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
+					<th class="table-header-repeat line-left"><a href="">Status</a></th>
+					<th class="table-header-options actions line-left"><a href="">Action</a></th>
+				</tr>
+
+				{% for city in cities %}
+					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+						<td>{{ city.name }}</td>
+						<td>{{ city.status ? 'Active' : 'Inactive' }}</td>
+						<td align="center">
+							<a href="{{ path('admin_city_edit', {id:city.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+							{% set class = city.status ? 'icon-2' : 'icon-5' %}
+							<a href="{{ path('admin_city_updateStatus', {id:city.id}) }}" title="{{ city.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+						</td>
+					</tr>
+				{% endfor %}
+				</table>
+						
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

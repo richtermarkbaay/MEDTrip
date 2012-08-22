@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -18,10 +20,10 @@ class CountryListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
 			'class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
-			'query_builder' => $this->container->get("services.location")->getActiveCountries()
+			'query_builder' => function(EntityRepository $er){ return $er->getQueryBuilderForCountries(); }
         ));
     }
-   
+
     public function getParent()
     {
         return 'entity';
