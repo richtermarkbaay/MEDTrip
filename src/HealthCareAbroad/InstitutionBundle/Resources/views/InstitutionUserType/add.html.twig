@@ -33,7 +33,7 @@
                                 {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
                             {% endif %}
                         
-                            <form novalidate="novalidate" action="{{ userType.id ? path('institution_userType_edit_save', {id: userType.id}) : path('admin_userType_add_save') }}" method="POST" {{ form_enctype(form) }} class="user">
+                            <form novalidate="novalidate" action="{{ userType.id ? path('institution_userType_edit_save', {id: userType.id}) : path('institution_userType_add_save') }}" method="POST" {{ form_enctype(form) }} class="user">
                                 <!-- start id-form -->
                                 <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
                                     
@@ -58,7 +58,7 @@
                     </td>
                     <td style="vertical-align: top; ">
                         {% block relatedTasks %}
-                            {% include 'InstitutionBundle:InstitutionUser:relatedTasks.html.twig' with {'showList': true, 'showAdd': false, 'userType' : userType}%}
+                            {% include 'InstitutionBundle:InstitutionUserType:relatedTasks.html.twig' with {'showList': true, 'showAdd': false, 'userType' : userType}%}
                         {% endblock %}
                     </td>
                 </tr>

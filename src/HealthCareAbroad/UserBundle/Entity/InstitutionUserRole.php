@@ -9,6 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUserRole
 {
+	/**
+	 * Roles that are built-in to the system and can only be assigned to user types by directly editing in db
+	 */
+	const STATUS_BUILT_IN_ROLE = 1;
+	
+	/**
+	 * Active roles that can be assigned to a user type
+	 */
+	const STATUS_ACTIVE = 2;
+	
+	/**
+	 * Inactive user roles and cannot be assigned to a user type
+	 */
+	const STATUS_INACTIVE = 4;
+	
     /**
      * @var integer $id
      */

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -12,7 +14,8 @@ use ChromediaUtilities\Helpers\Inflector;
 use ChromediaUtilities\Helpers\SecurityHelper;
 
 use HealthCareAbroad\UserBundle\Services\UserService;
-
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
 class InstitutionUserService extends UserService
 {
     /**
@@ -25,7 +28,14 @@ class InstitutionUserService extends UserService
     	$user = $this->findByEmailAndPassword($email, $password);
         
         if ($user) {
-            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', array('ROLE_ADMIN'));
+        	$userRoles = $user->getInstitutionUserType();
+        	$roles = array();
+        	$roles[] = $userRoles->getName();
+        	
+        	// add generic role for an admin user
+        	$roles[] = 'ROLE_ADMIN';
+
+        	$securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', $roles);
             $this->session->set('_security_institution_secured_area',  \serialize($securityToken));
             // $this->get("security.context")->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());

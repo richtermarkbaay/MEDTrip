@@ -56,7 +56,7 @@
                         <!--  end table-content  -->
                     </td>
                     <td style="vertical-align: top;width:100%; ">
-                        {% include 'InstitutionBundle:InstitutionUserType:relatedTasks.html.twig' %}
+                        {% include 'InstitutionBundle:InstitutionUserType:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
                     </td>
                 </tr>
             </table>

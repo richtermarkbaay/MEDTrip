@@ -20,5 +20,6 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
+           - [setInstitutionUserService, [@services.institution_user]]
         tags:
         - { name: kernel.event_listener, event: event.institution.create, method: onCreate }

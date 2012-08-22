@@ -10,7 +10,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
 
 
@@ -103,118 +103,37 @@ class InstitutionController extends Controller
            	    $institution->setCity($form->get('city')->getData());
            	    $institution->setCountry($form->get('country')->getData());
            	    
+           	    //create institution
            	    $institution = $this->get('services.institution')->createInstitution($institution);
            	    
-           	    // create Institution event and dispatch
-           	    $event = new CreateInstitutionEvent($institution);
-           	    $institutionUserType = $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
-           	    
-           	    $this->get('services.institution_user_type')->create();
-           	    $this->get('services.institution_user')->create();
-           	    $this->get('services.mailer')->send();
-           	    
-           	    var_dump($institutionUserType);exit;
-           	    $data->bindRequest($this->getRequest());
-           	    var_dump($data->get("institution"));exit;
-           	    
-           	    //TODO: get the matching institution user type
-           	    //$institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find('1');
-           	    	
-           	    // create a institution user and accounts on global
+           	    // set values for institutionUser
            	    $user = new InstitutionUser();
            	    $user->setInstitution($institution);
-           	    $user->setInstitutionUserType($institutionUserType);
            	    $user->setFirstName($form->get('firstName')->getData());
            	    $user->setMiddleName($form->get('middleName')->getData());
            	    $user->setLastName($form->get('lastName')->getData());
            	    $user->setPassword($form->get('new_password')->getData());
            	    $user->setEmail($form->get('email')->getData());
-           	    
            	    $user->setStatus(SiteUser::STATUS_ACTIVE);
-           	    $institutionUser = $this->get('services.institution_user')->create($user);
+
+           	    // create Institution event and dispatch
+           	    $event = new CreateInstitutionEvent($institution, $user);
+           	    $institutionUserType = $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
            	    
-           	    if ( count($institutionUser) > 0 ) {
+           	    if ( count($institutionUserType) > 0 ) {
            	    	$this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    }
            	    else {
            	    	$this->get('session')->setFlash('error', "Failed to create account on HealthCareAbroad");
            	    }
-           	    return $this->redirect($this->generateUrl('institution_homepage'));
+           	    return $this->redirect($this->generateUrl('institution_login'));
             }
 		}
 		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
 				'form' => $form->createView(),
 		));
 	}
-	public function createAction(Request $request)
-    {
-    	$user = new InstitutionUser();
-        $form = $this->createFormBuilder($user)
-        	->add('email', 'text')
-            ->add('firstName', 'text')
-            ->add('middleName', 'text')
-            ->add('lastName', 'text')
-            ->getForm();
-        
-        
-    	if ($this->getRequest()->isMethod('POST')) {
-            
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
-            	$data = $request->request->all();
-				
-				//validate email if already exist in institutionUser
-				$email = $this->get('services.user')->find(array('email' => $data["form"]["email"]),  array('limit' => 1));
-				
-				if (count($email) > 0) {
-					$this->get('session')->setFlash('success', "Email already registered!");
-				}
-				else {
-					
-					//create institution
-					$institution = new Institution();
-					$institution->setName($data["institutionName"]);
-					$institution->setDescription($data["description"]);
-					$institution->setSlug($data["description"]);
-					
-					$institution = $this->get('services.institution')->createInstitution($institution);	
-					
-					//TODO: get the matching institution user type
-					$institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find('1');
-					
-					// create temporary 10 character password
-					$temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
-					 
-					// create a institution user and accounts on global
-	 				$user->setInstitution($institution);
-	 				$user->setInstitutionUserType($institutionUserType);
-	 				$user->setPassword($temporaryPassword);
-	 				$user->setStatus(SiteUser::STATUS_ACTIVE);
-	 				
-	 				
-	 				//call service to create institution user by InstitutionUser
-					$institutionUser = $this->get('services.institution_user')->create($user);	
-					if ( count($institutionUser) > 0 ) {
-						
-						$sendingResult = $this->get('services.invitation')->sendInstitutionUserLoginCredentials($user,$temporaryPassword);
-						if ($sendingResult) {
-		                    $this->get('session')->setFlash('success', "Invitation sent to {$user->getEmail()}");
-		                }
-		                else {
-		                    $this->get('session')->setFlash('error', "Failed to send invitation to {$user->getEmail()}");
-		                }
-		                
-		                return $this->redirect($this->generateUrl('institution_homepage'));
-						
-					}
-					
-				}		
-			}
-		}
-		return $this->render('InstitutionBundle:Institution:create.html.twig', array(
-            'form' => $form->createView(),
-        ));
-	}
+	
 	
 }
 ?>

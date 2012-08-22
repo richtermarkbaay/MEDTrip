@@ -77,7 +77,7 @@ institution_userType_add:
 
 institution_userType_add_save:
     pattern: /institution/staff/add
-    defaults: { _controller: AdminBundle:AdminUserType:save }
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:save }
     requirements:    
         _method:  POST
         id: \d+
@@ -91,7 +91,7 @@ institution_userType_edit:
 
 institution_userType_edit_save:
     pattern: /institution/staff/edit/{id}
-    defaults: { _controller: AdminBundle:AdminUserType:save }
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:save }
     requirements:    
         _method:  POST
         id: \d+

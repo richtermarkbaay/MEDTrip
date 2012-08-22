@@ -13,21 +13,34 @@
         <!--  start related-act-inner -->
         <div id="related-act-inner">
         
-            <div class="clear"></div>
-            <div class="lines-dotted-short"></div>
+            {% if showAdd %}
+                <div class="clear"></div>
+                <div class="lines-dotted-short"></div>
+                
+                <div class="left"><a href="{{ path('institution_userType_add') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+                <div class="right">
+                    <h5>Manage institutions staff types</h5>
+                    Manage the permissions of each staff
+                    <ul class="greyarrow">
+                        <li><a href="{{ path('institution_userType_add') }}">Add a user type</a> </li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+                <div class="lines-dotted-short"></div>
+            {% endif%}
             
-            <div class="left"><a href="{{ path('institution_userType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
-            <div class="right">
-                <h5>Manage institution staff types</h5>
-                Manage the permissions of each staff
-                <ul class="greyarrow">
-                    <li><a href="{{ path('institution_userType_add') }}">Add a user type</a> </li>
-                </ul>
-            </div>
-            
-            <div class="clear"></div>
-            <div class="lines-dotted-short"></div>
-
+            {% if showList %}
+                <div class="left"><a href="{{ path('institution_userType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+                <div class="right">
+                    <h5>User types list</h5>
+                    View list of all user types.
+                    <ul class="greyarrow">
+                        <li><a href="{{ path('institution_userType_index') }}">Click here to view list</a></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+                
+            {% endif %}
         </div>
         <!-- end related-act-inner -->
         <div class="clear"></div>

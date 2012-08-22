@@ -12,7 +12,7 @@ class InstitutionUserTypeController extends Controller
 {
     /**
      * View all user types
-     *
+     * 
      */
     public function indexAction()
     {
@@ -40,7 +40,7 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
-    
+   
     public function editAction()
     {
     	$userTypeId = $this->getRequest()->get('id');
@@ -58,16 +58,20 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
-    /**
-     * Create new user type
-     *
-     * @PreAuthorize("hasAnyRole('LISTING_CREATOR')")
-     */
+    
     public function saveAction()
     {
-   		$request = $this->getRequest();
+    	$request = $this->getRequest();
+   		//get data of institutionId 
+    	$institutionId = $request->get('institutionId', null);
+    	if (!$institutionId){
+    		// no account id in parameter, editing currently logged in account
+    		$session = $request->getSession();
+    		$institutionId = $session->get('institutionId');
+    	}
+		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
         
-        $id = $request->get('id');
+    	$id = $request->get('id', 0);
         $userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($id);
         
         if ($id && !$userType) {
@@ -78,6 +82,9 @@ class InstitutionUserTypeController extends Controller
             $userType->setStatus(InstitutionUserType::STATUS_ACTIVE);
         }
         
+        //assign institution to userType
+        $userType->setInstitution($institution);
+
         $form = $this->createForm(new InstitutionUserTypeFormType(), $userType);
         $form->bind($request);
         
