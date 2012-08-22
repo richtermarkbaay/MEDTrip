@@ -1,20 +1,20 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_centers' %}
+{% set selectedSubTab = 'manage_cities' %}
 
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Center</h2></div>
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} City</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
             {% set contents = [{
-					'title': 'View all centers', 
-					'description': 'View the list available medical centers',
-					'href': path('admin_medicalCenter_index'), 
-					'links': [{'title': 'View medical centers', 'href': path('admin_medicalCenter_index')}]
+					'title': 'View all cities', 
+					'description': 'View the list of cities',
+					'href': path('admin_city_index'), 
+					'links': [{'title': 'View cities', 'href': path('admin_city_index')}]
 				}]
             %}
 
@@ -23,7 +23,8 @@
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
 				{{ form_row(form.name) }}
-				{{ form_row(form.description) }}
+				{{ form_row(form.country) }}
+				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
 
 			    <input type="submit" class="form-submit"/>

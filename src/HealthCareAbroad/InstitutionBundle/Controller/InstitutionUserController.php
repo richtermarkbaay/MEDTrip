@@ -51,7 +51,7 @@ class InstitutionUserController extends Controller
             if ($form->isValid()) {
                 if ($this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
-                    $this->get('session')->setFlash('success', 'Login successfully!');
+                    $this->get('session')->setFlash('success', 'Welcome '.$this->get('security.context')->getToken()->getUser().'!');
                     
                     return $this->redirect($this->generateUrl('institution_homepage'));
 	            }

@@ -46,7 +46,20 @@ class MedicalCenterRepository extends EntityRepository
 
 		return $query->getArrayResult();
 	}
-	
+
+	/**
+	 * Get Active MedicalCenters 
+	 *
+	 * @return Doctrine\ORM\QueryBuilder
+	 */
+	public function getBuilderForMedicalCenters()
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		$qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
+
+		return $qb;
+	}
+
 	/**
 	 * Get MedicalCenters that are not yet linked to a specific institution
 	 *

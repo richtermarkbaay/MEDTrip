@@ -21,4 +21,12 @@ class CountryRepository extends EntityRepository
 
 		return $arrCountries;
 	}
+	
+	public function getQueryBuilderForCountries()
+	{
+		return $this->_em->createQueryBuilder()
+		->add('select', 'c')
+		->add('from', 'HelperBundle:Country c')
+		->add('where', 'c.status = 1');
+	}
 }

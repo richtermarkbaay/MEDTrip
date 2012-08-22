@@ -37,7 +37,7 @@ class InstitutionUserService extends UserService
 
         	$securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', $roles);
             $this->session->set('_security_institution_secured_area',  \serialize($securityToken));
-            // $this->get("security.context")->setToken($securityToken);
+            $this->securityContext->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
             $this->session->set('institutionId', $user->getInstitution()->getId());
             $this->session->set('institutionName', $user->getInstitution()->getName());

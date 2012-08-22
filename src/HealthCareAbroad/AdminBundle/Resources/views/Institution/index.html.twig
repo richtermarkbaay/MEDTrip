@@ -19,8 +19,8 @@
 
 			{% for institution in institutions %}
 				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-					<td style="cursor: pointer" onclick="alert('institution full view')">{{ institution.name }}</td>
-					<td style="cursor: pointer" onclick="alert('institution full view')">{{ institution.description }}</td>
+					<td><a href="{{ path('admin_institution_view', {id: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
+					<td><a href="{{ path('admin_institution_view', {id: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
 					<td align="center">
 						<!--a href="{{ path('admin_institution_updateStatus', {id:institution.id}) }}" class="update-status">
 							{% if institution.status %} deactivate {% else %} activate {% endif %}

@@ -8,7 +8,7 @@
     <!--  start page-heading -->
     <div id="page-heading">
        
-        <h1> Institution Panel</h1>
+        <h1>Medical Institution Sign up </h1>
     </div>
     <!-- end page-heading -->
     
@@ -20,7 +20,7 @@
 
                 {% include '::notice.admin.html.twig' %}
                 
-                <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" {{ form_enctype(form) }} class="user">
+                <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                     <!-- start id-form -->
                     <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
                         <tr><h2>Institution Details</h2></tr>
@@ -31,7 +31,7 @@
                         {{ form_row( form.address1 ) }}
                         {{ form_row( form.address2 ) }}
                         </br></br>
-                        <tr><th>Admin Accounts:</th></tr>
+                        <tr><th>Admin Account:</th></tr>
                         {{ form_row(form.firstName) }}
                         {{ form_row(form.middleName) }}
                         {{ form_row(form.lastName) }}

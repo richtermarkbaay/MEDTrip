@@ -1,0 +1,48 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+
+{% block content %}
+	<div id="content">
+
+		<!--  start page-heading -->
+        <div id="page-heading">
+        	<h1>{{ institution.name }} Profile Page</h1>
+        </div>
+        <!-- end page-heading -->
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+			
+			{# ----- Related tasks ----- #}
+            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in this clinic or medical institution', 'href': path('admin_institution_manageCenters', {id: institution.id}), 'links': [{title:'Click here to view all centers',href: path('admin_institution_manageCenters', {id: institution.id})}, {title:'Click here to add center', href: path('admin_institution_addMedicalCenter', {id: institution.id})}]} %}
+            {% set manageListingsTask = {title: 'Listing Management', 'description': 'Go to listing management page to view all listings, or add a new one', 'href': path('admin_institution_manageListings', {id: institution.id}), 'links': [{title:'Click here to view all listings',href: path('admin_institution_manageListings', {id: institution.id})}, {title:'Click here to add listing', href: path('admin_institution_addListing', {id: institution.id})}] } %}
+		    
+            {% include '::relatedTasks.base.admin.html.twig' with 
+		        {'contents': [manageCentersTask, manageListingsTask]} 
+	        %}
+            {# ----- end Related tasks ----- #}
+            
+            <div id="table-content" style="width:70%">   
+                <h3>Alerts</h3>
+    			
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+    			<br />
+    			<br />
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+    			<br />
+    			<br />
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
+    			<br />
+    			<br />
+			</div>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

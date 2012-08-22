@@ -56,6 +56,15 @@ AdminBundle_institutuion:
     resource: "@AdminBundle/Resources/config/routing_institution.yml"
     prefix:   /
 
+    # Routes for Admin CountryController #
+AdminBundle_country:
+    resource: "@AdminBundle/Resources/config/routing_country.yml"
+    prefix:   /
+
+    # Routes for Admin CityController #
+AdminBundle_city:
+    resource: "@AdminBundle/Resources/config/routing_city.yml"
+    prefix:   /
 ### END OF ADMIN ROUTES ###
 
 
