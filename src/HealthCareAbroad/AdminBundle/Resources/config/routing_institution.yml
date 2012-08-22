@@ -8,7 +8,13 @@ admin_institution_updateStatus:
     requirements:
         id: \d+
 
-
+admin_institution_view:
+    pattern:  /admin/institution/{id}/view
+    defaults: { _controller: AdminBundle:Institution:view }
+    requirements:
+         id: \d+
+         method: GET
+        
 # Manage Centers #
 admin_institution_manageCenters:
     pattern:  /admin/institution/{id}/manage-centers

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,6 +32,19 @@ class InstitutionController extends Controller
 		$institutions = $this->getDoctrine()->getEntityManager()->getRepository('InstitutionBundle:Institution')->findAll();
 
 		return $this->render('AdminBundle:Institution:index.html.twig', array('institutions' => $institutions));
+	}
+	
+	/**
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 */
+	public function viewAction(Request $request)
+	{
+	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('id', 0));
+	    if (!$institution) {
+	        throw $this->createNotFoundException('Invalid institution');
+	    }
+	    
+	    return $this->render('AdminBundle:Institution:view.html.twig', array('institution' => $institution));
 	}
 	
 	/**
