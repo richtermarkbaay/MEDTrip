@@ -17,6 +17,7 @@ services:
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             - [setSession, [@session]]
+            - [setSecurityContext, [@security.context]]
             
     services.admin_user:
         class: %services.admin_user_class%
