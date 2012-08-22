@@ -29,12 +29,12 @@ class InstitutionType extends AbstractType
     	$builder
     		->add('name', 'text', array('constraints' => new NotBlank()))
     		->add('description', 'textarea', array('constraints' => new NotBlank()))
-    		->add('firstName', 'text', array('constraints' => new NotBlank()))
-    		->add('middleName', 'text', array('constraints' => new NotBlank()))
-    		->add('lastName', 'text', array('constraints' => new NotBlank()))
+    		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
+    		->add('middleName', 'text', array('label' => 'Middle name', 'constraints' => new NotBlank()))
+    		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()))
     		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
     		->add( 'new_password', 'password', array(
-                    'label' => 'New Password', 
+                    'label' => 'Password', 
                     'virtual' => true, 
                     'constraints' => array(new NotBlank())
                 ))
@@ -46,8 +46,8 @@ class InstitutionType extends AbstractType
                 ))
     		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
     		->add('city', new CityListType(1))
-    		->add('address1','text', array('constraints' => new NotBlank()))
-    		->add('address2','text', array('constraints' => new NotBlank()))
+    		->add('address1','text', array('label' => 'Address Line 1', 'constraints' => new NotBlank()))
+    		->add('address2','text', array('label' => 'Address Line 2', 'constraints' => new NotBlank()))
     		;
     }
     
