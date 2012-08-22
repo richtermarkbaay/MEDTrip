@@ -51,6 +51,12 @@
                 		<li class="{{ selectedSubTab == 'manage_procedures' ? 'sub_show' : '' }}">
                 		    <a href="{{ path('admin_medicalProcedure_index') }}">Manage Procedures</a>
             		    </li>
+                		<li class="{{ selectedSubTab == 'manage_countries' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_country_index') }}">Manage Countries</a>
+            		    </li>
+                		<li class="{{ selectedSubTab == 'manage_cities' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_city_index') }}">Manage Cities</a>
+            		    </li>
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->

@@ -13,14 +13,22 @@
         
         {% block wrappedContent %}
 
-            {# ----- Related tasks ----- #}
+            {# ----- Medical Terms Related tasks ----- #}
             {% set manageCentersTask = {"title": 'Medical Center Management', 'class': 'list-icon', 'description': 'View all available Medical Centers or add new one.', 'href': path('admin_medicalCenter_index'), 'links': [{title:'View Medical Centers',href: path('admin_medicalCenter_index')}, {title:'Add Medical Center', href: path('admin_medicalCenter_add')}]} %}
             {% set manageProcedureTypesTasks = {title: 'Procedure Type Management', 'description': 'View all available Medical Procedure Types or add new one.', 'href': path('admin_procedureType_index'), 'links': [{title:'View Medical Procedure Types',href: path('admin_procedureType_index')}, {title:'Add Medical Procedure Type', href: path('admin_procedureType_add')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'contents': [manageCentersTask, manageProcedureTypesTasks]} 
+		        {'headerTitle': 'Manage Medical Related Data', 'contents': [manageCentersTask, manageProcedureTypesTasks]} 
 	        %}
-        
+
+            {# ----- Location Related tasks ----- #}
+            {% set manageCountriesTask = {"title": 'Manage Countries', 'class': 'list-icon', 'description': 'View all countries or add new one.', 'href': path('admin_country_index'), 'links': [{title:'View Countries',href: path('admin_country_index')}, {title:'Add Country', href: path('admin_country_add')}]} %}
+            {% set manageCitiesTask = {"title": 'Manage Cities', 'class': 'list-icon', 'description': 'View all cities or add new one.', 'href': path('admin_city_index'), 'links': [{title:'View Cities',href: path('admin_city_index')}, {title:'Add City', href: path('admin_city_add')}]} %}
+		    
+            {% include '::relatedTasks.base.admin.html.twig' with 
+		        {'headerTitle': 'Manage Locations', 'contents': [manageCountriesTask, manageCitiesTask]} 
+	        %}
+
 			<div id="table-content" style="width: 70%">
 		        {% include '::notice.admin.html.twig' %}
 			
