@@ -23,7 +23,7 @@ InstitutionBundle_create_institution:
        _method: GET|POST
 
 institution_signUp:
-    pattern:  /signUp
+    pattern:  /sign-up
     defaults: {_controller: InstitutionBundle:Institution:signUp }
     requirements:
         _method: GET|POST
