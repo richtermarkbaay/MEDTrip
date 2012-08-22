@@ -1,19 +1,30 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'medical_procedures' %}
-{% set selectedSubTab = 'medical_procedures_index'%}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_procedures' %}
 
 {% block content %}
 	<div id="content">
 
 		{{ app.session.flash('notice') }}
-		<div id="page-heading"><h1>List of Medical Procedures</h1></div>
+		<div id="page-heading"><h2>List of Medical Procedures</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
 			{% include '::notice.admin.html.twig' %}
 
-			<table id="medical-procedure-list" class="generic-table mid-size">
+			{% set contents = [{
+					'title': 'Add procedure', 
+					'description': 'Add new medical procedure',
+					'class': 'add-icon',
+					'href': path('admin_medicalProcedure_add'), 
+					'links': [{'title': 'Add a medical procedure', 'href': path('admin_medicalProcedure_add')}]
+				}]
+			%}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			<table id="medical-procedure-list" class="generic-table" width="70%">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
 				<th class="table-header-repeat line-left"><a href="">Procedure Type</a></th>
@@ -25,11 +36,10 @@
 					<td>{{ procedure.name }}</td>
 					<td>{{ procedure.MedicalProcedureType.name }}</td>
 					<td align="center">
-						<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" class="update-status">
-							{% if procedure.status %} deactivate {% else %} activate {% endif %}
-						</a> 
-					<span class="separator" style="color:#ccc">|</span>
-					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}">edit</a>
+					
+					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+						{% set class = procedure.status ? 'icon-2' : 'icon-5' %}
+						<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>					
 					</td>
 				</tr>
 			{% else  %}

@@ -1,19 +1,31 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'procedure_types' %}
-{% set selectedSubTab = id ? '' : 'procedure_types_add'%}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_procedureTypes' %}
 
 {% block content %}
 
 	<div id="content">
 
-		<div id="page-heading"><h1>{{ id  ? 'Edit' : 'Add' }} Medical Procedure Type</h1></div>
+		<div id="page-heading"><h2>{{ id  ? 'Edit' : 'Add' }} Medical Procedure Type</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
+		
 			{% block wrappedContent %}
+			
+            {% set contents = [{
+					'title': 'View all procedure types', 
+					'description': 'View the list of medical procedure types',
+					'href': path('admin_procedureType_index'), 
+					'links': [{'title': 'View procedure types', 'href': path('admin_procedureType_index')}]
+				}]
+            %}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
 			<form novalidate="novalidate" class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
 				{{ form_row(form.name) }}
 				{{ form_row(form.description) }}
-				{{ form_row(form.medical_center) }}
+				{{ form_row(form.medicalCenter) }}
 				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
 			    <input type="submit" class="form-submit" name="submit"/>

@@ -1,19 +1,29 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'medical_centers' %}
-{% set selectedSubTab = 'medical_centers_index'%}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_centers' %}
 
 {% block content %}
 
 	<div id="content">
 
-		<div id="page-heading"><h3>List of Medical Centers</h3></div>
+		<div id="page-heading"><h2>List of Medical Centers</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
 				{% include '::notice.admin.html.twig' %}
 
-				<table class="generic-table mid-size">
+            	{% set contents = [{
+						'title': 'Add medical center', 
+						'description': 'Add new medical center',
+						'href': path('admin_medicalCenter_add'), 
+						'links': [{'title': 'Add a medical center', 'href': path('admin_medicalCenter_add')}]
+					}]
+            	%}
+
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<table class="generic-table" width="70%">
 				<tr>
 					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
 					<th class="table-header-repeat line-left"><a href="">Description</a></th>
@@ -24,12 +34,10 @@
 					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 						<td>{{ center.name }}</td>
 						<td>{{ center.description }}</td>
-						<td align="center">							
-							<a href="{{ path('admin_medicalCenter_updateStatus', {id:center.id}) }}" class="update-status">
-								{% if center.status %} deactivate {% else %} activate {% endif %}
-							</a> 
-							<span class="separator" style="color:#ccc">|</span> 
-							<a href="{{ path('admin_medicalCenter_edit', {'id':center.id}) }}">edit</a> 
+						<td align="center">
+							<a href="{{ path('admin_medicalCenter_edit', {id:center.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+							{% set class = center.status ? 'icon-2' : 'icon-5' %}
+							<a href="{{ path('admin_medicalCenter_updateStatus', {id:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
 						</td>
 					</tr>
 				{% endfor %}

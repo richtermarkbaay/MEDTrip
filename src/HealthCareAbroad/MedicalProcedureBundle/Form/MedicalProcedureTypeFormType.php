@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType as MedicalProcedureTypeEntity;
@@ -14,24 +16,22 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class MedicalProcedureTypeType extends AbstractType
+class MedicalProcedureTypeFormType extends AbstractType
 {
-	private $em;
-
-	public function __construct(EntityManager $em)
-	{
-		$this->em = $em;
-	}
-
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		
+		$status = array(
+			MedicalProcedureType::STATUS_ACTIVE => 'active',
+			MedicalProcedureType::STATUS_INACTIVE => 'inactive'
+		);
+		
 		$commonConstraints = array(new NotBlank());
 
-		$transformer = new MedicalCentersTransformer($this->em);
 		$builder->add('name', 'text', array('constraints'=> $commonConstraints));
 		$builder->add('description', 'textarea', array('constraints'=> $commonConstraints));
-		$builder->add($builder->create('medical_center','textarea', array('attr'=>array('class'=>'autocomplete-medical-center')))->addModelTransformer($transformer));
-		$builder->add('status', 'choice', array('choices' => array_flip(MedicalProcedureTypeEntity::$STATUS)));
+		$builder->add($builder->create('medicalCenter', 'medicalCenter_list'));
+		$builder->add('status', 'choice', array('choices' => $status));
 	}
 
 	// How does it work?

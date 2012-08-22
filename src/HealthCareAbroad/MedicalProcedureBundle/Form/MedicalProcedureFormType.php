@@ -10,16 +10,20 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class MedicalProcedureType extends AbstractType
+class MedicalProcedureFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$status = array(
+			MedicalProcedure::STATUS_ACTIVE => 'active',
+			MedicalProcedure::STATUS_INACTIVE => 'inactive'
+		);
+
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('medical_procedure_type', 'medicalproceduretype_list', array('constraints'=>array(new NotBlank())));
-		$builder->add('status', 'choice', array('choices' => array_keys(MedicalProcedure::$STATUS)), array('constraints'=>array(new NotBlank())));
+		$builder->add('medicalProcedureType', 'medicalproceduretype_list', array('constraints'=>array(new NotBlank())));
+		$builder->add('status', 'choice', array('choices' => $status), array('constraints'=>array(new NotBlank())));
 	}
 
-	// How does it work?
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(

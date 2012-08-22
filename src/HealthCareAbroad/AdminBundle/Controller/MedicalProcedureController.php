@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
-use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureType as MedicalProcedureForm;
+use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureController extends Controller
@@ -30,9 +30,8 @@ class MedicalProcedureController extends Controller
      */
     public function addAction()
     {
-    	$em = $this->getDoctrine()->getEntityManager();
     	$procedure = new MedicalProcedure();
-    	$form = $this->createForm(new MedicalProcedureForm(), $procedure);
+    	$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
     	$params = array('form' => $form->createView(), 'id' => null);
 
     	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
@@ -47,7 +46,7 @@ class MedicalProcedureController extends Controller
     public function editAction($id)
     {
     	$procedure = $this->get('services.medical_procedure')->getMedicalProcedure($id);
-    	$form = $this->createForm(new MedicalProcedureForm(), $procedure);
+    	$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
     	$params = array('form' => $form->createView(), 'id' => $id);
     	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
@@ -69,11 +68,12 @@ class MedicalProcedureController extends Controller
 			? $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id) 
 			: new MedicalProcedure();
 
-		$form = $this->createForm(new MedicalProcedureForm(), $procedure);
+		$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
 		$form->bind($request);
 
 		if ($form->isValid()) {
-			$this->get('services.medical_procedure')->saveMedicalProcedure($form->getData());
+			$em->persist($procedure);
+			$em->flush($procedure);
 
 			$request->getSession()->setFlash('success', 'New Procedure has been added!');
 			return $this->redirect($this->generateUrl('admin_medicalProcedure_index'));
@@ -96,9 +96,9 @@ class MedicalProcedureController extends Controller
 
 		if($procedure) {
 			$em = $this->getDoctrine()->getEntityManager();
-			$status = $procedure->getStatus() == MedicalProcedure::$STATUS['active'] 
-					? MedicalProcedure::$STATUS['inactive'] 
-					: MedicalProcedure::$STATUS['active'];
+			$status = $procedure->getStatus() == MedicalProcedure::STATUS_ACTIVE 
+					? MedicalProcedure::STATUS_INACTIVE
+					: MedicalProcedure::STATUS_ACTIVE;
 
 			$procedure->setStatus($status);
 			$em->persist($procedure);

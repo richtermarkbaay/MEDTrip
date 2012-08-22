@@ -5,7 +5,7 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
-use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureTypeType as MedicalProcedureTypeForm;
+use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureTypeFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureTypeController extends Controller
@@ -28,7 +28,7 @@ class MedicalProcedureTypeController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = new MedicalProcedureType();
-    	$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
+    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
     	$params = array('form' => $form->createView(), 'id' => null);
 
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
@@ -44,7 +44,7 @@ class MedicalProcedureTypeController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = $this->get('services.medical_procedure')->getMedicalProcedureType($id);
-    	$form = $this->createForm(new MedicalProcedureTypeForm($em, $id), $procedureType);
+    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
     	$params = array('form' => $form->createView(), 'id' => $id);
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
@@ -66,11 +66,10 @@ class MedicalProcedureTypeController extends Controller
 			? $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id) 
 			: new MedicalProcedureType();
 
-		$form = $this->createForm(new MedicalProcedureTypeForm($em), $procedureType);
+		$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
 		$form->bind($request);
 
 		if ($form->isValid()) {
-			$procedureType = $form->getData();
 			$em->persist($procedureType);
 			$em->flush($procedureType);
 
@@ -94,9 +93,10 @@ class MedicalProcedureTypeController extends Controller
 
 		if($procedureType) {
 			$em = $this->getDoctrine()->getEntityManager();
-			$status = $procedureType->getStatus() == MedicalProcedureType::$STATUS['active'] 
-					? MedicalProcedureType::$STATUS['inactive'] 
-					: MedicalProcedureType::$STATUS['active'];
+			
+			$status = $procedureType->getStatus() == MedicalProcedureType::STATUS_ACTIVE
+					? MedicalProcedureType::STATUS_INACTIVE 
+					: MedicalProcedureType::STATUS_ACTIVE;
 
 			$procedureType->setStatus($status);
 			$em->persist($procedureType);
