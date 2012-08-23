@@ -4,6 +4,8 @@ namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+
+
 /**
  * InstitutionMedicalProcedureTypeRepository
  *
@@ -12,4 +14,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalProcedureTypeRepository extends EntityRepository
 {
+	
+	function getByInstitutionIdAndMedicalCenterId($institutionId, $medicalCenterId, $status = null)
+	{			
+		$qb = $this->_em->createQueryBuilder()
+			->select('a')
+			->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
+			->innerJoin('a.medicalProcedureType', 'b')
+			->add('where','a.institution = :institution')
+			->andWhere('b.medicalCenter = :medicalCenter')
+			->setParameter('institution', $institutionId)
+			->setParameter('medicalCenter', $medicalCenterId)->orderBy('b.name', 'ASC');
+
+		if($status) {
+			$qb->andWhere('a.status = :status')->setParameter('status', $status);
+		}
+
+		return $qb->getQuery()->getResult();			
+	}
 }

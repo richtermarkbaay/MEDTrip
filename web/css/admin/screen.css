@@ -110,7 +110,7 @@ font-size: 12px;
 	}
 
 #table-content p {
-	margin-bottom: 20px;
+	/* margin-bottom: 20px; */
 }
 .topleft {
 background: url(/images/admin/shared/corner_top_left.jpg) no-repeat;
@@ -360,9 +360,10 @@ a:hover.icon-5	{
 	border: 1px solid #d2d2d2;
 	padding: 10px;
 	}
-.generic-table td.empty-list{
+.empty-list{
 	color: #CC6666;
 	text-align: center;
+	padding: 5px;
 	}
 .generic-table tr.alternate-row	{
 	background: #ececec;
@@ -651,7 +652,7 @@ form.basic-form {
 }
 
 form.basic-form > div {
-	width: 70%;
+	max-width: 700;
 	position: relative;
 	margin-bottom: 25px;
 }
@@ -666,10 +667,10 @@ form.basic-form > div > ul {
 form.basic-form label {
 	width: 120px; 
 	color: #888888;
+	font-weight: bold;
 	display: inline-block;
 	vertical-align: top;
 	}
-
 form.basic-form input[type=checkbox]{
 	margin: 5px 0;
 	}
@@ -681,11 +682,10 @@ form.basic-form input[type=number],
 form.basic-form input[type=email],
 form.basic-form input[type=text],
 .inp-form	{
-	background: url(/images/admin/forms/form_inp.gif) no-repeat;
-	border: none;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px;
 	color: #393939;
-	height: 25px;
-	padding: 3px 3px 3px 6px;
+	padding: 8px;
 	width: 190px;
 	}
 	
@@ -1721,11 +1721,6 @@ a.button-type {
 	margin-top: -8px;
 	position: absolute;
 	top: 50%;
-}
-
-.ui-accordion .ui-accordion-header a.edit-listing {
-	color: #759E1A;
-	float: right;
 }
 
 .ui-accordion .ui-accordion-content {

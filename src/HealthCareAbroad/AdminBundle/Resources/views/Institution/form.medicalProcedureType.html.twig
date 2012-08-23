@@ -1,6 +1,6 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'listings'%}
-{% block title %}{{ parent() }} {{ newListing ? "Add Listing" : "Edit Listing"}} {% endblock %}
+{% set selectedTab = 'procedureTypes'%}
+{% block title %}{{ parent() }} {{ newProcedureType ? "Add" : "Edit"}} Procedure Type {% endblock %} 
 {% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
@@ -9,10 +9,10 @@
     <!--  start page-heading -->
     <div id="page-heading">
     	<h1>
-    	    {% if newListing %} 
-    	        Creat a new listing
+    	    {% if newProcedureType %} 
+    	        Creat procedure type
 	        {% else %}
-	            Edit listing {# institutionMedicalProcedureType.medicalProcedureType.name #}
+	            Edit procedure type {# institutionMedicalProcedureType.medicalProcedureType.name #}
 	         {% endif %}       
         </h1>
     </div>
@@ -31,9 +31,9 @@
 
             				{% set contents = [
 									{
-										'isVisible' : newListing ? false : true,
+										'isVisible' : newProcedureType ? false : true,
 										'title': 'Add medical procedure', 
-										'description': 'Add medical procedure to this listing',
+										'description': 'Add medical procedure to this procedure type',
 										'class' : 'add-procedure add-icon',
 										'href': path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: institutionMedicalProcedureType.id}), 
 										'links': [
@@ -45,19 +45,19 @@
 										]
 									},
 									{
-										'title': 'Manage Listings', 
-										'description': 'Go back to listing management page',
-										'href': path('admin_institution_manageListings', {id:id}), 
+										'title': 'Manage Procedure Types', 
+										'description': 'Go back to procedure type management page',
+										'href': path('admin_institution_manageProcedureTypes', {id:id}), 
 										'links': [
-											{'title' : 'Add another listing','href': path('admin_institution_addListing', {id:id}), 'isVisible' : not newListing},
-											{'title': 'Back to listing management', 'href': path('admin_institution_manageListings', {id:id})}
+											{'title' : 'Add another procedure type','href': path('admin_institution_addProcedureType', {id:id}), 'isVisible' : not newProcedureType},
+											{'title': 'Back to procedure type management', 'href': path('admin_institution_manageProcedureTypes', {id:id})}
 										]
 									}
 								]
             				%}
 
 							{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-							{% set savePath = newListing ? path('admin_institution_createListing',{id:id}) : path('admin_institution_updateListing',{id:id, institution_medical_procedure_type_id:institutionMedicalProcedureType.id}) %}
+							{% set savePath = newProcedureType ? path('admin_institution_createProcedureType',{id:id}) : path('admin_institution_updateProcedureType',{id:id, institution_medical_procedure_type_id:institutionMedicalProcedureType.id}) %}
             			    <form novalidate="novalidate" action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                 			    
                 			    <!-- start id-form -->
@@ -82,9 +82,9 @@
                             	<!-- end id-form  -->
                         	</form>
 
-                        	{% if(not newListing) %}
+                        	{% if(not newProcedureType) %}
                         		<br/><br/>
-								<h3>Listing Procedures</h3>
+								<h3>Medical Procedures</h3>
 							    <table border="0" width="70%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
 				    				<tr>
 				    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
@@ -168,8 +168,8 @@
 			});
             
         	var params = {
-                selectedMedicalCenter: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
-                selectedMedicalProcedureType: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
+                selectedMedicalCenter: '{{ newProcedureType ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
+                selectedMedicalProcedureType: '{{ newProcedureType ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
         		loadProcedureTypesUrl : "{{ path('admin_loadMedicalProcedureTypes', {id:id}) }}"
             };
 

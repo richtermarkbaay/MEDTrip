@@ -21,11 +21,10 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
-	public function editInstitutionAction()
+	public function editInstitutionAction($institutionId)
 	{
+		//$institutionId = $this->getRequest()->get('institutionId', null);
 		
-		$institutionId = $this->getRequest()->get('institutionId', null);
-		echo $institutionId;exit;
 		if (!$institutionId){
 			// no account id in parameter, editing currently logged in account
 			$session = $this->getRequest()->getSession();
@@ -33,38 +32,24 @@ class InstitutionController extends Controller
 		}
 		
 		//TODO: get the matching institution
-		$institution = new Institution();
 		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-		
+		if (!$institution) {
+			throw $this->createNotFoundException('Cannot update invalid account.');
+		}
 		//render data to template
 		$form = $this->createForm(new InstitutionDetailType(), $institution);
 		
 		//update institution details
 		if ($this->getRequest()->isMethod('POST')) {
+			
 			$form->bindRequest($this->getRequest());
+			
 			if ($form->isValid()) {
-				$institution->setName($form->get('name')->getData());
-           	    $institution->setDescription($form->get('description')->getData());
-           	    $institution->setSlug('test');
-           	    $institution->setStatus(SiteUser::STATUS_ACTIVE);
-           	    $institution->setAddress1($form->get('address1')->getData());
-           	    $institution->setAddress2($form->get('address2')->getData());
-           	    $institution->setLogo('logo.jpg');
-           	    $institution->setCity($form->get('city')->getData());
-           	    $institution->setCountry($form->get('country')->getData());
-				$institution = $this->get('services.institution')->updateInstitution($institution);
 				
-				if ( count($institution) > 0 ) {
-					$this->get('session')->setFlash('notice', "Successfully updated account");
-				}
-				else
-				{
-					$this->get('session')->setFlash('notice', "Unable to update account!");
-					
-				}
+				$institution = $this->get('services.institution')->updateInstitution($institution);
+				$this->get('session')->setFlash('notice', "Successfully updated account");
 			}
 		}
-		
 		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
 				'form' => $form->createView(),
 				'institution' => $institution
@@ -115,17 +100,13 @@ class InstitutionController extends Controller
            	    $user->setPassword($form->get('new_password')->getData());
            	    $user->setEmail($form->get('email')->getData());
            	    $user->setStatus(SiteUser::STATUS_ACTIVE);
-
+           	    	
            	    // create Institution event and dispatch
            	    $event = new CreateInstitutionEvent($institution, $user);
-           	    $institutionUserType = $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
+           	    $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
+           	    	
+           	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    
-           	    if ( count($institutionUserType) > 0 ) {
-           	    	$this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
-           	    }
-           	    else {
-           	    	$this->get('session')->setFlash('error', "Failed to create account on HealthCareAbroad");
-           	    }
            	    return $this->redirect($this->generateUrl('institution_login'));
             }
 		}
