@@ -1,7 +1,7 @@
 <div id="page-heading"><h3>Add Medical Center</h3></div>
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
-		<form action="{{ path('admin_institution_saveMedicalCenter', {id:id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">		
+		<form action="{{ path('admin_institution_saveMedicalCenter', {id:id, medical_center_id:medical_center_id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">		
 			{{ form_row(form.medicalCenter) }}
 			{{ form_row(form.description) }}
 			{{ form_row(form.status) }}

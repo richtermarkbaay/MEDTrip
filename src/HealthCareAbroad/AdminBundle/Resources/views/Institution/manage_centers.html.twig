@@ -11,9 +11,27 @@
 			{% block wrappedContent %}
 
 				{% include '::notice.admin.html.twig' %}
+			
+				{% include '::relatedTasks.base.admin.html.twig' with 
+					{'contents': [
+						{
+							'title': 'Add medical center', 
+							'description': 'Add new medical center to this institution',
+							'class': 'add-icon add-medical-center',
+							'href': path('admin_institution_addMedicalCenter', {id:id}), 
+							'links': [{
+								'title': 'click here to add',
+								'class': 'add-medical-center',
+								'href': path('admin_institution_addMedicalCenter', {id:id})
+							}]
+						}
+	    			]} 
+				%}
 
-				<a href="{{ path('admin_institution_addMedicalCenter', {id:id}) }}" id="add-medical-center" class="button-type">Add Medical Center</a>
-			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+				<!-- Render Filter Box -->
+				{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), institution_id: id, selectedStatus: selectedStatus} %}
+				
+			    <table border="0" width="70%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
     				<tr>
     				    <th class="table-header-check"></th>
     					<th class="table-header-repeat line-left minwidth-1" width="300px"><a href="#">Medical Centers</a></th>
@@ -27,9 +45,9 @@
         					<td>{{ center.medicalCenter | title }}</td>
         					<td>{{ center.description }}</td>
         					<td class="options-width">
-            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+            					<a href="{{ path('admin_institution_editMedicalCenter', {id:id, medical_center_id: center.medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
             					{% set class = center.status ? 'icon-2' : 'icon-5' %}
-            					<a href="{{ path('admin_institution_updateMedicalCenterStatus', {id:id,medical_center_id: center.medicalCenter.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+            					<a href="{{ path('admin_institution_updateMedicalCenterStatus', {id:id, medical_center_id: center.medicalCenter.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
         					</td>
         				</tr>
         				
@@ -57,11 +75,10 @@
 				width: 700,
 				modal: true,
 				resizable: false,
-				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
 				close: function() {}
 			});
 
-			$("#add-medical-center").click(function() {
+			$(".add-medical-center, .edit-medical-center").click(function() {
 				var elem = $(this);
 				var addProcedureUrl = elem.attr('href');
 				

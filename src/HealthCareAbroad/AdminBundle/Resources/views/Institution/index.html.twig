@@ -10,7 +10,10 @@
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			<table class="generic-table mid-size">
+			<!-- Render Filter Box -->
+			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus} %}
+
+			<table class="generic-table" width="70%">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
 				<th class="table-header-repeat line-left"><a href="">Description</a></th>
@@ -27,8 +30,8 @@
 						</a>
 					<span class="bar">|</span -->
 					<a href="{{ path('admin_institution_manageCenters', {id:institution.id}) }}">manage centers</a>
-					<span class="bar">|</span>
-					<a href="{{ path('admin_institution_manageListings', {id:institution.id}) }}">manage listings</a>
+					<br/>
+					<a href="{{ path('admin_institution_manageProcedureTypes', {id:institution.id}) }}">manage procedure types</a>
 					</td>
 				</tr>
 			{% else  %}
