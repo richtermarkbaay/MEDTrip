@@ -90,7 +90,6 @@ class AdminUserTypeController extends Controller
         
         $form = $this->createForm(new AdminUserTypeFormType(), $userType);
         $form->bind($request);
-        var_dump($userType);exit;
         if ($form->isValid()) {
             //$userType = $form->getData();
             $em = $this->getDoctrine()->getEntityManager();
