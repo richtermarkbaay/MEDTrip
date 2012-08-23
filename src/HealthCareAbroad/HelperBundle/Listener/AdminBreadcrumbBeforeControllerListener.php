@@ -40,6 +40,7 @@ class AdminBreadcrumbBeforeControllerListener
         $request = $event->getRequest();
         $matched_route = $request->get('_route');
         
+        
         // this check is only based on convention that all admin routes start with admin
         if (!\preg_match('/^admin/', $matched_route)) {
             // non-admin route, do nothing
@@ -52,7 +53,8 @@ class AdminBreadcrumbBeforeControllerListener
             // render the template for the breadcrumbs
             $breadcrumbs = $this->twig->render('AdminBundle:Default:breadcrumbs.html.twig', array(
                 'currentNode' => $node,
-                'ancestors' => $node->getAncestors()
+                'ancestors' => $node->getAncestors(),
+                'routeParams' => $request->get('_route_params')
             ));
         }
         else {

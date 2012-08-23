@@ -25,6 +25,27 @@ class UtilityController extends Controller
         return $this->render('HelperBundle:Utility:index.html.twig', array('nodes' => $nodes));
     }
     
+    public function changeParentBreadcrumbAction(Request $request)
+    {
+        $service = $this->get('services.breadcrumb_tree');
+        $wrappedNode = $service->getNode($request->get('id', 0));
+        if (!$wrappedNode) {
+            throw $this->createNotFoundException('Invalid breadcrumb');
+        }
+        
+        if ($parentId = $request->get('parentId', 0)) {
+            $parentNode = $service->getNode($parentId);
+            if (!$parentNode) {
+                throw $this->createNotFoundException('Invalid parent breadcrumb');
+            }
+        }
+        $node = $wrappedNode->getNode();
+        
+        $wrappedNode->moveAsFirstChildOf($parentNode);
+        
+        return $this->redirect($this->generateUrl('helper_utility_manageBreadcrumbs'));
+    }
+    
     public function addBreadcrumbAction(Request $request)
     {
         $service = $this->get('services.breadcrumb_tree');

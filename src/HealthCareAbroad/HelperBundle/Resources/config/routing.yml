@@ -5,6 +5,14 @@ helper_utility_addBreadcrumb:
         parentId: \d+
         _method: GET
         
+helper_utility_moveBreadcrumb:
+    pattern:  /utilities/breadcrumbs/change-parent/{id}/{parentId}
+    defaults: { _controller: HelperBundle:Utility:changeParentBreadcrumb, parentId: ~}
+    requirements:
+        id: \d+
+        parentId: \d+
+        _method: GET
+        
 helper_utility_addBreadcrumb_save:
     pattern:  /utilities/breadcrumbs/add/{parentId}
     defaults: { _controller: HelperBundle:Utility:saveBreadcrumb, parentId: ~ }
