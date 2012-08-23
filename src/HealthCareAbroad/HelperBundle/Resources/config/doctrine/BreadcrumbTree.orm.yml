@@ -1,0 +1,35 @@
+HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree:
+    type: entity
+    table: breadcrumb_tree
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\BreadcrumbTreeRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        route:
+            type: string
+            length: 64
+            fixed: false
+            nullable: false
+        label:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        rootId:
+            type: integer
+            column: root_id
+            nullable: false
+        leftValue:
+            type: integer
+            column: left_value
+            nullable: false
+        rightValue:
+            type: integer
+            column: right_value
+            nullable: false
+    lifecycleCallbacks: {  }

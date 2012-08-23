@@ -23,6 +23,10 @@
 
 			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 			
+			
+			<!-- Render Filter Box -->
+			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus, selectedCenter: selectedCenter} %}
+			
 			<table id="procedure-type-list" class="generic-table" width="70%">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
@@ -36,9 +40,7 @@
 					<td>{{ type.name }}</td>
 					<td>{{ type.description }}</td>
 					<td>
-						{% for center in type.medicalCenter%}
-						<a href="#">{{ center.name }}</a>&nbsp;
-						{% endfor %}
+						<a href="#">{{ type.medicalCenter.name }}</a>&nbsp;
 					</td>
 					<td align="center">
 						<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>

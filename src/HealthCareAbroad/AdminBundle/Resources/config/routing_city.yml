@@ -1,6 +1,6 @@
 admin_city_index:
     pattern:  /admin/city
-    defaults: { _controller: AdminBundle:City:index }
+    defaults: { _controller: AdminBundle:City:index, status: 1, country: all }
     requirements:    
         _method:  GET
 

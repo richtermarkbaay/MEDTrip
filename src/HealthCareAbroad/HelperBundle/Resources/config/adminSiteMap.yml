@@ -1,0 +1,37 @@
+adminSiteMap:
+    label: Home
+    route: admin_index
+    children:
+        admin_institution_index:
+            label: All institutions
+            children:
+        admin_manageHcaData
+            label: HCA Data
+            children:
+                admin_medicalCenter_index:
+                    label: Medical Centers
+                
+                
+                
+                
+frontendSiteMap:
+    frontend_search_base:
+        pattern: /search
+        
+    frontend_search_specific_country:
+        pattern: /search/destinations/{country}
+        
+    frontend_search_specific_city:
+        pattern: /search/destinations/{country}/{city}
+        
+    frontend_search_specific_center:
+        pattern: /search/treatments/{medicalCenter}
+        
+    frontend_search_specific_procedure:
+        pattern: /search/treatments/{medicalCenter}/{procedure}
+        
+    frontend_search_country_center:
+        pattern: /{country}/{medicalCenter}
+        
+    frontend_search_city_procedure:
+        pattern: /{country}/{city}/{procedure}        

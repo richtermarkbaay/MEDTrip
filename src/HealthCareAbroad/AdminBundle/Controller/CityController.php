@@ -14,8 +14,21 @@ class CityController extends Controller
      */
     public function indexAction()
     {
-		$cities = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->findAll();
-    	return $this->render('AdminBundle:City:index.html.twig', array('cities' => $cities));
+		$request = $this->getRequest();
+		$status = $request->get('status');
+		$countryId = $request->get('country');
+    	
+		$criteria = $status == 'all' ? array() : array('status' => $status);
+    	
+		if($countryId != 'all') {
+			$country = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($countryId);
+			$criteria['country'] = $country;
+		}
+
+		$cities = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->findBy($criteria);
+
+		$params = array('cities' => $cities, 'selectedStatus' => $status, 'selectedCountry' => $countryId);
+		return $this->render('AdminBundle:City:index.html.twig', $params);
     }
 
     /**

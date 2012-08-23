@@ -1,0 +1,15 @@
+<div id="filter-wrapper">
+	<span class="caption">Filter</span>
+	{% for name, filter in filters %}
+		<div>
+			<label>{{ filter.label }}:</label>
+			<select name="{{ name }}" id="filter-{{ name }}" class="filter-params styledselect_form_1">
+				{% for value, label in filter.options %}
+					<option value="{{ value }}" {{ value == filter.selected ? 'selected' : ''}}>{{ label }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	{% endfor %}
+
+	<a href="javascript:HCA.filterResult('{{ url }}')" class="button-type">GO</a>
+</div>

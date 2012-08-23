@@ -23,7 +23,10 @@
             	%}
 
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-				
+
+				<!-- Render Filter Box -->
+				{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus} %}			
+
 				<table class="generic-table" width="70%">
 				<tr>
 					<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
@@ -41,6 +44,8 @@
 							<a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
 						</td>
 					</tr>
+				{% else  %}
+					<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
 				{% endfor %}
 				</table>
 						

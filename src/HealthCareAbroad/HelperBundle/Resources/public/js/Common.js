@@ -3,6 +3,15 @@ var HCA = {
 	init : function(params)
 	{
 		HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
+	},
+	
+	filterResult: function(url) {
+		var params = '';
+		$('#filter-wrapper .filter-params').each(function(){
+			params += "&" + $(this).attr('name') +"="+ $(this).val();
+		});
+		
+		window.location = url + '?' + params.substr(1); 
 	}
 };
 

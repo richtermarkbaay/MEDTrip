@@ -23,7 +23,11 @@
 			%}
 
 			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			
+
+
+			<!-- Render Filter Box -->
+			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus, selectedProcedureType: selectedProcedureType} %}			
+
 			<table id="medical-procedure-list" class="generic-table" width="70%">
 			<tr>
 				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>

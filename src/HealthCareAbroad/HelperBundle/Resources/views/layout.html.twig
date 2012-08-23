@@ -1,6 +1,6 @@
 {% extends '::base.admin.html.twig' %}
 
-{% block title %}{{ parent() }} &raquo; Admin Panel{% endblock %}
+{% block title %}{{ parent() }} &raquo; Utility Panel{% endblock %}
 
 {% block body %}
 
@@ -17,11 +17,7 @@
         	</div>
         	<!-- end logo -->
         	
-        	{% block top_search %}
-        		<div id="top-search">
-					{% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %}
-				</div>	        	    
-        	{% endblock %}
+        	
          	<div class="clear"></div>
         
         </div>
@@ -37,24 +33,16 @@
         <!--  start nav-outer -->
         <div class="nav-outer"> 
     
-    		{% block right_navigation %}
-    		    {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
-    		{% endblock %}
     		
-    		{% block main_navigation %}
-    		    {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
-    		{% endblock %}
         </div>
         <div class="clear"></div>
         <!--  end nav-outer -->
-        
     </div>
     <!--  end nav-outer-repeat................................................... END -->
 
     <!-- start content-outer ........................................................................................................................START -->
-    <div id="content-outer">
-        {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
-        {% block content %}{% endblock %}
+    <div id="content-outer"> 
+    {% block content %}{% endblock %}
     </div>
     <!--  end content-outer........................................................END -->
 
