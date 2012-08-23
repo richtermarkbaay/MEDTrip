@@ -1,0 +1,21 @@
+<div id="page-heading"><h3>{{ id ? "Edit":"Add" }} Breadcrumb</h3></div>
+{% embed '::contentWrapper.admin.html.twig' %}
+	{% block wrappedContent %}
+        <form novalidate="novalidate" action="{{ id ?  path('helper_utility_editBreadcrumb', {'id': id }) : path('helper_utility_addBreadcrumb', {'parentId': parentId }) }}" method="POST" class="basic-form">
+        
+            {% if parentPath is defined %}
+            <div>
+                <label>Parent Path:</label>
+                <span class="fixed-value">{{ parentPath }}</span>
+            </div>
+            {% endif %}
+            
+            <!-- start id-form -->
+    	    {{ form_row(form.route) }}
+    	    {{ form_row(form.label) }}
+    	    {{ form_rest(form) }}
+    	    <input type="submit" class="form-submit" name="submit"/>
+        	<!-- end id-form  -->
+        </form>
+    {% endblock %}
+{% endembed %}
