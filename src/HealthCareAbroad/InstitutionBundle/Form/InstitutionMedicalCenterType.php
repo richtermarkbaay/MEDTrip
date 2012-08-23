@@ -34,14 +34,14 @@ class InstitutionMedicalCenterType extends AbstractType
         $institutionMedicalCenter = $options['data'];
         $institution = $options['institution'];
         $institutionMedicalCenter->setInstitution($institution);
-        $medicalCenterId = \array_key_exists('medicalCenterId', $options) ? $options['medicalCenterId'] : 0;
-        
-        if (!$medicalCenterId) {
+
+        if (!$medicalCenterId = $institutionMedicalCenter->getMedicalCenterId()) {
             $builder->add('medicalCenter', 'medicalCenter_list', array('query_builder' => function (EntityRepository $er) use ($institution) {
                     return $er->getQueryBuilderForUnselectedInstitutionMedicalCenters($institution);
                 },'virtual' => false,'empty_value' => 'Please select one','constraints'=>array(new NotBlank())));
         }
         else {
+        	 
             $builder->add('medicalCenter', 'medicalCenter_list', array('query_builder' => function(EntityRepository $er) use($medicalCenterId){
                 return $er->createQueryBuilder('a')
                     ->where('a.id = :id')

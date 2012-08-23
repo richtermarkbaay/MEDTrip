@@ -3,36 +3,36 @@
 {% block content %}
 	<div id="content">
 
-		<div id="page-heading"><h3>{{ institutionName }} Listing Management</h3></div>
+		<div id="page-heading"><h3>{{ institutionName }} Procedure Type Management</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
 			{% include '::notice.admin.html.twig' %}
 
-			<div id="filter-wrapper">
-				<label>Filter by Center: </label>
-				<select id="procedure_filter" class="styledselect_form_1">
-					<option>Center1</option>
-				</select>
-			</div>
-			
+
 			{% include '::relatedTasks.base.admin.html.twig' with 
 				{'contents': [
 					{
-						'title': 'Add new listing', 
-						'description': 'Create a new listing',
+						'title': 'Add new procedure type', 
+						'description': 'Create a new procedure type',
 						'class' : 'add-icon',
-						'href': path('admin_institution_addListing', {id:id}), 
+						'href': path('admin_institution_addProcedureType', {id:id}), 
 						'links': [{
-							'title' : 'Add listing',
-							'href': path('admin_institution_addListing', {id:id})
+							'title' : 'Add procedure type',
+							'href': path('admin_institution_addProcedureType', {id:id})
 						}]
 					}
     			]} 
 			%}
 
-			<div id="institution-listings" style="width:70%">
+			<!-- Render Filter Box -->
+			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), institution_id: id, selectedStatus: selectedStatus, selectedCenter: selectedCenter} %}
+
+			{% if medicalProcedureTypes | length < 1 %}
+				<div class="empty-list">No records yet!</div>
+			{% endif %}
+			<div id="institution-procedure-types" style="width:70%">
 
 			{% for procedureType in medicalProcedureTypes %}	 
 				<h3>
@@ -40,7 +40,7 @@
 				</h3>
 				<div class="procedures">
 					<a class="add-procedure button-type" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}">Add Procedure</a>
-					<a href="{{ path('admin_institution_editListing', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" class="button-type">Edit Listing</a>
+					<a href="{{ path('admin_institution_editProcedureType', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" class="button-type">Edit Procedure Type</a>
 				    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
 	    				<tr>
 	    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
@@ -69,13 +69,11 @@
 								</td>
 							</tr>
 						{% else  %}
-							<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+							<tr><td colspan="3" class="empty-list">Empty List!</td></tr>
 						{% endfor %}
 					</table>
 
 				</div>
-			{% else  %}
-				<div class="empty-list">No records yet!</div>
 			{% endfor %}
 			</div>
 
@@ -93,7 +91,7 @@
 			$("#dialog-container").dialog({
 				autoOpen: false,
 				height: 580,
-				width: 700,
+				width: 800,
 				modal: true,
 				resizable: false,
 				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
@@ -118,7 +116,7 @@
 				$("#dialog-container").dialog("open");
 			});
 
-			$("#institution-listings").accordion();
+			$("#institution-procedure-types").accordion();
 		});
 	</script>
 {% endblock %}

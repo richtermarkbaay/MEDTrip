@@ -36,6 +36,10 @@ services:
         class: %services.inquire_class%
         calls:
             - [setDoctrine, [@doctrine]]
+            
+    services.breadcrumb_tree:
+        class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
+        arguments: [@doctrine]]
 
     form.country_list:
         class: "%services.country_list%"
@@ -54,3 +58,11 @@ services:
         class: "%services.tagtype_list%"
         tags:
             - { name: form.type, alias: tagtype_list }
+            
+    listener.helper.adminBreadcrumbBeforeController:
+        class: HealthCareAbroad\HelperBundle\Listener\AdminBreadcrumbBeforeControllerListener
+        calls:
+            - [setBreadcrumbService, [@services.breadcrumb_tree]]
+            - [setTwig, [@twig]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

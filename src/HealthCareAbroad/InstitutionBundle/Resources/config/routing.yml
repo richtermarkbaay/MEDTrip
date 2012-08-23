@@ -46,8 +46,8 @@ institution_editAccount:
         accountId: \d+
         
 institution_edit_information:
-    pattern:  /institution/edit-information/{accountId}
-    defaults:  { _controller: InstitutionBundle:Institution:editInstitution, accountId: ~ }
+    pattern:  /institution/edit-information/{institutionId}
+    defaults:  { _controller: InstitutionBundle:Institution:editInstitution, institutionId: ~ }
     requirements:
         _method:  GET|POST
         accountId:  \d+

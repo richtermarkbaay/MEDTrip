@@ -64,7 +64,7 @@ class DefaultController extends Controller
 	
 	public function showFiltersAction()
 	{
-		$filters = array();
+		$filters = $routeParams = array();
 		$request = $this->getRequest();
 
 		$statusOptions = array(1 => 'Active', 0 => 'Inactive', 'all' => 'All');
@@ -109,14 +109,35 @@ class DefaultController extends Controller
 
 				$filters['country'] = array('label'=>'Country', 'selected'=>$request->get('selectedCountry'), 'options'=>$options);
 				break;
+				
+			case 'admin_institution_manageProcedureTypes' :
+				$id = $request->get('institution_id');
+				$routeParams['id'] = $id;
+				$institution = $this->getDoctrine()->getEntityManager()->getRepository('InstitutionBundle:Institution')->find($id);
+				$institutionCenters = $institution->getInstitutionMedicalCenters();
+				
+				$options = array('all' => 'All');
+ 				foreach($institutionCenters as  $each) {
+ 					$center = $each->getMedicalCenter();
+ 					$options[$center->getId()] = $center->getName();
+ 				}
+				
+				$filters['medicalCenter'] = array('label'=>'Medical Center', 'selected'=>$request->get('selectedCenter'), 'options'=>$options);
+				break;
+				
+			case 'admin_institution_index' :
+				break;
 			
+			case 'admin_institution_manageCenters' :
+				$routeParams['id'] = $request->get('institution_id');
+				break;
 		}
 
 
 		$filters['status'] = array('label' => 'Status', 'selected' => $request->get('selectedStatus'), 'options' => $statusOptions);
 
 
-		$url = $this->generateUrl($request->get('route'));		
+		$url = $this->generateUrl($request->get('route'), $routeParams);
 		$params = array('url' => $url, 'filters' => $filters);
 		return $this->render('SearchBundle:Default:filters.html.twig', $params);
 	}

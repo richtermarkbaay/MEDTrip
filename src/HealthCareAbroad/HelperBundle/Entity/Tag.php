@@ -11,7 +11,7 @@ class Tag
 {
 	static $TYPES = array(
 		1 => 'MedicalProcedure',
-		2 => 'Listing'
+		2 => 'MedicalProcedureType'
 	);
 
 	const STATUS_ACTIVE = 1;

@@ -25,8 +25,8 @@ class MedicalProcedureController extends Controller
     	$criteria = $status == 'all' ? array() : array('status' => $status);
 
     	if($procedureTypeId != 'all') {
-    		$medicalCenter = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedureTypeId);
-    		$criteria['medicalProcedureType'] = $medicalCenter;
+    		$procedureType = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedureTypeId);
+    		$criteria['medicalProcedureType'] = $procedureType;
     	}
 
 		$procedures = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedure')->findBy($criteria);
