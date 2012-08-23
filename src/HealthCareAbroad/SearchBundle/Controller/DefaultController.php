@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\SearchBundle\Form\FilterFormType;
+
+use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalCenterListType;
+
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
 use HealthCareAbroad\SearchBundle\Constants;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -54,5 +60,64 @@ class DefaultController extends Controller
 		}
 		
 		return $this->render($template, array("{$varName}" => $this->get('services.search')->initiate($searchCriteria)));
+	}
+	
+	public function showFiltersAction()
+	{
+		$filters = array();
+		$request = $this->getRequest();
+
+		$statusOptions = array(1 => 'Active', 0 => 'Inactive', 'all' => 'All');
+
+		switch($request->get('route')) {
+			case 'admin_medicalCenter_index' :
+				break;
+				
+			case 'admin_procedureType_index' :
+				$medicalCenters = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
+				
+				$options = array('all' => 'All');
+				foreach($medicalCenters as  $each) {
+					$options[$each->getId()] = $each->getName();
+				}
+
+				$selected = $request->get('selectedCenter');
+				$filters['medicalCenter'] = array('label'=>'Medical Center', 'selected'=>$selected, 'options'=>$options);
+				break;
+
+			case 'admin_medicalProcedure_index' :
+				$procedureTypes = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
+
+				$options = array('all' => 'All');
+				foreach($procedureTypes as  $each) {
+					$options[$each->getId()] = $each->getName();
+				}
+
+				$filters['procedureType'] = array('label'=>'Procedure Type', 'selected'=>$request->get('selectedProcedureType'), 'options'=>$options);
+				break;
+
+			case 'admin_country_index' :
+				break;
+				
+			case 'admin_city_index' :
+				$countries = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->findByStatus(1);
+			
+				$options = array('all' => 'All');
+				foreach($countries as  $each) {
+					$options[$each->getId()] = $each->getName();
+				}
+
+				$filters['country'] = array('label'=>'Country', 'selected'=>$request->get('selectedCountry'), 'options'=>$options);
+				break;
+			
+		}
+
+
+		$filters['status'] = array('label' => 'Status', 'selected' => $request->get('selectedStatus'), 'options' => $statusOptions);
+
+
+		$url = $this->generateUrl($request->get('route'));		
+		$params = array('url' => $url, 'filters' => $filters);
+		return $this->render('SearchBundle:Default:filters.html.twig', $params);
 	}
 }

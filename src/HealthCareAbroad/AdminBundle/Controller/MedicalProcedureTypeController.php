@@ -16,8 +16,23 @@ class MedicalProcedureTypeController extends Controller
      */
     public function indexAction()
     {
-		$procedureTypes = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findAll();
-    	$data = array('procedureTypes'=>$procedureTypes);
+    	$request = $this->getRequest();
+    	$status = $request->get('status');
+    	$medicalCenterId = $request->get('medicalCenter');
+
+    	$criteria = $status == 'all' ? array() : array('status' => $status);
+
+    	if($medicalCenterId != 'all') {
+    		$medicalCenter = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
+    		$criteria['medicalCenter'] = $medicalCenter;
+    	}
+
+		$procedureTypes = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findBy($criteria);
+    	$data = array(
+    		'selectedStatus' => $status,
+   			'selectedCenter' => $medicalCenterId,
+    		'procedureTypes'=>$procedureTypes
+    	);
     	return $this->render('AdminBundle:MedicalProcedureType:index.html.twig', $data);
     }
 

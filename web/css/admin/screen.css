@@ -358,7 +358,7 @@ a:hover.icon-5	{
 	}
 .generic-table td	{
 	border: 1px solid #d2d2d2;
-	padding: 10px 0 10px 10px;
+	padding: 10px;
 	}
 .generic-table td.empty-list{
 	color: #CC6666;
@@ -1089,9 +1089,9 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 .nav .current .show .sub li a	{
 	background: transparent;
 	border: 0;
-	color: #fff;
+	color: #eee;
 	font-weight: bold;
-	font-size: 13px;
+	font-size: 12px;
 	display: block;
 	float: left;
 	margin: 0;
@@ -1321,16 +1321,14 @@ div.selectbox-wrapper2 ul li	{
 	}
 form.basic-form select,
 .styledselect_form_1	{
-	background: url(/images/admin/forms/form_select.gif) left no-repeat;
-	border: none;
-	border-left: none;
+	border: 1px solid #AAAAAA;
+	border-radius: 5px;
 	color: #393939;
 	cursor: pointer;
 	display: inline-block;
 	font-family: Arial;
 	font-size: 12px;
-	height: 32px;
-	padding: 8px 8px 8px 5px;
+	padding: 7px 5px;
 	text-align: left;
 	width: 198px;
 	}
@@ -1629,6 +1627,54 @@ a.button-type {
 	margin-left: 10px;
 	margin-bottom: 10px;
 	display: inline-block;
+}
+
+
+#filter-wrapper {
+	width: 70%;
+	position: relative;
+	padding: 6px 0;
+	border: 1px solid #ddd;
+	border-top-right-radius: 5px;
+	margin: 30px 0 10px;
+	text-align: right;
+	background: #F8F8F8;
+}
+
+#filter-wrapper > div {
+	margin-right: 20px;
+	display: inline-block;
+}
+
+#filter-wrapper .caption {
+	top: -25px;
+	left: -1px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 6px 20px;
+	margin-right: 50px; 
+	position: absolute; 
+	display: inline-block; 
+	background: #F8F8F8;
+	border-top: 1px solid #ddd; 
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd; 
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
+#filter-wrapper a.button-type {
+	margin-right: 10px;
+}
+#filter-wrapper label {
+	text-align: left;
+	display: inline-block;
+}
+
+#filter-wrapper select {
+	padding: 5px;
+	width: auto;
+	min-width: 100px;
 }
 
 /* jQuery UI Dialg Style */

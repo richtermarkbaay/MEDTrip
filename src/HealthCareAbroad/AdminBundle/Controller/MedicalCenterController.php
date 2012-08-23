@@ -14,11 +14,14 @@ class MedicalCenterController extends Controller
      */
     public function indexAction()
     {
-		$medicalCenters = $this->getDoctrine()->getEntityManager()
-				->getRepository('MedicalProcedureBundle:MedicalCenter')->findAll();
-    	
+    	$status = $this->getRequest()->get('status');
+		$criteria = $status == 'all' ? array() : array('status' => $status);
+
+		$medicalCenters = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findBy($criteria);
+
     	return $this->render('AdminBundle:MedicalCenter:index.html.twig', array(
-    			'medicalCenters' => $medicalCenters
+    		'selectedStatus' => $status,
+			'medicalCenters' => $medicalCenters
     	));
     }
 
