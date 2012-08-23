@@ -14,8 +14,7 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 class InstitutionControllerTest extends InstitutionBundleWebTestCase
 {
 	public function testEditInformation()
-	{
-		$client = static::createClient();
+	{ 
 		$editAccountUrl = '/institution/edit-information';
 		
 		//---- test that this should not be accessed by anonymous user
@@ -31,37 +30,48 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
         $formValues = array(
-        		'institutionDetails[name]' => 'edit name',
-        		'institutionDetails[description]' => 'edit desc',
-        		'institutionDetails[country]' => '1',
-        		'institutionDetails[city]' => '1',
-        		'institutionDetails[address1]' => 'edit address1',
-        		'institutionDetails[address2]' => 'edit address2',
+        		'institutionDetail[name]' => 'edit name',
+        		'institutionDetail[description]' => 'edit desc',
+        		'institutionDetail[country]' => '1',
+        		'institutionDetail[city]' => '1',
+        		'institutionDetail[address1]' => 'edit address1',
+        		'institutionDetail[address2]' => 'edit address2',
         );
 		
         $invalidFormValues = $formValues;
-        $invalidFormValues['institutionDetails[name]'] = null;
+        $invalidFormValues['institutionDetail[name]'] = null;
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-            
-	}
+           
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $editAccountUrl);
+        $crawler = $client->submit($form, $formValues);
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully updated account")')->count());
+        //---- end test edit logged in account
+        
+		$client = $this->getBrowserWithActualLoggedInUser();
+		$client->request('GET', $editAccountUrl."/210");
+		$this->assertEquals(404, $client->getResponse()->getStatusCode());
 		
+		
+	}
+	
+	public function testLoadCities()
+	{
+		$client = static::createClient();
+		$client->request('GET', "location/load-cities/1");
+		$this->assertTrue($client->getResponse()->headers->contains('Content-Type', 'application/json'));
+		
+	}
 	public function testSignUp()
 	{
 		$client = static::createClient();
-		$crawler = $client->request('GET', '/signUp');
+		$crawler = $client->request('GET', '/sign-up');
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name")')->count()); // look for the Current name text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description")')->count()); // look for the New email text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Country")')->count()); // look for the Current name text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("City")')->count()); // look for the New email text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Address1")')->count()); // look for the Current name text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Firstname")')->count()); // look for the Current name text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Middlename")')->count()); // look for the New email text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Lastname")')->count()); // look for the Current name text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count()); // look for the New email text
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("New Password")')->count()); // look for the New Password text
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm Password")')->count()); //look for the Confirm Password text
 		
 		$form = $crawler->selectButton('submit')->form();
 
@@ -81,10 +91,10 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 		);
 		$crawler = $client->submit($form, $formValues);
 		$this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to homepage
-        $this->assertEquals('/institution', $client->getResponse()->headers->get('location'));
+        $this->assertEquals('/institution/login', $client->getResponse()->headers->get('location'));
         
         // test for missing fields flow
-        $crawler = $client->request('GET', '/signUp');
+        $crawler = $client->request('GET', '/sign-up');
         $formValues = array(
         		'institution[name]' => 'alnie jacobe',
         		'institution[description]' => 'test test',
@@ -106,7 +116,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
     
         //test for existing email provided
         $client = static::createClient();
-        $crawler = $client->request('GET', '/signUp');
+        $crawler = $client->request('GET', '/sign-up');
         $formValues = array(
         		'institution[name]' => 'alnie jacobe',
         		'institution[description]' => 'test test',
@@ -117,21 +127,14 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         		'institution[firstName]' => 'test name',
         		'institution[middleName]' => 'middle',
         		'institution[lastName]' => 'jacobe',
-        		'institution[email]' => 'kristenstewart@yahoo.com',
+        		'institution[email]' => 'alnie.jacobe@chromedia.com',
         		'institution[new_password]' => $this->userPassword,
         		'institution[confirm_password]' => $this->userPassword,
         );
         
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
-        //$this->assertGreaterThan(0, $crawler->filter('html:contains("Integrity constraint violation: 1062 Duplicate entry ")')->count());
-    
-        
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
 	}
-	
-// 	public function testCreate()
-// 	{
-		
-// 	}
+
 }
