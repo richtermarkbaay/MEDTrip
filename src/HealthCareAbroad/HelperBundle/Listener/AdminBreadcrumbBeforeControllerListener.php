@@ -1,15 +1,39 @@
 <?php
 /**
+ * Listener for kernel.controller for creating breadcrumbs of current request
  * 
  * @author Allejo Chris G. Velarde
- *
  */
 namespace HealthCareAbroad\HelperBundle\Listener;
+
+use \Twig_Environment;
+
+use HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class AdminBreadcrumbBeforeControllerListener
 {
+    /**
+     * @var BreadcrumbTreeService
+     */
+    private $breadcrumbTreeService;
+    
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+    
+    public function setBreadcrumbService($service)
+    {
+        $this->breadcrumbTreeService = $service;
+    }
+    
+    public function setTwig(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+    
     public function onKernelController(FilterControllerEvent $event)
     {
         $controller = $event->getController();
@@ -22,6 +46,18 @@ class AdminBreadcrumbBeforeControllerListener
             return;
         }
         
-        
+        // find a matching breadcrumb node by route
+        $node = $this->breadcrumbTreeService->getNodeByRoute($matched_route);
+        if ($node) {
+            // render the template for the breadcrumbs
+            $breadcrumbs = $this->twig->render('AdminBundle:Default:breadcrumbs.html.twig', array(
+                'currentNode' => $node,
+                'ancestors' => $node->getAncestors()
+            ));
+        }
+        else {
+            $breadcrumbs = null;
+        }
+        $this->twig->addGlobal('breadcrumbs', $breadcrumbs);
     }    
 }

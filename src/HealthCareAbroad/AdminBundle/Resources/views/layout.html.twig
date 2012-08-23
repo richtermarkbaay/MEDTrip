@@ -47,12 +47,14 @@
         </div>
         <div class="clear"></div>
         <!--  end nav-outer -->
+        
     </div>
     <!--  end nav-outer-repeat................................................... END -->
 
     <!-- start content-outer ........................................................................................................................START -->
-    <div id="content-outer"> 
-    {% block content %}{% endblock %}
+    <div id="content-outer">
+        {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
+        {% block content %}{% endblock %}
     </div>
     <!--  end content-outer........................................................END -->
 

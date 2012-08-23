@@ -61,5 +61,8 @@ services:
             
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\AdminBreadcrumbBeforeControllerListener
+        calls:
+            - [setBreadcrumbService, [@services.breadcrumb_tree]]
+            - [setTwig, [@twig]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

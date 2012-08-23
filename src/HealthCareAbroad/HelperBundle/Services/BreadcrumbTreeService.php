@@ -55,6 +55,28 @@ class BreadcrumbTreeService
         return $this->repository;
     }
     
+    /**
+     * Find a breadcrumbtree node by route
+     * 
+     * @param string $route
+     * @return \DoctrineExtensions\NestedSet\NodeWrapper
+     */
+    public function getNodeByRoute($route)
+    {
+        $node = $this->repository->findOneBy(array('route' => $route));
+        if (!$node) {
+            return null;
+        }
+        
+        return $this->nsmManager->wrapNode($node);
+    }
+    
+    /**
+     * Find a breadcrumbtree node by primary key
+     * 
+     * @param int $id
+     * @return NULL|\DoctrineExtensions\NestedSet\NodeWrapper
+     */
     public function getNode($id)
     {
         $node = $this->repository->find($id);
