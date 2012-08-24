@@ -1,0 +1,41 @@
+helper_utility_addBreadcrumb:
+    pattern:  /breadcrumbs/add/{parentId}
+    defaults: { _controller: HelperBundle:Utility:addBreadcrumb, parentId: ~ }
+    requirements:
+        parentId: \d+
+        _method: GET
+        
+helper_utility_moveBreadcrumb:
+    pattern:  /breadcrumbs/change-parent/{id}/{parentId}
+    defaults: { _controller: HelperBundle:Utility:changeParentBreadcrumb, parentId: ~}
+    requirements:
+        id: \d+
+        parentId: \d+
+        _method: GET
+        
+helper_utility_addBreadcrumb_save:
+    pattern:  /breadcrumbs/add/{parentId}
+    defaults: { _controller: HelperBundle:Utility:saveBreadcrumb, parentId: ~ }
+    requirements:
+        parentId: \d+
+        _method: POST
+        
+helper_utility_editBreadcrumb:
+    pattern:  /breadcrumbs/edit/{id}
+    defaults: { _controller: HelperBundle:Utility:editBreadcrumb}
+    requirements:
+        id: \d+
+        _method: GET
+        
+helper_utility_editBreadcrumb_save:
+    pattern:  /breadcrumbs/edit/{id}
+    defaults: { _controller: HelperBundle:Utility:saveBreadcrumb}
+    requirements:
+        id: \d+
+        _method: POST
+    
+helper_utility_manageBreadcrumbs:
+    pattern:  /breadcrumbs
+    defaults: { _controller: HelperBundle:Utility:manageBreadcrumbs }
+    requirements:
+        _method: GET
