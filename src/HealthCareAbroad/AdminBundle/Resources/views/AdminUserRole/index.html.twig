@@ -37,7 +37,7 @@
                 				        <td>
                 				            <ul style="list-style:none; padding: 0 15px;">
                     					        {% for userType in userRole.adminUserTypes %}
-                    					        <li> <a href="{{ path('admin_userRole_viewByUserType', {'userTypeId': userType.id}) }}">{{ userType.name | title }}</a></li>
+                    					        <li> <a href="{{ path('admin_userRole_viewByUserType', {'id': userType.id}) }}">{{ userType.name | title }}</a></li>
                     					        {% endfor %}
                     					    </ul>
                 				        </td>
