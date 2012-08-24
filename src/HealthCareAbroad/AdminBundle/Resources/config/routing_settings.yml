@@ -31,7 +31,7 @@ admin_userType_edit_save:
         id: \d+
 
 admin_userRole_viewByUserType:
-    pattern: /admin/settings/user-type/{userTypeId}/user-roles
+    pattern: /admin/settings/user-type/{id}/user-roles
     defaults: { _controller: AdminBundle:AdminUserRole:viewByUserType }
     requirements:    
         _method: GET
