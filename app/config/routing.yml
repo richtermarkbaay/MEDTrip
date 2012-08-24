@@ -29,43 +29,10 @@ HelperBundle:
 UserBundle:
     resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /
-
-
-### ADMIN ROUTES ###
+    
 AdminBundle:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /
-
-    # Routes for Admin MedicalCenterController #
-AdminBundle_medicalCenter:
-    resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
-    prefix:   /
-
-    # Routes for Admin MedicalProcedureTypeController #
-AdminBundle_medicalProcedureType:
-    resource: "@AdminBundle/Resources/config/routing_procedureType.yml"
-    prefix:   /
-
-    # Routes for Admin MedicalProcedureController #
-AdminBundle_medicalProcedure:
-    resource: "@AdminBundle/Resources/config/routing_medicalProcedure.yml"
-    prefix:   /
-
-    # Routes for Admin InstitutionController #
-AdminBundle_institutuion:
-    resource: "@AdminBundle/Resources/config/routing_institution.yml"
-    prefix:   /
-
-    # Routes for Admin CountryController #
-AdminBundle_country:
-    resource: "@AdminBundle/Resources/config/routing_country.yml"
-    prefix:   /
-
-    # Routes for Admin CityController #
-AdminBundle_city:
-    resource: "@AdminBundle/Resources/config/routing_city.yml"
-    prefix:   /
-### END OF ADMIN ROUTES ###
 
 
 # Internal routing configuration to handle ESI
