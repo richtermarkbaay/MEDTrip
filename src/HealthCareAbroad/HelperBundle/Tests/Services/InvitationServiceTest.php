@@ -53,7 +53,7 @@ class InvitationServiceTest extends HelperBundleTestCase
 	{
 		$invitationToken = $this->service->createInvitationToken(0);
 		$this->assertNotEmpty($invitationToken);
-		return $invitationToken;
+		
 	}
 	
 	public  function testCreateInstitutionInvitation()
