@@ -46,28 +46,24 @@ class InstitutionService
     public function updateInstitution(Institution $institution)
     {
     	$em = $this->doctrine->getEntityManager();
-    	$em->persist($institution);
-    	$em->flush();
-    	
-    	// failed to save
-    	if (!$institution) {
-    		return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
-    	}
-    	
-    	return $institution;
+    	try {
+			$em->persist($institution);
+			$em->flush();
+		} catch(\Exception $e) {
+			return null;
+		}
+		return $institution;
     }
     
     public function createInstitution(Institution $institution)
     {
 		$em = $this->doctrine->getEntityManager();
-		$em->persist($institution);
-		$em->flush();
-		
-		// failed to save
-		if (!$institution) {
-			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
+		try {
+			$em->persist($institution);
+			$em->flush();
+		} catch(\Exception $e) {
+			return null;
 		}
-		
 		return $institution;
 		
     }

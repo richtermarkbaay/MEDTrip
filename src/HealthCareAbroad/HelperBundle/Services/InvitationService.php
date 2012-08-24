@@ -6,14 +6,13 @@ use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use Doctrine\Tests\DBAL\Types\VarDateTimeTest;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
-
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
+
 use ChromediaUtilities\Helpers\SecurityHelper;
 use Doctrine\ORM\EntityManager;
-
 
 class InvitationService
 {
@@ -66,18 +65,12 @@ class InvitationService
 		$invitationToken = new InvitationToken();
 		$invitationToken->setToken($generatedToken);
 		$invitationToken->setExpirationDate($expirationDate);
-		$invitationToken->setStatus("1");
+		$invitationToken->setStatus(SiteUser::STATUS_ACTIVE);
 		
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($invitationToken);
 		$em->flush();
-		
-		// failed to save
-		if (!$invitationToken) {
-			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
-		}
-		
- 		return $invitationToken;
+		return $invitationToken;
 	}
 	
 	public function createInstitutionInvitation(InstitutionInvitation $invitation, $message, InvitationToken $token)
@@ -89,13 +82,27 @@ class InvitationService
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($invitation);
 		$em->flush();
-		
-		// failed to save
-		if (!$invitation) {
-			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
-		}
-		
 		return $invitation;
+	}
+	
+	//send institution invitation
+	public function sendInstitutionInvitation(InvitationToken $token, InstitutionInvitation $invitation)
+	{
+		//set body content
+		$messageBody = $this->twig->render('InstitutionBundle:Email:institutionInvitation.html.twig', array(
+				'name' => $invitation->getName(),
+				'expirationDate' => $token->getExpirationDate(),
+				'email' => $invitation->getEmail(),
+				'token' => $token->getToken()
+		));
+		
+		$message = \Swift_Message::newInstance()
+			->setSubject('Activate your account with HealthCareAbroad')
+			->setFrom('alnie.jacobe@chromedia.com')
+			->setTo($institutionInvitation->getEmail())
+			->setBody($messageBody);
+		
+		return $this->mailer->send($message);
 	}
 	
 	//send email to institution user for his user and password
@@ -103,27 +110,18 @@ class InvitationService
 	{
 		
 		$messageBody = $this->twig->render('InstitutionBundle:Email:loginInformation.html.twig', array(
-
 				'institutionName' => $user->getInstitution()->getName(),
-				
 				'firstName' => $user->getFirstName(),
-		
 				'email' => $user->getEmail(),
-		
 				'password' => $password
-				
 		));
 		
 		// send email to newly created chromedia accounts|institution user
-		$message = \Swift_Message::newInstance()
-	
-		->setSubject('Institution User Invitation for Health Care Abroad')
-	
-		->setFrom('alnie.jacobe@chromedia.com')
-	
-		->setTo($user->getEmail())
-	
-		->setBody($messageBody);
+		$message = \Swift_Message::newInstance()	
+			->setSubject('Institution User Invitation for Health Care Abroad')
+			->setFrom('alnie.jacobe@chromedia.com')
+			->setTo($user->getEmail())
+			->setBody($messageBody);
 		 
 		return $this->mailer->send($message);
 	}

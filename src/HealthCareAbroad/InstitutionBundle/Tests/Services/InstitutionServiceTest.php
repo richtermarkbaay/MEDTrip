@@ -24,12 +24,15 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 	public function setUp()
 	{
 		$this->service = new InstitutionService($this->getDoctrine());
+		
 	}
 	
 	public function tearDown()
 	{
 		$this->service = null;
 	}
+	
+	
 	
 	public function testCreateInstitution()
 	{
@@ -52,6 +55,35 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 		
 		$result = $this->service->createInstitution($institution);
 		$this->assertNotEmpty($result);
+		
+	}
+	
+	public function testUpdateInstitution()
+	{
+		//test for valid institution
+		$institutionValue = new Institution();
+		$institutionValue = $this->doctrine->getRepository('InstitutionBundle:Institution')->find(1);
+	
+		$institutionValue->setDescription('edited description');
+	
+		$result = $this->service->updateInstitution($institutionValue);
+		$this->assertNotEmpty($result);
+	
+		//test for empty institution
+		$institutionValue = new Institution();
+		$institutionValue->setName('alnie');
+		$result = $this->service->updateInstitution($institutionValue);
+		$this->assertEmpty($result);
+	
+	}
+	public function testCreateEmptyInstitution()
+	{
+		//test for empty institution
+		$institution = new Institution();
+		$institution->setName('');
+		$result = $this->service->createInstitution($institution);
+		$this->assertEquals(NULL,$result);
+	
 	}
 	
 }

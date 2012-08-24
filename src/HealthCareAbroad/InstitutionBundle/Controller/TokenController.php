@@ -30,16 +30,17 @@ class TokenController extends Controller
             ->add('name', 'text')
             ->add('email', 'text')
             ->getForm();
-            
-    	$request = $this->getRequest();
-    		
+        
+        //generate token
+        $invitationToken = $this->get('services.invitation')->createInvitationToken(0);
+        
+        $request = $this->getRequest();
     	if ($request->getMethod() == 'POST') {
-			$form->bindRequest($request);	
-			
+
+    		$form->bindRequest($request);	
 			if ($form->isValid()){
 				
-				//generate token
-				$invitationToken = $this->get('services.invitation')->createInvitationToken(0);	
+				//TODO:: create institutioninvitation event
 				
 				//send institution invitation email
 				$message = \Swift_Message::newInstance()
