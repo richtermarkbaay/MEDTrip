@@ -23,3 +23,4 @@ services:
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
         - { name: kernel.event_listener, event: event.institution.create, method: onCreate }
+    

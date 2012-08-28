@@ -73,22 +73,13 @@ class InvitationService
 		return $invitationToken;
 	}
 	
-	public function createInstitutionInvitation(InstitutionInvitation $invitation, $message, InvitationToken $token)
+	public function sendInstitutionInvitation(InstitutionInvitation $invitation)
 	{	
-		$invitation->setMessage($message);
-		$invitation->setStatus('0');
-		$invitation->setInvitationToken($token);
 		
-		$em = $this->doctrine->getEntityManager();
-		$em->persist($invitation);
-		$em->flush();
-		return $invitation;
-	}
-	
-	//send institution invitation
-	public function sendInstitutionInvitation(InvitationToken $token, InstitutionInvitation $invitation)
-	{
-		//set body content
+		//generate token
+		$token = $this->createInvitationToken(0);
+		
+		//create message
 		$messageBody = $this->twig->render('InstitutionBundle:Email:institutionInvitation.html.twig', array(
 				'name' => $invitation->getName(),
 				'expirationDate' => $token->getExpirationDate(),
@@ -99,10 +90,19 @@ class InvitationService
 		$message = \Swift_Message::newInstance()
 			->setSubject('Activate your account with HealthCareAbroad')
 			->setFrom('alnie.jacobe@chromedia.com')
-			->setTo($institutionInvitation->getEmail())
+			->setTo($invitation->getEmail())
 			->setBody($messageBody);
+		$sendResult = $this->mailer->send($message);
 		
-		return $this->mailer->send($message);
+		$invitation->setMessage($message);
+		$invitation->setInvitationToken($token);
+		$invitation->setStatus($sendResult ? InstitutionInvitation::STATUS_SENT : InstitutionInvitation::STATUS_PENDING_SENDING);
+		 
+		$em = $this->doctrine->getEntityManager();
+		$em->persist($invitation);
+		$em->flush();
+		
+		return $sendResult;
 	}
 	
 	//send email to institution user for his user and password

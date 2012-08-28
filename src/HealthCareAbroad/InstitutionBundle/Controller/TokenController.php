@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
 use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 
@@ -25,12 +26,8 @@ class TokenController extends Controller
 	
     public function createAction(Request $request)
     {
-    	$institutionInvitation = new InstitutionInvitation();
-        $form = $this->createFormBuilder($institutionInvitation)
-            ->add('name', 'text')
-            ->add('email', 'text')
-            ->getForm();
-        
+    	$form = $this->createForm(new InstitutionInvitationType());
+    	
         //generate token
         $invitationToken = $this->get('services.invitation')->createInvitationToken(0);
         
