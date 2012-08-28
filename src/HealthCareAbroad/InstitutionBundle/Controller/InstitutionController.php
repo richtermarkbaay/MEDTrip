@@ -21,9 +21,9 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
-	public function editInstitutionAction($institutionId)
+	public function editInstitutionAction()
 	{
-		//$institutionId = $this->getRequest()->get('institutionId', null);
+		$institutionId = $this->getRequest()->get('institutionId', null);
 		
 		if (!$institutionId){
 			// no account id in parameter, editing currently logged in account
@@ -36,6 +36,7 @@ class InstitutionController extends Controller
 		if (!$institution) {
 			throw $this->createNotFoundException('Cannot update invalid account.');
 		}
+		
 		//render data to template
 		$form = $this->createForm(new InstitutionDetailType(), $institution);
 		
@@ -90,6 +91,14 @@ class InstitutionController extends Controller
            	    
            	    //create institution
            	    $institution = $this->get('services.institution')->createInstitution($institution);
+           	    if(!$institution) {
+           	    	
+           	    	//TODO:: send notification to hca admin
+           	    	$this->get('session')->setFlash('failed', "Unable to create account.");
+           	    	return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
+           	    			'form' => $form->createView(),
+           	    	));
+           	    }
            	    
            	    // set values for institutionUser
            	    $user = new InstitutionUser();
@@ -107,7 +116,10 @@ class InstitutionController extends Controller
            	    	
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    
-           	    return $this->redirect($this->generateUrl('institution_login'));
+           	    //login to institution
+           	    $this->get('services.institution_user')->login($user->getEmail(), $form->get('new_password')->getData());
+           	    
+           	    return $this->redirect($this->generateUrl('institution_edit_information'));
             }
 		}
 		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(

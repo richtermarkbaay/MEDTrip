@@ -1,92 +1,44 @@
+
+# Routes for Admin MedicalCenterController #
+AdminBundle_medicalCenter:
+    resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
+    prefix:   /
+
+# Routes for Admin MedicalProcedureTypeController #
+AdminBundle_medicalProcedureType:
+    resource: "@AdminBundle/Resources/config/routing_procedureType.yml"
+    prefix:   /
+
+# Routes for Admin MedicalProcedureController #
+AdminBundle_medicalProcedure:
+    resource: "@AdminBundle/Resources/config/routing_medicalProcedure.yml"
+    prefix:   /
+
+# Routes for Admin InstitutionController #
+AdminBundle_institutuion:
+    resource: "@AdminBundle/Resources/config/routing_institution.yml"
+    prefix:   /
+
+# Routes for Admin CountryController #
+AdminBundle_country:
+    resource: "@AdminBundle/Resources/config/routing_country.yml"
+    prefix:   /
+
+# Routes for Admin CityController #
+AdminBundle_city:
+    resource: "@AdminBundle/Resources/config/routing_city.yml"
+    prefix:   /
+
+# Routes for settings section #
+AdminBundle_settings:
+    resource: "@AdminBundle/Resources/config/routing_settings.yml"
+    prefix:   /
+
 admin_inquire:
     pattern: /admin/inquire
     defaults: { _controller: AdminBundle:Inquiry:index }
     requirements:    
         _method:  GET
-
-admin_settings:
-    pattern: /admin/settings
-    defaults: { _controller: AdminBundle:Default:settings }
-    requirements:    
-        _method:  GET
-        
-admin_userType_index:
-    pattern: /admin/settings/user-types
-    defaults: { _controller: AdminBundle:AdminUserType:index }
-    requirements:    
-        _method:  GET
-        
-admin_userType_add:
-    pattern: /admin/settings/user-types/add
-    defaults: { _controller: AdminBundle:AdminUserType:add }
-    requirements:    
-        _method:  GET
-        
-admin_userType_add_save:
-    pattern: /admin/settings/user-types/add
-    defaults: { _controller: AdminBundle:AdminUserType:save }
-    requirements:    
-        _method:  POST
-        
-admin_userType_edit:
-    pattern: /admin/settings/user-types/edit/{id}
-    defaults: { _controller: AdminBundle:AdminUserType:edit }
-    requirements:    
-        _method:  GET
-        id: \d+
-        
-admin_userType_edit_save:
-    pattern: /admin/settings/user-types/edit/{id}
-    defaults: { _controller: AdminBundle:AdminUserType:save }
-    requirements:    
-        _method:  POST
-        id: \d+
-
-admin_userRole_viewByUserType:
-    pattern: /admin/settings/user-type/{userTypeId}/user-roles
-    defaults: { _controller: AdminBundle:AdminUserRole:viewByUserType }
-    requirements:    
-        _method: GET
-        
-admin_userRole_addToUserType:
-    pattern: /admin/settings/user-roles/add-to-user-type
-    defaults: { _controller: AdminBundle:AdminUserRole:addRoleToUserType }
-    requirements:    
-        _method: POST
-        userRoleId: \d+
-        userTypeId: \d+
-        
-admin_userRole_removeRoleFromUserType:
-    pattern: /admin/settings/user-roles/remove-role-from-user-type
-    defaults: { _controller: AdminBundle:AdminUserRole:removeRoleFromUserType }
-    requirements:    
-        _method: POST
-        userRoleId: \d+
-        userTypeId: \d+
-        
-admin_userRole_index:
-    pattern: /admin/settings/user-roles
-    defaults: { _controller: AdminBundle:AdminUserRole:index }
-    requirements:    
-        _method: GET
-        
-admin_user_index:
-    pattern: /admin/settings/users
-    defaults: { _controller: AdminBundle:AdminUser:index }
-    requirements:    
-        _method: GET
-        
-admin_user_add:
-    pattern: /admin/settings/users/add
-    defaults: { _controller: AdminBundle:AdminUser:add }
-    requirements:    
-        _method: GET
-        
-admin_user_add_save:
-    pattern: /admin/settings/users/add
-    defaults: { _controller: AdminBundle:AdminUser:save }
-    requirements:    
-        _method: POST
         
 admin_login:
     pattern: /admin/login

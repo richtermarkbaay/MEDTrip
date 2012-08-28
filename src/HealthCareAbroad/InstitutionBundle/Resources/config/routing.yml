@@ -44,7 +44,7 @@ institution_edit_information:
     defaults:  { _controller: InstitutionBundle:Institution:editInstitution, institutionId: ~ }
     requirements:
         _method:  GET|POST
-        accountId:  \d+
+        institutionId:  \d+
         
 institution_change_password:
     pattern:  /institution/change-password

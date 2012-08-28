@@ -1,44 +1,10 @@
-helper_utility_addBreadcrumb:
-    pattern:  /utilities/breadcrumbs/add/{parentId}
-    defaults: { _controller: HelperBundle:Utility:addBreadcrumb, parentId: ~ }
-    requirements:
-        parentId: \d+
-        _method: GET
-        
-helper_utility_moveBreadcrumb:
-    pattern:  /utilities/breadcrumbs/change-parent/{id}/{parentId}
-    defaults: { _controller: HelperBundle:Utility:changeParentBreadcrumb, parentId: ~}
-    requirements:
-        id: \d+
-        parentId: \d+
-        _method: GET
-        
-helper_utility_addBreadcrumb_save:
-    pattern:  /utilities/breadcrumbs/add/{parentId}
-    defaults: { _controller: HelperBundle:Utility:saveBreadcrumb, parentId: ~ }
-    requirements:
-        parentId: \d+
-        _method: POST
-        
-helper_utility_editBreadcrumb:
-    pattern:  /utilities/breadcrumbs/edit/{id}
-    defaults: { _controller: HelperBundle:Utility:editBreadcrumb}
-    requirements:
-        id: \d+
-        _method: GET
-        
-helper_utility_editBreadcrumb_save:
-    pattern:  /utilities/breadcrumbs/edit/{id}
-    defaults: { _controller: HelperBundle:Utility:saveBreadcrumb}
-    requirements:
-        id: \d+
-        _method: POST
+HelperBundle_securedRoutes:
+    resource: "@HelperBundle/Resources/config/routing_secured.yml"
+    prefix:   /secured-utilities
     
-helper_utility_manageBreadcrumbs:
-    pattern:  /utilities/breadcrumbs
-    defaults: { _controller: HelperBundle:Utility:manageBreadcrumbs }
-    requirements:
-        _method: GET
+helper_access_denied:
+    pattern:  /helper/access-denied
+    defaults: { _controller: HelperBundle:Default:error403 }
 
 helper_autoCompleteSearch:
     pattern:  /autocomplete-search
