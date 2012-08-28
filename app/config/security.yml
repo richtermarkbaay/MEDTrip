@@ -16,12 +16,18 @@ security:
         in_memory:
             memory:
                 users:
-                    admin: { password: testadmin, roles: 'ROLE_ADMIN' }
+                    developer: { password: 123456, roles: 'ROLE_DEVELOPER' }
     
     firewalls:
         main:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            
+        utilities_secured_area:
+            pattern: ^/secured-utilities
+            access_denied_url: /helper/access-denied
+            http_basic:
+                realm: "Secured Developers Area"
             
         admin_user.login:
             pattern: ^/admin/login$

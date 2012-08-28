@@ -8,6 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    public function error403Action()
+    {
+        return $this->render('HelperBundle:Default:error403.html.twig');
+    }
+    
     public function indexAction($name)
     {
         return $this->render('HelperBundle:Default:index.html.twig', array('name' => $name));

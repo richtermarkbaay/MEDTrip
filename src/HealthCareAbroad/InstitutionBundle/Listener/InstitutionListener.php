@@ -52,14 +52,15 @@ class InstitutionListener
     	$institutionUser = $event->getInstitutionUser();
     	
     	//create institutionUser account and global account
-    	$this->createInstitutionUser($institutionUserType, $institutionUser);
-    	return $institutionUserType;
+    	$institutionUser = $this->createInstitutionUser($institutionUserType, $institutionUser);
+    	return $institutionUser;
     }
     
     public function createInstitutionUser(InstitutionUserType $institutionUserType, InstitutionUser $institutionUser)
     {
     	$institutionUser->setInstitutionUserType($institutionUserType);
     	$institutionUser = $this->institutionUserService->create($institutionUser);
+    	return $institutionUser;
     }
     
 }

@@ -46,32 +46,31 @@ class InstitutionService
     public function updateInstitution(Institution $institution)
     {
     	$em = $this->doctrine->getEntityManager();
-    	$em->persist($institution);
-    	$em->flush();
-    	
-    	// failed to save
-    	if (!$institution) {
-    		return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
-    	}
-    	
-    	return $institution;
+    	try {
+			$em->persist($institution);
+			$em->flush();
+		} catch(\Exception $e) {
+			return null;
+		}
+		return $institution;
     }
     
     public function createInstitution(Institution $institution)
     {
 		$em = $this->doctrine->getEntityManager();
-		$em->persist($institution);
-		$em->flush();
-		
-		// failed to save
-		if (!$institution) {
-			return $this->_errorResponse(500, 'Exception encountered upon persisting data.');
+		try {
+			$em->persist($institution);
+			$em->flush();
+		} catch(\Exception $e) {
+			return null;
 		}
-		
 		return $institution;
 		
     }
     
+    /*
+     * TODO - This is already DEPRECATED, should be removed in time.
+    */
     public function updateInstitutionMedicalCenters($institutionId, $newMedicalCenterIds = array(), $medicalCenterIdsWithProcedureType = array()) 
     {
 		$conn = $this->doctrine->getConnection();
@@ -98,7 +97,9 @@ class InstitutionService
 		}    	
     }
 
-    // We can move this to InstitutionMedicalCenterService when it's availabe.
+    /*
+     * TODO - This is already DEPRECATED, should be removed in time.
+     */
     public function updateInstitutionProcedureTypes($institutionMedicalCenterId, $newProcedureTypeIds = array(), $procedureTypeIdsWithProcedure = array())
     {
     	$conn = $this->doctrine->getConnection();
@@ -134,5 +135,26 @@ class InstitutionService
             $returnValue[] = $this->institutionUserService->getAccountData($user);
         }
         return $returnValue;
+    }
+    
+    public function getStatusFilterOptions()
+    {
+    	return array(
+    		'all' => 'All',
+			Institution::ACTIVE => 'Active',
+			Institution::INACTIVE => 'Inactive',
+			Institution::APPROVED => 'Approved',
+			Institution::UNAPPROVED => 'Unapproved',
+    		Institution::SUSPENDED => 'Suspended'
+    	);
+    }
+
+    public function getUpdateStatusOptions()
+    {
+		return array(
+			'Activate' => Institution::ACTIVE,
+			'Approve' => Institution::APPROVED,
+			'Suspend' => Institution::SUSPENDED
+		);
     }
 }

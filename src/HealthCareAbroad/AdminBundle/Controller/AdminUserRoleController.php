@@ -37,7 +37,7 @@ class AdminUserRoleController extends Controller
      */
     public function viewByUserTypeAction()
     {
-        $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('userTypeId', 0));
+        $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($this->getRequest()->get('id', 0));
         
         if (!$userType) {
             throw $this->createNotFoundException();

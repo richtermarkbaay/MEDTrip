@@ -44,6 +44,28 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
            
+        //test for invalid description
+        $invalidFormValues = $formValues;
+        $invalidFormValues['institutionDetail[description]'] = null;
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+         
+        //test for invalid address1
+        $invalidFormValues = $formValues;
+        $invalidFormValues['institutionDetail[address1]'] = null;
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+         
+        //test for invalid address2
+        $invalidFormValues = $formValues;
+        $invalidFormValues['institutionDetail[address2]'] = null;
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+         
+        //test valid values
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $editAccountUrl);
         $crawler = $client->submit($form, $formValues);
@@ -90,8 +112,8 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 				'institution[confirm_password]' => $this->userPassword,
 		);
 		$crawler = $client->submit($form, $formValues);
-		$this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to homepage
-        $this->assertEquals('/institution/login', $client->getResponse()->headers->get('location'));
+		$this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to edit information page
+        $this->assertEquals('/institution/edit-information', $client->getResponse()->headers->get('location'));
         
         // test for missing fields flow
         $crawler = $client->request('GET', '/sign-up');
@@ -135,6 +157,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        
 	}
 
 }

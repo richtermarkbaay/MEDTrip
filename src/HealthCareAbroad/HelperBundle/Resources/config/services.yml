@@ -64,5 +64,6 @@ services:
         calls:
             - [setBreadcrumbService, [@services.breadcrumb_tree]]
             - [setTwig, [@twig]]
+            - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
