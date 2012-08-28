@@ -14,7 +14,9 @@ class TokenController extends Controller
 {
 
 	public function confirmInvitationTokenAction($token)
-    {    	 
+    {    
+    	//get token	 
+    	$token = $this->getRequest()->get('token',null);
      	$invitation = $this->get('services.token')->getActiveInstitutionInvitationByToken($token);	
      	
     	if (!$invitation) {

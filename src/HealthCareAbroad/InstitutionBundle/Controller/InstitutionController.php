@@ -25,6 +25,7 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
+	
 	public function inviteAction()
 	{
 		$invitation = new InstitutionInvitation();
@@ -67,7 +68,7 @@ class InstitutionController extends Controller
 			throw $this->createNotFoundException('Cannot update invalid account.');
 		}
 		
-		//render data to template
+		//render data to template      
 		$form = $this->createForm(new InstitutionDetailType(), $institution);
 		
 		//update institution details
