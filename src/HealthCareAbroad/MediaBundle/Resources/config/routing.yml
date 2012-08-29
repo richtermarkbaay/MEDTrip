@@ -1,3 +1,7 @@
+media_upload:
+    pattern: /media/upload
+    defaults: { _controller: "MediaBundle:Default:upload" }
+
 media_index:
     pattern:  /media
     defaults: { _controller: "MediaBundle:Default:index" }

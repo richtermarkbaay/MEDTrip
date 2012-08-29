@@ -62,7 +62,35 @@ swiftmailer:
     spool:     { type: memory }
 
 # ChromediaMediaBundle Configuration
-#chromedia_media:
+chromedia_media:
+    cdn:
+        local:
+            default: true
+            id: chromedia_media.cdn.remote_server
+            options:
+                base_url: "http://hca-draft.com.local/images" #(put this in parameters.yml file)
+
+    provider:
+        image:
+            default: true
+            id: chromedia_media.provider.image
+
+    filesystem:
+        local:
+            default: true
+            id: chromedia_media.filesystem.local
+            options:
+                base_path: %kernel.root_dir%/../web/media
+                create: true
+
+    contexts:
+        institution_media:
+            formats:
+                small: { width: 50, height: 50 }
+                medium: { width: 90, height: 90 }
+
+
+
 #    adapters:
 #        default:
 #            local:
