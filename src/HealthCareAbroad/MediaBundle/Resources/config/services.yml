@@ -15,4 +15,19 @@ services:
         arguments:
             - @services.media.filesystemmanager
             - @doctrine.orm.entity_manager
-            
+
+    services.media.templating.helper:
+        class: HealthCareAbroad\MediaBundle\Templating\Helper\MediaHelper
+        tags:
+            - { name: templating.helper }
+        arguments:
+            - @service_container
+            - @services.media.filesystemmanager
+        
+    services.media.twig.extension.:
+        class: HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        arguments:
+            - @services.media.templating.helper
