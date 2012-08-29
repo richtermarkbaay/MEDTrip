@@ -84,7 +84,9 @@ class BreadcrumbTreeService
     public function getAllNodesOfTree(BreadcrumbTree $root)
     {
         $nodes = $this->repository->createQueryBuilder('a')
+            ->where('a.rootId = :rootId')
             ->orderBy('a.leftValue','asc')
+            ->setParameter('rootId', $root->getId())
             ->getQuery()
             ->getResult();
         

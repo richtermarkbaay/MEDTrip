@@ -15,13 +15,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class UtilityController extends Controller
 {
-    public function manageBreadcrumbsAction(Request $request)
+    public function manageInstitutionBreadcrumbsAction(Request $request)
+    {
+        $service = $this->get('services.breadcrumb_tree');
+        $root = $service->getRepository()->find(2);
+        $nodes = $service->getAllNodesOfTree($root);
+        $request->getSession()->set('referer', $this->generateUrl($request->get('_route')));
+        
+        return $this->render('HelperBundle:Utility:index.html.twig', array(
+            'breadcrumbService' => $service,
+            'nodes' => $nodes,
+            'context' => 'institution'
+        ));
+    }
+    
+    public function manageAdminBreadcrumbsAction(Request $request)
     {
         $service = $this->get('services.breadcrumb_tree');
         $root = $service->getRepository()->find(1);        
         $nodes = $service->getAllNodesOfTree($root);
+        $request->getSession()->set('referer', $this->generateUrl($request->get('_route')));
         
-        return $this->render('HelperBundle:Utility:index.html.twig', array('breadcrumbService' => $service,'nodes' => $nodes));
+        return $this->render('HelperBundle:Utility:index.html.twig', array(
+            'breadcrumbService' => $service,
+            'nodes' => $nodes,
+            'context' => 'admin'
+        ));
     }
     
     public function changeParentBreadcrumbAction(Request $request)
@@ -126,7 +145,9 @@ class UtilityController extends Controller
         else {
             $request->getSession()->setFlash('error', 'Missing required fields in form');
         }
+        $referer = $request->getSession()->get('referer', $this->generateUrl('helper_utility_adminBreadcrumbs'));
+        $request->getSession()->remove('referer');
         
-        return $this->redirect($this->generateUrl('helper_utility_manageBreadcrumbs'));
+        return $this->redirect($referer);
     }
 }
