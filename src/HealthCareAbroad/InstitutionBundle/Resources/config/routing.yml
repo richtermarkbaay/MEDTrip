@@ -1,47 +1,38 @@
+# Routes for Institution MedicalCenterController #
+InstitutionBundle_medicalCenter:
+    resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
+    prefix:   /institution
+    
+# Routes for Institution MedicalProcedureTypeController #
+InstitutionBundle_medicalProcedureType:
+    resource: "@InstitutionBundle/Resources/config/routing_medicalProcedureType.yml"
+    prefix:   /institution
+    
+# Routes for InstitutionUserController #
+InstitutionBundle_user:
+    resource: "@InstitutionBundle/Resources/config/routing_user.yml"
+    prefix:   /institution
+    
+# Routes for InstitutionUserController #
+InstitutionBundle_userType:
+    resource: "@InstitutionBundle/Resources/config/routing_userType.yml"
+    prefix:   /institution
+
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }
     requirements:
         _method: GET
-
-InstitutionBundle_create_token:
-    pattern:  /createtoken
-    defaults: { _controller: InstitutionBundle:Token:create }
-
-institution_invitation:
-    pattern:  /invite-institution
-    defaults: { _controller: InstitutionBundle:Institution:invite }
-    requirements:
-       _method:  GET|POST
-       
-institution_accept_user_invitation:
-    pattern:  /accounts/accept-invitation/{token}
-    defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
-    requirements:    
-       _method:  GET
-
-InstitutionBundle_confirmed_token:
-    pattern:  /confirm/t={token}
-    defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
-    requirements:
-       _method: GET
-
+        
 institution_signUp:
     pattern:  /sign-up
     defaults: {_controller: InstitutionBundle:Institution:signUp }
     requirements:
         _method: GET|POST
-
+        
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: InstitutionBundle:Institution:loadCities }
-        
-institution_editAccount:
-    pattern:  /institution/edit-account/{accountId}
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
-    requirements:
-        _method:  GET|POST
-        accountId: \d+
         
 institution_edit_information:
     pattern:  /institution/edit-information/{institutionId}
@@ -49,160 +40,29 @@ institution_edit_information:
     requirements:
         _method:  GET|POST
         institutionId:  \d+
-        
-institution_change_password:
-    pattern:  /institution/change-password
-    defaults: { _controller: InstitutionBundle:InstitutionUser:changePassword }
-    requirements:
-        _method:  GET|POST
-        
-institution_invite_user:
-    pattern:  /institution/invite-staff
-    defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
-    requirements:    
-        _method:  GET|POST
-
-institution_view_all_staff:
-    pattern: /institution/staff
-    defaults: {_controller: InstitutionBundle:InstitutionUser:viewAll}
-    requirements:
-
-institution_userType_index:
-    pattern: /institution/staff/designations
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
-    requirements:    
-        _method:  GET
-
-institution_userType_add:
-    pattern: /institution/staff/add
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:add }
-    requirements:    
-        _method:  GET
-
-institution_userType_add_save:
-    pattern: /institution/staff/add
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:save }
-    requirements:    
-        _method:  POST
-        id: \d+
-        
-institution_userType_edit:
-    pattern: /institution/staff/edit/{id}
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:edit }
-    requirements:    
-        _method:  GET
-        
-
-institution_userType_edit_save:
-    pattern: /institution/staff/edit/{id}
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:save }
-    requirements:    
-        _method:  POST
-        id: \d+
-        
-institution_login:
-    pattern:  /institution/login
-    defaults: { _controller: InstitutionBundle:InstitutionUser:login }
-    requirements:   
-        _method:  GET|POST
-
-institution_logout:
-    pattern:  /institution/logout
-    defaults: { _controller: InstitutionBundle:InstitutionUser:logout }
-    requirements:    
-        _method:  GET
-        
-institution_medicalCenter_index:
-    pattern: /institution/medical-centers
-    defaults: { _controller: InstitutionBundle:MedicalCenter:index }
-    requirements:    
-        _method:  GET
-        
-institution_medicalCenter_delete:
-    pattern: /institution/medical-centers/delete/{medicalCenterId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:delete }
-    requirements:    
-        _method:  GET
-        
-institution_medicalCenter_add:
-    pattern: /institution/medical-center/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:add }
-    requirements:    
-        _method: GET
-        
-institution_medicalCenter_edit:
-    pattern: /institution/medical-center/edit/{medicalCenterId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
-    requirements:    
-        _method: GET
-        
-institution_medicalCenter_edit_save:
-    pattern: /institution/medical-center/edit/{medicalCenterId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
-    requirements:    
-        _method: POST
-        
-institution_medicalCenter_add_save:
-    pattern: /institution/medical-center/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
-    requirements:    
-        _method:  POST
-        
-institution_medicalProcedureType_index:
-    pattern: /institution/listings
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
-    requirements:    
-        _method:  GET
-        
-institution_medicalProcedureType_add:
-    pattern: /institution/listing/add
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
-    requirements:    
-        _method:  GET
-        
-institution_medicalProcedureType_add_save:
-    pattern: /institution/listing/add
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
-    requirements:    
-        _method: POST
-
-institution_medicalProcedureType_edit:
-    pattern: /institution/listing/edit/{id}
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
-    requirements:    
-        _method: GET
-        
-institution_medicalProcedureType_edit_save:
-    pattern: /institution/listing/edit/{id}
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
-    requirements:    
-        _method: POST
-        
-institution_medicalProcedureType_addMedicalProcedure:
-    pattern: /institution/listing/{id}/add-procedure
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }
-    requirements:
-        _method: GET
-        
-institution_medicalProcedureType_addMedicalProcedure_save:
-    pattern: /institution/listing/{id}/add-procedure
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
-    requirements:
-        _method: POST
-
-institution_loadMedicalProcedureTypes:
-    pattern:  /institution/medical-center/load-procedure-types
-    defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
-    requirements:
-        medical_center_id: \d+
-
-institution_loadMedicalProcedures:
-    pattern:  /institution/procedure-type/load-procedures
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
-    requirements:
-         institution_id: \d+
-         procedure_type_id: \d+
 
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
+    
+#institution_accept_user_invitation:
+#    pattern:  /accounts/accept-invitation/{token}
+#    defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
+#    requirements:    
+#       _method:  GET
+#
+#InstitutionBundle_create_token:
+#    pattern:  /createtoken
+#    defaults: { _controller: InstitutionBundle:Token:create }
+#
+#institution_invitation:
+#    pattern:  /invite-institution
+#    defaults: { _controller: InstitutionBundle:Institution:invite }
+#    requirements:
+#       _method:  GET|POST
+#
+#InstitutionBundle_confirmed_token:
+#    pattern:  /confirm/t={token}
+#    defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
+#    requirements:
+#       _method: GET

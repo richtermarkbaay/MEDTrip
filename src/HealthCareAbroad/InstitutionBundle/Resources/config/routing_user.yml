@@ -1,0 +1,35 @@
+institution_editAccount:
+    pattern:  /edit-account/{accountId}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
+    requirements:
+        _method:  GET|POST
+        accountId: \d+
+        
+institution_change_password:
+    pattern:  /change-password
+    defaults: { _controller: InstitutionBundle:InstitutionUser:changePassword }
+    requirements:
+        _method:  GET|POST
+        
+institution_invite_user:
+    pattern:  /invite-staff
+    defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
+    requirements:    
+        _method:  GET|POST
+        
+institution_view_all_staff:
+    pattern: /staff
+    defaults: {_controller: InstitutionBundle:InstitutionUser:viewAll}
+    requirements:
+    
+institution_login:
+    pattern:  /login
+    defaults: { _controller: InstitutionBundle:InstitutionUser:login }
+    requirements:   
+        _method:  GET|POST
+
+institution_logout:
+    pattern:  /logout
+    defaults: { _controller: InstitutionBundle:InstitutionUser:logout }
+    requirements:    
+        _method:  GET
