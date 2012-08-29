@@ -1,9 +1,3 @@
-institution_gallery:
-    pattern: /institution/gallery
-    defaults: { _controller: MediaBundle:Default:gallery }
-    requirements:
-        _method: GET
-
 InstitutionBundle_create_token:
     pattern:  /createtoken
     defaults: { _controller: InstitutionBundle:Token:create }
