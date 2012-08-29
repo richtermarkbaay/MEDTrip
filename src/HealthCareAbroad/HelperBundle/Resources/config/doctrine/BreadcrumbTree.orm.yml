@@ -2,6 +2,9 @@ HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree:
     type: entity
     table: breadcrumb_tree
     repositoryClass: HealthCareAbroad\HelperBundle\Repository\BreadcrumbTreeRepository
+    gedmo:
+        tree:
+            type: nested
     fields:
         id:
             id: true
@@ -23,13 +26,36 @@ HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree:
         rootId:
             type: integer
             column: root_id
-            nullable: false
+            nullable: true
+            gedmo:
+                - treeRoot
         leftValue:
             type: integer
             column: left_value
-            nullable: false
+            gedmo:
+                - treeLeft
         rightValue:
             type: integer
             column: right_value
-            nullable: false
+            gedmo:
+                - treeRight
+        level:
+            type: integer
+            gedmo:
+                - treeLevel
+    manyToOne:
+        parent:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree
+            inversedBy: children
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+            gedmo:
+                - treeParent
+    oneToMany:
+        children:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree
+            mappedBy: parent
+            orderBy:
+                leftValue: ASC
     lifecycleCallbacks: {  }

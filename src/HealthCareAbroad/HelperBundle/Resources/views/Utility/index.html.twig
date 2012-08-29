@@ -6,14 +6,19 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ site_name }} Breadcrumbs Management</h1>
+    	<h1>{{ site_name }} {{ context | title }} Breadcrumbs Management</h1>
     </div>
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
         {% block wrappedContent %}
             {% include '::notice.admin.html.twig' %}
-            <table class="generic-table" width="100%">
+            
+            {# ----- Related tasks ----- #}
+            {% include 'HelperBundle:Utility:relatedTasks.html.twig' with {hideAdmin: (context == 'admin'), hideInstitution: (context == 'institution')} %}
+            {# ----- end Related tasks ----- #}
+            
+            <table class="generic-table" width="75%">
 				<tr>
 					<th class="table-header-repeat line-left minwidth-1"><a href="">Route</a></th>
 					<th class="table-header-repeat line-left"><a href="">Link Label</a></th>
@@ -21,18 +26,17 @@
 					<th class="table-header-options actions line-left"><a href="">Actions</a></th>
 				</tr>
 
-				{% for wrappedNode in nodes %}
-				    {% set node = wrappedNode.node %}
+				{% for node in nodes %}
+				    
 					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 						<td>{{ node.route }}</td>
 						<td>{{ node.label }}</td>
 						<td align="center">
-						    {% set ancestors = wrappedNode.ancestors %}
+						    {% set ancestors = breadcrumbService.getPathOfNode(node, false) %}
 							{% for ancestor in  ancestors  %}
-							    {{ ancestor.node.label }}
+							    {{ ancestor.label }}
 							    &raquo;
 							{% endfor %}
-							 
 							{{ node.label }}
 						</td>
 						<td>

@@ -1,3 +1,15 @@
+helper_utility_adminBreadcrumbs:
+    pattern:  /breadcrumbs/admin
+    defaults: { _controller: HelperBundle:Utility:manageAdminBreadcrumbs }
+    requirements:
+        _method: GET
+
+helper_utility_institutionBreadcrumbs:
+    pattern:  /breadcrumbs/institution
+    defaults: { _controller: HelperBundle:Utility:manageInstitutionBreadcrumbs }
+    requirements:
+        _method: GET
+
 helper_utility_addBreadcrumb:
     pattern:  /breadcrumbs/add/{parentId}
     defaults: { _controller: HelperBundle:Utility:addBreadcrumb, parentId: ~ }
@@ -34,8 +46,3 @@ helper_utility_editBreadcrumb_save:
         id: \d+
         _method: POST
     
-helper_utility_manageBreadcrumbs:
-    pattern:  /breadcrumbs
-    defaults: { _controller: HelperBundle:Utility:manageBreadcrumbs }
-    requirements:
-        _method: GET

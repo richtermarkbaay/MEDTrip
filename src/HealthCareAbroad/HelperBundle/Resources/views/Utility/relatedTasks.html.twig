@@ -1,0 +1,21 @@
+{% set adminBreadcrumbsTask = {
+        title: 'Manage Admin Breadcrumbs',
+        isVisible: hideAdmin is defined and hideAdmin ? false : true,
+        description: 'Manage the breadcrumbs in HCA Admin',
+        href: path('helper_utility_adminBreadcrumbs'),
+        links: [{href: path('helper_utility_adminBreadcrumbs'), title: 'View all admin breadcrumbs'}]
+    }
+%}
+
+{% set institutionBreadcrumbsTask = {
+        title: 'Manage Institution Breadcrumbs',
+        isVisible: hideInstitution is defined and hideInstitution ? false : true,
+        description: 'Manage the breadcrumbs in Client/Institution Admin',
+        href: path('helper_utility_institutionBreadcrumbs'),
+        links: [{href: path('helper_utility_institutionBreadcrumbs'), title: 'View all institution breadcrumbs'}]
+    }
+%}
+
+{% include '::relatedTasks.base.admin.html.twig' with 
+    {'contents': [adminBreadcrumbsTask, institutionBreadcrumbsTask]} 
+%}

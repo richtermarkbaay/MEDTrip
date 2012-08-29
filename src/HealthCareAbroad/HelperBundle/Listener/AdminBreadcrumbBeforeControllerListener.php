@@ -81,8 +81,8 @@ class AdminBreadcrumbBeforeControllerListener
             $commonParams = $request->get('_route_params');
             
             $ancestorItems = array();
-            foreach ($node->getAncestors() as $wrappedNode) {
-                $breadcrumbObj = $wrappedNode->getNode();
+            $ancestors = $this->breadcrumbTreeService->getPathOfNode($node, false);
+            foreach ($ancestors as $breadcrumbObj) {
                 $breadcrumbItem = array(
                     'name' => $breadcrumbObj->getLabel(),
                     'href' => null,
