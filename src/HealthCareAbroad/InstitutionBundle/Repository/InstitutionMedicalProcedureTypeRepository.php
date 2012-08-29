@@ -26,7 +26,7 @@ class InstitutionMedicalProcedureTypeRepository extends EntityRepository
 			->setParameter('institution', $institutionId)
 			->setParameter('medicalCenter', $medicalCenterId)->orderBy('b.name', 'ASC');
 
-		if($status) {
+		if(!is_null($status)) {
 			$qb->andWhere('a.status = :status')->setParameter('status', $status);
 		}
 

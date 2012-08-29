@@ -25,7 +25,8 @@
 			
 			
 			<!-- Render Filter Box -->
-			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus, selectedCenter: selectedCenter} %}
+			{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
 			
 			<table id="procedure-type-list" class="generic-table" width="70%">
 			<tr>

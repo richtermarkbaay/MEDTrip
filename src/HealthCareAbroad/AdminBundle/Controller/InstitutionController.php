@@ -23,19 +23,20 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
-{
+{	
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
      */
 	public function indexAction()
 	{
 		$request = $this->getRequest();
-		$status = $request->get('status');
-		
-		$criteria = $status == 'all' ? array() : array('status' => $status);
-		$institutions = $this->getDoctrine()->getEntityManager()->getRepository('InstitutionBundle:Institution')->findBy($criteria);
 
-		return $this->render('AdminBundle:Institution:index.html.twig', array('institutions' => $institutions, 'selectedStatus'=>$status));
+		$statusOptions = $this->get('services.institution')->getUpdateStatusOptions();
+		$statusValues = $this->get('services.institution')->getStatusFilterOptions();
+
+		$params = array('institutions' => $this->filteredResult, 'statusOptions' => $statusOptions, 'statusValues' => $statusValues);
+		
+		return $this->render('AdminBundle:Institution:index.html.twig', $params);
 	}
 	
 	/**
@@ -57,25 +58,18 @@ class InstitutionController extends Controller
 	 */
 	public function updateStatusAction($id)
 	{
-		$result = false;
+		$request = $this->getRequest();
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
 
 		if($institution) {
-			$status = $institution->getStatus() == Institution::$STATUS['active']
-			? Institution::$STATUS['inactive']
-			: Institution::$STATUS['active'];
-
-			$institution->setStatus($status);
+			$institution->setStatus($request->get('status'));
 			$em->persist($institution);
 			$em->flush($institution);
-			$result = true;
 		}
 
-		$response = new Response(json_encode($result));
-		$response->headers->set('Content-Type', 'application/json');
-	
-		return $response;
+		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
+		return $this->redirect($this->generateUrl('admin_institution_index'));
 	}
 
 	/**
@@ -97,7 +91,7 @@ class InstitutionController extends Controller
 			'id' => $id,
 			'selectedStatus' => $status,
 			'institutionName' => $institution->getName(),
-			'institutionMedicalCenters' => $institutionMedicalCenters,
+			'institutionMedicalCenters' => $this->filteredResult,
 		);
 		return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
 	}
@@ -223,24 +217,10 @@ class InstitutionController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
 
-		$request = $this->getRequest();
-    	$status = $request->get('status');
-    	$medicalCenterId = $request->get('medicalCenter');
-
-    	if($medicalCenterId != 'all') {
-    		$s = $status == 'all' ? false : $status;
-    		$medicalProcedureTypes = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getByInstitutionIdAndMedicalCenterId($id, $medicalCenterId, $s);
-    	} else {
-    		$criteria = $status == 'all' ? array() : array('status' => $status);
-    		$medicalProcedureTypes = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findBy($criteria);
-    	}
-
 		$params = array(
 			'id' => $id,
 			'institutionName' => $institution->getName(),
-			'selectedStatus' => $status,
-			'selectedCenter' => $medicalCenterId,
-			'medicalProcedureTypes' => $medicalProcedureTypes
+			'medicalProcedureTypes' => $this->filteredResult
 		);
 		return $this->render('AdminBundle:Institution:manage_proceduretypes.html.twig', $params);
 	}

@@ -8,7 +8,6 @@ parameters:
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
 
-
 services:
     services.chromedia_request:
         class: %services.chromedia_request_class%
@@ -64,6 +63,16 @@ services:
         calls:
             - [setBreadcrumbService, [@services.breadcrumb_tree]]
             - [setTwig, [@twig]]
+            - [setRouter, [@router]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+
+    listener.helper.ListFilterBeforeController:
+        class: HealthCareAbroad\HelperBundle\Listener\ListFilterBeforeController
+        calls:
+            - [setTwig, [@twig]]
+            - [setDoctrine, [@doctrine]]
             - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

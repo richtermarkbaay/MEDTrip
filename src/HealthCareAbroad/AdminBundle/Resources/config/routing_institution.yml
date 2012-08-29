@@ -1,12 +1,13 @@
 admin_institution_index:
     pattern:  /admin/institutions
-    defaults: { _controller: AdminBundle:Institution:index, status: 1 }
+    defaults: { _controller: AdminBundle:Institution:index, status: all }
 
 admin_institution_updateStatus:
-    pattern:  /admin/institution/{id}/update-status
-    defaults: { _controller: AdminBundle:Institution:updateStatus }
+    pattern:  /admin/institution/{id}/update-status/{status}
+    defaults: { _controller: AdminBundle:Institution:updateStatus, status: ~ }
     requirements:
         id: \d+
+        status: ".+"
 
 admin_institution_view:
     pattern:  /admin/institution/{id}/view
