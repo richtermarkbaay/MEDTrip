@@ -1,6 +1,6 @@
 {% set addMedicalProcedureTypeTask = {
-    title: 'Add new listing', 
-    isVisible: hideAddListing is defined and hideAddListing ? false: true,
+    title: 'Add new medical procedure type', 
+    isVisible: hideAddMedicalProcedureType is defined and hideAddMedicalProcedureType ? false: true,
     class: 'add-icon', 
     description: 'Add a new medical procedure type that is offered in your institution', 
     href: path('institution_medicalProcedureType_add'), 
@@ -11,17 +11,17 @@
     title: 'Add Medical Procedure', 
     isVisible: hideAddMedicalProcedure is defined and hideAddMedicalProcedure ? false: medicalProcedureTypeId is defined and medicalProcedureTypeId ,
     class: 'add-procedure add-icon', 
-    description: 'Add a medical procedure for this listing', 
+    description: 'Add a medical procedure for this medical procedure type', 
     href: path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0}), 
     links: [{title:'Click here to add a medical procedure', class: 'add-procedure','href': path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0})}]} 
 %}
 
-{% set manageListingsTask = {
-    title: "Listing Management", 
-    isVisible: hideListingManagement is defined and hideListingManagement ? false : true, 
-    description: "Go back to your listings management page to view all your listings.", 
+{% set manageMedicalProcedureTypesTask = {
+    title: "Medical Procedure Type Management", 
+    isVisible: hideMedicalProcedureTypeManagement is defined and hideMedicalProcedureTypeManagement ? false : true, 
+    description: "Go back to your medical procedure types management page to view all your medical procedure types.", 
     href: path('institution_medicalProcedureType_index'),
-    links: [{title: 'Click here to go to manage listings', href: path('institution_medicalProcedureType_index')}]}
+    links: [{title: 'Click here to go to manage medical procedure types', href: path('institution_medicalProcedureType_index')}]}
 %}
 
 {% set dashboardTask = {
@@ -33,5 +33,5 @@
 %}
 
 {% include '::relatedTasks.base.admin.html.twig' with 
-    {'contents': [addMedicalProcedureTypeTask, addMedicalProcedureTask, manageListingsTask, dashboardTask]} 
+    {'contents': [addMedicalProcedureTypeTask, addMedicalProcedureTask, manageMedicalProcedureTypesTask, dashboardTask]} 
 %}

@@ -15,7 +15,7 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
     
     public function testIndex()
     {
-        $uri = '/institution/listings';
+        $uri = '/institution/medical-procedure-types';
         $client = $this->requestUrlWithNoLoggedInUser($uri);
         
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -25,12 +25,12 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Listing Management")')->count(), 'Expecting page title to contain "Listing Management"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Medical Procedure Type Management")')->count(), 'Expecting page title to contain "Medical Procedure Type Management"');
     }
     
     public function testAdd()
     {
-        $uri = '/institution/listing/add';
+        $uri = '/institution/medical-procedure-type/add';
         
         // test accessing with no user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
@@ -41,13 +41,13 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Add Listing")')->count(), 'Expecting page title to contain "Add Listing"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Add Medical Procedure Type")')->count(), 'Expecting page title to contain "Add Medical Procedure Type"');
         
         // valid form values
         $formValues = array(
             'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
             'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
-            'institutionMedicalProcedureTypeForm[description]' => 'Test listing',
+            'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
@@ -71,7 +71,7 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         $client->followRedirect();
         
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Listing")')->count(), 'Expecting to be in "Edit Listing" page after saving new listing');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Medical Procedure Type")')->count(), 'Expecting to be in "Edit Medical Procedure Type" page after saving new medical-procedure-type');
     }
     
 	public function testLoadProcedures()

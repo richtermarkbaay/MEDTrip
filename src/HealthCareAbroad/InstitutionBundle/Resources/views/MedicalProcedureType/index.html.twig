@@ -1,13 +1,13 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% block title %}{{ parent() }} Listing Management {% endblock %}
-{% set selectedTab = 'listings'%}
+{% block title %}{{ parent() }} Medical Procedure Types {% endblock %}
+{% set selectedTab = 'medical_procedure_types'%}
 
 {% block content %}
 <!-- start content -->
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ app.session.get('institutionName') }} Listing Managment</h1>
+    	<h1>{{ app.session.get('institutionName') }} Medical Procedure Types</h1>
     </div>
 
     <!-- end page-heading -->
@@ -17,28 +17,28 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideListingManagement: true} %}
+            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideMedicalProcedureTypeManagement: true} %}
             {# ----- end Related tasks ----- #}
             
 			<!--  start table-content  -->
 			<div id="table-content">
 			    {% include '::notice.admin.html.twig' %}
 			    
-			    <div id="institution-listings" style="width:75%">
+			    <div id="institution-medical-procedure-types" style="width:75%">
 			    
     			    {% for procedureType in institutionMedicalProcedureTypes %}	 
-        				<h3><a href="#">Listing #{{ procedureType.id }} &raquo; {{ procedureType.medicalProcedureType.name }}</a></h3>
+        				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
         				<div class="procedures">
-        				    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalProcedureType_edit', {'id': procedureType.id}) }}">Edit Listing</a>
+        				    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalProcedureType_edit', {'id': procedureType.id}) }}">Edit</a>
         					<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': procedureType.id}) }}">Add Procedure</a>
-        					{% include 'InstitutionBundle:MedicalProcedureType:listingProcedures.html.twig' with {'procedures' : procedureType.institutionMedicalProcedures } %}
+        					{% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'procedures' : procedureType.institutionMedicalProcedures } %}
         				</div>
         			{% else  %}
         				<div class="empty-list">No records yet!</div>
         			{% endfor %}
 			    
 			    </div>
-                <!-- end institution-listings  -->            			    
+                <!-- end institution-medical-procedure-types  -->            			    
 				
 			</div>
 			<!--  end table-content  -->
@@ -84,7 +84,7 @@
 				return false;
 			});
 
-			$("#institution-listings").accordion();			
+			$("#institution-medical-procedure-types").accordion();			
 		});
 	</script>
 {% endblock %}
