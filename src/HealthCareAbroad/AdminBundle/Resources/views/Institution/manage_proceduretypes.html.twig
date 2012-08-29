@@ -27,7 +27,7 @@
 			%}
 
 			<!-- Render Filter Box -->
-			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), institution_id: id, selectedStatus: selectedStatus, selectedCenter: selectedCenter} %}
+			{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}	
 
 			{% if not medicalProcedureTypes|length %}
 				<div class="empty-list">No records yet!</div>

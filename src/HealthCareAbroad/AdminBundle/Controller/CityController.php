@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author adelbertsilla
+ */
+
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -11,24 +15,11 @@ class CityController extends Controller
 {
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
+     * 
      */
     public function indexAction()
     {
-		$request = $this->getRequest();
-		$status = $request->get('status');
-		$countryId = $request->get('country');
-    	
-		$criteria = $status == 'all' ? array() : array('status' => $status);
-    	
-		if($countryId != 'all') {
-			$country = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($countryId);
-			$criteria['country'] = $country;
-		}
-
-		$cities = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->findBy($criteria);
-
-		$params = array('cities' => $cities, 'selectedStatus' => $status, 'selectedCountry' => $countryId);
-		return $this->render('AdminBundle:City:index.html.twig', $params);
+		return $this->render('AdminBundle:City:index.html.twig', array('cities' => $this->filteredResult));
     }
 
     /**
@@ -80,7 +71,6 @@ class CityController extends Controller
    			$em->flush($city);
 
    			$this->getRequest()->getSession()->setFlash('success', 'City has been saved!');
-
    			return $this->redirect($this->generateUrl('admin_city_index'));
 		}
 
