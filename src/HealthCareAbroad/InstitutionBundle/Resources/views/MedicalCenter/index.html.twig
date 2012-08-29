@@ -15,7 +15,7 @@
         
         {% block wrappedContent %}
                 {# ----- Related tasks ----- #}
-                {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideAddListing: true} %}
+                {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideAddMedicalProcedureType: true} %}
                 {# ----- end Related tasks ----- #}
                 
     			<!--  start table-content  -->
@@ -37,7 +37,7 @@
             					<td>{{ center.description }}</td>
             					<td class="options-width">
                 					[<a href="{{ path('institution_medicalCenter_edit', {'medicalCenterId': center.medicalCenterId}) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
-                					[<a href="{{ path('institution_medicalProcedureType_add')}}" title="Add listing for {{ center.medicalCenter | title }}">Add Listing</a>]
+                					[<a href="{{ path('institution_medicalProcedureType_add')}}" title="Add medical procedure type for {{ center.medicalCenter | title }}">Add Medical Procedure Type</a>]
             					</td>
             				</tr>
         				{% else %}

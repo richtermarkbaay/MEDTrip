@@ -1,10 +1,10 @@
 {% set addMedicalProcedureTypeTask = {
-    title: 'Add new listing', 
-    isVisible: hideAddListing is defined and hideAddListing ? false: true,
+    title: 'Add new medical procedure type', 
+    isVisible: hideAddMedicalProcedureType is defined and hideAddMedicalProcedureType ? false: true,
     class: 'add-icon', 
-    description: medicalCenterId is defined and medicalCenterId ? 'Create a new listing for this medical center': 'Add a new listing', 
+    description: medicalCenterId is defined and medicalCenterId ? 'Create a new medical procedure type for this medical center': 'Add a new medical procedure type', 
     href: path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0}), 
-    links: [{title: 'Click here to add listing', 'href': path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})}]} 
+    links: [{title: 'Click here to add medical procedure type', 'href': path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})}]} 
 %}
 
 {% set addMedicalCenterTask = {

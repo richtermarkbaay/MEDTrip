@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set selectedTab = 'listings'%}
-{% block title %}{{ parent() }} {{ newListing ? "Add Listing" : "Edit Listing"}} {% endblock %}
+{% set selectedTab = 'medical_procedure_types'%}
+{% block title %}{{ parent() }} {{ newObject ? "Add Medical Procedure Type" : "Edit Medical Procedure Type"}} {% endblock %}
 {% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
@@ -9,10 +9,10 @@
     <!--  start page-heading -->
     <div id="page-heading">
     	<h1>
-    	    {% if newListing %} 
-    	        Creat a new listing
+    	    {% if newObject %} 
+    	        Add medical procedure type
 	        {% else %}
-	            Edit listing {# institutionMedicalProcedureType.medicalProcedureType.name #}
+	            Edit {# institutionMedicalProcedureType.medicalProcedureType.name #}
 	         {% endif %}       
         </h1>
     </div>
@@ -23,7 +23,7 @@
         {% block wrappedContent %}
         
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideAddListing: newListing?true:false, medicalProcedureTypeId: institutionMedicalProcedureType.id } %}
+            {% include 'InstitutionBundle:MedicalProcedureType:relatedTasks.html.twig' with {hideAddMedicalProcedureType: newObject?true:false, medicalProcedureTypeId: institutionMedicalProcedureType.id } %}
             {# ----- end Related tasks ----- #}
 			
 			<!--  start table-content  -->
@@ -31,7 +31,7 @@
 			
 			    {% include '::notice.admin.html.twig' %}
 			
-			    <form novalidate="novalidate" action="{{ newListing ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'id': institutionMedicalProcedureType.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+			    <form novalidate="novalidate" action="{{ newObject ? path('institution_medicalProcedureType_add_save') : path('institution_medicalProcedureType_edit_save', {'id': institutionMedicalProcedureType.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
     			    
     			    <!-- start id-form -->
             		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
@@ -55,7 +55,7 @@
                 	<!-- end id-form  -->
             	</form>
             	
-            	{% if not newListing %}
+            	{% if not newObject %}
                 	<div class="divider" style="margin: 15px 0px; border-top: 1px dashed #aaa;"></div>
                 	
                 	<div class="procedures">
@@ -63,7 +63,7 @@
                 	    
                 	    <a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
                 	    
-                	    {% include 'InstitutionBundle:MedicalProcedureType:listingProcedures.html.twig' with {'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
+                	    {% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
                 	</div>
             	{% endif %}
 			</div>
@@ -112,8 +112,8 @@
 			});
             
         	var params = {
-            	selectedMedicalCenter: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
-            	selectedMedicalProcedureType: '{{ newListing ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
+            	selectedMedicalCenter: '{{ newObject ? 0 : institutionMedicalProcedureType.medicalProcedureType.medicalCenter.id }}',
+            	selectedMedicalProcedureType: '{{ newObject ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
     			loadProcedureTypesUrl : "{{ path('institution_loadMedicalProcedureTypes') }}",
     			medicalCenterDropdown: $("select#institutionMedicalProcedureTypeForm_medicalCenter"),
     			medicalProcedureTypeDropdown: $("select#institutionMedicalProcedureTypeForm_medicalProcedureType")
