@@ -60,7 +60,16 @@ services:
             - { name: form.type, alias: tagtype_list }
             
     listener.helper.adminBreadcrumbBeforeController:
-        class: HealthCareAbroad\HelperBundle\Listener\AdminBreadcrumbBeforeControllerListener
+        class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
+        calls:
+            - [setBreadcrumbService, [@services.breadcrumb_tree]]
+            - [setTwig, [@twig]]
+            - [setRouter, [@router]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            
+    listener.helper.institutionBreadcrumbBeforeController:
+        class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\InstitutionBreadcrumbBeforeControllerListener
         calls:
             - [setBreadcrumbService, [@services.breadcrumb_tree]]
             - [setTwig, [@twig]]

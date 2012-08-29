@@ -35,7 +35,7 @@ AdminBundle_settings:
     prefix:   /
 
 admin_inquire:
-    pattern: /admin/inquire
+    pattern: /admin/inquiries
     defaults: { _controller: AdminBundle:Inquiry:index }
     requirements:    
         _method:  GET
