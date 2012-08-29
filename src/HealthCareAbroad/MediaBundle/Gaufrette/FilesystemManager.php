@@ -1,0 +1,41 @@
+<?php
+namespace HealthCareAbroad\MediaBundle\Gaufrette;
+
+use HealthCareAbroad\MediaBundle\Generator\Path\PathGeneratorInterface;
+use HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter;
+use Gaufrette\Filesystem;
+
+class FilesystemManager
+{
+	private $baseUploadRootDir;
+	private $uploadRootDir;
+	private $pathGenerator;
+	
+	public function __construct(PathGeneratorInterface $pathGenerator, $baseUploadRootDir)
+	{
+		$this->pathGenerator = $pathGenerator;		
+		$this->baseUploadRootDir = $baseUploadRootDir;
+	}
+	
+	public function get($institutionId, $adapterType = 'local')
+	{
+		$this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $institutionId);		
+		
+		switch ($adapterType) {
+			default:
+				$adapter = new LocalAdapter($this->uploadRootDir, true);
+		}
+
+		return new Filesystem($adapter);
+	}
+	
+	/**
+	 * Convenience function
+	 * 
+	 * @return string
+	 */
+	public function getUploadRootDir()
+	{
+		return $this->uploadRootDir;
+	}
+}

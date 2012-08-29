@@ -8,7 +8,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class CreateInstitutionEvent extends Event
 {
-    protected $order;
+    protected $institution;
 	protected $institutionUser;
     
     public function __construct(Institution $institution, InstitutionUser $institutionUser)

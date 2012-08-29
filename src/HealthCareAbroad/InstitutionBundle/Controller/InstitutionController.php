@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionInvitationEvent;
+
 use Assetic\Exception\Exception;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
@@ -12,7 +14,9 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
-
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
+use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,6 +25,33 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 
 class InstitutionController extends Controller
 {
+	
+	public function inviteAction()
+	{
+		$invitation = new InstitutionInvitation();
+		$form = $this->createForm(new InstitutionInvitationType(), $invitation);
+		 
+		$request = $this->getRequest();
+		if ($request->getMethod() == 'POST') {
+		
+			$form->bindRequest($request);
+			if ($form->isValid()){
+				
+				//send institution invitation
+				$sendingResult = $this->get('services.invitation')->sendInstitutionInvitation($invitation);
+				
+				if ($sendingResult) {
+					$this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
+				}
+				else {
+					$this->get('session')->setFlash('error', "Failed to send invitation to ".$invitation->getEmail());
+				}	
+			}
+		}
+		return $this->render('InstitutionBundle:Token:create.html.twig', array(
+				'form' => $form->createView(),
+		));
+	}
 	public function editInstitutionAction()
 	{
 		$institutionId = $this->getRequest()->get('institutionId', null);
@@ -37,7 +68,7 @@ class InstitutionController extends Controller
 			throw $this->createNotFoundException('Cannot update invalid account.');
 		}
 		
-		//render data to template
+		//render data to template      
 		$form = $this->createForm(new InstitutionDetailType(), $institution);
 		
 		//update institution details

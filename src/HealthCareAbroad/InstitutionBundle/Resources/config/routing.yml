@@ -7,9 +7,13 @@ institution_gallery:
 InstitutionBundle_create_token:
     pattern:  /createtoken
     defaults: { _controller: InstitutionBundle:Token:create }
+
+institution_invitation:
+    pattern:  /invite-institution
+    defaults: { _controller: InstitutionBundle:Institution:invite }
     requirements:
        _method:  GET|POST
-
+       
 institution_accept_user_invitation:
     pattern:  /accounts/accept-invitation/{token}
     defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
@@ -21,12 +25,6 @@ InstitutionBundle_confirmed_token:
     defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
     requirements:
        _method: GET
-
-InstitutionBundle_create_institution:
-    pattern:  /institution/create
-    defaults: { _controller: InstitutionBundle:Institution:create }
-    requirements:
-       _method: GET|POST
 
 institution_signUp:
     pattern:  /sign-up
