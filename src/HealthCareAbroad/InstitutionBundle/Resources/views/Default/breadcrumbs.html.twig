@@ -1,0 +1,11 @@
+<div class="breadcrumbs" style="max-width: 1260px; min-width: 780px; margin: 0px auto; padding: 15px 0px 0px;">
+    {% for item in ancestorItems %}
+        {% if item.href %}
+            <a href="{{ item.href }}">{{ item.name }}</a>
+        {% else %}
+            {{ item.name }}
+        {% endif %}
+        &raquo;
+    {% endfor %}
+    {{ currentNode.label }}
+</div>

@@ -50,6 +50,7 @@
 
     <!-- start content-outer ........................................................................................................................START -->
     <div id="content-outer"> 
+    {% autoescape false %}{{ breadcrumbs is defined ? breadcrumbs : '' }}{% endautoescape %}
     {% block content %}{% endblock %}
     </div>
     <!--  end content-outer........................................................END -->
