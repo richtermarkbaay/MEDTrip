@@ -14,15 +14,7 @@ class MedicalCenterController extends Controller
      */
     public function indexAction()
     {
-    	$status = $this->getRequest()->get('status');
-		$criteria = $status == 'all' ? array() : array('status' => $status);
-
-		$medicalCenters = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findBy($criteria);
-
-    	return $this->render('AdminBundle:MedicalCenter:index.html.twig', array(
-    		'selectedStatus' => $status,
-			'medicalCenters' => $medicalCenters
-    	));
+    	return $this->render('AdminBundle:MedicalCenter:index.html.twig', array('medicalCenters' => $this->filteredResult));
     }
 
     /**

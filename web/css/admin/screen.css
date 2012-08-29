@@ -347,7 +347,7 @@ a:hover.icon-5	{
 .generic-table	th	{
 	height: 40px;
 	text-align: left;
-	/*padding-right: 20px;*/
+	padding-right: 10px;
 	}
 .generic-table	th.actions	{
 	padding: 0;
@@ -378,7 +378,7 @@ td.checkbox-width	{
 	background: url(/images/admin/table/table_header_checkbox.jpg) no-repeat;
 	border: none;
 	min-width: 29px;
-	padding: 0px 0 0 10px;
+	padding: 0px 0 0 10px !important;
 	width: 29px;
 	}
 
@@ -1638,7 +1638,7 @@ a.button-type {
 	border-top-right-radius: 5px;
 	margin: 30px 0 10px;
 	text-align: right;
-	background: #F8F8F8;
+	background: #F5F5DC;
 }
 
 #filter-wrapper > div {
@@ -1655,7 +1655,7 @@ a.button-type {
 	margin-right: 50px; 
 	position: absolute; 
 	display: inline-block; 
-	background: #F8F8F8;
+	background: #F5F5DC;
 	border-top: 1px solid #ddd; 
 	border-left: 1px solid #ddd;
 	border-right: 1px solid #ddd; 

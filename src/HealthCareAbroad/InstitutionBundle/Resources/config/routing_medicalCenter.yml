@@ -1,0 +1,41 @@
+institution_medicalCenter_index:
+    pattern: /medical-centers
+    defaults: { _controller: InstitutionBundle:MedicalCenter:index }
+    requirements:    
+        _method:  GET
+        
+institution_medicalCenter_delete:
+    pattern: /medical-centers/delete/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:delete }
+    requirements:    
+        _method:  GET
+        
+institution_medicalCenter_add:
+    pattern: /medical-center/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:add }
+    requirements:    
+        _method: GET
+        
+institution_medicalCenter_edit:
+    pattern: /medical-center/edit/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
+    requirements:    
+        _method: GET
+        
+institution_medicalCenter_edit_save:
+    pattern: /medical-center/edit/{medicalCenterId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method: POST
+        
+institution_medicalCenter_add_save:
+    pattern: /medical-center/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method:  POST
+        
+institution_loadMedicalProcedureTypes:
+    pattern:  /medical-center/load-procedure-types
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
+    requirements:
+        medical_center_id: \d+

@@ -46,7 +46,7 @@ class MedicalProcedureTypeController extends Controller
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
-            'newListing' => true
+            'newObject' => true
         ));
     }
     
@@ -66,7 +66,7 @@ class MedicalProcedureTypeController extends Controller
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
-            'newListing' => false
+            'newObject' => false
         ));
     }
     
@@ -103,7 +103,7 @@ class MedicalProcedureTypeController extends Controller
             $em->persist($institutionMedicalProcedureType);
             $em->flush($institutionMedicalProcedureType);
             
-            $request->getSession()->setFlash('success', 'Successfully saved listing.');
+            $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
             return $this->redirect($this->generateUrl('institution_medicalProcedureType_edit', array('id' => $institutionMedicalProcedureType->getId())));
         }
@@ -111,7 +111,7 @@ class MedicalProcedureTypeController extends Controller
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
-            'newListing' => $isNew
+            'newObject' => $isNew
         ));
     }
     
@@ -152,7 +152,7 @@ class MedicalProcedureTypeController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionMedicalProcedure);
             $em->flush();
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} listing.");
+            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");
             
             return $this->redirect($this->generateUrl('institution_medicalProcedureType_edit', array('id' => $institutionMedicalProcedureType->getId())));
         }

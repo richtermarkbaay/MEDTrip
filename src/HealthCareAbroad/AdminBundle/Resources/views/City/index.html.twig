@@ -25,7 +25,7 @@
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
 				<!-- Render Filter Box -->
-				{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus, selectedCountry: selectedCountry} %}
+				{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}	
 
 
 				<table class="generic-table" width="70%">

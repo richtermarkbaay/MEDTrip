@@ -14,12 +14,7 @@ class CountryController extends Controller
      */
     public function indexAction()
     {
-    	$status = $this->getRequest()->get('status');
-    	$criteria = $status == 'all' ? array() : array('status' => $status);
-
-		$countries = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->findBy($criteria);
-
-    	return $this->render('AdminBundle:Country:index.html.twig', array('countries' => $countries, 'selectedStatus' => $status));
+    	return $this->render('AdminBundle:Country:index.html.twig', array('countries' => $this->filteredResult));
     }
 
     /**

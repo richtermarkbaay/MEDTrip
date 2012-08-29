@@ -25,8 +25,9 @@
 			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
 
-			<!-- Render Filter Box -->
-			{% render 'SearchBundle:Default:showFilters' with {route: app.request.attributes.get('_route'), selectedStatus: selectedStatus, selectedProcedureType: selectedProcedureType} %}			
+			<!-- Render Filter Box -->				
+			{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
 
 			<table id="medical-procedure-list" class="generic-table" width="70%">
 			<tr>
