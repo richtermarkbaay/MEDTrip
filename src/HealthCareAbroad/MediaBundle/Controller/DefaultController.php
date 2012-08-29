@@ -22,6 +22,15 @@ class DefaultController extends Controller
 		));
 	}
 	
+	public function addAction(Request $request)
+	{
+		$institutionId = $this->getRequest()->getSession()->get('institutionId');				
+		
+		return $this->render('MediaBundle:Institution:addMedia.html.twig', array(
+				'institutionId' => $institutionId
+		));
+	}
+	
 	public function uploadAction(Request $request)
 	{
 		$response = new Response(); 
