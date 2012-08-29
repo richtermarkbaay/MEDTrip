@@ -21,18 +21,17 @@
 					<th class="table-header-options actions line-left"><a href="">Actions</a></th>
 				</tr>
 
-				{% for wrappedNode in nodes %}
-				    {% set node = wrappedNode.node %}
+				{% for node in nodes %}
+				    
 					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 						<td>{{ node.route }}</td>
 						<td>{{ node.label }}</td>
 						<td align="center">
-						    {% set ancestors = wrappedNode.ancestors %}
+						    {% set ancestors = breadcrumbService.getPathOfNode(node, false) %}
 							{% for ancestor in  ancestors  %}
-							    {{ ancestor.node.label }}
+							    {{ ancestor.label }}
 							    &raquo;
 							{% endfor %}
-							 
 							{{ node.label }}
 						</td>
 						<td>

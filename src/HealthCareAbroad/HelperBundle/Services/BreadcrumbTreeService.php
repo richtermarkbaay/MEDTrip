@@ -24,16 +24,6 @@ class BreadcrumbTreeService
     private $doctrine;
     
     /**
-     * @var DoctrineExtensions\NestedSet\Config
-     */
-    private $nsmConfig;
-    
-    /**
-     * @var DoctrineExtensions\NestedSet\Manager
-     */
-    private $nsmManager;
-    
-    /**
      * @var HealthCareAbroad\HelperBundle\Repository\BreadcrumbTreeRepository
      */
     private $repository = null;
@@ -42,12 +32,6 @@ class BreadcrumbTreeService
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('HelperBundle:BreadcrumbTree');
-        $this->nsmConfig = new Config($this->doctrine->getEntityManager(), 'HelperBundle:BreadcrumbTree');
-        $this->nsmConfig->setLeftFieldName('leftValue');
-        $this->nsmConfig->setRightFieldName('rightValue');
-        $this->nsmConfig->setRootFieldName('rootId');
-        
-        $this->nsmManager = new Manager($this->nsmConfig);
     }
     
     public function getRepository()
@@ -55,11 +39,21 @@ class BreadcrumbTreeService
         return $this->repository;
     }
     
+    public function getPathOfNode(BreadcrumbTree $node, $includeSelf=true)
+    {
+        $path = $this->repository->getPath($node);
+        if (!$includeSelf) {
+            unset($path[count($path)-1]);    
+        }
+        
+        return $path;
+    }
+    
     /**
      * Find a breadcrumbtree node by route
      * 
      * @param string $route
-     * @return \DoctrineExtensions\NestedSet\NodeWrapper
+     * @return BreadcrumbTree
      */
     public function getNodeByRoute($route)
     {
@@ -68,14 +62,14 @@ class BreadcrumbTreeService
             return null;
         }
         
-        return $this->nsmManager->wrapNode($node);
+        return $node;
     }
     
     /**
      * Find a breadcrumbtree node by primary key
      * 
      * @param int $id
-     * @return NULL|\DoctrineExtensions\NestedSet\NodeWrapper
+     * @return BreadcrumbTree
      */
     public function getNode($id)
     {
@@ -84,7 +78,7 @@ class BreadcrumbTreeService
             return null;
         }
         
-        return $this->nsmManager->wrapNode($node);
+        return $node;
     }
     
     public function getAllNodesOfTree(BreadcrumbTree $root)
@@ -93,11 +87,8 @@ class BreadcrumbTreeService
             ->orderBy('a.leftValue','asc')
             ->getQuery()
             ->getResult();
-        $wrappedNodes = array();
-        foreach ($nodes as $e) {
-            $wrappedNodes[] = $this->nsmManager->wrapNode($e);
-        }
-        return $wrappedNodes;
+        
+        return $nodes;
     }
     
     public function getLeafNodesOfTree(BreadcrumbTree $root)
@@ -106,26 +97,7 @@ class BreadcrumbTreeService
             ->where('a.rightValue = a.leftValue+1')
             ->getQuery()
             ->getResult();
-        $wrappedNodes = array();
-        foreach ($nodes as $e) {
-            $wrappedNodes[] = $this->nsmManager->wrapNode($e);
-        }
-        return $wrappedNodes;
-    }
-    
-    public function addChild(BreadcrumbTree $parent, BreadcrumbTree $node)
-    {
-        $parentNode = $this->nsmManager->wrapNode($parent);
-        $parentNode->addChild($node);
-    }
-    
-    public function fetchTree(BreadcrumbTree $crumb)
-    {
-        return $this->nsmManager->fetchTree($crumb->getId());
-    }
-    
-    public function createRoot(BreadcrumbTree $crumb)
-    {
-        $this->nsmManager->createRoot($crumb);
+        
+        return $nodes;
     }
 }
