@@ -15,14 +15,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class UtilityController extends Controller
 {
-    public function manageBreadcrumbsAction(Request $request)
+    public function manageInstitutionBreadcrumbsAction(Request $request)
     {
         $service = $this->get('services.breadcrumb_tree');
-        $root = $service->getRepository()->find(1);
-        
+        $root = $service->getRepository()->find(2);
         $nodes = $service->getAllNodesOfTree($root);
+        $request->getSession()->set('referer', $this->generateUrl($request->get('_route')));
         
-        return $this->render('HelperBundle:Utility:index.html.twig', array('nodes' => $nodes));
+        return $this->render('HelperBundle:Utility:index.html.twig', array(
+            'breadcrumbService' => $service,
+            'nodes' => $nodes,
+            'context' => 'institution'
+        ));
+    }
+    
+    public function manageAdminBreadcrumbsAction(Request $request)
+    {
+        $service = $this->get('services.breadcrumb_tree');
+        $root = $service->getRepository()->find(1);        
+        $nodes = $service->getAllNodesOfTree($root);
+        $request->getSession()->set('referer', $this->generateUrl($request->get('_route')));
+        
+        return $this->render('HelperBundle:Utility:index.html.twig', array(
+            'breadcrumbService' => $service,
+            'nodes' => $nodes,
+            'context' => 'admin'
+        ));
     }
     
     public function changeParentBreadcrumbAction(Request $request)
@@ -60,27 +78,27 @@ class UtilityController extends Controller
         
         return $this->render('HelperBundle:Utility:form.html.twig', array(
             'form' => $form->createView(),
-            'parentId' => $parentId,
+            'parentNode' => $parentNode,
             'id' => 0,
-            'parentPath' => $parentNode->getPath(' > ', true)
+            'parentPath' => $service->getPathOfNode($parentNode, false)
         ));
     }
     
     public function editBreadcrumbAction(Request $request)
     {
         $service = $this->get('services.breadcrumb_tree');
-        $wrappedNode = $service->getNode($request->get('id', 0));
-        if (!$wrappedNode) {
+        $node = $service->getNode($request->get('id', 0));
+        if (!$node) {
             throw $this->createNotFoundException('Invalid breadcrumb');
         }
-        $node = $wrappedNode->getNode();
         $form = $this->createForm(new BreadcrumbFormType(), $node);
+        $parentNode = $node->getParent();
     
         return $this->render('HelperBundle:Utility:form.html.twig', array(
             'form' => $form->createView(),
-            'parentId' => 0,
+            'parentNode' => $parentNode,
             'id' => $node->getId(),
-            'parentPath' => $wrappedNode->isRoot() ? '' : $wrappedNode->getParent()->getPath(' > ', true)
+            'parentPath' => $service->getPathOfNode($parentNode, false)
         ));
     }
     
@@ -91,6 +109,7 @@ class UtilityController extends Controller
         }
         
         $service = $this->get('services.breadcrumb_tree');
+        $parentNode = null;
         if ($parentId = $request->get('parentId', 0)) {
             $parentNode = $service->getNode($parentId);
             if (!$parentNode) {
@@ -99,11 +118,11 @@ class UtilityController extends Controller
         }
         
         if ($id = $request->get('id', 0)) {
-            $wrappedNode = $service->getNode($id);
-            if (!$wrappedNode) {
+            $node = $service->getNode($id);
+            if (!$node) {
                 throw $this->createNotFoundException('Invalid parent breadcrumb');
             }
-            $form = $this->createForm(new BreadcrumbFormType(), $wrappedNode->getNode());
+            $form = $this->createForm(new BreadcrumbFormType(), $node);
         }
         else {
             $form = $this->createForm(new BreadcrumbFormType(), new BreadcrumbTree());
@@ -111,24 +130,24 @@ class UtilityController extends Controller
         $form->bindRequest($request);
         
         if ($form->isValid()) {
-            if ($id) {
-                // we are in edit mode
-                $node = $form->getData();
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($node);
-                $em->flush();
+            
+            $node = $form->getData();
+            if ($parentNode) {
+                $node->setParent($parentNode);
             }
-            else {
-                $node = $form->getData();
-                $service->addChild($parentNode->getNode(), $node);
-            }
+            
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($node);
+            $em->flush();
             
             $request->getSession()->setFlash('success', 'Successfully saved breadcrumb '.$node->getLabel());
         }
         else {
             $request->getSession()->setFlash('error', 'Missing required fields in form');
         }
+        $referer = $request->getSession()->get('referer', $this->generateUrl('helper_utility_adminBreadcrumbs'));
+        $request->getSession()->remove('referer');
         
-        return $this->redirect($this->generateUrl('helper_utility_manageBreadcrumbs'));
+        return $this->redirect($referer);
     }
 }

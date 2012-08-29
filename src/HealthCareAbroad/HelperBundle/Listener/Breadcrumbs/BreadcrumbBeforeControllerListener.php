@@ -4,7 +4,7 @@
  * 
  * @author Allejo Chris G. Velarde
  */
-namespace HealthCareAbroad\HelperBundle\Listener;
+namespace HealthCareAbroad\HelperBundle\Listener\Breadcrumbs;
 
 use \Exception;
 
@@ -14,22 +14,34 @@ use HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService;
 
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
-class AdminBreadcrumbBeforeControllerListener
+abstract class BreadcrumbBeforeControllerListener
 {
+    /**
+     * @var string
+     */
+    protected $templateName;
+    
+    /**
+     * @var string
+     */
+    protected $matchedRoute;
+    
+    protected $request;
+    
     /**
      * @var BreadcrumbTreeService
      */
-    private $breadcrumbTreeService;
+    protected $breadcrumbTreeService;
     
     /**
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
     
     /**
      * @var Symfony\Bundle\FrameworkBundle\Routing\Router
      */
-    private $router;
+    protected $router;
     
     public function setBreadcrumbService($service)
     {
@@ -47,42 +59,43 @@ class AdminBreadcrumbBeforeControllerListener
     }
     
     /**
+     * Specific validation for breadcrumb context
+     * 
+     * @return boolean
+     */
+    abstract protected function validate();
+    
+    
+    /**
      * kernel.controller listener method
      * 
      * @param FilterControllerEvent $event
      */
     public function onKernelController(FilterControllerEvent $event)
     {
+        $this->request = $event->getRequest();
+        $this->matchedRoute = $this->request->get('_route');
         
-        $controller = $event->getController();
-        $request = $event->getRequest();
-        $matchedRoute = $request->get('_route');
-        
-        if ($request->isXmlHttpRequest()) {
+        if ($this->request->isXmlHttpRequest()) {
             // this is an Ajax request we do not need to have breadcrumbs here
             return;
         }
         
-        // this check is only based on convention that all admin routes start with admin
-        if (!\preg_match('/^admin/', $matchedRoute)) {
-            // non-admin route, do nothing
+        if (!$this->validate()) {
             return;
         }
         
-        
-        
         // find a matching breadcrumb node by route
-        $node = $this->breadcrumbTreeService->getNodeByRoute($matchedRoute);
+        $node = $this->breadcrumbTreeService->getNodeByRoute($this->matchedRoute);
         if ($node) {
             
-            $routeObj = $this->router->getRouteCollection()->get($matchedRoute);
+            $routeObj = $this->router->getRouteCollection()->get($this->matchedRoute);
             $compiledRoute = $routeObj->compile();
-            
-            $commonParams = $request->get('_route_params');
-            
+            $commonParams = $this->request->get('_route_params');
             $ancestorItems = array();
-            foreach ($node->getAncestors() as $wrappedNode) {
-                $breadcrumbObj = $wrappedNode->getNode();
+            $ancestors = $this->breadcrumbTreeService->getPathOfNode($node, false);
+            
+            foreach ($ancestors as $breadcrumbObj) {
                 $breadcrumbItem = array(
                     'name' => $breadcrumbObj->getLabel(),
                     'href' => null,
@@ -106,9 +119,8 @@ class AdminBreadcrumbBeforeControllerListener
                 $ancestorItems[] = $breadcrumbItem;
             }
             
-            
             // render the template for the breadcrumbs
-            $breadcrumbs = $this->twig->render('AdminBundle:Default:breadcrumbs.html.twig', array(
+            $breadcrumbs = $this->twig->render($this->templateName, array(
                 'currentNode' => $node,
                 'ancestorItems' => $ancestorItems,
             ));

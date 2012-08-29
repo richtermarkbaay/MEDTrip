@@ -1,3 +1,15 @@
-media_index:
-    pattern:  /media
-    defaults: { _controller: "MediaBundle:Default:index" }
+institution_gallery:
+    pattern: /institution/gallery
+    defaults: { _controller: MediaBundle:Default:gallery }
+    requirements:
+        _method: GET
+
+institution_gallery_add:
+    pattern:  /institution/gallery/add
+    defaults: { _controller: MediaBundle:Default:add }
+    requirements:
+        _method: GET
+
+media_upload:
+    pattern: /media/upload
+    defaults: { _controller: MediaBundle:Default:upload }

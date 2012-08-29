@@ -1,0 +1,48 @@
+institution_medicalProcedureType_index:
+    pattern: /medical-procedure-types
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
+    requirements:    
+        _method:  GET
+        
+institution_medicalProcedureType_add:
+    pattern: /medical-procedure-types/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
+    requirements:    
+        _method:  GET
+        
+institution_medicalProcedureType_add_save:
+    pattern: /medical-procedure-types/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
+
+institution_medicalProcedureType_edit:
+    pattern: /medical-procedure-types/edit/{id}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
+    requirements:    
+        _method: GET
+        
+institution_medicalProcedureType_edit_save:
+    pattern: /medical-procedure-types/edit/{id}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
+        
+institution_medicalProcedureType_addMedicalProcedure:
+    pattern: /medical-procedure-types/{id}/add-procedure
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }
+    requirements:
+        _method: GET
+        
+institution_medicalProcedureType_addMedicalProcedure_save:
+    pattern: /medical-procedure-types/{id}/add-procedure
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
+    requirements:
+        _method: POST
+        
+institution_loadMedicalProcedures:
+    pattern:  /medical-procedure-types/load-procedures
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
+    requirements:
+         institution_id: \d+
+         procedure_type_id: \d+

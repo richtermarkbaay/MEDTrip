@@ -1,9 +1,9 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
-class BreadcrumbTreeRepository extends EntityRepository
+class BreadcrumbTreeRepository extends NestedTreeRepository
 {
     
 }

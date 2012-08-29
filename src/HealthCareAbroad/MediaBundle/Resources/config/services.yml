@@ -1,0 +1,18 @@
+parameters:
+    services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
+    services.media.pathgenerator.class: HealthCareAbroad\MediaBundle\Generator\Path\DefaultPathGenerator
+
+services:
+    services.media.pathgenerator:
+        class: %services.media.pathgenerator.class%
+    services.media.filesystemmanager:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager
+        arguments:
+            - @services.media.pathgenerator
+            - %kernel.root_dir%/../web/media
+    services.media:
+        class: %services.media.class%
+        arguments:
+            - @services.media.filesystemmanager
+            - @doctrine.orm.entity_manager
+            

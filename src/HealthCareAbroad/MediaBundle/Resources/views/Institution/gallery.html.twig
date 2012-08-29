@@ -1,0 +1,79 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'gallery'%}
+{#% form_theme form '::form.admin.html.twig' %#}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Media Gallery</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            {# ----- Related tasks ----- #}
+            {% include 'MediaBundle:Institution:relatedTasksGallery.html.twig' %}
+            {# ----- end Related tasks ----- #}        
+        
+    			<!--  start table-content  -->
+    			<div id="table-content" style="width:75%;">
+    			    {% include '::notice.admin.html.twig' %}
+    			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+    			        
+        				<tr>
+        				    <th class="table-header-check"></th>
+        					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Media</a></th>
+        					<th class="table-header-options line-left"><a href="#">Options</a> </th>
+        				</tr>
+        				
+        				{% for media in institutionMedia %}
+        				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+        				        <td></td>
+            					<td><a href="#" title="View {{ media.name }}">{{ media.name | title }}</a></td>
+            					<td class="options-width">
+                					[<a href="#" title="Edit {{ media.name | title }}">Edit</a>]
+            					</td>
+            				</tr>
+        				{% else %}
+        				    <tr class="">
+        				        <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
+        				    </tr>    
+        				{% endfor %}
+        				
+    				</table>
+    				
+    			</div>
+        {% endblock %}
+        
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+                        	
+
+{% block inlineJavascriptCode %}                
+<!-- Load Queue widget CSS and jQuery -->
+<style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
+<!-- 
+<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+-->
+
+<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+
+<!-- Load plupload and all it's runtimes and finally the jQuery UI queue widget -->
+
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js') }}"></script>
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}

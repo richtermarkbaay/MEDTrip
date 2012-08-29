@@ -62,9 +62,9 @@ class InvitationServiceTest extends HelperBundleTestCase
 		$invitation->setEmail('alnie@yahoo.com');
 		$invitation->setName('alnie jacobe');
 		
-		$invitationToken = $this->service->createInvitationToken(0);
-		$institutionInvitation = $this->service->createInstitutionInvitation($invitation, 'hi from healthcareabroad', $invitationToken);
+		$institutionInvitation = $this->service->createInstitutionInvitation($invitation);
 		$this->assertNotEmpty($institutionInvitation);
+		
 		return $institutionInvitation;
 	}
 	

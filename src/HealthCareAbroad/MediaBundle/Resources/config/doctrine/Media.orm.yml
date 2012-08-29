@@ -1,0 +1,65 @@
+HealthCareAbroad\MediaBundle\Entity\Media:
+    type: entity
+    table: media
+    repositoryClass: HealthCareAbroad\MediaBundle\Repository\MediaRepository    
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        uuid:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        name:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        caption:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false
+        context:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        contentType:
+            type: string
+            length: 30
+            fixed: false
+            nullable: false
+            column: content_type
+        metadata:
+            type: text
+            nullable: false
+        width:
+            type: integer
+            unsigned: false
+            nullable: false
+        height:
+            type: integer
+            unsigned: false
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+    manyToMany:
+        gallery:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
+            cascade: {  }
+            mappedBy: media
+            inversedBy: null
+            joinTable: null
+            orderBy: null
+    lifecycleCallbacks: {  }

@@ -119,7 +119,7 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->submit($form, $formValues);
         
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/institution/view-all-staff', $client->getResponse()->headers->get('location'));
+        $this->assertEquals('/institution/staff', $client->getResponse()->headers->get('location'));
         
         // test for missing fields flow
         $crawler = $client->request('GET', '/institution/invite-staff');
@@ -164,7 +164,7 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
     public function testViewAllStaffFlow()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/institution/view-all-staff');
+        $crawler = $client->request('GET', '/institution/staff');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Staff")')->count(), 'Cannot find string "List of Staff"');
     }

@@ -1,9 +1,9 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Entity;
 
-use DoctrineExtensions\NestedSet\MultipleRootNode;
+use Gedmo\Tree\Node;
 
-class BreadcrumbTree implements MultipleRootNode
+class BreadcrumbTree implements Node
 {
     /**
      * @var integer $id
@@ -12,13 +12,18 @@ class BreadcrumbTree implements MultipleRootNode
 
     /**
      * @var string $route
-     *
+     */
     private $route;
 
     /**
      * @var string $label
      */
     private $label;
+
+    /**
+     * @var integer $rootId
+     */
+    private $rootId;
 
     /**
      * @var integer $leftValue
@@ -29,13 +34,27 @@ class BreadcrumbTree implements MultipleRootNode
      * @var integer $rightValue
      */
     private $rightValue;
-    
+
     /**
-     * @var string $route
+     * @var integer $level
      */
-    private $route;
+    private $level;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $children;
 
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree
+     */
+    private $parent;
+
+    public function __construct()
+    {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -91,6 +110,28 @@ class BreadcrumbTree implements MultipleRootNode
     }
 
     /**
+     * Set rootId
+     *
+     * @param integer $rootId
+     * @return BreadcrumbTree
+     */
+    public function setRootId($rootId)
+    {
+        $this->rootId = $rootId;
+        return $this;
+    }
+
+    /**
+     * Get rootId
+     *
+     * @return integer 
+     */
+    public function getRootId()
+    {
+        return $this->rootId;
+    }
+
+    /**
      * Set leftValue
      *
      * @param integer $leftValue
@@ -133,45 +174,80 @@ class BreadcrumbTree implements MultipleRootNode
     {
         return $this->rightValue;
     }
-    
-    public function __toString()
-    {
-        return $this->label;
-    }
-    
-    
-    /**
-     * @var integer $rootId
-     */
-    private $rootId;
-
 
     /**
-     * Set rootId
+     * Set level
      *
-     * @param integer $rootId
+     * @param integer $level
      * @return BreadcrumbTree
      */
-    public function setRootId($rootId)
+    public function setLevel($level)
     {
-        $this->rootId = $rootId;
+        $this->level = $level;
         return $this;
     }
 
     /**
-     * Get rootId
+     * Get level
      *
      * @return integer 
      */
-    public function getRootId()
+    public function getLevel()
     {
-        return $this->rootId;
+        return $this->level;
     }
-    
-    public function getRootValue() {
-        return $this->rootId;
+
+    /**
+     * Add children
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $children
+     * @return BreadcrumbTree
+     */
+    public function addChildren(\HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $children)
+    {
+        $this->children[] = $children;
+        return $this;
     }
-    public function setRootValue($root) {
-        $this->rootId = $root;
+
+    /**
+     * Remove children
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $children
+     */
+    public function removeChildren(\HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Get children
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $parent
+     * @return BreadcrumbTree
+     */
+    public function setParent(\HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree $parent = null)
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\BreadcrumbTree 
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

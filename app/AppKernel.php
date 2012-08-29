@@ -18,7 +18,7 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-        	new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
+        	//new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
         	new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
         	//new HealthCareAbroad\ProcedureBundle\ProviderBundle(),

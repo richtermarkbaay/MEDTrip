@@ -13,6 +13,38 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class InstitutionControllerTest extends InstitutionBundleWebTestCase
 {
+	public function testInviteInstitution()
+	{
+		$url = '/invite-institution';
+		
+		$client = static::createClient();
+		$crawler = $client->request('GET', $url);
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name")')->count()); // look for the Current name text
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count()); // look for the Current email text
+		
+		$form = $crawler->selectButton('submit')->form();
+		
+		$formValues = array(
+				'institutionInvitation[name]' => 'alnie jacobe',
+				'institutionInvitation[email]' => 'test@yahoo.com',
+		);
+		$crawler = $client->submit($form, $formValues);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode()); 
+		$this->assertGreaterThan(0,$crawler->filter('html:contains("Invitation sent to test@yahoo.com")')->count());
+		
+		//test for missing email field
+		$invalidValues = $formValues;
+		$invalidValues['institutionInvitation[email]'] = null;
+		$crawler = $client->submit($form, $invalidValues);
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+		
+		//test for missing email field
+		$invalidValues = $formValues;
+		$invalidValues['institutionInvitation[name]'] = null;
+		$crawler = $client->submit($form, $invalidValues);
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+		
+	}
 	public function testEditInformation()
 	{ 
 		$editAccountUrl = '/institution/edit-information';

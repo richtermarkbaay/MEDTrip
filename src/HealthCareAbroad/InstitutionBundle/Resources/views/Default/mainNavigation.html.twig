@@ -34,6 +34,12 @@
                 
             </li>
         </ul>
+        
+        <ul class="{{ selectedTab == 'gallery' ? 'current' : 'select' }}">
+            <li>
+                <a href="{{ path('institution_gallery') }}"><b>Gallery</b><!--[if IE 7]><!--></a><!--<![endif]-->
+            </li>
+        </ul>        
                         
         <ul class="{{ selectedTab == 'staff' ? 'current' : 'select' }}">
             <li>
