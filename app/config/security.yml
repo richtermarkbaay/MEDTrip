@@ -32,7 +32,13 @@ security:
         admin_user.login:
             pattern: ^/admin/login$
             security: false
-            
+            remember_me:
+               key:  %secret%   
+               lifetime: 3600
+               path:     /admin
+               domain:   ~
+               remember_me_parameter: _remember_me
+               always_remember_me: true
         admin_secured_area:
             pattern: ^/admin
             access_denied_url: /admin/access-denied
