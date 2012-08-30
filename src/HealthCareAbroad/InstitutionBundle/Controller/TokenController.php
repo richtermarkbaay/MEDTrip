@@ -13,7 +13,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 class TokenController extends Controller
 {
 
-	public function confirmInvitationTokenAction($token)
+	public function confirmInvitationTokenAction()
     {    
     	//get token	 
     	$token = $this->getRequest()->get('token',null);
@@ -22,7 +22,6 @@ class TokenController extends Controller
             throw $this->createNotFoundException('Invalid token');
         }
         
-       
         $this->get('session')->setFlash('success', "Successfully confirm token!");
 		return $this->render('InstitutionBundle:Token:confirmInvitationToken.html.twig', array('token' => $token));
     }
