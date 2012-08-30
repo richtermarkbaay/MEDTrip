@@ -28,6 +28,20 @@ institution_medicalProcedureType_edit_save:
     requirements:    
         _method: POST
         
+## --- routes from medical center        
+institution_medicalCenter_addProcedureType:
+    pattern: /medical-centers/edit/{medicalCenterId}/medical-procedure-types/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
+    requirements:    
+        _method: GET
+        
+institution_medicalCenter_procedureTypes:
+    pattern: /medical-centers/edit/{medicalCenterId}/medical-procedure-types/
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
+    requirements:    
+        _method: GET
+## --- end         
+        
 institution_medicalProcedureType_addMedicalProcedure:
     pattern: /medical-procedure-types/{id}/add-procedure
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }

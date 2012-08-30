@@ -11,31 +11,31 @@ institution_medicalCenter_delete:
         _method:  GET
         
 institution_medicalCenter_add:
-    pattern: /medical-center/add
+    pattern: /medical-centers/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:add }
     requirements:    
         _method: GET
         
 institution_medicalCenter_edit:
-    pattern: /medical-center/edit/{medicalCenterId}
+    pattern: /medical-centers/edit/{medicalCenterId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
     requirements:    
         _method: GET
-        
+
 institution_medicalCenter_edit_save:
-    pattern: /medical-center/edit/{medicalCenterId}
+    pattern: /medical-centers/edit/{medicalCenterId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:    
         _method: POST
         
 institution_medicalCenter_add_save:
-    pattern: /medical-center/add
+    pattern: /medical-centers/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:    
         _method:  POST
         
 institution_loadMedicalProcedureTypes:
-    pattern:  /medical-center/load-procedure-types
+    pattern:  /medical-centers/load-procedure-types
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
     requirements:
         medical_center_id: \d+
