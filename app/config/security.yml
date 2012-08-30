@@ -38,8 +38,8 @@ security:
             access_denied_url: /admin/access-denied
             form_login:
                 login_path: /admin/login
-            http_basic:
-                realm: "Secured Admin Area"
+            #http_basic:
+            #    realm: "Secured Admin Area"
 
         institution_login:
             pattern:  ^/institution/login$
