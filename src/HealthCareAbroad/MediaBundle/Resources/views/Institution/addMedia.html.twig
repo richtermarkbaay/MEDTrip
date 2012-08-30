@@ -62,22 +62,23 @@ $(function() {
 		runtimes : 'html5',
 		url : '{{ path('media_upload') }}',
 		max_file_size : '10mb',
-		chunk_size : '1mb',
+		/*chunk_size : '1mb',*/
 		unique_names : true,
 
 		// Resize images on clientside if we can
-		resize : {width : 320, height : 240, quality : 90},
+		//resize : {width : 320, height : 240, quality : 90},
 
 		// Specify what files to browse for
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png"},
 			{title : "Zip files", extensions : "zip"},
+			{title : "Pdf files", extensions : "pdf"},
 			{title : "Porn", extensions : "avi,mov,flv"}
 		],
 
 		// Flash settings
-		//flash_swf_url : '/plupload/js/plupload.flash.swf',
-
+		flash_swf_url : '/plupload/js/plupload.flash.swf',
+		//http://www.youtube.com/watch?v=kPIM6V9eeRE
 		// Silverlight settings
 		//silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
 	});
