@@ -594,7 +594,7 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
