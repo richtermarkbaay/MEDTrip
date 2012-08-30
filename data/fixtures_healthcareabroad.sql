@@ -651,6 +651,14 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   KEY `medical_center_id` (`medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `medical_procedure_types`
+--
+
+INSERT INTO `medical_procedure_types` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 1, 'Procedure Type1', 'the quick is not slow. the quick is not slow.the quick is not slow.the quick is not slow.the quick is not slow.', '2012-08-30 06:13:31', '2012-08-29 16:00:00', 'procedure-type1', 1),
+(2, 2, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1);
+
 
 -- --------------------------------------------------------
 
