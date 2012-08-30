@@ -19,7 +19,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    // test for no login user
 	    $client = $this->requestUrlWithNoLoggedInUser($uri);
 	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
-	    $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirec to login page');
+	    $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirect to login page');
 	    
 	    // test for correct logged user
 	    $client = $this->getBrowserWithActualLoggedInUser();
@@ -31,5 +31,23 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    $this->setInvalidInstitutionInSession($client);
 	    $crawler = $client->request('GET', $uri);
 	    $this->assertEquals(404, $client->getResponse()->getStatusCode());
-	}	
+	}
+	
+	public function testAdd()
+	{
+	    $uri = 'institution/medical-centers/add';
+	    
+	    // test for no login user
+	    $client = $this->requestUrlWithNoLoggedInUser($uri);
+	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirect to login page');
+	    
+	    // test for correct logged user
+	    $client = $this->getBrowserWithActualLoggedInUser();
+	    $crawler = $client->request('GET', $uri);
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertGreaterThan(0,$crawler->filter('h1:contains("Add a new medical center")')->count());
+	    
+	    
+	}
 }
