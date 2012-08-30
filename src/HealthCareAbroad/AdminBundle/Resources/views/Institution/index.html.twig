@@ -20,10 +20,10 @@
 
 			<table class="generic-table" width="100%">
 			<tr>
-				<th class="table-header-repeat line-left minwidth-1"><a href="">Name</a></th>
-				<th class="table-header-repeat line-left"><a href="">Description</a></th>
-				<th class="table-header-repeat line-left"><a href="">Status</a></th>
-				<th class="table-header-options actions line-left" style="width:220px;"><a href="">Actions</a></th>
+				<th class="first"><a href="#">Name</a></th>
+				<th><a href="#">Description</a></th>
+				<th><a href="#">Status</a></th>
+				<th width="240" class="last actions"><a href="#">Actions</a></th>
 			</tr>
 
 			{% for institution in institutions %}
@@ -33,7 +33,7 @@
 					<td class="status">{{ statusValues[institution.status] }}</td>
 					<td align="center">
 						<a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {id:institution.id}) }}" class="show-update-status">
-							Update Status
+							update status
 						</a>
 					<span class="bar">|</span>
 					<a href="{{ path('admin_institution_manageCenters', {id:institution.id}) }}">centers</a>
