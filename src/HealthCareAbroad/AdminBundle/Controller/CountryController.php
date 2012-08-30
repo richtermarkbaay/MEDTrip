@@ -10,7 +10,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class CountryController extends Controller
 {
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_COUNTRIES')")
      */
     public function indexAction()
     {
@@ -18,7 +18,7 @@ class CountryController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
      */
 	public function addAction()
 	{
@@ -32,7 +32,7 @@ class CountryController extends Controller
 	}
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
      */
     public function editAction($id)
     {
@@ -49,23 +49,28 @@ class CountryController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
      */
     public function saveAction()
     {
-    	$id = $this->getRequest()->get('id', null);
+    	$request = $this->getRequest();
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
+    	}
+
+    	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
 
 		$country = $id ? $em->getRepository('HelperBundle:Country')->find($id) : new Country();
 
 		$form = $this->createForm(New CountryFormType(), $country);
-   		$form->bind($this->getRequest());
+   		$form->bind($request);
 
    		if ($form->isValid()) {
    			$em->persist($country);
    			$em->flush($country);
 
-   			$this->getRequest()->getSession()->setFlash('success', 'Country has been saved!');
+   			$request->getSession()->setFlash('success', 'Country has been saved!');
 
    			return $this->redirect($this->generateUrl('admin_country_index'));
 		}
@@ -82,7 +87,7 @@ class CountryController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_COUNTRY')")
      */
     public function updateStatusAction($id)
     {
@@ -91,7 +96,7 @@ class CountryController extends Controller
     	$country = $em->getRepository('HelperBundle:Country')->find($id);
 
 		if ($country) {
-			$country->setStatus($country->getStatus() ? 0 : 1);
+			$country->setStatus($country->getStatus() ? $country::STATUS_INACTIVE : $country::STATUS_ACTIVE);
 			$em->persist($country);
 			$em->flush($country);
 			$result = true;

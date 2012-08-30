@@ -1,5 +1,5 @@
 admin_city_index:
-    pattern:  /admin/city
+    pattern:  /admin/cities
     defaults: { _controller: AdminBundle:City:index, status: 1, country: all }
     requirements:    
         _method:  GET
@@ -31,7 +31,7 @@ admin_city_update:
          _method: POST
 
 admin_city_updateStatus:
-    pattern:  /admin/city/updateStatus/{id}
+    pattern:  /admin/city/update-status/{id}
     defaults: { _controller: AdminBundle:City:updateStatus, id: ~ }
     requirements:
         id: \d+

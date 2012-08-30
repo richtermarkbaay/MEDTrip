@@ -31,7 +31,7 @@ admin_country_update:
          _method: POST
 
 admin_country_updateStatus:
-    pattern:  /admin/country/updateStatus/{id}
+    pattern:  /admin/country/update-status/{id}
     defaults: { _controller: AdminBundle:Country:updateStatus, id: ~ }
     requirements:
         id: \d+

@@ -229,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `cities` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `country_id_2` (`country_id`,`name`),
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -264,7 +265,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `name` varchar(250) NOT NULL,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
