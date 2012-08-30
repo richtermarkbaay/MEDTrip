@@ -97,7 +97,7 @@ class MedicalCenterRepository extends EntityRepository
 	    $qb->select('a')
 	        ->from('MedicalProcedureBundle:MedicalCenter', 'a')
 	        ->innerJoin('a.institutionMedicalCenters', 'b')
-	        ->add('where', 'b.institutionId = :institutionId')
+	        ->add('where', 'b.institution = :institutionId')
 	        ->setParameter('institutionId', $institution->getId());
 	        
         return $qb;	    
