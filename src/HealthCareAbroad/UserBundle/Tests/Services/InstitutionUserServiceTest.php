@@ -30,6 +30,7 @@ class InstitutionUserServiceTest extends UserBundleTestCase
 		$this->service->setDoctrine($this->getDoctrine());
 		$this->service->setChromediaRequest($this->getServiceContainer()->get('services.chromedia_request'));
 		$this->service->setChromediaAccountsUri($this->getServiceContainer()->getParameter('chromedia_accounts_uri'));
+		$this->service->setSecurityContext($this->getServiceContainer()->get('security.context'));
 	}
 	
 	public function tearDown()
