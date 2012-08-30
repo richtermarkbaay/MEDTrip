@@ -49,7 +49,7 @@ class ListFilterBeforeController
 
         $controller[0]->filteredResult = array();
         
-        $listFilter = ListFilterFactory::create($routeName, $this->doctrine);
+		$listFilter = ListFilterFactory::create($routeName, $this->doctrine);
 		$params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {

@@ -30,12 +30,18 @@ class FilesystemManager
 	}
 	
 	/**
-	 * Convenience function
+	 * Convenience functions
 	 * 
 	 * @return string
 	 */
 	public function getUploadRootDir()
 	{
 		return $this->uploadRootDir;
+	}
+	
+	public function getWebRootPath()
+	{
+		//TODO: use path generator
+		return '/media/';
 	}
 }

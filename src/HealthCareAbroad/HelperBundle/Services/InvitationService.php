@@ -96,7 +96,7 @@ class InvitationService
 		
 		$invitation->setMessage($message);
 		$invitation->setInvitationToken($token);
-		$invitation->setStatus($sendResult ? InstitutionInvitation::STATUS_SENT : InstitutionInvitation::STATUS_PENDING_SENDING);
+		$invitation->setStatus(1);
 		 
 		$em = $this->doctrine->getEntityManager();
 		$em->persist($invitation);

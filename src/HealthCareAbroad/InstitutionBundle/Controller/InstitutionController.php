@@ -1,22 +1,25 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionInvitationEvent;
-
 use Assetic\Exception\Exception;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
-use HealthCareAbroad\HelperBundle\Services\LocationService;
-use HealthCareAbroad\HelperBundle\Entity\Country;
-use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\UserBundle\Entity\SiteUser;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
-use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
+
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
+use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;

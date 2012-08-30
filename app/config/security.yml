@@ -27,7 +27,7 @@ security:
             pattern: ^/secured-utilities
             access_denied_url: /helper/access-denied
             http_basic:
-                realm: "Secured Developers Area"
+                realm: "Secured Developers Area" 
             
         admin_user.login:
             pattern: ^/admin/login$
@@ -44,11 +44,18 @@ security:
         institution_login:
             pattern:  ^/institution/login$
             security: false
-
+            remember_me:
+               key:  %secret%   
+               lifetime: 3600
+               path:     /institution
+               domain:   ~
+               remember_me_parameter: _remember_me
+               always_remember_me: true
         institution_secured_area:
             pattern:    ^/institution
             form_login:
                 login_path: /institution/login
+            
             #logout:
             #    path:   /demo/secured/logout
             #    target: /demo/

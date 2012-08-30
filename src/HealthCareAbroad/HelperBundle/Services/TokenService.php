@@ -23,7 +23,6 @@ class TokenService
 		$query = $this->doctrine->getEntityManager()->createQuery($dql)
 			->setParameter('token', $token)
 			->setParameter('token_status', 1);
-		
 		return $query;		
 	}
 	

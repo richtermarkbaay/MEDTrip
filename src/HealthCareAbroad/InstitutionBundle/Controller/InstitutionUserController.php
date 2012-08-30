@@ -103,7 +103,7 @@ class InstitutionUserController extends Controller
     
     public function editAccountAction()
     {
-        $accountId = $this->getRequest()->get('accountId', null);
+    	$accountId = $this->getRequest()->get('accountId', null);
         if (!$accountId){
             // no account id in parameter, editing currently logged in account
             $session = $this->getRequest()->getSession();

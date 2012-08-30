@@ -41,6 +41,19 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 		return $ids;
 	}
 	
+	public function getMedicalCentersList($institutionId)
+	{	
+		$qb = $this->_em->createQueryBuilder()
+		->select('b.id, b.name')
+		->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+		->leftJoin('a.medicalCenter', 'b')
+		->add('where','a.institution = :institution')
+		->setParameter('institution', $institutionId)
+		->orderBy('b.name', 'ASC');
+		
+		return $qb->getQuery()->getResult();
+	}
+	
 	/**
 	 * Get the available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
 	 * 

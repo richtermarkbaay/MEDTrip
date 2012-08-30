@@ -7,8 +7,6 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 class InstitutionMedicalProcedureTypeListFilter extends ListFilter
 {
-
-	private $institution;
 	
 	function __construct($doctrine)
 	{
@@ -20,9 +18,6 @@ class InstitutionMedicalProcedureTypeListFilter extends ListFilter
 
 	function setFilterOptions()
 	{
-		$em = $this->doctrine->getEntityManager();
-		$this->institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['id']);
-
 		$this->setMedicalCenterOption();
 
 		$this->setStatusFilterOption();
@@ -30,14 +25,14 @@ class InstitutionMedicalProcedureTypeListFilter extends ListFilter
 	
 	function setMedicalCenterOption()
 	{
-		$institutionCenters = $this->institution->getInstitutionMedicalCenters();
+		$em = $this->doctrine->getEntityManager();
+		$medicalCenters = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersList($this->queryParams['id']);
 
-		$options = array('all' => 'All');
-		foreach($institutionCenters as $each) {
-			$center = $each->getMedicalCenter();
-			$options[$center->getId()] = $center->getName();
+		$options['all'] = 'All';
+		foreach($medicalCenters as $each) {
+			$options[$each['id']] = $each['name'];
 		}
-		
+
 		$this->filterOptions['medicalCenter'] = array(
 			'label' => 'Medical Center',
 			'selected' => $this->queryParams['medicalCenter'],
@@ -47,17 +42,20 @@ class InstitutionMedicalProcedureTypeListFilter extends ListFilter
 
 	function setFilteredResult()
 	{	
+		$em = $this->doctrine->getEntityManager();
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['id']);
+
 		$medicalCenterId = $this->queryParams['medicalCenter'];
 		$status = $this->queryParams['status'];
 
 		if($medicalCenterId != 'all') {
 			$status = $this->queryParams['status'] == 'all' ? null : $this->queryParams['status'];
-
-			$this->filteredResult = $this->entityRepository->getByInstitutionIdAndMedicalCenterId($this->institution->getId(), $medicalCenterId, $status);
+			$this->filteredResult = $this->entityRepository->getByInstitutionIdAndMedicalCenterId($institution->getId(), $medicalCenterId, $status);
 		} else {
-			unset($this->criteria['medicalCenter']);
-			$this->criteria['institution'] = $this->institution;			
 
+			unset($this->criteria['medicalCenter']);
+			$this->criteria['institution'] = $institution;
+			
 			$this->filteredResult = $this->entityRepository->findBy($this->criteria);
 		}
 	}

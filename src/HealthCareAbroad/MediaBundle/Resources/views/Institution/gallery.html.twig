@@ -32,7 +32,8 @@
         				{% for media in institutionMedia %}
         				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
         				        <td></td>
-            					<td><a href="#" title="View {{ media.name }}">{{ media.name | title }}</a></td>
+        				        {# TODO: set escaping off globally #}
+            					<td>{{ media(media) | raw }}</td>
             					<td class="options-width">
                 					[<a href="#" title="Edit {{ media.name | title }}">Edit</a>]
             					</td>
