@@ -32,16 +32,15 @@ class InstitutionMedicalCenterType extends AbstractType
 
         // we are expecting only an InstitutionMedicalCenter as data
         $institutionMedicalCenter = $options['data'];
-        $institution = $options['institution'];
-        $institutionMedicalCenter->setInstitution($institution);
 
-        if (!$medicalCenterId = $institutionMedicalCenter->getMedicalCenterId()) {
+        if (!$institutionMedicalCenter->getId()) {
+            $institution = $institutionMedicalCenter->getInstitution();
             $builder->add('medicalCenter', 'medicalCenter_list', array('query_builder' => function (EntityRepository $er) use ($institution) {
                     return $er->getQueryBuilderForUnselectedInstitutionMedicalCenters($institution);
                 },'virtual' => false,'empty_value' => 'Please select one','constraints'=>array(new NotBlank())));
         }
         else {
-        	 
+            $medicalCenterId = $institutionMedicalCenter->getMedicalCenter()->getId(); 
             $builder->add('medicalCenter', 'medicalCenter_list', array('query_builder' => function(EntityRepository $er) use($medicalCenterId){
                 return $er->createQueryBuilder('a')
                     ->where('a.id = :id')
@@ -51,13 +50,6 @@ class InstitutionMedicalCenterType extends AbstractType
         
         $builder->add('description', 'textarea', array('constraints' => new NotBlank()));
         $builder->add('status', 'choice', array('choices' => $status));
-    }
-    
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setRequired(array('institution'));
-        $resolver->setOptional(array('medicalCenterId'));
-        $resolver->setAllowedTypes(array('institution' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution'));
     }
     
     public function getName()
