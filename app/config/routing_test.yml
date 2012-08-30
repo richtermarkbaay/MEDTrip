@@ -12,5 +12,11 @@ admin_procedureType_testSave:
          id: \d+
          _method: GET
 
+admin_medicalCenter_testSave:
+    pattern:  /admin/medical-center/test-save
+    defaults: { _controller: AdminBundle:MedicalCenter:save }
+    requirements:
+         id: \d+
+         _method: GET
 _main:
     resource: routing.yml
