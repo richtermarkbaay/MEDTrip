@@ -361,6 +361,9 @@ a:hover.icon-5	{
 .generic-table td a {
 	color: #393939;
 	}
+.generic-table td a:hover{
+	color: #759E1A;
+	}
 .generic-table td	{
 	border-right: 1px solid #d2d2d2;
 	border-bottom: 1px solid #d2d2d2;
@@ -1620,6 +1623,14 @@ a.button-type {
 	width: auto;
 	min-width: 100px;
 }
+
+./*ellipsis {
+	border: 1px solid #000000;
+	white-space: nowrap;
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}*/
 
 /* jQuery UI Dialg Style */
 

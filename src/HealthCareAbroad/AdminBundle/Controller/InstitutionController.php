@@ -153,12 +153,11 @@ class InstitutionController extends Controller
 		if('POST' != $request->getMethod()) {
 			
 		} else {
-			$medicalCenterId = $request->get('medical_center_id');
 			$em = $this->getDoctrine()->getEntityManager();
 			$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-			$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
 
-			if($medicalCenter) {
+			if($medicalCenterId = $request->get('medical_center_id')) {
+				$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
 				$criteria = array('institution' => $institution, 'medicalCenter' => $medicalCenter);
 				$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
 			} else {
