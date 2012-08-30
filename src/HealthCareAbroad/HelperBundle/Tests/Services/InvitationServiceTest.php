@@ -62,7 +62,7 @@ class InvitationServiceTest extends HelperBundleTestCase
 		$invitation->setEmail('alnie@yahoo.com');
 		$invitation->setName('alnie jacobe');
 		
-		$institutionInvitation = $this->service->createInstitutionInvitation($invitation);
+		$institutionInvitation = $this->service->sendInstitutionInvitation($invitation);
 		$this->assertNotEmpty($institutionInvitation);
 		
 		return $institutionInvitation;

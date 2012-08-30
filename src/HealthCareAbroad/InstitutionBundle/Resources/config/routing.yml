@@ -61,8 +61,8 @@ institution_homepage:
 #    requirements:
 #       _method:  GET|POST
 #
-#InstitutionBundle_confirmed_token:
-#    pattern:  /confirm/t={token}
-#    defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
-#    requirements:
-#       _method: GET
+InstitutionBundle_confirmed_token:
+    pattern:  /confirm/t={token}
+    defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
+    requirements:
+       _method: GET
