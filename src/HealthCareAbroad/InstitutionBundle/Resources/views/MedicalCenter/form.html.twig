@@ -1,6 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'medical_centers'%}
-{% set isNew = institutionMedicalCenter.id == 0 %}
 {% block title %}{{ parent() }} {{ isNew ? "Add Medical Center" : "Edit Medical Center"}} {% endblock %}
 {% form_theme form '::form.admin.html.twig' %}
 

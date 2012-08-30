@@ -42,6 +42,7 @@ class MedicalCenterController extends Controller
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
+            'isNew' => false,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
@@ -57,14 +58,9 @@ class MedicalCenterController extends Controller
         $institutionMedicalCenter->setInstitution($institution);
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('InstitutionBundle:MedicalCenter:modalForm.html.twig', array(
-                'form' => $form->createView()
-            ));
-        }
-        
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
+            'isNew' => true,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
@@ -111,6 +107,7 @@ class MedicalCenterController extends Controller
         else {
             return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
                 'form' => $form->createView(),
+                'isNew' => $isNew,
                 'institutionMedicalCenter' => $institutionMedicalCenter
             ));
         }
