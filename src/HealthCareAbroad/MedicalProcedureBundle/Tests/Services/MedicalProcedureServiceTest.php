@@ -90,11 +90,4 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 		$procedureType = $this->service->getMedicalProcedureType(1);
 		$this->assertNotEmpty($procedureType);
 	}
-
-	public function testGetMedicalProcedureTypes()
-	{
-		$procedureTypes = $this->service->getMedicalProcedureTypes();
-		var_dump(count($procedureTypes));
-		$this->assertNotEmpty($procedureTypes);
-	}
 }
