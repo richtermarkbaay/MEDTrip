@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use Doctrine\ORM\EntityRepository;
 
 
@@ -31,5 +33,10 @@ class InstitutionMedicalProcedureTypeRepository extends EntityRepository
 		}
 
 		return $qb->getQuery()->getResult();			
+	}
+	
+	public function getByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+	{
+	    return $this->getByInstitutionIdAndMedicalCenterId($institutionMedicalCenter->getInstitutionId(), $institutionMedicalCenter->getMedicalCenterId());
 	}
 }

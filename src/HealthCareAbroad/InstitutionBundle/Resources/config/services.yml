@@ -8,6 +8,11 @@ services:
         arguments: [@doctrine]]
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
+            
+    services.institutionMedicalCenter:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
+        arguments: [@doctrine]]
+    
     form.institution_list:
         class: "%services.institution_list%"
         calls:

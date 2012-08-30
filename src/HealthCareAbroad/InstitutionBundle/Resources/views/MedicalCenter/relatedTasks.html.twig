@@ -1,10 +1,12 @@
-{% set addMedicalProcedureTypeTask = {
-    title: 'Add new medical procedure type', 
-    isVisible: hideAddMedicalProcedureType is defined and hideAddMedicalProcedureType ? false: true,
-    class: 'add-icon', 
+{% set medicalProcedureTypeTask = {
+    title: 'Medical Procedure Types', 
+    isVisible: hideMedicalProcedureTypeTask is defined and hideMedicalProcedureTypeTask ? false: true,
     description: medicalCenterId is defined and medicalCenterId ? 'Create a new medical procedure type for this medical center': 'Add a new medical procedure type', 
-    href: path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0}), 
-    links: [{title: 'Click here to add medical procedure type', 'href': path('institution_medicalProcedureType_add', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})}]} 
+    href: path('institution_medicalCenter_procedureTypes', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0}), 
+    links: [
+        {title: 'View all medical procedure types', 'href': path('institution_medicalCenter_procedureTypes', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})},
+        {title: 'Add medical procedure type', 'href': path('institution_medicalCenter_addProcedureType', {'medicalCenterId': medicalCenterId is defined ? medicalCenterId : 0})}
+    ]} 
 %}
 
 {% set addMedicalCenterTask = {
@@ -33,6 +35,6 @@
 %}
 
 {% include '::relatedTasks.base.admin.html.twig' with 
-    {'contents': [addMedicalCenterTask, addMedicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
+    {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
 %}
             

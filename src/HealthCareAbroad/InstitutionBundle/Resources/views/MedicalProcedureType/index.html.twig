@@ -25,18 +25,7 @@
 			    {% include '::notice.admin.html.twig' %}
 			    
 			    <div id="institution-medical-procedure-types" style="width:75%">
-			    
-    			    {% for procedureType in institutionMedicalProcedureTypes %}	 
-        				<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
-        				<div class="procedures">
-        				    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalProcedureType_edit', {'id': procedureType.id}) }}">Edit</a>
-        					<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'id': procedureType.id}) }}">Add Procedure</a>
-        					{% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'procedures' : procedureType.institutionMedicalProcedures } %}
-        				</div>
-        			{% else  %}
-        				<div class="empty-list">No records yet!</div>
-        			{% endfor %}
-			    
+			        {% include 'InstitutionBundle:MedicalProcedureType:medicalProcedureTypes.html.twig' with {'institutionMedicalProcedureTypes': institutionMedicalProcedureTypes} %}
 			    </div>
                 <!-- end institution-medical-procedure-types  -->            			    
 				

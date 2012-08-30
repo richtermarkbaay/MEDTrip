@@ -23,7 +23,7 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: isNew?true:false,hideAddMedicalProcedureType: isNew?true:false, 'medicalCenterId': medicalCenter ? medicalCenter.id : 0} %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true,hideMedicalProcedureTypeTask: isNew?true:false, 'medicalCenterId': medicalCenter ? medicalCenter.id : 0} %}
             {# ----- end Related tasks ----- #}
             
             <!--  start table-content  -->
@@ -52,6 +52,7 @@
                 	</table>
                 	<!-- end id-form  -->
             	</form>
+            	
 			</div>
 			<!--  end table-content  -->
         			
