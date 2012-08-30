@@ -15,7 +15,7 @@
         
         {% block wrappedContent %}
                 {# ----- Related tasks ----- #}
-                {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideAddMedicalProcedureType: true} %}
+                {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideMedicalProcedureTypeTask: true} %}
                 {# ----- end Related tasks ----- #}
                 
     			<!--  start table-content  -->
@@ -33,11 +33,11 @@
         				{% for center in institutionMedicalCenters %}
         				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
         				        <td></td>
-            					<td><a href="{{ path('institution_medicalCenter_edit', {'medicalCenterId': center.medicalCenterId}) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
+            					<td><a href="{{ path('institution_medicalCenter_edit', {'imcid': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
             					<td>{{ center.description }}</td>
             					<td class="options-width">
-                					[<a href="{{ path('institution_medicalCenter_edit', {'medicalCenterId': center.medicalCenterId}) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
-                					[<a href="{{ path('institution_medicalProcedureType_add')}}" title="Add medical procedure type for {{ center.medicalCenter | title }}">Add Medical Procedure Type</a>]
+                					[<a href="{{ path('institution_medicalCenter_edit', {'imcid': center.id }) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
+                					[<a href="{{ path('institution_medicalCenter_addProcedureType', {'imcid': center.id })}}" title="Add medical procedure type for {{ center.medicalCenter | title }}">Add Medical Procedure Type</a>]
             					</td>
             				</tr>
         				{% else %}

@@ -33,19 +33,16 @@ class MedicalCenterController extends Controller
     
     public function editAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-        $medicalCenterId = $request->get('medicalCenterId', 0);
-        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find(array('institutionId' => $institutionId, 'medicalCenterId' => $medicalCenterId));
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcid', 0));
         
         if (!$institutionMedicalCenter) {
             throw $this->createNotFoundException("Invalid institution medical center.");
         }
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institutionMedicalCenter->getInstitution(), 'medicalCenterId' => $medicalCenterId));
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
-            'medicalCenter' => $institutionMedicalCenter->getMedicalCenter(),
-            'isNew' => false
+            'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
     
@@ -57,7 +54,8 @@ class MedicalCenterController extends Controller
         }
         
         $institutionMedicalCenter = new InstitutionMedicalCenter();
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institution));
+        $institutionMedicalCenter->setInstitution($institution);
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
         if ($request->isXmlHttpRequest()) {
             return $this->render('InstitutionBundle:MedicalCenter:modalForm.html.twig', array(
@@ -67,8 +65,7 @@ class MedicalCenterController extends Controller
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
-            'medicalCenter' => null,
-            'isNew' => true
+            'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
     
@@ -84,18 +81,18 @@ class MedicalCenterController extends Controller
             throw $this->createNotFoundException('Invalid institution');
         }
         
-        if ($medicalCenterId= $request->get('medicalCenterId', 0)) {
-            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find(array('institutionId' => $institution->getId(), 'medicalCenterId' => $medicalCenterId));
+        if ($imcid= $request->get('imcid', 0)) {
+            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcid);
             if (!$institutionMedicalCenter) {
                 throw $this->createNotFoundException("Invalid institution medical center.");
             }
-            $isNew = false;
         }
         else {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
-            $isNew = true;
+            $institutionMedicalCenter->setInstitution($institution);
         }
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution' => $institution, 'medicalCenterId' => $medicalCenterId));
+        $isNew = $institutionMedicalCenter->getId() == 0;
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         $form->bind($request);
         
         if ($form->isValid()) {
@@ -114,8 +111,7 @@ class MedicalCenterController extends Controller
         else {
             return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
                 'form' => $form->createView(),
-                'medicalCenter' => $isNew ? null: $institutionMedicalCenter->getMedicalCenter(),
-                'isNew' => $isNew
+                'institutionMedicalCenter' => $institutionMedicalCenter
             ));
         }
     }
