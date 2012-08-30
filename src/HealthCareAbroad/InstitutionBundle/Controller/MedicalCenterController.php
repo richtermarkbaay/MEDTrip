@@ -126,6 +126,9 @@ class MedicalCenterController extends Controller
         
     }
 
+    /**
+     * method no longer needed
+     * TODO: remove entirely
 	function loadProcedureTypesAction(Request $request)
 	{
 		$institutionId = $request->get('id', $request->getSession()->get('institutionId')); 
@@ -137,7 +140,7 @@ class MedicalCenterController extends Controller
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
 		$repo = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-		$institutionMedicalCenter = $repo->findOneBy(array('institutionId' => $institution->getId(), 'medicalCenterId' => $request->get('medical_center_id')));
+		$institutionMedicalCenter = $repo->findOneBy(array('institution' => $institution->getId(), 'medicalCenter' => $request->get('medical_center_id')));
 		
 		if (!$institutionMedicalCenter) {
 		    throw $this->createNotFoundException('No InstitutionMedicalCenter found.');
@@ -152,7 +155,7 @@ class MedicalCenterController extends Controller
 		$response->headers->set('Content-Type', 'application/json');
 	
 		return $response;
-	}
+	}**/
 	
 	private function _errorResponse($message, $code=500)
 	{

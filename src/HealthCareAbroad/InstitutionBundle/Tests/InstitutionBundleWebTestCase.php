@@ -50,8 +50,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected function getBrowserWithMockLoggedUser()
     {
         $client = static::createClient(array(), array(
-                        'PHP_AUTH_USER' => 'ryan',
-                        'PHP_AUTH_PW'   => 'ryanpass',
+            'PHP_AUTH_USER' => 'developer',
+            'PHP_AUTH_PW'   => '123456',
         ));
     }
     
@@ -63,5 +63,27 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected function getLocationResponseHeader($client)
     {
         return $client->getResponse()->headers->get('location');
+    }
+    
+    /**
+     * Convenienve function to check if location header is the login page. 
+     * 
+     * @param unknown_type $client
+     */
+    protected function isRedirectedToLoginPage($client)
+    {
+        $location = $this->getLocationResponseHeader($client);
+        return $location == '/institution/login' || $location == 'http://localhost/institution/login';
+    }
+    
+    /**
+     * Convenience function to set an invalid institution id in the browser session
+     * @param unknown_type $client
+     */
+    protected function setInvalidInstitutionInSession(&$client)
+    {
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionId', 99999999);
+        $session->save();
     }
 }
