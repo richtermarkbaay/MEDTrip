@@ -10,20 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class MedicalCenterController extends Controller
+class MedicalCenterController extends InstitutionAwareController
 {
     
     public function indexAction(Request $request)
     {
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution'); 
-        $institution = $institutionRepository->find($request->getSession()->get('institutionId'));
-        
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($institution);
+        $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($this->institution);
         
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
