@@ -13,21 +13,21 @@
 
             {% include '::notice.admin.html.twig' %}
 
-            <table id="inquiries-list" class="generic-table mid-size">
+            <table id="inquiries-list" class="generic-table" cellspacing="0" width="70%">
             <tr>
-                <th class="table-header-options actions line-left"><a href="">Inquirer</a></th>
-                <th class="table-header-options actions line-left"><a href="">Inquiry Subject</a></th>
-                <th class="table-header-options actions line-left"><a href="">Message</a></th>
-                <th class="table-header-options actions line-left"><a href="">Email</a></th>
-                <th class="table-header-options actions line-left"><a href="">Date Created</a></th>
+                <th><a href="">Inquirer</a></th>
+                <th><a href="">Inquiry Subject</a></th>
+                <th><a href="">Message</a></th>
+                <th><a href="">Email</a></th>
+                <th><a href="">Date Created</a></th>
             </tr>
                 
             {% for inquiry in inquiries %}
                 <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                    <td align="center">{{ inquiry.firstName }} {{ inquiry.lastName }}</td>
-                    <td align="center">{{ inquiry.inquirySubject.name }}</td>
-                    <td align="center">{{ inquiry.message }}</td>
-                    <td align="center">{{ inquiry.email }}</td>
+                    <td>{{ inquiry.firstName }} {{ inquiry.lastName }}</td>
+                    <td>{{ inquiry.inquirySubject.name }}</td>
+                    <td>{{ inquiry.message }}</td>
+                    <td>{{ inquiry.email }}</td>
                     <td align="center">{{ inquiry.dateCreated|date("m/d/Y") }}</td>
                 </tr>
             {% else  %}

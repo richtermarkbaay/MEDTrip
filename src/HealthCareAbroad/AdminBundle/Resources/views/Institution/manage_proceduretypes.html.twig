@@ -41,11 +41,11 @@
 				<div class="procedures">
 					<a class="add-procedure button-type" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}">Add Procedure</a>
 					<a href="{{ path('admin_institution_editProcedureType', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" class="button-type">Edit Procedure Type</a>
-				    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+				    <table border="0" width="100%" class="generic-table" id="medical-centers-list">
 	    				<tr>
-	    					<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
-	    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
-	    					<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+	    					<th class="first" width="200"><a href="#">Procedures</a></th>
+	    					<th><a href="#">Description</a></th>
+	    					<th class="last actions" width="100"><a href="#">Options</a></th>
 	    				</tr>
 
 						{% set procedures = procedureType.institutionMedicalProcedures %}

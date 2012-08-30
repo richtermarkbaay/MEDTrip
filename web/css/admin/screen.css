@@ -253,14 +253,7 @@ h3	{
 	}
 .green-right	{
 	width: 55px;
-	}	
-	
-	
-	
-	
-	
-	
-	
+	}		
 	
 a.icon-1	{
 	background: url(/images/admin/table/table_icon_1.gif) no-repeat;
@@ -336,29 +329,48 @@ a:hover.icon-5	{
 	margin: 0;
 	}
 .generic-table	{
+	border: 0;
+	border-spacing: 0;
 	margin-bottom: 20px;
 	}
-.generic-table	td a	{
-	color: #393939;
-	}
-.generic-table	td a:hover	{
-	text-decoration: underline;
-	}
-.generic-table	th	{
-	height: 40px;
+.generic-table th {
+	padding: 12px 10px;
 	text-align: left;
 	padding-right: 10px;
+	background: #555555;
+	border-right: 1px solid #777777;
 	}
-.generic-table	th.actions	{
+.generic-table tr th:first-child{
+	border-top-left-radius: 5px;
+	}
+.generic-table tr th:last-child{
+	border-top-right-radius: 5px;
+	border-right: none;
+	}
+.generic-table th.actions {
 	padding: 0;
 	text-align: center;
 	}
-.generic-table	.minwidth-1	{
-	min-width: 110px;
+.generic-table th a{
+	color: #FFFFFF;	
+	font-size: 13px;
+	}
+.generic-table th a:hover{
+	color:#94b52c;
+	}
+.generic-table td a {
+	color: #393939;
 	}
 .generic-table td	{
-	border: 1px solid #d2d2d2;
+	border-right: 1px solid #d2d2d2;
+	border-bottom: 1px solid #d2d2d2;
 	padding: 10px;
+	}
+.generic-table tr td:first-child {
+	border-left: 1px solid #d2d2d2;
+}
+.generic-table .minwidth-1	{
+	min-width: 110px;
 	}
 .empty-list{
 	color: #CC6666;
@@ -373,53 +385,6 @@ td.options-width	{
 	width: 210px;
 	}
 td.checkbox-width	{
-	}
-.table-header-check	{
-	background: url(/images/admin/table/table_header_checkbox.jpg) no-repeat;
-	border: none;
-	min-width: 29px;
-	padding: 0px 0 0 10px !important;
-	width: 29px;
-	}
-
-.table-header-options	{
-	background: url(/images/admin/table/table_header_options.jpg) no-repeat scroll right top;
-	border: none;
-	min-width: 150px;
-	padding: 0px 0 0 0;
-	width: 150px;
-	}
-.table-header-repeat	{
-	background: url(/images/admin/table/table_header_repeat.jpg) repeat-x;
-	border: none;
-	font-size: 0px;
-	line-height: 0;
-	padding: 0px 0 0 0;
-	}
-.table-header-options a,
- .table-header-repeat a	{
-	background: url(/images/admin/table/table_sort_arrow.gif) right no-repeat;
-	color: #fff;
-	font-family: Tahoma;
-	font-size: 13px;
-	font-weight: bold;
-	line-height: 14px;
-	margin: 0 0 0 10px;
-	padding: 0 10px 0 0;
-	}
-
-.table-header-options a {
-	background: none;
-}
-
-	.table-header-options a:hover,
- .table-header-repeat a:hover	{
-	
-	color:#94b52c
-	}
-	
-th.line-left	{
-	border-left: 1px solid #373737;
 	}
 .generic-table	tr.activity-blue	{
 	background: #e3eceb;
@@ -439,24 +404,6 @@ th.line-left	{
 		height:17px;
 		background: url(/images/admin/shared/checkbox.gif) 0 0;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -1154,9 +1101,6 @@ height: 70px;
  
  
 /* GENERAL --------------------------------------------------------*/ 
- table	{
-	border-collapse: collapse;
-	}
 .fr	{
 	float: right;
 	}
@@ -1729,8 +1673,17 @@ a.button-type {
 	overflow: auto;
 }
 
+.ui-accordion .generic-table th{
+	padding: 8px;
+}
+
+.ui-accordion .generic-table th a{
+	font-size: 12px;
+}
+
 .ui-accordion .generic-table td {
-	padding: 5px 0 5px 10px;
+	padding: 5px 8px;
+	font-size: 12px;
 }
 /* end */
 

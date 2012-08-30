@@ -31,11 +31,11 @@
 
 			<table id="medical-procedure-list" class="generic-table" width="70%">
 			<tr>
-				<th class="table-header-repeat line-left minwidth-1"><a href="">Procedure</a></th>
-				<th class="table-header-repeat line-left"><a href="">Procedure Type</a></th>
-				<th class="table-header-options actions line-left"><a href="">Actions</a></th>
+				<th class="minwidth-1"><a href="">Procedure</a></th>
+				<th class="minwidth-1"><a href="">Procedure Type</a></th>
+				<th class="actions"><a href="">Actions</a></th>
 			</tr>
-			
+
 			{% for procedure in procedures %}
 				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 					<td>{{ procedure.name }}</td>
