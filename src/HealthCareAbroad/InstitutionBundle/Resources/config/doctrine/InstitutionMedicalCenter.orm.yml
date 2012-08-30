@@ -2,20 +2,13 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     type: entity
     table: institution_medical_centers
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository
-    id:
-        institutionId:
-            type: integer
-            nullable: false
-            column: institution_id
-            generator:
-                strategy: NONE
-        medicalCenterId:
-            type: integer
-            nullable: false
-            column: medical_center_id
-            generator:
-                strategy: NONE
     fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
         description:
             type: text
             nullable: false

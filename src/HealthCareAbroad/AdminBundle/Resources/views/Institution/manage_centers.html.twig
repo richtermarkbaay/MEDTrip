@@ -4,7 +4,7 @@
 
 	<div id="content">
 
-		<div id="page-heading"><h3>Manage "{{ institutionName }}" Medical Centers</h3></div>
+		<div id="page-heading"><h3>{{ institutionName }} Medical Centers</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 
@@ -47,6 +47,7 @@
             					<a href="{{ path('admin_institution_editMedicalCenter', {id:id, medical_center_id: center.medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
             					{% set class = center.status ? 'icon-2' : 'icon-5' %}
             					<a href="{{ path('admin_institution_updateMedicalCenterStatus', {id:id, medical_center_id: center.medicalCenter.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+								<a href="{{ path('admin_institution_manageProcedureTypes', {id:institution.id}) }}">procedure types</a>
         					</td>
         				</tr>
         				
@@ -61,40 +62,4 @@
 			{% endblock %}
 		{% endembed %}
 	</div>
-{% endblock %}
-
-
-{% block inlineJavascriptCode %}
-	<script type="text/javascript">
-		$(function(){
-
-			$("#dialog-container").dialog({
-				autoOpen: false,
-				height: 480,
-				width: 700,
-				modal: true,
-				resizable: false,
-				close: function() {}
-			});
-
-			$(".add-medical-center, .edit-medical-center").click(function() {
-				var elem = $(this);
-				var addProcedureUrl = elem.attr('href');
-				
-				elem.attr('href', 'javascript:void(0)');
-
-				$("#dialog-container").empty();
-				$("#dialog-container").dialog({
-					open: function() {
-						$.ajax(addProcedureUrl)
-							.done(function (data) {
-								elem.attr('href', addProcedureUrl);
-								$('#dialog-container').html(data);
-							});
-					},
-				});
-				$("#dialog-container").dialog("open");
-			});
-		});
-	</script>
 {% endblock %}
