@@ -70,34 +70,21 @@ INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`)
 -- Table structure for table `breadcrumb_tree`
 --
 
+DROP TABLE IF EXISTS `breadcrumb_tree`;
 CREATE TABLE IF NOT EXISTS `breadcrumb_tree` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `route` varchar(64) NOT NULL,
   `label` varchar(250) NOT NULL,
-  `root_id` int(10) unsigned NOT NULL,
-  `left_value` int(10) unsigned NOT NULL,
-  `right_value` int(10) unsigned NOT NULL,
+  `root_id` int(10) unsigned DEFAULT NULL,
+  `left_value` int(10) unsigned DEFAULT NULL,
+  `right_value` int(10) unsigned DEFAULT NULL,
+  `parent_id` int(10) unsigned DEFAULT NULL,
+  `level` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `route` (`route`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+  UNIQUE KEY `route` (`route`),
+  KEY `parent_id` (`parent_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `breadcrumb_tree`
---
-
-INSERT INTO `breadcrumb_tree` (`id`, `route`, `label`, `root_id`, `left_value`, `right_value`) VALUES
-(1, 'admin_homepage', 'Home', 1, 1, 26),
-(2, 'admin_manageHcaData', 'HCA Data', 1, 2, 15),
-(3, 'admin_institution_index', 'All Institutions', 1, 16, 21),
-(4, 'admin_settings', 'Settings', 1, 22, 23),
-(5, 'admin_medicalCenter_index', 'Manage Medical Centers', 1, 3, 8),
-(6, 'admin_medicalCenter_add', 'Add Medical Center', 1, 4, 5),
-(7, 'admin_medicalCenter_edit', 'Edit Medical Center', 1, 6, 7),
-(8, 'admin_institution_manageCenters', 'Manage Institution Medical Centers', 1, 18, 19),
-(9, 'admin_institution_view', 'Institution Profile', 1, 17, 20),
-(10, 'admin_procedureType_index', 'Manage Medical Procedure Types', 1, 9, 14),
-(11, 'admin_procedureType_add', 'Add Medical Procedure Type', 1, 10, 11),
-(12, 'admin_procedureType_edit', 'Edit Medical Procedure Type', 1, 12, 13);
 
 -- --------------------------------------------------------
 
