@@ -56,6 +56,7 @@ class AdminUserServiceTest extends UserBundleTestCase
         return $adminUser;
     }
     
+    
     /**
      * @depends testCreate
      */
@@ -91,4 +92,34 @@ class AdminUserServiceTest extends UserBundleTestCase
         $isLoginOk = $this->service->login($adminUser->getEmail(), $this->commonPassword.'12344444');
         $this->assertFalse($isLoginOk);
     }
+    
+    /**
+     * @depends testCreate
+     * @param AdminUser $adminUser
+     */
+    public function testFindbyId(AdminUser $adminUser)
+    {
+    	$accountId = $adminUser->getAccountId();
+    	$result = $this->service->findById($accountId, true);
+    	$this->assertNotEmpty($result);
+    }
+    
+    /**
+     * @depends testCreate
+     * @param AdminUser $adminUser
+     */
+	public function testUpdate(AdminUser $adminUser)
+	{
+		//test for valid adminuser
+		$adminUser->setFirstName('edited name');
+	
+		$result = $this->service->update($adminUser);
+		$this->assertNotEmpty($result);
+	
+		//test for empty adminuser
+		$adminUser = new AdminUser();
+		$result = $this->service->update($adminUser);
+		$this->assertEmpty($result);
+	
+	}
 }

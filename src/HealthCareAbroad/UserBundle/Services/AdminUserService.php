@@ -82,12 +82,11 @@ class AdminUserService extends UserService
     {
     	//update data in chromedia global accounts
     	if (!$user->getAccountId()) {
-            throw InvalidInstitutionUserOperationException::illegalUpdateWithNoAccountId();
-        }
-        
-    	// update user in chromedia global accounts
+    		return null;
+    	}
+    	
         $user = $this->updateUser($user);
-    	return $user;
+        return $user;
     }
     /**
      * Find an AdminUser based on email and password
