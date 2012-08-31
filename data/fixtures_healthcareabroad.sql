@@ -380,23 +380,18 @@ INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `medical_cent
 
 DROP TABLE IF EXISTS `institution_medical_procedures`;
 CREATE TABLE IF NOT EXISTS `institution_medical_procedures` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_medical_procedure_type_id` bigint(20) unsigned NOT NULL,
   `medical_procedure_id` int(10) unsigned NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`institution_medical_procedure_type_id`,`medical_procedure_id`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_medical_procedure_type_id` (`institution_medical_procedure_type_id`,`medical_procedure_id`),
   KEY `medical_procedure_id` (`medical_procedure_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `institution_medical_procedures`
---
-
-INSERT INTO `institution_medical_procedures` (`institution_medical_procedure_type_id`, `medical_procedure_id`, `description`, `date_modified`, `date_created`, `status`) VALUES
-(1, 1, 'the quick brown fox jump over the mango tree.', '2012-08-14 06:13:20', '2012-08-13 16:00:00', 1),
-(1, 2, 'this is a test churva', '2012-08-14 06:13:20', '2012-08-13 16:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -407,24 +402,17 @@ INSERT INTO `institution_medical_procedures` (`institution_medical_procedure_typ
 DROP TABLE IF EXISTS `institution_medical_procedure_types`;
 CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
   `medical_procedure_type_id` int(11) unsigned NOT NULL,
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `medical_procedure_type_id` (`medical_procedure_type_id`),
-  KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`medical_procedure_type_id`),
+  KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `institution_medical_procedure_types`
---
-
-INSERT INTO `institution_medical_procedure_types` (`id`, `institution_id`, `medical_procedure_type_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
-(1, 1, 3, 'this is the second listing. sdf sdafa fdaf sdaf', '2012-08-14 06:32:05', '2012-08-13 16:00:00', 1),
-(2, 1, 4, 'Inactive listing procedure type ini.', '2012-08-14 06:32:05', '2012-08-13 16:00:00', 0);
 
 -- --------------------------------------------------------
 
@@ -790,14 +778,14 @@ ALTER TABLE `institution_medical_centers`
 --
 ALTER TABLE `institution_medical_procedures`
   ADD CONSTRAINT `institution_medical_procedures_ibfk_2` FOREIGN KEY (`medical_procedure_id`) REFERENCES `medical_procedures` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_procedures_ibfk_3` FOREIGN KEY (`institution_medical_procedure_type_id`) REFERENCES `institution_medical_procedure_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_medical_procedures_ibfk_1` FOREIGN KEY (`institution_medical_procedure_type_id`) REFERENCES `institution_medical_procedure_types` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_medical_procedure_types`
 --
 ALTER TABLE `institution_medical_procedure_types`
-  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_3` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_2` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_users`

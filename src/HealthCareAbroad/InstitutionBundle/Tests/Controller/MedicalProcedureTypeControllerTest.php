@@ -13,30 +13,39 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
 {	
     
+    public function testPreExecute()
+    {
+        // test invalid imcId
+        $uri = '/institution/medical-centers/edit/9999999999/medical-procedure-types/';
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $client->request('GET', $uri);
+        
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
+    
     public function testIndex()
     {
-        $uri = '/institution/medical-procedure-types';
-        $client = $this->requestUrlWithNoLoggedInUser($uri);
+        $uri = '/institution/medical-centers/edit/1/medical-procedure-types/';
         
+        // test access by no logged user
+        $client = $this->requestUrlWithNoLoggedInUser($uri);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $location = $this->getLocationResponseHeader($client);
-        $this->assertTrue($this->loginAbsoluteUri == $location || $this->loginRelativeUri == $location );
+        $this->assertTrue($this->isRedirectedToLoginPage($client));
         
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Medical Procedure Type Management")')->count(), 'Expecting page title to contain "Medical Procedure Type Management"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Institution Panel Medical Procedure Types")')->count(), 'Expecting page title to contain "Institution Panel Medical Procedure Types"');
     }
     
     public function testAdd()
     {
-        $uri = '/institution/medical-procedure-type/add';
+        $uri = '/institution/medical-centers/edit/1/medical-procedure-types/add';
         
         // test accessing with no user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $location = $this->getLocationResponseHeader($client);
-        $this->assertTrue($this->loginAbsoluteUri == $location || $this->loginRelativeUri == $location );
+        $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirection to login page');
         
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
@@ -52,7 +61,7 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         $invalidFormValues = array(
             'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '',
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => '',
         );
         
@@ -69,19 +78,82 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         $this->assertEquals(302, $client->getResponse()->getStatusCode(), "Expecting redirect after submitting correct data");
         
-        $client->followRedirect();
-        
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Medical Procedure Type")')->count(), 'Expecting to be in "Edit Medical Procedure Type" page after saving new medical-procedure-type');
+        $crawler = $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved medical procedure type")')->count(), 'Expecting success message "Successfully saved medical procedure type" page after saving new medical-procedure-type');
     }
     
-	public function testLoadProcedures()
-	{
-	    $this->markTestIncomplete();
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$params = array('institution_id' => 1, 'procedure_type_id' => 1);
-// 		$crawler = $client->request('GET', '/institution/procedure-type/load-procedures', $params);
-
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-	}
+    /**
+     * @depends testAdd
+     */
+    public function testEdit()
+    {
+        $uri = '/institution/medical-centers/edit/1/medical-procedure-types/edit/1';
+        
+        // test accessing with no user
+        $client = $this->requestUrlWithNoLoggedInUser($uri);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirection to login page');
+        
+        // test with valid user
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        // test with invalid imptId
+        $client->request('GET','/institution/medical-centers/edit/1/medical-procedure-types/edit/9999999');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting 404 error for invalid imptId');
+        
+        // test correct request
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Medical Procedure Type")')->count(), 'Expecting page title to contain "Edit Medical Procedure Type"');
+        
+        // valid form values
+        $formValues = array(
+            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
+            'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
+        );
+        
+        $invalidFormValues = array(
+            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
+            'institutionMedicalProcedureTypeForm[description]' => '',
+        );
+        
+        // test for submitting missing required fields
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("This value should not be blank.")')->count(), 'Text "This value should not be blank." not found after validating form');
+        
+        // test for submitting correct fields
+        $crawler = $client->request('GET', $uri);
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "Expecting redirect after submitting correct data");
+        
+        $crawler = $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved medical procedure type")')->count(), 'Expecting success message "Successfully saved medical procedure type" page after updating medical-procedure-type');
+    }
+    
+    public function testSave()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+         
+        // --- test not allowed methods
+        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave');
+        $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
+         
+        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave');
+        $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
+         
+        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave');
+        $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
+         
+        // -- test posting with invalid imcId
+        $client->request('POST', '/institution/medical-centers/edit/1/medical-procedure-types/edit/999999999');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Expecting 404 if passed invalid imptId");
+    }
 	
 }

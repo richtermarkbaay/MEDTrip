@@ -73,20 +73,13 @@ institution_medicalCenter_procedureTypes:
 ## --- end         
         
 institution_medicalProcedureType_addMedicalProcedure:
-    pattern: /medical-procedure-types/{id}/add-procedure
+    pattern: /medical-procedure-types/{imptId}/add-procedure
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }
     requirements:
         _method: GET
         
 institution_medicalProcedureType_addMedicalProcedure_save:
-    pattern: /medical-procedure-types/{id}/add-procedure
+    pattern: /medical-procedure-types/{imptId}/add-procedure
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
     requirements:
         _method: POST
-        
-institution_loadMedicalProcedures:
-    pattern:  /medical-procedure-types/load-procedures
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
-    requirements:
-         institution_id: \d+
-         procedure_type_id: \d+
