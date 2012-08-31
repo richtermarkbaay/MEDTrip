@@ -44,6 +44,7 @@ class InstitutionAwareBeforeControllerListener
         $controllerObj = $callable[0];
         
         if ($controllerObj instanceof InstitutionAwareController) {
+            
             $institutionId = $request->getSession()->get('institutionId', 0);
             if ($institutionId) {
                 $institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find($institutionId);
@@ -53,6 +54,8 @@ class InstitutionAwareBeforeControllerListener
                 
                 $controllerObj->setInstitution($institution);
             }
+            
+            $controllerObj->preExecute();
         }
     }
 }

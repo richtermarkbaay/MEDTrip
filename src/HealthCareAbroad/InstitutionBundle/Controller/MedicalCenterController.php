@@ -25,7 +25,7 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcid', 0));
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId', 0));
         
         if (!$institutionMedicalCenter) {
             throw $this->createNotFoundException("Invalid institution medical center.");
@@ -58,8 +58,8 @@ class MedicalCenterController extends InstitutionAwareController
             return $this->_errorResponse("POST is the only allowed method", 405);
         }
         
-        if ($imcid= $request->get('imcid', 0)) {
-            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcid);
+        if ($imcId= $request->get('imcId', 0)) {
+            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$institutionMedicalCenter) {
                 throw $this->createNotFoundException("Invalid institution medical center.");
             }

@@ -18,6 +18,14 @@ abstract class InstitutionAwareController extends Controller
      */
     protected $institution;
     
+    /**
+     * Convenience function to help controllers set up common variables
+     */
+    public function preExecute()
+    {
+        
+    }
+    
     public function setInstitution(Institution $institution)
     {
         $this->institution = $institution;

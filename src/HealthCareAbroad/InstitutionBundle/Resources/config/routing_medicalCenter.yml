@@ -1,4 +1,4 @@
-## imcid variable is institution_medical_center.id
+## imcId variable is institution_medical_center.id
 institution_medicalCenter_index:
     pattern: /medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
@@ -6,7 +6,7 @@ institution_medicalCenter_index:
         _method:  GET
         
 institution_medicalCenter_delete:
-    pattern: /medical-centers/delete/{imcid}
+    pattern: /medical-centers/delete/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:delete }
     requirements:    
         _method:  GET
@@ -18,13 +18,13 @@ institution_medicalCenter_add:
         _method: GET
         
 institution_medicalCenter_edit:
-    pattern: /medical-centers/edit/{imcid}
+    pattern: /medical-centers/edit/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
     requirements:    
         _method: GET
 
 institution_medicalCenter_edit_save:
-    pattern: /medical-centers/edit/{imcid}
+    pattern: /medical-centers/edit/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:    
         _method: POST

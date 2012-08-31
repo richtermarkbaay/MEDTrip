@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
@@ -14,20 +16,25 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class MedicalProcedureTypeController extends Controller
+class MedicalProcedureTypeController extends InstitutionAwareController
 {
+    /**
+     * @var InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter;
+    
+    public function preExecute()
+    {
+        $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($this->getRequest()->get('imcId'));
+        
+        if (!$this->institutionMedicalCenter) {
+            throw $this->createNotFoundException("Invalid institution medical center");
+        }
+    }
     
     public function indexAction(Request $request)
     {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
         $institutionMedicalProcedureTypes = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findAll();
-        
         $params = array(
             'institutionMedicalProcedureTypes' => $institutionMedicalProcedureTypes
         );
@@ -36,12 +43,8 @@ class MedicalProcedureTypeController extends Controller
     
     public function addAction(Request $request)
     {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
         $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $institution));
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $this->institution));
         
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
@@ -52,17 +55,12 @@ class MedicalProcedureTypeController extends Controller
     
     public function editAction(Request $request)
     {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
-        $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('id', 0));
+        $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId', 0));
         if (!$institutionMedicalProcedureType) {
             throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
         }
         
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $institution));
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $this->institution));
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
@@ -76,13 +74,8 @@ class MedicalProcedureTypeController extends Controller
             return new Response('Unsupported method', 405);
         }
         
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
-        if ($id = $request->get('id', 0)) {
-            $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($id);
+        if ($imptId = $request->get('imptId', 0)) {
+            $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($imptId);
             if (!$institutionMedicalProcedureType) {
                 throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
             }
@@ -91,12 +84,12 @@ class MedicalProcedureTypeController extends Controller
             $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
         }
         
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType, array('institution' => $institution));
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType, array('institution' => $this->institution));
         $form->bindRequest($request);
         $isNew = $institutionMedicalProcedureType->getId() == 0;
         if ($form->isValid()){
             $institutionMedicalProcedureType = $form->getData();
-            $institutionMedicalProcedureType->setInstitution($institution);
+            $institutionMedicalProcedureType->setInstitution($this->institution);
             $institutionMedicalProcedureType->setStatus(InstitutionMedicalProcedureType::STATUS_ACTIVE);
             
             $em = $this->getDoctrine()->getEntityManager();
@@ -105,7 +98,7 @@ class MedicalProcedureTypeController extends Controller
             
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
-            return $this->redirect($this->generateUrl('institution_medicalProcedureType_edit', array('id' => $institutionMedicalProcedureType->getId())));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $this->institutionMedicalCenter->getId() ,'imptId' => $institutionMedicalProcedureType->getId())));
         }
         
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
@@ -154,7 +147,7 @@ class MedicalProcedureTypeController extends Controller
             $em->flush();
             $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");
             
-            return $this->redirect($this->generateUrl('institution_medicalProcedureType_edit', array('id' => $institutionMedicalProcedureType->getId())));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $this->institutionMedicalCenter->getId(),'imptIdd' => $institutionMedicalProcedureType->getId())));
         }
         
         $params = array(
@@ -167,6 +160,9 @@ class MedicalProcedureTypeController extends Controller
         return $this->render('InstitutionBundle:MedicalProcedureType:form.procedure.html.twig', $params);
     }
 
+	
+    
+    /** TODO: remove permanently
 	function loadProceduresAction()
 	{
 		$request = $this->getRequest();
@@ -193,4 +189,5 @@ class MedicalProcedureTypeController extends Controller
 
 		return $response;
 	}
+	**/
 }

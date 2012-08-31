@@ -86,9 +86,9 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    $client->request('DELETE', '/institution/medical-centers/testSave');
 	    $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
 	    
-	    // -- test posting with invalid imcid
+	    // -- test posting with invalid imcId
 	    $client->request('POST', '/institution/medical-centers/edit/99999999');
-	    $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Expecting 404 if passed invalid imcid");
+	    $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Expecting 404 if passed invalid imcId");
 	}
 	
 	
