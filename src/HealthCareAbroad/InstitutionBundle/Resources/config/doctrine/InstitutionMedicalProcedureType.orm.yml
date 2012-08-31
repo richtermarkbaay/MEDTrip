@@ -29,11 +29,11 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure
             mappedBy: institutionMedicalProcedureType
     manyToOne:
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            inversedBy: institutions
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: institutionMedicalProcedureTypes
             joinColumn:
-                name: institution_id
+                name: institution_medical_center_id
                 referencedColumnName: id
         medicalProcedureType:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType

@@ -67,12 +67,12 @@ class InstitutionMedicalCenterRepository extends EntityRepository
    	        "AND b.institution_id = :institution_id ".
    	        "AND a.medical_center_id = b.medical_center_id ".
 	        "AND a.status = :active_medical_procedure_type ".
-	        "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_id = :institution_id)";
+	        "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
 	    
 	    $rsm = new ResultSetMapping();
 	    $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
 	        ->addFieldResult("a", "id", "id")
-	        ->addFieldResult("a", "medicalCenterId", "medical_center_id")
+	        ->addFieldResult("a", "medicalCenter", "medical_center_id")
 	        ->addFieldResult("a", "name", "name")
 	        ->addFieldResult("a", "description", "description")
 	        ->addFieldResult("a", "dateModified", "date_modified")
@@ -82,8 +82,8 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 	    
 
 	    $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
-	        ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenterId())
-	        ->setParameter('institution_id', $institutionMedicalCenter->getInstitutionId())
+	        ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenter()->getId())
+	        ->setParameter('institution_id', $institutionMedicalCenter->getInstitution()->getId())
 	        ->setParameter('active_medical_procedure_type', MedicalProcedureType::STATUS_ACTIVE);
 	    
 	    return $query->getResult();

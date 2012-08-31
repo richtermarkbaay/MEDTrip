@@ -23,6 +23,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         status:
             type: smallint
             nullable: false
+    oneToMany:
+        institutionMedicalProcedureTypes:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
+            mappedBy: institutionMedicalCenter
     manyToOne:
         medicalCenter:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter

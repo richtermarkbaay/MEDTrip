@@ -47,6 +47,16 @@ class InstitutionMedicalCenter
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedureTypes;
+    
+    public function __construct()
+    {
+        $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -189,5 +199,37 @@ class InstitutionMedicalCenter
     public function getInstitution()
     {
         return $this->institution;
+    }
+    
+    /**
+     * Add institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     */
+    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
+    }
+
+    /**
+     * Get institutionMedicalProcedureTypes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalProcedureTypes()
+    {
+        return $this->institutionMedicalProcedureTypes;
     }
 }

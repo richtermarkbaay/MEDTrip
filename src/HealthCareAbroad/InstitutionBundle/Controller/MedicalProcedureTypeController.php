@@ -44,7 +44,8 @@ class MedicalProcedureTypeController extends InstitutionAwareController
     public function addAction(Request $request)
     {
         $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $this->institution));
+        $institutionMedicalProcedureType->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
         
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
@@ -60,7 +61,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
         }
         
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType, array('institution' => $this->institution));
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
@@ -82,14 +83,14 @@ class MedicalProcedureTypeController extends InstitutionAwareController
         }
         else {
             $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
+            $institutionMedicalProcedureType->setInstitutionMedicalCenter($this->institutionMedicalCenter);
         }
         
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType, array('institution' => $this->institution));
+        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType);
         $form->bindRequest($request);
         $isNew = $institutionMedicalProcedureType->getId() == 0;
         if ($form->isValid()){
             $institutionMedicalProcedureType = $form->getData();
-            $institutionMedicalProcedureType->setInstitution($this->institution);
             $institutionMedicalProcedureType->setStatus(InstitutionMedicalProcedureType::STATUS_ACTIVE);
             
             $em = $this->getDoctrine()->getEntityManager();

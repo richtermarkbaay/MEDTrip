@@ -90,21 +90,12 @@ class MedicalCenterController extends InstitutionAwareController
         }
     }
 
-    /**
-     * method no longer needed
-     * TODO: remove entirely
-	function loadProcedureTypesAction(Request $request)
+    function loadProcedureTypesAction(Request $request)
 	{
-		$institutionId = $request->get('id', $request->getSession()->get('institutionId')); 
-	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-	    if (!$institution) {
-	        throw $this->createNotFoundException('Invalid institution');
-	    }
-	    
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
 		$repo = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-		$institutionMedicalCenter = $repo->findOneBy(array('institution' => $institution->getId(), 'medicalCenter' => $request->get('medical_center_id')));
+		$institutionMedicalCenter = $repo->findOneBy(array('institution' => $this->institution->getId(), 'medicalCenter' => $request->get('medical_center_id')));
 		
 		if (!$institutionMedicalCenter) {
 		    throw $this->createNotFoundException('No InstitutionMedicalCenter found.');
@@ -120,7 +111,6 @@ class MedicalCenterController extends InstitutionAwareController
 	
 		return $response;
 	}
-	**/
 	
 	private function _errorResponse($message, $code=500)
 	{

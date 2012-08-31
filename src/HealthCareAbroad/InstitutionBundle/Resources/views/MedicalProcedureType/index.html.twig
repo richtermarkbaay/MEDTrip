@@ -73,7 +73,9 @@
 				return false;
 			});
 
-			$("#institution-medical-procedure-types").accordion();			
+			{% if institutionMedicalProcedureTypes is not empty %} 
+		    $("#institution-medical-procedure-types").accordion();
+		    {% endif %}			
 		});
 	</script>
 {% endblock %}
