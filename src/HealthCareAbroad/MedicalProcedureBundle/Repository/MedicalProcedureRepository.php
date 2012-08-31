@@ -40,9 +40,9 @@ class MedicalProcedureRepository extends EntityRepository
 	public function getQueryBuilderForAvailableInstitutionMedicalProcedures(InstitutionMedicalProcedureType $institutionMedicalProcedureType)
 	{
 	    $qbInner = $this->getEntityManager()->createQueryBuilder();
-	    $qbInner->select('i.medicalProcedureId')
+	    $qbInner->select('i.id')
 	        ->from('InstitutionBundle:InstitutionMedicalProcedure', 'i')
-	        ->where('i.institutionMedicalProcedureTypeId = :institutionMedicalProcedureTypeId');
+	        ->where('i.institutionMedicalProcedureType = :institutionMedicalProcedureTypeId');
 	    
 	    $qb = $this->getEntityManager()->createQueryBuilder();
 	    $qb->select('a')
