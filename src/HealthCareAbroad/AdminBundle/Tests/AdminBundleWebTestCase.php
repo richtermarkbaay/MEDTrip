@@ -46,8 +46,8 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	protected function getBrowserWithMockLoggedUser($options = array())
 	{
 		$client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
-				'PHP_AUTH_USER' => 'admin',
-				'PHP_AUTH_PW'   => 'testadmin',
+				'PHP_AUTH_USER' => 'developer',
+				'PHP_AUTH_PW'   => '123456',
 		));
 		return $client;
 	}

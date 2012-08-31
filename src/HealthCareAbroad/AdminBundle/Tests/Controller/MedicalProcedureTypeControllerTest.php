@@ -35,7 +35,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     public function testEdit()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/edit/1');
+    	$crawler = $client->request('GET', '/admin/procedure-type/edit/3');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
     	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Medical Procedure Type")')->count(), '"Edit Medical Procedure Type" string not found!');
@@ -46,7 +46,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$formData = array(
 			'medicalProcedureType[name]' => '1st TestNewlyAdded MedProcType',
 			'medicalProcedureType[description]' => 'Lorem Lorem ipsum dolor sit amit!',
-			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[medicalCenter]' => 1,
 			'medicalProcedureType[status]' => 1
     	);
     
@@ -64,7 +64,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
 		$formData = array(
 			'medicalProcedureType[name]' => 'TestNewlyAdded MedProcType',
 			'medicalProcedureType[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[medicalCenter]' => 1,
 			'medicalProcedureType[status]' => 1
 		);
 
@@ -88,12 +88,12 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     public function testEditSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/edit/2');
+    	$crawler = $client->request('GET', '/admin/procedure-type/edit/3');
 
 		$formData = array(
 			'medicalProcedureType[name]' => 'TestNewlyAdded MedProcType Updated',
 			'medicalProcedureType[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[medicalCenter]' => 1,
 			'medicalProcedureType[status]' => 1
 		);
 
@@ -130,7 +130,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
 		$formData = array(
 			'medicalProcedureType[name]' => '',
 			'medicalProcedureType[description]' => 'the description',
-			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[medicalCenter]' => 1,
 			'medicalProcedureType[status]' => 1
 		);
 
@@ -148,7 +148,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$formData = array(
 			'medicalProcedureType[name]' => '',
 			'medicalProcedureType[description]' => 'the description',
-			'medicalProcedureType[medical_center]' => 'AddedFromTest Center',
+			'medicalProcedureType[medicalCenter]' => 1,
 			'medicalProcedureType[status]' => 1
     	);
 

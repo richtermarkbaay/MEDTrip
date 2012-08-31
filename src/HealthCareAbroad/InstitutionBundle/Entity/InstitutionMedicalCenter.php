@@ -9,18 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
-    const STATUS_ACTIVE = 1;
-    
-    const STATUS_INACTIVE = 0;
-    /**
-     * @var integer $institutionId
-     */
-    private $institutionId;
+	const STATUS_ACTIVE = 1;
+	
+	const STATUS_INACTIVE = 0;
 
     /**
-     * @var integer $medicalCenterId
+     * @var bigint $id
      */
-    private $medicalCenterId;
+    private $id;
 
     /**
      * @var text $description
@@ -38,6 +34,11 @@ class InstitutionMedicalCenter
     private $dateCreated;
 
     /**
+     * @var smallint $status
+     */
+    private $status;
+
+    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
      */
     private $medicalCenter;
@@ -49,47 +50,13 @@ class InstitutionMedicalCenter
 
 
     /**
-     * Set institutionId
+     * Get id
      *
-     * @param integer $institutionId
-     * @return InstitutionMedicalCenter
+     * @return bigint 
      */
-    public function setInstitutionId($institutionId)
+    public function getId()
     {
-        $this->institutionId = $institutionId;
-        return $this;
-    }
-
-    /**
-     * Get institutionId
-     *
-     * @return integer 
-     */
-    public function getInstitutionId()
-    {
-        return $this->institutionId;
-    }
-
-    /**
-     * Set medicalCenterId
-     *
-     * @param integer $medicalCenterId
-     * @return InstitutionMedicalCenter
-     */
-    public function setMedicalCenterId($medicalCenterId)
-    {
-        $this->medicalCenterId = $medicalCenterId;
-        return $this;
-    }
-
-    /**
-     * Get medicalCenterId
-     *
-     * @return integer 
-     */
-    public function getMedicalCenterId()
-    {
-        return $this->medicalCenterId;
+        return $this->id;
     }
 
     /**
@@ -159,6 +126,28 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set status
+     *
+     * @param smallint $status
+     * @return InstitutionMedicalCenter
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return smallint 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
@@ -167,7 +156,6 @@ class InstitutionMedicalCenter
     public function setMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter = null)
     {
         $this->medicalCenter = $medicalCenter;
-        $this->setMedicalCenterId($medicalCenter->getId());
         return $this;
     }
 
@@ -190,7 +178,6 @@ class InstitutionMedicalCenter
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
-        $this->setInstitutionId($institution->getId());
         return $this;
     }
 
@@ -202,32 +189,5 @@ class InstitutionMedicalCenter
     public function getInstitution()
     {
         return $this->institution;
-    }
-    /**
-     * @var smallint $status
-     */
-    private $status;
-
-
-    /**
-     * Set status
-     *
-     * @param smallint $status
-     * @return InstitutionMedicalCenter
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return smallint 
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 }

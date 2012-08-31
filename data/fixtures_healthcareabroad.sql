@@ -229,6 +229,7 @@ CREATE TABLE IF NOT EXISTS `cities` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `country_id_2` (`country_id`,`name`),
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -264,7 +265,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `name` varchar(250) NOT NULL,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
@@ -350,16 +352,25 @@ CREATE TABLE IF NOT EXISTS `institution_media` (
 
 DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `medical_center_id` int(10) unsigned NOT NULL,
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(6) NOT NULL,
-  PRIMARY KEY (`institution_id`,`medical_center_id`),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_id` (`institution_id`,`medical_center_id`),
   KEY `medical_center_id` (`medical_center_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+
+--
+-- Dumping data for table `institution_medical_centers`
+--
+
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, 'dsafdsafdsaf', '2012-08-30 04:18:36', '2012-08-30 04:18:36', 1);
 
 -- --------------------------------------------------------
 
@@ -592,7 +603,8 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
@@ -650,6 +662,14 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
   PRIMARY KEY (`id`),
   KEY `medical_center_id` (`medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `medical_procedure_types`
+--
+
+INSERT INTO `medical_procedure_types` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 1, 'Procedure Type1', 'the quick is not slow. the quick is not slow.the quick is not slow.the quick is not slow.the quick is not slow.', '2012-08-30 06:13:31', '2012-08-29 16:00:00', 'procedure-type1', 1),
+(2, 2, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1);
 
 
 -- --------------------------------------------------------
@@ -745,6 +765,7 @@ ALTER TABLE `institution_contact_details`
   ADD CONSTRAINT `institution_contact_details_ibfk_3` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `institution_contact_details_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+
 --
 -- Constraints for table `institution_invitations`
 --
@@ -762,7 +783,7 @@ ALTER TABLE `institution_media`
 --
 ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_2` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_medical_procedures`

@@ -1,0 +1,39 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionListing:
+    type: entity
+    table: institution_listings
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionListingRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_medical_center_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

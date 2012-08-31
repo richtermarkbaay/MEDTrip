@@ -12,8 +12,6 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 {
     public function testIndex()
@@ -50,7 +48,8 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
     		'medicalProcedure[name]' => 'testeste new',
-    		'medicalProcedure[medical_procedure_type]' => 1,
+    		'medicalProcedure[description]' => 'MedicalProcedure Description added from test data.',
+   			'medicalProcedure[medicalProcedureType]' => 2,
     		'medicalProcedure[status]' => 1
     	);
 
@@ -79,7 +78,8 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
     			'medicalProcedure[name]' => 'testeste new updated',
-    			'medicalProcedure[medical_procedure_type]' => 1,
+    			'medicalProcedure[description]' => 'MedicalProcedure Description added from test data. Updated Description',
+    			'medicalProcedure[medicalProcedureType]' => 2,
     			'medicalProcedure[status]' => 1
     	);
 
@@ -108,7 +108,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
 			'medicalProcedure[name]' => 'testeste new updated',
-			'medicalProcedure[medical_procedure_type]' => 1,
+			'medicalProcedure[medicalProcedureType]' => 2,
     		'medicalProcedure[status]' => 1
     	);
 
@@ -136,7 +136,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
 			'medicalProcedure[name]' => '',
-			'medicalProcedure[medical_procedure_type]' => 1,
+			'medicalProcedure[medicalProcedureType]' => 2,
 			'medicalProcedure[status]' => 1
     	);
 
@@ -153,7 +153,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
 			'medicalProcedure[name]' => 'saveUsingGet',
-			'medicalProcedure[medical_procedure_type]' => 1,
+			'medicalProcedure[medicalProcedureType]' => 2,
 			'medicalProcedure[status]' => 1
     	);
     	$crawler = $client->request('GET', '/admin/medical-procedure/test-save', $formData);

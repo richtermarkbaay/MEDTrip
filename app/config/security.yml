@@ -38,15 +38,16 @@ security:
             access_denied_url: /admin/access-denied
             form_login:
                 login_path: /admin/login
-            http_basic:
-                realm: "Secured Admin Area"
             remember_me:
                key:  %secret%   
                lifetime: 1209600
-               path:     /admin/
+               path:     /admin
                domain:   ~
                remember_me_parameter: _remember_me
                always_remember_me: true
+            http_basic:
+                realm: "Secured Admin Area"
+
         institution_login:
             pattern:  ^/institution/login$
             security: false

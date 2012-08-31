@@ -18,12 +18,12 @@
 				{{ listFilters is defined ? listFilters : '' }}
 			{% endautoescape %}
 
-			<table class="generic-table" width="100%">
+			<table class="generic-table" width="70%">
 			<tr>
-				<th class="first"><a href="#">Name</a></th>
+				<th><a href="#">Name</a></th>
 				<th><a href="#">Description</a></th>
 				<th><a href="#">Status</a></th>
-				<th width="240" class="last actions"><a href="#">Actions</a></th>
+				<th width="160" class="actions"><a href="#">Actions</a></th>
 			</tr>
 
 			{% for institution in institutions %}
@@ -37,9 +37,9 @@
 						</a>
 					<span class="bar">|</span>
 					<a href="{{ path('admin_institution_manageCenters', {id:institution.id}) }}">centers</a>
-					<span class="bar">|</span>
-					<a href="{{ path('admin_institution_manageProcedureTypes', {id:institution.id}) }}">procedure types</a>
-					</td>
+<!-- 					<span class="bar">|</span> -->
+<!-- 					<a href="{{ path('admin_institution_manageProcedureTypes', {id:institution.id}) }}">procedure types</a> -->
+<!-- 					</td> -->
 				</tr>
 			{% else  %}
 				<tr><td class="empty-list" colspan="4">No records yet!</td></tr>

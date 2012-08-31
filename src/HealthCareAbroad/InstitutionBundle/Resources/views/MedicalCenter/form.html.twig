@@ -12,7 +12,7 @@
     	    {% if isNew %} 
     	        Add a new medical center
 	        {% else %}
-	            Edit {{ medicalCenter.name }} medical center
+	            Edit {{ institutionMedicalCenter.medicalCenter.name }} medical center
 	         {% endif %}       
         </h1>
     </div>
@@ -23,7 +23,7 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true,hideMedicalProcedureTypeTask: isNew?true:false, 'medicalCenterId': medicalCenter ? medicalCenter.id : 0} %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true,hideMedicalProcedureTypeTask: isNew?true:false, 'imcid': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
             
             <!--  start table-content  -->
@@ -31,7 +31,7 @@
 			
 			    {% include '::notice.admin.html.twig' %}
 			
-			    <form novalidate="novalidate" action="{{ isNew ? path('institution_medicalCenter_add') : path('institution_medicalCenter_edit', {'medicalCenterId': medicalCenter.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+			    <form novalidate="novalidate" action="{{ isNew ? path('institution_medicalCenter_add') : path('institution_medicalCenter_edit', {'imcid': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
     			    
     			    <!-- start id-form -->
             		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">

@@ -17,27 +17,50 @@
             {# ----- Related tasks ----- #}
             {% include 'MediaBundle:Institution:relatedTasksGallery.html.twig' %}
             {# ----- end Related tasks ----- #}        
-        
+
+        		<div style="float: right" width="75%">
+					<a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
+					<a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
+					<a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
+					<a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
+				</div>																		    			                
+            
     			<!--  start table-content  -->
     			<div id="table-content" style="width:75%;">
     			    {% include '::notice.admin.html.twig' %}
-    			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
-    			        
-        				<tr>
-        				    <th class="table-header-check"></th>
-        					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Media</a></th>
-        					<th class="table-header-options line-left"><a href="#">Options</a> </th>
-        				</tr>
-        				
+
+    			    <div id="filter-wrapper" style="width: 100%">
+						<span class="caption">Search</span>
+						<div style="float: left">
+							<input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
+						</div>
+						<div>
+							<label>Media type: </label>
+							<select class="styledselect_form_1">
+								<option value="1">All</option>
+								<option value="2">Images</option>
+								<option value="3">Videos</option>
+								<option value="4">Pdfs</option>
+							</select>
+						</div>
+						<a href="#" class="button-type">GO</a>
+					</div>    			    
+	
+	   			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+    			    	{% set mediaCount = 0 %}
         				{% for media in institutionMedia %}
-        				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-        				        <td></td>
-        				        {# TODO: set escaping off globally #}
-            					<td>{{ media(media) | raw }}</td>
-            					<td class="options-width">
-                					[<a href="#" title="Edit {{ media.name | title }}">Edit</a>]
-            					</td>
-            				</tr>
+							{% if (loop.index - 1) % 4 == 0 %}
+								{% set mediaCount = 1 %}			
+        						<tr>
+        							<td valign="top">{{ media(media, 'gallery') | raw }}</td>
+        					{% else %}
+        						{% set mediaCount = mediaCount + 1 %}
+        							<td valign="top">{{ media(media, 'gallery', {"institutionId": institutionId}) | raw }}</td>		
+        					{% endif %}
+									
+							{% if mediaCount == 4 %}									
+            					</tr>
+            				{% endif %}	
         				{% else %}
         				    <tr class="">
         				        <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
@@ -46,7 +69,14 @@
         				
     				</table>
     				
+	        		<div style="float: right" width="75%">
+						<a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
+						<a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
+						<a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
+						<a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
+					</div>																		    			        				
     			</div>
+    			
         {% endblock %}
         
     {% endembed %}
@@ -54,27 +84,93 @@
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+
+<div id="edit-media-form" title="Edit media">
+	<form>
+		<fieldset>
+			<label for="caption">Caption</label>
+			<input type="text" name="caption" id="caption" class="text ui-widget-content ui-corner-all" />
+		</fieldset>
+	</form>
+</div>                        	
+
+<div id="delete-media-form" title="Are you sure you want to delete the media?">
+	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>                        	
+
 {% endblock %}
                         	
+{# TODO: there has to be a better way to load all these #}
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('js/jquery/jquery.mousewheel-3.0.6.pack.js') }}"></script>
 
-{% block inlineJavascriptCode %}                
-<!-- Load Queue widget CSS and jQuery -->
-<style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
-<!-- 
-<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
--->
+<!-- Optionally add helpers - button, thumbnail and/or media -->
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.3') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.3') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.3') }}"></script>
 
-<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
-<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-
-<!-- Load plupload and all it's runtimes and finally the jQuery UI queue widget -->
-
-<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.6') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.6') }}"></script>
 
 <script type="text/javascript">
+$(document).ready(function() {
 
+	$(".fancybox").fancybox({
+		openEffect	: 'none',
+		closeEffect	: 'none',
+	});
+
+	$("#edit-media-form").dialog({
+		autoOpen: false,
+		height: 300,
+		width: 350,
+		modal: true,
+		buttons: {
+			"Edit caption": function() {
+				alert('eat shit');
+				/*
+					$( "#users tbody" ).append( "<tr>" +
+						"<td>" + name.val() + "</td>" + 
+						"<td>" + email.val() + "</td>" + 
+						"<td>" + password.val() + "</td>" +
+					"</tr>" );
+				*/	 
+				$( this ).dialog( "close" );
+			},
+			Cancel: function() {
+				$(this).dialog( "close" );
+			}
+		}
+	});
+
+	$("#delete-media-form" ).dialog({
+		autoOpen: false,
+		resizable: false,
+		height:140,
+		modal: true,
+		buttons: {
+			"Delete all items": function() {
+				$( this ).dialog( "close" );
+			},
+			Cancel: function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+	
+	$(".attached-edit-form").click(function() {
+		$("#edit-media-form").dialog("open");
+		return false;
+	});
+
+	$(".attached-delete-form").click(function() {
+		$("#delete-media-form").dialog("open");
+		return false;
+	});	
+});
 </script>
 {% endblock %}
