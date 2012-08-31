@@ -46,6 +46,17 @@ admin_login:
     requirements:    
         _method:  GET|POST
         
+admin_edit_account:
+    pattern: /admin/edit-account
+    defaults: { _controller: AdminBundle:AdminUser:editAccount }
+    requirements:
+        _method:  GET|POST
+
+admin_change_password:
+    pattern: /admin/change-password
+    defaults: { _controller: AdminBundle:AdminUser:changePassword}
+    requirements:
+        _method: GET|POST   
 admin_logout:
     pattern:  /admin/logout
     defaults: { _controller: AdminBundle:AdminUser:logout }

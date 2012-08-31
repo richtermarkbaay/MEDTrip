@@ -13,8 +13,9 @@
     isVisible: hideAddMedicalProcedure is defined and hideAddMedicalProcedure ? false: medicalProcedureTypeId is defined and medicalProcedureTypeId ,
     class: 'add-procedure add-icon', 
     description: 'Add a medical procedure for this medical procedure type', 
-    href: path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0}), 
-    links: [{title:'Click here to add a medical procedure', class: 'add-procedure','href': path('institution_medicalProcedureType_addMedicalProcedure', {id: medicalProcedureTypeId is defined ? medicalProcedureTypeId : 0})}]} 
+    href: path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': app.request.get('imptId')}), 
+    links: [{title:'Click here to add a medical procedure', class: 'add-procedure','href': path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': app.request.get('imptId')} ) }]
+    } 
 %}
 
 {% set manageMedicalProcedureTypesTask = {

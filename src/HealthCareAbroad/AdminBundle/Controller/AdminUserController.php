@@ -1,18 +1,15 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\UserBundle\Form\AdminUserFormType;
-
+use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
-
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
-use ChromediaUtilities\Helpers\SecurityHelper;
-
+use HealthCareAbroad\UserBundle\Form\AdminUserChangePasswordType;
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class AdminUserController extends Controller
@@ -51,6 +48,67 @@ class AdminUserController extends Controller
         return $this->redirect($this->generateUrl('admin_login'));
     }
     
+    public function editAccountAction()
+    {
+    	$accountId = $this->getRequest()->getSession()->get('accountId');
+
+    	//get user's data
+    	$adminUser = $this->get('services.admin_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        if (!$adminUser) {
+            throw $this->createNotFoundException('Cannot update invalid account.');
+        }
+    	$form = $this->createForm(new UserAccountDetailType(), $adminUser);
+    	
+    	if ($this->getRequest()->isMethod('POST')) {
+			$form->bindRequest($this->getRequest());
+			
+	    	if($form->isValid()) {
+	    		//TODO:: persist data to database
+	    		$user = $this->get('services.admin_user')->update($adminUser);
+	    		if(!$user) {
+	    			//TODO:: send notification to hca admin
+	    			$this->get('session')->setFlash('error', "Unable to update account");
+	    			 
+	    		}
+	    		$this->get('session')->setFlash('success', "Successfully updated account");
+	    		
+	    	}
+    	}
+    	return $this->render('AdminBundle:AdminUser:edit.html.twig', array(
+    			'form' => $form->createView(),
+    			'user' => $adminUser
+    			));
+    }
+    
+    public function changePasswordAction()
+    {
+    	$accountId = $this->getRequest()->getSession()->get('accountId');
+    	
+    	//get user's data
+    	$adminUser = $this->get('services.admin_user')->findById($accountId, true);
+    	if(!$adminUser) {
+    		throw $this->createNotFoundException('Cannot update invalid account');
+    	}
+    	
+    	$form = $this->createForm(new AdminUserChangePasswordType(), $adminUser);
+    	
+    	if ($this->getRequest()->isMethod('POST')) {
+	    	$form->bindRequest($this->getRequest());
+	    	
+	    	if($form->isValid()) {
+	    		//TODO:: persist new password to db
+	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
+	    		
+	    		$this->get('session')->setFlash('success', "Successfully updated account");
+	    		return $this->redirect($this->generateUrl('admin_homepage'));
+	    		
+	    	}
+    	}
+    	return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(
+    			'form' => $form->createView(),
+    			));
+    }
     /**
      * View all admin users
      * 

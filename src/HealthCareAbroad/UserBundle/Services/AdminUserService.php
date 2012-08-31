@@ -1,16 +1,14 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
-use HealthCareAbroad\UserBundle\Entity\AdminUserRole;
-
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
-
 use ChromediaUtilities\Helpers\Inflector;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUserRole;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
-
+use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 class AdminUserService extends UserService
@@ -79,6 +77,17 @@ class AdminUserService extends UserService
         return $user;
     }
     
+    
+    public function update(AdminUser $user)
+    {
+    	//update data in chromedia global accounts
+    	if (!$user->getAccountId()) {
+    		return null;
+    	}
+    	
+        $user = $this->updateUser($user);
+        return $user;
+    }
     /**
      * Find an AdminUser based on email and password
      * 
@@ -111,4 +120,24 @@ class AdminUserService extends UserService
         }
         return null;
     }
+    
+    /**
+     * Find a AdminUser by accountId
+     *
+     * @param int $id
+     * @param boolean $activeOnly
+     * @return Ambigous <NULL, \HealthCareAbroad\UserBundle\Entity\AdminUser>
+     */
+    public function findById($id, $activeOnly=true)
+    {
+    	 
+    	// find a adminUser
+    	$repository = $this->doctrine->getRepository('UserBundle:AdminUser');
+    	$adminUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
+    
+    	return $adminUser
+    	? $this->getAccountData($adminUser) // find a matching global account for this AdminUser
+    	: null; // no AdminUser found
+    }
+    
 }
