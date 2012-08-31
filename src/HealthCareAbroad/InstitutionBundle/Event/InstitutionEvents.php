@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
-final class UserEvents
+final class InstitutionEvents
 {
     const ON_CREATE_INSTITUTION = 'event.institution.create';
 }

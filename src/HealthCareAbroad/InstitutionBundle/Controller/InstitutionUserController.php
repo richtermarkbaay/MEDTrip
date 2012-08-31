@@ -3,37 +3,26 @@
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
-
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
-
-use Symfony\Component\Validator\Constraints\NotBlank;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserInvitationType;
-
-use Guzzle\Http\Message\Response;
-
 use HealthCareAbroad\UserBundle\Event\UserEvents;
-
 use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
-
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
-
-use Chromedia\AccountBundle\Entity\Account;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
-
-use ChromediaUtilities\Helpers\SecurityHelper;
-
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangePasswordType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserInvitationType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Guzzle\Http\Message\Response;
+use Chromedia\AccountBundle\Entity\Account;
+use ChromediaUtilities\Helpers\SecurityHelper;
+use Symfony\Component\Security\Core\SecurityContext;
+
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InstitutionUserController extends Controller
 {
 	public function settingsAction()
@@ -42,7 +31,7 @@ class InstitutionUserController extends Controller
 	}
     public function loginAction()
     {
-        $user = new InstitutionUser();
+    	$user = new InstitutionUser();
         $form = $this->createForm(new UserLoginType());
         
         if ($this->getRequest()->isMethod('POST')) {
