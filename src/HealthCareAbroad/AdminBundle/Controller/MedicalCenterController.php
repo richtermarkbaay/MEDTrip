@@ -53,7 +53,12 @@ class MedicalCenterController extends Controller
      */
     public function saveAction()
     {
-    	$id = $this->getRequest()->get('id', null);
+    	$request = $this->getRequest();	
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
+    	}
+
+    	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
 
 		$medicalCenter = $id
@@ -61,13 +66,13 @@ class MedicalCenterController extends Controller
 				: new MedicalCenter();
 
 		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
-   		$form->bind($this->getRequest());
+   		$form->bind($request);
 
    		if ($form->isValid()) {
    			$em->persist($medicalCenter);
    			$em->flush($medicalCenter);
 
-   			$this->getRequest()->getSession()->setFlash('success', 'Medical center saved!');
+   			$request->getSession()->setFlash('success', 'Medical center saved!');
 
    			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
 		}
@@ -93,7 +98,7 @@ class MedicalCenterController extends Controller
     	$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
 
 		if ($medicalCenter) {
-			$medicalCenter->setStatus($medicalCenter->getStatus() ? 0 : 1);
+			$medicalCenter->setStatus($medicalCenter->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
 			$em->persist($medicalCenter);
 			$em->flush($medicalCenter);
 			$result = true;

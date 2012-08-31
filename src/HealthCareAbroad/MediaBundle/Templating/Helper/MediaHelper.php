@@ -19,16 +19,23 @@ class MediaHelper extends Helper
 
     public function getMedia(Media $media, $format = null, array $options = array())
     {
-    	$institutionId = $media->getGallery()->first()->getInstitution()->getId();
+    	$institutionId = isset($options['institutionId'])
+    			? $options['institutionId']
+				: $media->getGallery()->first()->getInstitution()->getId();
     	
     	$filesystem = $this->filesystemManager->get($institutionId);
     	
-        return $this->container->get('templating')->render('MediaBundle:Helper:mediaHelper.html.twig', array(
+        return $this->container->get('templating')->render($this->getTemplate($format ? $format : 'gallery'), array(
             'media' => $media,
             'format' => $format,
             'options' => $options,
         	'src' => $this->filesystemManager->getWebRootPath().$institutionId.'/'.$media->getName()
         ));
+    }
+    
+    private function getTemplate($format)
+    {
+    	return 'MediaBundle:Helper:'.$format.'Helper.html.twig';	
     }
 
     /**

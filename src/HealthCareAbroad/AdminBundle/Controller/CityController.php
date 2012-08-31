@@ -14,7 +14,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class CityController extends Controller
 {
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_CITIES')")
      * 
      */
     public function indexAction()
@@ -23,7 +23,7 @@ class CityController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
 	public function addAction()
 	{
@@ -37,7 +37,7 @@ class CityController extends Controller
 	}
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
     public function editAction($id)
     {
@@ -54,23 +54,28 @@ class CityController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
     public function saveAction()
     {
-    	$id = $this->getRequest()->get('id', null);
+    	$request = $this->getRequest();
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
+    	}
+
+    	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
 
 		$city = $id ? $em->getRepository('HelperBundle:City')->find($id) : new City();
 
 		$form = $this->createForm(New CityFormType(), $city);
-   		$form->bind($this->getRequest());
+   		$form->bind($request);
 
    		if ($form->isValid()) {
    			$em->persist($city);
    			$em->flush($city);
 
-   			$this->getRequest()->getSession()->setFlash('success', 'City has been saved!');
+   			$request->getSession()->setFlash('success', 'City has been saved!');
    			return $this->redirect($this->generateUrl('admin_city_index'));
 		}
 
@@ -86,7 +91,7 @@ class CityController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_CITY')")
      */
     public function updateStatusAction($id)
     {

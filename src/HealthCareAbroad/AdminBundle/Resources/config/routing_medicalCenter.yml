@@ -31,7 +31,7 @@ admin_medicalCenter_update:
          _method: POST
 
 admin_medicalCenter_updateStatus:
-    pattern:  /admin/medical-center/updateStatus/{id}
+    pattern:  /admin/medical-center/update-status/{id}
     defaults: { _controller: AdminBundle:MedicalCenter:updateStatus, id: ~ }
     requirements:
         id: \d+
