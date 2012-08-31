@@ -1,10 +1,6 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-
-
-use Assetic\Exception\Exception;
-
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;

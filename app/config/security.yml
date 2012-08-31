@@ -55,7 +55,6 @@ security:
             pattern:    ^/institution
             form_login:
                 login_path: /institution/login
-                use_forward: true
             remember_me:
                key:  %secret%   
                lifetime: 1209600
