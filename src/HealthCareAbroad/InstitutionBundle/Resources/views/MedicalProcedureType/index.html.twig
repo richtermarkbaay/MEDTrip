@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% block title %}{{ parent() }} Medical Procedure Types {% endblock %}
-{% set selectedTab = 'medical_procedure_types'%}
+{% set selectedTab = 'medical_centers'%}
 
 {% block content %}
 <!-- start content -->
@@ -73,7 +73,9 @@
 				return false;
 			});
 
-			$("#institution-medical-procedure-types").accordion();			
+			{% if institutionMedicalProcedureTypes is not empty %} 
+		    $("#institution-medical-procedure-types").accordion();
+		    {% endif %}			
 		});
 	</script>
 {% endblock %}

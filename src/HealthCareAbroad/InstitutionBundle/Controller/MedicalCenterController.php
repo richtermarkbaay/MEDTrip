@@ -10,21 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-class MedicalCenterController extends Controller
+class MedicalCenterController extends InstitutionAwareController
 {
     
     public function indexAction(Request $request)
     {
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution'); 
-        $institution = $institutionRepository->find($request->getSession()->get('institutionId'));
-        
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($institution);
-        
+        $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($this->institution);
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
             'institutionMedicalCenters' => $institutionMedicalCenters,
@@ -33,7 +25,7 @@ class MedicalCenterController extends Controller
     
     public function editAction(Request $request)
     {
-        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcid', 0));
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId', 0));
         
         if (!$institutionMedicalCenter) {
             throw $this->createNotFoundException("Invalid institution medical center.");
@@ -42,29 +34,20 @@ class MedicalCenterController extends Controller
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
+            'isNew' => false,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
     
     public function addAction(Request $request)
     {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
         $institutionMedicalCenter = new InstitutionMedicalCenter();
-        $institutionMedicalCenter->setInstitution($institution);
+        $institutionMedicalCenter->setInstitution($this->institution);
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
-        
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('InstitutionBundle:MedicalCenter:modalForm.html.twig', array(
-                'form' => $form->createView()
-            ));
-        }
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
+            'isNew' => true,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
@@ -75,21 +58,15 @@ class MedicalCenterController extends Controller
             return $this->_errorResponse("POST is the only allowed method", 405);
         }
         
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
-        if ($imcid= $request->get('imcid', 0)) {
-            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcid);
+        if ($imcId= $request->get('imcId', 0)) {
+            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$institutionMedicalCenter) {
                 throw $this->createNotFoundException("Invalid institution medical center.");
             }
         }
         else {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
-            $institutionMedicalCenter->setInstitution($institution);
+            $institutionMedicalCenter->setInstitution($this->institution);
         }
         $isNew = $institutionMedicalCenter->getId() == 0;
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
@@ -97,13 +74,9 @@ class MedicalCenterController extends Controller
         
         if ($form->isValid()) {
             
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($institutionMedicalCenter);
-                $em->flush();
-            } catch (\Exception $e) {
-                return $this->_errorResponse($e->getMessage(), 500);
-            }
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($institutionMedicalCenter);
+            $em->flush();
             
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
             return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
@@ -111,33 +84,18 @@ class MedicalCenterController extends Controller
         else {
             return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
                 'form' => $form->createView(),
+                'isNew' => $isNew,
                 'institutionMedicalCenter' => $institutionMedicalCenter
             ));
         }
     }
-    
-    public function deleteAction()
-    {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
-        
-    }
 
-	function loadProcedureTypesAction(Request $request)
+    function loadProcedureTypesAction(Request $request)
 	{
-		$institutionId = $request->get('id', $request->getSession()->get('institutionId')); 
-	    $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-	    if (!$institution) {
-	        throw $this->createNotFoundException('Invalid institution');
-	    }
-	    
 		$data = array();
 		$em = $this->getDoctrine()->getEntityManager();
 		$repo = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-		$institutionMedicalCenter = $repo->findOneBy(array('institutionId' => $institution->getId(), 'medicalCenterId' => $request->get('medical_center_id')));
+		$institutionMedicalCenter = $repo->findOneBy(array('institution' => $this->institution->getId(), 'medicalCenter' => $request->get('medical_center_id')));
 		
 		if (!$institutionMedicalCenter) {
 		    throw $this->createNotFoundException('No InstitutionMedicalCenter found.');
@@ -158,4 +116,5 @@ class MedicalCenterController extends Controller
 	{
 	    return new Response($message, $code);
 	}
+	
 }

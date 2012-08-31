@@ -3,8 +3,9 @@
     isVisible: hideAddMedicalProcedureType is defined and hideAddMedicalProcedureType ? false: true,
     class: 'add-icon', 
     description: 'Add a new medical procedure type that is offered in your institution', 
-    href: path('institution_medicalProcedureType_add'), 
-    links: [{'href': path('institution_medicalProcedureType_add')}]} 
+    href: path('institution_medicalCenter_addProcedureType', {'imcId': app.request.get('imcId')}), 
+    links: [{'href': path('institution_medicalCenter_addProcedureType', {'imcId': app.request.get('imcId') }) }]
+    } 
 %}
 
 {% set addMedicalProcedureTask = {
@@ -20,8 +21,8 @@
     title: "Medical Procedure Type Management", 
     isVisible: hideMedicalProcedureTypeManagement is defined and hideMedicalProcedureTypeManagement ? false : true, 
     description: "Go back to your medical procedure types management page to view all your medical procedure types.", 
-    href: path('institution_medicalProcedureType_index'),
-    links: [{title: 'Click here to go to manage medical procedure types', href: path('institution_medicalProcedureType_index')}]}
+    href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')} ),
+    links: [{title: 'Click here to go to manage medical procedure types', href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')} )}]}
 %}
 
 {% set dashboardTask = {

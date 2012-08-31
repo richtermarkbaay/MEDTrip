@@ -11,6 +11,7 @@ class InstitutionMedicalProcedureType
     const STATUS_ACTIVE = 1;
     
     const STATUS_INACTIVE = 0;
+    
     /**
      * @var integer $id
      */
@@ -32,14 +33,19 @@ class InstitutionMedicalProcedureType
     private $dateCreated;
 
     /**
+     * @var smallint $status
+     */
+    private $status;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionMedicalProcedures;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
      */
-    private $institution;
+    private $institutionMedicalCenter;
 
     /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
@@ -128,6 +134,28 @@ class InstitutionMedicalProcedureType
     }
 
     /**
+     * Set status
+     *
+     * @param smallint $status
+     * @return InstitutionMedicalProcedureType
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return smallint 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Add institutionMedicalProcedures
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures
@@ -160,25 +188,25 @@ class InstitutionMedicalProcedureType
     }
 
     /**
-     * Set institution
+     * Set institutionMedicalCenter
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
      * @return InstitutionMedicalProcedureType
      */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    public function setInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter = null)
     {
-        $this->institution = $institution;
+        $this->institutionMedicalCenter = $institutionMedicalCenter;
         return $this;
     }
 
     /**
-     * Get institution
+     * Get institutionMedicalCenter
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
      */
-    public function getInstitution()
+    public function getInstitutionMedicalCenter()
     {
-        return $this->institution;
+        return $this->institutionMedicalCenter;
     }
 
     /**
@@ -201,32 +229,5 @@ class InstitutionMedicalProcedureType
     public function getMedicalProcedureType()
     {
         return $this->medicalProcedureType;
-    }
-    /**
-     * @var smallint $status
-     */
-    private $status;
-
-
-    /**
-     * Set status
-     *
-     * @param smallint $status
-     * @return InstitutionMedicalProcedureType
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return smallint 
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 }

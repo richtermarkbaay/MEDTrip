@@ -33,11 +33,11 @@
         				{% for center in institutionMedicalCenters %}
         				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
         				        <td></td>
-            					<td><a href="{{ path('institution_medicalCenter_edit', {'imcid': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
+            					<td><a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
             					<td>{{ center.description }}</td>
             					<td class="options-width">
-                					[<a href="{{ path('institution_medicalCenter_edit', {'imcid': center.id }) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
-                					[<a href="{{ path('institution_medicalCenter_addProcedureType', {'imcid': center.id })}}" title="Add medical procedure type for {{ center.medicalCenter | title }}">Add Medical Procedure Type</a>]
+                					[<a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id }) }}" title="Edit {{ center.medicalCenter | title }}">Edit</a>]
+                					[<a href="{{ path('institution_medicalCenter_procedureTypes', {'imcId': center.id })}}" title="View medical procedure types of {{ center.medicalCenter | title }}">View Medical Procedure Types</a>]
             					</td>
             				</tr>
         				{% else %}

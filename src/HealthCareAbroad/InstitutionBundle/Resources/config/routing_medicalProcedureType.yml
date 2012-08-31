@@ -1,45 +1,75 @@
-institution_medicalProcedureType_index:
-    pattern: /medical-procedure-types
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
-    requirements:    
-        _method:  GET
-        
-institution_medicalProcedureType_add:
-    pattern: /medical-procedure-types/add
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
-    requirements:    
-        _method:  GET
-        
-institution_medicalProcedureType_add_save:
-    pattern: /medical-procedure-types/add
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
-    requirements:    
-        _method: POST
 
-institution_medicalProcedureType_edit:
-    pattern: /medical-procedure-types/edit/{id}
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
-    requirements:    
-        _method: GET
-        
-institution_medicalProcedureType_edit_save:
-    pattern: /medical-procedure-types/edit/{id}
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
-    requirements:    
-        _method: POST
+#### -- all routes will now be from the medical center context
+##
+
+#institution_medicalProcedureType_index:
+#    pattern: /medical-procedure-types
+#    defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
+#    requirements:    
+#        _method:  GET
+#        
+#institution_medicalProcedureType_add:
+#    pattern: /medical-procedure-types/add
+#    defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
+#    requirements:    
+#        _method:  GET
+#        
+#institution_medicalProcedureType_add_save:
+#    pattern: /medical-procedure-types/add
+#    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+#    requirements:    
+#        _method: POST
+#
+#institution_medicalProcedureType_edit:
+#    pattern: /medical-procedure-types/edit/{id}
+#    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
+#    requirements:    
+#        _method: GET
+#        
+#institution_medicalProcedureType_edit_save:
+#    pattern: /medical-procedure-types/edit/{id}
+#    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+#    requirements:    
+#        _method: POST
+####
         
 ## --- routes from medical center        
 institution_medicalCenter_addProcedureType:
-    pattern: /medical-centers/edit/{imcid}/medical-procedure-types/add
+    pattern: /medical-centers/edit/{imcId}/medical-procedure-types/add
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:add }
     requirements:    
         _method: GET
+        imcId: \d+
+        
+institution_medicalCenter_addProcedureType_save:
+    pattern: /medical-centers/edit/{imcId}/medical-procedure-types/add
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_editProcedureType:
+    pattern: /medical-centers/edit/{imcId}/medical-procedure-types/edit/{imptId}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:edit }
+    requirements:    
+        _method: GET
+        imcId: \d+
+        imptId: \d+
+        
+institution_medicalCenter_editProcedureType_save:
+    pattern: /medical-centers/edit/{imcId}/medical-procedure-types/edit/{imptId}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    requirements:    
+        _method: POST
+        imcId: \d+
+        imptId: \d+
         
 institution_medicalCenter_procedureTypes:
-    pattern: /medical-centers/edit/{imcid}/medical-procedure-types/
+    pattern: /medical-centers/edit/{imcId}/medical-procedure-types/
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:index }
     requirements:    
         _method: GET
+        imcId: \d+
 ## --- end         
         
 institution_medicalProcedureType_addMedicalProcedure:

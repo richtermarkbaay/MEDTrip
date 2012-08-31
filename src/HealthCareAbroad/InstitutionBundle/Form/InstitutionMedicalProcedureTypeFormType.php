@@ -22,20 +22,13 @@ use \Exception;
 
 class InstitutionMedicalProcedureTypeFormType extends AbstractType
 {
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setRequired(array('institution'));
-    }
-    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $institutionMedicalProcedureType = $options['data'];
-        $institution = $options['institution'];        
-        $medicalCenterId = \array_key_exists('medicalCenterId', $options) && $options['medicalCenterId'] ? $options['medicalCenterId'] : 0;
-        
+        $medicalCenter = $institutionMedicalProcedureType->getInstitutionMedicalCenter()->getMedicalCenter();
         
         if ($institutionMedicalProcedureType->getId()) {
-            $builder->add('medicalCenter', 'hidden', array('virtual' => true,'label' => 'Medical Center:'));
+            $builder->add('medicalCenter', 'hidden', array('virtual' => true)); // we won't allow editing of Medical Center in edit
             
             // we are in edit mode, so filter the medical procedure types dropdown by adding query builder to limit only the result with the current MedicalProcedureType selected
             $builder->add('medicalProcedureType', 'medicalproceduretype_list', array(
@@ -48,7 +41,12 @@ class InstitutionMedicalProcedureTypeFormType extends AbstractType
                 'virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()));
         }
         else {
-            $builder->add('medicalCenter', new  InstitutionMedicalCenterListType($institution), array('virtual' => true,'label' => 'Medical Center:'));
+            $builder->add('medicalCenter', 'medicalCenter_list', array(
+                'query_builder' => function(EntityRepository $er) use ($medicalCenter) {
+                    return $er->createQueryBuilder('a')->where('a.id =:id')->setParameter('id', $medicalCenter->getId());
+                },
+                'virtual' => true,'label' => 'Medical Center:'
+            ));
             $builder->add('medicalProcedureType', 'medicalproceduretype_list', array('virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()));
         }
         $builder->add('description', 'textarea', array('label' => 'Description:', 'constraints' => new NotBlank()));

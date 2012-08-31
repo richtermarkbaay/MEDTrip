@@ -1,11 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use Assetic\Exception\Exception;
-
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\UserEvents;
-
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
@@ -146,7 +143,7 @@ class InstitutionController extends Controller
            	    	
            	    // create Institution event and dispatch
            	    $event = new CreateInstitutionEvent($institution, $user);
-           	    $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION, $event);
+           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_CREATE_INSTITUTION, $event);
            	    	
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    

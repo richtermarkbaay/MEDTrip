@@ -21,21 +21,6 @@
         </ul>
         
         <div class="nav-divider">&nbsp;</div>
-                        
-        <ul class="{{ selectedTab == 'medical_procedure_types' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('institution_medicalProcedureType_index') }}"><b>Medical Procedure Types</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'medical_procedure_types' ? 'show' : '' }}">
-                	<ul class="sub">
-                		<li><a href="{{ path('institution_medicalProcedureType_add') }}">Add Procedure Type</a></li>
-                	</ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-            </li>
-        </ul>
-        
-        <div class="nav-divider">&nbsp;</div>
         
         <ul class="{{ selectedTab == 'gallery' ? 'current' : 'select' }}">
             <li>

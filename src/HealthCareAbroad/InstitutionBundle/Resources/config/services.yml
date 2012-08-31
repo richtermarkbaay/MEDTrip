@@ -28,4 +28,11 @@ services:
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
             - { name: kernel.event_listener, event: event.institution.create, method: onCreate }
+            
+    listener.institution.authorizationBeforeController:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionAwareBeforeControllerListener
+        calls:
+           - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
     

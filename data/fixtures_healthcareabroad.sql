@@ -365,6 +365,13 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 
+--
+-- Dumping data for table `institution_medical_centers`
+--
+
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, 'dsafdsafdsaf', '2012-08-30 04:18:36', '2012-08-30 04:18:36', 1);
+
 -- --------------------------------------------------------
 
 --
