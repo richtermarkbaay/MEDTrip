@@ -65,6 +65,11 @@ class AdminUserController extends Controller
 	    	if($form->isValid()) {
 	    		//TODO:: persist data to database
 	    		$user = $this->get('services.admin_user')->update($adminUser);
+	    		if(!$user) {
+	    			//TODO:: send notification to hca admin
+	    			$this->get('session')->setFlash('error', "Unable to update account");
+	    			 
+	    		}
 	    		$this->get('session')->setFlash('success', "Successfully updated account");
 	    		
 	    	}
