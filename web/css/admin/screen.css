@@ -603,7 +603,7 @@ form.basic-form {
 }
 
 form.basic-form > div {
-	max-width: 700;
+	max-width: 700px;
 	position: relative;
 	margin-bottom: 25px;
 }

@@ -18,45 +18,13 @@ class InstitutionMedicalProcedureTypeListFilter extends ListFilter
 
 	function setFilterOptions()
 	{
-		$this->setMedicalCenterOption();
-
 		$this->setStatusFilterOption();
-	}
-	
-	function setMedicalCenterOption()
-	{
-		$em = $this->doctrine->getEntityManager();
-		$medicalCenters = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersList($this->queryParams['id']);
-
-		$options['all'] = 'All';
-		foreach($medicalCenters as $each) {
-			$options[$each['id']] = $each['name'];
-		}
-
-		$this->filterOptions['medicalCenter'] = array(
-			'label' => 'Medical Center',
-			'selected' => $this->queryParams['medicalCenter'],
-			'options' => $options
-		);
 	}
 
 	function setFilteredResult()
-	{	
-		$em = $this->doctrine->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['id']);
-
-		$medicalCenterId = $this->queryParams['medicalCenter'];
-		$status = $this->queryParams['status'];
-
-		if($medicalCenterId != 'all') {
-			$status = $this->queryParams['status'] == 'all' ? null : $this->queryParams['status'];
-			$this->filteredResult = $this->entityRepository->getByInstitutionIdAndMedicalCenterId($institution->getId(), $medicalCenterId, $status);
-		} else {
-
-			unset($this->criteria['medicalCenter']);
-			$this->criteria['institution'] = $institution;
-			
-			$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-		}
+	{
+		$institutionMedicalCenter = $this->doctrine->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($this->queryParams['imcId']);
+		$this->criteria['institutionMedicalCenter'] = $institutionMedicalCenter;
+		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
 	}
 }

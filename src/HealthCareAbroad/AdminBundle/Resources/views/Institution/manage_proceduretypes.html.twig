@@ -17,10 +17,10 @@
 						'title': 'Add new procedure type', 
 						'description': 'Create a new procedure type',
 						'class' : 'add-icon',
-						'href': path('admin_institution_addProcedureType', {id:id}), 
+						'href': path('admin_institution_procedureType_add', {institutionId:institutionId, imcId:institutionMedicalCenterId}), 
 						'links': [{
 							'title' : 'Add procedure type',
-							'href': path('admin_institution_addProcedureType', {id:id})
+							'href': path('admin_institution_procedureType_add', {institutionId:institutionId, imcId:institutionMedicalCenterId}), 
 						}]
 					}
     			]} 
@@ -39,8 +39,8 @@
 					<a href="#">{{ procedureType.medicalProcedureType.name }} ({{ procedureType.medicalProcedureType.medicalCenter.name }})</a>
 				</h3>
 				<div class="procedures">
-					<a class="add-procedure button-type" href="{{ path('admin_institution_addMedicalProcedure', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}">Add Procedure</a>
-					<a href="{{ path('admin_institution_editProcedureType', {id:id, institution_medical_procedure_type_id: procedureType.id }) }}" class="button-type">Edit Procedure Type</a>
+					<a class="add-procedure button-type" href="{{ path('admin_institution_medicalProcedure_add', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId:procedureType.id }) }}">Add Procedure</a>
+					<a href="{{ path('admin_institution_procedureType_edit', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId:institutionMedicalCenterId }) }}" class="button-type">Edit Procedure Type</a>
 				    <table border="0" width="100%" class="generic-table" id="medical-centers-list">
 	    				<tr>
 	    					<th class="first" width="200"><a href="#">Procedures</a></th>
@@ -58,11 +58,7 @@
 								<td>
 	            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
 	            					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
-	            					<a href="{{ path('admin_institution_updateProcedureStatus', {
-	            								id: id, 
-	            								medical_procedure_id: medicalProcedure.id,
-	            								institution_medical_procedure_type_id: procedureType.id
-	            						}) }}"
+	            					<a href="{{ path('admin_institution_medicalProcedure_updateStatus', {impId:procedure.id}) }}"
 	            						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
 	            						class="update-status {{ class }} info-tooltip">
 	            					</a>
@@ -94,7 +90,6 @@
 				width: 700,
 				modal: true,
 				resizable: false,
-				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
 				close: function() {}
 			});
 

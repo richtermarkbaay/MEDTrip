@@ -18,11 +18,11 @@
 							'title': 'Add medical center', 
 							'description': 'Add new medical center to this institution',
 							'class': 'add-icon add-medical-center',
-							'href': path('admin_institution_addMedicalCenter', {id:id}), 
+							'href': path('admin_institution_medicalCenter_add', {institutionId:institutionId}), 
 							'links': [{
 								'title': 'click here to add',
 								'class': 'add-medical-center',
-								'href': path('admin_institution_addMedicalCenter', {id:id})
+								'href': path('admin_institution_medicalCenter_add', {institutionId:institutionId})
 							}]
 						}
 	    			]} 
@@ -44,10 +44,10 @@
         					<td>{{ center.medicalCenter | title }}</td>
         					<td>{{ center.description }}</td>
         					<td class="options-width">
-            					<a href="{{ path('admin_institution_editMedicalCenter', {id:id, imcid:center.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
+            					<a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
             					{% set class = center.status ? 'icon-2' : 'icon-5' %}
-            					<a href="{{ path('admin_institution_updateMedicalCenterStatus', {id:id, imcid:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-								<a class="icon-type" href="{{ path('admin_institution_manageProcedureTypes', {id:id}) }}">procedure types</a>
+            					<a href="{{ path('admin_institution_medicalCenter_updateStatus', {imcId:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+								<a class="icon-type" href="{{ path('admin_institution_manageProcedureTypes', {institutionId:institutionId, imcId:center.id}) }}">procedure types</a>
         					</td>
         				</tr>
         				

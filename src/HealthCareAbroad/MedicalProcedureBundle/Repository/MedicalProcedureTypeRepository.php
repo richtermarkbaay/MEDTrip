@@ -2,6 +2,11 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+
+use Doctrine\ORM\Query\Expr\Join;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 
 use Doctrine\ORM\EntityRepository;
@@ -42,5 +47,51 @@ class MedicalProcedureTypeRepository extends EntityRepository
             ->add('from', 'MedicalProcedureBundle:MedicalProcedureType t')
             ->add('where', 't.status = :active')
 	        ->setParameter('active', MedicalProcedureType::STATUS_ACTIVE);
+	}
+
+	/**
+	 * @author Adelbert Silla
+	 * @param InstitutionMedicalCenter $institutionMedicalCenter
+	 * @return array of medical_procedure type_id
+	 */
+	public function getActiveProcedureTypeIdsOfInstitution(InstitutionMedicalCenter $institutionMedicalCenter)
+	{
+		$qb = $this->_em->createQueryBuilder()
+			->select('a.id, b.id as medical_procedure_type_id')
+			->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
+			->innerJoin('a.medicalProcedureType', 'b')
+			->add('where','a.institutionMedicalCenter = :institutionMedicalCenter')
+			->setParameter('institutionMedicalCenter', $institutionMedicalCenter);
+	
+		$result = $qb->getQuery()->getResult();
+		$ids = array();
+
+		foreach($result as $each) {
+			$ids[$each['id']] = $each['medical_procedure_type_id'];
+		}
+
+		return $ids;
+	}
+
+	/**
+	 * @author Adelbert Silla
+	 * 
+	 * Get the query builder available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
+	 *
+	 * @param InstitutionMedicalCenter $institutionMedicalCenter
+	 */
+	public function getQueryBuilderForAvailableInstitutionMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
+	{
+		$activeProcedureTypeIds = $this->getActiveProcedureTypeIdsOfInstitution($institutionMedicalCenter);
+
+		return $this->getEntityManager()->createQueryBuilder()
+			->add('select', 'a')
+			->add('from', 'MedicalProcedureBundle:MedicalProcedureType a')
+			->add('where', 'a.medicalCenter = :medicalCenter')
+			->andWhere('a.id NOT IN (:activeProcedureTypeIds)')
+			->andWhere('a.status = :active')
+			->setParameter('medicalCenter', $institutionMedicalCenter->getMedicalCenter())
+			->setParameter('activeProcedureTypeIds', implode(',', $activeProcedureTypeIds))
+			->setParameter('active', MedicalProcedureType::STATUS_ACTIVE);
 	}
 }

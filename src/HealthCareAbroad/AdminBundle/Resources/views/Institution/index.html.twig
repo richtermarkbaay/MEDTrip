@@ -28,18 +28,15 @@
 
 			{% for institution in institutions %}
 				<tr id="institution-{{institution.id}}" class="{{ cycle(['alternate-row', ''], loop.index) }}">
-					<td><a class="name" href="{{ path('admin_institution_view', {id: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
-					<td><a href="{{ path('admin_institution_view', {id: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
+					<td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
+					<td><a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
 					<td class="status">{{ statusValues[institution.status] }}</td>
 					<td align="center">
-						<a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {id:institution.id}) }}" class="show-update-status">
+						<a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
 							update status
 						</a>
 					<span class="bar">|</span>
-					<a href="{{ path('admin_institution_manageCenters', {id:institution.id}) }}">centers</a>
-<!-- 					<span class="bar">|</span> -->
-<!-- 					<a href="{{ path('admin_institution_manageProcedureTypes', {id:institution.id}) }}">procedure types</a> -->
-<!-- 					</td> -->
+					<a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}">centers</a>
 				</tr>
 			{% else  %}
 				<tr><td class="empty-list" colspan="4">No records yet!</td></tr>
