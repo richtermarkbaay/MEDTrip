@@ -18,18 +18,18 @@
             {% include 'MediaBundle:Institution:relatedTasksAddMedia.html.twig' %}
             {# ----- end Related tasks ----- #}
                     
-   			<!--  start table-content  -->
-   			<div id="table-content" style="width:75%;">                    
+               <!--  start table-content  -->
+               <div id="table-content" style="width:75%;">                    
                     
-				<div id="dialog-form" title="Add media">
-					<form>
-						<div id="uploader">
-							<p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
-						</div>
-					</form>
-				</div>		
-				
-			</div>
+                <div id="dialog-form" title="Add media">
+                    <form>
+                        <div id="uploader">
+                            <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+                        </div>
+                    </form>
+                </div>		
+                
+            </div>
         {% endblock %}
         
     {% endembed %}
@@ -38,7 +38,7 @@
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 {% endblock %}
-                        	
+                            
 
 {% block inlineJavascriptCode %}                
 <!-- Load Queue widget CSS and jQuery -->
@@ -56,35 +56,35 @@
 
 // Convert divs to queue widgets when the DOM is ready
 $(function() {
-	$("#uploader").plupload({
-		// General settings
-		/*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
-		runtimes : 'html5',
-		url : '{{ path('media_upload') }}',
-		max_file_size : '10mb',
-		/*chunk_size : '1mb',*/
-		unique_names : true,
+    $("#uploader").plupload({
+        // General settings
+        /*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
+        runtimes : 'html5',
+        url : '{{ path('media_upload') }}',
+        max_file_size : '10mb',
+        /*chunk_size : '1mb',*/
+        unique_names : true,
 
-		// Resize images on clientside if we can
-		//resize : {width : 320, height : 240, quality : 90},
+        // Resize images on clientside if we can
+        //resize : {width : 320, height : 240, quality : 90},
 
-		// Specify what files to browse for
-		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
-			{title : "Zip files", extensions : "zip"},
-			{title : "Pdf files", extensions : "pdf"},
-			{title : "Porn", extensions : "avi,mov,flv"}
-		],
+        // Specify what files to browse for
+        filters : [
+            {title : "Image files", extensions : "jpg,gif,png"},
+            {title : "Zip files", extensions : "zip"},
+            {title : "Pdf files", extensions : "pdf"},
+            {title : "Video files", extensions : "avi,mov,flv"}
+        ],
 
-		// Flash settings
-		flash_swf_url : '/plupload/js/plupload.flash.swf',
-		//http://www.youtube.com/watch?v=kPIM6V9eeRE
-		// Silverlight settings
-		//silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
-	});
+        // Flash settings
+        flash_swf_url : '/plupload/js/plupload.flash.swf',
+        //http://www.youtube.com/watch?v=kPIM6V9eeRE
+        // Silverlight settings
+        //silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
+    });
 
-	// Client side form validation
-	$('form').submit(function(e) {
+    // Client side form validation
+    $('form').submit(function(e) {
         var uploader = $('#uploader').plupload('getUploader');
 
         // Files in queue upload them first
