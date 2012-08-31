@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
@@ -39,21 +43,26 @@ class MedicalProcedureRepository extends EntityRepository
 	 */
 	public function getQueryBuilderForAvailableInstitutionMedicalProcedures(InstitutionMedicalProcedureType $institutionMedicalProcedureType)
 	{
-	    $qbInner = $this->getEntityManager()->createQueryBuilder();
-	    $qbInner->select('i.id')
-	        ->from('InstitutionBundle:InstitutionMedicalProcedure', 'i')
-	        ->where('i.institutionMedicalProcedureType = :institutionMedicalProcedureTypeId');
+	    /**
+	     SELECT a . * , b . *
+        FROM `medical_procedures` a
+        LEFT JOIN `institution_medical_procedures` b ON a.id = b.medical_procedure_id
+        AND b.institution_medical_procedure_type_id =2
+        WHERE a.medical_procedure_type_id =7
+        AND b.id IS NULL
+	     **/
 	    
+	    // create query builder similar to above raw sql
 	    $qb = $this->getEntityManager()->createQueryBuilder();
 	    $qb->select('a')
 	        ->from('MedicalProcedureBundle:MedicalProcedure', 'a')
-	        ->add('where', 'a.status = :active')
+	        ->leftJoin('a.institutionMedicalProcedures', 'b', Join::WITH, 'b.institutionMedicalProcedureType = :institutionMedicalProcedureTypeId')
+	        ->where('a.status = :active')
 	        ->andWhere('a.medicalProcedureType = :medicalProcedureTypeId')
-	        ->andWhere($qb->expr()->notIn('a.id', $qbInner->getDQL()))
+	        ->andWhere('b.id IS NULL')
 	        ->setParameter('active', MedicalProcedure::STATUS_ACTIVE)
 	        ->setParameter('medicalProcedureTypeId', $institutionMedicalProcedureType->getMedicalProcedureType()->getId())
 	        ->setParameter('institutionMedicalProcedureTypeId', $institutionMedicalProcedureType->getId());
-	    
 	    return $qb;
 	}
 	

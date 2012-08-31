@@ -129,6 +129,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             'form' => $form->createView()
         );
         return $this->render('InstitutionBundle:MedicalProcedureType:form.procedure.html.twig', $params);
+        //return $this->render('InstitutionBundle:Default:index.html.twig');
     }
     
     public function saveMedicalProcedureAction(Request $request)
@@ -152,7 +153,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             $em->flush();
             $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");
             
-            return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $institutionMedicalProcedureType->getInstitutionMedicalCenter()->getId(),'imptIdd' => $institutionMedicalProcedureType->getId())));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $institutionMedicalProcedureType->getInstitutionMedicalCenter()->getId(),'imptId' => $institutionMedicalProcedureType->getId())));
         }
         
         $params = array(
