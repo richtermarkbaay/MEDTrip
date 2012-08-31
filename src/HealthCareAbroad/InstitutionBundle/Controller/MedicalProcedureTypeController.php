@@ -34,7 +34,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
     
     public function indexAction(Request $request)
     {
-        $institutionMedicalProcedureTypes = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findAll();
+        $institutionMedicalProcedureTypes = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findByInstitutionMedicalCenter(array($this->institutionMedicalCenter->getId()));
         $params = array(
             'institutionMedicalProcedureTypes' => $institutionMedicalProcedureTypes
         );
