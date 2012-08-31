@@ -25,6 +25,6 @@ abstract class InstitutionAwareController extends Controller
     
     public function throwInvalidInstitutionException()
     {
-        return $this->createNotFoundException("Invalid institution");
+        throw $this->createNotFoundException("Invalid institution");
     }
 }

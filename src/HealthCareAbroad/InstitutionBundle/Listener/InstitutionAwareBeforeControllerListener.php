@@ -44,13 +44,15 @@ class InstitutionAwareBeforeControllerListener
         $controllerObj = $callable[0];
         
         if ($controllerObj instanceof InstitutionAwareController) {
-            
-            $institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId', 0));
-            if (!$institution) {
-                $controllerObj->throwInvalidInstitutionException();
+            $institutionId = $request->getSession()->get('institutionId', 0);
+            if ($institutionId) {
+                $institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find($institutionId);
+                if (!$institution) {
+                    $controllerObj->throwInvalidInstitutionException();
+                }
+                
+                $controllerObj->setInstitution($institution);
             }
-            
-            $controllerObj->setInstitution($institution);
         }
     }
 }

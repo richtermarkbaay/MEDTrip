@@ -1,3 +1,7 @@
+InstitutionBundleTests:
+    resource: "@InstitutionBundle/Resources/config/routing_test.yml"
+    prefix:   /
+
 admin_medicalProcedure_testSave:
     pattern:  /admin/medical-procedure/test-save
     defaults: { _controller: AdminBundle:MedicalProcedure:save }

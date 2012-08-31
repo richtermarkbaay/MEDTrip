@@ -1,0 +1,5 @@
+institution_medicalCenter_testSave:
+    pattern: /institution/medical-centers/testSave
+    defaults: { _controller: InstitutionBundle:MedicalCenter:save }
+    requirements:    
+        _method: GET|PUT|DELETE

@@ -18,7 +18,6 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution'); 
         $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($this->institution);
         
-        
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
             'institutionMedicalCenters' => $institutionMedicalCenters,
         ));
@@ -42,13 +41,8 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addAction(Request $request)
     {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
         $institutionMedicalCenter = new InstitutionMedicalCenter();
-        $institutionMedicalCenter->setInstitution($institution);
+        $institutionMedicalCenter->setInstitution($this->institution);
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
@@ -64,12 +58,6 @@ class MedicalCenterController extends InstitutionAwareController
             return $this->_errorResponse("POST is the only allowed method", 405);
         }
         
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
         if ($imcid= $request->get('imcid', 0)) {
             $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcid);
             if (!$institutionMedicalCenter) {
@@ -78,7 +66,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         else {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
-            $institutionMedicalCenter->setInstitution($institution);
+            $institutionMedicalCenter->setInstitution($this->institution);
         }
         $isNew = $institutionMedicalCenter->getId() == 0;
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
@@ -86,13 +74,9 @@ class MedicalCenterController extends InstitutionAwareController
         
         if ($form->isValid()) {
             
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($institutionMedicalCenter);
-                $em->flush();
-            } catch (\Exception $e) {
-                return $this->_errorResponse($e->getMessage(), 500);
-            }
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($institutionMedicalCenter);
+            $em->flush();
             
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
             return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
@@ -104,16 +88,6 @@ class MedicalCenterController extends InstitutionAwareController
                 'institutionMedicalCenter' => $institutionMedicalCenter
             ));
         }
-    }
-    
-    public function deleteAction()
-    {
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->getSession()->get('institutionId'));
-        if (!$institution) {
-            throw $this->createNotFoundException('Invalid institution');
-        }
-        
-        
     }
 
     /**
@@ -145,10 +119,12 @@ class MedicalCenterController extends InstitutionAwareController
 		$response->headers->set('Content-Type', 'application/json');
 	
 		return $response;
-	}**/
+	}
+	**/
 	
 	private function _errorResponse($message, $code=500)
 	{
 	    return new Response($message, $code);
 	}
+	
 }
