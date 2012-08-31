@@ -109,10 +109,11 @@ class InstitutionController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
 
-		$newInstitutionMedicalCenter = new InstitutionMedicalCenter;
-		$form = $this->createForm(new InstitutionMedicalCenterType(), $newInstitutionMedicalCenter, array('institution'=>$institution));
+		$innstitutionMedicalCenter = new InstitutionMedicalCenter();
+		$innstitutionMedicalCenter->setInstitution($institution);
+		$form = $this->createForm(new InstitutionMedicalCenterType(), $innstitutionMedicalCenter);
 
-		$params = array('id' => $id, 'medical_center_id' => null, 'form' => $form->createView());
+		$params = array('id' => $id, 'imcid' => null, 'form' => $form->createView());
 		return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
 	
 	}
@@ -126,18 +127,14 @@ class InstitutionController extends Controller
 	{
 		$request = $this->getRequest();
 		$id = $request->get('id');
-		$medicalCenterId = $request->get('medical_center_id');
-	
-		$em = $this->getDoctrine()->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
-		$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
-	
-		$criteria = array('institution' => $institution, 'medicalCenter' => $medicalCenter);
-		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
+		$imcId = $request->get('imcid');
 
-		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution'=>$institution));
+		$em = $this->getDoctrine()->getEntityManager();
+		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
+
+		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
 	
-		$params = array('id' => $id, 'medical_center_id' => $medicalCenterId, 'form' => $form->createView());
+		$params = array('id' => $id, 'imcid' => $imcId, 'form' => $form->createView());
 		return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
 	}
 	
@@ -149,30 +146,29 @@ class InstitutionController extends Controller
 	public function saveMedicalCenterAction($id)
 	{
 		$request = $this->getRequest();
-		
+
 		if('POST' != $request->getMethod()) {
-			
+			return new Response("Save requires POST method!", 405);
+		}
+
+		$em = $this->getDoctrine()->getEntityManager();
+
+		if($imcId = $request->get('imcid')) {
+			$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
 		} else {
-			$em = $this->getDoctrine()->getEntityManager();
 			$institution = $em->getRepository('InstitutionBundle:Institution')->find($id);
+			$institutionMedicalCenter = new InstitutionMedicalCenter;
+			$institutionMedicalCenter->setInstitution($institution);
+		}
 
-			if($medicalCenterId = $request->get('medical_center_id')) {
-				$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
-				$criteria = array('institution' => $institution, 'medicalCenter' => $medicalCenter);
-				$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
-			} else {
-				$institutionMedicalCenter = new InstitutionMedicalCenter;
-			}
+		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
+		$form->bind($request);
 
-			$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter, array('institution'=>$institution));
-			$form->bind($request);
-			
-			if($form->isValid()) {
-				$em->persist($institutionMedicalCenter);
-				$em->flush($institutionMedicalCenter);
-				
-				$request->getSession()->setFlash('success', 'Medical center has been added!');
-			}
+		if($form->isValid()) {
+			$em->persist($institutionMedicalCenter);
+			$em->flush($institutionMedicalCenter);
+
+			$request->getSession()->setFlash('success', 'Medical center has been added!');
 		}
 
 		return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('id'=>$id)));
@@ -187,15 +183,15 @@ class InstitutionController extends Controller
 		$request = $this->getRequest();
 		$result = false;
 		$em = $this->getDoctrine()->getEntityManager();
-		
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($request->get('id'));
-		$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('medical_center_id'));
-		
-		$criteria = array('institution' => $institution, 'medicalCenter'=> $medicalCenter);
-		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
+
+		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcid'));
 	
 		if ($institutionMedicalCenter) {
-			$institutionMedicalCenter->setStatus($institutionMedicalCenter->getStatus() ? 0 : 1);
+			$status = $institutionMedicalCenter->getStatus()
+					? $institutionMedicalCenter::STATUS_INACTIVE
+					: $institutionMedicalCenter::STATUS_ACTIVE;
+
+			$institutionMedicalCenter->setStatus($status);
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
 			$result = true;

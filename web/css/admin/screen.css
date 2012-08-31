@@ -304,6 +304,7 @@ a.icon-5	{
 	display: block;
 	float: left;
 	height: 24px;
+	margin: 0 8px 0 0;
 	width: 24px;
 	}
 a:hover.icon-5	{
@@ -1574,6 +1575,21 @@ a.button-type {
 	margin-left: 10px;
 	margin-bottom: 10px;
 	display: inline-block;
+}
+
+a.icon-type {
+	color: #999999 !important;
+	font-weight: bold;
+	padding: 5px 10px;
+	background: #FFFFFF;
+	display: inline-block;
+	border: 1px solid #CCCCCC;
+	border-radius: 5px 5px 5px 5px; 
+}
+
+a.icon-type:hover {
+	background: #DDDDDD;
+	color: #777777 !important;
 }
 
 
