@@ -19,6 +19,7 @@ class AdminUserController extends Controller
         $form = $this->createForm(new UserLoginType());
         if ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
+            
             if ($form->isValid()) {
                 if ($this->get('services.admin_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
@@ -100,7 +101,7 @@ class AdminUserController extends Controller
 	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
 	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
 	    		
-	    		$this->get('session')->setFlash('success', "Successfully updated account");
+	    		$this->get('session')->setFlash('success', "Password changed!");
 	    		return $this->redirect($this->generateUrl('admin_homepage'));
 	    		
 	    	}
