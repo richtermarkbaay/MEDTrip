@@ -26,11 +26,17 @@ class InstitutionMedicalProcedureTypeFormType extends AbstractType
     {
         $institutionMedicalProcedureType = $options['data'];
 
-        $builder->add('medicalProcedureType', 'medicalproceduretype_list', array(
-            'query_builder' => function(EntityRepository $er) use ($institutionMedicalProcedureType) {
-                return $er->getQueryBuilderForAvailableInstitutionMedicalProcedureTypes($institutionMedicalProcedureType->getInstitutionMedicalCenter());
-            },
-            'virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()));
+        if ($institutionMedicalProcedureType->getId()) {
+            $builder->add('medicalProcedureType', 'hidden', array('virtual' => true));
+        }
+        else {
+            $builder->add('medicalProcedureType', 'medicalproceduretype_list', array(
+                'query_builder' => function(EntityRepository $er) use ($institutionMedicalProcedureType) {
+                    return $er->getQueryBuilderForAvailableInstitutionMedicalProcedureTypes($institutionMedicalProcedureType->getInstitutionMedicalCenter());
+                },
+                'virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()
+            ));
+        }
 
         $builder->add('description', 'textarea', array('label' => 'Description:', 'constraints' => new NotBlank()));
     }
