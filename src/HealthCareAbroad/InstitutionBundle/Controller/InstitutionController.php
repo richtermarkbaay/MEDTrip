@@ -26,7 +26,9 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 	
 class InstitutionController extends Controller
 {
-	
+	/**
+	 * invite institutions
+	 */
 	public function inviteAction()
 	{
 		$invitation = new InstitutionInvitation();
@@ -105,7 +107,9 @@ class InstitutionController extends Controller
 	
 		return $response;
 	}
-	
+	/**
+	 * register institutions
+	 */
 	public function signUpAction()
 	{
 		$form = $this->createForm(new InstitutionType());

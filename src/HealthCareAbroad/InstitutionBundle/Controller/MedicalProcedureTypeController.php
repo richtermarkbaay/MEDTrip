@@ -33,7 +33,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             }    
         }
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES')")
+     */
     public function indexAction(Request $request)
     {
         $institutionMedicalProcedureTypes = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->findByInstitutionMedicalCenter(array($this->institutionMedicalCenter->getId()));
@@ -42,7 +44,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
         );
         return $this->render('InstitutionBundle:MedicalProcedureType:index.html.twig', $params);
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPES')")
+     */
     public function addAction(Request $request)
     {
         $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
@@ -55,7 +59,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             'newObject' => true
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPES')")
+     */
     public function editAction(Request $request)
     {
         $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId', 0));
@@ -70,7 +76,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             'newObject' => false
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPES')")
+     */
     public function saveAction(Request $request)
     {
         if (!$request->isMethod('POST')) {
@@ -110,7 +118,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             'newObject' => $isNew
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPES')")
+     */
     public function addMedicalProcedureAction(Request $request)
     {
         $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId', 0));
@@ -131,7 +141,9 @@ class MedicalProcedureTypeController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalProcedureType:form.procedure.html.twig', $params);
         //return $this->render('InstitutionBundle:Default:index.html.twig');
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_PROCEDURE_TYPES')")
+     */
     public function saveMedicalProcedureAction(Request $request)
     {
         $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId', 0));
