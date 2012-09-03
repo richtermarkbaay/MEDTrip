@@ -42,7 +42,6 @@ class AdminUserService extends UserService
                     $roles[] = $userRole->getName();
                 }
             }
-            var_dump($roles);exit;
             // add generic role for an admin user
             $roles[] = 'ROLE_ADMIN';
             
