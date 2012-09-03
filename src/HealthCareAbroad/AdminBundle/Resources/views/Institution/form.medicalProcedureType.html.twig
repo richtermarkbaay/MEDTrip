@@ -90,14 +90,7 @@
 	<script type="text/javascript">
 
         $(function(){
-        	$("#dialog-container").dialog({
-				autoOpen: false,
-				height: 580,
-				width: 700,
-				modal: true,
-				resizable: false,
-				close: function() {}
-			});
+        	$("#dialog-container").dialog({autoOpen: false, width: 700, modal: true, resizable: false});
 
         	$("a.add-procedure").click(function() {
 				var elem = $(this);
@@ -106,6 +99,7 @@
 
 				$("#dialog-container").empty();
 				$("#dialog-container").dialog({
+					title: 'Add Medical Procedure',
 					open: function() {
 						$.ajax(addProcedureUrl)
 							.done(function (data) {
@@ -116,9 +110,8 @@
 				});
 				$("#dialog-container").dialog("open");
 			});
-
         });
-	</script>	
+	</script>
 {% endblock %}
 {#
 
