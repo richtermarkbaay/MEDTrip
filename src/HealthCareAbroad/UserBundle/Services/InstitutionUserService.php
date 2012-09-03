@@ -31,7 +31,6 @@ class InstitutionUserService extends UserService
         	$userRoles = $user->getInstitutionUserType();
         	$roles = array();
         	$roles[] = $userRoles->getName();
-        	
         	// add generic role for an admin user
         	$roles[] = 'ROLE_ADMIN';
 

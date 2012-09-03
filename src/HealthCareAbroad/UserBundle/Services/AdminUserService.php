@@ -34,6 +34,7 @@ class AdminUserService extends UserService
         $user = $this->findByEmailAndPassword($email, $password);
         if ($user) {
             $userRoles = $user->getAdminUserType()->getAdminUserRoles();
+            
             $roles = array();
             foreach ($userRoles as $userRole) {
                 // compare bitwise status for active
@@ -41,7 +42,6 @@ class AdminUserService extends UserService
                     $roles[] = $userRole->getName();
                 }
             }
-            
             // add generic role for an admin user
             $roles[] = 'ROLE_ADMIN';
             

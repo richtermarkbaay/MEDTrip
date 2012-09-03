@@ -9,6 +9,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalCenterController extends InstitutionAwareController
 {
@@ -22,7 +23,9 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenters' => $institutionMedicalCenters,
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function editAction(Request $request)
     {
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId', 0));
@@ -38,7 +41,9 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function addAction(Request $request)
     {
         $institutionMedicalCenter = new InstitutionMedicalCenter();
@@ -51,7 +56,9 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     */
     public function saveAction(Request $request)
     {
         if (!$request->isMethod('POST')) {
@@ -89,7 +96,9 @@ class MedicalCenterController extends InstitutionAwareController
             ));
         }
     }
-
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES')")
+     */
     function loadProcedureTypesAction(Request $request)
 	{
 		$data = array();
