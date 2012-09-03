@@ -48,7 +48,10 @@ class AdminUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('admin_login'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     * 
+     */
     public function editAccountAction()
     {
     	$accountId = $this->getRequest()->getSession()->get('accountId');
@@ -80,7 +83,10 @@ class AdminUserController extends Controller
     			'user' => $adminUser
     			));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     *
+     */
     public function changePasswordAction()
     {
     	$accountId = $this->getRequest()->getSession()->get('accountId');

@@ -64,7 +64,9 @@ class InstitutionUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('institution_login'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function changePasswordAction()
     {
         //get user account in chromedia global accounts by accountID
@@ -88,7 +90,9 @@ class InstitutionUserController extends Controller
     	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function editAccountAction()
     {
     	$accountId = $this->getRequest()->get('accountId', null);
@@ -194,7 +198,9 @@ class InstitutionUserController extends Controller
         
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function viewAllAction()
     {
         $institutionService = $this->get('services.institution');
