@@ -1,4 +1,3 @@
-<div id="page-heading"><h3>Add Medical Procedure</h3></div>
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
 		<form action="{{ path('institution_medicalProcedureType_addMedicalProcedure_save', {'imptId':id} ) }}" method="post" {{ form_enctype(form) }} class="basic-form">
