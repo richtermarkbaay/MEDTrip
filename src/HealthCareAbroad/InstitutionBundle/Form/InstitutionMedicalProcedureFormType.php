@@ -37,7 +37,7 @@ class InstitutionMedicalProcedureFormType extends AbstractType
             'constraints'=>array(new NotBlank())
         ));
     	
-        $builder->add('description', 'textarea')
+        $builder->add('description', 'textarea', array('constraints' => array(new NotBlank())))
 			->add('status', 'choice', array('choices' => $status));
     }
     
