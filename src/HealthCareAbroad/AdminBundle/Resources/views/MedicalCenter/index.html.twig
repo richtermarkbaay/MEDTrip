@@ -6,7 +6,7 @@
 
 	<div id="content">
 
-		<div id="page-heading"><h2>List of Medical Centers</h2></div>
+		<div id="page-heading"><h2>List of Center Types</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -14,11 +14,11 @@
 				{% include '::notice.admin.html.twig' %}
 
             	{% set contents = [{
-						'title': 'Add medical center', 
-						'description': 'Add new medical center',
+						'title': 'Add center type', 
+						'description': 'Add new center type',
 						'class': 'add-icon',
 						'href': path('admin_medicalCenter_add'), 
-						'links': [{'title': 'Add a medical center', 'href': path('admin_medicalCenter_add')}]
+						'links': [{'title': 'Add a center type', 'href': path('admin_medicalCenter_add')}]
 					}]
             	%}
 
