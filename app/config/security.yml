@@ -45,8 +45,8 @@ security:
                domain:   ~
                remember_me_parameter: _remember_me
                always_remember_me: true
-            http_basic:
-                realm: "Secured Admin Area"
+            #http_basic:
+            #    realm: "Secured Admin Area"
 
         institution_login:
             pattern:  ^/institution/login$
