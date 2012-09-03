@@ -9,6 +9,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalCenterController extends InstitutionAwareController
 {

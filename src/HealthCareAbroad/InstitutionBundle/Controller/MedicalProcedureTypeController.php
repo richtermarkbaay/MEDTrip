@@ -15,6 +15,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormT
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureTypeController extends InstitutionAwareController
 {

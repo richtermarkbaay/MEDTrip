@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Guzzle\Http\Message\Response;
 use Chromedia\AccountBundle\Entity\Account;
 use ChromediaUtilities\Helpers\SecurityHelper;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 use Symfony\Component\Security\Core\SecurityContext;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
