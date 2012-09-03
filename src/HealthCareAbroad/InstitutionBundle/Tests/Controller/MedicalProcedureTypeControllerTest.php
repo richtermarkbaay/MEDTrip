@@ -54,13 +54,13 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         // valid form values
         $formValues = array(
-            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
             'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
-            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
             'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => '',
         );
@@ -109,13 +109,13 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         
         // valid form values
         $formValues = array(
-            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
             'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
-            'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
+            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
             'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
             'institutionMedicalProcedureTypeForm[description]' => '',
         );
@@ -156,4 +156,57 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Expecting 404 if passed invalid imptId");
     }
 	
+    public function testAddMedicalProcedure()
+    {
+        $uri = '/institution/medical-procedure-types/1/add-procedure';
+        
+        // test accessing with no user
+        $client = $this->requestUrlWithNoLoggedInUser($uri);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirection to login page');
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        // test invalid imptId
+        $client->request('GET', '/institution/medical-procedure-types/9999999999/add-procedure');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting 404 for invalid imptId');
+        
+        // test valid request
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Medical Procedure")')->count(), 'Expecting text "Add Medical Procedure"');
+        
+        $form = $crawler->selectButton('submit')->form();
+        $invalidValues = array('institutionMedicalProcedureForm[medicalProcedure]' => 0,
+            'institutionMedicalProcedureForm[description]' => '',
+            'institutionMedicalProcedureForm[status]' => 0
+        );
+        
+        // test submit invalid form
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value is not valid")')->count(), 'Expecting validation error message "This value is not valid"');
+        
+        $validValues = array('institutionMedicalProcedureForm[medicalProcedure]' => 1,
+            'institutionMedicalProcedureForm[description]' => 'sdfasdfasdf',
+            'institutionMedicalProcedureForm[status]' => 1
+        );
+        $crawler = $client->submit($form, $validValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "expecting redirect after successfully saving procedure");
+        
+        $crawler = $client->followRedirect();
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully added a medical procedure")')->count(), 'Expecting text "Successfully added a medical procedure"');
+    }
+    
+    public function testSaveMedicalProcedure()
+    {
+        $uri = '/institution/medical-procedure-types/1/add-procedure';
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        // test invalid id
+        $client->request('POST', '/institution/medical-procedure-types/999999999999/add-procedure');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting not found error for invalid imptId');
+        
+    }
 }

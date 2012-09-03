@@ -1,6 +1,6 @@
 imports:
     - { resource: parameters_test.yml }
-    - { resource: security.yml }
+    - { resource: security_test.yml }
     - { resource: doctrine_extensions.yml }
 
 framework:
