@@ -60,9 +60,9 @@
                 	<div class="procedures">
                 	    <h3>Medical Procedures</h3>
                 	    
-                	    <a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
+                	    <a class="add-edit-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
                 	    
-                	    {% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
+                	    {% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'imptId':institutionMedicalProcedureType.id ,'procedures' : institutionMedicalProcedureType.institutionMedicalProcedures } %}
                 	</div>
             	{% endif %}
 			</div>
@@ -92,7 +92,7 @@
 				close: function() {}
 			});
 
-        	$("a.add-procedure").click(function() {
+        	$("a.add-edit-procedure").click(function() {
 				var elem = $(this);
 				var addProcedureUrl = elem.attr('href');
 				elem.attr('href', 'javascript:void(0)');
