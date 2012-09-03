@@ -32,7 +32,7 @@ class InstitutionUserService extends UserService
         	$roles = array();
         	$roles[] = $userRoles->getName();
         	// add generic role for an admin user
-        	$roles[] = 'ROLE_ADMIN';
+        	$roles[] = 'INSTITUTION_USER';
 
         	$securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'institution_secured_area', $roles);
             $this->session->set('_security_institution_secured_area',  \serialize($securityToken));
