@@ -83,7 +83,7 @@ admin_institution_procedureType_create:
     requirements:
         institutionId: \d+
         imcId: \d+
-        _method: GET      
+        _method: POST
 
 admin_institution_procedureType_edit:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/edit/{imptId}
@@ -92,7 +92,7 @@ admin_institution_procedureType_edit:
         institutionId: \d+
         imcId: \d+
         imptId: \d+
-        _method: POST
+        _method: GET
 
 admin_institution_procedureType_update:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/edit/{imptId}
