@@ -16,27 +16,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalProcedureTypeRepository extends EntityRepository
 {
-	
-	function getByInstitutionIdAndMedicalCenterId($institutionId, $medicalCenterId, $status = null)
-	{			
-		$qb = $this->_em->createQueryBuilder()
-			->select('a')
-			->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
-			->innerJoin('a.medicalProcedureType', 'b')
-			->add('where','a.institution = :institution')
-			->andWhere('b.medicalCenter = :medicalCenter')
-			->setParameter('institution', $institutionId)
-			->setParameter('medicalCenter', $medicalCenterId)->orderBy('b.name', 'ASC');
 
-		if(!is_null($status)) {
-			$qb->andWhere('a.status = :status')->setParameter('status', $status);
-		}
-
-		return $qb->getQuery()->getResult();			
-	}
-	
-	public function getByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
-	{
-	    return $this->getByInstitutionIdAndMedicalCenterId($institutionMedicalCenter->getInstitutionId(), $institutionMedicalCenter->getMedicalCenterId());
-	}
 }

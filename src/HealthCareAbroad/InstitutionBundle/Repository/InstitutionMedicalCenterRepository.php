@@ -88,7 +88,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 	    
 	    return $query->getResult();
 	}
-	
+
 	private function _getCommonRSM()
 	{
 	    

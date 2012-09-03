@@ -22,7 +22,7 @@ class InstitutionMedicalCenterListFilter extends ListFilter
 	function setFilteredResult()
 	{
 		$em = $this->doctrine->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['id']);
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['institutionId']);
 
 		$this->criteria['institution'] = $institution;
 		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
