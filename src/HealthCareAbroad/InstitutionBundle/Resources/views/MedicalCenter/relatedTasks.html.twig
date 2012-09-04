@@ -1,11 +1,12 @@
+{% set imcId = imcId is defined and imcId ? imcId : 0 %}
 {% set medicalProcedureTypeTask = {
     title: 'Medical Procedure Types', 
     isVisible: hideMedicalProcedureTypeTask is defined and hideMedicalProcedureTypeTask ? false: true,
     description: imcId is defined and imcId ? 'Create a new medical procedure type for this medical center': 'Add a new medical procedure type', 
-    href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId is defined ? imcId : 0}), 
+    href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId }), 
     links: [
-        {title: 'View all medical procedure types', 'href': path('institution_medicalCenter_procedureTypes', {'imcId': imcId is defined ? imcId : 0})},
-        {title: 'Add medical procedure type', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId is defined ? imcId : 0})}
+        {title: 'View all medical procedure types', 'href': path('institution_medicalCenter_procedureTypes', {'imcId': imcId})},
+        {title: 'Add medical procedure type', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId})}
     ]} 
 %}
 
