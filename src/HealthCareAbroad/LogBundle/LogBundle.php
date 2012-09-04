@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\LogBundle;
+namespace HealthCareAbroad\LogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

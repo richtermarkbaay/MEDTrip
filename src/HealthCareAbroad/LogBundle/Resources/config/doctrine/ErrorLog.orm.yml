@@ -1,7 +1,7 @@
-HealthcareAbroad\LogBundle\Entity\ErrorLog:
+HealthCareAbroad\LogBundle\Entity\ErrorLog:
     type: entity
     table: error_logs
-    repositoryClass: HealthcareAbroad\LogBundle\Repository\ErrorLogRepository
+    repositoryClass: HealthCareAbroad\LogBundle\Repository\ErrorLogRepository
     fields:
         id:
             id: true

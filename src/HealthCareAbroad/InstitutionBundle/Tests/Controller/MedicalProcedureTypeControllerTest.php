@@ -199,6 +199,24 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully added a medical procedure")')->count(), 'Expecting text "Successfully added a medical procedure"');
     }
     
+    /**
+     * @depends testAddMedicalProcedure
+     */
+    public function testEditMedicalProcedure()
+    {
+        $uri = '/institution/medical-procedure-types/1/edit-procedure/1';
+        // test accessing with no user
+        $client = $this->requestUrlWithNoLoggedInUser($uri);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirection to login page');
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        //test with invalid impId
+        $client->request('GET', '/institution/medical-procedure-types/1/edit-procedure/999999999');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting 404 error for invalid impId');
+    }
+    
     public function testSaveMedicalProcedure()
     {
         $uri = '/institution/medical-procedure-types/1/add-procedure';

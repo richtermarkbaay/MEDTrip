@@ -33,6 +33,6 @@ class DefaultController extends Controller
     
     public function error403Action()
     {
-        return $this->render('AdminBundle:Default:error403.html.twig');
+        return $this->render('AdminBundle:Exception:error403.html.twig');
     }
 }
