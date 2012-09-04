@@ -84,6 +84,23 @@
         </ul>
         {% endif %}
         
+       <div class="nav-divider">&nbsp;</div>
+        <ul class="{{ selectedTab == 'news' ? 'current' : 'select' }}">
+            <li>
+                <a href="{{ path('admin_news_index') }}"><b>News</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+                <div class="select_sub {{ selectedTab == 'news' ? 'show' : '' }}">
+                    <ul class="sub">
+                        <li class="{{ selectedSubTab == 'manage_news' ? 'sub_show' : '' }}">
+                            <a href="{{ path('admin_news_index') }}">View all</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+            </li>
+        </ul>
+        
         {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %} 
         <div class="nav-divider">&nbsp;</div>
         

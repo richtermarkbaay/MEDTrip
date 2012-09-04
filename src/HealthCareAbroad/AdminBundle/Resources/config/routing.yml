@@ -28,6 +28,11 @@ AdminBundle_country:
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"
     prefix:   /
+    
+# Routes for Admin NewsController #
+AdminBundle_news:
+    resource: "@AdminBundle/Resources/config/routing_news.yml"
+    prefix:   /
 
 # Routes for settings section #
 AdminBundle_settings:
