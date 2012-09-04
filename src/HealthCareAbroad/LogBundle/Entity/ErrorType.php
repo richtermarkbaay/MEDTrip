@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\LogBundle\Entity;
+namespace HealthCareAbroad\LogBundle\Entity;
 
 final class ErrorType
 {

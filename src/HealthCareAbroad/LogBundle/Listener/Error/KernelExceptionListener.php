@@ -5,13 +5,13 @@
  * @author Allejo Chris G. Velarde
  *
  */
-namespace HealthcareAbroad\LogBundle\Listener\Error;
+namespace HealthCareAbroad\LogBundle\Listener\Error;
 
-use HealthcareAbroad\LogBundle\Entity\ErrorType;
+use HealthCareAbroad\LogBundle\Entity\ErrorType;
 
-use HealthcareAbroad\LogBundle\Entity\ErrorLog;
+use HealthCareAbroad\LogBundle\Entity\ErrorLog;
 
-use HealthcareAbroad\LogBundle\Repository\ErrorLogRepository;
+use HealthCareAbroad\LogBundle\Repository\ErrorLogRepository;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
