@@ -11,7 +11,7 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/medical-centers');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Medical Centers")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Center Types")')->count(), 'No Output!');
     }
     
     public function testAdd()
@@ -104,9 +104,8 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
     	$form = $crawler->selectButton('submit')->form();
     	$crawler = $client->submit($form, $formData);
 
-    	// check if redirect code 500
-    	$hasDuplicateEntry = $client->getResponse()->getStatusCode() == 500;
-    	$this->assertTrue($hasDuplicateEntry, '"Medical Center" must not be able to create an entry with duplicate "name" fields.');
+    	// check if status code is not 302
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Medical Center" must not be able to create an entry with duplicate name.');
     }
 
     public function testUpdateStatusAction(){
