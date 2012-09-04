@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\LogBundle\DependencyInjection;
+namespace HealthCareAbroad\LogBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
