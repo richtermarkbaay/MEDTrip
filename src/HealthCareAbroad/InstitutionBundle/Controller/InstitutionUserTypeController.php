@@ -1,7 +1,7 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-//use HealthCareAbroad\UserBundle\Form\InstitutionUserTypeFormType;
+use HealthCareAbroad\UserBundle\Form\InstitutionUserTypeFormType;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

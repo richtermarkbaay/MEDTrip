@@ -1,5 +1,5 @@
 institution_userRole_removeRoleFromUserType:
-    pattern: /admin/settings/user-roles/remove-role-from-user-type
+    pattern: /staff/user-roles/remove-role-from-user-type
     defaults: { _controller: InstitutionBundle:InstitutionUserRole:removeRoleFromUserType }
     requirements:    
         _method: POST

@@ -12,23 +12,22 @@
     
         <!--  start related-act-inner -->
         <div id="related-act-inner">
-        
-            <div class="clear"></div>
-            <div class="lines-dotted-short"></div>
             
-            <div class="left"><a href="{{ path('institution_userType_index') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
+            <div class="left"><a href="{{ path('institution_userType_add') }}"><img src="/images/admin/forms/icon_edit.gif" width="21" height="21" alt="" /></a></div>
             <div class="right">
-                <h5>Manage institution staff types</h5>
-                Manage the permissions of each staff
+                <h5>Back to user types</h5>
+                Create new user type
                 <ul class="greyarrow">
-                    <li><a href="{{ path('institution_userType_index') }}">View all user types</a></li> 
-                    <li><a href="{{ path('institution_userType_add') }}">Add a user type</a> </li>
+                    <li><a href="{{ path('institution_userType_index') }}">Click here to view all user types</a></li>
+                    {% if userType.id is defined and userType.id %}
+                    <li><a href="{{ path('institution_userType_edit', {'id':userType.id}) }}">Go back to {{ userType.name }} User Type</a></li>
+                    {% endif %}
                 </ul>
             </div>
-            
             <div class="clear"></div>
+            
             <div class="lines-dotted-short"></div>
-
+            
         </div>
         <!-- end related-act-inner -->
         <div class="clear"></div>

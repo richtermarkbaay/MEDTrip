@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set selectedTab = 'settings'%}
+{% set selectedTab = 'staff'%}
 
 {% block content %}
 <!-- start content -->
@@ -91,7 +91,7 @@
             }
             else {
                 $.ajax({
-                    url: "{{ path('admin_userRole_removeRoleFromUserType') }}",
+                    url: "{{ path('institution_userRole_removeRoleFromUserType') }}",
                     data: {'userRoleId': self.attr('id').split(':')[1], 'userTypeId': '{{ userType.id }}'},
                     type: 'post',
                     success: function(){
