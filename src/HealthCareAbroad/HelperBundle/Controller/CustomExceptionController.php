@@ -63,7 +63,11 @@ class CustomExceptionController extends ExceptionController
         }
         // check if path is /institution/
         elseif (\preg_match('/^\/institution\//', $pathInfo)){
+            $template = new TemplateReference('InstitutionBundle', 'Exception', 'error', 'html', 'twig');
             
+            if ($templating->exists($template)) {
+                return $template;
+            }
         }
         
         // not in /admin and /institution or the specific template was not found, use default error template

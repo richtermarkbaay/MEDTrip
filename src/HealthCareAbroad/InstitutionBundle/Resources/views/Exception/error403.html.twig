@@ -1,0 +1,30 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'error'%}
+{% block content %}
+<!-- start content -->
+<div id="content">
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			    
+    		    <h2>Opps! You do not have proper credentials to access this page</h2>
+    			
+    			
+    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
+    			adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. 
+    			<br />
+    			
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
