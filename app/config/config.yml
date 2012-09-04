@@ -23,6 +23,7 @@ twig:
     strict_variables: %kernel.debug%
     globals:
         site_name: HealthCareAbroad.com
+    exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
 
 # Assetic Configuration
 assetic:
