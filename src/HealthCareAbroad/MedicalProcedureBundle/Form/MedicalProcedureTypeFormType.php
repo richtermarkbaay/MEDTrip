@@ -26,10 +26,8 @@ class MedicalProcedureTypeFormType extends AbstractType
 			MedicalProcedureType::STATUS_INACTIVE => 'inactive'
 		);
 		
-		$commonConstraints = array(new NotBlank());
-
-		$builder->add('name', 'text', array('constraints'=> $commonConstraints));
-		$builder->add('description', 'textarea', array('constraints'=> $commonConstraints));
+		$builder->add('name');
+		$builder->add('description');
 		$builder->add($builder->create('medicalCenter', 'medicalCenter_list'));
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
