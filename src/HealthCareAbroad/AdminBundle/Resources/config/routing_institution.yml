@@ -159,7 +159,7 @@ admin_institution_medicalProcedure_update:
         
 admin_institution_medicalProcedure_updateStatus:
     pattern:  /admin/institution/medical-procedure/update-status
-    defaults: { _controller: AdminBundle:Institution:updateMedicalProcedureStatus }
+    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus }
     requirements:
          impId: \d+
 # End of Medical Procedure Routes #

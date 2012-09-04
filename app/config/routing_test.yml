@@ -37,5 +37,11 @@ admin_city_testSave:
          id: \d+
          _method: GET
 
+admin_institution_medicalCenter_testAdd:
+    pattern:  /admin/institution{institutionId}/medical-center/test-save
+    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
+    requirements:
+         institutionId: \d+
+         _method: GET
 _main:
     resource: routing.yml

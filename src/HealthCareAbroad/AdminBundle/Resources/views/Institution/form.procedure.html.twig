@@ -12,6 +12,13 @@
 				<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
 			</div>
 
+			{% if not isNew %}
+				<div>
+					<label>Procedure</label>
+					<span class="fixed-value">{{ medicalProcedureName }}</span>
+				</div>
+			{% endif %}
+			
 			{{ form_row(form.medicalProcedure) }}
 			{{ form_row(form.description) }}
 			{{ form_row(form.status) }}

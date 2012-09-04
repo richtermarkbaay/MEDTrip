@@ -41,7 +41,7 @@
 				</h3>
 				<div class="procedures">
 					<p style="color: #aaa">{{ procedureType.description }}</p>
-				
+
 					<a href="{{ path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:procedureType.id }) }}" class="add-procedure button-type" >Add Procedure</a>
 					<a href="{{ path('admin_institution_procedureType_edit', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:procedureType.id }) }}" class="button-type">Edit</a>
 
@@ -91,7 +91,6 @@
 
 			$("#dialog-container").dialog({
 				autoOpen: false,
-				height: 520,
 				width: 700,
 				modal: true,
 				resizable: false,

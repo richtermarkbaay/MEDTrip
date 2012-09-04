@@ -425,6 +425,7 @@ class InstitutionController extends Controller
 			'institutionMedicalCenter' => $institutionMedicalCenter,
 			'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
 			'formAction' => $formAction,
+			'isNew' => true,
 			'form' => $form->createView()
 		);
 		return $this->render('AdminBundle:Institution:form.procedure.html.twig', $params);
@@ -473,7 +474,9 @@ class InstitutionController extends Controller
 				'institutionId' => $institutionId,
 				'institutionMedicalCenter' => $institutionMedicalCenter,
 				'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
+				'medicalProcedureName' => $institutionMedicalProcedure->getMedicalProcedure()->getName(),
 				'formAction' => $formAction,
+				'isNew' => false,
 				'form' => $form->createView()
 		);
 		return $this->render('AdminBundle:Institution:form.procedure.html.twig', $params);
@@ -487,29 +490,33 @@ class InstitutionController extends Controller
 	public function saveProcedureAction($institutionId)
 	{
 		$request = $this->getRequest();
+		$em = $this->getDoctrine()->getEntityManager();
 
-		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 		if (!$institution) {
 			throw $this->createNotFoundException('Invalid Institution');
 		}
 		
-		$institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
 		if (!$institutionMedicalCenter) {
 			throw $this->createNotFoundException('Invalid InstitutionMedicanCenter');
 		}
 
-		$institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId'));
+		$institutionMedicalProcedureType = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId'));
 		if (!$institutionMedicalProcedureType) {
 			throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
 		}
 
-		$institutionMedicalProcedure = new InstitutionMedicalProcedure();
-		$institutionMedicalProcedure->setInstitutionMedicalProcedureType($institutionMedicalProcedureType);
+		$institutionMedicalProcedure = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->find($request->get('impId', 0));
+		if (!$institutionMedicalProcedure) {
+			$institutionMedicalProcedure = new InstitutionMedicalProcedure();
+			$institutionMedicalProcedure->setInstitutionMedicalProcedureType($institutionMedicalProcedureType);
+		}		
+
 		$form = $this->createForm(new InstitutionMedicalProcedureFormType(), $institutionMedicalProcedure);
 		$form->bindRequest($request);
-		
+
 		if ($form->isValid()) {
-			$em = $this->getDoctrine()->getEntityManager();
 			$em->persist($institutionMedicalProcedure);
 			$em->flush($institutionMedicalProcedure);
 			$request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$institutionMedicalProcedureType->getMedicalProcedureType()->getName()}\" procedure type.");
@@ -525,19 +532,11 @@ class InstitutionController extends Controller
 	public function updateProcedureStatusAction()
 	{
 		$result = false;
+
 		$em = $this->getDoctrine()->getEntityManager();
-		$institutionProcedureTypeId = $this->getRequest()->get('institution_medical_procedure_type_id');
-		$institutionProcedureType = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($institutionProcedureTypeId);
-		
-		$medicalProcedureId = $this->getRequest()->get('medical_procedure_id');
-		$medicalProcedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($medicalProcedureId);
-		
-		$criteria = array('institutionMedicalProcedureType' => $institutionProcedureType, 'medicalProcedure' => $medicalProcedure);
-		
-		$institutionProcedure = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->findOneBy($criteria);
+		$institutionProcedure = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->find($this->getRequest()->get('impId'));
 		
 		if($institutionProcedure) {
-
 			$status = $institutionProcedure->getStatus() == $institutionProcedure::STATUS_ACTIVE
 			? $institutionProcedure::STATUS_INACTIVE
 			: $institutionProcedure::STATUS_ACTIVE;
