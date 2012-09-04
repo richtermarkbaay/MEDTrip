@@ -1,0 +1,6 @@
+services:
+    listener.log.kernelException:
+        class: HealthcareAbroad\LogBundle\Listener\Error\KernelExceptionListener
+        arguments: [@doctrine]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
