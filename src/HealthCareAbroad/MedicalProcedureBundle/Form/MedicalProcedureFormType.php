@@ -19,15 +19,15 @@ class MedicalProcedureFormType extends AbstractType
 			MedicalProcedure::STATUS_INACTIVE => 'inactive'
 		);
 
-		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('medicalProcedureType', 'medicalproceduretype_list', array('constraints'=>array(new NotBlank())));
-		$builder->add('status', 'choice', array('choices' => $status), array('constraints'=>array(new NotBlank())));
+		$builder->add('name');
+		$builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		$builder->add('status', 'choice', array('choices' => $status));
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-			'data_class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure',
+			'data_class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure'
 		));
 	}
 

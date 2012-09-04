@@ -16,7 +16,7 @@ class CityFormType extends AbstractType
 	{
 		$status = array(City::STATUS_ACTIVE => 'active', City::STATUS_INACTIVE => 'inactive');
 
-		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
+		$builder->add('name');
 		$builder->add('country', 'country_list');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}

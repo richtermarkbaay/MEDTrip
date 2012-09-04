@@ -46,9 +46,11 @@
 		{% endembed %}
 	</div>
 
-	<div id="update-status-container" style="">
-		<h3>Update Status</h3>
-		<p>"<strong id="current-institution"></strong>" is currently <strong id="current-status"></strong>. Select an option below to update its status.</p>
+	<div id="update-status-container" title="Update Status">
+		<p>
+			<strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
+			Select an option below to update its status.
+		</p>
 		<select id="selected-status">
 			{% for label,value in statusOptions %}
 				<option value="{{value}}">{{label}}</option>
@@ -63,7 +65,7 @@
 <script type="text/javascript">
 	$(function(){
 
-		$("#update-status-container").dialog({autoOpen:false, height:300, width:400, modal:true, resizable:false, close:function(){}});
+		$("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
 
 		$("a.show-update-status").click(function() {
 

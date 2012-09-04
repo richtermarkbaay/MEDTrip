@@ -1,4 +1,36 @@
 HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This center type already exists!
     properties:
         name:
-            - NotBlank: { groups: [default] }            
+            - NotBlank: ~
+        description:
+            - NotBlank: ~
+
+
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This procedure type already exists!
+    properties:
+        name:
+            - NotBlank: ~
+        medicalCenter: 
+            - NotBlank: ~
+        description:
+            - NotBlank: ~
+
+
+HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name, medicalProcedureType]
+            message: This procedure and procedure type already exists!
+    properties:
+        name:
+            - NotBlank: ~
+        medicalProcedureType: 
+            - NotBlank: ~

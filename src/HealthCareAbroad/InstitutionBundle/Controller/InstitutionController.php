@@ -22,10 +22,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
-
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+	
 class InstitutionController extends Controller
 {
-	
+	/**
+	 * invite institutions
+	 */
 	public function inviteAction()
 	{
 		$invitation = new InstitutionInvitation();
@@ -52,6 +55,9 @@ class InstitutionController extends Controller
 				'form' => $form->createView(),
 		));
 	}
+	/**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
 	public function editInstitutionAction()
 	{
 		$institutionId = $this->getRequest()->get('institutionId', null);
@@ -88,6 +94,10 @@ class InstitutionController extends Controller
 		));
 		
 	}
+	/**
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 *
+	 */
 	public function loadCitiesAction($countryId)
 	{
 		$data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
@@ -97,7 +107,9 @@ class InstitutionController extends Controller
 	
 		return $response;
 	}
-	
+	/**
+	 * register institutions
+	 */
 	public function signUpAction()
 	{
 		$form = $this->createForm(new InstitutionType());

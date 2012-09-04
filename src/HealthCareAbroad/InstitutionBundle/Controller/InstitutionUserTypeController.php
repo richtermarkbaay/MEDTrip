@@ -29,7 +29,10 @@ class InstitutionUserTypeController extends Controller
             'userTypes' => $userTypes
         ));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
+     *
+     */
     public function addAction()
     {
     	$userType = new InstitutionUserType();
@@ -40,7 +43,10 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
-   
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
+     *
+     */
     public function editAction()
     {
     	$userTypeId = $this->getRequest()->get('id');
@@ -58,7 +64,10 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
+     *
+     */
     public function saveAction()
     {
     	$request = $this->getRequest();

@@ -1,0 +1,20 @@
+HealthCareAbroad\HelperBundle\Entity\Country:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This country already exists!
+    properties:
+        name:
+            - NotBlank: ~
+
+
+HealthCareAbroad\HelperBundle\Entity\City:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name, country]
+            message: This city and country already exists!
+    properties:
+        name:
+            - NotBlank: ~
+        country: 
+            - NotBlank: ~

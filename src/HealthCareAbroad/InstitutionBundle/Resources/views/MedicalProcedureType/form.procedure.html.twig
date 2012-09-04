@@ -1,7 +1,10 @@
-<div id="page-heading"><h3>Add Medical Procedure</h3></div>
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
-		<form action="{{ path('institution_medicalProcedureType_addMedicalProcedure_save', {'imptId':id} ) }}" method="post" {{ form_enctype(form) }} class="basic-form">
+	    {% set formUrl = impId == 0 
+	        ? path('institution_medicalProcedureType_addMedicalProcedure_save', {'imptId':imptId} ) 
+	        : path('institution_medicalProcedureType_editMedicalProcedure_save', {'imptId':imptId, 'impId': impId} )
+        %}
+		<form action="{{ formUrl }}" method="post" {{ form_enctype(form) }} class="basic-form">
 			<div>
 				<label>Medical Center</label>
 				<span class="fixed-value">{{ medicalCenterName }}</span>

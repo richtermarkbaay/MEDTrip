@@ -77,9 +77,27 @@ institution_medicalProcedureType_addMedicalProcedure:
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:addMedicalProcedure }
     requirements:
         _method: GET
+        imptId: \d+
         
 institution_medicalProcedureType_addMedicalProcedure_save:
     pattern: /medical-procedure-types/{imptId}/add-procedure
     defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
     requirements:
         _method: POST
+        imptId: \d+
+        
+institution_medicalProcedureType_editMedicalProcedure:
+    pattern: /medical-procedure-types/{imptId}/edit-procedure/{impId}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:editMedicalProcedure }
+    requirements:
+        _method: GET
+        imptId: \d+
+        impId: \d+
+        
+institution_medicalProcedureType_editMedicalProcedure_save:
+    pattern: /medical-procedure-types/{imptId}/edit-procedure/{impId}
+    defaults: { _controller: InstitutionBundle:MedicalProcedureType:saveMedicalProcedure }
+    requirements:
+        _method: POST
+        imptId: \d+
+        impId: \d+

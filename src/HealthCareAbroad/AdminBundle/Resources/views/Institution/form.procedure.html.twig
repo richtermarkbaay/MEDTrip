@@ -1,17 +1,24 @@
-<div id="page-heading"><h3>Add Medical Procedure</h3></div>
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
-		<form action="{{ path('admin_institution_saveMedicalProcedure', {id:id, institution_medical_procedure_type_id: institution_medical_procedure_type_id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
+
+		<form action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 			<div>
 				<label>Medical Center</label>
-				<span class="fixed-value">{{ medicalCenterName }}</span>
+				<span class="fixed-value">{{ institutionMedicalCenter.medicalCenter.Name }}</span>
 			</div>
 
 			<div>
 				<label>Procedure Type</label>
-				<span class="fixed-value">{{ procedureTypeName }}</span>
+				<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
 			</div>
 
+			{% if not isNew %}
+				<div>
+					<label>Procedure</label>
+					<span class="fixed-value">{{ medicalProcedureName }}</span>
+				</div>
+			{% endif %}
+			
 			{{ form_row(form.medicalProcedure) }}
 			{{ form_row(form.description) }}
 			{{ form_row(form.status) }}
