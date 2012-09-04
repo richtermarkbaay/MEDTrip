@@ -5,11 +5,14 @@
 {% block content %}
 
 	<div id="content">
+	
 		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Center</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
+			{% include '::notice.admin.html.twig' %}
+			
             {% set contents = [{
 					'title': 'View all center types', 
 					'description': 'View the list available center types',
@@ -25,8 +28,10 @@
 				{{ form_row(form.name) }}
 				{{ form_row(form.description) }}
 				{{ form_rest(form) }}
-
-			    <input type="submit" class="form-submit" name="submit"/>
+				
+			    <input type="submit" value="Submit" name="submit" class="form-submit"/>
+			    <input type="checkbox" name="add-another-center" id="add-another" style="margin-left: 38px;">
+			    <label for="add-another" style="width: 200px;color:#555;margin-top:1px;">Add another center after saving</label>
 			</form>
 			{% endblock %}
 		{% endembed %}

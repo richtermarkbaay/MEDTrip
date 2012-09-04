@@ -74,7 +74,10 @@ class MedicalCenterController extends Controller
 
    			$request->getSession()->setFlash('success', 'Medical center saved!');
 
-   			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
+   			if($request->get('add-another-center'))
+   				return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
+   			else 
+	   			return $this->redirect($this->generateUrl('admin_medicalCenter_edit', array('id' => $medicalCenter->getId())));
 		}
 
 		$formAction = $id 
