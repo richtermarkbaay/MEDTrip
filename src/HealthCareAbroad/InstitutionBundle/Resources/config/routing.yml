@@ -17,7 +17,10 @@ InstitutionBundle_user:
 InstitutionBundle_userType:
     resource: "@InstitutionBundle/Resources/config/routing_userType.yml"
     prefix:   /institution
-
+# Routes for InstitutionUserRoleController #
+InstitutionBundle_userRole:
+    resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
+    prefix:   /institution
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }

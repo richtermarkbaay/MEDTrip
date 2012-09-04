@@ -28,9 +28,21 @@ class InstitutionUserService extends UserService
     	$user = $this->findByEmailAndPassword($email, $password);
         
         if ($user) {
-        	$userRoles = $user->getInstitutionUserType();
+        	
+        	$userRoles = $user->getInstitutionUserType()->getInstitutionUserRole();//$user->getInstitutionUserType();
+        	//var_dump($userRoles);exit;
+        	
+        	//$roles = array();
+        	//$roles[] = $userRoles->getName();
+        	
         	$roles = array();
-        	$roles[] = $userRoles->getName();
+        	foreach ($userRoles as $userRole) {
+        		// compare bitwise status for active
+        		if ($userRole->getStatus() & InstitutionUserRole::STATUS_ACTIVE) {
+        			$roles[] = $userRole->getName();
+        		}
+        	}
+        	
         	// add generic role for an admin user
         	$roles[] = 'INSTITUTION_USER';
 
