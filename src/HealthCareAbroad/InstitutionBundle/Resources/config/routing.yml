@@ -44,6 +44,11 @@ institution_edit_information:
         _method:  GET|POST
         institutionId:  \d+
 
+institution_error403:
+    pattern: /institution/access-denied
+    defaults: { _controller: InstitutionBundle:Default:error403 }
+        
+        
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
