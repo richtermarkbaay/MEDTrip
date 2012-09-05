@@ -23,9 +23,29 @@
             {# ----- end Related tasks ----- #}
             
             <!--  start table-content  -->
-			<div id="table-content">
+			<div id="table-content" style="width:75%">
 			
 			    {% include '::notice.admin.html.twig' %}
+			    
+			    <div id="tab-container" style="padding:20px;">
+			        
+			        <ul>
+                        <li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
+                        {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                            <li><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <div id="tab-overview-imc-{{institutionMedicalCenter.id}}">
+                        {{ institutionMedicalCenter.description }}
+                    </div>
+                    
+                    {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                        <div id="tab-impt-{{ impt.id }}">
+                            {% include 'InstitutionBundle:MedicalCenter:medicalProcedureTypeDetail.html.twig' with {'institutionMedicalProcedureType': impt } %}
+                        </div>
+                    {% endfor %}
+                </div>
             	
 			</div>
 			<!--  end table-content  -->
@@ -36,6 +56,34 @@
     
 </div>
 
+<div id="procedure-dialog"></div>
+
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+
 {% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+			
+		    InstitutionMedicalCenter.setProcedureDialog($('#procedure-dialog'), {
+			    autoOpen: false,
+			    height: 'auto',
+			    width: 700,
+			    modal: true,
+			    resizable: false,
+			    close: function() {
+			        $('#procedure-dialog').html("");
+			    }
+			});
+			
+			$("#tab-container").tabs();
+	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+			$("#tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');			
+		});
+	</script>
+{% endblock %}
+
+
