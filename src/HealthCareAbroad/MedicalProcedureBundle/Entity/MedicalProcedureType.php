@@ -13,6 +13,7 @@ class MedicalProcedureType
 	
 	const STATUS_INACTIVE = 0;
 
+    
     /**
      * @var integer $id
      */
@@ -54,6 +55,11 @@ class MedicalProcedureType
     private $medicalProcedures;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedureTypes;
+
+    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
      */
     private $medicalCenter;
@@ -61,6 +67,7 @@ class MedicalProcedureType
     public function __construct()
     {
         $this->medicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -235,6 +242,38 @@ class MedicalProcedureType
     public function getMedicalProcedures()
     {
         return $this->medicalProcedures;
+    }
+
+    /**
+     * Add institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     * @return MedicalProcedureType
+     */
+    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     */
+    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
+    }
+
+    /**
+     * Get institutionMedicalProcedureTypes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalProcedureTypes()
+    {
+        return $this->institutionMedicalProcedureTypes;
     }
 
     /**

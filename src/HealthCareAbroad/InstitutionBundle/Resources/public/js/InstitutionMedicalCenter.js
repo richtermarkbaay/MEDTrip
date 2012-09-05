@@ -3,16 +3,34 @@
  */
 var InstitutionMedicalCenter = {
     
-    procedureDialog: null,
+    commonDialog: null,
 
     /**
      * set the procedure dialog box
-     * @params DOMElement dialogContainer
+     * @params jQueryElement dialogContainer
      * @params options - see jquery ui dialog options
      */
-    setProcedureDialog: function(dialogContainer, options) {
-        this.procedureDialog = dialogContainer;
-        this.procedureDialog.dialog(options);
+    setCommonDialog: function(dialogContainer, options) {
+        this.commonDialog = dialogContainer;
+        this.commonDialog.dialog(options);
+    },
+    
+    /**
+     * Handler for click add procedure type buttons/links 
+     */
+    addProcedureType: function(linkElement) {
+        this.commonDialog.dialog('option','title', 'Add Medical Procedure Type');
+        this._showCommonDialog(linkElement);
+        return false;
+    },
+    
+    /**
+     * Handler for click edit procedure type button/links
+     */
+    editProcedureType: function(linkElement) {
+        this.commonDialog.dialog('option','title', 'Edit Medical Procedure Type');
+        this._showCommonDialog(linkElement);
+        return false;
     },
     
     /**
@@ -20,32 +38,40 @@ var InstitutionMedicalCenter = {
      * @params jquery element linkElement the element that dispatched the event
      */
     addProcedure: function(linkElement) {
-        if (this.procedureDialog) {
-            this.procedureDialog.dialog('option','title', 'Add Medical Procedure');
-            this._showProcedureForm(linkElement);
+        if (this.commonDialog) {
+            this.commonDialog.dialog('option','title', 'Add Medical Procedure');
+            this._showCommonDialog(linkElement);
         }
         return false;
     },
     
+    /**
+     * Handler for edit procedure link actions
+     */
     editProcedure: function(linkElement) {
-        if (this.procedureDialog) {
-            this.procedureDialog.dialog('option','title', 'Edit Medical Procedure');
-            this._showProcedureForm(linkElement);
+        if (this.commonDialog) {
+            this.commonDialog.dialog('option','title', 'Edit Medical Procedure');
+            this._showCommonDialog(linkElement);
         }
         return false;
     },
     
-    _showProcedureForm: function(linkElement) {
+    /**
+     * Show the dialog with contents retrieve from AJAX call to linkElement's href attribute
+     * 
+     * @internal
+     */
+    _showCommonDialog: function(linkElement) {
         _url = linkElement.attr('href');
-        this.procedureDialog.dialog({
+        this.commonDialog.dialog({
             open: function() {
                 $.ajax(_url)
                     .done(function (data) {
-                        InstitutionMedicalCenter.procedureDialog.html(data);
+                        InstitutionMedicalCenter.commonDialog.html(data);
                     }
                 );
             },
         });
-        this.procedureDialog.dialog("open");
+        this.commonDialog.dialog("open");
     }
 }

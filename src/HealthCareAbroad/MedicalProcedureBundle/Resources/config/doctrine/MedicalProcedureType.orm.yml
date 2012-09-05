@@ -53,4 +53,7 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
         medicalProcedures:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure
             mappedBy: medicalProcedureType
+        institutionMedicalProcedureTypes:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
+            mappedBy: medicalProcedureType
     lifecycleCallbacks: {  }

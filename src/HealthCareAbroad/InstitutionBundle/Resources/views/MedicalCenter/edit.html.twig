@@ -19,7 +19,7 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: false, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: false, hideMedicalProcedureTypeTask: false, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
             
             <!--  start table-content  -->
@@ -27,7 +27,7 @@
 			
 			    {% include '::notice.admin.html.twig' %}
 			    
-			    <div id="tab-container" style="padding:20px;">
+			    <div class="tab-container" id="tab-container" style="padding:20px;">
 			        
 			        <ul>
                         <li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
@@ -36,15 +36,17 @@
                         {% endfor %}
                     </ul>
                     
+                    
                     <div id="tab-overview-imc-{{institutionMedicalCenter.id}}">
                         {{ institutionMedicalCenter.description }}
                     </div>
                     
                     {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
                         <div id="tab-impt-{{ impt.id }}">
-                            {% include 'InstitutionBundle:MedicalCenter:medicalProcedureTypeDetail.html.twig' with {'institutionMedicalProcedureType': impt } %}
+                            {% include 'InstitutionBundle:MedicalCenter:medicalProcedureTypeDetail.html.twig' with {'institutionMedicalCenter': institutionMedicalCenter, 'institutionMedicalProcedureType': impt } %}
                         </div>
                     {% endfor %}
+                    
                 </div>
             	
 			</div>
@@ -56,8 +58,6 @@
     
 </div>
 
-<div id="procedure-dialog"></div>
-
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 
@@ -68,20 +68,24 @@
 	<script type="text/javascript">
 		$(function(){
 			
-		    InstitutionMedicalCenter.setProcedureDialog($('#procedure-dialog'), {
+		    InstitutionMedicalCenter.setCommonDialog($('#dialog-container'), {
 			    autoOpen: false,
 			    height: 'auto',
 			    width: 700,
 			    modal: true,
 			    resizable: false,
 			    close: function() {
-			        $('#procedure-dialog').html("");
+			        $('#dialog-container').html("");
 			    }
 			});
 			
-			$("#tab-container").tabs();
+			
 	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
 			$("#tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');			
+
+			$('a.add-procedure-type').click(function(e){
+			    return InstitutionMedicalCenter.addProcedureType($(this));
+			});
 		});
 	</script>
 {% endblock %}
