@@ -3,6 +3,7 @@
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+use Symfony\Component\HttpFoundation\Response;
 
 class InstitutionUserRoleController extends Controller
 {
@@ -15,11 +16,9 @@ class InstitutionUserRoleController extends Controller
 	{
 		//get userRoles
 		$userRoles = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserRole')->getAssignablePermissions();
-		//var_dump($userRoles);exit;
 		return $this->render('InstitutionBundle:InstitutionUserRole:index.html.twig', array(
 			'userRoles' => $userRoles
 		));
-			
 	}
 	
 	/**
@@ -38,7 +37,6 @@ class InstitutionUserRoleController extends Controller
 		$userRoleRepo = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserRole');
 		$assignableUserRoles = $userRoleRepo->getAssignablePermissionsByUserType($userType);
 		$currentRoles = $userType->getInstitutionUserRole();
-		//getInstitutionUserType()->getInstitutionUserRole()
 		return $this->render('InstitutionBundle:InstitutionUserRole:viewByUserType.html.twig', array(
 				'assignableUserRoles' => $assignableUserRoles,
 				'userType' => $userType,
