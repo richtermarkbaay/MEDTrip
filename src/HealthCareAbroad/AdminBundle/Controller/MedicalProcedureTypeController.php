@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
@@ -26,8 +28,25 @@ class MedicalProcedureTypeController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = new MedicalProcedureType();
+    	
+    	$medicalCenterId = $this->getRequest()->get('medicalCenterId');
+
+    	if($medicalCenterId) {
+    		$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
+    		$procedureType->setMedicalCenter($medicalCenter);
+    	}
+
     	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
-    	$params = array('form' => $form->createView(), 'id' => null);
+		$formActionParams = $medicalCenterId ? array('medicalCenterId' => $medicalCenterId) : array();
+
+    	$params = array(
+    		'form' => $form->createView(),
+    		'formAction' =>  $this->generateUrl('admin_procedureType_create', $formActionParams)
+    	);
+    	
+    	if($medicalCenterId) {
+    		$params['isAddFromSpecificCenter'] = true;
+    	}
 
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
@@ -43,7 +62,13 @@ class MedicalProcedureTypeController extends Controller
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = $this->get('services.medical_procedure')->getMedicalProcedureType($id);
     	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
-    	$params = array('form' => $form->createView(), 'id' => $id);
+
+    	$params = array(
+    		'form' => $form->createView(),
+    		'formAction' =>  $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId())),
+   			'medicalProcedureType' => $procedureType
+    	);
+
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
 
@@ -72,9 +97,26 @@ class MedicalProcedureTypeController extends Controller
 			$em->flush($procedureType);
 
 			$request->getSession()->setFlash('success', 'New Procedure Type has been added!');
-			return $this->redirect($this->generateUrl('admin_procedureType_index'));
+
+			if($request->get('submit') == 'Save')
+				return $this->redirect($this->generateUrl('admin_procedureType_edit', array('id' => $procedureType->getId())));
+			else {
+				$medicalCenterId = $request->get('medicalCenterId');
+				$addParams = $medicalCenterId ? array('medicalCenterId' => $medicalCenterId) : array();
+
+				return $this->redirect($this->generateUrl('admin_procedureType_add', $addParams));
+			}
+
 		} else {
-	    	$params = array('form' => $form->createView(), 'id' => $id);
+
+			if(!$procedureType->getId()) {
+				$medicalCenterId = $request->get('medicalCenterId');
+				$formAction = $this->generateUrl('admin_procedureType_create', $medicalCenterId ? array('medicalCenterId' => $medicalCenterId) : array());
+			} else {
+				$formAction = $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId()));
+			}
+			
+	    	$params = array('form' => $form->createView(), 'formAction' => $formAction);
 	    	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
 		}
     }

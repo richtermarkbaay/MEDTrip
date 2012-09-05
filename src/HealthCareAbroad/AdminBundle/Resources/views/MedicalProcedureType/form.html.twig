@@ -6,30 +6,86 @@
 
 	<div id="content">
 
-		<div id="page-heading"><h2>{{ id  ? 'Edit' : 'Add' }} Medical Procedure Type</h2></div>
+		<div id="page-heading"><h2>{{ form.vars.value.id  ? 'Edit' : 'Add' }} Medical Procedure Type</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 		
 			{% block wrappedContent %}
-			
-            {% set contents = [{
-					'title': 'View all procedure types', 
-					'description': 'View the list of medical procedure types',
-					'href': path('admin_procedureType_index'), 
-					'links': [{'title': 'View procedure types', 'href': path('admin_procedureType_index')}]
-				}]
-            %}
 
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				{% include '::notice.admin.html.twig' %}
+				
+	            {% set contents = [{
+						'title': 'View all procedure types', 
+						'description': 'View the list of medical procedure types',
+						'href': path('admin_medicalProcedure_index'), 
+						'links': [{'title': 'View procedure types', 'href': path('admin_medicalProcedure_index')}]
+					}]
+	            %}
+	
+				{% if(medicalProcedureType is defined) %} 
+					{% set contents = [{
+							'title': 'Add procedure', 
+							'class': 'add-icon',
+							'description': 'add new procedure for this procedure type',
+							'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId:medicalProcedureType.id}), 
+							'links': [{'title': 'add procedure', 'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId: medicalProcedureType.id} )}]
+						}] | merge(contents)
+					%}
+				{% endif %}
+	
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
+	
+					{% if isAddFromSpecificCenter is defined %}
+						<div>
+							{{ form_label(form.medicalCenter) }}
+							<span class="fixed-value">{{ form.vars.value.medicalCenter }}</span>
+						</div>
+					{% else %}
+						{{ form_row(form.medicalCenter) }}
+					{% endif %}
+	
+					{{ form_row(form.name) }}
+					{{ form_row(form.description) }}
+					{{ form_row(form.status) }}
+					
+					{{ form_rest(form) }}
+	
+				    <input type="submit" value="Save" class="green-button" name="submit"/>
+				    <input type="submit" value="Save &amp; Add another procedure type" class="green-button" name="submit"/>
+				</form>
+				
+	
+				<!-- Display List of Procedures -->
+				{% set procedures = medicalProcedureType is defined ? medicalProcedureType.medicalProcedures : [] %}
+				
+				{% if procedures is not empty %}
+				
+					<h2 style="padding-top: 20px; border-top: 1px dashed #aaa;margin-top:30px;width:70%">Procedures</h2>
+				
+					<table id="procedure-list" class="generic-table" width="70%">
+					<tr>
+						<th><a href="">Procedure</a></th>
+						<th width="70"><a href="">Status</a></th>
+						<th class="actions" width="90"><a href="">Actions</a></th>
+					</tr>
+	
+					{% for procedure in procedures %}
+						<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+							<td>{{ procedure.name }}</td>
+							<td>{{ procedure.status ? 'Active' : 'Inactive' }}</td>
+							<td align="center">
+								<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+								{% set class = procedure.status ? 'icon-2' : 'icon-5' %}
+								<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+				{% endif %}
+				<!-- End of List of Procedures -->
 			
-			<form novalidate="novalidate" class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
-				{{ form_row(form.name) }}
-				{{ form_row(form.description) }}
-				{{ form_row(form.medicalCenter) }}
-				{{ form_row(form.status) }}
-				{{ form_rest(form) }}
-			    <input type="submit" class="form-submit" name="submit"/>
-			</form>
 			{% endblock %}
 
 		{% endembed %}

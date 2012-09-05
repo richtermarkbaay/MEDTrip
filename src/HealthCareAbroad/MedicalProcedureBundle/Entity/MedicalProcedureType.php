@@ -9,10 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalProcedureType
 {
-    const STATUS_ACTIVE = 1;
-    
-    const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	
+	const STATUS_INACTIVE = 0;
 
+    
     /**
      * @var integer $id
      */
@@ -48,9 +49,25 @@ class MedicalProcedureType
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $medicalProcedures;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedureTypes;
+
+    /**
+     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
+     */
+    private $medicalCenter;
+
     public function __construct()
     {
-        $this->medicalCenter = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -194,11 +211,70 @@ class MedicalProcedureType
     {
         return $this->status;
     }
-    /**
-     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
-     */
-    private $medicalCenter;
 
+    /**
+     * Add medicalProcedures
+     *
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
+     * @return MedicalProcedureType
+     */
+    public function addMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    {
+        $this->medicalProcedures[] = $medicalProcedures;
+        return $this;
+    }
+
+    /**
+     * Remove medicalProcedures
+     *
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
+     */
+    public function removeMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    {
+        $this->medicalProcedures->removeElement($medicalProcedures);
+    }
+
+    /**
+     * Get medicalProcedures
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMedicalProcedures()
+    {
+        return $this->medicalProcedures;
+    }
+
+    /**
+     * Add institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     * @return MedicalProcedureType
+     */
+    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalProcedureTypes
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     */
+    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    {
+        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
+    }
+
+    /**
+     * Get institutionMedicalProcedureTypes
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalProcedureTypes()
+    {
+        return $this->institutionMedicalProcedureTypes;
+    }
 
     /**
      * Set medicalCenter

@@ -437,7 +437,7 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 --
 
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
-(1, 1, 1, '2012-08-02 03:43:12', 1),
+(1, 1, 2, '2012-08-02 03:43:12', 1),
 (4, 1, 1, '2012-08-02 03:43:12', 1);
 
 
@@ -487,7 +487,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
 --
 
 INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VALUES
-(1, 'add_medical_procedure', 'Add medical procedure', 1);
+(1, 'add_medical_procedure', 'Add medical procedure', 1),
+(2, 'SUPER_ADMIN', 'owner/admin', 3)
+;
 
 -- --------------------------------------------------------
 
@@ -511,7 +513,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
 --
 
 INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
-(1, 1, 'Content Staff', 1);
+(1, 1, 'Content Staff', 1),
+(2, 1, 'SUPER_ADMIN', 3);
 
 -- --------------------------------------------------------
 
@@ -533,8 +536,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
 --
 
 INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
-(1, 1);
-
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 

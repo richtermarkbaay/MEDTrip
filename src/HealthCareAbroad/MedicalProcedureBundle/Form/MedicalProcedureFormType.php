@@ -14,13 +14,21 @@ class MedicalProcedureFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$medicalProcedure = $options['data'];
+
 		$status = array(
 			MedicalProcedure::STATUS_ACTIVE => 'active',
 			MedicalProcedure::STATUS_INACTIVE => 'inactive'
 		);
 
 		$builder->add('name');
-		$builder->add('medicalProcedureType', 'medicalproceduretype_list');
+
+		if(!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType())
+			$builder->add('medicalProcedureType', 'hidden', array('property_path' => 'medicalProcedureType.id', 'label' => 'Procedure Type'));
+		else
+			$builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		
+
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 

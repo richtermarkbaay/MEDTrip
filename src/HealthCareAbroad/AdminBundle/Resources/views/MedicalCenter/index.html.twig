@@ -32,7 +32,7 @@
 				<tr>
 					<th class="minwidth-1"><a href="">Name</a></th>
 					<th class="minwidth-1"><a href="">Description</a></th>
-					<th class="actions"><a href="">Action</a></th>
+					<th class="actions" width="210"><a href="">Action</a></th>
 				</tr>
 
 				{% for center in medicalCenters %}
@@ -43,6 +43,7 @@
 							<a href="{{ path('admin_medicalCenter_edit', {id:center.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
 							{% set class = center.status ? 'icon-2' : 'icon-5' %}
 							<a href="{{ path('admin_medicalCenter_updateStatus', {id:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+							<a href="{{ path('admin_procedureType_index', {medicalCenter:center.id}) }}" class="icon-type">procedure types</a>
 						</td>
 					</tr>
 				{% else  %}

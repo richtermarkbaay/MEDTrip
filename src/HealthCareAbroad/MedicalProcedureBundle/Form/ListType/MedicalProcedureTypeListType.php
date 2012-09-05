@@ -14,9 +14,9 @@ class MedicalProcedureTypeListType extends AbstractType
         	'property' => 'name',
         	'label' => 'Procedure Type',
 			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType',
-			'query_builder' => function(EntityRepository $er) {
-			    return $er->getQueryBuilderForGettingAvailableMedicalProcedureTypes();
-            }
+// 			'query_builder' => function(EntityRepository $er) {
+// 			    return $er->getQueryBuilderForGettingAvailableMedicalProcedureTypes();
+//             }
         ));
     }
    

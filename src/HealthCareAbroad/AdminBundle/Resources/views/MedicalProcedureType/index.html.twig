@@ -33,7 +33,7 @@
 				<th class="minwidth-1"><a href="">Procedure</a></th>
 				<th class="minwidth-1" width="250"><a href="">Description</a></th>
 				<th class="minwidth-1" width="250"><a href="">Medical Centers</a></th>
-				<th class="actions"><a href="">Actions</a></th>
+				<th class="actions" width="200"><a href="">Actions</a></th>
 			</tr>
 
 			{% for type in procedureTypes %}
@@ -47,6 +47,7 @@
 						<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
 						{% set class = type.status ? 'icon-2' : 'icon-5' %}
 						<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+							<a href="{{ path('admin_medicalProcedure_index', {medicalProcedureType:type.id}) }}" class="icon-type">procedures</a>
 					</td>
 				</tr>
 			{% else  %}
