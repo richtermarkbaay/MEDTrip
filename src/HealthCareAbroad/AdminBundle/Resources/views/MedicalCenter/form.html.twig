@@ -11,28 +11,69 @@
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-			{% include '::notice.admin.html.twig' %}
-			
-            {% set contents = [{
-					'title': 'View all center types', 
-					'description': 'View the list available center types',
-					'href': path('admin_medicalCenter_index'), 
-					'links': [{'title': 'View all', 'href': path('admin_medicalCenter_index')}]
-				}]
-            %}
+				{% include '::notice.admin.html.twig' %}
 
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			
-			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+	            {% set contents = [{
+						'title': 'Back to list of center types', 
+						'description': 'View the list available center types',
+						'href': path('admin_medicalCenter_index'), 
+						'links': [{'title': 'View all', 'href': path('admin_medicalCenter_index')}]
+					}]
+	            %}
 
-				{{ form_row(form.name) }}
-				{{ form_row(form.description) }}
-				{{ form_rest(form) }}
+				{% if(medicalCenter is defined) %} 
+					{% set contents = [{
+							'title': 'Add procedure type', 
+							'class': 'add-icon',
+							'description': 'add new procedure type for this center type',
+							'href': path('admin_procedureType_add', {medicalCenter:medicalCenter.id}), 
+							'links': [{'title': 'add procedure type', 'href': path('admin_procedureType_add', {medicalCenter: medicalCenter.id} )}]
+						}] | merge(contents)
+					%}
+				{% endif %}
+	
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 				
-			    <input type="submit" value="Submit" name="submit" class="form-submit"/>
-			    <input type="checkbox" name="add-another-center" id="add-another" style="margin-left: 38px;">
-			    <label for="add-another" style="width: 200px;color:#555;margin-top:1px;">Add another center after saving</label>
-			</form>
+				<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+	
+					{{ form_row(form.name) }}
+					{{ form_row(form.description) }}
+					{{ form_rest(form) }}
+					
+				    <input type="submit" value="Save" class="green-button" name="submit"/>
+				    <input type="submit" value="Save &amp; Add another center" class="green-button" name="submit"/>
+				</form>
+				
+				{% set procedureTypes = medicalCenter is defined ? medicalCenter.medicalProcedureTypes : [] %}
+				
+				{% if procedureTypes is not empty %}
+				
+					<h2 style="padding-top: 20px; border-top: 1px dashed #aaa;margin-top:30px;width:70%">Procedure Types</h2>
+				
+					<table id="procedure-type-list" class="generic-table" width="70%">
+					<tr>
+						<th width="200"><a href="">Procedure</a></th>
+						<th><a href="">Description</a></th>
+						<th width="70"><a href="">Status</a></th>
+						<th class="actions" width="90"><a href="">Actions</a></th>
+					</tr>
+
+					{% for type in procedureTypes %}
+						<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+							<td>{{ type.name }}</td>
+							<td>{{ type.description }}</td>
+							<td>{{ type.status ? 'Active' : 'Inactive' }}</td>
+							<td align="center">
+								<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+								{% set class = type.status ? 'icon-2' : 'icon-5' %}
+								<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+
+				{% endif %}
+				
 			{% endblock %}
 		{% endembed %}
 	</div>

@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalProcedureType
 {
-    const STATUS_ACTIVE = 1;
-    
-    const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	
+	const STATUS_INACTIVE = 0;
 
     /**
      * @var integer $id
@@ -48,9 +48,19 @@ class MedicalProcedureType
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $medicalProcedures;
+
+    /**
+     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
+     */
+    private $medicalCenter;
+
     public function __construct()
     {
-        $this->medicalCenter = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -194,11 +204,38 @@ class MedicalProcedureType
     {
         return $this->status;
     }
-    /**
-     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
-     */
-    private $medicalCenter;
 
+    /**
+     * Add medicalProcedures
+     *
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
+     * @return MedicalProcedureType
+     */
+    public function addMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    {
+        $this->medicalProcedures[] = $medicalProcedures;
+        return $this;
+    }
+
+    /**
+     * Remove medicalProcedures
+     *
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
+     */
+    public function removeMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    {
+        $this->medicalProcedures->removeElement($medicalProcedures);
+    }
+
+    /**
+     * Get medicalProcedures
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMedicalProcedures()
+    {
+        return $this->medicalProcedures;
+    }
 
     /**
      * Set medicalCenter

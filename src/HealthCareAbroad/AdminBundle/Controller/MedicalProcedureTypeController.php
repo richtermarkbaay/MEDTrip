@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
@@ -26,8 +28,19 @@ class MedicalProcedureTypeController extends Controller
     {
     	$em = $this->getDoctrine()->getEntityManager();
     	$procedureType = new MedicalProcedureType();
+    	
+    	$medicalCenterId = $this->getRequest()->get('medicalCenter');
+
+    	if($medicalCenterId) {
+    		$medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
+    		$procedureType->setMedicalCenter($medicalCenter);
+    	}
+
     	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+
     	$params = array('form' => $form->createView(), 'id' => null);
+    	if($medicalCenterId) 
+    		$params['isAddFromSpecificCenter'] = true;
 
     	return $this->render('AdminBundle:MedicalProcedureType:form.html.twig', $params);
     }
