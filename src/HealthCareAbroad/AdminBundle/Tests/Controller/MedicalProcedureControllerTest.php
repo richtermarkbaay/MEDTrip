@@ -48,7 +48,6 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
     		'medicalProcedure[name]' => 'testeste new',
-    		'medicalProcedure[description]' => 'MedicalProcedure Description added from test data.',
    			'medicalProcedure[medicalProcedureType]' => 2,
     		'medicalProcedure[status]' => 1
     	);
@@ -78,7 +77,6 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
     			'medicalProcedure[name]' => 'testeste new updated',
-    			'medicalProcedure[description]' => 'MedicalProcedure Description added from test data. Updated Description',
     			'medicalProcedure[medicalProcedureType]' => 2,
     			'medicalProcedure[status]' => 1
     	);
@@ -115,9 +113,8 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$form = $crawler->selectButton('submit')->form();
     	$crawler = $client->submit($form, $formData);
 
-    	// check if redirect code 500
-    	$hasDuplicateEntry = $client->getResponse()->getStatusCode() == 500;
-    	$this->assertTrue($hasDuplicateEntry, '"Medical Procedure" must not be able to create an entry with duplicate ("medical_procedure_type_id", "name") fields.');
+    	// check if status code is not 302
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Medical Procedure" must not be able to create an entry with duplicate ("medical_procedure_type_id", "name") fields.');
     }
     
     public function testUpdateStatusAction(){

@@ -21,7 +21,7 @@ institution_view_all_staff:
     pattern: /staff
     defaults: {_controller: InstitutionBundle:InstitutionUser:viewAll}
     requirements:
-    
+
 institution_login:
     pattern:  /login
     defaults: { _controller: InstitutionBundle:InstitutionUser:login }

@@ -27,7 +27,21 @@ services:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
-            - { name: kernel.event_listener, event: event.institution.create, method: onCreate }
+            - { name: kernel.event_listener, event: event.institution.add, method: onAdd }
+    
+    listener.institution.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution.edit, method: onEdit }
+    
+    listener.institution.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution.edit, method: onDelete }
             
     listener.institution.authorizationBeforeController:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionAwareBeforeControllerListener

@@ -212,4 +212,5 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
     
+    
 }
