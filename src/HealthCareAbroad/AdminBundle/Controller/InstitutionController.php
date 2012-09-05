@@ -20,6 +20,9 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -63,9 +66,15 @@ class InstitutionController extends Controller
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
 		if($institution) {
+			
 			$institution->setStatus($request->get('status'));
 			$em->persist($institution);
 			$em->flush($institution);
+			
+			//TODO:: to create listener for the dispatch event of editInstitution Event
+			$event = new CreateInstitutionEvent($institution, $user);
+			$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+					
 		}
 
 		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
@@ -315,7 +324,7 @@ class InstitutionController extends Controller
 		}
 		
 		$institutionMedicalProcedureType->setInstitutionMedicalCenter($institutionMedicalCenter);
-
+		
 		$form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
 	
 		return $this->render('AdminBundle:Institution:form.medicalProcedureType.html.twig', array(

@@ -53,6 +53,7 @@ security:
             security: false
         institution_secured_area:
             pattern:    ^/institution
+            access_denied_url: /institution/access-denied
             form_login:
                 login_path: /institution/login
             remember_me:

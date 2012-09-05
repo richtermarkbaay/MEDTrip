@@ -103,13 +103,12 @@ class AdminUserController extends Controller
 	    	$form->bindRequest($this->getRequest());
 	    	
 	    	if($form->isValid()) {
-	    		//TODO:: persist new password to db
+	    		//TODO:: persist new password to db	
 	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
 	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
 	    		
 	    		$this->get('session')->setFlash('success', "Password changed!");
 	    		return $this->redirect($this->generateUrl('admin_homepage'));
-	    		
 	    	}
     	}
     	return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(

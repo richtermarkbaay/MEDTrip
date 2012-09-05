@@ -33,13 +33,18 @@ class MedicalCenterController extends InstitutionAwareController
         if (!$institutionMedicalCenter) {
             throw $this->createNotFoundException("Invalid institution medical center.");
         }
-        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
+        return $this->render('InstitutionBundle:MedicalCenter:edit.html.twig', array(
+            'institutionMedicalCenter' => $institutionMedicalCenter
+        ));
+        
+        /**
+        $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
             'form' => $form->createView(),
             'isNew' => false,
             'institutionMedicalCenter' => $institutionMedicalCenter
-        ));
+        ));**/
     }
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")

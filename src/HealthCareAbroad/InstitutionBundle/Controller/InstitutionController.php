@@ -85,6 +85,11 @@ class InstitutionController extends Controller
 			if ($form->isValid()) {
 				
 				$institution = $this->get('services.institution')->updateInstitution($institution);
+				
+				//create editInstitution event and dispatch
+				$event = new CreateInstitutionEvent($institution, $user);
+				$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+				
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 			}
 		}
@@ -155,7 +160,7 @@ class InstitutionController extends Controller
            	    	
            	    // create Institution event and dispatch
            	    $event = new CreateInstitutionEvent($institution, $user);
-           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_CREATE_INSTITUTION, $event);
+           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_ADD_INSTITUTION, $event);
            	    	
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    

@@ -116,4 +116,10 @@ class InstitutionUserTypeController extends Controller
     	
     	
     }
+    
+    public function viewUserTypesAction()
+    {
+    	return $this->render('InstitutionBundle:InstitutionUserType:viewUserType.html.twig'
+    	);
+    }
 }
