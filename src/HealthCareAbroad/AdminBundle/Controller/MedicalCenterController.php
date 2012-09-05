@@ -43,7 +43,8 @@ class MedicalCenterController extends Controller
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
     			'id' => $id,
-    			'form' => $form->createView(), 
+    			'medicalCenter' => $medicalCenter,
+    			'form' => $form->createView(),
     			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
     	));
     }
@@ -74,11 +75,11 @@ class MedicalCenterController extends Controller
 
    			$request->getSession()->setFlash('success', 'Medical center saved!');
 
-   			if($request->get('add-another-center'))
-   				return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
+   			if($request->get('submit') == 'Save')
+   				return $this->redirect($this->generateUrl('admin_medicalCenter_edit', array('id' => $medicalCenter->getId())));
    			else 
-	   			return $this->redirect($this->generateUrl('admin_medicalCenter_edit', array('id' => $medicalCenter->getId())));
-		}
+   				return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
+   		}
 
 		$formAction = $id 
 			? $this->generateUrl('admin_medicalCenter_update', array('id' => $id))

@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalProcedure
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+	
+	const STATUS_INACTIVE = 0;
 
     /**
      * @var integer $id
@@ -134,58 +135,5 @@ class MedicalProcedure
     public function getMedicalProcedureType()
     {
         return $this->medicalProcedureType;
-    }
-    
-//     public static function loadValidatorMetadata(ClassMetadata $metadata)
-//     {
-//     	$metadata->addPropertyConstraint('name', new NotBlank());
-    
-//     	$metadata->addPropertyConstraint('email', new Email());
-    
-//     	$metadata->addPropertyConstraint('subject', new NotBlank());
-//     	$metadata->addPropertyConstraint('subject', new MaxLength(50));
-    
-//     	$metadata->addPropertyConstraint('body', new MinLength(50));
-//     }
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionMedicalProcedures;
-
-    public function __construct()
-    {
-        $this->institutionMedicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
-     * Add institutionMedicalProcedures
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures
-     * @return MedicalProcedure
-     */
-    public function addInstitutionMedicalProcedure(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures)
-    {
-        $this->institutionMedicalProcedures[] = $institutionMedicalProcedures;
-        return $this;
-    }
-
-    /**
-     * Remove institutionMedicalProcedures
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures
-     */
-    public function removeInstitutionMedicalProcedure(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures)
-    {
-        $this->institutionMedicalProcedures->removeElement($institutionMedicalProcedures);
-    }
-
-    /**
-     * Get institutionMedicalProcedures
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionMedicalProcedures()
-    {
-        return $this->institutionMedicalProcedures;
     }
 }

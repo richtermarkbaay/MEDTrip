@@ -5,13 +5,14 @@
 {% block content %}
 
 	<div id="content">
-
 		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Procedure</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
-		
+
 			{% block wrappedContent %}
 			
+			{% include '::notice.admin.html.twig' %}
+
             {% set contents = [{
 					'title': 'View all procedures', 
 					'description': 'View the list of medical procedures',

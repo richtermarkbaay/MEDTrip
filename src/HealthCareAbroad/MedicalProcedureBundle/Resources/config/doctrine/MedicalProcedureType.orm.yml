@@ -49,4 +49,8 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
                 medical_center_id:
                     referencedColumnName: id
             orphanRemoval: false
+    oneToMany:
+        medicalProcedures:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure
+            mappedBy: medicalProcedureType
     lifecycleCallbacks: {  }

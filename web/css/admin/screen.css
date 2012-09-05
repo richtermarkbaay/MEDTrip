@@ -1596,6 +1596,7 @@ input.green-button,
 	background: #759E1A;
 	display: inline-block;
 	cursor: pointer;
+	margin-right: 10px;
 }
 
 input.green-button:hover,
@@ -1743,10 +1744,32 @@ a.icon-type:hover {
 	top: 50%;
 }
 
+.ui-accordion .ui-accordion-header a.edit { 
+	color: #AAAAAA;
+	margin-left: 5px;
+}
+
+.ui-accordion .ui-accordion-header a.edit:hover {
+	color: #759E1A;
+}
+
 .ui-accordion .ui-accordion-content {
 	padding: 20px;
 	border-top: 0 none;
 	overflow: auto;
+}
+
+.ui-accordion-content .buttons {
+	float: right;
+}
+
+.ui-accordion-content .button-type {
+	color: #FFFFFF;
+	margin-bottom: 10px;
+}
+
+.ui-accordion-content .button-type:last-child {
+	margin-right: 0;
 }
 
 .ui-accordion .generic-table th{

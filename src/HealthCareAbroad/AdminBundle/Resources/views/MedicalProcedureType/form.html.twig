@@ -23,11 +23,22 @@
 			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 			
 			<form novalidate="novalidate" class="basic-form" action="{{ id ? path('admin_procedureType_update', {'id':id}) : path('admin_procedureType_create') }}" method="post" {{ form_enctype(form) }}>
+
+				{% if isAddFromSpecificCenter is defined %}
+					<div>
+						{{ form_label(form.medicalCenter) }}
+						<span class="fixed-value">{{ form.vars.value.medicalCenter }}</span>
+					</div>
+				{% else %}
+					{{ form_row(form.medicalCenter) }}
+				{% endif %}
+
 				{{ form_row(form.name) }}
 				{{ form_row(form.description) }}
-				{{ form_row(form.medicalCenter) }}
 				{{ form_row(form.status) }}
+				
 				{{ form_rest(form) }}
+				
 			    <input type="submit" class="form-submit" name="submit"/>
 			</form>
 			{% endblock %}

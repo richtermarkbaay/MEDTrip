@@ -28,10 +28,6 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
         status:
             type: smallint
             nullable: false
-    oneToMany:
-        institutionMedicalProcedures:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure
-            mappedBy: medicalProcedure
     manyToOne:
         medicalProcedureType:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
