@@ -1,7 +1,6 @@
 
 <div class="tabbed-medical-procedure-type-detail" >
     
-    
     <div class="action-buttons">    
         <a title="Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': institutionMedicalCenter.id,'imptId': institutionMedicalProcedureType.id}) }}">Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}</a>
         <a title="Add {{ institutionMedicalProcedureType.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>

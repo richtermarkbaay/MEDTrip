@@ -37,8 +37,8 @@
                     </ul>
                     
                     
-                    <div id="tab-overview-imc-{{institutionMedicalCenter.id}}">
-                        {{ institutionMedicalCenter.description }}
+                    <div id="tab-overview-imc-{{institutionMedicalCenter.id}}">                        
+                        {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_edit', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %}
                     </div>
                     
                     {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
