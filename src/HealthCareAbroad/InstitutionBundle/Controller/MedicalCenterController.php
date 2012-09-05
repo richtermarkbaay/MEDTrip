@@ -54,6 +54,7 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
@@ -87,7 +88,8 @@ class MedicalCenterController extends InstitutionAwareController
             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionMedicalCenter->getId())));
         }
         else {
-            return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+            
+            return $this->render($isNew ? 'InstitutionBundle:MedicalCenter:add.html.twig': 'InstitutionBundle:MedicalCenter:edit.html.twig', array(
                 'form' => $form->createView(),
                 'isNew' => $isNew,
                 'institutionMedicalCenter' => $institutionMedicalCenter
