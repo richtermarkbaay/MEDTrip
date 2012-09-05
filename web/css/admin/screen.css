@@ -1878,6 +1878,7 @@ a.icon-type:hover {
 /* Institution Medical Center styles */
 .tabbed-medical-procedure-type-detail table.generic-table {
 	margin-top: 20px;
+	width: 100%;
 }
 .tabbed-medical-procedure-type-detail table.generic-table td {
 	background-color: #fff;
