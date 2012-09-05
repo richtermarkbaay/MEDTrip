@@ -1813,7 +1813,7 @@ a.icon-type:hover {
 	background: none repeat scroll 0 0 #F5F3F0; 
 	float: right; 
 	width: 48em; 
-	height: 40em; 
+	height: auto; 
 }
 
 /* end */
@@ -1899,6 +1899,20 @@ a.icon-type:hover {
 
 
 /* Institution Medical Center styles */
+.tab-container li.call-to-action {
+    background: none repeat scroll 0 0 #759E1A;	
+}
+
+.tabbed-medical-procedure-type-detail .details {
+	margin-bottom: 20px;
+}
+
+.tabbed-medical-procedure-type-detail .action-buttons {
+	width: 100%; 
+	float: right;
+	margin-bottom: 20px;
+}
+
 .tabbed-medical-procedure-type-detail table.generic-table {
 	margin-top: 20px;
 	width: 100%;

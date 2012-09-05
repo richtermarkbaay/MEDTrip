@@ -82,7 +82,27 @@ class MedicalProcedureTypeRepository extends EntityRepository
 	 */
 	public function getQueryBuilderForAvailableInstitutionMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
 	{
-		$activeProcedureTypeIds = $this->getActiveProcedureTypeIdsOfInstitution($institutionMedicalCenter);
+	    /**
+	    SELECT a . * , b . *
+        FROM `medical_procedure_types` a
+        LEFT JOIN `institution_medical_procedure_types` b ON a.id = b.medical_procedure_type_id
+        WHERE a.medical_center_id =7
+        AND b.id IS NULL 
+	     **/
+	    
+	    $qb = $this->getEntityManager()->createQueryBuilder();
+	    $qb->select('a')
+    	    ->from('MedicalProcedureBundle:MedicalProcedureType', 'a')
+    	    ->leftJoin('a.institutionMedicalProcedureTypes', 'b')
+    	    ->where('a.status = :active')
+    	    ->andWhere('a.medicalCenter = :medicalCenterId')
+    	    ->andWhere('b.id IS NULL')
+    	    ->setParameter('active', MedicalProcedureType::STATUS_ACTIVE)
+    	    ->setParameter('medicalCenterId', $institutionMedicalCenter->getMedicalCenter()->getId());
+	    return $qb;
+	    
+	    
+		/**$activeProcedureTypeIds = $this->getActiveProcedureTypeIdsOfInstitution($institutionMedicalCenter);
 
 		return $this->getEntityManager()->createQueryBuilder()
 			->add('select', 'a')
@@ -92,6 +112,6 @@ class MedicalProcedureTypeRepository extends EntityRepository
 			->andWhere('a.status = :active')
 			->setParameter('medicalCenter', $institutionMedicalCenter->getMedicalCenter())
 			->setParameter('activeProcedureTypeIds', implode(',', $activeProcedureTypeIds))
-			->setParameter('active', MedicalProcedureType::STATUS_ACTIVE);
+			->setParameter('active', MedicalProcedureType::STATUS_ACTIVE);**/
 	}
 }

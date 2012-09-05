@@ -1,13 +1,19 @@
 
 <div class="tabbed-medical-procedure-type-detail" >
     
-    <div class="details">
-        <label>Description:</label>
-        {{ institutionMedicalProcedureType.description }}
+    <div class="action-buttons">    
+        <a title="Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': institutionMedicalCenter.id,'imptId': institutionMedicalProcedureType.id}) }}">Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}</a>
+        <a title="Add {{ institutionMedicalProcedureType.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
     </div>
     
+    <div class="details">
+        {% if institutionMedicalProcedureType.description | length > 1000 %}
+            {{ institutionMedicalProcedureType.description | slice(0, 1000)}}...
+        {% else %}
+            {{ institutionMedicalProcedureType.description }}
+        {% endif %}
+    </div>
     
-    <a onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
     
     <table class="generic-table" id="medical-procedures-list">
     	<tr>

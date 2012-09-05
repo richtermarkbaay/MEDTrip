@@ -14,19 +14,31 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected $loginAbsoluteUri = 'http://localhost/institution/login';
     protected $loginRelativeUri = '/institution/login';
    
+    protected $doctrine;
     public static function setUpBeforeClass()
     {
         \HCA_DatabaseManager::getInstance()
         ->restoreDatabaseState()
         ->restoreGlobalAccountsDatabaseState();
     }
-    
+
     public function setUp()
     {
         $this->formValues = array(
             'userLogin[email]' => $this->userEmail,
             'userLogin[password]' => $this->userPassword
         );
+    }
+    
+    /**
+     * @return \Doctrine\Bundle\DoctrineBundle\Registry
+     */
+    public function getDoctrine()
+    {
+    	if (\is_null($this->doctrine)) {
+    		$this->doctrine = HCA_DatabaseManager::getInstance()->getDoctrine();
+    	}
+    	return $this->doctrine;
     }
     
     protected function requestUrlWithNoLoggedInUser($uri, $method="GET")

@@ -1,0 +1,56 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers'%}
+{% block title %}{{ parent() }} Add Medical Center {% endblock %}
+
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+    	<h1>
+    	    {% if isNew %} 
+    	        Add a new medical center
+	        {% else %}
+	            Edit {{ institutionMedicalCenter.medicalCenter.name }} medical center
+	         {% endif %}       
+        </h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: isNew?true:false, 'imcId': institutionMedicalCenter.id } %}
+            {# ----- end Related tasks ----- #}
+            
+            <!--  start table-content  -->
+			<div id="table-content">
+			
+			    {% include '::notice.admin.html.twig' %}
+			    
+			    {% include '::stepHolder.base.admin.html.twig' with {
+			        steps: [
+			            {title: 'Center Details', 'selected': true},
+			            {title: 'Add Gallery'},
+			            {title: 'Add Procedure Types'},
+			            {title: 'Preview', 'selected': false},
+		            ] }
+		        %}
+			
+			    {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_add'), 'institutionMedicalCenter': institutionMedicalCenter} %}
+            	
+			</div>
+			<!--  end table-content  -->
+        			
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

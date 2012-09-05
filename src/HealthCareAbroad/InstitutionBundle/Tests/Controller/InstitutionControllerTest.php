@@ -38,7 +38,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 		$crawler = $client->submit($form, $invalidValues);
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
 		
-		//test for missing email field
+		//test for missing name field
 		$invalidValues = $formValues;
 		$invalidValues['institutionInvitation[name]'] = null;
 		$crawler = $client->submit($form, $invalidValues);
@@ -181,7 +181,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         		'institution[firstName]' => 'test name',
         		'institution[middleName]' => 'middle',
         		'institution[lastName]' => 'jacobe',
-        		'institution[email]' => 'alnie.jacobe@chromedia.com',
+        		'institution[email]' => 'kristenstewart@yahoo.com',
         		'institution[new_password]' => $this->userPassword,
         		'institution[confirm_password]' => $this->userPassword,
         );

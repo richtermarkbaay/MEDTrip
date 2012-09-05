@@ -50,11 +50,15 @@ class MedicalProcedureTypeController extends InstitutionAwareController
      */
     public function addAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            //throw $this->createNotFoundException();
+        }
+        
         $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
         $institutionMedicalProcedureType->setInstitutionMedicalCenter($this->institutionMedicalCenter);
         $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
-        
-        return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
+        //return $this->render('InstitutionBundle:Default:index.html.twig');
+        return $this->render('InstitutionBundle:MedicalProcedureType:modalForm.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
             'newObject' => true
@@ -65,13 +69,17 @@ class MedicalProcedureTypeController extends InstitutionAwareController
      */
     public function editAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            //throw $this->createNotFoundException();
+        }
+        
         $institutionMedicalProcedureType = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->find($request->get('imptId', 0));
         if (!$institutionMedicalProcedureType) {
             throw $this->createNotFoundException('Invalid InstitutionMedicalProcedureType');
         }
         
         $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
-        return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalProcedureType:modalForm.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalProcedureType' => $institutionMedicalProcedureType,
             'newObject' => false
@@ -110,7 +118,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
-            return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $this->institutionMedicalCenter->getId() ,'imptId' => $institutionMedicalProcedureType->getId())));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
         }
         
         return $this->render('InstitutionBundle:MedicalProcedureType:form.html.twig', array(
