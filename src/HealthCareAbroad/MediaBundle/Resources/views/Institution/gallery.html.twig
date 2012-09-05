@@ -18,65 +18,76 @@
             {% include 'MediaBundle:Institution:relatedTasksGallery.html.twig' %}
             {# ----- end Related tasks ----- #}        
 
-        		<div style="float: right" width="75%">
-					<a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
-					<a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
-					<a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
-					<a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
-				</div>																		    			                
-            
-    			<!--  start table-content  -->
-    			<div id="table-content" style="width:75%;">
-    			    {% include '::notice.admin.html.twig' %}
+                <!--  start table-content  -->
+                <div id="table-content" style="width:75%;">
+                    {% include '::notice.admin.html.twig' %}
 
-    			    <div id="filter-wrapper" style="width: 100%">
-						<span class="caption">Search</span>
-						<div style="float: left">
-							<input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
-						</div>
-						<div>
-							<label>Media type: </label>
-							<select class="styledselect_form_1">
-								<option value="1">All</option>
-								<option value="2">Images</option>
-								<option value="3">Videos</option>
-								<option value="4">Pdfs</option>
-							</select>
-						</div>
-						<a href="#" class="button-type">GO</a>
-					</div>    			    
-	
-	   			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
-    			    	{% set mediaCount = 0 %}
-        				{% for media in institutionMedia %}
-							{% if (loop.index - 1) % 4 == 0 %}
-								{% set mediaCount = 1 %}			
-        						<tr>
-        							<td valign="top">{{ media(media, 'gallery') | raw }}</td>
-        					{% else %}
-        						{% set mediaCount = mediaCount + 1 %}
-        							<td valign="top">{{ media(media, 'gallery', {"institutionId": institutionId}) | raw }}</td>		
-        					{% endif %}
-									
-							{% if mediaCount == 4 %}									
-            					</tr>
-            				{% endif %}	
-        				{% else %}
-        				    <tr class="">
-        				        <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
-        				    </tr>    
-        				{% endfor %}
-        				
-    				</table>
-    				
-	        		<div style="float: right" width="75%">
-						<a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
-						<a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
-						<a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
-						<a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
-					</div>																		    			        				
-    			</div>
-    			
+                    <div id="filter-wrapper" style="width: 100%;">
+                        <span class="caption">Search</span>
+                        <div style="float: left">
+                            <input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
+                        </div>
+                        <div>
+                            <label>Media type: </label>
+                            <select class="styledselect_form_1">
+                                <option value="1">All</option>
+                                <option value="2">Images</option>
+                                <option value="3">Videos</option>
+                                <option value="4">Pdfs</option>
+                            </select>
+                        </div>
+                        <a href="#" class="button-type">GO</a>
+                    </div>    			    
+    
+                       <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+                        <thead>
+                            <tr>
+                                <th colspan="4">
+                                    <div style="float: right;>
+                                        <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
+                                    </div>																		    			                																
+                                </th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="float: right">
+                                        <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
+                                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
+                                    </div>																		    			                								
+                                </td>
+                            </tr>
+                        </tfoot>
+                       
+                        {% set mediaCount = 0 %}
+                        {% for media in institutionMedia %}
+                            {% if (loop.index - 1) % 4 == 0 %}
+                                {% set mediaCount = 1 %}			
+                                <tr>
+                                    <td valign="top">{{ media(media, 'gallery') | raw }}</td>
+                            {% else %}
+                                {% set mediaCount = mediaCount + 1 %}
+                                    <td valign="top">{{ media(media, 'gallery', {"institutionId": institutionId}) | raw }}</td>		
+                            {% endif %}
+                                    
+                            {% if mediaCount == 4 %}									
+                                </tr>
+                            {% endif %}	
+                        {% else %}
+                            <tr class="">
+                                <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
+                            </tr>    
+                        {% endfor %}
+                        
+                    </table>
+                </div>
+                
         {% endblock %}
         
     {% endembed %}
@@ -85,23 +96,31 @@
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 
-<div id="edit-media-form" title="Edit media">
-	<form>
-		<fieldset>
-			<label for="caption">Caption</label>
-			<input type="text" name="caption" id="caption" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
-	</form>
+<div id="edit-media-form" title="Edit media" style="display: hidden;">
+    <form action="{{ path('media_edit_caption') }}">
+        <fieldset>
+            <label for="caption">Caption</label>
+            <input type="text" name="caption" id="caption" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+    </form>
 </div>                        	
 
-<div id="delete-media-form" title="Are you sure you want to delete the media?">
-	<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+<div id="delete-media-form" title="Are you sure you want to delete the media?" style="display: hidden;">
+    <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>                        	
 
 {% endblock %}
-                        	
+                            
 {# TODO: there has to be a better way to load all these #}
 {% block inlineJavascriptCode %}
+
+<style type="text/css">
+    .fancybox-type-iframe .fancybox-nav {width: 80px;}
+    .fancybox-type-iframe .fancybox-nav span {visibility: visible;}
+    .fancybox-type-iframe .fancybox-next {right: -80px;}
+    .fancybox-type-iframe .fancybox-prev {left: -80px;}
+</style>
+
 <script type="text/javascript" src="{{ asset('js/jquery/jquery.mousewheel-3.0.6.pack.js') }}"></script>
 
 <!-- Add fancyBox -->
@@ -119,58 +138,90 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	$(".fancybox").fancybox({
-		openEffect	: 'none',
-		closeEffect	: 'none',
-	});
+    $(".fancybox").fancybox({
+        helpers     : { media	: {} },
+        margin      : [20, 60, 20, 60]		
+    });
 
-	$("#edit-media-form").dialog({
-		autoOpen: false,
-		height: 300,
-		width: 350,
-		modal: true,
-		buttons: {
-			"Edit caption": function() {
-				alert('eat shit');
-				/*
-					$( "#users tbody" ).append( "<tr>" +
-						"<td>" + name.val() + "</td>" + 
-						"<td>" + email.val() + "</td>" + 
-						"<td>" + password.val() + "</td>" +
-					"</tr>" );
-				*/	 
-				$( this ).dialog( "close" );
-			},
-			Cancel: function() {
-				$(this).dialog( "close" );
-			}
-		}
-	});
+    var media_id, media_caption; 
+    
+    $("#edit-media-form").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 120,
+        width: 300,
+        modal: true,
+        open: function(event, ui) { 
+            //hide close button.
+            //$(this).parent().children().children('.ui-dialog-titlebar-close').hide();
+            $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            
+            $('#caption').val(media_caption.trim());     
+        },
+        buttons: {
+            "Save": function(event) {
+                
+                $.ajax({
+                    url: $('form').attr('action'),
+                    data: {id: media_id, caption: $('#caption').val()},
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(success) {
+                        if (success) {
+                            alert('You suceeded!');
+                        } else {
+                            alert('Application error');
+                        }
 
-	$("#delete-media-form" ).dialog({
-		autoOpen: false,
-		resizable: false,
-		height:140,
-		modal: true,
-		buttons: {
-			"Delete all items": function() {
-				$( this ).dialog( "close" );
-			},
-			Cancel: function() {
-				$( this ).dialog( "close" );
-			}
-		}
-	});
-	
-	$(".attached-edit-form").click(function() {
-		$("#edit-media-form").dialog("open");
-		return false;
-	});
+                        $(this).dialog( "close" );                        
+                    },
+                    error: function() {
+                        alert('Server error');
+                        $(this).dialog( "close" );
+                    }
+                });
+            },
+            Cancel: function() {
+                $(this).dialog( "close" );
+            }
+        }
+    });
 
-	$(".attached-delete-form").click(function() {
-		$("#delete-media-form").dialog("open");
-		return false;
-	});	
+    $("#delete-media-form" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 120,
+        width: 300,
+        modal: true,
+        buttons: {
+            "Delete media": function() {
+                if (confirm('Are you really sure?')) {
+                    if (confirm('Maybe you should consult your administrator first?')) {
+                        if (confirm('Or your psychologist.')) {
+                            alert('Permission denied'); 
+                         }
+                    }
+                }
+                $( this ).dialog( "close" );
+            },
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+    
+    $(".attached-edit-form").click(function() {
+        media_id = this.id;
+        media_caption = this.innerHTML;
+        
+        $("#edit-media-form").dialog("open");
+        return false;
+    });
+
+    $(".attached-delete-form").click(function() {
+        $("#delete-media-form").dialog("open");
+        return false;
+    });	
 });
 </script>
 {% endblock %}
