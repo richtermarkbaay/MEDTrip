@@ -5,8 +5,25 @@
 {% block content %}
 
 	<div id="content">
+	
+<div id="step-holder">
+			<div class="step-no">1</div>
+			<div class="step-dark-left"><a href="">Add Medical Center</a></div>
+			<div class="step-dark-right">&nbsp;</div>
+			<div class="step-no-off">2</div>
+			<div class="step-light-left">Add Center Media</div>
+			<div class="step-light-right">&nbsp;</div>
+			<div class="step-no-off">3</div>
+			<div class="step-light-left">Add Center Media</div>
+			<div class="step-light-right">&nbsp;</div>
+			<div class="step-no-off">4</div>
+			<div class="step-light-left">Preview</div>
+			<div class="step-light-round">&nbsp;</div>
+			<div class="clear"></div>
+		</div>
+		
 		<div id="page-heading"><h2>{{ institutionMedicalCenterId ? 'Edit' : 'Add' }} Medical Center</h2></div>
-
+		
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 

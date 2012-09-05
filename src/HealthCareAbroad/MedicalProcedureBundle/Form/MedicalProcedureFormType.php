@@ -23,7 +23,7 @@ class MedicalProcedureFormType extends AbstractType
 
 		$builder->add('name');
 
-		if(!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType())
+		if((!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType()) || count($medicalProcedure->getInstitutionMedicalProcedures()) )
 			$builder->add('medicalProcedureType', 'hidden', array('property_path' => 'medicalProcedureType.id', 'label' => 'Procedure Type'));
 		else
 			$builder->add('medicalProcedureType', 'medicalproceduretype_list');

@@ -52,10 +52,10 @@
 				
 					<table id="procedure-type-list" class="generic-table" width="70%">
 					<tr>
-						<th width="200"><a href="">Procedure</a></th>
+						<th width="200"><a href="">Procedure Type</a></th>
 						<th><a href="">Description</a></th>
 						<th width="70"><a href="">Status</a></th>
-						<th class="actions" width="90"><a href="">Actions</a></th>
+						<th class="actions" width="180"><a href="">Actions</a></th>
 					</tr>
 
 					{% for type in procedureTypes %}
@@ -67,6 +67,7 @@
 								<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
 								{% set class = type.status ? 'icon-2' : 'icon-5' %}
 								<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+								<a href="{{ path('admin_medicalProcedure_index', {medicalProcedureTypeId:type.id}) }}" class="icon-type">procedures</a>
 							</td>
 						</tr>
 					{% endfor %}

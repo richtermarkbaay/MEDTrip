@@ -37,7 +37,7 @@
 				
 				<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 	
-					{% if isAddFromSpecificCenter is defined %}
+					{% if (isAddFromSpecificCenter is defined) or ((hasProcedures is defined) and hasProcedures) %}
 						<div>
 							{{ form_label(form.medicalCenter) }}
 							<span class="fixed-value">{{ form.vars.value.medicalCenter }}</span>
@@ -45,7 +45,7 @@
 					{% else %}
 						{{ form_row(form.medicalCenter) }}
 					{% endif %}
-	
+
 					{{ form_row(form.name) }}
 					{{ form_row(form.description) }}
 					{{ form_row(form.status) }}
