@@ -46,6 +46,7 @@
 		$(function(){
 
 			$("#dialog-container").dialog({
+				title: 'Medical Procedure',
 				autoOpen: false,
 				height: 580,
 				width: 700,
@@ -55,16 +56,15 @@
 				close: function() {}
 			});
 
-			$("a.add-procedure").click(function() {
+			$("a.add-edit-procedure").click(function() {
 				var elem = $(this);
-				var addProcedureUrl = elem.attr('href');
+				var _url = elem.attr('href');
 
 				$("#dialog-container").empty();
 				$("#dialog-container").dialog({
 					open: function() {
-						$.ajax(addProcedureUrl)
+						$.ajax(_url)
 							.done(function (data) {
-								elem.attr('href', addProcedureUrl);
 								$('#dialog-container').html(data);
 							});
 					},

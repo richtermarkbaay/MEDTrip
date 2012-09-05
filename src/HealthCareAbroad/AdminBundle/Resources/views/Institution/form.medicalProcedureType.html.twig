@@ -25,42 +25,55 @@
 
             	{% set contents = [
 						{
-							'isVisible' : newProcedureType ? false : true,
-							'title': 'Add medical procedure', 
-							'description': 'Add medical procedure to this procedure type',
-							'class' : 'add-procedure add-icon',
-							'href': path('admin_institution_medicalProcedure_add', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId: institutionMedicalProcedureType.id}), 
-							'links': [
-								{
-									'title': 'Add a medical procedure',
-									'class' : 'add-procedure',
-									'href': path('admin_institution_medicalProcedure_add', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId: institutionMedicalProcedureType.id}),
-								}
-							]
-						},
-						{
 							'title': 'Manage Procedure Types',
 							'description': 'Go back to procedure type management page',
-							'href': path('admin_institution_manageProcedureTypes', {institutionId:institutionId,imcId:institutionMedicalCenterId}), 
+							'href': path('admin_institution_manageProcedureTypes', {institutionId:institution.id,imcId:institutionMedicalCenter.id}), 
 							'links': [
-								{'title' : 'Add another procedure type','href': path('admin_institution_procedureType_add', {institutionId:institutionId, imcId:institutionMedicalCenterId}), 'isVisible' : not newProcedureType},
-								{'title': 'Back to procedure type management', 'href': path('admin_institution_manageProcedureTypes', {institutionId:institutionId, imcId:institutionMedicalCenterId})}
+								{'title' : 'Add another procedure type','href': path('admin_institution_procedureType_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id}), 'isVisible' : not newProcedureType},
+								{'title': 'Back to procedure type management', 'href': path('admin_institution_manageProcedureTypes', {institutionId:institution.id, imcId:institutionMedicalCenter.id})}
 							]
 						}
 					]
   				%}
-
+  				
+  				{% if not newProcedureType %}
+  				
+	  				{% set contents = contents | merge ([{
+							'isVisible' : newProcedureType ? false : true,
+							'title': 'Add medical procedure', 
+							'description': 'Add medical procedure to this procedure type',
+							'class' : 'add-procedure add-icon',
+							'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}), 
+							'links': [
+								{
+									'title': 'Add a medical procedure',
+									'class' : 'add-procedure',
+									'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}),
+								}
+							]
+						}])
+	  				%}
+  				{% endif %}
+  				
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
 				{% set savePath = newProcedureType 
-					? path('admin_institution_procedureType_create',{institutionId:institutionId, imcId:institutionMedicalCenterId}) 
-					: path('admin_institution_procedureType_update',{institutionId:institutionId, imcId:institutionMedicalCenterId, imptId:institutionMedicalProcedureType.id}) %}
+					? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
+					: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionMedicalProcedureType.id}) %}
 
             	<form novalidate="novalidate" action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 					<div>
 						<label>Medical Center</label>
-						<span class="fixed-value">{{ medicalCenterName }}</span>
+						<span class="fixed-value">{{ institutionMedicalCenter.medicalCenter.name }}</span>
 					</div>
+
+					{% if not newProcedureType %}
+						<div>
+							<label>Procedure Type</label>
+							<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
+						</div>
+					{% endif %}
+					
 	                {{ form_row(form.medicalProcedureType) }}
 	                {{ form_row(form.description) }}
 	                {{ form_rest(form) }}
@@ -75,16 +88,9 @@
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
 	<script type="text/javascript">
-        $(function(){
 
-        	$("#dialog-container").dialog({
-				autoOpen: false,
-				height: 580,
-				width: 700,
-				modal: true,
-				resizable: false,
-				close: function() {}
-			});
+        $(function(){
+        	$("#dialog-container").dialog({autoOpen: false, width: 700, modal: true, resizable: false});
 
         	$("a.add-procedure").click(function() {
 				var elem = $(this);
@@ -93,6 +99,7 @@
 
 				$("#dialog-container").empty();
 				$("#dialog-container").dialog({
+					title: 'Add Medical Procedure',
 					open: function() {
 						$.ajax(addProcedureUrl)
 							.done(function (data) {
@@ -103,16 +110,8 @@
 				});
 				$("#dialog-container").dialog("open");
 			});
-            
-        	var params = {
-                selectedMedicalCenter: '{{ newProcedureType ? 0 : imcId }}',
-                selectedMedicalProcedureType: '{{ newProcedureType ? 0 : institutionMedicalProcedureType.medicalProcedureType.id }}',
-        		loadProcedureTypesUrl : "{{ path('admin_loadMedicalProcedureTypes', {institutionId:institutionId}) }}"
-            };
-
-    		InstitutionMedicalProcedure.init(params);
         });
-	</script>	
+	</script>
 {% endblock %}
 {#
 

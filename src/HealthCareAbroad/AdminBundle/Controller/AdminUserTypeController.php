@@ -86,8 +86,7 @@ class AdminUserTypeController extends Controller
             $userType = new AdminUserType();
             $userType->setStatus(AdminUserType::STATUS_ACTIVE);
         }
-        
-        
+                
         $form = $this->createForm(new AdminUserTypeFormType(), $userType);
         $form->bind($request);
         if ($form->isValid()) {

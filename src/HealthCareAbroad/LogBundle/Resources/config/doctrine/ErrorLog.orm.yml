@@ -1,0 +1,46 @@
+HealthCareAbroad\LogBundle\Entity\ErrorLog:
+    type: entity
+    table: error_logs
+    repositoryClass: HealthCareAbroad\LogBundle\Repository\ErrorLogRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        errorType:
+            type: smallint
+            unsigned: true
+            nullable: false
+            column: error_type
+        message:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+        stacktrace:
+            type: text
+            nullable: false
+        httpUserAgent:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+            column: http_user_agent
+        remoteAddress:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+            column: remote_address
+        serverJSON:
+            type: text
+            nullable: false
+            column: server_json
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    lifecycleCallbacks: {  }

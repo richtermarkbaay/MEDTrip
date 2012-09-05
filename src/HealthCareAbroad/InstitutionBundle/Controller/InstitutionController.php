@@ -22,10 +22,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
-
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+	
 class InstitutionController extends Controller
 {
-	
+	/**
+	 * invite institutions
+	 */
 	public function inviteAction()
 	{
 		$invitation = new InstitutionInvitation();
@@ -52,6 +55,9 @@ class InstitutionController extends Controller
 				'form' => $form->createView(),
 		));
 	}
+	/**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
 	public function editInstitutionAction()
 	{
 		$institutionId = $this->getRequest()->get('institutionId', null);
@@ -79,6 +85,11 @@ class InstitutionController extends Controller
 			if ($form->isValid()) {
 				
 				$institution = $this->get('services.institution')->updateInstitution($institution);
+				
+				//create editInstitution event and dispatch
+				$event = new CreateInstitutionEvent($institution, $user);
+				$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+				
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 			}
 		}
@@ -88,6 +99,10 @@ class InstitutionController extends Controller
 		));
 		
 	}
+	/**
+	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+	 *
+	 */
 	public function loadCitiesAction($countryId)
 	{
 		$data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
@@ -97,7 +112,9 @@ class InstitutionController extends Controller
 	
 		return $response;
 	}
-	
+	/**
+	 * register institutions
+	 */
 	public function signUpAction()
 	{
 		$form = $this->createForm(new InstitutionType());
@@ -143,7 +160,7 @@ class InstitutionController extends Controller
            	    	
            	    // create Institution event and dispatch
            	    $event = new CreateInstitutionEvent($institution, $user);
-           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_CREATE_INSTITUTION, $event);
+           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_ADD_INSTITUTION, $event);
            	    	
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    

@@ -1,0 +1,46 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+			<!--  start table-content  -->
+			<div id="table-content">
+			    
+    		    <h1>Oops! An error occurred</h1>
+    		    
+                <h2 style="margin-top: 20px;">The server returned a "{{ status_code }} {{ status_text }}".</h2>
+        
+                <div style="margin-top: 20px;">
+                    Something is broken and this has been logged. Please let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused.
+                    
+                    <form style="margin-top:20px;" class="basic-form" method="post" action="#">
+                        <div>
+                            <label>Your name:</label>
+                            <input type="text" name="name" />
+                        </div>
+                        
+                        <div>        
+                            <label>Details:</label>
+                            <textarea name="details" ></textarea>
+                        </div>
+                        
+                        <input class="form-submit" type="submit" name="submit" />
+                        
+                    </form>
+                    
+                </div>
+    			
+			</div>
+			<!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 	<div id="content">
 
-		<div id="page-heading"><h3>{{ institutionName }} Procedure Types Management</h3></div>
+		<div id="page-heading"><h3>{{ institution.name }} Procedure Types for {{ institutionMedicalCenter.medicalCenter.name }} center</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -17,10 +17,10 @@
 						'title': 'Add new procedure type', 
 						'description': 'Create a new procedure type',
 						'class' : 'add-icon',
-						'href': path('admin_institution_procedureType_add', {institutionId:institutionId, imcId:institutionMedicalCenterId}), 
+						'href': path('admin_institution_procedureType_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id}), 
 						'links': [{
 							'title' : 'Add procedure type',
-							'href': path('admin_institution_procedureType_add', {institutionId:institutionId, imcId:institutionMedicalCenterId}), 
+							'href': path('admin_institution_procedureType_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id}), 
 						}]
 					}
     			]} 
@@ -36,16 +36,21 @@
 
 			{% for procedureType in medicalProcedureTypes %}	 
 				<h3>
-					<a href="#">{{ procedureType.medicalProcedureType.name }} ({{ procedureType.medicalProcedureType.medicalCenter.name }})</a>
+					<a href="#">{{ procedureType.medicalProcedureType.name }}</a>
+					<span style="float: right; color: #888">{{ procedureType.status ? 'active' : 'inactive' }}</span>
 				</h3>
 				<div class="procedures">
-					<a class="add-procedure button-type" href="{{ path('admin_institution_medicalProcedure_add', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId:procedureType.id }) }}">Add Procedure</a>
-					<a href="{{ path('admin_institution_procedureType_edit', {institutionId:institutionId, imcId:institutionMedicalCenterId, imptId:institutionMedicalCenterId }) }}" class="button-type">Edit Procedure Type</a>
-				    <table border="0" width="100%" class="generic-table" id="medical-centers-list">
+					<p style="color: #aaa">{{ procedureType.description }}</p>
+
+					<a href="{{ path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:procedureType.id }) }}" class="add-procedure button-type" >Add Procedure</a>
+					<a href="{{ path('admin_institution_procedureType_edit', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:procedureType.id }) }}" class="button-type">Edit</a>
+
+
+				    <table width="100%" class="generic-table" id="medical-centers-list">
 	    				<tr>
-	    					<th class="first" width="200"><a href="#">Procedures</a></th>
+	    					<th width="200"><a href="#">Procedures</a></th>
 	    					<th><a href="#">Description</a></th>
-	    					<th class="last actions" width="100"><a href="#">Options</a></th>
+	    					<th class="actions" width="100"><a href="#">Options</a></th>
 	    				</tr>
 
 						{% set procedures = procedureType.institutionMedicalProcedures %}
@@ -56,7 +61,7 @@
 								<td>{{ medicalProcedure.name }}</td>
 								<td>{{ procedure.description }}</td>  
 								<td>
-	            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
+	            					<a href="{{path('admin_institution_medicalProcedure_edit', {institutionId: institution.id, imcId: institutionMedicalCenter.id, imptId: procedureType.id, impId: procedure.id})}}" title="Edit" class="edit-procedure icon-1 info-tooltip"></a>
 	            					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
 	            					<a href="{{ path('admin_institution_medicalProcedure_updateStatus', {impId:procedure.id}) }}"
 	            						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
@@ -86,20 +91,20 @@
 
 			$("#dialog-container").dialog({
 				autoOpen: false,
-				height: 520,
 				width: 700,
 				modal: true,
 				resizable: false,
 				close: function() {}
 			});
 
-			$("a.add-procedure").click(function() {
+			$("a.add-procedure, a.edit-procedure").click(function() {
 				var elem = $(this);
 				var addProcedureUrl = elem.attr('href');
 				elem.attr('href', 'javascript:void(0)');
 
 				$("#dialog-container").empty();
 				$("#dialog-container").dialog({
+					title: (elem.hasClass('edit-procedure') ? 'Edit' : 'Add') + ' Medical Procedure',
 					open: function() {
 						$.ajax(addProcedureUrl)
 							.done(function (data) {
@@ -111,7 +116,9 @@
 				$("#dialog-container").dialog("open");
 			});
 
+			{% if medicalProcedureTypes is not empty %} 
 			$("#institution-procedure-types").accordion();
+			{% endif %}
 		});
 	</script>
 {% endblock %}

@@ -83,4 +83,61 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
         
     }
+    
+    public function testEditAccount()
+    {
+    	$editAccountUrl = '/admin/edit-account';
+		
+		//---- test that this should not be accessed by anonymous user
+		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
+		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+		//---- end test that this should not be accessed by anonymous user
+		
+		//---- test edit logged in account
+		$client = $this->getBrowserWithActualLoggedInUser();
+		$crawler = $client->request('GET', $editAccountUrl);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+		
+		$formValues = array(
+				'userAccountDetail[firstName]' => 'edit first',
+				'userAccountDetail[middleName]' => 'edit middle',
+				'userAccountDetail[lastName]' => 'edit last',
+		);
+		
+		//test for firstName = null
+		$invalidFormValues = $formValues;
+		$invalidFormValues['userAccountDetail[firstName]'] = null;
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+		 
+		//test for valid form
+		$crawler = $client->request('GET', $editAccountUrl);
+		$referer = $client->getRequest()->headers->get('referer'); 
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $formValues);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+		//---- end test edit logged in account
+    }
+    
+    public function testChangePassword()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/change-password');
+        
+    	
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Current Password")')->count()); // look for the Current Password text
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("New Password")')->count()); // look for the New Password text
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm Password")')->count()); // look for the Confirm Password text
+    	
+    	$form = $crawler->selectButton('submit')->form();
+    	$formValues = array(
+    			'adminUserChangePasswordType[current_password]' => $this->userPassword,
+    			'adminUserChangePasswordType[new_password]' => $this->userPassword.'1',
+    			'adminUserChangePasswordType[confirm_password]' => $this->userPassword.'1',
+    	);
+    	$crawler = $client->submit($form, $formValues);
+    	$this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertEquals('/admin', $client->getResponse()->headers->get('location'));
+    }
 }

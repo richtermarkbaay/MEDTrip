@@ -23,7 +23,7 @@
         {% block wrappedContent %}
             
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true,hideMedicalProcedureTypeTask: isNew?true:false, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: isNew?true:false, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
             
             <!--  start table-content  -->

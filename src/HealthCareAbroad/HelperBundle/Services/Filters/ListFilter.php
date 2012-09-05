@@ -26,7 +26,7 @@ abstract class ListFilter
 	 * @desc Default options value for Status Filter Option
 	 * @var array
 	 */
-	protected $statusFilterOptions = array('all' => 'All', 1 => 'Active', 0 => 'Inactive');
+	protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', 'all' => 'All');
 
 
 	abstract function setFilterOptions();

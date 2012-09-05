@@ -19,7 +19,7 @@ class CountryFormType extends AbstractType
 			Country::STATUS_INACTIVE => 'inactive',
 		);
 
-		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
+		$builder->add('name', 'text');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 

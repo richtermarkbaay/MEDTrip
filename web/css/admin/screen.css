@@ -58,7 +58,7 @@ font-size: 12px;
 	margin: 0 auto 0 auto;
 	max-width: 1260px;
 	min-width: 780px;
-	padding: 35px 0px 30px 0px;
+	padding: 20px 0px 30px 0px;
 	}
 #content-inner	{
 	color: #333;
@@ -370,6 +370,11 @@ a:hover.icon-5	{
 	border-bottom: 1px solid #d2d2d2;
 	padding: 10px;
 	}
+	
+.generic-table tr:first-child td {
+	border-top: 1px solid #d2d2d2;
+}
+
 .generic-table tr td:first-child {
 	border-left: 1px solid #d2d2d2;
 }
@@ -607,12 +612,29 @@ form.basic-form > div {
 	position: relative;
 	margin-bottom: 25px;
 }
+
 form.basic-form > div > ul {
-	top: -15px;
-	color: #CC6666;
+	color: #FFFFFF;
+	right: -20px;
+	padding: 0 6px;
+	border-radius: 5px;
 	position: absolute;
-	display: inline-block; 
+	display: inline-block;
 	list-style: none outside none;
+	background: url("/images/admin/forms/error_left.gif") no-repeat scroll 0 0 transparent;
+}
+
+form.basic-form > div > ul li:first-child {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+form.basic-form > div > ul li {
+	padding: 10px;
+	background: #D80000;
+}
+form.basic-form > div > ul li:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 form.basic-form label {
@@ -1563,18 +1585,22 @@ span.bar {
 	color: #CCCCCC;
 }
 
-a.button-type {
-	float: right;
+input.green-button,
+.button-type {
 	color: #FFFFFF;
 	font-size: 11px;
 	font-weight: bold;
-	padding: 8px 15px; 
+	padding: 8px 10px; 
 	border-radius: 5px;
 	border: medium none; 
 	background: #759E1A;
-	margin-left: 10px;
-	margin-bottom: 10px;
 	display: inline-block;
+	cursor: pointer;
+}
+
+input.green-button:hover,
+.button-type:hover {
+	background: #67910A;
 }
 
 a.icon-type {
@@ -1627,6 +1653,7 @@ a.icon-type:hover {
 }
 
 #filter-wrapper a.button-type {
+	float: right;
 	margin-right: 10px;
 }
 #filter-wrapper label {
@@ -1640,7 +1667,7 @@ a.icon-type:hover {
 	min-width: 100px;
 }
 
-./*ellipsis {
+/*.ellipsis {
 	border: 1px solid #000000;
 	white-space: nowrap;
 	width: 100%;
@@ -1657,6 +1684,8 @@ a.icon-type:hover {
 
 .ui-dialog-titlebar {
 	border: none;
+	color: #759E1A;
+	padding: 15px 20px;
 	background: none;
 }
 
@@ -1668,13 +1697,33 @@ a.icon-type:hover {
 
 .ui-dialog-content {
 	border: none; 
-	padding: 5px 20px;
+	padding: 5px 15px 25px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.ui-dialog-content > p {
+	margin-bottom: 20px;
+	font-size: 12px;
+}
+
+.ui-dialog-buttonpane {
+	border: none;
+	padding: 20px;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.ui-dialog-buttonset .ui-button {
+	border: none;
+	padding: 5px 10px;
+	margin-right: 10px;
 }
 
 .ui-widget-overlay {
 	position: fixed;
 }
-/*  */
+
 
 /* jQuery UI accordion Style */
 .ui-accordion .ui-accordion-header {

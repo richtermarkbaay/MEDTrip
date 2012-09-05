@@ -8,8 +8,8 @@
     	</span>
 	    
 	    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': app.request.get('imcId'), 'imptId': procedureType.id } ) }}">Edit</a>
-		<a class="add-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': procedureType.id}) }}">Add Procedure</a>
-		{% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'procedures' : procedureType.institutionMedicalProcedures } %}
+		<a class="add-edit-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': procedureType.id}) }}">Add Procedure</a>
+		{% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'imptId':procedureType.id,'procedures' : procedureType.institutionMedicalProcedures } %}
 	</div>
 {% else  %}
 	<div class="empty-list">No medical procedure types!</div>

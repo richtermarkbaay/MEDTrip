@@ -43,9 +43,10 @@ class InstitutionRepository extends EntityRepository
 	 */
 	public function getActiveInstitutionMedicalCenters(Institution $institution, QueryOptionBag $queryOptions=null)
 	{
-	    $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId ";
+	    $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status = :active ";
 	    $query = $this->_em->createQuery($dql)
-	        ->setParameter('institutionId', $institution->getId());
+	        ->setParameter('institutionId', $institution->getId())
+	        ->setParameter('active', InstitutionMedicalCenter::STATUS_ACTIVE);
 	    
 	    return $query->getResult();
 	}

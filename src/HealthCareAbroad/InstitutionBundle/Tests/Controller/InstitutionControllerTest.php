@@ -56,7 +56,7 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 		$this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
 		//---- end test that this should not be accessed by anonymous user
 		
-		 //---- test edit logged in account
+		//---- test edit logged in account
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $editAccountUrl);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());

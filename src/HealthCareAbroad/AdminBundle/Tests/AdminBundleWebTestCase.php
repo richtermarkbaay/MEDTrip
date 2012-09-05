@@ -33,6 +33,13 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 		);
 	}
 	
+	protected function requestUrlWithNoLoggedInUser($uri, $method="GET")
+	{
+		$client = static::createClient();
+		$client->request($method, $uri);
+		return $client;
+	}
+	
 	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
 		$client = static::createClient(\array_merge($this->defaultClientOptions, $options));

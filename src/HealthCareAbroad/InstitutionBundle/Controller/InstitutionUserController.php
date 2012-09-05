@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Guzzle\Http\Message\Response;
 use Chromedia\AccountBundle\Entity\Account;
 use ChromediaUtilities\Helpers\SecurityHelper;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 use Symfony\Component\Security\Core\SecurityContext;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -64,7 +66,9 @@ class InstitutionUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('institution_login'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function changePasswordAction()
     {
         //get user account in chromedia global accounts by accountID
@@ -88,7 +92,9 @@ class InstitutionUserController extends Controller
     	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function editAccountAction()
     {
     	$accountId = $this->getRequest()->get('accountId', null);
@@ -194,7 +200,9 @@ class InstitutionUserController extends Controller
         
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
     public function viewAllAction()
     {
         $institutionService = $this->get('services.institution');
@@ -203,5 +211,6 @@ class InstitutionUserController extends Controller
         $users = $institutionService->getAllStaffOfInstitution($institution);
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
+    
     
 }

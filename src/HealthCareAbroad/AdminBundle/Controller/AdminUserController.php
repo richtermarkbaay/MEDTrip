@@ -19,6 +19,7 @@ class AdminUserController extends Controller
         $form = $this->createForm(new UserLoginType());
         if ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
+            
             if ($form->isValid()) {
                 if ($this->get('services.admin_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
@@ -47,7 +48,10 @@ class AdminUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('admin_login'));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     * 
+     */
     public function editAccountAction()
     {
     	$accountId = $this->getRequest()->getSession()->get('accountId');
@@ -79,7 +83,10 @@ class AdminUserController extends Controller
     			'user' => $adminUser
     			));
     }
-    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     *
+     */
     public function changePasswordAction()
     {
     	$accountId = $this->getRequest()->getSession()->get('accountId');
@@ -96,13 +103,12 @@ class AdminUserController extends Controller
 	    	$form->bindRequest($this->getRequest());
 	    	
 	    	if($form->isValid()) {
-	    		//TODO:: persist new password to db
+	    		//TODO:: persist new password to db	
 	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
 	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
 	    		
-	    		$this->get('session')->setFlash('success', "Successfully updated account");
+	    		$this->get('session')->setFlash('success', "Password changed!");
 	    		return $this->redirect($this->generateUrl('admin_homepage'));
-	    		
 	    	}
     	}
     	return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(

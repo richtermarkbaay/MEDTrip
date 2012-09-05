@@ -16,10 +16,9 @@
         
             {# ----- Related tasks ----- #}
             {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
-            {% set manageMedicalProceduresTask = {title: 'Medical Procedure Type Management', 'description': 'Go to medical procedure type management page to view all your medical procedure types, or add a new one', 'href': path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')}), 'links': [{title:'Click here to view all medical procedure types',href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')})}, {title:'Click here to add medical procedure type', href: path('institution_medicalCenter_addProcedureType', {'imcId': app.request.get('imcId')})}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'contents': [manageCentersTask, manageMedicalProceduresTask]} 
+		        {'contents': [manageCentersTask]} 
 	        %}
             {# ----- end Related tasks ----- #}
         

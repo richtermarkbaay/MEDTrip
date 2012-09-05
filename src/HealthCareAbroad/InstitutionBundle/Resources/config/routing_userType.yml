@@ -17,14 +17,13 @@ institution_userType_edit:
     requirements:    
         _method:  GET
         
-
 institution_userType_edit_save:
     pattern: /staff/designations/edit/{id}
     defaults: { _controller: InstitutionBundle:InstitutionUserType:save }
     requirements:    
         _method:  POST
         id: \d+
-        
+
 institution_userType_index:
     pattern: /staff/designations
     defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
