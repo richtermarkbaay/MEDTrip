@@ -33,18 +33,11 @@ class MedicalCenterController extends InstitutionAwareController
         if (!$institutionMedicalCenter) {
             throw $this->createNotFoundException("Invalid institution medical center.");
         }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:edit.html.twig', array(
-            'institutionMedicalCenter' => $institutionMedicalCenter
-        ));
-        
-        /**
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
-        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalCenter:edit.html.twig', array(
+            'institutionMedicalCenter' => $institutionMedicalCenter,
             'form' => $form->createView(),
-            'isNew' => false,
-            'institutionMedicalCenter' => $institutionMedicalCenter
-        ));**/
+        ));
     }
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
@@ -55,7 +48,7 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionMedicalCenter->setInstitution($this->institution);
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
-        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalCenter:add.html.twig', array(
             'form' => $form->createView(),
             'isNew' => true,
             'institutionMedicalCenter' => $institutionMedicalCenter
@@ -91,7 +84,7 @@ class MedicalCenterController extends InstitutionAwareController
             $em->flush();
             
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
-            return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionMedicalCenter->getId())));
         }
         else {
             return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
