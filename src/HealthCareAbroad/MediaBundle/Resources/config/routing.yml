@@ -13,3 +13,14 @@ institution_gallery_add:
 media_upload:
     pattern: /media/upload
     defaults: { _controller: MediaBundle:Default:upload }
+    
+media_delete:
+    pattern: /media/delete/{id}
+    defaults: { _controller: MediaBundle:Default:delete, id: ~ }
+    requirements:
+        _method: POST
+        id: \d+
+    
+media_edit_caption:
+    pattern: /media/edit-caption
+    defaults: { _controller: MediaBundle:Default:editCaption }

@@ -39,7 +39,7 @@
                         <a href="#" class="button-type">GO</a>
                     </div>    			    
     
-                       <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
                         <thead>
                             <tr>
                                 <th colspan="4">
@@ -67,18 +67,20 @@
                        
                         {% set mediaCount = 0 %}
                         {% for media in institutionMedia %}
+                        
                             {% if (loop.index - 1) % 4 == 0 %}
                                 {% set mediaCount = 1 %}			
                                 <tr>
-                                    <td valign="top">{{ media(media, 'gallery') | raw }}</td>
                             {% else %}
                                 {% set mediaCount = mediaCount + 1 %}
-                                    <td valign="top">{{ media(media, 'gallery', {"institutionId": institutionId}) | raw }}</td>		
                             {% endif %}
-                                    
+                            
+                                    <td valign="top">{{ media(media, 'gallery', {'institutionId': institutionId}) | raw }}</td>
+
                             {% if mediaCount == 4 %}									
                                 </tr>
-                            {% endif %}	
+                            {% endif %}
+                                
                         {% else %}
                             <tr class="">
                                 <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
@@ -96,17 +98,18 @@
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 
-<div id="edit-media-form" title="Edit media" style="display: hidden;">
-    <form action="{{ path('media_edit_caption') }}">
-        <fieldset>
-            <label for="caption">Caption</label>
-            <input type="text" name="caption" id="caption" class="text ui-widget-content ui-corner-all" />
-        </fieldset>
+<div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+    <form id="editMediaForm" name="editMediaForm" action="{{ path('media_edit_caption') }}" method="post">
+        <label for="caption">Caption</label>
+        <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
     </form>
 </div>                        	
 
-<div id="delete-media-form" title="Are you sure you want to delete the media?" style="display: hidden;">
+<div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
     <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+    <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path('media_delete') }}" method="post">
+        <input type="hidden" name="media_id" id="media_id" />
+    </form>    
 </div>                        	
 
 {% endblock %}
@@ -143,9 +146,15 @@ $(document).ready(function() {
         margin      : [20, 60, 20, 60]		
     });
 
-    var media_id, media_caption; 
+    var media_id, media_caption, link; 
+
+    var showMessage = function(parent, message) {
+        $message = $('<div style="display:none;">'+ message + '</div>');
+        parent.append($message);
+        $message.fadeIn('slow', function(){setTimeout(function(){$message.remove()}, 1000)});
+    };
     
-    $("#edit-media-form").dialog({
+    $("#edit-media-form-dialog").dialog({
         autoOpen: false,
         resizable: false,
         height: 120,
@@ -154,32 +163,13 @@ $(document).ready(function() {
         open: function(event, ui) { 
             //hide close button.
             //$(this).parent().children().children('.ui-dialog-titlebar-close').hide();
-            $(".ui-dialog-titlebar-close", $(this).parent()).hide();
+            //$(".ui-dialog-titlebar-close", $(this).parent()).hide();
             
             $('#caption').val(media_caption.trim());     
         },
         buttons: {
-            "Save": function(event) {
-                
-                $.ajax({
-                    url: $('form').attr('action'),
-                    data: {id: media_id, caption: $('#caption').val()},
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(success) {
-                        if (success) {
-                            alert('You suceeded!');
-                        } else {
-                            alert('Application error');
-                        }
-
-                        $(this).dialog( "close" );                        
-                    },
-                    error: function() {
-                        alert('Server error');
-                        $(this).dialog( "close" );
-                    }
-                });
+            "Save": function() {
+                $('#editMediaForm').submit();
             },
             Cancel: function() {
                 $(this).dialog( "close" );
@@ -187,21 +177,37 @@ $(document).ready(function() {
         }
     });
 
-    $("#delete-media-form" ).dialog({
+    $("#delete-media-dialog" ).dialog({
         autoOpen: false,
         resizable: false,
-        height: 120,
+        height: 140,
         width: 300,
         modal: true,
         buttons: {
             "Delete media": function() {
-                if (confirm('Are you really sure?')) {
-                    if (confirm('Maybe you should consult your administrator first?')) {
-                        if (confirm('Or your psychologist.')) {
-                            alert('Permission denied'); 
-                         }
+                /*
+                TODO: it might be better if we don't do ajax here. e.g. normal form submission or link. 
+                */
+                $.ajax({
+                    url: $('#deleteMediaForm').attr('action') + '/' + media_id,
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(success) {
+
+                        if (!success) {
+                            showMessage($('#deleteMediaForm'), 'An error occurred while processing your request.');
+                            setTimeout(function(){$("#delete-media-dialog").dialog("close")}, 2000);
+                        } else {
+                            window.location.reload();
+                        }
+                        
+                    },
+                    error: function() {
+                        alert('Server error');
+                        $("#edit-media-form-dialog").dialog("close");
                     }
-                }
+                });
+                
                 $( this ).dialog( "close" );
             },
             Cancel: function() {
@@ -211,17 +217,48 @@ $(document).ready(function() {
     });
     
     $(".attached-edit-form").click(function() {
-        media_id = this.id;
+        media_id = this.id.substring(12);/*'link_caption'+id*/
         media_caption = this.innerHTML;
+        link = this;
         
-        $("#edit-media-form").dialog("open");
+    $("#edit-media-form-dialog").dialog("open");
         return false;
     });
 
     $(".attached-delete-form").click(function() {
-        $("#delete-media-form").dialog("open");
+        media_id = this.id.substring(11);/*'link_delete'+id*/
+        $("#delete-media-dialog").dialog("open");
         return false;
     });	
+
+
+    $('#editMediaForm').submit(function() {
+        var caption = $('#caption').val();
+        
+        $.ajax({
+            url: $('#editMediaForm').attr('action'),
+            data: {id: media_id, caption: caption},
+            type: 'post',
+            dataType: 'json',
+            success: function(success) {
+
+                if (success) {
+                    link.innerHTML = caption;
+                    showMessage($('#editMediaForm'), 'Caption updated!');
+                    setTimeout(function(){$("#edit-media-form-dialog").dialog("close")}, 2000);
+                } else {
+                    alert('Application error');
+                }
+                
+            },
+            error: function() {
+                alert('Server error');
+                $("#edit-media-form-dialog").dialog("close");
+            }
+        });
+    
+        return false;
+    });
 });
 </script>
 {% endblock %}
