@@ -1763,6 +1763,38 @@ a.icon-type:hover {
 }
 /* end */
 
+/* jQuery UI vertical tabs Style */
+.ui-tabs-vertical .ui-tabs-nav { 
+	padding: .2em .1em .2em .2em; 
+	float: left; 
+	width: 12em; 
+}
+.ui-tabs-vertical .ui-tabs-nav li { 
+	clear: left; 
+	width: 100%; 
+	border-bottom-width: 1px !important; 
+	border-right-width: 0 !important; 
+	margin: 0 -1px .2em 0; 
+}
+.ui-tabs-vertical .ui-tabs-nav li a { 
+	display:block; 
+}
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
+	background: none repeat scroll 0 0 #F5F3F0; 
+	padding-bottom: 0; 
+	padding-right: .1em; 
+	border-right-width: 1px; 
+	border-right-width: 1px; 
+}
+.ui-tabs-vertical .ui-tabs-panel {  
+	background: none repeat scroll 0 0 #F5F3F0; 
+	float: right; 
+	width: 48em; 
+	height: 40em; 
+}
+
+/* end */
+    
 /* Admin Custom Sidebar */
 .admin-sidebar {
 	clear: both;
@@ -1841,3 +1873,13 @@ a.icon-type:hover {
 	background: red;
 }
 /* End of Admin Custom Sidebar */
+
+
+/* Institution Medical Center styles */
+.tabbed-medical-procedure-type-detail table.generic-table {
+	margin-top: 20px;
+}
+.tabbed-medical-procedure-type-detail table.generic-table td {
+	background-color: #fff;
+}
+/* end Institution Medical Center styles */
