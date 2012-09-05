@@ -29,9 +29,19 @@ class MedicalProcedureController extends Controller
     public function addAction()
     {
     	$procedure = new MedicalProcedure();
+    	
+    	
+    	if($medicalProcedureTypeId = $this->getRequest()->get('medicalProcedureTypeId')) {
+    		$medicalProcedureType = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($medicalProcedureTypeId);
+    		$procedure->setMedicalProcedureType($medicalProcedureType);
+    	}
+
     	$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
     	$params = array('form' => $form->createView(), 'id' => null);
 
+    	if($medicalProcedureTypeId)
+    		$params['isAddFromSpecificType'] = true;
+    	
     	return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
     

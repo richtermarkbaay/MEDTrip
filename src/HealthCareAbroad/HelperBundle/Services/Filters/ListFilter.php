@@ -54,10 +54,14 @@ abstract class ListFilter
 	{
 		$this->queryParams = $queryParams;
 
-		foreach($queryParams as $key => $val) {
-			if(in_array($key, $this->validCriteria) && $val != 'all') {
-				$this->criteria[$key] = $val;
-			}
+		foreach($this->validCriteria as $key) {
+
+			if(isset($queryParams[$key])) {
+				if(!is_null($queryParams[$key]) && $queryParams[$key] != 'all')
+					$this->criteria[$key] = $queryParams[$key];
+			} 
+			
+			else $this->queryParams[$key] = 'all';
 		}
 	}
 

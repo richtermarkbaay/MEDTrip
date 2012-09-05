@@ -26,8 +26,8 @@
 							'title': 'Add procedure type', 
 							'class': 'add-icon',
 							'description': 'add new procedure type for this center type',
-							'href': path('admin_procedureType_add', {medicalCenter:medicalCenter.id}), 
-							'links': [{'title': 'add procedure type', 'href': path('admin_procedureType_add', {medicalCenter: medicalCenter.id} )}]
+							'href': path('admin_procedureType_add', {medicalCenterId:medicalCenter.id}), 
+							'links': [{'title': 'add procedure type', 'href': path('admin_procedureType_add', {medicalCenterId: medicalCenter.id} )}]
 						}] | merge(contents)
 					%}
 				{% endif %}
