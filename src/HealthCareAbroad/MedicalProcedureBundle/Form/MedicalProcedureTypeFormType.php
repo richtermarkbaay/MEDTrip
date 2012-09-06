@@ -30,10 +30,15 @@ class MedicalProcedureTypeFormType extends AbstractType
 		$builder->add('name');
 		$builder->add('description');
 
-		if((!$medicalProcedureType->getId() && $medicalProcedureType->getMedicalCenter()) || count($medicalProcedureType->getMedicalProcedures()) )
-			$builder->add('medicalCenter', 'hidden', array('property_path' => 'medicalCenter.id', 'label' => 'Medical Center'));
-		else 
-			$builder->add('medicalCenter', 'medicalCenter_list');
+		if((!$medicalProcedureType->getId() && $medicalProcedureType->getMedicalCenter()) || count($medicalProcedureType->getMedicalProcedures()) ) {
+		    // we cannot use property_path medicalCenter.id since it will call MedicalCenter.setId which is not existing, 
+		    // also there is no need to put this value since we have a rule that if we reach here [based on the if condition above], we won't allow changing of medical center of already saved MedicalProcedureType 
+		    //$builder->add('medicalCenter', 'hidden', array('property_path' => 'medicalCenter.id', 'label' => 'Medical Center'));
+		    $builder->add('medicalCenter', 'hidden', array('virtual' => true, 'label' => 'Medical Center'));
+		}
+		else {
+		    $builder->add('medicalCenter', 'medicalCenter_list');
+		}
 
 		$builder->add('status', 'choice', array('choices' => $status));
 	}

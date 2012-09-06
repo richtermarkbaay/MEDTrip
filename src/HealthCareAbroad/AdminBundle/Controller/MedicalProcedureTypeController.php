@@ -95,7 +95,10 @@ class MedicalProcedureTypeController extends Controller
 			if(!$procedureType) {
 				throw $this->createNotFoundException("Invalid Medical Procedure Type.");
 			}
-		} else $procedureType = new MedicalProcedureType();
+		} 
+		else {
+		    $procedureType = new MedicalProcedureType();
+		}
 
 		$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
 		$form->bind($request);
@@ -104,7 +107,7 @@ class MedicalProcedureTypeController extends Controller
 			$em->persist($procedureType);
 			$em->flush($procedureType);
 
-			$request->getSession()->setFlash('success', 'New Procedure Type has been added!');
+			$request->getSession()->setFlash('success', $id ? "Successfully updated {$procedureType->getName()}." : "Successfully added {$procedureType->getName()}.");
 
 			if($request->get('submit') == 'Save')
 				return $this->redirect($this->generateUrl('admin_procedureType_edit', array('id' => $procedureType->getId())));
