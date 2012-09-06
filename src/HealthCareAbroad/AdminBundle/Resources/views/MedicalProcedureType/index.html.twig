@@ -16,9 +16,9 @@
 					'title': 'Add procedure type', 
 					'description': 'Add new medical procedure type',
 					'class': 'add-icon',
-					'href': path('admin_procedureType_add'), 
+					'href': path('admin_procedureType_add', {'medicalCenterId': medicalCenterId ? medicalCenterId : null }), 
 					'links': [
-						{'title': 'Add procedure type', 'href': path('admin_procedureType_add')}
+						{'title': 'Add procedure type', 'href': path('admin_procedureType_add', {'medicalCenterId': medicalCenterId ? medicalCenterId : null } )}
 					]
 				}]
 			%}

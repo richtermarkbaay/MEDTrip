@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +20,14 @@ class MedicalProcedureTypeController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_PROCEDURE_TYPES')")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-		return $this->render('AdminBundle:MedicalProcedureType:index.html.twig', array('procedureTypes'=> $this->filteredResult));
+        $medicalCenterId = $request->get('medicalCenter', 0);
+        if ($medicalCenterId == ListFilter::FILTER_KEY_ALL) {
+            $medicalCenterId = 0;
+        }
+        
+		return $this->render('AdminBundle:MedicalProcedureType:index.html.twig', array('medicalCenterId' => $medicalCenterId,'procedureTypes'=> $this->filteredResult));
     }
 
     /**
@@ -40,7 +49,7 @@ class MedicalProcedureTypeController extends Controller
 
     		$procedureType->setMedicalCenter($medicalCenter);
 
-    		$params['isAddFromSpecificCenter'] = true;
+    		//$params['isAddFromSpecificCenter'] = true;
     		$formActionParams['medicalCenterId'] = $medicalCenterId;
     	}
 
@@ -67,6 +76,7 @@ class MedicalProcedureTypeController extends Controller
     	}
 
     	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+    	
     	$params = array(
     		'form' => $form->createView(),
     		'formAction' =>  $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId())),

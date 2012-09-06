@@ -4,7 +4,7 @@ admin_procedureType_index:
 
 admin_procedureType_add:
     pattern:  /admin/procedure-type/add
-    defaults: { _controller: AdminBundle:MedicalProcedureType:add }
+    defaults: { _controller: AdminBundle:MedicalProcedureType:add, medicalCenterId: ~ }
     requirements:
          _method: GET
 

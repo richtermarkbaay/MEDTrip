@@ -8,6 +8,8 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 abstract class ListFilter
 {
+    const FILTER_KEY_ALL = 'all';
+    
 	protected $doctrine;
 	
 	protected $entityRepository;
