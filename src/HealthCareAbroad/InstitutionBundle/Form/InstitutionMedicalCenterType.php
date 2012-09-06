@@ -25,12 +25,7 @@ class InstitutionMedicalCenterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$status = array(
-			InstitutionMedicalCenter::STATUS_ACTIVE => 'active',
-			InstitutionMedicalCenter::STATUS_INACTIVE => 'inactive'
-		);
-
-        // we are expecting only an InstitutionMedicalCenter as data
+		// we are expecting only an InstitutionMedicalCenter as data
         $institutionMedicalCenter = $options['data'];
 
         if (!$institutionMedicalCenter->getId()) {
@@ -49,7 +44,6 @@ class InstitutionMedicalCenterType extends AbstractType
         }
         
         $builder->add('description', 'textarea', array('constraints' => new NotBlank()));
-        $builder->add('status', 'choice', array('choices' => $status));
     }
     
     public function getName()
