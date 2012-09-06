@@ -51,7 +51,7 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
      
      ###listener for institutionUserType
-     listener.institution_user_type.create:
+    listener.institution_user_type.create:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserTypeLogListener
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
@@ -73,8 +73,8 @@ services:
             - { name: kernel.event_listener, event: event.institution_user_type.edit, method: onDelete }
             
             
-      ###listener for institutionUserRole
-     listener.institution_user_role.create:
+    ###listener for institutionUserRole
+    listener.institution_user_role.create:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserRoleLogListener
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
@@ -97,7 +97,7 @@ services:
             
      
     ###listener for institutionMedicalCenter
-     listener.institution_medical_center.create:
+    listener.institution_medical_center.create:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalCenterLogListener
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
@@ -120,7 +120,7 @@ services:
             - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onDelete }
             
     ###listener for institutionMedicalProcedureType
-     listener.institution_medical_procedure_type.create:
+    listener.institution_medical_procedure_type.create:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureTypeLogListener
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
