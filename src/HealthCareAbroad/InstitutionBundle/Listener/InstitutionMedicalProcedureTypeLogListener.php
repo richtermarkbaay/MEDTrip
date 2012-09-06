@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;	
 
-class InstitutionMedicalProcedureTypeListener
+class InstitutionMedicalProcedureTypeLogListener
 {
     /**
      * 
