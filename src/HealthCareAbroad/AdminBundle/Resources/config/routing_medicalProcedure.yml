@@ -4,7 +4,7 @@ admin_medicalProcedure_index:
 
 admin_medicalProcedure_add:
     pattern:  /admin/medical-procedure/add
-    defaults: { _controller: AdminBundle:MedicalProcedure:add }
+    defaults: { _controller: AdminBundle:MedicalProcedure:add, medicalProcedureTypeId : ~ }
     requirements:
          _method: GET
 

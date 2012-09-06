@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -16,9 +20,14 @@ class MedicalProcedureController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_PROCEDURES')")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-    	return $this->render('AdminBundle:MedicalProcedure:index.html.twig', array('procedures' => $this->filteredResult));
+        $medicalProcedureTypeId = $request->get('medicalProcedureType', 0);
+        if ($medicalProcedureTypeId == ListFilter::FILTER_KEY_ALL) {
+            $medicalProcedureTypeId = 0;
+        }
+        
+    	return $this->render('AdminBundle:MedicalProcedure:index.html.twig', array('medicalProcedureTypeId' => $medicalProcedureTypeId,'procedures' => $this->filteredResult));
     }
 
     /**

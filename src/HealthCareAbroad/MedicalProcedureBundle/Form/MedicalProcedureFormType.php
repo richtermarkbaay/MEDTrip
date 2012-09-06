@@ -22,11 +22,24 @@ class MedicalProcedureFormType extends AbstractType
 		);
 
 		$builder->add('name');
+		
+		if ($medicalProcedure->getId()) {
+		    // we don't allow changing of medicalProcedureType if this has been linked already to institutionMedicalProcedures
+		    if (count($medicalProcedure->getInstitutionMedicalProcedures())) {
+		        $builder->add('medicalProcedureType', 'hidden', array('virtual' => 'true', 'label' => 'Procedure Type', 'read_only' => true));
+		    }
+		    else {
+		        $builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		    }
+		}
+		else {
+		    $builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		}
 
-		if((!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType()) || count($medicalProcedure->getInstitutionMedicalProcedures()) )
-			$builder->add('medicalProcedureType', 'hidden', array('property_path' => 'medicalProcedureType.id', 'label' => 'Procedure Type'));
-		else
-			$builder->add('medicalProcedureType', 'medicalproceduretype_list');
+// 		if((!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType()) || count($medicalProcedure->getInstitutionMedicalProcedures()) )
+// 			$builder->add('medicalProcedureType', 'hidden', array('property_path' => 'medicalProcedureType.id', 'label' => 'Procedure Type'));
+// 		else
+// 			$builder->add('medicalProcedureType', 'medicalproceduretype_list');
 		
 
 		$builder->add('status', 'choice', array('choices' => $status));
