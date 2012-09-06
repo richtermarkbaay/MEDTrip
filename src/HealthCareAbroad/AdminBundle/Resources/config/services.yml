@@ -134,5 +134,92 @@ services:
         calls:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.medical_procedure_type.delete, method: onDelete }       
-        
+            - { name: kernel.event_listener, event: event.medical_procedure_type.delete, method: onDelete }
+
+     ##listener for Tag
+    listener.tag.add:
+        class: HealthCareAbroad\AdminBundle\Listener\TagLogListener
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.tag.add , method: onAdd }
+
+    listener.tag.edit:
+        class: HealthCareAbroad\AdminBundle\Listener\TagLogListener
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.tag.edit , method: onEdit }
+
+    listener.tag.delete:
+        class: HealthCareAbroad\AdminBundle\Listener\TagLogListener
+        calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.tag.delete , method: onDelete }
+
+     ##listener for Inquiry
+    listener.inquiry.add:
+        class: HealthCareAbroad\AdminBundle\Listener\InquiryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.inquiry.add , method: onAdd }
+
+    listener.inquiry.edit:
+        class: HealthCareAbroad\AdminBundle\Listener\InquiryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.inquiry.edit , method: onEdit }
+
+    listener.inquiry.delete:
+        class: HealthCareAbroad\AdminBundle\Listener\InquiryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.inquiry.delete , method: onDelete }
+
+    ##listener for Country
+    listener.country.add:
+        class: HealthCareAbroad\AdminBundle\Listener\CountryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.country.add , method: onAdd }
+
+    listener.country.edit:
+        class: HealthCareAbroad\AdminBundle\Listener\CountryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.country.edit , method: onEdit }
+
+    listener.country.delete:
+        class: HealthCareAbroad\AdminBundle\Listener\CountryLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.country.delete , method: onDelete }
+
+    ##listener for City
+    listener.city.add:
+        class: HealthCareAbroad\AdminBundle\Listener\CityLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.city.add , method: onAdd }
+
+    listener.city.edit:
+         class: HealthCareAbroad\AdminBundle\Listener\CityLogListener
+         calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+         tags:
+            - { name: kernel.event_listener, event: event.city.edit , method: onEdit }
+
+    listener.city.delete:
+        class: HealthCareAbroad\AdminBundle\Listener\CityLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.city.delete , method: onDelete }
