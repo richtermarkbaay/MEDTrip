@@ -64,12 +64,12 @@ institution_homepage:
 #    pattern:  /createtoken
 #    defaults: { _controller: InstitutionBundle:Token:create }
 #
-#institution_invitation:
-#    pattern:  /invite-institution
-#    defaults: { _controller: InstitutionBundle:Institution:invite }
-#    requirements:
-#       _method:  GET|POST
-#
+institution_invitation:
+    pattern:  /invite-institution
+    defaults: { _controller: InstitutionBundle:Institution:invite }
+    requirements:
+       _method:  GET|POST
+
 InstitutionBundle_confirmed_token:
     pattern:  /confirm/t={token}
     defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
