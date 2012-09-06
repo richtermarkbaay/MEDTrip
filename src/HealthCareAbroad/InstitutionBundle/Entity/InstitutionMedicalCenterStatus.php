@@ -2,15 +2,17 @@
 namespace HealthCareAbroad\InstitutionBundle\Entity;
 final class InstitutionMedicalCenterStatus {
     
-    const DRAFT = 0;
+    const INACTIVE = 0;
     
-    const ACTIVE = 1;
+    const APPROVED = 1;
     
-    const PENDING = 2;
+    const DRAFT = 2;
     
-    const EXPIRED = 3;
+    const PENDING = 3;
     
-    const ARCHIVED = 4;
+    const EXPIRED = 4;
+    
+    const ARCHIVED = 5;
     
     static public function getStatusList()
     {
