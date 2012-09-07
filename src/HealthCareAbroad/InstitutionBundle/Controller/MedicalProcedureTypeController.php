@@ -2,6 +2,14 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
+
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
@@ -116,6 +124,16 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             $em->persist($institutionMedicalProcedureType);
             $em->flush($institutionMedicalProcedureType);
             
+            if($isNew) {
+	            //// create event on adding institutionMedicalProcedureTypes and dispatch
+	            $event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
+	            $this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+            }
+            else {
+            	//// create event on editing institutionMedicalProcedureTypes and dispatch
+            	$event = new CreateInstitutionMedicalProcedureTypeEvent($procedureType);
+            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+            }
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
@@ -201,8 +219,19 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionMedicalProcedure);
             $em->flush();
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");
             
+            if($isNew) {
+            	//// create event on adding institutionMedicalProcedureTypes and dispatch
+            	$event = new CreateInstitutionMedicalProcedureEvent($institutionMedicalProcedure);
+            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
+            }
+            else {
+            	//// create event on editing institutionMedicalProcedureTypes and dispatch
+            	$event = new CreateInstitutionMedicalProcedureTypeEvent($procedureType);
+            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
+            }
+            
+            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");
             return $this->redirect($this->generateUrl('institution_medicalCenter_editProcedureType', array('imcId' => $institutionMedicalProcedureType->getInstitutionMedicalCenter()->getId(),'imptId' => $institutionMedicalProcedureType->getId())));
         }
         

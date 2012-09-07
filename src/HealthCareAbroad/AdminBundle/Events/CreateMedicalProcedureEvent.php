@@ -5,7 +5,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
-class CreateMedicalCenterEvent extends Event
+class CreateMedicalProcedureEvent extends Event
 {
 	protected $procedure;
 	

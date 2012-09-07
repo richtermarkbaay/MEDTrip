@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
@@ -83,6 +87,17 @@ class MedicalCenterController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionMedicalCenter);
             $em->flush();
+            
+            if($isNew) {
+	            //// create event on adding medicalCenters and dispatch
+	            $event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+	            $this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
+            }
+            else {
+            	//// create event on edit medical Centers and dispatch
+            	$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
+            }
             
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionMedicalCenter->getId())));
