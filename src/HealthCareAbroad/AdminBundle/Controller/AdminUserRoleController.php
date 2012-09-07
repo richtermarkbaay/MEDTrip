@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\AdminUserRoleEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateAdminUserRoleEvent;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -74,6 +78,11 @@ class AdminUserRoleController extends Controller
         try {
             $em->persist($userType);
             $em->flush();
+            
+            //// create event on addRoleToUserType and dispatch
+            $event = new CreateAdminUserRoleEvent($roles);
+            $this->get('event_dispatcher')->dispatch(AdminUserRoleEvents::ON_ADD_ADMIN_USER_ROLE, $event);
+            
         }
         catch (\PDOException $e) {
             return $this->_errorResponse(500, $e->getMessage());

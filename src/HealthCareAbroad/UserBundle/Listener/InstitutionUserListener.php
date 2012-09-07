@@ -33,4 +33,9 @@ class InstitutionUserListener
         }
     }
     
+    public function onChangePassword()
+    {
+    	
+    }
+    
 }

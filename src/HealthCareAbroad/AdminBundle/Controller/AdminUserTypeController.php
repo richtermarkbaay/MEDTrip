@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\AdminUserTypeEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateAdminUserTypeEvent;
+
 use HealthCareAbroad\UserBundle\Form\AdminUserTypeFormType;
 
 use HealthCareAbroad\UserBundle\Entity\AdminUserType;
@@ -94,6 +98,10 @@ class AdminUserTypeController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($userType);
             $em->flush();
+            
+            //// create event on addRoleToUserType and dispatch
+            $event = new CreateAdminUserTypeEvent($userType);
+            $this->get('event_dispatcher')->dispatch(AdminUserTypeEvents::ON_ADD_ADMIN_USER_TYPE, $event);
             
             $request->getSession()->setFlash("success", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('admin_userType_index'));

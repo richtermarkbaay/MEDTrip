@@ -1,8 +1,12 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionInvitationEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvents;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
+
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
@@ -42,6 +46,10 @@ class InstitutionController extends Controller
 				
 				//send institution invitation
 				$sendingResult = $this->get('services.invitation')->sendInstitutionInvitation($invitation);
+				
+				//// create event on invite institution and dispatch
+				$event = new CreateInstitutionInvitationEvent($invitation);
+				$this->get('event_dispatcher')->dispatch(InstitutionInvitation::ON_ADD_INSTITUTION_INVITATION, $event);
 				
 				if ($sendingResult) {
 					$this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
@@ -86,7 +94,7 @@ class InstitutionController extends Controller
 				
 				$institution = $this->get('services.institution')->updateInstitution($institution);
 				
-				//create editInstitution event and dispatch
+				//create event on editInstitution and dispatch
 				$event = new CreateInstitutionEvent($institution, $user);
 				$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
 				

@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
@@ -73,6 +77,11 @@ class MedicalCenterController extends Controller
    			$em->persist($medicalCenter);
    			$em->flush($medicalCenter);
 
+   			
+   			//// create event on addMedicalcenter and dispatch
+   			$event = new CreateMedicalCenterEvent($medicalCenter);
+   			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_ADD_MEDICAL_CENTER, $event);
+   			
    			$request->getSession()->setFlash('success', 'Medical center saved!');
 
    			if($request->get('submit') == 'Save')
@@ -105,6 +114,11 @@ class MedicalCenterController extends Controller
 			$medicalCenter->setStatus($medicalCenter->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
 			$em->persist($medicalCenter);
 			$em->flush($medicalCenter);
+			
+			//// create event on editMedicalCEnter and dispatch
+			$event = new CreateMedicalCenterEvent($medicalCenter);
+			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_EDIT_MEDICAL_CENTER, $event);
+			
 			$result = true;
 		}
 

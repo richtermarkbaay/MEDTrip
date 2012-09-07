@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\MedicalProcedureTypeEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalProcedureTypeEvent;
+
 use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -116,7 +120,18 @@ class MedicalProcedureTypeController extends Controller
 		if ($form->isValid()) {
 			$em->persist($procedureType);
 			$em->flush($procedureType);
-
+	
+			if($id) {
+				//// create event on addMedicalProcedureType and dispatch
+				$event = new CreateMedicalProcedureTypeEvent($procedureType);
+				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_ADD_MEDICAL_PROCEDURE_TYPE, $event);
+			}
+			else{
+				//// create event on editMedicalProcedureType and dispatch
+				$event = new CreateMedicalProcedureTypeEvent($procedureType);
+				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
+			}
+			
 			$request->getSession()->setFlash('success', $id ? "Successfully updated {$procedureType->getName()}." : "Successfully added {$procedureType->getName()}.");
 
 			if($request->get('submit') == 'Save')
@@ -166,6 +181,11 @@ class MedicalProcedureTypeController extends Controller
 			$procedureType->setStatus($status);
 			$em->persist($procedureType);
 			$em->flush($procedureType);
+			
+			//// create event on editMedicalProcedureType and dispatch
+			$event = new CreateMedicalProcedureTypeEvent($procedureType);
+			$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
+			
 			$result = true;
 		}
 
