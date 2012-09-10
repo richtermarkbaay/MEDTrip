@@ -92,16 +92,7 @@
 	<script type="text/javascript">
 		$(function(){
 
-		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {
-			    autoOpen: false,
-			    height: 'auto',
-			    width: 700,
-			    modal: true,
-			    resizable: false,
-			    close: function() {
-			        $('#dialog-container').html("");
-			    }
-			});
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
 
 		    $('a.view-edit-history-link').click(function(){
 		        EntityVersionHistory.viewHistory($(this));

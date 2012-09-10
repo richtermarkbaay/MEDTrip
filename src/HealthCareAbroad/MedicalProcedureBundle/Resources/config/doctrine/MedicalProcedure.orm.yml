@@ -1,7 +1,10 @@
 HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
     type: entity
     table: medical_procedures
-    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalProcedureRepository    
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalProcedureRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry    
     fields:
         id:
             id: true
@@ -15,6 +18,8 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
             length: 250
             fixed: false
             nullable: false
+            gedmo:
+                - versioned
         slug:
             type: string
             length: 100
