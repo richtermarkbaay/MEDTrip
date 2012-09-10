@@ -12,14 +12,25 @@ use HealthCareAbroad\MedicalProcedureBundle\Form\DataTransformer\MedicalCenterSt
 
 class MedicalCenterType extends AbstractType
 {
+	protected $doctrine;
+	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$medicalCenter = $options['data'];
+
 		$status = array(
 			MedicalCenter::STATUS_ACTIVE => 'active',
 			MedicalCenter::STATUS_INACTIVE => 'inactive'
 		);
 
-		$builder->add('name');
+		$institutionMedicalCenterRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+		$hasInstitutionMedicalCenter = $institutionMedicalCenterRepo->getCountByMedicalCenterId($medicalCenter->getId());
+
+		if($medicalCenter->getId() && $hasInstitutionMedicalCenter)
+			$builder->add('name', 'text', array('virtual' => true, 'read_only' => true));
+		else 
+			$builder->add('name');			
+
 		$builder->add('description');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
@@ -34,5 +45,10 @@ class MedicalCenterType extends AbstractType
 	public function getName()
 	{
 		return 'medicalCenter';
+	}
+	
+	public function setDoctrine($doctrine)
+	{
+		$this->doctrine = $doctrine;
 	}
 }

@@ -40,8 +40,17 @@
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 				
 				<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-	
-					{{ form_row(form.name) }}
+
+					{% if form.children.name.vars.read_only %}
+					    <div>
+							{{ form_label(form.name) }}
+							<span class="fixed-value">{{ form.vars.value.name }}</span>
+						</div>
+					{% else %}
+					    {{ form_row(form.name) }}
+					{% endif %}
+
+					
 					{{ form_row(form.description) }}
 					{{ form_rest(form) }}
 					

@@ -57,7 +57,10 @@ class MedicalProcedureController extends Controller
     		$formActionParams['medicalProcedureTypeId'] = $medicalProcedureTypeId;
     	}
 
-    	$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
+    	$medicalProcedureForm = new MedicalProcedureFormType();
+    	$medicalProcedureForm->setDoctrine($this->getDoctrine());
+
+    	$form = $this->createForm($medicalProcedureForm, $procedure);    	
 
     	$params['form'] = $form->createView();
     	$params['formAction'] = $this->generateUrl('admin_medicalProcedure_create', $formActionParams);
@@ -79,7 +82,10 @@ class MedicalProcedureController extends Controller
     		}
     	}
 
-    	$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
+    	$medicalProcedureForm = new MedicalProcedureFormType();
+    	$medicalProcedureForm->setDoctrine($this->getDoctrine());
+
+    	$form = $this->createForm($medicalProcedureForm, $procedure);
 
     	$params['form'] = $form->createView();
     	$params['formAction'] = $this->generateUrl('admin_medicalProcedure_update', array('id' => $procedure->getId()));
@@ -108,7 +114,10 @@ class MedicalProcedureController extends Controller
 		} else $procedure = new MedicalProcedure();
 
 
-		$form = $this->createForm(new MedicalProcedureFormType(), $procedure);
+    	$medicalProcedureForm = new MedicalProcedureFormType();
+    	$medicalProcedureForm->setDoctrine($this->getDoctrine());
+
+    	$form = $this->createForm($medicalProcedureForm, $procedure);
 		$form->bind($request);
 
 		if ($form->isValid()) {
