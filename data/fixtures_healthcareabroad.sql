@@ -275,6 +275,43 @@ CREATE TABLE IF NOT EXISTS `countries` (
 
 INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_logs`
+--
+
+DROP TABLE IF EXISTS `error_logs`;
+CREATE TABLE IF NOT EXISTS `error_logs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `error_type` smallint(1) unsigned NOT NULL,
+  `message` varchar(500) NOT NULL,
+  `stacktrace` text NOT NULL,
+  `http_user_agent` varchar(500) NOT NULL,
+  `remote_address` varchar(50) NOT NULL,
+  `server_json` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_reports`
+--
+
+DROP TABLE IF EXISTS `error_reports`;
+CREATE TABLE IF NOT EXISTS `error_reports` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `reporter_name` varchar(250) NOT NULL,
+  `details` text NOT NULL,
+  `logged_user_id` bigint(20) unsigned DEFAULT '0',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` smallint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -711,6 +748,27 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `version_entries`
+--
+
+DROP TABLE IF EXISTS `version_entries`;
+CREATE TABLE IF NOT EXISTS `version_entries` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `action` varchar(250) NOT NULL,
+  `logged_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `object_id` bigint(20) unsigned DEFAULT NULL,
+  `object_class` varchar(500) NOT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `username` varchar(250) DEFAULT NULL,
+  `data` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
 
 --
 -- Constraints for dumped tables
