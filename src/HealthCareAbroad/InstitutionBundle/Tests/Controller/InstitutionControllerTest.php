@@ -18,16 +18,15 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 		$url = '/invite-institution';
 		
 		$client = static::createClient();
-		$crawler = $client->request('GET', $url);
+		$crawler = $client->request('POST', $url);
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name")')->count()); // look for the Current name text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count()); // look for the Current email text
-		
-		$form = $crawler->selectButton('submit')->form();
 		
 		$formValues = array(
 				'institutionInvitation[name]' => 'alnie jacobe',
 				'institutionInvitation[email]' => 'test@yahoo.com',
 		);
+		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $formValues);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode()); 
 		$this->assertGreaterThan(0,$crawler->filter('html:contains("Invitation sent to test@yahoo.com")')->count());

@@ -99,7 +99,7 @@ class AdminUserTypeController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            //// create event on addRoleToUserType and dispatch
+            //// create event on addUserType and dispatch
             $event = new CreateAdminUserTypeEvent($userType);
             $this->get('event_dispatcher')->dispatch(AdminUserTypeEvents::ON_ADD_ADMIN_USER_TYPE, $event);
             
