@@ -1921,3 +1921,13 @@ a.icon-type:hover {
 	background-color: #fff;
 }
 /* end Institution Medical Center styles */
+
+/** versioning styles **/
+ul.version-edit-list {
+	list-style: none;
+}
+
+ul.version-edit-list label.field {
+	font-weight: bold;
+}
+/** end versioning styles **/
