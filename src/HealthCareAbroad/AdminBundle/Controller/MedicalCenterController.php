@@ -26,10 +26,7 @@ class MedicalCenterController extends Controller
      */
     public function addAction()
     {
-    	$medicalCenterForm = new MedicalCenterType();
-    	$medicalCenterForm->setDoctrine($this->getDoctrine());
-
-    	$form = $this->createForm($medicalCenterForm, new MedicalCenter());
+    	$form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
 			'id' => null,
@@ -45,11 +42,8 @@ class MedicalCenterController extends Controller
     {
     	$medicalCenter = $this->getDoctrine()->getEntityManager()
     			->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
-    	
-    	$medicalCenterForm = new MedicalCenterType();
-    	$medicalCenterForm->setDoctrine($this->getDoctrine());
 
-    	$form = $this->createForm($medicalCenterForm, $medicalCenter);
+    	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
 			'id' => $id,
@@ -76,10 +70,7 @@ class MedicalCenterController extends Controller
 				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
 				: new MedicalCenter();
 
-    	$medicalCenterForm = new MedicalCenterType();
-    	$medicalCenterForm->setDoctrine($this->getDoctrine());
-
-    	$form = $this->createForm($medicalCenterForm, $medicalCenter);
+    	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
    		$form->bind($request);
 
    		if ($form->isValid()) {

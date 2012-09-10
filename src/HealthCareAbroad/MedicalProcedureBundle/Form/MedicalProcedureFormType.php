@@ -22,8 +22,6 @@ class MedicalProcedureFormType extends AbstractType
 			MedicalProcedure::STATUS_ACTIVE => 'active',
 			MedicalProcedure::STATUS_INACTIVE => 'inactive'
 		);
-
-		$builder->add('name');
 		
 		if ($medicalProcedure->getId()) {
 			$institutionMedicalProcedureRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedure');
@@ -40,6 +38,7 @@ class MedicalProcedureFormType extends AbstractType
 		    $builder->add('medicalProcedureType', 'medicalproceduretype_list');
 		}
 
+		$builder->add('name');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 

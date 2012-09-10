@@ -25,9 +25,6 @@ class MedicalProcedureTypeFormType extends AbstractType
 			MedicalProcedureType::STATUS_INACTIVE => 'inactive'
 		);
 
-		$builder->add('name');
-		$builder->add('description');
-
 		if ($medicalProcedureType->getId()) {
 			$medicalProcedureRepo = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalProcedure');
  			$hasMedicalProcedureType = $medicalProcedureRepo->getCountByMedicalProcedureTypeId($medicalProcedureType->getId());
@@ -35,15 +32,19 @@ class MedicalProcedureTypeFormType extends AbstractType
  			$institutionMedicalProcedureTypeRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedureType');
  			$hasInstitutionMedicalProcedureType = $institutionMedicalProcedureTypeRepo->getCountByMedicalProcedureTypeId($medicalProcedureType->getId());
 
-			if($hasInstitutionMedicalProcedureType || $hasMedicalProcedureType)
+			if($hasInstitutionMedicalProcedureType || $hasMedicalProcedureType) {
 		        $builder->add('medicalCenter', 'hidden', array('virtual' => true, 'label' => 'Medical Center', 'read_only' => true));
-			else
+			}
+			else {
 				$builder->add('medicalCenter', 'medicalCenter_list');
+			}
 		}
 		else {
 		    $builder->add('medicalCenter', 'medicalCenter_list');
 		}
 
+		$builder->add('name');
+		$builder->add('description');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 
