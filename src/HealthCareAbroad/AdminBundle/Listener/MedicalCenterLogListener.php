@@ -19,15 +19,15 @@ class MedicalCenterLogListener
 		$this->em = $em;
 	}
 
-	public function onDelete(CreateAdminUserEvent $event){
+	public function onDelete(CreateMedicalCenterEvent $event){
 
 	}
 
-	public function onEdit(CreateAdminUserEvent $event){
+	public function onEdit(CreateMedicalCenterEvent $event){
 		 
 	}
 
-	public function onAdd(CreateAdminUserEvent $event)
+	public function onAdd(CreateMedicalCenterEvent $event)
 	{
 		 
 	}

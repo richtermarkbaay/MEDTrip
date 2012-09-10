@@ -1,21 +1,36 @@
-<table id="medical-center-list" class="generic-table" width="70%">
+<table id="medical-center-list" class="generic-table" width="100%">
 	<tr>
-		<th class="minwidth-1" width="5%"><a href="">Version #</a></th>
+		<th  width="1%"><a href="">Version</a></th>
 		<th class="minwidth-1"><a href="">Log Date</a></th>
 		<th class="minwidth-1"><a href="">Author</a></th>
-		<th class="minwidth-1"><a href="">Data</a></th>
+		<th class="minwidth-1"><a href="">Version Data</a></th>
 	</tr>
 
 {% for version in versions %}
 	<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 		<td>{{ version.version }}</td>
 		<td>{{ version.loggedAt | date("Y-m-d")}}</td>
-		<td>{{ version.username }}</td>
-		<td>{{ unserialize(version.data) }}
-		
+		<td>
+		    {% set accountData = getAccountDataById(version.username) %}
+		    {% if accountData %}
+		        {{ accountData.first_name }} {{ accountData.last_name }}
+		    {% else %}
+		        User id {{ version.username }} not found    
+		    {% endif %}
+		</td>
+		<td>
+		    <ul class="version-edit-list">
+		    
+		    {% for key, value in version.data %}
+		        <li>
+		            <label class="field"> {{ key | title }}:</label>
+                    {{ value }}
+		        </li>
+		    {% endfor %}
+		    </ul>
 		</td>
 	</tr>
 {% else  %}
-	<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+	<tr><td class="empty-list" colspan="4">No records yet!</td></tr>
 {% endfor %}
 </table>

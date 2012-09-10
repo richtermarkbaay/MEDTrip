@@ -31,8 +31,9 @@
 						}, {
 						    title: 'View edit history',
 						    href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }),
+						    class: 'view-edit-history-link',
 						    description: 'Show all the changes made to this center type content',
-						    links: [{title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
+						    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
 						}] | merge(contents)
 					%}
 				{% endif %}
@@ -93,4 +94,20 @@
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}

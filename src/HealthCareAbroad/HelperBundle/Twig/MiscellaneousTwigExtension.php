@@ -30,10 +30,4 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     {
         return 'miscellaneous';
     }
-    
-    public function unserialize($a)
-    {
-        var_dump($a); exit;
-        return \unserialize($a);
-    }
 }
