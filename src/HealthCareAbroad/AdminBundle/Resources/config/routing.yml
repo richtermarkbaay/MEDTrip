@@ -37,7 +37,7 @@ AdminBundle_settings:
 # vier edit    
 admin_showEditHistory:
     pattern: /admin/edit-history
-    defaults: { _controller: AdminBundle:Default:showEditHistory, objectId: ~, objectClass: ~ }
+    defaults: { _controller: AdminBundle:Default:showEditHistory }
     requirements:
         _method: GET
         objectId: \d+    

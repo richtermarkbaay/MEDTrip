@@ -29,6 +29,13 @@
 							'description': 'add new procedure for this procedure type',
 							'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId:medicalProcedureType.id}), 
 							'links': [{'title': 'add procedure', 'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId: medicalProcedureType.id} )}]
+						},
+						{
+						    title: 'View version history',
+						    href: path('admin_showEditHistory', {'objectId': medicalProcedureType.id, 'objectClass': base64_encode(getClass(medicalProcedureType)) }),
+						    class: 'view-edit-history-link',
+						    description: 'Show all the changes made to this center type content',
+						    links: [{class: 'view-edit-history-link', title: 'View versions', href: path('admin_showEditHistory', {'objectId': medicalProcedureType.id, 'objectClass': base64_encode(getClass(medicalProcedureType)) }) }]
 						}] | merge(contents)
 					%}
 				{% endif %}
@@ -104,4 +111,20 @@
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}
