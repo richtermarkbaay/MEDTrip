@@ -27,6 +27,14 @@ services:
             - [setSession, [@session]]
             - [setSecurityContext, [@security.context]]
             
+    services.user.twig.extension:
+        class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
+        public: false
+        calls:
+            - [setUserService, [@services.user]]
+        tags:
+            - { name: twig.extension }
+            
     ## listeners below
     listener.user.institution_user.create:
         class: HealthCareAbroad\UserBundle\Listener\InstitutionUserListener
