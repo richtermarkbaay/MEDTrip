@@ -31,8 +31,9 @@
 						}, {
 						    title: 'View edit history',
 						    href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }),
+						    class: 'view-edit-history-link',
 						    description: 'Show all the changes made to this center type content',
-						    links: [{title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
+						    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
 						}] | merge(contents)
 					%}
 				{% endif %}
@@ -84,4 +85,40 @@
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    $('#dialog-container').dialog({
+			    autoOpen: false,
+			    height: 'auto',
+			    width: 700,
+			    modal: true,
+			    resizable: false,
+			    close: function() {
+			        $('#dialog-container').html("");
+			    }
+			});
+
+		    $('a.view-edit-history-link').click(function(){
+		        _url = $(this).attr('href');
+		        $('#dialog-container').dialog("option", 'title', 'Version History');
+			    $('#dialog-container').dialog({
+		            open: function() {
+		                $.ajax(_url)
+		                    .done(function (data) {
+		                        $('#dialog-container').html(data);
+		                    }
+		                );
+		            },
+		        });
+		        $('#dialog-container').dialog("open");
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}
