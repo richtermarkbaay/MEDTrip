@@ -99,7 +99,7 @@ class InstitutionController extends Controller
 
 	/**
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-	 * @param int $id
+	 * @param int $institutionId
 	 */
 	public function manageCentersAction($institutionId)
 	{
