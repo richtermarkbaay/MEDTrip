@@ -4,6 +4,8 @@ namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
+use \HCA_DatabaseManager;
+
 class DefaultControllerTest extends AdminBundleWebTestCase
 {
     public function testIndex()
@@ -43,5 +45,19 @@ class DefaultControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithMockLoggedUser();
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Access is forbidden to not allowed roles");
+    }
+    public function testErrorReport()
+    {
+   		
+    	$formData = array(
+    			'errorReport[reporterName]' => 'test Reporter Name',
+    			'errorReport[details]' => 'Lorem Lorem ipsum dolor sit amit!',
+ 
+    	);
+    	
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('POST', '/admin/settings/user-types/error-report', $formData);
+    	
+    	$this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }
