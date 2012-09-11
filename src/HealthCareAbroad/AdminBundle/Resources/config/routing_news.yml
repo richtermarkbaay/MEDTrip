@@ -1,0 +1,37 @@
+admin_news_index:
+    pattern:  /admin/news
+    defaults: { _controller: AdminBundle:News:index, status: 1 }
+    requirements:    
+        _method:  GET
+
+admin_news_add:
+    pattern:  /admin/news/add
+    defaults: { _controller: AdminBundle:News:add }
+    requirements:    
+        _method:  GET
+        
+admin_news_create:
+    pattern:  /admin/news/add
+    defaults: { _controller: AdminBundle:News:save }
+    requirements:
+         _method: POST
+         
+admin_news_edit:
+    pattern:  /admin/news/edit/{id}
+    defaults: { _controller: AdminBundle:News:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_news_update:
+    pattern:  /admin/news/edit/{id}
+    defaults: { _controller: AdminBundle:News:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_news_updateStatus:
+    pattern:  /admin/news/update-status/{id}
+    defaults: { _controller: AdminBundle:News:updateStatus, id: ~ }
+    requirements:
+        id: \d+

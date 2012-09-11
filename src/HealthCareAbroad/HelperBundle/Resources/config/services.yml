@@ -64,6 +64,8 @@ services:
         tags:
             - { name: form.type, alias: tagtype_list }
             
+    
+            
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
         calls:
@@ -91,3 +93,11 @@ services:
             - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    
+    listener.mailer.error_report.create:
+        class: HealthCareAbroad\MailerBundle\Listener\ErrorReportListener
+        calls:
+            - [setTwig, [@twig]]
+            - [setMailer, [@mailer]]
+        tags:
+            - { name: kernel.event_listener, event: event.errorReport.create, method: onCreate }

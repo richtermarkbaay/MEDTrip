@@ -10,27 +10,26 @@
 			<!--  start table-content  -->
 			<div id="table-content">
 			    
+		        {% if reportSubmitted is defined and reportSubmitted %}
+		        {% include '::notice.admin.html.twig' %}
+			    {% else %}
     		    <h1>Oops! An error occurred</h1>
     		    
                 <h2 style="margin-top: 20px;">The server returned a "{{ status_code }} {{ status_text }}".</h2>
-        
+                {% endif %}     
+    		        
                 <div style="margin-top: 20px;">
                     Something is broken and this has been logged. Please let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused.
-                    
-                    <form style="margin-top:20px;" class="basic-form" method="post" action="#">
-                        <div>
-                            <label>Your name:</label>
-                            <input type="text" name="name" />
-                        </div>
-                        
-                        <div>        
-                            <label>Details:</label>
-                            <textarea name="details" ></textarea>
-                        </div>
-                        
-                        <input class="form-submit" type="submit" name="submit" />
-                        
-                    </form>
+                                 
+			        <form style="margin-top:20px;" action="{{ path('admin_exception_report_create') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+							
+						{{ form_row(form.reporterName) }}					
+						{{ form_row(form.details) }}
+						{{ form_rest(form) }}
+		
+				   		<input type="submit" class="form-submit" name="submit"/>
+				   		
+					</form>
                     
                 </div>
     			
