@@ -25,6 +25,16 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        $mailer = $this->get('mailer');
+        var_dump($mailer);
+        $message = \Swift_Message::newInstance()
+        ->setSubject('New Error Report')
+        ->setFrom('chris.velarde@chromedia.com')
+        ->setTo('chaztine.blance@chromedia.com')
+        ->setBody('watatadsfsdf');
+        $sendResult = $mailer->send($message);
+        exit;
+        
         return $this->render('AdminBundle:Default:index.html.twig');
     }
 
