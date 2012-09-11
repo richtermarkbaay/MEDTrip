@@ -32,17 +32,6 @@
 			
 			<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
-			    {# ----
-				{% if (isAddFromSpecificType is defined) or ((hasInstitutionMedicalProcedures is defined) and hasInstitutionMedicalProcedures) %}
-					<div>
-						{{ form_label(form.medicalProcedureType) }}
-						<span class="fixed-value">{{ form.vars.value.medicalProcedureType.name }}</span>
-					</div>
-				{% else %}
-					{{ form_row(form.medicalProcedureType) }}
-				{% endif %}
-				---- #}
-				
 				{% if form.children.medicalProcedureType.vars.read_only %}
 				    <div>
 						{{ form_label(form.medicalProcedureType) }}

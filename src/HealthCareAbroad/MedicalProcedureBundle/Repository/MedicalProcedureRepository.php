@@ -36,6 +36,20 @@ class MedicalProcedureRepository extends EntityRepository
 		return $query->getResult();
 	}
 	
+	public function getCountByMedicalProcedureTypeId($medicalProcedureTypeId) {
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		$qb->select('count(a)')
+	        ->from('MedicalProcedureBundle:MedicalProcedure', 'a')
+	        ->where('a.status = :active')
+	        ->andWhere('a.medicalProcedureType = :medicalPRocedureTypeId')
+			->setParameter('active', MedicalProcedure::STATUS_ACTIVE)
+			->setParameter('medicalPRocedureTypeId', $medicalProcedureTypeId);
+		
+		$count = (int)$qb->getQuery()->getSingleScalarResult();
+		
+		return $count;
+	}
+	
 	/**
 	 * Get query builder for getting available MedicalProcedures that can be used by InstitutionMedicalProcedureType 
 	 * 

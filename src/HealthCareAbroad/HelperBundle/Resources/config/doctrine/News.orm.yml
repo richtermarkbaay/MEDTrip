@@ -1,0 +1,35 @@
+HealthCareAbroad\HelperBundle\Entity\News:
+    type: entity
+    table: news
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\NewsRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        title:
+            type: string
+            length: 100
+            fixed: false
+            nullable: true
+        description:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        slug:
+            type: string
+            length: 10
+            fixed: true
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    lifecycleCallbacks: {  }

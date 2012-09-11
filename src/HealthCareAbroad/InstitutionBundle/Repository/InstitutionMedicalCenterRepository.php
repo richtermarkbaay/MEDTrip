@@ -3,15 +3,12 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
-
-use Doctrine\ORM\Query\ResultSetMapping;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -22,6 +19,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
+	public function getCountByMedicalCenterId($medicalCenterId) {
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('count(a)')
+		->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+		->andWhere('a.medicalCenter = :medicalCenterId')
+		->setParameter('medicalCenterId', $medicalCenterId);
+	
+		$count = (int)$qb->getQuery()->getSingleScalarResult();
+	
+		return $count;
+	}
+	
 	function getProcedureTypeIdsWithProcedure($medicalCenterId)
 	{
 		$conn = $this->_em->getConnection();

@@ -11,9 +11,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use HealthCareAbroad\MedicalProcedureBundle\Form\DataTransformer\MedicalCenterStatusToBooleanTransformer;
 
 class MedicalCenterType extends AbstractType
-{
+{	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$medicalCenter = $options['data'];
+
 		$status = array(
 			MedicalCenter::STATUS_ACTIVE => 'active',
 			MedicalCenter::STATUS_INACTIVE => 'inactive'

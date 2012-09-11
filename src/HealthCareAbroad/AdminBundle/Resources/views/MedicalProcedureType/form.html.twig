@@ -43,18 +43,7 @@
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 				
 				<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
-	
-	                {# --------
-					{% if (isAddFromSpecificCenter is defined) or ((hasProcedures is defined) and hasProcedures) %}
-						<div>
-							{{ form_label(form.medicalCenter) }}
-							<span class="fixed-value">{{ form.vars.value.medicalCenter }}</span>
-						</div>
-					{% else %}
-						{{ form_row(form.medicalCenter) }}
-					{% endif %}
-					--------- #}
-					
+
 					{% if form.children.medicalCenter.vars.read_only %}
 					    <div>
 							{{ form_label(form.medicalCenter) }}

@@ -1,0 +1,15 @@
+{% block body %}
+	
+	Hello,
+	
+	A new error report has been created. See the following details below:
+	
+	Reporter Name: {{ reporterName }}
+	
+	Details: {{ details }}
+	
+	Date publish: {{ dateCreated|date("m/d/Y") }}
+	
+	Thank you.
+
+{% endblock %}	

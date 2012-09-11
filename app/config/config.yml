@@ -56,6 +56,7 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
+    port: 465
     transport: %mailer_transport%
     host:      %mailer_host%
     username:  %mailer_user%

@@ -29,12 +29,12 @@ class MedicalCenterController extends Controller
     	$form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
-    			'id' => null,
-    			'form' => $form->createView(),  
-    			'formAction' => $this->generateUrl('admin_medicalCenter_create')
+			'id' => null,
+			'form' => $form->createView(),  
+			'formAction' => $this->generateUrl('admin_medicalCenter_create')
     	));
     }
-    
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
@@ -42,14 +42,14 @@ class MedicalCenterController extends Controller
     {
     	$medicalCenter = $this->getDoctrine()->getEntityManager()
     			->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
-    	
+
     	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
-    			'id' => $id,
-    			'medicalCenter' => $medicalCenter,
-    			'form' => $form->createView(),
-    			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
+			'id' => $id,
+			'medicalCenter' => $medicalCenter,
+			'form' => $form->createView(),
+			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
     	));
     }
     
@@ -70,7 +70,7 @@ class MedicalCenterController extends Controller
 				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
 				: new MedicalCenter();
 
-		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+    	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
    		$form->bind($request);
 
    		if ($form->isValid()) {

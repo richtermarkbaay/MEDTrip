@@ -56,8 +56,11 @@ class MedicalProcedureTypeController extends Controller
     		//$params['isAddFromSpecificCenter'] = true;
     		$formActionParams['medicalCenterId'] = $medicalCenterId;
     	}
+		
+    	$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+    	$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
 
-    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+    	$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
 
     	$params['form'] = $form->createView();
     	$params['formAction'] = $this->generateUrl('admin_procedureType_create', $formActionParams);
@@ -79,8 +82,11 @@ class MedicalProcedureTypeController extends Controller
 			throw $this->createNotFoundException("Invalid Medical Procedure Type.");
     	}
 
-    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
-    	
+		$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+		$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+
+		$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
+
     	$params = array(
     		'form' => $form->createView(),
     		'formAction' =>  $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId())),
@@ -114,7 +120,10 @@ class MedicalProcedureTypeController extends Controller
 		    $procedureType = new MedicalProcedureType();
 		}
 
-		$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+		$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+		$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+
+		$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
 		$form->bind($request);
 
 		if ($form->isValid()) {
