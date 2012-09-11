@@ -19,3 +19,4 @@ web/.DS_Store
 MAMP.webarchive
 bin/
 cache/
+.metadata/
