@@ -30,13 +30,13 @@ institution_gallery:
         
 institution_signUp:
     pattern:  /sign-up
-    defaults: {_controller: InstitutionBundle:Institution:signUp }
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
     requirements:
         _method: GET|POST
         
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
-    defaults: { _controller: InstitutionBundle:Institution:loadCities }
+    defaults: { _controller: InstitutionBundle:City:loadCities }
         
 institution_edit_information:
     pattern:  /institution/edit-information/{institutionId}
@@ -66,7 +66,7 @@ institution_homepage:
 #
 institution_invitation:
     pattern:  /invite-institution
-    defaults: { _controller: InstitutionBundle:Institution:invite }
+    defaults: { _controller: InstitutionBundle:InstitutionSignUp:invite }
     requirements:
        _method:  GET|POST
 
