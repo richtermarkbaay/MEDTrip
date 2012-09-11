@@ -26,11 +26,10 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $mailer = $this->get('mailer');
-        var_dump($mailer);
         $message = \Swift_Message::newInstance()
         ->setSubject('New Error Report')
         ->setFrom('chris.velarde@chromedia.com')
-        ->setTo('chaztine.blance@chromedia.com')
+        ->setTo('chris.velarde@chromedia.com')
         ->setBody('watatadsfsdf');
         $sendResult = $mailer->send($message);
         exit;
