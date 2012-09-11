@@ -36,7 +36,7 @@ institution_signUp:
         
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
-    defaults: { _controller: InstitutionBundle:City:loadCities }
+    defaults: { _controller: HelperBundle:Default:loadCities }
         
 institution_edit_information:
     pattern:  /institution/edit-information/{institutionId}
