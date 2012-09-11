@@ -30,5 +30,7 @@ class NewsController extends Controller
 				'formAction' => $this->generateUrl('admin_news_create')
 		));
 	}
+	
+	
 
 }
