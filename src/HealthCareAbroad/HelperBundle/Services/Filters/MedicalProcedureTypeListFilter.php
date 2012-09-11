@@ -29,7 +29,7 @@ class MedicalProcedureTypeListFilter extends ListFilter
 
 		// Set The Filter Option 
 		$medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
-		$options = array('all' => 'All');
+		$options = array(ListFilter::FILTER_KEY_ALL => 'All');
 		foreach($medicalCenters as $each) {
 			$options[$each->getId()] = $each->getName();
 		}
@@ -45,7 +45,7 @@ class MedicalProcedureTypeListFilter extends ListFilter
 	{
 		$medicalCenterId = $this->queryParams['medicalCenter'];
 
-		if($medicalCenterId != 'all') {
+		if($medicalCenterId != ListFilter::FILTER_KEY_ALL) {
 			$medicalCenter = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);			
 			$this->criteria['medicalCenter'] = $medicalCenter;
 		}

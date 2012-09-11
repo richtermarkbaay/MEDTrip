@@ -39,6 +39,12 @@ services:
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]]
+        
+    services.miscellaneous.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
 
     form.country_list:
         class: "%services.country_list%"

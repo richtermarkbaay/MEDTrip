@@ -12,15 +12,33 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MedicalProcedureFormType extends AbstractType
 {
+	protected $doctrine;
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$medicalProcedure = $options['data'];
+
 		$status = array(
 			MedicalProcedure::STATUS_ACTIVE => 'active',
 			MedicalProcedure::STATUS_INACTIVE => 'inactive'
 		);
+		
+		if ($medicalProcedure->getId()) {
+			$institutionMedicalProcedureRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedure');
+			$hasInstitutionMedicalProcedure = $institutionMedicalProcedureRepo->getCountByMedicalProcedureId($medicalProcedure->getId());
+
+		    if ($hasInstitutionMedicalProcedure) {
+		        $builder->add('medicalProcedureType', 'hidden', array('virtual' => 'true', 'label' => 'Procedure Type', 'read_only' => true));
+		    }
+		    else {
+		        $builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		    }
+		}
+		else {
+		    $builder->add('medicalProcedureType', 'medicalproceduretype_list');
+		}
 
 		$builder->add('name');
-		$builder->add('medicalProcedureType', 'medicalproceduretype_list');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 
@@ -34,5 +52,9 @@ class MedicalProcedureFormType extends AbstractType
 	public function getName()
 	{
 		return 'medicalProcedure';
+	}
+	
+	function setDoctrine($doctrine) {
+		$this->doctrine = $doctrine;
 	}
 }

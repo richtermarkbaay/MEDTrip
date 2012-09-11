@@ -275,6 +275,43 @@ CREATE TABLE IF NOT EXISTS `countries` (
 
 INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_logs`
+--
+
+DROP TABLE IF EXISTS `error_logs`;
+CREATE TABLE IF NOT EXISTS `error_logs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `error_type` smallint(1) unsigned NOT NULL,
+  `message` varchar(500) NOT NULL,
+  `stacktrace` text NOT NULL,
+  `http_user_agent` varchar(500) NOT NULL,
+  `remote_address` varchar(50) NOT NULL,
+  `server_json` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `error_reports`
+--
+
+DROP TABLE IF EXISTS `error_reports`;
+CREATE TABLE IF NOT EXISTS `error_reports` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `reporter_name` varchar(250) NOT NULL,
+  `details` text NOT NULL,
+  `logged_user_id` bigint(20) unsigned DEFAULT '0',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` smallint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -437,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 --
 
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
-(1, 1, 1, '2012-08-02 03:43:12', 1),
+(1, 1, 2, '2012-08-02 03:43:12', 1),
 (4, 1, 1, '2012-08-02 03:43:12', 1);
 
 
@@ -487,7 +524,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
 --
 
 INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VALUES
-(1, 'add_medical_procedure', 'Add medical procedure', 1);
+(1, 'add_medical_procedure', 'Add medical procedure', 1),
+(2, 'SUPER_ADMIN', 'owner/admin', 3)
+;
 
 -- --------------------------------------------------------
 
@@ -511,7 +550,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
 --
 
 INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
-(1, 1, 'Content Staff', 1);
+(1, 1, 'Content Staff', 1),
+(2, 1, 'SUPER_ADMIN', 3);
 
 -- --------------------------------------------------------
 
@@ -533,8 +573,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
 --
 
 INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
-(1, 1);
-
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -708,6 +748,27 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `version_entries`
+--
+
+DROP TABLE IF EXISTS `version_entries`;
+CREATE TABLE IF NOT EXISTS `version_entries` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `action` varchar(250) NOT NULL,
+  `logged_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `object_id` bigint(20) unsigned DEFAULT NULL,
+  `object_class` varchar(500) NOT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `username` varchar(250) DEFAULT NULL,
+  `data` text,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+
 
 --
 -- Constraints for dumped tables

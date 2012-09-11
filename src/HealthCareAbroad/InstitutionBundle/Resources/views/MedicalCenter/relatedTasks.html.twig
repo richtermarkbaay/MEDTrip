@@ -1,16 +1,18 @@
+{% set imcId = imcId is defined and imcId ? imcId : 0 %}
+
 {% set medicalProcedureTypeTask = {
-    title: 'Medical Procedure Types', 
+    title: 'Add Medical Procedure Type', 
+    class: 'add-procedure-type add-icon',
     isVisible: hideMedicalProcedureTypeTask is defined and hideMedicalProcedureTypeTask ? false: true,
     description: imcId is defined and imcId ? 'Create a new medical procedure type for this medical center': 'Add a new medical procedure type', 
-    href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId is defined ? imcId : 0}), 
+    href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId }), 
     links: [
-        {title: 'View all medical procedure types', 'href': path('institution_medicalCenter_procedureTypes', {'imcId': imcId is defined ? imcId : 0})},
-        {title: 'Add medical procedure type', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId is defined ? imcId : 0})}
+        {class: 'add-procedure-type', title: 'Add medical procedure type', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId})}
     ]} 
 %}
 
 {% set addMedicalCenterTask = {
-    title: "Add Medical Center", 
+    title: "Add Another Medical Center", 
     class: 'add-medical-center add-icon',
     isVisible: hideAddMedicalCenter is defined and hideAddMedicalCenter ? false : true, 
     description: "Add a new medical center that is available in your institution", 

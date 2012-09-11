@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
@@ -25,12 +29,12 @@ class MedicalCenterController extends Controller
     	$form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
-    			'id' => null,
-    			'form' => $form->createView(),  
-    			'formAction' => $this->generateUrl('admin_medicalCenter_create')
+			'id' => null,
+			'form' => $form->createView(),  
+			'formAction' => $this->generateUrl('admin_medicalCenter_create')
     	));
     }
-    
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
@@ -38,13 +42,14 @@ class MedicalCenterController extends Controller
     {
     	$medicalCenter = $this->getDoctrine()->getEntityManager()
     			->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
-    	
+
     	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
 
     	return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
-    			'id' => $id,
-    			'form' => $form->createView(), 
-    			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
+			'id' => $id,
+			'medicalCenter' => $medicalCenter,
+			'form' => $form->createView(),
+			'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
     	));
     }
     
@@ -65,17 +70,25 @@ class MedicalCenterController extends Controller
 				? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
 				: new MedicalCenter();
 
-		$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+    	$form = $this->createForm(new MedicalCenterType(), $medicalCenter);
    		$form->bind($request);
 
    		if ($form->isValid()) {
    			$em->persist($medicalCenter);
    			$em->flush($medicalCenter);
 
+   			
+   			//// create event on addMedicalcenter and dispatch
+   			$event = new CreateMedicalCenterEvent($medicalCenter);
+   			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_ADD_MEDICAL_CENTER, $event);
+   			
    			$request->getSession()->setFlash('success', 'Medical center saved!');
 
-   			return $this->redirect($this->generateUrl('admin_medicalCenter_index'));
-		}
+   			if($request->get('submit') == 'Save')
+   				return $this->redirect($this->generateUrl('admin_medicalCenter_edit', array('id' => $medicalCenter->getId())));
+   			else 
+   				return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
+   		}
 
 		$formAction = $id 
 			? $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
@@ -101,6 +114,11 @@ class MedicalCenterController extends Controller
 			$medicalCenter->setStatus($medicalCenter->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
 			$em->persist($medicalCenter);
 			$em->flush($medicalCenter);
+			
+			//// create event on editMedicalCEnter and dispatch
+			$event = new CreateMedicalCenterEvent($medicalCenter);
+			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_EDIT_MEDICAL_CENTER, $event);
+			
 			$result = true;
 		}
 

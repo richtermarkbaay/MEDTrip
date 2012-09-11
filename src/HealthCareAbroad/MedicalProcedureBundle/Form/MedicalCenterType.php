@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -9,12 +11,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use HealthCareAbroad\MedicalProcedureBundle\Form\DataTransformer\MedicalCenterStatusToBooleanTransformer;
 
 class MedicalCenterType extends AbstractType
-{
+{	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
+		$medicalCenter = $options['data'];
+
+		$status = array(
+			MedicalCenter::STATUS_ACTIVE => 'active',
+			MedicalCenter::STATUS_INACTIVE => 'inactive'
+		);
+
 		$builder->add('name');
 		$builder->add('description');
-		$builder->add('status', 'medicalCenterStatusSelector');
+		$builder->add('status', 'choice', array('choices' => $status));
 	}
 	
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

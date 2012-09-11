@@ -2,6 +2,22 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
+
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
+
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
+
+use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +36,9 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -63,9 +82,15 @@ class InstitutionController extends Controller
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
 		if($institution) {
+			
 			$institution->setStatus($request->get('status'));
 			$em->persist($institution);
 			$em->flush($institution);
+			
+			//TODO:: to create listener for the dispatch event of editInstitution Event
+			$event = new CreateInstitutionEvent($institution, $user);
+			$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+					
 		}
 
 		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
@@ -74,7 +99,7 @@ class InstitutionController extends Controller
 
 	/**
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-	 * @param int $id
+	 * @param int $institutionId
 	 */
 	public function manageCentersAction($institutionId)
 	{
@@ -185,6 +210,10 @@ class InstitutionController extends Controller
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
 
+			//// create event on add institutionMedicalCenter and dispatch
+			$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+			$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
+			
 			$request->getSession()->setFlash('success', 'Medical center has been added!');
 			return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId'=>$institutionId)));
 		} else {
@@ -230,6 +259,11 @@ class InstitutionController extends Controller
 			$institutionMedicalCenter->setStatus($status);
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
+			
+			//// create event on editInstitutionMedicalCenter and dispatch
+			$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+			$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
+			
 			$result = true;
 		}
 
@@ -315,7 +349,7 @@ class InstitutionController extends Controller
 		}
 		
 		$institutionMedicalProcedureType->setInstitutionMedicalCenter($institutionMedicalCenter);
-
+		
 		$form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(),$institutionMedicalProcedureType);
 	
 		return $this->render('AdminBundle:Institution:form.medicalProcedureType.html.twig', array(
@@ -371,6 +405,10 @@ class InstitutionController extends Controller
 			$em->persist($institutionMedicalProcedureType);
 			$em->flush($institutionMedicalProcedureType);
 
+			//// create event on add medicalProcedureTypes and dispatch
+			$event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
+			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+			
 			$request->getSession()->setFlash('success', 'Successfully saved institution procedure type.');
 			return $this->redirect($this->generateUrl('admin_institution_manageProcedureTypes', array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenter->getId())));
 		}
@@ -519,6 +557,11 @@ class InstitutionController extends Controller
 		if ($form->isValid()) {
 			$em->persist($institutionMedicalProcedure);
 			$em->flush($institutionMedicalProcedure);
+			
+			//// create event on addInstitutionMedicalProcedure and dispatch
+			$event = new CreateInstitutionMedicalProcedureEvent($institutionMedicalProcedure);
+			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
+			
 			$request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$institutionMedicalProcedureType->getMedicalProcedureType()->getName()}\" procedure type.");
 
 			return $this->redirect($this->generateUrl('admin_institution_manageProcedureTypes', array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenter->getId()) ));
@@ -544,6 +587,11 @@ class InstitutionController extends Controller
 			$institutionProcedure->setStatus($status);
 			$em->persist($institutionProcedure);
 			$em->flush($institutionProcedure);
+			
+			//// create event on editInsitutionMedicalProcedure and dispatch
+			$event = new CreateInstitutionMedicalProcedureEvent($institutionProcedure);
+			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
+			
 			$result = true;			
 		}
 

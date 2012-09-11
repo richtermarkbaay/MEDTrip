@@ -12,4 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class MediaRepository extends EntityRepository
 {
+    public function findWithInstitution($mediaId, $institutionId)
+    {
+        $dql = 'SELECT m FROM MediaBundle:Media m 
+                LEFT JOIN m.gallery g 
+                LEFT JOIN g.institution i
+                WHERE m.id = :mediaId AND i.id = :institutionId';
+
+        $query = $this->_em->createQuery($dql);
+        $query->setParameter('mediaId', $mediaId);
+        $query->setParameter('institutionId', $institutionId);
+        
+        return $query->getOneOrNullResult();    	
+    }
 }

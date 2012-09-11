@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,7 +14,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalProcedureRepository extends EntityRepository
 {
+	public function getCountByMedicalProcedureId($medicalProcedureId) {
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select('count(a)')
+		->from('InstitutionBundle:InstitutionMedicalProcedure', 'a')
+		->where('a.status = :active')
+		->andWhere('a.medicalProcedure = :medicalProcedureId')
+		->setParameter('active', InstitutionMedicalProcedure::STATUS_ACTIVE)
+		->setParameter('medicalProcedureId', $medicalProcedureId);
 	
+		$count = (int)$qb->getQuery()->getSingleScalarResult();
+
+		return $count;
+	}
+
 	public function updateStatus($id, $value = null)
 	{
 		$result = false;

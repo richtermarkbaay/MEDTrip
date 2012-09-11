@@ -9,9 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class MedicalProcedure
 {
-    const STATUS_ACTIVE = 1;
-    const STATUS_INACTIVE = 0;
-
+	const STATUS_ACTIVE = 1;
+	
+	const STATUS_INACTIVE = 0;
     /**
      * @var integer $id
      */
@@ -33,11 +33,20 @@ class MedicalProcedure
     private $status;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedures;
+
+    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
      */
     private $medicalProcedureType;
 
-
+    public function __construct()
+    {
+        $this->institutionMedicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -115,49 +124,6 @@ class MedicalProcedure
     }
 
     /**
-     * Set medicalProcedureType
-     *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType
-     * @return MedicalProcedure
-     */
-    public function setMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType = null)
-    {
-        $this->medicalProcedureType = $medicalProcedureType;
-        return $this;
-    }
-
-    /**
-     * Get medicalProcedureType
-     *
-     * @return HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType 
-     */
-    public function getMedicalProcedureType()
-    {
-        return $this->medicalProcedureType;
-    }
-    
-//     public static function loadValidatorMetadata(ClassMetadata $metadata)
-//     {
-//     	$metadata->addPropertyConstraint('name', new NotBlank());
-    
-//     	$metadata->addPropertyConstraint('email', new Email());
-    
-//     	$metadata->addPropertyConstraint('subject', new NotBlank());
-//     	$metadata->addPropertyConstraint('subject', new MaxLength(50));
-    
-//     	$metadata->addPropertyConstraint('body', new MinLength(50));
-//     }
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionMedicalProcedures;
-
-    public function __construct()
-    {
-        $this->institutionMedicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
-    /**
      * Add institutionMedicalProcedures
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure $institutionMedicalProcedures
@@ -187,5 +153,32 @@ class MedicalProcedure
     public function getInstitutionMedicalProcedures()
     {
         return $this->institutionMedicalProcedures;
+    }
+
+    /**
+     * Set medicalProcedureType
+     *
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType
+     * @return MedicalProcedure
+     */
+    public function setMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureType = null)
+    {
+        $this->medicalProcedureType = $medicalProcedureType;
+        return $this;
+    }
+
+    /**
+     * Get medicalProcedureType
+     *
+     * @return HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType 
+     */
+    public function getMedicalProcedureType()
+    {
+        return $this->medicalProcedureType;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

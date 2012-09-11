@@ -1,0 +1,39 @@
+
+<div class="tabbed-medical-procedure-type-detail" >
+    
+    <div class="action-buttons">    
+        <a title="Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': institutionMedicalCenter.id,'imptId': institutionMedicalProcedureType.id}) }}">Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}</a>
+        <a title="Add {{ institutionMedicalProcedureType.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
+    </div>
+    
+    <div class="details">
+        {% if institutionMedicalProcedureType.description | length > 1000 %}
+            {{ institutionMedicalProcedureType.description | slice(0, 1000)}}...
+        {% else %}
+            {{ institutionMedicalProcedureType.description }}
+        {% endif %}
+    </div>
+    
+    
+    <table class="generic-table" id="medical-procedures-list">
+    	<tr>
+    		<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+    		<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+    		<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+    	</tr>
+    
+        {% for procedure in institutionMedicalProcedureType.institutionMedicalProcedures %}
+    		{% set medicalProcedure = procedure.medicalProcedure %}
+    		<tr>
+    			<td>{{ medicalProcedure.name }}</td>
+    			<td>{{ procedure.description }}</td>  
+    			<td>
+    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_medicalProcedureType_editMedicalProcedure', {'imptId': institutionMedicalProcedureType.id, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+    			</td>
+    		</tr>
+    	{% else  %}
+    		<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+    	{% endfor %}
+    </table>
+    
+</div>

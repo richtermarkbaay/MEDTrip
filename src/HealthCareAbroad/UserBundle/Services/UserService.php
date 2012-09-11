@@ -186,6 +186,11 @@ class UserService
         }
     }
     
+    public function getAccountDataById($id)
+    {
+        return $this->find(array('id' => $id), array());
+    }
+    
     /**
      * Find an account in global chromedia by accountId
      * 

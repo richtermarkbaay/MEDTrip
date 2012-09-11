@@ -38,6 +38,14 @@ AdminBundle_news:
 AdminBundle_settings:
     resource: "@AdminBundle/Resources/config/routing_settings.yml"
     prefix:   /
+    
+# vier edit    
+admin_showEditHistory:
+    pattern: /admin/edit-history
+    defaults: { _controller: AdminBundle:Default:showEditHistory }
+    requirements:
+        _method: GET
+        objectId: \d+    
 
 admin_inquire:
     pattern: /admin/inquiries

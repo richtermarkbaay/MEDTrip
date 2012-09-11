@@ -58,7 +58,7 @@ font-size: 12px;
 	margin: 0 auto 0 auto;
 	max-width: 1260px;
 	min-width: 780px;
-	padding: 35px 0px 30px 0px;
+	padding: 20px 0px 30px 0px;
 	}
 #content-inner	{
 	color: #333;
@@ -612,12 +612,29 @@ form.basic-form > div {
 	position: relative;
 	margin-bottom: 25px;
 }
+
 form.basic-form > div > ul {
-	top: -15px;
-	color: #CC6666;
+	color: #FFFFFF;
+	right: -20px;
+	padding: 0 6px;
+	border-radius: 5px;
 	position: absolute;
-	display: inline-block; 
+	display: inline-block;
 	list-style: none outside none;
+	background: url("/images/admin/forms/error_left.gif") no-repeat scroll 0 0 transparent;
+}
+
+form.basic-form > div > ul li:first-child {
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+form.basic-form > div > ul li {
+	padding: 10px;
+	background: #D80000;
+}
+form.basic-form > div > ul li:last-child {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
 }
 
 form.basic-form label {
@@ -1283,7 +1300,7 @@ form.basic-form select,
 	font-size: 12px;
 	padding: 7px 5px;
 	text-align: left;
-	width: 198px;
+	width: 208px;
 	}
 .styledselect_form_2	{
 	background: url(/images/admin/forms/form_select_small.gif) left no-repeat;
@@ -1568,18 +1585,23 @@ span.bar {
 	color: #CCCCCC;
 }
 
-a.button-type {
-	float: right;
+input.green-button,
+.button-type {
 	color: #FFFFFF;
 	font-size: 11px;
 	font-weight: bold;
-	padding: 8px 15px; 
+	padding: 8px 10px; 
 	border-radius: 5px;
 	border: medium none; 
 	background: #759E1A;
-	margin-left: 10px;
-	margin-bottom: 10px;
 	display: inline-block;
+	cursor: pointer;
+	margin-right: 10px;
+}
+
+input.green-button:hover,
+.button-type:hover {
+	background: #67910A;
 }
 
 a.icon-type {
@@ -1632,6 +1654,7 @@ a.icon-type:hover {
 }
 
 #filter-wrapper a.button-type {
+	float: right;
 	margin-right: 10px;
 }
 #filter-wrapper label {
@@ -1721,10 +1744,32 @@ a.icon-type:hover {
 	top: 50%;
 }
 
+.ui-accordion .ui-accordion-header a.edit { 
+	color: #AAAAAA;
+	margin-left: 5px;
+}
+
+.ui-accordion .ui-accordion-header a.edit:hover {
+	color: #759E1A;
+}
+
 .ui-accordion .ui-accordion-content {
 	padding: 20px;
 	border-top: 0 none;
 	overflow: auto;
+}
+
+.ui-accordion-content .buttons {
+	float: right;
+}
+
+.ui-accordion-content .button-type {
+	color: #FFFFFF;
+	margin-bottom: 10px;
+}
+
+.ui-accordion-content .button-type:last-child {
+	margin-right: 0;
 }
 
 .ui-accordion .generic-table th{
@@ -1741,6 +1786,38 @@ a.icon-type:hover {
 }
 /* end */
 
+/* jQuery UI vertical tabs Style */
+.ui-tabs-vertical .ui-tabs-nav { 
+	padding: .2em .1em .2em .2em; 
+	float: left; 
+	width: 12em; 
+}
+.ui-tabs-vertical .ui-tabs-nav li { 
+	clear: left; 
+	width: 100%; 
+	border-bottom-width: 1px !important; 
+	border-right-width: 0 !important; 
+	margin: 0 -1px .2em 0; 
+}
+.ui-tabs-vertical .ui-tabs-nav li a { 
+	display:block; 
+}
+.ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
+	background: none repeat scroll 0 0 #F5F3F0; 
+	padding-bottom: 0; 
+	padding-right: .1em; 
+	border-right-width: 1px; 
+	border-right-width: 1px; 
+}
+.ui-tabs-vertical .ui-tabs-panel {  
+	background: none repeat scroll 0 0 #F5F3F0; 
+	float: right; 
+	width: 48em; 
+	height: auto; 
+}
+
+/* end */
+    
 /* Admin Custom Sidebar */
 .admin-sidebar {
 	clear: both;
@@ -1819,3 +1896,38 @@ a.icon-type:hover {
 	background: red;
 }
 /* End of Admin Custom Sidebar */
+
+
+/* Institution Medical Center styles */
+.tab-container li.call-to-action {
+    background: none repeat scroll 0 0 #759E1A;	
+}
+
+.tabbed-medical-procedure-type-detail .details {
+	margin-bottom: 20px;
+}
+
+.tabbed-medical-procedure-type-detail .action-buttons {
+	width: 100%; 
+	float: right;
+	margin-bottom: 20px;
+}
+
+.tabbed-medical-procedure-type-detail table.generic-table {
+	margin-top: 20px;
+	width: 100%;
+}
+.tabbed-medical-procedure-type-detail table.generic-table td {
+	background-color: #fff;
+}
+/* end Institution Medical Center styles */
+
+/** versioning styles **/
+ul.version-edit-list {
+	list-style: none;
+}
+
+ul.version-edit-list label.field {
+	font-weight: bold;
+}
+/** end versioning styles **/

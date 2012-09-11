@@ -5,32 +5,70 @@
 {% block content %}
 
 	<div id="content">
-
-		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Procedure</h2></div>
+		<div id="page-heading"><h2>{{ form.vars.value.id ? 'Edit' : 'Add' }} Medical Procedure</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
-		
+
 			{% block wrappedContent %}
 			
+			{% include '::notice.admin.html.twig' %}
+
             {% set contents = [{
 					'title': 'View all procedures', 
 					'description': 'View the list of medical procedures',
 					'href': path('admin_medicalProcedure_index'), 
 					'links': [{'title': 'View procedures', 'href': path('admin_medicalProcedure_index')}]
+				}, 
+				{
+				    title: 'View version history',
+				    href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }),
+				    class: 'view-edit-history-link',
+				    description: 'Show all the changes made to this center type content',
+				    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }) }]
 				}]
             %}
 
 			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 			
-			<form novalidate="novalidate" class="basic-form" action="{{ id ? path('admin_medicalProcedure_update', {'id':id}) : path('admin_medicalProcedure_create') }}" method="post" {{ form_enctype(form) }}>
+			<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
+
+				{% if form.children.medicalProcedureType.vars.read_only %}
+				    <div>
+						{{ form_label(form.medicalProcedureType) }}
+						<span class="fixed-value">{{ form.vars.value.medicalProcedureType.name }}</span>
+					</div>
+				{% else %}
+				    {{ form_row(form.medicalProcedureType) }}
+				{% endif %}
+
 				{{ form_row(form.name) }}
-				{{ form_row(form.medicalProcedureType) }}
+				{{ form_row(form.status) }}
+				
 				{{ form_rest(form) }}
-			    <input type="submit" class="form-submit" name="submit"/>
+
+			    <input type="submit" value="Save" class="green-button" name="submit"/>
+			    <input type="submit" value="Save &amp; Add another procedure" class="green-button" name="submit"/>
+				
 			</form>
 			{% endblock %}
 
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}

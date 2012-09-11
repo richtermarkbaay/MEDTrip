@@ -106,9 +106,8 @@ class CityControllerTest extends AdminBundleWebTestCase
     	$form = $crawler->selectButton('submit')->form();
     	$crawler = $client->submit($form, $formData);
 
-    	// check if redirect code 500
-    	$hasDuplicateEntry = $client->getResponse()->getStatusCode() == 500;
-    	$this->assertTrue($hasDuplicateEntry, '"City" must not be able to create an entry with duplicate name.');
+    	// check if status code is not 302
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"City" must not be able to create an entry with duplicate name.');
     }
 
     public function testUpdateStatusAction(){

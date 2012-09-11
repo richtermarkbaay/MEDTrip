@@ -1,6 +1,6 @@
 admin_procedureType_index:
     pattern:  /admin/procedure-types
-    defaults: { _controller: AdminBundle:MedicalProcedureType:index, status: 1, medicalCenter: all}
+    defaults: { _controller: AdminBundle:MedicalProcedureType:index, status: 1 }
 
 admin_procedureType_add:
     pattern:  /admin/procedure-type/add

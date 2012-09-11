@@ -22,7 +22,6 @@
         "guzzle/guzzle": "*",
         "knplabs/gaufrette": "dev-master",
         "chromedia/utilities": "dev-master",
-        "chromedia/media-bundle": "dev-master",
         "nikic/php-parser": "dev-master",
         "sami/sami": "dev-master"
     },

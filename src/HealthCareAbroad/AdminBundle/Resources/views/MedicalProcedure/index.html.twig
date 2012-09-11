@@ -17,8 +17,8 @@
 					'title': 'Add procedure', 
 					'description': 'Add new medical procedure',
 					'class': 'add-icon',
-					'href': path('admin_medicalProcedure_add'), 
-					'links': [{'title': 'Add a medical procedure', 'href': path('admin_medicalProcedure_add')}]
+					'href': path('admin_medicalProcedure_add', {'medicalProcedureTypeId' : medicalProcedureTypeId ? medicalProcedureTypeId : null } ), 
+					'links': [{'title': 'Add a medical procedure', 'href': path('admin_medicalProcedure_add', {'medicalProcedureTypeId' : medicalProcedureTypeId ? medicalProcedureTypeId : null } )}]
 				}]
 			%}
 

@@ -1,0 +1,29 @@
+institution_userRole_removeRoleFromUserType:
+    pattern: /staff/user-roles/remove-role-from-user-type
+    defaults: { _controller: InstitutionBundle:InstitutionUserRole:removeRoleFromUserType }
+    requirements:    
+        _method: POST
+        userRoleId: \d+
+        userTypeId: \d+
+        
+institution_userRole_addToUserType:
+    pattern: /staff/user-roles/add-to-user-type
+    defaults: { _controller: InstitutionBundle:InstitutionUserRole:addRoleToUserType }
+    requirements:    
+        _method: POST
+        userRoleId: \d+
+        userTypeId: \d+
+        
+institution_userRole_viewByUserType:
+    pattern: /staff/user-type/{id}/user-roles
+    defaults: { _controller: InstitutionBundle:InstitutionUserRole:viewByUserType }
+    requirements:    
+        _method: GET
+
+institution_userRole_index:
+    pattern: /staff/user-roles
+    defaults: { _controller: InstitutionBundle:InstitutionUserRole:index }
+    requirements:    
+        _method: GET
+
+   

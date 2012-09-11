@@ -35,9 +35,15 @@ class InstitutionListener
     	$this->institutionUserService = $institutionUserService;
     }
     
+    public function onDelete(CreateInstitutionEvent $event){
+    	 
+    }
     
+    public function onEdit(CreateInstitutionEvent $event){
+    	
+    }
     
-    public function onCreate(CreateInstitutionEvent $event)
+    public function onAdd(CreateInstitutionEvent $event)
     {
     	//get institution
     	$institution = $event->getInstitution();

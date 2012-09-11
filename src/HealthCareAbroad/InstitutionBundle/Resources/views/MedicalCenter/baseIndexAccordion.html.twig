@@ -1,0 +1,59 @@
+<div id="institution-medical-centers">
+    
+    {% for imc in institutionMedicalCenters %}
+    
+        <h3>{{ imc.medicalCenter.name }}</h3>
+        
+        <div class="tab-container" >
+            
+            <ul>
+                <li><a href="#tab-overview-imc-{{imc.id}}">Overview</a></li>
+                {% for impt in imc.institutionMedicalProcedureTypes %}
+                    <li><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+                {% endfor %}
+            </ul>
+            
+            <div id="tab-overview-imc-{{imc.id}}">
+                {{ imc.description }}
+            </div>
+            
+            {% for impt in imc.institutionMedicalProcedureTypes %}
+                <div id="tab-impt-{{ impt.id }}">
+                    <div>
+                        <label>Description:</label>
+                        {{ impt.description }}
+                    </div>
+                </div>
+            {% endfor %}
+            
+        </div>
+    {% endfor %}
+</div>
+
+<style type="text/css">
+	
+    /* Vertical Tabs
+    ----------------------------------*/
+    
+    .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 12em; }
+    .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+    .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+    .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+    .ui-tabs-vertical .ui-tabs-panel {  padding: 1em; float: right; width: 45em;} }
+</style>
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+		    
+			{% if institutionMedicalCenters is not empty %} 
+		        $("#institution-medical-centers").accordion();
+		        $(".tab-container").tabs();
+		        $(".tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+				$(".tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');
+		    {% endif %}			
+		});
+	</script>
+{% endblock %}
+

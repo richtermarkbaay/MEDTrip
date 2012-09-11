@@ -5,31 +5,100 @@
 {% block content %}
 
 	<div id="content">
+	
 		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Medical Center</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-            {% set contents = [{
-					'title': 'View all center types', 
-					'description': 'View the list available center types',
-					'href': path('admin_medicalCenter_index'), 
-					'links': [{'title': 'View all', 'href': path('admin_medicalCenter_index')}]
-				}]
-            %}
+				{% include '::notice.admin.html.twig' %}
 
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			
-			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+	            {% set contents = [{
+						'title': 'Back to list of center types', 
+						'description': 'View the list available center types',
+						'href': path('admin_medicalCenter_index'), 
+						'links': [{'title': 'View all', 'href': path('admin_medicalCenter_index')}]
+					}]
+	            %}
 
-				{{ form_row(form.name) }}
-				{{ form_row(form.description) }}
-				{{ form_rest(form) }}
+				{% if(medicalCenter is defined) %} 
+					{% set contents = [{
+							'title': 'Add procedure type', 
+							'class': 'add-icon',
+							'description': 'add new procedure type for this center type',
+							'href': path('admin_procedureType_add', {medicalCenterId:medicalCenter.id}), 
+							'links': [{'title': 'Add procedure type', 'href': path('admin_procedureType_add', {medicalCenterId: medicalCenter.id} )}]
+						}, {
+						    title: 'View edit history',
+						    href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }),
+						    class: 'view-edit-history-link',
+						    description: 'Show all the changes made to this center type content',
+						    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
+						}] | merge(contents)
+					%}
+				{% endif %}
+	
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
-			    <input type="submit" class="form-submit" name="submit"/>
-			</form>
+					{{ form_row(form.name) }}
+					{{ form_row(form.description) }}
+					{{ form_rest(form) }}
+					
+				    <input type="submit" value="Save" class="green-button" name="submit"/>
+				    <input type="submit" value="Save &amp; Add another center" class="green-button" name="submit"/>
+				</form>
+				
+				{% set procedureTypes = medicalCenter is defined ? medicalCenter.medicalProcedureTypes : [] %}
+				
+				{% if procedureTypes is not empty %}
+				
+					<h2 style="padding-top: 20px; border-top: 1px dashed #aaa;margin-top:30px;width:70%">Procedure Types</h2>
+				
+					<table id="procedure-type-list" class="generic-table" width="70%">
+					<tr>
+						<th width="200"><a href="">Procedure Type</a></th>
+						<th><a href="">Description</a></th>
+						<th width="70"><a href="">Status</a></th>
+						<th class="actions" width="180"><a href="">Actions</a></th>
+					</tr>
+
+					{% for type in procedureTypes %}
+						<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+							<td>{{ type.name }}</td>
+							<td>{{ type.description }}</td>
+							<td>{{ type.status ? 'Active' : 'Inactive' }}</td>
+							<td align="center">
+								<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+								{% set class = type.status ? 'icon-2' : 'icon-5' %}
+								<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+								<a href="{{ path('admin_medicalProcedure_index', {medicalProcedureTypeId:type.id}) }}" class="icon-type">procedures</a>
+							</td>
+						</tr>
+					{% endfor %}
+					</table>
+
+				{% endif %}
+				
 			{% endblock %}
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}

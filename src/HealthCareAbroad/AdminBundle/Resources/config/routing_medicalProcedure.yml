@@ -1,6 +1,6 @@
 admin_medicalProcedure_index:
     pattern:  /admin/medical-procedures
-    defaults: { _controller: AdminBundle:MedicalProcedure:index, status: 1, medicalProcedureType: all }
+    defaults: { _controller: AdminBundle:MedicalProcedure:index, status: 1 }
 
 admin_medicalProcedure_add:
     pattern:  /admin/medical-procedure/add

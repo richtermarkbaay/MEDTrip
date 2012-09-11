@@ -114,6 +114,25 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertTrue($isAdded);
     }
 
+    public function testCreateDuplicate()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('GET', '/admin/procedure-type/add');
+    
+		$formData = array(
+			'medicalProcedureType[name]' => 'TestNewlyAdded MedProcType Updated',
+			'medicalProcedureType[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+			'medicalProcedureType[medicalCenter]' => 1,
+			'medicalProcedureType[status]' => 1
+		);
+    
+    	$form = $crawler->selectButton('submit')->form();
+    	$crawler = $client->submit($form, $formData);
+
+    	// check if status code is not 302
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Procedure Type" must not be able to create an entry with duplicate ("medical_center_id", "name") fields.');
+    }
+
     public function testUpdateStatus(){
     	$client = $this->getBrowserWithActualLoggedInUser();
     	$crawler = $client->request('GET', '/admin/procedure-type/update-status/1');

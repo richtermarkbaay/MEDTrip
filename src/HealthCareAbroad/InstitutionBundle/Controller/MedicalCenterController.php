@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
+
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
@@ -34,11 +38,9 @@ class MedicalCenterController extends InstitutionAwareController
             throw $this->createNotFoundException("Invalid institution medical center.");
         }
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
-        
-        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalCenter:edit.html.twig', array(
+            'institutionMedicalCenter' => $institutionMedicalCenter,
             'form' => $form->createView(),
-            'isNew' => false,
-            'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
     /**
@@ -50,12 +52,13 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionMedicalCenter->setInstitution($this->institution);
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         
-        return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalCenter:add.html.twig', array(
             'form' => $form->createView(),
             'isNew' => true,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
@@ -85,11 +88,23 @@ class MedicalCenterController extends InstitutionAwareController
             $em->persist($institutionMedicalCenter);
             $em->flush();
             
+            if($isNew) {
+	            //// create event on adding medicalCenters and dispatch
+	            $event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+	            $this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
+            }
+            else {
+            	//// create event on edit medical Centers and dispatch
+            	$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
+            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
+            }
+            
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
-            return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
+            return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionMedicalCenter->getId())));
         }
         else {
-            return $this->render('InstitutionBundle:MedicalCenter:form.html.twig', array(
+            
+            return $this->render($isNew ? 'InstitutionBundle:MedicalCenter:add.html.twig': 'InstitutionBundle:MedicalCenter:edit.html.twig', array(
                 'form' => $form->createView(),
                 'isNew' => $isNew,
                 'institutionMedicalCenter' => $institutionMedicalCenter

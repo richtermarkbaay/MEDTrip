@@ -40,7 +40,11 @@
                                         <td></td>
                                         <td>{{ userType.name | title }}</td>
                                         <td>
-                                            
+                                            <ul style="list-style:decimal; padding: 0 15px;">
+                                                {% for role in userType.institutionUserRole %}
+                                                <li> {{ role.description | title }}</li>
+                                                {% endfor %}
+                                            </ul>
                                         </td>
                                         <td class="options-width">
                                             <a href="{{ path('institution_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>

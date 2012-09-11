@@ -4,8 +4,11 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
+
 use HealthCareAbroad\UserBundle\Event\UserEvents;
 use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserInvitationEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserInvitationEvents;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
@@ -85,9 +88,12 @@ class InstitutionUserController extends Controller
     			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
     			$institutionUserService->update($institutionUser);
     			
+    			//// create event on editAccount and dispatch
+    			$event = new CreateInstitutionUserEvent($institutionUser);
+    			$this->get('event_dispatcher')->dispatch(UserEvents::ON_CHANGE_INSTITUTION_USER_PASSWORD, $event);
+    			    			
     			$this->get('session')->setFlash('success', "Password changed!");
-    		}
-    			
+    		}    			
     	}
     	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
@@ -117,6 +123,11 @@ class InstitutionUserController extends Controller
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
                 $institutionUser = $this->get('services.institution_user')->update($institutionUser);
+                
+                //// create event on editAccount and dispatch
+                $event = new CreateInstitutionUserEvent($institutionUser);
+                $this->get('event_dispatcher')->dispatch(UserEvents::ON_UPDATE_INSTITUTION_USER, $event);
+                
                 $this->get('session')->setFlash('success', "Successfully updated account");
                 $refer = $this->get('session')->get('referer');
                 $this->getRequest()->getSession()->remove('referer');
@@ -130,8 +141,7 @@ class InstitutionUserController extends Controller
     }
     public function inviteAction()
     {
-    	
-        $institution = $this->get('services.institution')->getCurrentInstitution();
+    	$institution = $this->get('services.institution')->getCurrentInstitution();
         $institutionUserInvitation = new InstitutionUserInvitation();
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
         
@@ -141,6 +151,11 @@ class InstitutionUserController extends Controller
             if ($form->isValid()){
                 
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
+                
+                //// create event on invite institutionUser and dispatch
+                $event = new CreateInstitutionUserInvitationEvent($institutionUserInvitation);
+                $this->get('event_dispatcher')->dispatch(InstitutionUserInvitation::ON_ADD_INSTITUTION_USER_INVITATION, $event);
+                 
                 if ($sendingResult) {
                     $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
                 }
@@ -211,5 +226,6 @@ class InstitutionUserController extends Controller
         $users = $institutionService->getAllStaffOfInstitution($institution);
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
+    
     
 }

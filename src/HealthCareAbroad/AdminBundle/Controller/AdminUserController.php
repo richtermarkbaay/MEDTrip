@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Event\CreateAdminUserEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminUserEvents;
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 use HealthCareAbroad\UserBundle\Form\AdminUserChangePasswordType;
@@ -74,6 +76,12 @@ class AdminUserController extends Controller
 	    			$this->get('session')->setFlash('error', "Unable to update account");
 	    			 
 	    		}
+	    		
+	    		//TODO: apply listener functionality
+	    		//create event after editAccount and dispatch
+	    		$event = new CreateAdminUserEvent($user);
+	    		$this->get('event_dispatcher')->dispatch(AdminUserEvents::ON_EDIT_ADMIN_USER, $event);
+	    		
 	    		$this->get('session')->setFlash('success', "Successfully updated account");
 	    		
 	    	}
@@ -103,13 +111,17 @@ class AdminUserController extends Controller
 	    	$form->bindRequest($this->getRequest());
 	    	
 	    	if($form->isValid()) {
-	    		//TODO:: persist new password to db
+	    		//TODO:: persist new password to db	
 	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
 	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
 	    		
+	    		//TODO: apply listener functionality
+	    		$event = new CreateAdminUserEvent($adminUser);
+	    		$this->get('event_dispatcher')->dispatch(AdminUserEvents::ON_CHANGE_ADMIN_USER_PASSWORD, $event);
+	    		 
+	    		
 	    		$this->get('session')->setFlash('success', "Password changed!");
 	    		return $this->redirect($this->generateUrl('admin_homepage'));
-	    		
 	    	}
     	}
     	return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(

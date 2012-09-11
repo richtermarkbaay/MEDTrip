@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use Doctrine\ORM\EntityRepository;
@@ -16,5 +18,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalProcedureTypeRepository extends EntityRepository
 {
+	public function getCountByMedicalProcedureTypeId($medicalProcedureTypeId) {
+		$qb = $this->_em->createQueryBuilder();
 
+		$qb->select('count(a)')
+			->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
+			->where('a.status = :active')
+			->andWhere('a.medicalProcedureType = :medicalProcedureTypeId')
+			->setParameter('active', InstitutionMedicalProcedureType::STATUS_ACTIVE)
+			->setParameter('medicalProcedureTypeId', $medicalProcedureTypeId);
+	
+		$count = (int)$qb->getQuery()->getSingleScalarResult();
+		return $count;
+	}
 }
