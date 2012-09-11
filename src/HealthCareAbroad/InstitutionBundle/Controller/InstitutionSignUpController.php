@@ -11,6 +11,8 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 
 

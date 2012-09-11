@@ -33,6 +33,8 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
         status:
             type: smallint
             nullable: false
+            gedmo:
+                - versioned
     oneToMany:
         institutionMedicalProcedures:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure

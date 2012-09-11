@@ -4,9 +4,9 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Symfony\Component\HttpFoundation\Request;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
@@ -25,6 +25,15 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+//         $mailer = $this->get('mailer');
+//         $message = \Swift_Message::newInstance()
+//         ->setSubject('New Error Report')
+//         ->setFrom('chris.velarde@chromedia.com')
+//         ->setTo('chris.velarde@chromedia.com')
+//         ->setBody('watatadsfsdf');
+//         $sendResult = $mailer->send($message);
+//         exit;
+        
         return $this->render('AdminBundle:Default:index.html.twig');
     }
 
