@@ -1072,13 +1072,11 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	white-space: nowrap;
 	}
 .nav .current .sub li.sub_show a	{
-	background: url(/images/admin/shared/nav/menus/back_1.gif);
 	color: #94b52c;
 	cursor: default;
 	}
 .nav .select :hover .sub li a:hover, 
 .nav .current .sub li a:hover	{
-	background: url(/images/admin/shared/nav/menus/back_1.gif);
 	color: #94b52c;
 	visibility: visible;
 	}
