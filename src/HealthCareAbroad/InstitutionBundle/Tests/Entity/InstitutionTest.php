@@ -3,7 +3,7 @@
 namespace HealthCareAbroad\InstitutionBundle\Tests;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleTestCase;
 
 class InstitutionTest extends InstitutionBundleTestCase
@@ -21,31 +21,31 @@ class InstitutionTest extends InstitutionBundleTestCase
     public function testSetAsActive()
     {
         $this->institution->setAsActive();
-        $this->assertEquals(Institution::ACTIVE, $this->institution->getStatus());
+        $this->assertEquals(InstitutionStatus::ACTIVE, $this->institution->getStatus());
     }
     
     public function testSetAsInactive()
     {
         $this->institution->setAsInactive();
-        $this->assertEquals(Institution::INACTIVE, $this->institution->getStatus());
+        $this->assertEquals(InstitutionStatus::INACTIVE, $this->institution->getStatus());
     }
     
     public function testSetAsUnapproved()
     {
         $this->institution->setAsUnapproved();
-        $this->assertEquals(Institution::ACTIVE+Institution::UNAPPROVED, $this->institution->getStatus());
+        $this->assertEquals(InstitutionStatus::ACTIVE+InstitutionStatus::UNAPPROVED, $this->institution->getStatus());
     }
     
     public function testAsApproved()
     {
         $this->institution->setAsApproved();
-        $this->assertEquals(Institution::ACTIVE+Institution::APPROVED, $this->institution->getStatus());
+        $this->assertEquals(InstitutionStatus::ACTIVE+InstitutionStatus::APPROVED, $this->institution->getStatus());
     }
     
     public function testAsSuspended()
     {
         $this->institution->setAsSuspended();
-        $this->assertEquals(Institution::ACTIVE+Institution::SUSPENDED, $this->institution->getStatus());
+        $this->assertEquals(InstitutionStatus::ACTIVE+InstitutionStatus::SUSPENDED, $this->institution->getStatus());
     }
     
     public function testIsActive()

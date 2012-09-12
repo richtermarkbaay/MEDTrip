@@ -19,10 +19,23 @@ final class InstitutionMedicalCenterStatus {
         return array(
             self::DRAFT => 'Draft',
             self::APPROVED => 'Active',
+            self::INACTIVE => 'Inactive',
             self::PENDING => 'Pending',
             self::EXPIRED => 'Expired',
             self::ARCHIVED => 'Archived'                
         );
+    }    
+
+    static public function getUpdateStatusOptions()
+    {
+        return array(
+            'Approve/Activate' => self::APPROVED,
+            'Remove' => self::ARCHIVED
+        );
     }
     
+    static public function isValid($status)
+    {
+        return in_array($status, array_keys(self::getStatusList()));
+    }
 }

@@ -6,7 +6,7 @@
 
 	<div id="content">
 
-		<div id="page-heading"><h2>{{ institutionMedicalCenterId ? 'Edit' : 'Add' }} Medical Center</h2></div>
+		<div id="page-heading"><h2>{{ institutionMedicalCenter.id ? 'Edit' : 'Add' }} Medical Center</h2></div>
 		
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -20,13 +20,13 @@
 					'links': [{'title': 'View medical centers', 'href': path('admin_institution_manageCenters', {institutionId: institutionId}) }]
 				}] %}
 	            
-	            {% if institutionMedicalCenterId %}	            
+	            {% if institutionMedicalCenter.id %}	            
 		            {% set addProcedureTypeTask = [{
 						'title': 'Add procedure type', 
 						'description': 'Add new procedure type for this medical center',
 						'class': 'add-procedure-type',
-						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterId}), 
-						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterId})}]
+						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id}), 
+						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id})}]
 					}] %}
 					
 					{% set contents = addProcedureTypeTask | merge(contents) %}
@@ -36,7 +36,7 @@
 				
 				<div id="table-content" style="width:75%">
 				
-					{% if not institutionMedicalCenterId %}
+					{% if not institutionMedicalCenter.id %}
 						<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
 							{{ form_row(form.medicalCenter) }}
 							{{ form_row(form.description) }}
