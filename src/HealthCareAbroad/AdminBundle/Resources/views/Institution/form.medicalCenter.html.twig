@@ -52,7 +52,7 @@
 									<li id="procedure-type-{{impt.id}}"><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
 								{% endfor %}
 							</ul>
-			
+
 							<div id="tab-overview-imc-{{institutionMedicalCenter.id}}">                        
 								<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
 									{{ form_row(form.medicalCenter) }}
@@ -61,7 +61,7 @@
 								    <input type="submit" class="green-button" value="Save" name="submit"/>
 								</form>
 							</div>
-		
+
 							{% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
 								<div id="tab-impt-{{ impt.id }}">
 									{% include 'AdminBundle:Institution:medicalProcedureTypeDetail.html.twig' with 
@@ -85,13 +85,12 @@
 		$(function(){
 			
 		    InstitutionMedicalCenter.setCommonDialog($('#dialog-container'), {
+			    position: ['center', 100],
 			    autoOpen: false,
 			    width: 700,
 			    modal: true,
 			    resizable: false,
-			    close: function() {
-			        $('#dialog-container').html("");
-			    }
+			    close: function() { $('#dialog-container').empty(); }
 			});
 
 	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');

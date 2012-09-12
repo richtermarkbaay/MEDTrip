@@ -1926,10 +1926,22 @@ a.icon-type:hover {
 }
 
 .tabbed-medical-procedure-type-detail table.generic-table {
+	font-size: 12px;
 	margin-top: 20px;
 	width: 100%;
 }
+
+.tabbed-medical-procedure-type-detail table.generic-table th {
+	font-size: 11px;
+	padding: 8px 10px;
+}
+
+.tabbed-medical-procedure-type-detail table.generic-table th a{
+	font-size: 12px;
+}
+
 .tabbed-medical-procedure-type-detail table.generic-table td {
+	padding: 3px 8px;
 	background-color: #fff;
 }
 /* end Institution Medical Center styles */

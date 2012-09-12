@@ -2,45 +2,37 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
-
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
-
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
-
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
-
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
-
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
-
-use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
-
-use Symfony\Component\HttpFoundation\Request;
-
-use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-//use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
+
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
+
+use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -50,8 +42,6 @@ class InstitutionController extends Controller
      */
 	public function indexAction()
 	{
-		$request = $this->getRequest();
-
 		$statusOptions = $this->get('services.institution')->getUpdateStatusOptions();
 		$statusValues = $this->get('services.institution')->getStatusFilterOptions();
 
@@ -127,13 +117,9 @@ class InstitutionController extends Controller
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $institutionId
 	 */
-	public function addMedicalCenterAction()
+	public function addMedicalCenterAction($institutionId)
 	{
-		$request = $this->getRequest();
-		$institutionId = $request->get('institutionId');
-
-		$em = $this->getDoctrine()->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
+		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
 		$innstitutionMedicalCenter = new InstitutionMedicalCenter();
 		$innstitutionMedicalCenter->setInstitution($institution);
@@ -158,24 +144,20 @@ class InstitutionController extends Controller
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $institutionId
 	 */
-	public function editMedicalCenterAction()
+	public function editMedicalCenterAction($institutionId)
 	{
-		$request = $this->getRequest();
-		$institutionId = $request->get('institutionId');
-		$institutionMedicalCenterId = $request->get('imcId');
-
-		$em = $this->getDoctrine()->getEntityManager();
-		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
+		$institutionMedicalCenterId = $this->getRequest()->get('imcId');
+		$institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
 
 		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
 
-		$formActionParams = array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenterId);
+		$formActionParams = array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenter->getId());
 		$formAction = $this->generateUrl('admin_institution_medicalCenter_update', $formActionParams);
 		
 		$params = array(
 			'institutionId' => $institutionId,
-			'institutionMedicalCenterId' => $institutionMedicalCenterId,
 			'institutionMedicalCenter' => $institutionMedicalCenter,
+			'institutionMedicalCenterId' => $institutionMedicalCenterId,
 			'formAction' => $formAction,
 			'form' => $form->createView()
 		);
