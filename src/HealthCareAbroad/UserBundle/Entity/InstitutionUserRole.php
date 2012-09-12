@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUserRole
 {
+    const SUPER_ADMIN = 'SUPER_ADMIN';
+    
 	/**
 	 * Roles that are built-in to the system and can only be assigned to user types by directly editing in db
 	 */
