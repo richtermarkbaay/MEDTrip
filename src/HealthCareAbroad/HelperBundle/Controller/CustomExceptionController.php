@@ -30,6 +30,8 @@ class CustomExceptionController extends ExceptionController
     public function showAction(FlattenException $exception, DebugLoggerInterface $logger = null, $format='html')
     {
     	$isDebug = $this->container->get('kernel')->isDebug();
+    	$this->request =  $this->container->get('request');
+    	
         // we will only customize the exception page for Non-debug environment
         if ($isDebug = $this->container->get('kernel')->isDebug()) {
              return parent::showAction($exception, $logger, $format);   
@@ -37,7 +39,6 @@ class CustomExceptionController extends ExceptionController
        else {
             
             //TODO: there might be a case in the future that we will use other formats, but right now let's make this simple and always use an html template
-            $this->request =  $this->container->get('request');
             $this->request->setRequestFormat('html');
             $currentContent = $this->getAndCleanOutputBuffering();
             
