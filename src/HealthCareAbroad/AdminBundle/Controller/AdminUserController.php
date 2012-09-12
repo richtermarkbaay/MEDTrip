@@ -78,6 +78,7 @@ class AdminUserController extends Controller
 	    		}
 	    		
 	    		//TODO: apply listener functionality
+	    		//create event after editAccount and dispatch
 	    		$event = new CreateAdminUserEvent($user);
 	    		$this->get('event_dispatcher')->dispatch(AdminUserEvents::ON_EDIT_ADMIN_USER, $event);
 	    		
@@ -116,7 +117,7 @@ class AdminUserController extends Controller
 	    		
 	    		//TODO: apply listener functionality
 	    		$event = new CreateAdminUserEvent($adminUser);
-	    		$this->get('event_dispatcher')->dispatch(AdminUserEvents::ON_EDIT_ADMIN_USER, $event);
+	    		$this->get('event_dispatcher')->dispatch(AdminUserEvents::ON_CHANGE_ADMIN_USER_PASSWORD, $event);
 	    		 
 	    		
 	    		$this->get('session')->setFlash('success', "Password changed!");

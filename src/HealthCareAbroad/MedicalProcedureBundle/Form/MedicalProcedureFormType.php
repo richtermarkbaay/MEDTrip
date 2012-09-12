@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class MedicalProcedureFormType extends AbstractType
 {
+	protected $doctrine;
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$medicalProcedure = $options['data'];
@@ -20,12 +22,12 @@ class MedicalProcedureFormType extends AbstractType
 			MedicalProcedure::STATUS_ACTIVE => 'active',
 			MedicalProcedure::STATUS_INACTIVE => 'inactive'
 		);
-
-		$builder->add('name');
 		
 		if ($medicalProcedure->getId()) {
-		    // we don't allow changing of medicalProcedureType if this has been linked already to institutionMedicalProcedures
-		    if (count($medicalProcedure->getInstitutionMedicalProcedures())) {
+			$institutionMedicalProcedureRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedure');
+			$hasInstitutionMedicalProcedure = $institutionMedicalProcedureRepo->getCountByMedicalProcedureId($medicalProcedure->getId());
+
+		    if ($hasInstitutionMedicalProcedure) {
 		        $builder->add('medicalProcedureType', 'hidden', array('virtual' => 'true', 'label' => 'Procedure Type', 'read_only' => true));
 		    }
 		    else {
@@ -36,12 +38,7 @@ class MedicalProcedureFormType extends AbstractType
 		    $builder->add('medicalProcedureType', 'medicalproceduretype_list');
 		}
 
-// 		if((!$medicalProcedure->getId() && $medicalProcedure->getMedicalProcedureType()) || count($medicalProcedure->getInstitutionMedicalProcedures()) )
-// 			$builder->add('medicalProcedureType', 'hidden', array('property_path' => 'medicalProcedureType.id', 'label' => 'Procedure Type'));
-// 		else
-// 			$builder->add('medicalProcedureType', 'medicalproceduretype_list');
-		
-
+		$builder->add('name');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 
@@ -55,5 +52,9 @@ class MedicalProcedureFormType extends AbstractType
 	public function getName()
 	{
 		return 'medicalProcedure';
+	}
+	
+	function setDoctrine($doctrine) {
+		$this->doctrine = $doctrine;
 	}
 }

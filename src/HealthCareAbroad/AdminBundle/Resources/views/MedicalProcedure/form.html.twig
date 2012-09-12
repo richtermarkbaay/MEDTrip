@@ -18,6 +18,13 @@
 					'description': 'View the list of medical procedures',
 					'href': path('admin_medicalProcedure_index'), 
 					'links': [{'title': 'View procedures', 'href': path('admin_medicalProcedure_index')}]
+				}, 
+				{
+				    title: 'View version history',
+				    href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }),
+				    class: 'view-edit-history-link',
+				    description: 'Show all the changes made to this center type content',
+				    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }) }]
 				}]
             %}
 
@@ -25,17 +32,6 @@
 			
 			<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
-			    {# ----
-				{% if (isAddFromSpecificType is defined) or ((hasInstitutionMedicalProcedures is defined) and hasInstitutionMedicalProcedures) %}
-					<div>
-						{{ form_label(form.medicalProcedureType) }}
-						<span class="fixed-value">{{ form.vars.value.medicalProcedureType.name }}</span>
-					</div>
-				{% else %}
-					{{ form_row(form.medicalProcedureType) }}
-				{% endif %}
-				---- #}
-				
 				{% if form.children.medicalProcedureType.vars.read_only %}
 				    <div>
 						{{ form_label(form.medicalProcedureType) }}
@@ -59,4 +55,20 @@
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}

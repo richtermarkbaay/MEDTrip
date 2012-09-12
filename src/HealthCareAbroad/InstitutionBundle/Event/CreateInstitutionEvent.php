@@ -11,10 +11,10 @@ class CreateInstitutionEvent extends Event
     protected $institution;
 	protected $institutionUser;
     
-    public function __construct(Institution $institution, InstitutionUser $institutionUser)
+    public function __construct(Institution $institution)
     {
         $this->institution = $institution;
-        $this->institutionUser = $institutionUser;
+        
     }
 
     public function getInstitution()
@@ -25,5 +25,9 @@ class CreateInstitutionEvent extends Event
     public function getInstitutionUser()
     {
     	return $this->institutionUser;
+    }
+    public function setInstitutionUser(InstitutionUser $user)
+    {
+    	$this->institutionUser = $user;
     }
 }

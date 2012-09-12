@@ -297,4 +297,9 @@ class MedicalProcedureType
     {
         return $this->medicalCenter;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

@@ -20,6 +20,19 @@
     links: [{title:'Click here to add a medical center',href: path('institution_medicalCenter_add')}]}
 %}
 
+{% if (institutionMedicalCenter is defined)%}
+    {% set viewHistoryTask = {
+        title: 'View History', 
+        class: 'list-icon',
+        isVisible: hideViewHistory is defined and hideViewHistory ? false : true,
+        description: 'Show all the changes made to this center type content', 
+        href: path('institution_showEditHistory', {'objectId': institutionMedicalCenter.id, 'objectClass': base64_encode(getClass(institutionMedicalCenter)) }), 
+        links: [
+            {class: 'view-edit-history-link', title: 'View history', href: path('institution_showEditHistory', {'objectId': institutionMedicalCenter.id, 'objectClass': base64_encode(getClass(institutionMedicalCenter)) }) }
+        ]} 
+    %}
+{% endif %}
+
 {% set manageMedicalCentersTask = {
     title: "Manage Medical Centers", 
     isVisible: hideManageMedicalCenters is defined and hideManageMedicalCenters ? false : true, 
@@ -36,7 +49,13 @@
     links: [{'href': path('institution_homepage')}]} 
 %}
 
-{% include '::relatedTasks.base.admin.html.twig' with 
-    {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
-%}
-            
+{% if (institutionMedicalCenter is defined) %}
+    {% include '::relatedTasks.base.admin.html.twig' with 
+        {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, viewHistoryTask, dashboardTask]} 
+    %}
+{% else %}
+    {% include '::relatedTasks.base.admin.html.twig' with 
+        {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
+    %}
+{% endif %}
+                        

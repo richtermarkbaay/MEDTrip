@@ -141,3 +141,40 @@ services:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
             - { name: kernel.event_listener, event: event.institution_medical_procedure_type.edit, method: onDelete }
+    
+    ###listener for institutionMedicalProcedure
+    listener.institution_medical_procedure.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+           
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.add, method: onAdd }
+    
+    listener.institution_medical_procedure.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.edit, method: onEdit }
+    
+    listener.institution_medical_procedure.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.edit, method: onDelete }
+    ##listener for institution_invitation
+    listener.institution_invitation.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionInvitationLogListener
+        calls:
+             - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.add, method:onAdd }
+    ##listener for institution_invitation
+    listener.institution__user_invitation.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserInvitationLogListener
+        calls:
+             - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_invitation.add, method:onAdd }

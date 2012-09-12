@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\MedicalProcedureTypeEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateMedicalProcedureTypeEvent;
+
 use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -52,8 +56,11 @@ class MedicalProcedureTypeController extends Controller
     		//$params['isAddFromSpecificCenter'] = true;
     		$formActionParams['medicalCenterId'] = $medicalCenterId;
     	}
+		
+    	$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+    	$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
 
-    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+    	$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
 
     	$params['form'] = $form->createView();
     	$params['formAction'] = $this->generateUrl('admin_procedureType_create', $formActionParams);
@@ -75,8 +82,11 @@ class MedicalProcedureTypeController extends Controller
 			throw $this->createNotFoundException("Invalid Medical Procedure Type.");
     	}
 
-    	$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
-    	
+		$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+		$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+
+		$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
+
     	$params = array(
     		'form' => $form->createView(),
     		'formAction' =>  $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId())),
@@ -110,13 +120,27 @@ class MedicalProcedureTypeController extends Controller
 		    $procedureType = new MedicalProcedureType();
 		}
 
-		$form = $this->createForm(new MedicalProcedureTypeFormType(), $procedureType);
+		$medicalProcedureTypeForm = new MedicalProcedureTypeFormType();
+		$medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+
+		$form = $this->createForm($medicalProcedureTypeForm, $procedureType);
 		$form->bind($request);
 
 		if ($form->isValid()) {
 			$em->persist($procedureType);
 			$em->flush($procedureType);
-
+	
+			if($id) {
+				//// create event on addMedicalProcedureType and dispatch
+				$event = new CreateMedicalProcedureTypeEvent($procedureType);
+				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_ADD_MEDICAL_PROCEDURE_TYPE, $event);
+			}
+			else{
+				//// create event on editMedicalProcedureType and dispatch
+				$event = new CreateMedicalProcedureTypeEvent($procedureType);
+				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
+			}
+			
 			$request->getSession()->setFlash('success', $id ? "Successfully updated {$procedureType->getName()}." : "Successfully added {$procedureType->getName()}.");
 
 			if($request->get('submit') == 'Save')
@@ -166,6 +190,11 @@ class MedicalProcedureTypeController extends Controller
 			$procedureType->setStatus($status);
 			$em->persist($procedureType);
 			$em->flush($procedureType);
+			
+			//// create event on editMedicalProcedureType and dispatch
+			$event = new CreateMedicalProcedureTypeEvent($procedureType);
+			$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
+			
 			$result = true;
 		}
 

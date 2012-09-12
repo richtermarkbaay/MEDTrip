@@ -28,11 +28,24 @@ AdminBundle_country:
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"
     prefix:   /
+    
+# Routes for Admin NewsController #
+AdminBundle_news:
+    resource: "@AdminBundle/Resources/config/routing_news.yml"
+    prefix:   /
 
 # Routes for settings section #
 AdminBundle_settings:
     resource: "@AdminBundle/Resources/config/routing_settings.yml"
     prefix:   /
+    
+# vier edit    
+admin_showEditHistory:
+    pattern: /admin/edit-history
+    defaults: { _controller: AdminBundle:Default:showEditHistory }
+    requirements:
+        _method: GET
+        objectId: \d+    
 
 admin_inquire:
     pattern: /admin/inquiries

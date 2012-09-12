@@ -59,7 +59,7 @@ class ListFilterBeforeController
 
 			$listFilters = $this->twig->render('HelperBundle:Default:filters.html.twig', array(
 				'filters' => $listFilter->getFilterOptions(),
-				'url' => $this->router->generate($routeName)
+				'url' => $this->router->generate($routeName, $request->get('_route_params'))
 			));
 
 			$this->twig->addGlobal('listFilters', $listFilters);

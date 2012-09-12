@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\TagEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateTagEvent;
+
 use HealthCareAbroad\HelperBundle\Form\TagType;
 
 use HealthCareAbroad\HelperBundle\Form\TagTypeListType;
@@ -55,6 +59,18 @@ class TagController extends Controller
     			$em->persist($tag);
     			$em->flush($tag);
 
+    			if($request->get('id')){
+    				//// create event on addTAg and dispatch
+    				$event = new CreateTagEvent($tag);
+    				$this->get('event_dispatcher')->dispatch(TagEvents::ON_ADD_TAG, $event);
+    			}
+    			else {
+    				//// create event on addTAg and dispatch
+    				$event = new CreateTagEvent($tag);
+    				$this->get('event_dispatcher')->dispatch(TagEvents::ON_EDIT_TAG, $event);
+    			}
+    			
+    			
     			$msg = $request->get('id') 
     				? '"' .$tag->getName() . '" tag has been updated!' 
     				: 'New Tag has been added!'; 
@@ -77,6 +93,11 @@ class TagController extends Controller
 			$tag->setStatus($status);
 			$em->persist($tag);
 			$em->flush($tag);
+			
+			//// create event on addTAg and dispatch
+			$event = new CreateTagEvent($tag);
+			$this->get('event_dispatcher')->dispatch(TagEvents::ON_EDIT_TAG, $event);
+			
 			$result = true;
 		}
 

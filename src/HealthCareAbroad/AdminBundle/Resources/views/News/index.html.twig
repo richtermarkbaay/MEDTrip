@@ -1,0 +1,57 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_news' %}
+
+{% block content %}
+
+	<div id="content">
+
+		<div id="page-heading"><h2>List of News</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+				{% include '::notice.admin.html.twig' %}
+
+            	{% set contents = [{
+						'title': 'Add news', 
+						'description': 'Add new news',
+						'class': 'add-icon',
+						'href': path('admin_news_add'), 
+						'links': [{'title': 'Add a news', 'href': path('admin_news_add')}]
+					}]
+            	%}
+
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+				<!-- Render Filter Box -->				
+				{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}	
+
+				<table id="news-list" class="generic-table" width="70%">
+				<tr>
+					<th><a href="">Title</a></th>
+					<th><a href="">Description</a></th>
+					<th><a href="">Status</a></th>
+					<th class="actions" width="200"><a href="">Action</a></th>
+				</tr>
+
+				{% for newsData in news %}
+					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+						<td>{{ newsData.name }}</td>
+						<td>{{ newsData.status ? 'Active' : 'Inactive' }}</td>
+						<td align="center">
+							<a href="{{ path('admin_news_edit', {id:newsData.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+							{% set class = newsData.status ? 'icon-2' : 'icon-5' %}
+							<a href="{{ path('admin_news_updateStatus', {id:newsData.id}) }}" title="{{ newsData.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+						</td>
+					</tr>
+				{% else  %}
+					<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+				{% endfor %}
+				</table>
+						
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

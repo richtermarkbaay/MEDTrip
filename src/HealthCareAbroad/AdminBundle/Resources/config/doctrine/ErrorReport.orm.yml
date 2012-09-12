@@ -1,0 +1,33 @@
+HealthCareAbroad\AdminBundle\Entity\ErrorReport:
+    type: entity
+    table: error_reports
+    repositoryClass: HealthCareAbroad\AdminBundle\Repository\ErrorReportRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        reporterName:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            column: reporter_name
+        details:
+            type: text
+            nullable: false
+        loggedUserId:
+            type: bigint
+            nullable: true
+            column: logged_user_id
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -22,14 +22,27 @@ media_upload_medicalCenter:
     requirements:
         _method: POST
         imcId: \d+
-    
+
+media_ajaxLoad_medicalCenter:
+    pattern: /media/load-medical-center-media/{imcId}
+    defaults: { _controller: MediaBundle:Default:ajaxLoadMedicalCenterMedia }
+    requirements:
+        imcId: \d+
+
+media_ajaxAttach_medicalCenter:
+    pattern: /media/attach-medical-center-media/{imcId}/{mediaId}
+    defaults: { _controller: MediaBundle:Default:ajaxAttachMedicalCenterMedia }
+    requirements:
+        imcId: \d+
+        mediaId: \d+
+
 media_delete:
     pattern: /media/delete/{id}
     defaults: { _controller: MediaBundle:Default:delete, id: ~ }
     requirements:
         _method: POST
         id: \d+
-    
+
 media_edit_caption:
     pattern: /media/edit-caption
     defaults: { _controller: MediaBundle:Default:editCaption }

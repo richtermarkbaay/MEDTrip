@@ -1,0 +1,44 @@
+HealthCareAbroad\LogBundle\Entity\VersionEntry:
+    type: entity
+    table: version_entries
+    repositoryClass: HealthCareAbroad\LogBundle\Repository\VersionEntryRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        action:
+            type: string
+            length: 200
+            fixed: false
+            nullable: false
+        loggedAt:
+            type: datetime
+            nullable: true
+            column: logged_at
+        objectId:
+            type: bigint
+            unsigned: true
+            nullable: true
+            column: object_id
+        objectClass:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+            column: object_class
+        version:
+            type: integer
+            unsigned: true
+            nullable: false
+        username:
+            type: string
+            length: 250
+            nullable: true
+        data:
+            type: array
+            nullable: false
+    lifecycleCallbacks: {  }

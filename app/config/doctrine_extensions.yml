@@ -1,14 +1,15 @@
 services:
     # KernelRequest listener
-    #extension.listener:
-    #    class: Acme\DemoBundle\Listener\DoctrineExtensionListener
-    #    calls:
-    #        - [ setContainer, [ @service_container ] ]
-    #    tags:
+    extension.listener:
+        class: HealthCareAbroad\LogBundle\Listener\DoctrineExtensionListener
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            # loggable hooks user username if one is in security context
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
     #        # translatable sets locale after router processing
     #        - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
-    #        # loggable hooks user username if one is in security context
-    #        - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    #        
 
     # Doctrine Extension listeners to handle behaviors
     gedmo.listener.timestampable:
@@ -31,3 +32,10 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
+            
+    gedmo.listener.loggable:
+        class: Gedmo\Loggable\LoggableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+        calls:
+            - [ setAnnotationReader, [ @annotation_reader ] ] 

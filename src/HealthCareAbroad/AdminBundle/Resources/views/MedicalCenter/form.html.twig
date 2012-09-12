@@ -27,7 +27,13 @@
 							'class': 'add-icon',
 							'description': 'add new procedure type for this center type',
 							'href': path('admin_procedureType_add', {medicalCenterId:medicalCenter.id}), 
-							'links': [{'title': 'add procedure type', 'href': path('admin_procedureType_add', {medicalCenterId: medicalCenter.id} )}]
+							'links': [{'title': 'Add procedure type', 'href': path('admin_procedureType_add', {medicalCenterId: medicalCenter.id} )}]
+						}, {
+						    title: 'View edit history',
+						    href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }),
+						    class: 'view-edit-history-link',
+						    description: 'Show all the changes made to this center type content',
+						    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': medicalCenter.id, 'objectClass': base64_encode(getClass(medicalCenter)) }) }]
 						}] | merge(contents)
 					%}
 				{% endif %}
@@ -35,7 +41,7 @@
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 				
 				<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-	
+
 					{{ form_row(form.name) }}
 					{{ form_row(form.description) }}
 					{{ form_rest(form) }}
@@ -79,4 +85,20 @@
 		{% endembed %}
 	</div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+
+		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('a.view-edit-history-link').click(function(){
+		        EntityVersionHistory.viewHistory($(this));
+		        return false;
+		    });
+		    
+		});
+	</script>
 {% endblock %}

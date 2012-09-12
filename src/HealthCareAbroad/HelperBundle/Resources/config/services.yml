@@ -39,6 +39,12 @@ services:
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]]
+        
+    services.miscellaneous.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
 
     form.country_list:
         class: "%services.country_list%"
@@ -57,6 +63,8 @@ services:
         class: "%services.tagtype_list%"
         tags:
             - { name: form.type, alias: tagtype_list }
+            
+    
             
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
@@ -85,3 +93,11 @@ services:
             - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+    
+    listener.mailer.error_report.create:
+        class: HealthCareAbroad\MailerBundle\Listener\ErrorReportListener
+        calls:
+            - [setTwig, [@twig]]
+            - [setMailer, [@mailer]]
+        tags:
+            - { name: kernel.event_listener, event: event.errorReport.create, method: onCreate }

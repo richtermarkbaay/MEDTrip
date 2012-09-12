@@ -105,7 +105,7 @@ font-size: 12px;
 	}
 #table-content {
 	line-height: 16px;
-	margin: 0 10px 10px 10px;
+	margin: 0 10px 10px 0;
 	min-height: 300px;
 	}
 
@@ -1072,13 +1072,11 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	white-space: nowrap;
 	}
 .nav .current .sub li.sub_show a	{
-	background: url(/images/admin/shared/nav/menus/back_1.gif);
 	color: #94b52c;
 	cursor: default;
 	}
 .nav .select :hover .sub li a:hover, 
 .nav .current .sub li a:hover	{
-	background: url(/images/admin/shared/nav/menus/back_1.gif);
 	color: #94b52c;
 	visibility: visible;
 	}
@@ -1300,7 +1298,7 @@ form.basic-form select,
 	font-size: 12px;
 	padding: 7px 5px;
 	text-align: left;
-	width: 198px;
+	width: 208px;
 	}
 .styledselect_form_2	{
 	background: url(/images/admin/forms/form_select_small.gif) left no-repeat;
@@ -1788,34 +1786,46 @@ a.icon-type:hover {
 
 /* jQuery UI vertical tabs Style */
 .ui-tabs-vertical .ui-tabs-nav { 
-	padding: .2em .1em .2em .2em; 
 	float: left; 
 	width: 12em; 
+	border: none;
+	background: #E6E6E6;
+	padding: .2em .1em .2em .4em;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
 }
 .ui-tabs-vertical .ui-tabs-nav li { 
 	clear: left; 
-	width: 100%; 
-	border-bottom-width: 1px !important; 
-	border-right-width: 0 !important; 
-	margin: 0 -1px .2em 0; 
+	width: 100%;
+	margin: 0 -1px .2em 0;
+	white-space: pre-wrap;
+	border: 1px solid #CCCCCC !important; 
 }
 .ui-tabs-vertical .ui-tabs-nav li a { 
-	display:block; 
+	width: 150px;
+	display:block;
+	padding-right: 0;
+	padding-left: 10px;
+	word-wrap: break-word;
 }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
-	background: none repeat scroll 0 0 #F5F3F0; 
-	padding-bottom: 0; 
-	padding-right: .1em; 
-	border-right-width: 1px; 
-	border-right-width: 1px; 
+	z-index: 1;
+	padding-right: .5em;
+	margin: 0.1em 0 0.3em;
+	border: none !important;
+	background: none repeat scroll 0 0 #F5F5F5;
 }
-.ui-tabs-vertical .ui-tabs-panel {  
-	background: none repeat scroll 0 0 #F5F3F0; 
+.ui-tabs-vertical .ui-tabs-panel {
 	float: right; 
-	width: 48em; 
-	height: auto; 
+	width: 623px; 
+	height: auto;
+	border: 5px solid #E6E6E6;
+	border-top-right-radius: 4px;
+	background: none repeat scroll 0 0 #F5F5F5;
 }
-
+.ui-widget-content a {
+	color: #FFFFFF;
+}
 /* end */
     
 /* Admin Custom Sidebar */
@@ -1914,10 +1924,32 @@ a.icon-type:hover {
 }
 
 .tabbed-medical-procedure-type-detail table.generic-table {
+	font-size: 12px;
 	margin-top: 20px;
 	width: 100%;
 }
+
+.tabbed-medical-procedure-type-detail table.generic-table th {
+	font-size: 11px;
+	padding: 8px 10px;
+}
+
+.tabbed-medical-procedure-type-detail table.generic-table th a{
+	font-size: 12px;
+}
+
 .tabbed-medical-procedure-type-detail table.generic-table td {
+	padding: 3px 8px;
 	background-color: #fff;
 }
 /* end Institution Medical Center styles */
+
+/** versioning styles **/
+ul.version-edit-list {
+	list-style: none;
+}
+
+ul.version-edit-list label.field {
+	font-weight: bold;
+}
+/** end versioning styles **/

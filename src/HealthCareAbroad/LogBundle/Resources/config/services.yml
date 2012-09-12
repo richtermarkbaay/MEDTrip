@@ -1,4 +1,8 @@
 services:
+    services.log.entity_version:
+        class: HealthCareAbroad\LogBundle\Services\EntityVersionService
+        arguments: [@doctrine]
+
     listener.log.kernelException:
         class: HealthCareAbroad\LogBundle\Listener\Error\KernelExceptionListener
         arguments: [@doctrine]

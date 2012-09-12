@@ -5,6 +5,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\HttpFoundation\Response;
 
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserRoleEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserRoleEvents;
+
 class InstitutionUserRoleController extends Controller
 {
 	/**
@@ -60,10 +63,15 @@ class InstitutionUserRoleController extends Controller
 		$userType->addInstitutionUserRole($userRole);
 	
 		$em = $this->getDoctrine()->getEntityManager();
-	
+	    
 		try {
 			$em->persist($userType);
 			$em->flush();
+			
+			//// create event on adding roles to userTypes and dispatch
+			$event = new CreateInstitutionUserRoleEvent($userRole);
+			$this->get('event_dispatcher')->dispatch(InstitutionUserRoleEvents::ON_ADD_INSTITUTION_USER_ROLE, $event);
+			
 		}
 		catch (\PDOException $e) {
 			return $this->_errorResponse(500, $e->getMessage());
@@ -85,13 +93,17 @@ class InstitutionUserRoleController extends Controller
 		if (!$userType || !$userRole) {
 			throw $this->createNotFoundException();
 		}
-		$userType->removeInstitutionUserRole($userRole);
+		$userType->removeInstitutionUserRole($userRole);	
 	
 		$em = $this->getDoctrine()->getEntityManager();
 	
 		$em->persist($userType);
 		$em->flush();
 	
+		//// create event on removing roles to userTypes and dispatch
+		$event = new CreateInstitutionUserRoleEvent($userRole);
+		$this->get('event_dispatcher')->dispatch(InstitutionUserRoleEvents::ON_DELETE_INSTITUTION_USER_ROLE, $event);
+			
 		return $this->_jsonResponse(array('success' => 1));
 	}
 	

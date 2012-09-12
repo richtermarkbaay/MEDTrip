@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Events\CityEvents;
+
+use HealthCareAbroad\AdminBundle\Events\CreateCityEvent;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -75,6 +79,18 @@ class CityController extends Controller
    			$em->persist($city);
    			$em->flush($city);
 
+   			if($id) {
+	   			//// create event on addCity and dispatch
+	   			$event = new CreateCityEvent($city);
+	   			$this->get('event_dispatcher')->dispatch(CityEvents::ON_ADD_CITY, $event);
+   			}
+   			else
+   			{
+   				//// create event on editCity and dispatch
+	   			$event = new CreateCityEvent($city);
+	   			$this->get('event_dispatcher')->dispatch(CityEvents::ON_EDIT_CITY, $event);
+   			}	
+   				
    			$request->getSession()->setFlash('success', 'City has been saved!');
    			return $this->redirect($this->generateUrl('admin_city_index'));
 		}
@@ -103,6 +119,11 @@ class CityController extends Controller
 			$city->setStatus($city->getStatus() ? 0 : 1);
 			$em->persist($city);
 			$em->flush($city);
+			
+			//// create event on addRoleToUserType and dispatch
+			$event = new CreateCityEvent($city);
+			$this->get('event_dispatcher')->dispatch(CityEvents::ON_EDIT_CITY, $event);
+			
 			$result = true;
 		}
 
