@@ -40,4 +40,20 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             joinColumn:
                 name: institution_id
                 referencedColumnName: id
+    manyToMany:
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            joinTable:
+                name: institution_medical_center_media
+                joinColumns:
+                    -
+                        name: institution_medical_center_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: media_id
+                        referencedColumnName: id
+            orderBy: null                
     lifecycleCallbacks: {  }

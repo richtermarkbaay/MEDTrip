@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'medical_centers'%}
-{% block title %}{{ parent() }} Add Medical Center {% endblock %}
+{% block title %}{{ parent() }} Edit Draft {% endblock %}
 
 
 {% block content %}
@@ -8,13 +8,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-        <h1>
-            {% if isNew %} 
-                Add a new medical center
-            {% else %}
-                Edit {{ institutionMedicalCenter.medicalCenter.name }} medical center
-            {% endif %}       
-        </h1>
+        <h1>Edit Draft</h1>
     </div>
     <!-- end page-heading -->
     
@@ -38,9 +32,9 @@
                         {title: 'Add Procedure Types'},
                         {title: 'Preview', 'selected': false},
                     ] }
-              %}
+                %}
             
-                {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_add', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %}
+                {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_editDraft', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %}
                 
             </div>
             <!--  end table-content  -->

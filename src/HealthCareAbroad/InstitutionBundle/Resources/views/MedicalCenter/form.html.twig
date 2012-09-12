@@ -1,10 +1,15 @@
-<form action="{{ formUrl }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-    			    
+<form novalidate="novalidate" action="{{ formUrl }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                    
         {{ form_row(form.medicalCenter) }}
-	    {{ form_row(form.description) }}
-	    {{ form_rest(form) }}
-	    
-		<input style="" type="submit" name="submit" value="Next" class="green-button" />
-		<input type="reset" value="" class="form-reset"  />
-	    <!-- end id-form  -->
+        {{ form_row(form.description) }}
+        {{ form_rest(form) }}
+        
+        {# TODO: there might be a similar query variable in the form url #}
+        {% if imcId is defined %}
+        <input type="hidden" name="imcId" value="{{ imcId }}" />
+        {% endif %}
+        
+        <input style="" type="submit" name="submit" value="Next" class="green-button" />
+        <input type="reset" value="" class="form-reset"  />
+        <!-- end id-form  -->
 </form>

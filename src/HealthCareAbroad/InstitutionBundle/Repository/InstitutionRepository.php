@@ -48,7 +48,7 @@ class InstitutionRepository extends EntityRepository
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status = :active ";
         $query = $this->_em->createQuery($dql)
             ->setParameter('institutionId', $institution->getId())
-            ->setParameter('active', InstitutionMedicalCenterStatus::ACTIVE);
+            ->setParameter('active', InstitutionMedicalCenterStatus::APPROVED);
         
         return $query->getResult();
     }

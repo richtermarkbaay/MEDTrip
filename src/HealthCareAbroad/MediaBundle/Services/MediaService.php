@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\MediaBundle\Entity\Media;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -20,46 +22,60 @@ class MediaService
         $this->filesystemManager = $filesystemManager;
     }
 
-    public function upload(UploadedFile $file, $institutionId = null)
+    public function upload(UploadedFile $file, $institutionId, $context = array())
     {
-        if (!is_numeric($institutionId)) {
-            throw new \Exception('Invalid institution id');
+        if (!$file->isValid()) {
+            return $file->getError();    
         }
-        
-        if ($file->isValid()) {
-            $filesystem = $this->filesystemManager->get($institutionId, 'local');
 
-            //TODO: rename/sanitize filename
-            $filename = $file->getClientOriginalName();
+        $filesystem = $this->filesystemManager->get($institutionId, 'local');
 
-            $media = new Media();
-            $media->setName($filename);
-            $media->setContentType($file->getMimeType());
-            //TODO: the ff are temporary
-            $media->setCaption($filename);			
-            $media->setContext($institutionId);
-            $media->setUuid(\time());			
-            //TODO: ignore the other attributes for now
+        //TODO: rename/sanitize filename
+        $filename = $file->getClientOriginalName();
+
+        $media = new Media();
+        $media->setName($filename);
+        $media->setContentType($file->getMimeType());
+        //TODO: the ff are temporary
+        $media->setCaption($filename);			
+        $media->setContext($institutionId);
+        $media->setUuid(\time());			
+        //TODO: ignore the other attributes for now
             
-            $proceed = true;
-            try {
-                $file->move($this->filesystemManager->getUploadRootDir(), $filename);
-            } catch (FileException $e) {
-                $proceed = false;				
-            }
-            
-            if ($proceed) {
-                $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
-                $gallery->addMedia($media);
-                
-                //TODO: set cascade persist on entity Gallery
-                $this->entityManager->persist($media);
-                $this->entityManager->persist($gallery);
-                $this->entityManager->flush();
-            }
-            
+        $proceed = true;
+        try {
+            $file->move($this->filesystemManager->getUploadRootDir(), $filename);
+        } catch (FileException $e) {
+            $proceed = false;				
         }
-        
+            
+        if ($proceed) {
+            
+            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
+            $gallery->addMedia($media);
+            
+            $mediaEntity = null;
+            
+            if (!empty($context)) {
+                switch ($context['context']) {
+                    case 'institutionMedicalCenter':
+                        $mediaEntity = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($context['contextId']);
+                        
+                        break;
+                }
+            }
+
+            if ($mediaEntity) {
+                $mediaEntity->addMedia($media);
+                $this->entityManager->persist($mediaEntity);
+            }
+
+            //TODO: set cascade persist on entity Gallery
+            $this->entityManager->persist($media);
+            $this->entityManager->persist($gallery);
+            $this->entityManager->flush();
+        }
+            
         $errorCode = $file->getError();
         unset($file);
         
@@ -116,4 +132,5 @@ class MediaService
     {
         $this->entityManager->remove($media);
     }
+    
 }

@@ -17,8 +17,9 @@ final class InstitutionMedicalCenterStatus {
     static public function getStatusList()
     {
         return array(
+            self::INACTIVE => 'Inactive',
+            self::APPROVED => 'Approved',
             self::DRAFT => 'Draft',
-            self::APPROVED => 'Active',
             self::PENDING => 'Pending',
             self::EXPIRED => 'Expired',
             self::ARCHIVED => 'Archived'                

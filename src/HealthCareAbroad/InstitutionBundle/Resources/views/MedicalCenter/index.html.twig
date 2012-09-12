@@ -6,7 +6,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-    	<h1>{{ app.session.get('institutionName') }} Medical Centers</h1>
+        <h1>{{ app.session.get('institutionName') }} Medical Centers</h1>
     </div>
 
     <!-- end page-heading -->
@@ -18,12 +18,25 @@
                 {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideMedicalProcedureTypeTask: true} %}
                 {# ----- end Related tasks ----- #}
                 
-    			<!--  start table-content  -->
-    			<div id="table-content" style="width:75%">
-    			    {% include '::notice.admin.html.twig' %}
-    			    {% include 'InstitutionBundle:MedicalCenter:baseIndexTable.html.twig' with {'institutionMedicalCenters': institutionMedicalCenters} %}
-    			    
-    			</div>
+                <!--  start table-content  -->
+                <div id="table-content" style="width:75%">
+                
+                    {% include '::notice.admin.html.twig' %}
+                    {% include 'InstitutionBundle:MedicalCenter:baseIndexTable.html.twig' with {'institutionMedicalCenters': institutionMedicalCenters} %}
+
+                    <!-- medical centers with DRAFT status -->
+                    {% if draftInstitutionMedicalCenters|length > 0 %}
+                    <div>
+                        The following medical centers have incomplete information. Click on one to resume inputting your data.
+                        <ul>
+                        {% for center in draftInstitutionMedicalCenters %}
+                            <li><a href="{{ path('institution_medicalCenter_editDraft', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></li>
+                        {% endfor %}
+                        </ul>				
+                    </div>                
+                    {% endif %}                                    
+                    
+                </div>
         {% endblock %}
         
     {% endembed %}
@@ -36,38 +49,38 @@
 
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
-	<script type="text/javascript">
+    <script type="text/javascript">
         $(function(){
 
-        	$("#dialog-container").dialog({
-				autoOpen: false,
-				height: 580,
-				width: 700,
-				modal: true,
-				resizable: false,
-				//buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
-				close: function() {}
-			});
+            $("#dialog-container").dialog({
+                autoOpen: false,
+                height: 580,
+                width: 700,
+                modal: true,
+                resizable: false,
+                //buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
+                close: function() {}
+            });
 
-        	$("a.add-medical-center").click(function() {
-				var elem = $(this);
-				var addProcedureUrl = elem.attr('href');
-				elem.attr('href', 'javascript:void(0)');
+            $("a.add-medical-center").click(function() {
+                var elem = $(this);
+                var addProcedureUrl = elem.attr('href');
+                elem.attr('href', 'javascript:void(0)');
 
-				$("#dialog-container").empty();
-				$("#dialog-container").dialog({
-					open: function() {
-						$.ajax(addProcedureUrl)
-							.done(function (data) {
-								elem.attr('href', addProcedureUrl);
-								$('#dialog-container').html(data);
-							});
-					},
-				});
-				$("#dialog-container").dialog("open");
-			});
+                $("#dialog-container").empty();
+                $("#dialog-container").dialog({
+                    open: function() {
+                        $.ajax(addProcedureUrl)
+                            .done(function (data) {
+                                elem.attr('href', addProcedureUrl);
+                                $('#dialog-container').html(data);
+                            });
+                    },
+                });
+                $("#dialog-container").dialog("open");
+            });
         });
-	</script>	
+    </script>	
 {% endblock %}
 
 

@@ -13,8 +13,7 @@ class DefaultController extends Controller
 {
     public function galleryAction(Request $request)
     {
-        $session = $this->getRequest()->getSession();
-        $institutionId = $session->get('institutionId');				
+        $institutionId = $request->getSession()->get('institutionId');				
         
         return $this->render('MediaBundle:Institution:gallery.html.twig', array(
                 'institutionId' => $institutionId,
@@ -24,7 +23,7 @@ class DefaultController extends Controller
     
     public function addAction(Request $request)
     {
-        $institutionId = $this->getRequest()->getSession()->get('institutionId');				
+        $institutionId = $request->getSession()->get('institutionId');				
         
         return $this->render('MediaBundle:Institution:addMedia.html.twig', array(
                 'institutionId' => $institutionId
@@ -34,22 +33,24 @@ class DefaultController extends Controller
     public function uploadAction(Request $request)
     {
         $response = new Response(); 
+        $institutionId = $request->getSession()->get('institutionId');
 
-        $institutionId = $this->getRequest()->getSession()->get('institutionId');
-        
         $fileBag = $request->files;
+        
         if ($fileBag->has('file')) {
-            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId);
+            $errorCode = 0;
+            //commented out for testing
+            //$errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
         } else {
             return $response->create('File not detected', 415); 
         }
         
         return $response->create('Error code: '.$errorCode);
     }
-    
+
     public function deleteAction(Request $request)
     {
-        $institutionId = $this->getRequest()->getSession()->get('institutionId');
+        $institutionId = $request->getSession()->get('institutionId');
 
         $success = $this->get('services.media')->delete($request->get('id'), $institutionId);
 
@@ -58,7 +59,7 @@ class DefaultController extends Controller
     
     public function editCaptionAction(Request $request)
     {
-        $institutionId = $this->getRequest()->getSession()->get('institutionId');
+        $institutionId = $request->getSession()->get('institutionId');
 
         $media = $this->get('services.media')->editMediaCaption($request->get('id'), $institutionId, $request->get('caption'));
         
@@ -69,4 +70,18 @@ class DefaultController extends Controller
         
         return new Response($response);      
     }
+    
+    private function extractContext(Request $request)
+    {
+        $context = array();
+    
+        if ($request->get('imcId')) {
+            $context = array(
+                    'context' => 'institutionMedicalCenter',
+                    'contextId' => $request->get('imcId')
+            );
+        }
+    
+        return $context;
+    }    
 }

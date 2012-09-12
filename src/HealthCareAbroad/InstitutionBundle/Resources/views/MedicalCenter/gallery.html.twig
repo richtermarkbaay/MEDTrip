@@ -1,0 +1,215 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers'%}
+{% block title %}{{ parent() }} Add Medical Center Media {% endblock %}
+
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add media for {{ institutionMedicalCenter.medicalCenter.name }} medical center</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {# ----- end Related tasks ----- #}
+            
+            <!--  start table-content  -->
+            <div id="table-content">
+                <div style="width:75%;">
+                    {% include '::notice.admin.html.twig' %}
+                    
+                    {% include '::stepHolder.base.admin.html.twig' with {
+                        steps: [
+                            {title: 'Center Details', 'selected': true},
+                            {title: 'Add Media', 'selected': true},
+                            {title: 'Add Procedure Types'},
+                            {title: 'Preview', 'selected': false},
+                        ] }
+                  %}                
+
+                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+                                            
+                        <tr>
+                            <th class="table-header-repeat line-left minwidth-1"> <a href="#">Media</a></th>
+                            <th class="table-header-repeat line-left minwidth-1"><a href="#">Caption</a></th>
+                        </tr>
+                        
+                        {% for media in institutionMedicalCenter.media %}
+                            <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                                <td valign="top">{{ media(media, 'galleryAdd', {'institutionId': institutionId}) | raw }}</td>
+                                <td>{{ media.caption }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td id="noMedia" colspan="4" align="center"> {{ institutionMedicalCenter.medicalCenter.name }} has no media yet. </td>
+                            </tr>    
+                        {% endfor %}                                   
+                            
+                    </table>                  
+                    
+                    <div>
+                        <ul>
+                            <li><a href="#" id="uploadFormButton">Upload media from your computer</a></li>
+                            <li><a href="#" id="mediaGalleryButton">Attach media from Media Gallery</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="clear">&nbsp;</div>
+                    
+                    <form action="{{ path('institution_medicalCenter_index') }}" method="GET" name="nextStep" id="nextStep">
+                        <input type="submit" name="submit" value="Next" class="green-button" />
+                    </form>
+                    
+                </div>
+            
+            </div>
+            <!--  end table-content  -->
+                    
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+
+<!-- TODO: load the following via ajax instead -->
+<div id="uploadForm" title="Upload media">
+    <form id="pluploaderForm" name="pluploaderForm">
+        <div id="uploader">
+            <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+        </div>
+    </form>
+</div>
+
+<div id="mediaGallery" title="Media Gallery">
+    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+        <thead>
+            <tr>
+                <th style="width: 90px"></th>
+                <th class="table-header-repeat line-left minwidth-1"><a href="#">File</a></th>
+                <th class="table-header-repeat line-left minwidth-1"><a href="#">Attached to</a></th>
+                <th class="table-header-options line-left"><a href="#">Date</a></th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div style="float: right">
+                        <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
+                        <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
+                        <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
+                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
+                    </div>																		    			                								
+                </td>
+            </tr>
+        </tfoot>
+                               
+        {% for media in institutionMedia %}
+            <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                <td valign="top">{{ media(media, 'galleryAdd', {'institutionId': institutionId}) | raw }}</td>
+                <td>{{ media.caption }}</td>
+                <td><div style="font-style: italic;">[Unattached]</div><a href="#"><br/>Attach</a></td>
+                <td></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
+            </tr>    
+        {% endfor %}       
+    </table>
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+
+    {% block inlineJavascriptCode %}
+        <style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
+        <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+        <script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js') }}"></script>
+        
+        <script type="text/javascript">
+        $(function() {
+            
+            $('#nextStep').submit(function(e) {
+                if ($('#noMedia').length) {
+                    alert('Please upload your media or attach one from the Media Gallery.');
+                    return false;                
+                } else {
+                    $('#nextStep').submit();                    
+                }
+            });    
+            
+            $("#uploader").plupload({
+                runtimes : 'html5',
+                url : '{{ path('media_upload_medicalCenter', {'imcId': institutionMedicalCenter.id}) }}',
+                max_file_size : '10mb',
+                unique_names : true,
+                resize : {height : 500, quality : 90},
+                filters : [
+                    {title : "Image files", extensions : "jpg,gif,png"},
+                    {title : "Zip files", extensions : "zip"}
+                ],
+                flash_swf_url : '/plupload/js/plupload.flash.swf',
+                silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
+            });
+
+            $("#pluploadForm").submit(function(e) {
+                var uploader = $('#uploader').plupload('getUploader');
+
+                if (uploader.files.length > 0) {
+                    
+                    uploader.bind('StateChanged', function() {
+                        if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                            $('#pluploaderForm').submit();
+                       }
+                    });
+
+                    uploader.bind('FileUploaded', function(up, file) {
+                        //$('#' + file.id + " b").html("100%");
+                        alert('test');
+                    });
+                        
+                    uploader.start();
+
+                } else {
+                    alert('You must at least upload one file.');
+                }
+                    
+                return false;
+            });        
+        
+            $("#uploadForm").dialog({
+                autoOpen: false,
+                resizable: false,
+                height: 420,
+                width: 800,
+                modal: true,
+            });
+    
+            $ ("#uploadFormButton").button().click(function() {
+                $("#uploadForm").dialog("open");
+            });    
+
+            $("#mediaGallery").dialog({
+                autoOpen: false,
+                resizable: false,
+                width: 800,
+                modal: true,
+            });
+    
+            $ ("#mediaGalleryButton").button().click(function() {
+                $("#mediaGallery").dialog("open");
+            });                
+        });
+        </script>
+        
+    {% endblock %}
+{% endblock %}

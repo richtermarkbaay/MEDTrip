@@ -13,6 +13,15 @@ institution_gallery_add:
 media_upload:
     pattern: /media/upload
     defaults: { _controller: MediaBundle:Default:upload }
+    requirements:
+        _method: POST
+
+media_upload_medicalCenter:
+    pattern: /media/upload/medical-center/{imcId}
+    defaults: { _controller: MediaBundle:Default:upload }
+    requirements:
+        _method: POST
+        imcId: \d+
     
 media_delete:
     pattern: /media/delete/{id}
