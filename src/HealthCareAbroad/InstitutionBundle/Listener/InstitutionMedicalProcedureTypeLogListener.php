@@ -19,15 +19,15 @@ class InstitutionMedicalProcedureTypeLogListener
         $this->em = $em;
     }
        
-    public function onDelete(CreateInstitutionMedicalProcedureTypeEvent $event){
+    public function onDelete(){
     	 
     }
     
-    public function onEdit(CreateInstitutionMedicalProcedureTypeEvent $event){
+    public function onEdit(){
     	
     }
     
-    public function onAdd(CreateInstitutionMedicalProcedureTypeEvent $event)
+    public function onAdd()
     {
     	
     }

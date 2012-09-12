@@ -19,15 +19,15 @@ class InstitutionUserRoleLogListener
         $this->em = $em;
     }
        
-    public function onDelete(CreateInstitutionUserRoleEvent $event){
+    public function onDelete(){
     	 
     }
     
-    public function onEdit(CreateInstitutionUserRoleEvent $event){
+    public function onEdit(){
     	
     }
     
-    public function onAdd(CreateInstitutionUserRoleEvent $event)
+    public function onAdd()
     {
     	
     }

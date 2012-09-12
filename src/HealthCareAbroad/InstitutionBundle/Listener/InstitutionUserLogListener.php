@@ -4,9 +4,9 @@ namespace HealthCareAbroad\InstitutionBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
 
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;	
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionUserEvent;	
 
-class InstitutionMedicalProcedureLogListener
+class InstitutionUserLogListener
 {
     /**
      * 

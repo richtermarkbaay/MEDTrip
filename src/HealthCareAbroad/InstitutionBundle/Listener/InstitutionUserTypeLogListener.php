@@ -19,15 +19,15 @@ class InstitutionUserTypeLogListener
         $this->em = $em;
     }
        
-    public function onDelete(CreateInstitutionUserTypeEvent $event){
+    public function onDelete(){
     	 
     }
     
-    public function onEdit(CreateInstitutionUserTypeEvent $event){
+    public function onEdit(){
     	
     }
     
-    public function onAdd(CreateInstitutionUserTypeEvent $event)
+    public function onAdd()
     {
     	
     }

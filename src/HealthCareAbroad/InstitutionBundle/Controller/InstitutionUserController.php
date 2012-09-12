@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+
+
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 
@@ -9,6 +11,9 @@ use HealthCareAbroad\UserBundle\Event\UserEvents;
 use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserInvitationEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserInvitationEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvents;
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionUserEvent;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
@@ -78,6 +83,7 @@ class InstitutionUserController extends Controller
         $session = $this->getRequest()->getSession();
         $institutionUserService = $this->get('services.institution_user');
         $institutionUser = $institutionUserService->findById($session->get('accountId'));
+        
         $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
     	
     	if ($this->getRequest()->isMethod('POST')) {
@@ -88,13 +94,14 @@ class InstitutionUserController extends Controller
     			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
     			$institutionUserService->update($institutionUser);
     			
-    			//// create event on editAccount and dispatch
-    			$event = new CreateInstitutionUserEvent($institutionUser);
-    			$this->get('event_dispatcher')->dispatch(UserEvents::ON_CHANGE_INSTITUTION_USER_PASSWORD, $event);
+    			// create event on editAccount and dispatch
+    			$event = new EditInstitutionUserEvent($institutionUser);
+    			$this->get('event_dispatcher')->dispatch(InstitutionUserEvents::ON_EDIT_INSTITUTION_USER, $event);
     			    			
     			$this->get('session')->setFlash('success', "Password changed!");
     		}    			
     	}
+    	
     	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
@@ -124,9 +131,9 @@ class InstitutionUserController extends Controller
             if ($form->isValid()) {
                 $institutionUser = $this->get('services.institution_user')->update($institutionUser);
                 
-                //// create event on editAccount and dispatch
-                $event = new CreateInstitutionUserEvent($institutionUser);
-                $this->get('event_dispatcher')->dispatch(UserEvents::ON_UPDATE_INSTITUTION_USER, $event);
+                // create event on editAccount and dispatch
+                $event = new EditInstitutionUserEvent($institutionUser);
+                $this->get('event_dispatcher')->dispatch(InstitutionUserEvents::ON_EDIT_INSTITUTION_USER, $event);
                 
                 $this->get('session')->setFlash('success', "Successfully updated account");
                 $refer = $this->get('session')->get('referer');
@@ -152,7 +159,7 @@ class InstitutionUserController extends Controller
                 
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
                 
-                //// create event on invite institutionUser and dispatch
+                // create event on invite institutionUser and dispatch
                 $event = new CreateInstitutionUserInvitationEvent($institutionUserInvitation);
                 $this->get('event_dispatcher')->dispatch(InstitutionUserInvitation::ON_ADD_INSTITUTION_USER_INVITATION, $event);
                  
