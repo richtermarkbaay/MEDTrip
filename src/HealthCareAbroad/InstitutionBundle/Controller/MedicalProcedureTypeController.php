@@ -131,7 +131,7 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             }
             else {
             	//// create event on editing institutionMedicalProcedureTypes and dispatch
-            	$event = new CreateInstitutionMedicalProcedureTypeEvent($procedureType);
+            	$event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
             	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
             }
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
