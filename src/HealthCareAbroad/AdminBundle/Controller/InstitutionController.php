@@ -21,7 +21,7 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
 
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
@@ -80,7 +80,7 @@ class InstitutionController extends Controller
 			$em->flush($institution);
 			
 			//TODO:: to create listener for the dispatch event of editInstitution Event
-			$event = new CreateInstitutionEvent($institution);
+			$event = new EditInstitutionEvent($institution);
 			$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
 					
 		}
