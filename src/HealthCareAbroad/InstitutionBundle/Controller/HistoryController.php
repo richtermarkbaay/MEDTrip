@@ -48,7 +48,7 @@ class HistoryController extends Controller
         
         $template = 'InstitutionBundle:History:editHistory.html.twig';
         if ($request->isXmlHttpRequest()) {
-            $template = 'InstitutionBundle:History:versionsList.html.twig';
+            $template = 'InstitutionBundle:History:versionList.html.twig';
         }
         
         $objectName = $object->__toString();

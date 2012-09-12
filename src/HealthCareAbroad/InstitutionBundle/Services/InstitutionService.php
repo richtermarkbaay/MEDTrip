@@ -62,7 +62,7 @@ class InstitutionService
 			$em->persist($institution);
 			$em->flush();
 		} catch(\Exception $e) {
-			return null;
+			throw $e;
 		}
 		return $institution;
 		
@@ -135,26 +135,5 @@ class InstitutionService
             $returnValue[] = $this->institutionUserService->getAccountData($user);
         }
         return $returnValue;
-    }
-    
-    public function getStatusFilterOptions()
-    {
-    	return array(
-    		'all' => 'All',
-			Institution::ACTIVE => 'Active',
-			Institution::INACTIVE => 'Inactive',
-			Institution::APPROVED => 'Approved',
-			Institution::UNAPPROVED => 'Unapproved',
-    		Institution::SUSPENDED => 'Suspended'
-    	);
-    }
-
-    public function getUpdateStatusOptions()
-    {
-		return array(
-			'Activate' => Institution::ACTIVE,
-			'Approve' => Institution::APPROVED,
-			'Suspend' => Institution::SUSPENDED
-		);
     }
 }

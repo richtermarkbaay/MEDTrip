@@ -19,7 +19,7 @@ admin_institution_view:
 # Manage Centers #
 admin_institution_manageCenters:
     pattern:  /admin/institution/{institutionId}/manage-centers
-    defaults: { _controller: AdminBundle:Institution:manageCenters, status: 1 }
+    defaults: { _controller: AdminBundle:Institution:manageCenters }
     requirements:
          institutionId: \d+
 
@@ -54,10 +54,11 @@ admin_institution_medicalCenter_update:
         _method: POST
 
 admin_institution_medicalCenter_updateStatus:
-    pattern:  /admin/institution/medical-center/update-status
-    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
+    pattern:  /admin/institution/medical-center/{imcId}/update-status/{status}
+    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus, status: ~ }
     requirements:
          imcId: \d+
+         status: \d+
 # End of Manage Centers Routes #
 
 

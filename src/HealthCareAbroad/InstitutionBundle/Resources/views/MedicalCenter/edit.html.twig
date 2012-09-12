@@ -64,6 +64,7 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
 	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
 	<script type="text/javascript">
 		$(function(){
@@ -86,6 +87,15 @@
 			$('a.add-procedure-type').click(function(e){
 			    return InstitutionMedicalCenter.addProcedureType($(this));
 			});
+			
+			EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+            $('a.view-edit-history-link').click(function(){
+                
+                EntityVersionHistory.viewHistory($(this));
+                
+                return false;
+            });
 		});
 	</script>
 {% endblock %}

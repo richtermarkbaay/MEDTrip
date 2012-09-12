@@ -2,9 +2,13 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Listener;
 
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
+
 use Doctrine\ORM\EntityManager;
 
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;	
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\DeleteInstitutionEvent;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;	
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -35,11 +39,11 @@ class InstitutionListener
     	$this->institutionUserService = $institutionUserService;
     }
     
-    public function onDelete(CreateInstitutionEvent $event){
+    public function onDelete(){
     	 
     }
     
-    public function onEdit(CreateInstitutionEvent $event){
+    public function onEdit(){
     	
     }
     
@@ -47,12 +51,19 @@ class InstitutionListener
     {
     	//get institution
     	$institution = $event->getInstitution();
-        
+    	
     	//persist data to create institutionUserTypes
     	$institutionUserType = new InstitutionUserType();
     	$institutionUserType->setInstitution($institution);
     	$institutionUserType->setName(Institution::USER_TYPE);
     	$institutionUserType->setStatus(3);
+    	
+    	// add role to this first user type as super admin for this institution
+    	$adminInstitutionRole = $this->em->getRepository('UserBundle:InstitutionUserRole')->findOneBy(array('name' => InstitutionUserRole::SUPER_ADMIN));
+    	if ($adminInstitutionRole) {
+    	    $institutionUserType->addInstitutionUserRole($adminInstitutionRole);
+    	}
+    	
     	$this->em->persist($institutionUserType);
     	$this->em->flush();
     	
@@ -60,15 +71,13 @@ class InstitutionListener
     	$institutionUser = $event->getInstitutionUser();
     	
     	//create institutionUser account and global account
-    	$institutionUser = $this->createInstitutionUser($institutionUserType, $institutionUser);
-    	return $institutionUser;
+    	$this->createInstitutionUser($institutionUserType, $institutionUser);
     }
     
     public function createInstitutionUser(InstitutionUserType $institutionUserType, InstitutionUser $institutionUser)
     {
     	$institutionUser->setInstitutionUserType($institutionUserType);
     	$institutionUser = $this->institutionUserService->create($institutionUser);
-    	return $institutionUser;
     }
     
 }

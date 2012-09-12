@@ -46,18 +46,30 @@ class DefaultControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), "Access is forbidden to not allowed roles");
     }
+    
     public function testErrorReport()
     {
-   		
-    	$formData = array(
-    			'errorReport[reporterName]' => 'test Reporter Name',
-    			'errorReport[details]' => 'Lorem Lorem ipsum dolor sit amit!',
- 
-    	);
-    	
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('POST', '/admin/settings/user-types/error-report', $formData);
+    	$crawler = $client->request('GET', '/admin/settings/user-types/error-report');
     	
-    	$this->assertEquals(200, $client->getResponse()->getStatusCode());
+    	$formValues = array(
+    			'ExceptionForm[reporterName]' => 'test Reporter Name',
+    			'ExceptionForm[details]' => 'Lorem Lorem ipsum dolor sit amit!'
+    	);
+ 		
+ 		$invalidFormValues = array(
+ 				'ExceptionForm[reporterName]' => '',
+ 				'ExceptionForm[details]' => ''
+ 		);
+      
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully sent error report to HealthCareAbroad")')->count());
+        
+        $crawler = $client->request('GET', '/admin/settings/user-types/error-report');
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+         
     }
 }

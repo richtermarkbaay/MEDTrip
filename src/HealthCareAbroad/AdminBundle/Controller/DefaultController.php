@@ -58,6 +58,11 @@ class DefaultController extends Controller
         return $this->render('AdminBundle:Exception:error403.html.twig');
     }
 
+    /**
+     * Add Error Report
+	 *
+     * @author Chaztine Blance
+     */
     public function errorReportAction()
     {  	
     	$request = $this->getRequest();
@@ -76,12 +81,12 @@ class DefaultController extends Controller
  			    $errorReport->setStatus(1);
  			    $em->persist($errorReport);
  			    $em->flush($errorReport);
- 			    	
+ 			    
+ 			    //// create event on sendEmail and dispatch
  			    $event = new CreateErrorReportEvent($errorReport);
            	   	$sendResult = $this->get('event_dispatcher')->dispatch(ErrorReportEvent::ON_CREATE_REPORT, $event);
 	    	    	
-           	   	if ($sendResult) {
-           	   		 
+           	   	if ($sendResult) {         	   		 
            	   		$this->get('session')->setFlash('success', "Successfully sent error report to HealthCareAbroad");
            	   	}
            	   	else {
