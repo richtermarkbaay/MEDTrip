@@ -4,7 +4,9 @@ namespace HealthCareAbroad\InstitutionBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
 
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;	
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\DeleteInstitutionEvent;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;	
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -35,11 +37,11 @@ class InstitutionListener
     	$this->institutionUserService = $institutionUserService;
     }
     
-    public function onDelete(CreateInstitutionEvent $event){
+    public function onDelete(){
     	 
     }
     
-    public function onEdit(CreateInstitutionEvent $event){
+    public function onEdit(){
     	
     }
     
@@ -60,15 +62,13 @@ class InstitutionListener
     	$institutionUser = $event->getInstitutionUser();
     	
     	//create institutionUser account and global account
-    	$institutionUser = $this->createInstitutionUser($institutionUserType, $institutionUser);
-    	return $institutionUser;
+    	$this->createInstitutionUser($institutionUserType, $institutionUser);
     }
     
     public function createInstitutionUser(InstitutionUserType $institutionUserType, InstitutionUser $institutionUser)
     {
     	$institutionUser->setInstitutionUserType($institutionUserType);
     	$institutionUser = $this->institutionUserService->create($institutionUser);
-    	return $institutionUser;
     }
     
 }
