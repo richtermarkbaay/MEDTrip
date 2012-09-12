@@ -5,57 +5,106 @@
 {% block content %}
 
 	<div id="content">
-	
-<div id="step-holder">
-			<div class="step-no">1</div>
-			<div class="step-dark-left"><a href="">Add Medical Center</a></div>
-			<div class="step-dark-right">&nbsp;</div>
-			<div class="step-no-off">2</div>
-			<div class="step-light-left">Add Center Media</div>
-			<div class="step-light-right">&nbsp;</div>
-			<div class="step-no-off">3</div>
-			<div class="step-light-left">Add Center Media</div>
-			<div class="step-light-right">&nbsp;</div>
-			<div class="step-no-off">4</div>
-			<div class="step-light-left">Preview</div>
-			<div class="step-light-round">&nbsp;</div>
-			<div class="clear"></div>
-		</div>
-		
+
 		<div id="page-heading"><h2>{{ institutionMedicalCenterId ? 'Edit' : 'Add' }} Medical Center</h2></div>
 		
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
-            {% set contents = [
-					{
-						'title': 'Manage procedure types', 
-						'description': 'Manage medical procedure types for this center',
-						'href': path('admin_medicalCenter_index'), 
-						'links': [{'title': 'View procedure types', 'href': path('admin_medicalCenter_index')}]
-					},
-	            	{
-						'title': 'Back to manage centers', 
-						'description': 'View the list available medical centers',
-						'href': path('admin_medicalCenter_index'), 
-						'links': [{'title': 'View medical centers', 'href': path('admin_medicalCenter_index')}]
-					}
-				]
-            %}
+				{% include '::notice.admin.html.twig' %}
+				
+	            {% set contents = [{
+					'title': 'Back to institution centers', 
+					'description': 'View the list available medical centers',
+					'href': path('admin_institution_manageCenters', {institutionId: institutionId}), 
+					'links': [{'title': 'View medical centers', 'href': path('admin_institution_manageCenters', {institutionId: institutionId}) }]
+				}] %}
+	            
+	            {% if institutionMedicalCenterId %}	            
+		            {% set addProcedureTypeTask = [{
+						'title': 'Add procedure type', 
+						'description': 'Add new procedure type for this medical center',
+						'class': 'add-procedure-type',
+						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterId}), 
+						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterId})}]
+					}] %}
+					
+					{% set contents = addProcedureTypeTask | merge(contents) %}
+	            {% endif %}
+	
+				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+				
+				<div id="table-content" style="width:75%">
+				
+					{% if not institutionMedicalCenterId %}
+						<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
+							{{ form_row(form.medicalCenter) }}
+							{{ form_row(form.description) }}
+							{{ form_rest(form) }}
+						    <input type="submit" class="green-button" value="Save" name="submit"/>
+						    <input type="submit" class="green-button" value="Save &amp; Add another center" name="submit"/>
+						</form>
+					{% else %}
+					    <div class="tab-container" id="tab-container" style="padding: 20px;">
+							<ul>
+								<li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
+								{% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+									<li id="procedure-type-{{impt.id}}"><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+								{% endfor %}
+							</ul>
 
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+							<div id="tab-overview-imc-{{institutionMedicalCenter.id}}">                        
+								<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
+									{{ form_row(form.medicalCenter) }}
+									{{ form_row(form.description) }}
+									{{ form_rest(form) }}
+								    <input type="submit" class="green-button" value="Save" name="submit"/>
+								</form>
+							</div>
 
-			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
-				{{ form_row(form.medicalCenter) }}
-				{{ form_row(form.description) }}
-				{{ form_row(form.status) }}
-				{{ form_rest(form) }}
-			    <input type="submit" class="form-submit" name="submit"/>
-			</form>
-
-
+							{% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+								<div id="tab-impt-{{ impt.id }}">
+									{% include 'AdminBundle:Institution:medicalProcedureTypeDetail.html.twig' with 
+										{institutionId: institutionId, institutionMedicalCenter: institutionMedicalCenter, institutionMedicalProcedureType: impt } 
+									%}
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
 			{% endblock %}
+
 		{% endembed %}
 	</div>
 
 {% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+			
+		    InstitutionMedicalCenter.setCommonDialog($('#dialog-container'), {
+			    position: ['center', 100],
+			    autoOpen: false,
+			    width: 700,
+			    modal: true,
+			    resizable: false,
+			    close: function() { $('#dialog-container').empty(); }
+			});
+
+	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+			$("#tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');
+
+			{% if app.request.get('imptId') %}
+				$("#tab-container #procedure-type-{{ app.request.get('imptId') }} a").click();
+			{% endif %}			
+
+			$('a.add-procedure-type').click(function(e){
+			    return InstitutionMedicalCenter.addProcedureType($(this));
+			});
+		});
+	</script>
+{% endblock %}
+
+

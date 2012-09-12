@@ -19,6 +19,12 @@ class InstitutionMedicalProcedure
     private $id;
 
     /**
+     * @var string $name
+     */
+    private $name;
+    
+    
+    /**
      * @var text $description
      */
     private $description;
@@ -124,7 +130,12 @@ class InstitutionMedicalProcedure
     {
         return $this->dateCreated;
     }
-
+	
+    public function __toString()
+    {
+    	return $this->name;
+    }
+    
     /**
      * Set status
      *

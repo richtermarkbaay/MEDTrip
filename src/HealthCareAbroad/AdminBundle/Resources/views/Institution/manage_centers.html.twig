@@ -33,9 +33,9 @@
 				
 			    <table width="70%" class="generic-table" id="medical-centers-list">
     				<tr>
-    					<th width="300px"><a href="#">Medical Centers</a></th>
-    					<th><a href="#">Description</a></th>
-    					<th><a href="#">Options</a></th>
+    					<th width="300"><a href="#">Medical Centers</a></th>
+    					<th width="400"><a href="#">Description</a></th>
+    					<th width="80"><a href="#">Options</a></th>
     				</tr>
 
     				{% for center in institutionMedicalCenters %}
@@ -47,7 +47,6 @@
             					<a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
             					{% set class = center.status ? 'icon-2' : 'icon-5' %}
             					<a href="{{ path('admin_institution_medicalCenter_updateStatus', {imcId:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-								<a class="icon-type" href="{{ path('admin_institution_manageProcedureTypes', {institutionId:institutionId, imcId:center.id}) }}">procedure types</a>
         					</td>
         				</tr>
         				

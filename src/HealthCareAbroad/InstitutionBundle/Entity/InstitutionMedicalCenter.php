@@ -15,6 +15,12 @@ class InstitutionMedicalCenter
     private $id;
 
     /**
+     * @var string $name
+     */
+    private $name;
+    
+    
+    /**
      * @var text $description
      */
     private $description;
@@ -54,7 +60,10 @@ class InstitutionMedicalCenter
         $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
-
+    public function __toString()
+    {
+    	return $this->name;
+    }
     /**
      * Get id
      *

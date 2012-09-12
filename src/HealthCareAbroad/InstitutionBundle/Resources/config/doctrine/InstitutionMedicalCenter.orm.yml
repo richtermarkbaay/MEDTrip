@@ -2,6 +2,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     type: entity
     table: institution_medical_centers
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -12,17 +15,25 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         description:
             type: text
             nullable: false
+            gedmo:
+                - versioned
         dateModified:
             type: datetime
             nullable: false
             column: date_modified
+            gedmo:
+                - versioned
         dateCreated:
             type: datetime
             nullable: false
             column: date_created
+            gedmo:
+                - versioned
         status:
             type: smallint
             nullable: false
+            gedmo:
+                - versioned
     oneToMany:
         institutionMedicalProcedureTypes:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
