@@ -95,18 +95,14 @@ class InstitutionController extends Controller
 	 */
 	public function manageCentersAction($institutionId)
 	{
-		$request = $this->getRequest();
-		$status = $request->get('status');
-
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
-		$criteria = $status == 'all' ? array() : array('status' => $status);
-		$institutionMedicalCenters = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
-		
 		$params = array(
 			'institutionId' => $institutionId,
 			'institutionName' => $institution->getName(),
+			'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+			'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
 			'institutionMedicalCenters' => $this->filteredResult,
 		);
 		return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
@@ -192,7 +188,7 @@ class InstitutionController extends Controller
 		$form->bind($request);
 
 		if($form->isValid()) {
-			$institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
+			$institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
 
