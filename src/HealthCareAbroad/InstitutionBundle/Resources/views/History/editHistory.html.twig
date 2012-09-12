@@ -1,0 +1,20 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_centers' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>Edit History - {{ objectName }}</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include 'InstitutionBundle:History:versionList.html.twig' with {'versions': versions} %}
+                        
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}
