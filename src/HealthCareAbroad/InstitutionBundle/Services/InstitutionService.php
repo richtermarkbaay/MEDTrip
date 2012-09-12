@@ -62,7 +62,7 @@ class InstitutionService
 			$em->persist($institution);
 			$em->flush();
 		} catch(\Exception $e) {
-			return null;
+			throw $e;
 		}
 		return $institution;
 		

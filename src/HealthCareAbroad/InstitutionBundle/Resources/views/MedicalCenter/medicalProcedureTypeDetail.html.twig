@@ -39,3 +39,18 @@
     </table>
     
 </div>
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+            $('a.button-type').click(function(){
+                EntityVersionHistory.viewHistory($(this));
+                return false;
+            });
+            
+        });
+    </script>
+{% endblock %}
