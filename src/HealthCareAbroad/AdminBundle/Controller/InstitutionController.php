@@ -3,6 +3,8 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
@@ -42,11 +44,12 @@ class InstitutionController extends Controller
      */
 	public function indexAction()
 	{
-		$statusOptions = $this->get('services.institution')->getUpdateStatusOptions();
-		$statusValues = $this->get('services.institution')->getStatusFilterOptions();
+		$params = array(
+		    'institutions' => $this->filteredResult, 
+            'statusList' => InstitutionStatus::getStatusList(),
+		    'updateStatusOptions' => InstitutionStatus::getUpdateStatusOptions()
+		);
 
-		$params = array('institutions' => $this->filteredResult, 'statusOptions' => $statusOptions, 'statusValues' => $statusValues);
-		
 		return $this->render('AdminBundle:Institution:index.html.twig', $params);
 	}
 	
@@ -74,18 +77,24 @@ class InstitutionController extends Controller
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
 		if($institution) {
-			
+
+		    if(!InstitutionStatus::isValid($request->get('status'))) {
+		        $request->getSession()->setFlash('error', 'Unable to update status. ' . $request->get('status') . ' is invalid status value!');
+
+		        return $this->redirect($this->generateUrl('admin_institution_index'));
+		    }
+
 			$institution->setStatus($request->get('status'));
 			$em->persist($institution);
 			$em->flush($institution);
-			
+
 			//TODO:: to create listener for the dispatch event of editInstitution Event
 			$event = new EditInstitutionEvent($institution);
 			$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
-					
 		}
 
 		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
+
 		return $this->redirect($this->generateUrl('admin_institution_index'));
 	}
 
@@ -95,20 +104,17 @@ class InstitutionController extends Controller
 	 */
 	public function manageCentersAction($institutionId)
 	{
-		$request = $this->getRequest();
-		$status = $request->get('status');
-
 		$em = $this->getDoctrine()->getEntityManager();
 		$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
-		$criteria = $status == 'all' ? array() : array('status' => $status);
-		$institutionMedicalCenters = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
-		
 		$params = array(
 			'institutionId' => $institutionId,
 			'institutionName' => $institution->getName(),
+			'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+			'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
 			'institutionMedicalCenters' => $this->filteredResult,
 		);
+
 		return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
 	}
 
@@ -119,19 +125,23 @@ class InstitutionController extends Controller
 	 */
 	public function addMedicalCenterAction($institutionId)
 	{
+	    $institutionId = $this->getRequest()->get('institutionId', 0);
 		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+		
+		if(!$institution) {
+            throw $this->createNotFoundException('Invalid institution');
+        }
 
-		$innstitutionMedicalCenter = new InstitutionMedicalCenter();
-		$innstitutionMedicalCenter->setInstitution($institution);
+		$institutionMedicalCenter = new InstitutionMedicalCenter();
+        $institutionMedicalCenter->setInstitution($institution);
 
-		$form = $this->createForm(new InstitutionMedicalCenterType(), $innstitutionMedicalCenter);
+		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
 
 		$formAction = $this->generateUrl('admin_institution_medicalCenter_create', array('institutionId' => $institutionId));
 
 		$params = array(
 			'institutionId' => $institutionId,
-			'institutionName' => $institution->getName(),
-			'institutionMedicalCenterId' => null,
+			'institutionMedicalCenter' => $institutionMedicalCenter,
 			'formAction' => $formAction,
 			'form' => $form->createView()
 		);
@@ -146,9 +156,13 @@ class InstitutionController extends Controller
 	 */
 	public function editMedicalCenterAction($institutionId)
 	{
-		$institutionMedicalCenterId = $this->getRequest()->get('imcId');
+		$institutionMedicalCenterId = $this->getRequest()->get('imcId', 0);
 		$institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
 
+		if(!$institutionMedicalCenter) {
+		    throw $this->createNotFoundException('Invalid InstitutionMedicalCenter.');
+		}
+		
 		$form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
 
 		$formActionParams = array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenter->getId());
@@ -157,7 +171,6 @@ class InstitutionController extends Controller
 		$params = array(
 			'institutionId' => $institutionId,
 			'institutionMedicalCenter' => $institutionMedicalCenter,
-			'institutionMedicalCenterId' => $institutionMedicalCenterId,
 			'formAction' => $formAction,
 			'form' => $form->createView()
 		);
@@ -184,6 +197,11 @@ class InstitutionController extends Controller
 			$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
 		} else {
 			$institution = $em->getRepository('InstitutionBundle:Institution')->find($institutionId);
+
+			if(!$institution) {
+			    throw $this->createNotFoundException('Invalid Institution.');
+			}
+
 			$institutionMedicalCenter = new InstitutionMedicalCenter;
 			$institutionMedicalCenter->setInstitution($institution);
 		}
@@ -192,11 +210,12 @@ class InstitutionController extends Controller
 		$form->bind($request);
 
 		if($form->isValid()) {
-			$institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
+			$institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
 
 			//// create event on add institutionMedicalCenter and dispatch
+			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
 			$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
 			$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
 
@@ -204,6 +223,7 @@ class InstitutionController extends Controller
 
 			if($request->get('submit') == 'Save') {
 				$routeParams = array('institutionId' => $institutionId, 'imcId' => $institutionMedicalCenter->getId());
+
 				return $this->redirect($this->generateUrl('admin_institution_medicalCenter_edit', $routeParams));
 			} else {			
 				return $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $institutionId)));
@@ -222,7 +242,7 @@ class InstitutionController extends Controller
 			$params = array(
 				'form' => $form->createView(),
 				'institutionId' => $institutionId,
-				'institutionMedicalCenterId' => $institutionMedicalCenterId,
+                'institutionMedicalCenter' => $institutionMedicalCenter,
 				'formAction' => $formAction
 			);
 
@@ -232,7 +252,6 @@ class InstitutionController extends Controller
 	
 
 	/**
-	 * TODO - Need to change the implementation
 	 * 
 	 * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
 	 * @param int $institutionId
@@ -240,31 +259,28 @@ class InstitutionController extends Controller
 	public function updateMedicalCenterStatusAction()
 	{
 		$request = $this->getRequest();
-		$result = false;
 		$em = $this->getDoctrine()->getEntityManager();
-
 		$institutionMedicalCenter = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
 
-		if ($institutionMedicalCenter) {
-			$status = $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::PENDING
-					? InstitutionMedicalCenterStatus::APPROVED
-					: InstitutionMedicalCenterStatus::PENDING;
+		if(!InstitutionMedicalCenterStatus::isValid($request->get('status'))) {
+		    $request->getSession()->setFlash('error', 'Unable to update status. ' .$request->get('status')  . ' is invalid status value!' );
 
-			$institutionMedicalCenter->setStatus($status);
+		    return $this->redirect($request->headers->get('referer'));
+		}
+
+		if ($institutionMedicalCenter) {
+			$institutionMedicalCenter->setStatus($request->get('status'));
 			$em->persist($institutionMedicalCenter);
 			$em->flush($institutionMedicalCenter);
 
 			//// create event on editInstitutionMedicalCenter and dispatch
 			$event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
 			$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
-			
-			$result = true;
 		}
 
-		$response = new Response(json_encode($result));
-		$response->headers->set('Content-Type', 'application/json');
-	
-		return $response;
+		$request->getSession()->setFlash('success', '"'.$institutionMedicalCenter->getMedicalCenter()->getName().'" status has been updated!');
+
+		return $this->redirect($request->headers->get('referer'));
 	}
 
 	/**
@@ -381,6 +397,7 @@ class InstitutionController extends Controller
 			$em->flush($institutionMedicalProcedureType);
 
 			//// create event on add medicalProcedureTypes and dispatch
+			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
 			$event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
 			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
 			
@@ -441,6 +458,7 @@ class InstitutionController extends Controller
 			'isNew' => true,
 			'form' => $form->createView()
 		);
+
 		return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
 	}
 
@@ -492,6 +510,7 @@ class InstitutionController extends Controller
 			'isNew' => false,
 			'form' => $form->createView()
 		);
+
 		return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
 	}
 
@@ -534,6 +553,7 @@ class InstitutionController extends Controller
 			$em->flush($institutionMedicalProcedure);
 			
 			//// create event on addInstitutionMedicalProcedure and dispatch
+			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
 			$event = new CreateInstitutionMedicalProcedureEvent($institutionMedicalProcedure);
 			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
 			
@@ -570,9 +590,9 @@ class InstitutionController extends Controller
 			$result = true;			
 		}
 
-
 		$response = new Response(json_encode($result));
 		$response->headers->set('Content-Type', 'application/json');
+
 		return $response;
 	}
 }

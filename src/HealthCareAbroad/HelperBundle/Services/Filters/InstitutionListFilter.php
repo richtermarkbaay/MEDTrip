@@ -6,6 +6,8 @@
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class InstitutionListFilter extends ListFilter
@@ -20,16 +22,8 @@ class InstitutionListFilter extends ListFilter
 
 	function setFilterOptions()
 	{
-		$this->statusFilterOptions = array(
-			'all' => 'All',
-			Institution::ACTIVE => 'Active',
-			Institution::INACTIVE => 'Inactive',
-			Institution::APPROVED => 'Approved',
-			Institution::UNAPPROVED => 'Unapproved',
-			Institution::SUSPENDED => 'Suspended'
-		);
-
-		$this->setStatusFilterOption();
+		$statusOptions = array('all' => 'All') + InstitutionStatus::getStatusList();
+		$this->setStatusFilterOption($statusOptions);
 	}
 
 	function setFilteredResult()

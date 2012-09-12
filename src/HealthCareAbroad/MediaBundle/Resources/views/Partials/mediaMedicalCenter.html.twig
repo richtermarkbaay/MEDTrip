@@ -1,0 +1,17 @@
+<tr>
+    <th class="table-header-repeat line-left minwidth-1"> <a href="#">Media</a></th>
+    <th class="table-header-repeat line-left minwidth-1"><a href="#">Caption</a></th>
+</tr>
+
+<tr><td id="messageBar" colspan="2" align="center"></td></tr>
+
+{% for media in institutionMedicalCenter.media %}
+    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+        <td valign="top">{{ media(media, 'galleryAdd', {'institutionId': institutionId}) | raw }}</td>
+        <td>{{ media.caption }}</td>
+    </tr>
+{% else %}
+    <tr>
+        <td id="noMedia" colspan="2" align="center"> {{ institutionMedicalCenter.medicalCenter.name }} has no media yet. </td>
+    </tr>
+{% endfor %}

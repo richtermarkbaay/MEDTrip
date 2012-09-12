@@ -136,25 +136,4 @@ class InstitutionService
         }
         return $returnValue;
     }
-    
-    public function getStatusFilterOptions()
-    {
-    	return array(
-    		'all' => 'All',
-			Institution::ACTIVE => 'Active',
-			Institution::INACTIVE => 'Inactive',
-			Institution::APPROVED => 'Approved',
-			Institution::UNAPPROVED => 'Unapproved',
-    		Institution::SUSPENDED => 'Suspended'
-    	);
-    }
-
-    public function getUpdateStatusOptions()
-    {
-		return array(
-			'Activate' => Institution::ACTIVE,
-			'Approve' => Institution::APPROVED,
-			'Suspend' => Institution::SUSPENDED
-		);
-    }
 }

@@ -70,15 +70,18 @@ abstract class ListFilter
 	/**
 	 * @desc Sets Status Filter Option
 	 */
-	function setStatusFilterOption()
+	function setStatusFilterOption($statusFilterOptions = array())
 	{
+		if(count($statusFilterOptions))
+			$this->statusFilterOptions = $statusFilterOptions;
+	
 		$this->filterOptions['status'] = array(
 			'label' => 'Status', 
 			'selected' => $this->queryParams['status'],
 			'options' => $this->statusFilterOptions
 		);
 	}
-	
+
 	/**
 	 * @desc Add a new valid criteria
 	 * @param string $val
