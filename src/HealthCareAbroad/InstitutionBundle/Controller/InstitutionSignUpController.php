@@ -116,9 +116,13 @@ class InstitutionSignUpController  extends Controller
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    
            	    //login to institution
-           	    $this->get('services.institution_user')->login($user->getEmail(), $form->get('new_password')->getData());
+           	    $loginOk = $this->get('services.institution_user')->login($user->getEmail(), $form->get('new_password')->getData());
+           	    if ($loginOk) {
+           	        
+           	        return $this->redirect($this->generateUrl('institution_edit_information'));
+           	    }
            	    
-           	    return $this->redirect($this->generateUrl('institution_edit_information'));
+           	    return $this->redirect($this->generateUrl('institution_login'));
             }
 		}
 		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
