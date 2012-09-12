@@ -34,7 +34,7 @@ class DoctrineExtensionListener implements ContainerAwareInterface
         if (null != $securityContext && null != $securityContext->getToken()) {
             // there is a logged in user
             $loggable = $this->container->get('gedmo.listener.loggable');
-            $loggable->setUsername($this->container->get('session')->get('accountId', null));
+            $loggable->setUsername((string)$this->container->get('session')->get('accountId', null));
         }
     }
 }
