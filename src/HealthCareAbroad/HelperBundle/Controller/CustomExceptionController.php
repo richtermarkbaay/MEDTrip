@@ -64,8 +64,13 @@ class CustomExceptionController extends ExceptionController
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
-        $pathInfo = $this->request->server->get('PATH_INFO');
-
+        if ($this->request->server->has('PATH_INFO')) {
+            $pathInfo = $this->request->server->get('PATH_INFO');
+        }
+        else {
+            $pathInfo = $this->request->server->get('REQUEST_URI');
+        }
+        
         // check if this path is /admin/
         if (\preg_match('/^\/admin\//', $pathInfo)) {
         	$template = new TemplateReference('AdminBundle', 'Exception', 'error', 'html', 'twig');
