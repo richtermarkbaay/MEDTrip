@@ -18,7 +18,7 @@ class InstitutionUserInvitationLogListener
 	{
 		$this->em = $em;
 	}
-	public function onAdd(CreateInstitutionUserInvitationEvent $event)
+	public function onAdd()
 	{
 		
 	}
