@@ -64,7 +64,7 @@ admin_institution_medicalCenter_updateStatus:
 # Manage Procedure Types Routes #
 admin_institution_manageProcedureTypes: 
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/manage-procedure-types
-    defaults: { _controller: AdminBundle:Institution:manageProcedureTypes, status: 1, medicalCenter: all }
+    defaults: { _controller: AdminBundle:Institution:manageProcedureTypes, status: 1 }
     requirements:
         institutionId: \d+
         imcId: \d+
