@@ -80,7 +80,7 @@ class InstitutionController extends Controller
 			$em->flush($institution);
 			
 			//TODO:: to create listener for the dispatch event of editInstitution Event
-			$event = new CreateInstitutionEvent($institution, $user);
+			$event = new CreateInstitutionEvent($institution);
 			$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
 					
 		}
