@@ -1,4 +1,10 @@
 <?php
+/**
+ * 
+ * @author Chaztine Blance
+ *
+ */
+
 namespace HealthCareAbroad\MailerBundle\Listener;
 
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
@@ -37,7 +43,7 @@ class ErrorReportListener
 	    			'dateCreated' => $report->getDateCreated()
 	    	));
 	    	 
-    	// send to email
+    	// send email
     	$message = \Swift_Message::newInstance()
     	->setSubject('New Error Report')
     	->setFrom('chris.velarde@chromedia.com')
