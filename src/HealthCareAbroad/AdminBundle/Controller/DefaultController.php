@@ -112,7 +112,6 @@ class DefaultController extends Controller
         }
         $objectId = $request->get('objectId', null);
         $objectClass = $request->get('objectClass', null);
-        
         if ($objectId === null || $objectClass === null) {
             return new Response("objectId and objectClass are required parameters", 400);
         }
@@ -136,7 +135,6 @@ class DefaultController extends Controller
         }
         
         $objectName = $object->__toString();
-        
         return $this->render($template, array(
             'versions' => $versionEntries,
             'objectName' => $objectName

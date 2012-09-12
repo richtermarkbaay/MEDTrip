@@ -18,4 +18,5 @@ class DefaultController extends InstitutionAwareController
     {
     	return $this->render('InstitutionBundle:Exception:error403.html.twig');
     }
+    
 }
