@@ -11,7 +11,7 @@ var EntityVersionHistory = {
         _commonOptions = {
             autoOpen: false,
             height: 'auto',
-            width: 700,
+            width: 750,
             modal: true,
             resizable: false,
             close: function() {
