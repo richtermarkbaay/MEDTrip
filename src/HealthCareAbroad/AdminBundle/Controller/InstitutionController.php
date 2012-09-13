@@ -3,14 +3,11 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;

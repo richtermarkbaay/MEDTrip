@@ -1,5 +1,5 @@
 {
-    "hash": "896e9654a635182595e18c70d37931f2",
+    "hash": "e9f472c7b402401b26b5fe9fde85965d",
     "packages": [
         {
             "package": "chromedia/utilities",
@@ -38,8 +38,14 @@
         {
             "package": "gedmo/doctrine-extensions",
             "version": "dev-master",
-            "source-reference": "4e8a3a920eedaba4e76c26a92347e9b47bb7ffdf",
-            "commit-date": "1346486653"
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "8690cabf9c750fe44a257a8c7e905cdc36931674",
+            "commit-date": "1347372790"
         },
         {
             "package": "guzzle/guzzle",
@@ -94,8 +100,8 @@
         {
             "package": "monolog/monolog",
             "version": "dev-master",
-            "source-reference": "e5bf7ba5d1df622b68d004b3c0277bc94286e1b7",
-            "commit-date": "1347105894"
+            "source-reference": "0f3dc95c4a0ed7d17bec237d07af3da6c0c1071a",
+            "commit-date": "1347363321"
         },
         {
             "package": "nikic/php-parser",
@@ -110,8 +116,8 @@
         {
             "package": "sami/sami",
             "version": "dev-master",
-            "source-reference": "cef4abb9344cb0e6de77de5e01da7359001726f9",
-            "commit-date": "1344320326"
+            "source-reference": "d3e3067796a5180ddd18f5a67c154bc2154f1f1d",
+            "commit-date": "1347368573"
         },
         {
             "package": "sensio/distribution-bundle",
@@ -142,6 +148,12 @@
             "version": "dev-master",
             "source-reference": "v2.1.0-RC2",
             "commit-date": "1346138171"
+        },
+        {
+            "package": "stfalcon/tinymce-bundle",
+            "version": "dev-master",
+            "source-reference": "b6d6b3053c797a6397a65ce94056de441c22cfe0",
+            "commit-date": "1347049782"
         },
         {
             "package": "swiftmailer/swiftmailer",
@@ -182,8 +194,8 @@
         {
             "package": "symfony/symfony",
             "version": "2.1.x-dev",
-            "source-reference": "v2.1.1",
-            "commit-date": "1347339641"
+            "source-reference": "f23fd03732e115fd15ec675c0ada4cba20a035d1",
+            "commit-date": "1347354770"
         },
         {
             "package": "twig/extensions",
@@ -221,6 +233,7 @@
         "knplabs/gaufrette": 20,
         "chromedia/utilities": 20,
         "nikic/php-parser": 20,
-        "sami/sami": 20
+        "sami/sami": 20,
+        "stfalcon/tinymce-bundle": 20
     }
 }

@@ -1953,3 +1953,15 @@ ul.version-edit-list label.field {
 	font-weight: bold;
 }
 /** end versioning styles **/
+
+
+/** TinyMCE styles **/
+textarea.tinymce {
+	width: 500px !important;
+    height: 150px !important;
+}
+
+.tinymce + span.mceEditor{
+	display: inline-block;
+}
+/** End of TinyMCE styles **/
