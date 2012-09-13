@@ -7,6 +7,7 @@ parameters:
     services.country_list: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
+    services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
 
 services:
     services.chromedia_request:
@@ -64,7 +65,12 @@ services:
         tags:
             - { name: form.type, alias: tagtype_list }
             
-    
+    form.news_list:
+        class: "%services.news_list%"
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: news_list }
             
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

@@ -223,3 +223,25 @@ services:
              - [ setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
              - { name: kernel.event_listener, event: event.city.delete , method: onDelete }
+             
+    ##listener for News
+    listener.news.add:
+        class: HealthCareAbroad\AdminBundle\Listener\NewsLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.news.add , method: onAdd }
+
+    listener.news.edit:
+         class: HealthCareAbroad\AdminBundle\Listener\NewsLogListener
+         calls:
+            - [ setEntityManager, [@doctrine.orm.entity_manager]]
+         tags:
+            - { name: kernel.event_listener, event: event.news.edit , method: onEdit }
+
+    listener.news.delete:
+        class: HealthCareAbroad\AdminBundle\Listener\NewsLogListener
+        calls:
+             - [ setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+             - { name: kernel.event_listener, event: event.news.delete , method: onDelete }
