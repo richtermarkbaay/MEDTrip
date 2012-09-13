@@ -18,7 +18,7 @@ class InstitutionDetailType extends AbstractType
     {
     	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
     	$builder->addEventSubscriber($subscriber);
-    	$countryId = $builder->getData()->getId();
+    	$countryId = $builder->getData()->getCountry()->getId();
     	
     	$builder
     	->add('name', 'text', array('constraints' => new NotBlank()));

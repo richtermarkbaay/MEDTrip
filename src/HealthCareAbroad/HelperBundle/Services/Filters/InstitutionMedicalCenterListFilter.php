@@ -5,24 +5,25 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 class InstitutionMedicalCenterListFilter extends ListFilter
 {
-
 	function __construct($doctrine)
 	{
 		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+		$this->entityRepository = $doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 	}
 
 	function setFilterOptions()
 	{
-		$this->setStatusFilterOption();
+		$statusFilterOptions = array('all' => 'All') + InstitutionMedicalCenterStatus::getStatusList();
+		$this->setStatusFilterOption($statusFilterOptions);
 	}
 
 	function setFilteredResult()
 	{
-		$em = $this->doctrine->getEntityManager();
-		$institution = $em->getRepository('InstitutionBundle:Institution')->find($this->queryParams['institutionId']);
+		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find($this->queryParams['institutionId']);
 
 		$this->criteria['institution'] = $institution;
 		$this->filteredResult = $this->entityRepository->findBy($this->criteria);

@@ -55,9 +55,15 @@ class InstitutionMedicalCenter
      */
     private $institutionMedicalProcedureTypes;
     
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $media;    
+    
     public function __construct()
     {
         $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     public function __toString()
@@ -237,4 +243,36 @@ class InstitutionMedicalCenter
     {
         return $this->institutionMedicalProcedureTypes;
     }
+    
+    /**
+     * Add media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return InstitutionMedicalCenter
+     */
+    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media[] = $media;
+        return $this;
+    }
+    
+    /**
+     * Remove media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     */
+    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media->removeElement($media);
+    }
+    
+    /**
+     * Get media
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }    
 }

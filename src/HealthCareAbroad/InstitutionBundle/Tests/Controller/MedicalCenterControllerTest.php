@@ -52,7 +52,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    $invalidFormValues = array(
             'institutionMedicalCenter[medicalCenter]' => '',
             'institutionMedicalCenter[description]' => '',
-            'institutionMedicalCenter[status]' => 1
+            //'institutionMedicalCenter[status]' => 1
         );
 	    $form = $crawler->selectButton('submit')->form();
 	    $crawler = $client->submit($form, $invalidFormValues);
@@ -63,9 +63,10 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    $validFormValues = array(
             'institutionMedicalCenter[medicalCenter]' => 2,
             'institutionMedicalCenter[description]' => 'testsetsdfdsfdsfafsafsadf',
-            'institutionMedicalCenter[status]' => 1
+            //'institutionMedicalCenter[status]' => 1
 	    );
 	    $crawler = $client->submit($form, $validFormValues);
+	    echo $client->getResponse(); exit;
 	    $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'Expecting redirect header after submitting data');
 	    $crawler = $client->followRedirect();
 	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully added")')->count(), 'Expecting success message part "Successfully added"');
@@ -115,7 +116,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 	    // test valid form submission
 	    $validFormValues = array(
             'institutionMedicalCenter[description]' => 'testsetsdfdsfdsfafsafsadf',
-            'institutionMedicalCenter[status]' => 1
+            //'institutionMedicalCenter[status]' => 1
 	    );
 	    $form = $crawler->selectButton('submit')->form();
 	    $crawler = $client->submit($form, $validFormValues);

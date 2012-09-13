@@ -10,6 +10,13 @@ parameters:
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
 
 services:
+    
+    # factory class for creating named events
+    events.factory:
+        class: HealthCareAbroad\HelperBundle\Factory\EventFactory
+        arguments: [@service_container]
+        
+    
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
@@ -100,6 +107,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
     
+    listener.helper.preExecute:
+        class: HealthCareAbroad\HelperBundle\Listener\PreExecuteController
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
     listener.mailer.error_report.create:
         class: HealthCareAbroad\MailerBundle\Listener\ErrorReportListener
         calls:

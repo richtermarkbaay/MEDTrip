@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -16,90 +18,119 @@ use Doctrine\ORM\EntityRepository;
  */
 class MedicalCenterRepository extends EntityRepository
 {
-	public function search($term = '', $limit = 10)
-	{
-		$dql = "
-			SELECT c
-			FROM MedicalProcedureBundle:MedicalCenter AS c
-			WHERE c.name LIKE :term
-			ORDER BY c.name ASC"
-		;
-		
-		$query = $this->_em->createQuery($dql);
-		$query->setParameter('term', "%$term%");
-		$query->setMaxResults($limit);
+    public function search($term = '', $limit = 10)
+    {
+        $dql = "
+            SELECT c
+            FROM MedicalProcedureBundle:MedicalCenter AS c
+            WHERE c.name LIKE :term
+            ORDER BY c.name ASC"
+        ;
+        
+        $query = $this->_em->createQuery($dql);
+        $query->setParameter('term', "%$term%");
+        $query->setMaxResults($limit);
 
-		return $query->getResult();
-	}
-	
-	function autoCompleteSearch($term = '', $limit = 10)
-	{
-		$dql = "SELECT MedicalCenter.id, MedicalCenter.name as value 
-				FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter 
-				WHERE MedicalCenter.name LIKE :term 
-				AND MedicalCenter.status = 1 
-				ORDER BY MedicalCenter.name ASC";
+        return $query->getResult();
+    }
+    
+    function autoCompleteSearch($term = '', $limit = 10)
+    {
+        $dql = "SELECT MedicalCenter.id, MedicalCenter.name as value 
+                FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter 
+                WHERE MedicalCenter.name LIKE :term 
+                AND MedicalCenter.status = 1 
+                ORDER BY MedicalCenter.name ASC";
 
-		$query = $this->_em->createQuery($dql);
-		$query->setMaxResults($limit);
-		$query->setParameter('term', "%$term%");
+        $query = $this->_em->createQuery($dql);
+        $query->setMaxResults($limit);
+        $query->setParameter('term', "%$term%");
 
-		return $query->getArrayResult();
-	}
+        return $query->getArrayResult();
+    }
 
-	/**
-	 * Get Active MedicalCenters 
-	 *
-	 * @return Doctrine\ORM\QueryBuilder
-	 */
-	public function getBuilderForMedicalCenters()
-	{
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		$qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
+    /**
+     * Get Active MedicalCenters 
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getBuilderForMedicalCenters()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
 
-		return $qb;
-	}
+        return $qb;
+    }
 
-	/**
-	 * Get MedicalCenters that are not yet linked to a specific institution
-	 *
-	 * @param Institution $institution
-	 * @return Doctrine\ORM\QueryBuilder
-	 */
-	public function getQueryBuilderForUnselectedInstitutionMedicalCenters(Institution $institution)
-	{
-	    $usedMedicalCenterIds = array();
-	    foreach ($institution->getInstitutionMedicalCenters() as $e) {
-	        $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
-	    }
-	     
-	    $qb = $this->createQueryBuilder('a');
-	    $qb->add('where', 'a.status = :active');
-	    if (!empty($usedMedicalCenterIds)) {
-	        $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
-	    }
-	    
-	    $qb->orderBy('a.name', 'ASC')
-	    ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
-	     
-	    return $qb;
-	}
-	
-	/**
-	 * Get MedicalCenters that are linked to a specific institution. This is used in the InstitutionMedicalCenterListType
-	 *
-	 * @param Institution $institution
-	 * @return Doctrine\ORM\QueryBuilder
-	 */
-	public function getBuilderForMedicalCentersOfInstitution(Institution $institution)
-	{
-	    $qb = $this->getEntityManager()->createQueryBuilder();
-	    $qb->select('a')
-	        ->from('MedicalProcedureBundle:MedicalCenter', 'a')
-	        ->innerJoin('a.institutionMedicalCenters', 'b')
-	        ->add('where', 'b.institution = :institutionId')
-	        ->setParameter('institutionId', $institution->getId());
-	        
+    /**
+     * Get MedicalCenters that are not yet linked to a specific institution
+     *
+     * @param Institution $institution
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderForUnselectedInstitutionMedicalCenters(Institution $institution)
+    {
+        $usedMedicalCenterIds = array();
+        foreach ($institution->getInstitutionMedicalCenters() as $e) {
+            $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
+        }
+         
+        $qb = $this->createQueryBuilder('a');
+        $qb->add('where', 'a.status = :active');
+        if (!empty($usedMedicalCenterIds)) {
+            $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
+        }
+        
+        $qb->orderBy('a.name', 'ASC')
+        ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
+         
+        return $qb;
+    }
+    
+    /**
+     * Get MedicalCenters that are not yet linked to a specific institution excluding
+     * the medical centers with status InstitutionMedicalCenterStatus::DRAFT
+     *
+     * @param Institution $institution
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderForUnselectedInstitutionMedicalCentersButWithDraftsIncluded(Institution $institution)
+    {
+        $usedMedicalCenterIds = array();
+        foreach ($institution->getInstitutionMedicalCenters() as $e) {
+            if ($e->getStatus() == InstitutionMedicalCenterStatus::DRAFT) {
+                continue;
+            }
+            $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
+        }
+    
+        $qb = $this->createQueryBuilder('a');
+        $qb->add('where', 'a.status = :active');
+        if (!empty($usedMedicalCenterIds)) {
+            $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
+        }
+         
+        $qb->orderBy('a.name', 'ASC')
+        ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
+    
+        return $qb;
+    }	
+    
+    /**
+     * Get MedicalCenters that are linked to a specific institution. This is used in the InstitutionMedicalCenterListType
+     *
+     * @param Institution $institution
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getBuilderForMedicalCentersOfInstitution(Institution $institution)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a')
+            ->from('MedicalProcedureBundle:MedicalCenter', 'a')
+            ->innerJoin('a.institutionMedicalCenters', 'b')
+            ->add('where', 'b.institution = :institutionId')
+            ->setParameter('institutionId', $institution->getId());
+            
         return $qb;	    
-	}
+    }
 }

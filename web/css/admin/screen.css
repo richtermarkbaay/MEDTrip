@@ -360,6 +360,7 @@ a:hover.icon-5	{
 	color:#94b52c;
 	}
 .generic-table td a {
+	display: inline-block;
 	color: #393939;
 	}
 .generic-table td a:hover{
@@ -386,7 +387,7 @@ a:hover.icon-5	{
 	text-align: center;
 	padding: 5px;
 	}
-.generic-table tr.alternate-row	{
+.generic-table tr:nth-child(odd)	{
 	background: #ececec;
 	}
 td.options-width	{
@@ -977,7 +978,6 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	padding: 0;
 	}
 .nav .select a	{
-	background: url(/images/admin/shared/nav/pro_line_0.gif);
 	color: #fff;
 	display: block;
 	float: left;
@@ -1953,3 +1953,15 @@ ul.version-edit-list label.field {
 	font-weight: bold;
 }
 /** end versioning styles **/
+
+
+/** TinyMCE styles **/
+textarea.tinymce {
+	width: 500px !important;
+    height: 150px !important;
+}
+
+.tinymce + span.mceEditor{
+	display: inline-block;
+}
+/** End of TinyMCE styles **/
