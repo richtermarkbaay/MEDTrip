@@ -6,7 +6,7 @@ use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use Symfony\Component\EventDispatcher\Event;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
-abstract class EditInstitutionEvent extends Event
+abstract class InstitutionEvent extends Event
 {
     protected $institution;
 	protected $institutionUser;
