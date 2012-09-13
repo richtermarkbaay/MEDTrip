@@ -25,9 +25,7 @@ var EntityVersionHistory = {
     
     viewHistory: function(linkElement) {
         if (this.commonDialog) {
-            if ('' == this.commonDialog.dialog('option','title')) {
-                this.commonDialog.dialog('option','title', 'Version History');
-            }
+            this.commonDialog.dialog('option','title', 'Version History');
             this._showCommonDialog(linkElement);
         }
         return false;
