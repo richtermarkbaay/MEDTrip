@@ -99,6 +99,7 @@ class InstitutionSignUpController  extends Controller
            	    
            	    // set values for institutionUser
            	    $user = $userForm->getData();
+           	    $user->setPassword($userForm->get('password')->getData());
            	    $user->setInstitution($institution);
            	    $user->setStatus(SiteUser::STATUS_ACTIVE);
            	    
