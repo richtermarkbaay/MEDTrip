@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionInvitationEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvents;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
@@ -115,7 +117,7 @@ class InstitutionSignUpController  extends Controller
            	    // create Institution event and dispatch
            	    $event = new CreateInstitutionEvent($institution);
            	    $event->setInstitutionUser($user);
-           	    $this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_ADD_INSTITUTION, $event);
+           	    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION, $event);
            	    	
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    
