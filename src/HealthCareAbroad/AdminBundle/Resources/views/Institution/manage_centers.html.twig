@@ -42,7 +42,7 @@
     				{% for center in institutionMedicalCenters %}
     				    <tr id="medical-center-{{center.id}}">
         					<td class="name">{{ center.medicalCenter | title }}</td>
-        					<td>{{ center.description }}</td>
+        					<td class="raw-content">{{ center.description|raw }}</td>
         					<td class="status">{{ centerStatusList[center.status] }}</td>
         					<td class="options-width">
             					<a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>

@@ -680,10 +680,8 @@ form.basic-form textarea,
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	height: 92px;
-	overflow: auto;
 	padding: 6px;
 	width: 378px;
-	resize: none;
 	}
 	
 form.basic-form span.fixed-value{
@@ -1724,6 +1722,20 @@ a.icon-type:hover {
 	position: fixed;
 }
 
+.raw-content ul,
+.raw-content ol,
+.raw-content p {
+	margin-bottom: 10px;
+}
+
+.raw-content ul,
+.raw-content ol {
+	margin-left: 30px;
+}
+
+.raw-content *:last-child {
+	margin-bottom: 0;
+}
 
 /* jQuery UI accordion Style */
 .ui-accordion .ui-accordion-header {
@@ -1919,8 +1931,7 @@ a.icon-type:hover {
 }
 
 .tabbed-medical-procedure-type-detail .action-buttons {
-	width: 100%; 
-	float: right;
+	width: 100%;
 	margin-bottom: 20px;
 }
 
@@ -1958,7 +1969,7 @@ ul.version-edit-list label.field {
 
 /** TinyMCE styles **/
 textarea.tinymce {
-	width: 500px !important;
+	width: 470px !important;
     height: 150px !important;
 }
 

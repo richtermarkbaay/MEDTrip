@@ -1,8 +1,12 @@
 var HCA = {
 
+	tinymceConfig: null,
+		
 	init : function(params)
 	{
 		HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
+		
+		HCA.tinymceConfig = params.tinymceConfig;
 	},
 	
 	filterResult: function(url) {
