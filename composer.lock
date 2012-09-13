@@ -1,5 +1,5 @@
 {
-    "hash": "e9f472c7b402401b26b5fe9fde85965d",
+    "hash": "1d04252b1ff3d659db4d70582e5cf6c9",
     "packages": [
         {
             "package": "chromedia/utilities",
@@ -121,33 +121,15 @@
         },
         {
             "package": "sensio/distribution-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.2.x-dev",
-            "alias-version": "2.2.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/distribution-bundle",
-            "version": "dev-master",
-            "source-reference": "4cd5b5848aed4781678cc9d84feed0ca08c51fc8",
-            "commit-date": "1347340238"
+            "version": "v2.1.0"
         },
         {
             "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.2.x-dev",
-            "alias-version": "2.2.9999999.9999999-dev"
-        },
-        {
-            "package": "sensio/framework-extra-bundle",
-            "version": "dev-master",
-            "source-reference": "03e32da3fd1bb37e4c6f3c77f1b4cb8a3a78e0a8",
-            "commit-date": "1347340790"
+            "version": "v2.1.0"
         },
         {
             "package": "sensio/generator-bundle",
-            "version": "dev-master",
-            "source-reference": "v2.1.0-RC2",
-            "commit-date": "1346138171"
+            "version": "v2.1.0"
         },
         {
             "package": "stfalcon/tinymce-bundle",
@@ -169,21 +151,17 @@
         },
         {
             "package": "symfony/assetic-bundle",
-            "version": "dev-master",
-            "source-reference": "4e7e8a039fa19434f04558473adbb201118af942",
-            "commit-date": "1346199949"
+            "version": "v2.1.0"
         },
         {
             "package": "symfony/monolog-bundle",
+            "version": "v2.1.0"
+        },
+        {
+            "package": "symfony/swiftmailer-bundle",
             "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/monolog-bundle",
-            "version": "dev-master",
-            "source-reference": "b7318480e6f8bf5579d6b3cd856850302e7ba8d8",
-            "commit-date": "1347283885"
         },
         {
             "package": "symfony/swiftmailer-bundle",
@@ -196,6 +174,12 @@
             "version": "2.1.x-dev",
             "source-reference": "f23fd03732e115fd15ec675c0ada4cba20a035d1",
             "commit-date": "1347354770"
+        },
+        {
+            "package": "twig/extensions",
+            "version": "dev-master",
+            "alias-pretty-version": "1.0.x-dev",
+            "alias-version": "1.0.9999999.9999999-dev"
         },
         {
             "package": "twig/extensions",
@@ -225,11 +209,6 @@
         "doctrine/doctrine-bundle": 20,
         "gedmo/doctrine-extensions": 20,
         "twig/extensions": 20,
-        "symfony/assetic-bundle": 20,
-        "symfony/monolog-bundle": 20,
-        "sensio/distribution-bundle": 20,
-        "sensio/framework-extra-bundle": 20,
-        "sensio/generator-bundle": 20,
         "knplabs/gaufrette": 20,
         "chromedia/utilities": 20,
         "nikic/php-parser": 20,
