@@ -45,6 +45,7 @@ final class ListFilterFactory
 	static function getValidClasses()
 	{
 		return array(
+			'admin_news_index' => 'NewsListFilter',
 			'admin_city_index' => 'CityListFilter',
 			'admin_country_index' => 'CountryListFilter',
 			'admin_institution_index' => 'InstitutionListFilter',
