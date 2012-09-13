@@ -1,8 +1,6 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
-use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-
 use Symfony\Component\EventDispatcher\Event;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 

@@ -63,11 +63,6 @@ class NewsController extends Controller
 	public function saveAction()
 	{
 		$request = $this->getRequest();
-		
-		if('POST' != $request->getMethod()) {
-			
-			return new Response("Save requires POST method!", 405);
-		}
 	
 		$id = $request->get('id', null);
 		$em = $this->getDoctrine()->getEntityManager();	
@@ -77,30 +72,24 @@ class NewsController extends Controller
 	
 		if ($form->isValid()) {
 			
-			try{
-				$em->persist($news);
-				$em->flush($news);
-		
-				if($id) {
-					//// create event on add News and dispatch
-					$event = new CreateNewsEvent($news);
-					$this->get('event_dispatcher')->dispatch(NewsEvents::ON_ADD_NEWS, $event);
-				}
-				else
-				{
-					//// create event on edit News and dispatch
-					$event = new CreateNewsEvent($news);
-					$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
-				}
-					
-				$request->getSession()->setFlash('success', 'News has been saved!');
+			$em->persist($news);
+			$em->flush($news);
+	
+			if($id) {
+				//// create event on add News and dispatch
+				$event = new CreateNewsEvent($news);
+				$this->get('event_dispatcher')->dispatch(NewsEvents::ON_ADD_NEWS, $event);
+			}
+			else
+			{
+				//// create event on edit News and dispatch
+				$event = new CreateNewsEvent($news);
+				$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
+			}
 				
-				return $this->redirect($this->generateUrl('admin_news_index'));
+			$request->getSession()->setFlash('success', 'News has been saved!');
 			
-			}
-			catch (\PDOException $e) {
-				return $this->_errorResponse(500, $e->getMessage());
-			}
+			return $this->redirect($this->generateUrl('admin_news_index'));							
 		}
 	
 		$formAction = $id ? $this->generateUrl('admin_news_update', array('id' => $id)) : $this->generateUrl('admin_news_create');
@@ -126,20 +115,15 @@ class NewsController extends Controller
 
 		if ($news) {
 			$news->setStatus($news->getStatus() ? 0 : 1);
+					
+			$em->persist($news);
+			$em->flush($news);
+
+			//// create event on edit status and dispatch
+			$event = new CreateNewsEvent($news);
+			$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
 			
-			try{
-				$em->persist($news);
-				$em->flush($news);
-	
-				//// create event on edit status and dispatch
-				$event = new CreateNewsEvent($news);
-				$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
-				
-				$result = true;
-			}
-			catch (\PDOException $e) {
-				return $this->_errorResponse(500, $e->getMessage());
-			}
+			$result = true;
 		}
 	
 		$response = new Response(json_encode($result));

@@ -8,7 +8,6 @@
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
 class InstitutionEvent extends BaseEvent
