@@ -51,7 +51,7 @@ class InstitutionSignUpController  extends Controller
 				
 				// create event on invite institution and dispatch
 				$event = new CreateInstitutionInvitationEvent($invitation);
-				$this->get('event_dispatcher')->dispatch(InstitutionInvitationEvents::ON_ADD_INSTITUTION_INVITATION, $event);
+				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_INVITATION, $event);
 				
 				if ($sendingResult) {
 					$this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
