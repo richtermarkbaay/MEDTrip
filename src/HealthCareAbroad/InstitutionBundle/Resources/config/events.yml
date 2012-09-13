@@ -1,6 +1,8 @@
 #list down the event classes used in this bundle
 
 parameters:
+    # add institution event class
+    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
 
     # user login event class
     event.institution_user.login: HealthCareAbroad\UserBundle\Event\InstitutionUserEvent

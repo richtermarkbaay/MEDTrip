@@ -89,6 +89,16 @@ class Institution
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $contactDetail;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalProcedureTypes;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionUsers;
 
     public function __construct()
     {
@@ -489,10 +499,6 @@ class Institution
     {
         return $this->contactDetail;
     }
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionMedicalProcedureTypes;
 
 
     /**
@@ -525,5 +531,38 @@ class Institution
     public function getInstitutionMedicalProcedureTypes()
     {
         return $this->institutionMedicalProcedureTypes;
+    }
+
+
+    /**
+     * Add institutionUsers
+     *
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
+     * @return Institution
+     */
+    public function addInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
+    {
+        $this->institutionUsers[] = $institutionUsers;
+        return $this;
+    }
+
+    /**
+     * Remove institutionUsers
+     *
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
+     */
+    public function removeInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
+    {
+        $this->institutionUsers->removeElement($institutionUsers);
+    }
+
+    /**
+     * Get institutionUsers
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionUsers()
+    {
+        return $this->institutionUsers;
     }
 }

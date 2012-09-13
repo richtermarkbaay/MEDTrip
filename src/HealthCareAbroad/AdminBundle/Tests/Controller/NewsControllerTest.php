@@ -35,12 +35,12 @@ class NewsControllerTest extends AdminBundleWebTestCase
     public function testAddSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/News/add');
+    	$crawler = $client->request('GET', '/admin/news/add');
 
     	$formData = array(
-    		'News[title]' => 'TestNews1',
-			'News[description]' => 'test',
-    		'News[status]' => 1
+    		'news[title]' => 'TestNews1',
+			'news[description]' => 'test',
+    		'news[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->form();
@@ -49,7 +49,7 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
-    	// check of redirect url /admin/cities
+    	// check of redirect url /admin/news
     	$this->assertEquals('/admin/news', $client->getResponse()->headers->get('location'));
     	 
     	 
@@ -57,19 +57,20 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->followRedirect(true);
 
     	// check if the redirected response content has the newly added News
-    	$isAdded = $crawler->filter('#News-list > tr > td:contains("'.$formData['News[title]'].'")')->count() > 0;
+    	$isAdded = $crawler->filter('#news-list > tr > td:contains("'.$formData['news[title]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
+ 			
     }
     
     public function testEditSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/News/edit/1');
+    	$crawler = $client->request('GET', '/admin/news/edit/1');
     
     	$formData = array(
-    			'News[title]' => 'TestNews1 Updated',
-    			'News[description]' => 'test',
-    			'News[status]' => 1
+    			'news[title]' => 'TestNews1 Updated',
+    			'news[description]' => 'test',
+    			'news[status]' => 1
     	);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -78,7 +79,7 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     
-    	// check of redirect url /admin/cities
+    	// check of redirect url /admin/news
     	$this->assertEquals('/admin/news', $client->getResponse()->headers->get('location'));
     
     
@@ -86,19 +87,19 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->followRedirect(true);
     
     	// check if the redirected response content has the newly added News name
-    	$isAdded = $crawler->filter('#News-list > tr > td:contains("'.$formData['News[title]'].'")')->count() > 0;
+    	$isAdded = $crawler->filter('#news-list > tr > td:contains("'.$formData['news[title]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
     public function testCreateDuplicate()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/News/add');
+    	$crawler = $client->request('GET', '/admin/news/add');
     
 		$formData = array(
-			'News[title]' => 'TestNews1 Updated',
-			'News[description]' => 'test',
-			'News[status]' => 1
+			'news[title]' => 'test',
+			'news[description]' => 1,
+			'news[status]' => 1
 		);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -110,7 +111,7 @@ class NewsControllerTest extends AdminBundleWebTestCase
 
     public function testUpdateStatusAction(){
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/News/update-status/1');
+    	$crawler = $client->request('GET', '/admin/news/update-status/1');
 
     	$response = $client->getResponse();
     	$this->assertEquals("Response code: 200", "Response code: " . $response->getStatusCode());
@@ -119,12 +120,12 @@ class NewsControllerTest extends AdminBundleWebTestCase
     public function testSaveInvalidData()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/News/add');
+    	$crawler = $client->request('GET', '/admin/news/add');
     
     	$formData = array(
-    			'News[title]' => '',
-    			'News[description]' => 'test',
-    			'News[status]' => 1
+    			'news[title]' => '',
+    			'news[description]' => 1,
+    			'news[status]' => 1
     	);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -139,11 +140,11 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	$client = $this->getBrowserWithActualLoggedInUser();
     
     	$formData = array(
-    			'News[title]' => 'saveUsingGet',
-    			'News[description]' => 'test',
-    			'News[status]' => 1
+    			'news[title]' => 'saveUsingGet',
+    			'news[description]' => 1,
+    			'news[status]' => 1
     	);
-    	$crawler = $client->request('GET', '/admin/News/test-save', $formData);
-    	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
+    	$crawler = $client->request('GET', '/admin/news/test-save', $formData);
+    	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Save requires POST method!');
     }
 }

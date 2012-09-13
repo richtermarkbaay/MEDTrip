@@ -1,6 +1,13 @@
 <?php
-
+/**
+ * Service class for Institution
+ * 
+ * @author Allejo Chris G. Velarde
+ * @author Alnie Jacobe
+ */
 namespace HealthCareAbroad\InstitutionBundle\Services;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
 
@@ -55,7 +62,14 @@ class InstitutionService
 		return $institution;
     }
     
-    public function createInstitution(Institution $institution)
+    /**
+     * Save Institution
+     * 
+     * @param Institution $institution
+     * @throws Exception
+     * @return Institution
+     */
+    public function save(Institution $institution)
     {
 		$em = $this->doctrine->getEntityManager();
 		try {
@@ -64,8 +78,26 @@ class InstitutionService
 		} catch(\Exception $e) {
 			throw $e;
 		}
-		return $institution;
 		
+		return $institution;
+    }
+    
+    /**
+     * Create new Institution
+     * 
+     * @param Institution $institution
+     * @return Institution
+     */
+    public function create(Institution $institution)
+    {
+        if ($institution->getId()) {
+            throw new \Exception("Cannot create institution with given id.");
+        }
+        
+        $institution->setLogo("");
+        $institution->setStatus(InstitutionStatus::ACTIVE);
+        
+        return $this->save($institution);
     }
     
     /*

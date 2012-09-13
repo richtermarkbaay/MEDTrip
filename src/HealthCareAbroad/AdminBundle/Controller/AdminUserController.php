@@ -69,7 +69,7 @@ class AdminUserController extends Controller
 			$form->bindRequest($this->getRequest());
 			
 	    	if($form->isValid()) {
-	    		//TODO:: persist data to database
+	    		
 	    		$user = $this->get('services.admin_user')->update($adminUser);
 	    		if(!$user) {
 	    			//TODO:: send notification to hca admin

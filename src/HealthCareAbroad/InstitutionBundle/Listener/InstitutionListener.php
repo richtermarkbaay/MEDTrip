@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Listener;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
 
 use Doctrine\ORM\EntityManager;
@@ -49,8 +51,12 @@ class InstitutionListener
     
     public function onAdd(CreateInstitutionEvent $event)
     {
-    	//get institution
-    	$institution = $event->getInstitution();
+        $institution = $event->getInstitution();
+    	$institutionUser = $event->getInstitutionUser();
+    	
+    	if (!$institution instanceof Institution || !$institutionUser instanceof InstitutionUser) {
+    	    throw new \Exception("{$event->getName()} handled by ".__CLASS__."::onAdd listener has invalid data.");
+    	}
     	
     	//persist data to create institutionUserTypes
     	$institutionUserType = new InstitutionUserType();
@@ -67,11 +73,8 @@ class InstitutionListener
     	$this->em->persist($institutionUserType);
     	$this->em->flush();
     	
-    	//get institutionUser
-    	$institutionUser = $event->getInstitutionUser();
-    	
-    	//create institutionUser account and global account
-    	$this->createInstitutionUser($institutionUserType, $institutionUser);
+	    //create institutionUser account and global account
+	    $this->createInstitutionUser($institutionUserType, $institutionUser);
     }
     
     public function createInstitutionUser(InstitutionUserType $institutionUserType, InstitutionUser $institutionUser)

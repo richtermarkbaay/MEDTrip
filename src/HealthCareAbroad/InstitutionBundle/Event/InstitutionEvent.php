@@ -1,34 +1,22 @@
 <?php 
+/**
+ * Event class for Institution
+ * 
+ * @author Allejo Chris G. Velarde
+ * @author Alnie Jacobe
+ */
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
-use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-
-use Symfony\Component\EventDispatcher\Event;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
-abstract class EditInstitutionEvent extends Event
+class InstitutionEvent extends BaseEvent
 {
-    protected $institution;
-	protected $institutionUser;
-    
-    public function __construct(Institution $institution)
-    {
-        $this->institution = $institution;
-        
-    }
-
+    /**
+     * @return Institution
+     */
     public function getInstitution()
     {
-        return $this->institution;
-    }
-    
-    public function getInstitutionUser()
-    {
-    	return $this->institutionUser;
-    }
-    
-    public function setInstitutionUser(InstitutionUser $user)
-    {
-    	$this->institutionUser = $user;
+        return isset($this->data['institution']) ? $this->data['institution'] : null;
     }
 }

@@ -655,6 +655,7 @@ form.basic-form input[type=search],
 form.basic-form input[type=number],
 form.basic-form input[type=email],
 form.basic-form input[type=text],
+form.basic-form input[type=password],
 .inp-form	{
 	border: 1px solid #AAAAAA;
 	border-radius: 5px;

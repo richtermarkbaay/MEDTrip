@@ -1,7 +1,5 @@
 {% extends 'InstitutionBundle::signUpheader.html.twig' %}
 
-{% form_theme form '::form.admin.html.twig' %}
-
 {% block content %}
 <!-- start content -->
 <div id="content">
@@ -22,35 +20,34 @@
                 
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                     <!-- start id-form -->
-                    <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-                        <tr><h2>Institution Details</h2></tr>
+                    
+                        {{ form_errors(userForm) }}
+                        
                         {{ form_row(form.name) }}
                         {{ form_row(form.description) }}
                         {{ form_row( form.country ) }}
                         {{ form_row( form.city ) }}
                         {{ form_row( form.address1 ) }}
                         {{ form_row( form.address2 ) }}
-                        </br></br>
-                        <tr><th>Admin Account:</th></tr>
-                        {{ form_row(form.firstName) }}
-                        {{ form_row(form.middleName) }}
-                        {{ form_row(form.lastName) }}
-                        {{ form_row(form.email) }}
-                        {{ form_row( form.new_password ) }}
-                        {{ form_row( form.confirm_password ) }}
-                       
-                        <tr>
-                            <th>&nbsp;</th>
-                            <td valign="top">
-                                <input type="submit" value="submit" class="form-submit" />
-                                <input type="reset" value="" class="form-reset"  />
-                            </td>
-                            <td></td>
-                        </tr>
+                        
+                        <div style="font-weight:bold;">
+                            Admin Account:
+                        </div>
+                        
+                        {{ form_row(userForm.firstName) }}
+                        {{ form_row(userForm.middleName) }}
+                        {{ form_row(userForm.lastName) }}
+                        {{ form_row(userForm.email) }}
+                        {{ form_row(userForm.password ) }}
+                        {{ form_row(userForm.confirm_password ) }}
+                        
+                        <input type="submit" value="submit" class="form-submit" />
+                        <input type="reset" value="" class="form-reset"  />
                         
                         {{ form_rest(form) }}
+                        {{ form_rest(userForm) }}
                         
-                    </table>
+                    
                     <!-- end id-form  -->
                 </form>
             </div>
