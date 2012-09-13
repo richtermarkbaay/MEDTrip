@@ -11,3 +11,11 @@ services:
         arguments: [@doctrine]
         tags:
             - { name: kernel.event_listener, event: event.institution_user.login, method: onLogin }
+            
+    listener.user.institution.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+           - [setInstitutionUserService, [@services.institution_user]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution.add, method: onAdd }

@@ -29,21 +29,21 @@ class InstitutionType extends AbstractType
     	$builder
     		->add('name', 'text', array('constraints' => new NotBlank()))
     		->add('description', 'textarea', array('constraints' => new NotBlank()))
-    		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
-    		->add('middleName', 'text', array('label' => 'Middle name'))
-    		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()))
-    		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
-    		->add( 'new_password', 'password', array(
-                    'label' => 'Password', 
-                    'virtual' => true, 
-                    'constraints' => array(new NotBlank())
-                ))
-    	    ->add('confirm_password', 'password', array(
-                    'label' => 'Confirm Password', 
-                    'virtual' => true, 
-                    'constraints' => array(
-                        new EqualFieldValue(array('field' => 'new_password', 'message' => 'Passwords do not match')))
-                ))
+//     		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
+//     		->add('middleName', 'text', array('label' => 'Middle name'))
+//     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()))
+//     		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
+//     		->add( 'new_password', 'password', array(
+//                     'label' => 'Password', 
+//                     'virtual' => true, 
+//                     'constraints' => array(new NotBlank())
+//                 ))
+//     	    ->add('confirm_password', 'password', array(
+//                     'label' => 'Confirm Password', 
+//                     'virtual' => true, 
+//                     'constraints' => array(
+//                         new EqualFieldValue(array('field' => 'new_password', 'message' => 'Passwords do not match')))
+//                 ))
     		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
     		->add('city', new CityListType(1))
     		->add('address1','text', array('label' => 'Address Line 1', 'constraints' => new NotBlank()))
