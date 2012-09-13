@@ -89,9 +89,7 @@ class CountryController extends Controller
    			return $this->redirect($this->generateUrl('admin_country_index'));
 		}
 
-		$formAction = $id 
-			? $this->generateUrl('admin_country_update', array('id' => $id))
-			: $this->generateUrl('admin_country_create');
+		$formAction = $id ? $this->generateUrl('admin_country_update', array('id' => $id)) : $this->generateUrl('admin_country_create');
 		
 		return $this->render('AdminBundle:Country:form.html.twig', array(
 				'id' => $id,

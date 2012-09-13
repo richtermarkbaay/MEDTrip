@@ -23,10 +23,7 @@
             	%}
 
 				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-
-				<!-- Render Filter Box -->				
-				{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}	
-
+				
 				<table id="news-list" class="generic-table" width="70%">
 				<tr>
 					<th><a href="">Title</a></th>
@@ -37,7 +34,8 @@
 
 				{% for newsData in news %}
 					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-						<td>{{ newsData.name }}</td>
+						<td>{{ newsData.title }}</td>
+						<td>{{ newsData.description}}</td>
 						<td>{{ newsData.status ? 'Active' : 'Inactive' }}</td>
 						<td align="center">
 							<a href="{{ path('admin_news_edit', {id:newsData.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
