@@ -92,9 +92,7 @@ class DefaultController extends Controller
 
     public function ajaxAttachMedicalCenterMediaAction(Request $request)
     {
-        //$success = $this->get('services.media')->addMedicalCenterMedia($request->get('imcId'), $request->get('mediaId'));
-
-        $success = 1;
+        $success = $this->get('services.media')->addMedicalCenterMedia($request->get('imcId'), $request->get('mediaId'));
 
         $response = new Response(json_encode($success));
         $response->headers->set('Content-Type', 'application/json');
