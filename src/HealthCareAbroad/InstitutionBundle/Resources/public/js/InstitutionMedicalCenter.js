@@ -68,6 +68,7 @@ var InstitutionMedicalCenter = {
                 $.ajax(_url)
                     .done(function (data) {
                         InstitutionMedicalCenter.commonDialog.html(data);
+                        InstitutionMedicalCenter.commonDialog.find('.tinymce').tinymce(HCA.tinymceConfig.themeSimple);
                     }
                 );
             },
