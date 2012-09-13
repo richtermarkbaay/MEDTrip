@@ -129,7 +129,7 @@ class InstitutionController extends Controller
 		$em->flush($this->institution);
 
 		//TODO:: to create listener for the dispatch event of editInstitution Event
-		$event = new EditInstitutionEvent($institution);
+		$event = new EditInstitutionEvent($this->institution);
 		$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
 
 		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
