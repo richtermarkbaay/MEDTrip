@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\LogBundle\Listener;
 
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 abstract class BaseListener
@@ -22,11 +24,11 @@ abstract class BaseListener
         $this->doctrine = $doctrine;
     }
     
-    abstract public function onAddAction();
+    abstract public function onAdd(BaseEvent $event);
     
-    abstract public function onEditAction();
+    abstract public function onEdit(BaseEvent $event);
     
-    abstract public function onDeleteAction();
+    abstract public function onDelete(BaseEvent $event);
     
     protected function saveLog()
     {

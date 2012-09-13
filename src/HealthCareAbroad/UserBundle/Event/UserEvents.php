@@ -7,9 +7,15 @@ final class UserEvents
     
     const ON_UPDATE_INSTITUTION_USER = 'event.institution_user.update';
     
-    const ON_CHANGE_INSTITUTION_USER_PASSWORD = 'event.institution_user_password.change';
+    const ON_CHANGE_INSTITUTION_USER_PASSWORD = 'event.institution_user.change_password';
+    
+    const ON_LOGIN_INSTITUTION_USER = 'event.institution_user.login';
+    
+    const ON_LOGOUT_INSTITUTION_USER = 'event.institution_user.logout';
         
     const ON_DELETE_INSTITUTION_USER = 'event.institution_user.delete';
+    
+    
     
     
 }

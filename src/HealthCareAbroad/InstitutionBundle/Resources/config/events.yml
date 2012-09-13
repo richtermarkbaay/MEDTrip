@@ -1,0 +1,7 @@
+#list down the event classes used in this bundle
+
+parameters:
+
+    # user login event class
+    event.institution_user.login: HealthCareAbroad\UserBundle\Event\InstitutionUserEvent
+    

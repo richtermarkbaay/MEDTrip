@@ -9,6 +9,13 @@ parameters:
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
 
 services:
+    
+    # factory class for creating named events
+    events.factory:
+        class: HealthCareAbroad\HelperBundle\Factory\EventFactory
+        arguments: [@service_container]
+        
+    
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
