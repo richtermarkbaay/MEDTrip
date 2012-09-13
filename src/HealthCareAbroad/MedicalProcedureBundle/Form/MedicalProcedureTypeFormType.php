@@ -44,7 +44,7 @@ class MedicalProcedureTypeFormType extends AbstractType
 		}
 
 		$builder->add('name');
-		$builder->add('description');
+		$builder->add('description', 'textarea');
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 

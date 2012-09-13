@@ -1,0 +1,6 @@
+services:
+    listener.log.institution_user.login:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserListener
+        arguments: [@doctrine]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user.login, method: onLogin }
