@@ -43,7 +43,7 @@ class InstitutionMedicalCenterType extends AbstractType
             }, 'virtual' => false,'constraints'=>array(new NotBlank())));
         }
         
-        $builder->add('description', 'textarea', array('constraints' => new NotBlank()));
+        $builder->add('description', 'textarea', array('constraints' => new NotBlank(), 'attr' => array('class' => 'tinymce')));
     }
     
     public function getName()

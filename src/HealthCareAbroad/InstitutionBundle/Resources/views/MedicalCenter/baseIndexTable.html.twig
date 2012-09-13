@@ -11,7 +11,7 @@
 	    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
 	        <td></td>
 			<td><a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
-			<td>{{ center.description }}</td>
+			<td class="raw-content">{{ center.description|raw }}</td>
 			<td class="options-width">
 				[<a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id })}}" title="View medical procedure types of {{ center.medicalCenter | title }}">View Medical Procedure Types</a>]
 			</td>

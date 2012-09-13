@@ -8,11 +8,11 @@
         
     </div>
     
-    <div class="details">
+    <div class="details raw-content">
         {% if institutionMedicalProcedureType.description | length > 1000 %}
             {{ institutionMedicalProcedureType.description | slice(0, 1000)}}...
         {% else %}
-            {{ institutionMedicalProcedureType.description }}
+            {{ institutionMedicalProcedureType.description|raw }}
         {% endif %}
     </div>
     
@@ -28,7 +28,7 @@
     		{% set medicalProcedure = procedure.medicalProcedure %}
     		<tr>
     			<td>{{ medicalProcedure.name }}</td>
-    			<td>{{ procedure.description }}</td>  
+    			<td class="raw-content">{{ procedure.description|raw }}</td>  
     			<td>
     				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_medicalProcedureType_editMedicalProcedure', {'imptId': institutionMedicalProcedureType.id, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
     			</td>
