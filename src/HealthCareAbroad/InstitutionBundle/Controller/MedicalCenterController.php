@@ -1,6 +1,8 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
@@ -124,12 +126,12 @@ class MedicalCenterController extends InstitutionAwareController
             if ($isNew) {
                 //// create event on adding medicalCenters and dispatch
                 $event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
-                $this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
             }
             else {
                 //// create event on edit medical Centers and dispatch
                 $event = new CreateInstitutionMedicalCenterEvent($institutionMedicalCenter);
-                $this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
             }
             
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
