@@ -2,7 +2,7 @@
 
 parameters:
     # add institution event class
-    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
+    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
     
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
 

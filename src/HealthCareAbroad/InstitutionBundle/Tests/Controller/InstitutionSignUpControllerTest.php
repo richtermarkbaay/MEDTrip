@@ -23,6 +23,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description")')->count()); // look for the Description text
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password")')->count()); // look for the Country text
 		//$this->assertGreaterThan(0, $crawler->filter('html:contains("USA")')->count()); // look for the New Address1 text
+		
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		$formValues = array(
 				'institution[name]' => 'alnie jacobe',
@@ -31,77 +32,44 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 				'institution[city]' => '1',
 				'institution[address1]' => 'ohuket city',
 				'institution[address2]' => 'ohuket city',
-				'institution[firstName]' => 'test name',
-				'institution[middleName]' => 'middle',
-				'institution[lastName]' => 'last',
-				'institution[email]' => 'test@yahoo.com',
-				'institution[new_password]' => $this->userPassword,
-				'institution[confirm_password]' => $this->userPassword,
+				'institutionUserForm[firstName]' => 'test name',
+				'institutionUserForm[middleName]' => 'middle',
+				'institutionUserForm[lastName]' => 'last',
+				'institutionUserForm[email]' => 'test@yahoo.com',
+				'institutionUserForm[password]' => $this->userPassword,
+				'institutionUserForm[confirm_password]' => $this->userPassword,
 		);
 		
 		//test for existing email provided
 		$invalidFormValues = $formValues;
-		$invalidFormValues['institution[email]'] = 'kristenstewart@yahoo.com';
+		$invalidFormValues['institutionUserForm[email]'] = 'kristenstewart@yahoo.com';
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $invalidFormValues);
 		$this->assertEquals(500, $client->getResponse()->getStatusCode());
 		$duplicateNotCreated = \trim($crawler->filter('div.text_exception > h1')->text()) != "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry";
 		$this->assertTrue($duplicateNotCreated, 'institution_medical_procedure_types Duplicate Entry.');
 		
-		
-        // test for missing name field
+		// test for required fields
+		$invalidFormValues = array(
+            'institution[name]' => '',
+            'institution[description]' => '',
+            'institution[country]' => '1',
+            'institution[city]' => '1',
+            'institution[address1]' => '',
+            'institution[address2]' => '',
+            'institutionUserForm[firstName]' => '',
+            'institutionUserForm[middleName]' => '',
+            'institutionUserForm[lastName]' => '',
+            'institutionUserForm[email]' => '',
+            'institutionUserForm[password]' => '',
+            'institutionUserForm[confirm_password]' => '',
+		);
 		$client = static::createClient();
 		$crawler = $client->request('GET', '/sign-up');
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[name]'] = null;
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $invalidFormValues);
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-        //test for missing description
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[description]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-                
-        //test for missing address 1
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[address1]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-                
-        //test for missing address 2
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/sign-up');
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[address2]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-                
-        //test for missing firstname
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[firstName]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-                
-        //test for missing middlename
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/sign-up');
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[middleName]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-                
-        //test for missing lastname
-        $invalidFormValues = $formValues;
-        $invalidFormValues['institution[lastName]'] = null;
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
+        
       
         $client = static::createClient();
         $crawler = $client->request('GET', '/sign-up');
