@@ -19,88 +19,88 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
-	public function getCountByMedicalCenterId($medicalCenterId) {
-		$qb = $this->_em->createQueryBuilder();
+    public function getCountByMedicalCenterId($medicalCenterId) {
+        $qb = $this->_em->createQueryBuilder();
 
-		$qb->select('count(a)')
-		->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-		->andWhere('a.medicalCenter = :medicalCenterId')
-		->setParameter('medicalCenterId', $medicalCenterId);
-	
-		$count = (int)$qb->getQuery()->getSingleScalarResult();
-	
-		return $count;
-	}
-	
-	function getProcedureTypeIdsWithProcedure($medicalCenterId)
-	{
-		$conn = $this->_em->getConnection();
-		$qry = "SELECT a.medical_procedure_type_id, b.id FROM institution_medical_procedure_types AS a " .
-				"JOIN medical_procedures AS b ON a.medical_procedure_type_id = b.medical_procedure_type_id " .
-				"JOIN institution_medical_procedures AS c ON b.id = c.medical_procedure_id ".
-				"WHERE institution_medical_center_id = $medicalCenterId AND b.status = 1 AND c.status = 1 " .
-				"GROUP BY a.medical_procedure_type_id";
+        $qb->select('count(a)')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        ->andWhere('a.medicalCenter = :medicalCenterId')
+        ->setParameter('medicalCenterId', $medicalCenterId);
 
-		$result = $conn->executeQuery($qry)->fetchAll();
+        $count = (int)$qb->getQuery()->getSingleScalarResult();
 
-		$ids = array();
-		foreach($result as $each) {
-			$ids[] = (int)$each['medical_procedure_type_id'];
-		}
+        return $count;
+    }
 
-		return $ids;
-	}
-	
-	public function getMedicalCentersList($institutionId)
-	{	
-		$qb = $this->_em->createQueryBuilder()
-		->select('b.id, b.name')
-		->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-		->leftJoin('a.medicalCenter', 'b')
-		->add('where','a.institution = :institution')
-		->setParameter('institution', $institutionId)
-		->orderBy('b.name', 'ASC');
-		
-		return $qb->getQuery()->getResult();
-	}
-	
-	/**
-	 * Get the available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
-	 * 
-	 * @param InstitutionMedicalCenter $institutionMedicalCenter
-	 */
-	public function getAvailableMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
-	{
-	    //$dql = "SELECT p FROM InstitutionBundle:InstitutionMedicalCenter"
-	    $sql = "SELECT a.* FROM medical_procedure_types a, institution_medical_centers b ".
-       	    "WHERE b.medical_center_id = :medical_center_id ".
-   	        "AND b.institution_id = :institution_id ".
-   	        "AND a.medical_center_id = b.medical_center_id ".
-	        "AND a.status = :active_medical_procedure_type ".
-	        "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
-	    
-	    $rsm = new ResultSetMapping();
-	    $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
-	        ->addFieldResult("a", "id", "id")
-	        ->addFieldResult("a", "medicalCenter", "medical_center_id")
-	        ->addFieldResult("a", "name", "name")
-	        ->addFieldResult("a", "description", "description")
-	        ->addFieldResult("a", "dateModified", "date_modified")
-	        ->addFieldResult("a", "dateCreated", "date_created")
-	        ->addFieldResult("a", "slug", "slug")
-	        ->addFieldResult("a", "status", "status");
-	    
+    function getProcedureTypeIdsWithProcedure($medicalCenterId)
+    {
+        $conn = $this->_em->getConnection();
+        $qry = "SELECT a.medical_procedure_type_id, b.id FROM institution_medical_procedure_types AS a " .
+                "JOIN medical_procedures AS b ON a.medical_procedure_type_id = b.medical_procedure_type_id " .
+                "JOIN institution_medical_procedures AS c ON b.id = c.medical_procedure_id ".
+                "WHERE institution_medical_center_id = $medicalCenterId AND b.status = 1 AND c.status = 1 " .
+                "GROUP BY a.medical_procedure_type_id";
 
-	    $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
-	        ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenter()->getId())
-	        ->setParameter('institution_id', $institutionMedicalCenter->getInstitution()->getId())
-	        ->setParameter('active_medical_procedure_type', MedicalProcedureType::STATUS_ACTIVE);
-	    
-	    return $query->getResult();
-	}
+        $result = $conn->executeQuery($qry)->fetchAll();
 
-	private function _getCommonRSM()
-	{
-	    
-	}
+        $ids = array();
+        foreach($result as $each) {
+            $ids[] = (int)$each['medical_procedure_type_id'];
+        }
+
+        return $ids;
+    }
+
+    public function getMedicalCentersList($institutionId)
+    {
+        $qb = $this->_em->createQueryBuilder()
+        ->select('b.id, b.name')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        ->leftJoin('a.medicalCenter', 'b')
+        ->add('where','a.institution = :institution')
+        ->setParameter('institution', $institutionId)
+        ->orderBy('b.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get the available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     */
+    public function getAvailableMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        //$dql = "SELECT p FROM InstitutionBundle:InstitutionMedicalCenter"
+        $sql = "SELECT a.* FROM medical_procedure_types a, institution_medical_centers b ".
+               "WHERE b.medical_center_id = :medical_center_id ".
+               "AND b.institution_id = :institution_id ".
+               "AND a.medical_center_id = b.medical_center_id ".
+            "AND a.status = :active_medical_procedure_type ".
+            "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
+
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
+            ->addFieldResult("a", "id", "id")
+            ->addFieldResult("a", "medicalCenter", "medical_center_id")
+            ->addFieldResult("a", "name", "name")
+            ->addFieldResult("a", "description", "description")
+            ->addFieldResult("a", "dateModified", "date_modified")
+            ->addFieldResult("a", "dateCreated", "date_created")
+            ->addFieldResult("a", "slug", "slug")
+            ->addFieldResult("a", "status", "status");
+
+
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
+            ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenter()->getId())
+            ->setParameter('institution_id', $institutionMedicalCenter->getInstitution()->getId())
+            ->setParameter('active_medical_procedure_type', MedicalProcedureType::STATUS_ACTIVE);
+
+        return $query->getResult();
+    }
+
+    private function _getCommonRSM()
+    {
+
+    }
 }

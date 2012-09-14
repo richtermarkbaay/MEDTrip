@@ -37,11 +37,7 @@ use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InstitutionUserController extends Controller
 {
-	public function settingsAction()
-	{
-		return $this->render('AdminBundle:Default:settings.html.twig');
-	}
-    public function loginAction()
+	public function loginAction()
     {
     	$user = new InstitutionUser();
         $form = $this->createForm(new UserLoginType());
@@ -107,6 +103,7 @@ class InstitutionUserController extends Controller
     	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
      */

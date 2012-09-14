@@ -1,0 +1,61 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers'%}
+{% block title %}{{ parent() }} Add Medical Center Media {% endblock %}
+
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add media for {{ institutionMedicalCenter.medicalCenter.name }} medical center</h1>
+    </div>
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {# ----- end Related tasks ----- #}
+
+            <!--  start table-content  -->
+            <div id="table-content">
+                <div style="width:75%;">
+                    {% include '::notice.admin.html.twig' %}
+
+                    {% include '::stepHolder.base.admin.html.twig' with {
+                        steps: [
+                            {title: 'Center Details', 'selected': true},
+                            {title: 'Add Media', 'selected': true},
+                            {title: 'Add Procedure Types', 'selected': true},
+                            {title: 'Preview', 'selected': true},
+                        ] }
+                  %}
+
+                      {{ dump(institutionMedicalCenter) }}
+
+                    <div class="clear">&nbsp;</div>
+
+                    <form action="{{ path('institution_medicalCenter_index') }}" method="GET" name="nextStep" id="nextStep">
+                        <input type="submit" name="submit" value="Done" class="green-button" />
+                    </form>
+
+                </div>
+
+            </div>
+            <!--  end table-content  -->
+
+        {% endblock %}
+
+    {% endembed %}
+
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+
+    {% block inlineJavascriptCode %}
+    {% endblock %}
+{% endblock %}
