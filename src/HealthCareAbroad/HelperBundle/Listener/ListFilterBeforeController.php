@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * @author Adelbert D. Silla
@@ -14,55 +14,61 @@ use HealthCareAbroad\HelperBundle\Services\Filters\ListFilterFactory;
 
 class ListFilterBeforeController
 {
-	private $twig;
+    private $twig;
 
-	private $doctrine; 
+    private $doctrine;
 
-	public function setTwig(\Twig_Environment $twig)
-	{
-		$this->twig = $twig;
-	}
+    public function setTwig(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
 
-	public function setRouter($router)
-	{
-		$this->router = $router;
-	}
-	
-	public function setDoctrine($doctrine)
-	{
-		$this->doctrine = $doctrine;
-	}
+    public function setRouter($router)
+    {
+        $this->router = $router;
+    }
 
-	/**
-	 * kernel.controller listener method
-	 *
-	 * @param FilterControllerEvent $event
-	 */
-	public function onKernelController(FilterControllerEvent $event)
-	{
+    public function setDoctrine($doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    /**
+     * kernel.controller listener method
+     *
+     * @param FilterControllerEvent $event
+     */
+    public function onKernelController(FilterControllerEvent $event)
+    {
         $controller = $event->getController();
         $request = $event->getRequest();
         $routeName = $request->get('_route');
 
         if(!ListFilterFactory::isValidRouteName($routeName))
-        	return;
+            return;
 
         $controller[0]->filteredResult = array();
-        
-		$listFilter = ListFilterFactory::create($routeName, $this->doctrine);
-		$params = array_merge($request->get('_route_params'), $request->query->all());
+
+        $listFilter = ListFilterFactory::create($routeName, $this->doctrine);
+        $params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {
-        	$listFilter->prepare($params);
 
-        	$controller[0]->filteredResult = $listFilter->getFilteredResult();
+            if($request->getSession()->get('institutionId')) {
+                $params['institutionId'] = $request->getSession()->get('institutionId');
+                $params['isInstitutionContext'] = true;
+            }
 
-			$listFilters = $this->twig->render('HelperBundle:Default:filters.html.twig', array(
-				'filters' => $listFilter->getFilterOptions(),
-				'url' => $this->router->generate($routeName, $request->get('_route_params'))
-			));
+            $listFilter->prepare($params);
 
-			$this->twig->addGlobal('listFilters', $listFilters);
+            $controller[0]->filteredResult = $listFilter->getFilteredResult();
+
+            $listFilters = $this->twig->render('HelperBundle:Default:filters.html.twig', array(
+                'filters' => $listFilter->getFilterOptions(),
+                'url' => $this->router->generate($routeName, $request->get('_route_params'))
+            ));
+
+            $this->twig->addGlobal('listFilters', $listFilters);
         }
-	}
+    }
 }
