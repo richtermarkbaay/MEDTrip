@@ -2,38 +2,46 @@
 {% block body %}
 <body>
 
-<div class="fixed">
+	<div class="fixed">		
+			{% include 'PageBundle:Default:TopHeader.html.twig' %}
+			{% include 'PageBundle:Default:header.html.twig' %}
+			{% include 'PageBundle:Default:navigation.html.twig' %}
 
-	{% include 'PageBundle:Default:TopHeader.html.twig' %}
-	{% include 'PageBundle:Default:header.html.twig' %}
-	{% include 'PageBundle:Default:navigation.html.twig' %}
-	<div class="inner">	
-		<!-- News Ticker -->	
-	</div> <!--End Inner-->
-	<div class="inner">
-   		<div class="container">
-			{% include 'PageBundle:Main:mainContent.html.twig' %}
-			{% include 'PageBundle:Default:sidebar.html.twig' %}
+		<div class="inner">	
+			<!-- News Ticker -->	
+		</div> <!--End Inner-->
+		<div class="inner">
+	   		<div class="container">
+		   		 <section class="main-col">
+					{% include 'PageBundle:Main:mainContent.html.twig' %}
+				</section>
+				<section class="sidebar">
+					{% block sidebar %}
+						{% include 'PageBundle:Default:sidebar.html.twig' %}
+					{% endblock %}
+				</section>
+			</div>
 		</div>
+		{% block footer %}
+			{% include 'PageBundle:Footer:footer.html.twig' %}
+		{% endblock %}
+	
 	</div>
-	{% include 'PageBundle:Footer:footer.html.twig' %}
-
-</div>
-
-<div class="scrollTo_top">
-
-    <a title="Scroll To Top" href="#">
-
-	<img src="{{ asset('images/frontend/up.png') }}" alt="Scroll To Top" />
-
-    </a>
-
-</div>
+	
+	<div class="scrollTo_top">
+	
+	    <a title="Scroll To Top" href="#">
+	
+		<img src="{{ asset('images/frontend/up.png') }}" alt="Scroll To Top" />
+	
+	    </a>
+	
+	</div>
 
 {% endblock %}
 {% block inlineJavascriptCode %}
 <!-- The JavaScript -->
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ asset('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js') }}"></script>
         <script type="text/javascript">
             $(function() {
 				/**
