@@ -4,6 +4,7 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
