@@ -4,15 +4,15 @@
     <div class="action-buttons">    
         <a title="Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': institutionMedicalCenter.id,'imptId': institutionMedicalProcedureType.id}) }}">Edit {{ institutionMedicalProcedureType.medicalProcedureType.name }}</a>
         <a title="Add {{ institutionMedicalProcedureType.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': institutionMedicalProcedureType.id}) }}">Add Procedure</a>
-        <a title="View {{ institutionMedicalProcedureType.medicalProcedureType.name }} History" class="button-type" href="{{ path('institution_showEditHistory', {'objectId': institutionMedicalProcedureType.id, 'objectClass': base64_encode(getClass(institutionMedicalProcedureType)) }) }}">View History</a>
+        <a title="View History" class="button-type view-history" href="{{ path('institution_showEditHistory', {'objectId': institutionMedicalProcedureType.id, 'objectClass': base64_encode(getClass(institutionMedicalProcedureType)) }) }}">View History</a>
         
     </div>
     
-    <div class="details">
+    <div class="details raw-content">
         {% if institutionMedicalProcedureType.description | length > 1000 %}
             {{ institutionMedicalProcedureType.description | slice(0, 1000)}}...
         {% else %}
-            {{ institutionMedicalProcedureType.description }}
+            {{ institutionMedicalProcedureType.description|raw }}
         {% endif %}
     </div>
     
@@ -28,7 +28,7 @@
     		{% set medicalProcedure = procedure.medicalProcedure %}
     		<tr>
     			<td>{{ medicalProcedure.name }}</td>
-    			<td>{{ procedure.description }}</td>  
+    			<td class="raw-content">{{ procedure.description|raw }}</td>  
     			<td>
     				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_medicalProcedureType_editMedicalProcedure', {'imptId': institutionMedicalProcedureType.id, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
     			</td>
@@ -46,7 +46,7 @@
 
             EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
 
-            $('a.button-type').click(function(){
+            $('a.view-history').click(function(){
                 EntityVersionHistory.viewHistory($(this));
                 return false;
             });

@@ -41,7 +41,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution.delete, method: onDelete }
             
     listener.institution.authorizationBeforeController:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionAwareBeforeControllerListener
@@ -70,7 +70,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user_type.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution_user_type.delete, method: onDelete }
             
             
     ###listener for institutionUserRole
@@ -93,7 +93,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user_role.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution_user_role.delete, method: onDelete }
             
      
     ###listener for institutionMedicalCenter
@@ -117,7 +117,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onDelete }
             
     ###listener for institutionMedicalProcedureType
     listener.institution_medical_procedure_type.create:
@@ -140,7 +140,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.delete, method: onDelete }
     
     ###listener for institutionMedicalProcedure
     listener.institution_medical_procedure.add:
@@ -163,7 +163,7 @@ services:
         calls:
            - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_medical_procedure.edit, method: onDelete }
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.delete, method: onDelete }
     ##listener for institution_invitation
     listener.institution_invitation.add:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionInvitationLogListener
@@ -172,9 +172,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.institution_invitation.add, method:onAdd }
     ##listener for institution_invitation
-    listener.institution__user_invitation.add:
+    listener.institution_user_invitation.add:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserInvitationLogListener
         calls:
              - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user_invitation.add, method:onAdd }
+            - { name: form.type, alias: institution_list }

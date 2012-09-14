@@ -12,4 +12,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
+	function getNewsList() {
+		$countries = $this->_em->getRepository('HelperBundle:News')->findByStatus(1);
+		$arrNews = array();
+		foreach($news as $each){
+			$arrNews[$each->getId()] = $each->getTitle();
+		}
+	
+		return $arrNews;
+	}
+	
+	public function getQueryBuilderForNews()
+	{
+		return $this->_em->createQueryBuilder()
+		->add('select', 'c')
+		->add('from', 'HelperBundle:News c')
+		->add('where', 'c.status = 1');
+	}
 }

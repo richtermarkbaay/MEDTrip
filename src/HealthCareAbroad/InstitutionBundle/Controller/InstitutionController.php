@@ -6,16 +6,15 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\HelperBundle\Services\LocationService;
-
-use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,7 +47,7 @@ class InstitutionController  extends InstitutionAwareController
 				
 				//create event on editInstitution and dispatch
 				$event = new EditInstitutionEvent($institution);
-				$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
 			}
 		}
 		

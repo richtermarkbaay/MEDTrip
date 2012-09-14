@@ -7,8 +7,16 @@ parameters:
     services.country_list: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
+    services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
 
 services:
+    
+    # factory class for creating named events
+    events.factory:
+        class: HealthCareAbroad\HelperBundle\Factory\EventFactory
+        arguments: [@service_container]
+        
+    
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
@@ -64,7 +72,12 @@ services:
         tags:
             - { name: form.type, alias: tagtype_list }
             
-    
+    form.news_list:
+        class: "%services.news_list%"
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: news_list }
             
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
@@ -94,6 +107,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
     
+    listener.helper.preExecute:
+        class: HealthCareAbroad\HelperBundle\Listener\PreExecuteController
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
     listener.mailer.error_report.create:
         class: HealthCareAbroad\MailerBundle\Listener\ErrorReportListener
         calls:

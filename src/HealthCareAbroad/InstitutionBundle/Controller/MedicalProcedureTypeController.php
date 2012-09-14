@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
@@ -127,12 +129,12 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             if($isNew) {
 	            //// create event on adding institutionMedicalProcedureTypes and dispatch
 	            $event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
-	            $this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+	            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
             }
             else {
             	//// create event on editing institutionMedicalProcedureTypes and dispatch
             	$event = new CreateInstitutionMedicalProcedureTypeEvent($institutionMedicalProcedureType);
-            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+            	$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
             }
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
@@ -223,12 +225,12 @@ class MedicalProcedureTypeController extends InstitutionAwareController
             if($isNew) {
             	//// create event on adding institutionMedicalProcedureTypes and dispatch
             	$event = new CreateInstitutionMedicalProcedureEvent($institutionMedicalProcedure);
-            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
+            	$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
             }
             else {
             	//// create event on editing institutionMedicalProcedureTypes and dispatch
             	$event = new CreateInstitutionMedicalProcedureTypeEvent($procedureType);
-            	$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
+            	$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
             }
             
             $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} medical procedure type.");

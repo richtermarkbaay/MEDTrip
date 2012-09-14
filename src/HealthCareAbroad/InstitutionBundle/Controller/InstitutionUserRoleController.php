@@ -6,7 +6,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserRoleEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserRoleEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 class InstitutionUserRoleController extends Controller
 {
@@ -70,7 +70,7 @@ class InstitutionUserRoleController extends Controller
 			
 			//// create event on adding roles to userTypes and dispatch
 			$event = new CreateInstitutionUserRoleEvent($userRole);
-			$this->get('event_dispatcher')->dispatch(InstitutionUserRoleEvents::ON_ADD_INSTITUTION_USER_ROLE, $event);
+			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_ROLE, $event);
 			
 		}
 		catch (\PDOException $e) {
@@ -102,7 +102,7 @@ class InstitutionUserRoleController extends Controller
 	
 		//// create event on removing roles to userTypes and dispatch
 		$event = new CreateInstitutionUserRoleEvent($userRole);
-		$this->get('event_dispatcher')->dispatch(InstitutionUserRoleEvents::ON_DELETE_INSTITUTION_USER_ROLE, $event);
+		$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_DELETE_INSTITUTION_USER_ROLE, $event);
 			
 		return $this->_jsonResponse(array('success' => 1));
 	}

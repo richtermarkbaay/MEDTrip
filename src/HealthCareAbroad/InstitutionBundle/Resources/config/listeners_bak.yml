@@ -1,0 +1,152 @@
+services:
+    
+    
+    listener.institution.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution.edit, method: onEdit }
+    
+    listener.institution.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution.edit, method: onDelete }
+            
+    listener.institution.authorizationBeforeController:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionAwareBeforeControllerListener
+        calls:
+           - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+     
+     ###listener for institutionUserType
+    listener.institution_user_type.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_type.add, method: onAdd }
+    
+    listener.institution_user_type.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_type.edit, method: onEdit }
+    
+    listener.institution_user_type.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_type.edit, method: onDelete }
+            
+            
+    ###listener for institutionUserRole
+    listener.institution_user_role.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserRoleLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_role.add, method: onAdd }
+    
+    listener.institution_user_role.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserRoleLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_role.edit, method: onEdit }
+    
+    listener.institution_user_role.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserRoleLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_role.edit, method: onDelete }
+            
+     
+    ###listener for institutionMedicalCenter
+    listener.institution_medical_center.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalCenterLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+           
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.add, method: onAdd }
+    
+    listener.institution_medical_center.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalCenterLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onEdit }
+    
+    listener.institution_medical_center.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalCenterLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onDelete }
+            
+    ###listener for institutionMedicalProcedureType
+    listener.institution_medical_procedure_type.create:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+           
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.add, method: onAdd }
+    
+    listener.institution_medical_procedure_type.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.edit, method: onEdit }
+    
+    listener.institution_medical_procedure_type.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureTypeLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.edit, method: onDelete }
+    
+    ###listener for institutionMedicalProcedure
+    listener.institution_medical_procedure.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+           
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.add, method: onAdd }
+    
+    listener.institution_medical_procedure.edit:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.edit, method: onEdit }
+    
+    listener.institution_medical_procedure.delete:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionMedicalProcedureLogListener
+        calls:
+           - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure.edit, method: onDelete }
+    ##listener for institution_invitation
+    listener.institution_invitation.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionInvitationLogListener
+        calls:
+             - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.add, method:onAdd }
+    ##listener for institution_invitation
+    listener.institution__user_invitation.add:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserInvitationLogListener
+        calls:
+             - [setEntityManager, [@doctrine.orm.entity_manager]]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_invitation.add, method:onAdd }

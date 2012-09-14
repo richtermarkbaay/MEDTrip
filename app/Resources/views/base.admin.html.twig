@@ -12,9 +12,17 @@
         
         	<script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-			<script type="text/javascript">
-				HCA.init({
-					autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}"
+            <script type="text/javascript">
+                var berty = '{{ tinymce.theme.simple|json_encode|raw }}';
+                HCA.init({
+                    autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}",
+
+                    tinymceConfig: {
+                        themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),
+                        themeMedium: $.parseJSON('{{ tinymce.theme.medium|json_encode|raw }}'),
+                        themeBbCode: $.parseJSON('{{ tinymce.theme.bbcode|json_encode|raw }}'),
+                        themeAdvanced: $.parseJSON('{{ tinymce.theme.advanced|json_encode|raw }}')
+                    }
 				});
 			</script>
         
@@ -24,4 +32,6 @@
         {% endblock %}
     </head>
     {% block body %}{% endblock %}
+
+    {{ tinymce_init() }}
 </html>

@@ -52,7 +52,6 @@ class HistoryController extends Controller
         }
         
         $objectName = $object->__toString();
-        
         return $this->render($template, array(
             'versions' => $versionEntries,
             'objectName' => $objectName

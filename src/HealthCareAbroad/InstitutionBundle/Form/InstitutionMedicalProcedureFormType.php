@@ -42,7 +42,7 @@ class InstitutionMedicalProcedureFormType extends AbstractType
     	    ));
     	}
     	
-        $builder->add('description', 'textarea', array('constraints' => array(new NotBlank())))
+        $builder->add('description', 'textarea', array('constraints' => array(new NotBlank()), 'attr' => array('class' => 'tinymce')))
 			->add('status', 'choice', array('choices' => $status));
     }
     

@@ -11,19 +11,20 @@
         "doctrine/doctrine-bundle": "dev-master",
         "gedmo/doctrine-extensions": "master-dev",        
         "twig/extensions": "dev-master",
-        "symfony/assetic-bundle": "dev-master",
+        "symfony/assetic-bundle": "v2.1.0",
         "symfony/swiftmailer-bundle": "master",
-        "symfony/monolog-bundle": "dev-master",
-        "sensio/distribution-bundle": "dev-master",
-        "sensio/framework-extra-bundle": "dev-master",
-        "sensio/generator-bundle": "dev-master",
+        "symfony/monolog-bundle": "v2.1.0",
+        "sensio/distribution-bundle": "v2.1.0",
+        "sensio/framework-extra-bundle": "v2.1.0",
+        "sensio/generator-bundle": "v2.1.0",
         "jms/security-extra-bundle": "1.1.*",
         "jms/di-extra-bundle": "1.0.*",
         "guzzle/guzzle": "*",
         "knplabs/gaufrette": "dev-master",
         "chromedia/utilities": "dev-master",
         "nikic/php-parser": "dev-master",
-        "sami/sami": "dev-master"
+        "sami/sami": "dev-master",
+        "stfalcon/tinymce-bundle" : "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

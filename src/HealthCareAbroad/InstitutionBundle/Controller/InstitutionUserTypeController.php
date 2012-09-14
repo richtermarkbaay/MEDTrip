@@ -1,7 +1,7 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserTypeEvent;
 
@@ -75,8 +75,10 @@ class InstitutionUserTypeController extends Controller
     public function saveAction()
     {
     	$request = $this->getRequest();
+    	
    		//get data of institutionId 
     	$institutionId = $request->get('institutionId', null);
+    	
     	if (!$institutionId){
     		// no account id in parameter, editing currently logged in account
     		$session = $request->getSession();
@@ -108,9 +110,9 @@ class InstitutionUserTypeController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            //// create event on edit and create userTypes and dispatch
+            // create event on edit and create userTypes and dispatch
             $event = new CreateInstitutionUserTypeEvent($userType);
-            $this->get('event_dispatcher')->dispatch(InstitutionUserTypeEvents::ON_ADD_INSTITUTION_USER_TYPE, $event);
+            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_TYPE, $event);
             
             $request->getSession()->setFlash("success", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('institution_userType_index'));

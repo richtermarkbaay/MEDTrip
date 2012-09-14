@@ -2,6 +2,7 @@
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;

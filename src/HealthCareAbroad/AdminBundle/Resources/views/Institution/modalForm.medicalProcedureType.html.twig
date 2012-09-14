@@ -5,7 +5,7 @@
 			? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
 			: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionMedicalProcedureType.id}) %}
 		
-		<form novalidate="novalidate" action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+		<form action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 			<div>
 				<label>Medical Center</label>
 				<span class="fixed-value">{{ institutionMedicalCenter.medicalCenter.name }}</span>

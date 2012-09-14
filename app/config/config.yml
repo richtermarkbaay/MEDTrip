@@ -20,10 +20,16 @@ framework:
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
-    strict_variables: %kernel.debug%
+    strict_variables: %kernel.debug%                
+    exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
     globals:
         site_name: HealthCareAbroad.com
-    exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
+        tinymce:
+            theme: 
+                simple: %tinymce_simple_theme%
+                advanced: %tinymce_advanced_theme%
+                medium: %tinymce_medium_theme%
+                bbcode: %tinymce_bbcode_theme%
 
 # Assetic Configuration
 assetic:
@@ -61,3 +67,14 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
+
+# TinyMCE Configuration
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: true
+    textarea_class: "tinymce"
+    theme: 
+        simple: %tinymce_simple_theme%
+        advanced: %tinymce_advanced_theme%
+        medium: %tinymce_medium_theme%
+        bbcode: %tinymce_bbcode_theme%

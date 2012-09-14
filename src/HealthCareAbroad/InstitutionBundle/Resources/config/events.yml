@@ -1,0 +1,23 @@
+#list down the event classes used in this bundle
+
+parameters:
+    # add institution event class
+    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
+    
+    event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
+
+    # user login event class
+    event.institution_user.login: HealthCareAbroad\UserBundle\Event\InstitutionUserEvent
+
+    # institutionMedicalCenter event class
+    event.institution_medical_center.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
+    event.institution_medical_center.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
+
+    # institutionMedicalProcedureType event class
+    event.institution_medical_procedure_type.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
+    event.institution_medical_procedure_type.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
+
+    # institutionMedicalProcedure event class
+    event.institution_medical_procedure.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
+    event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
+    

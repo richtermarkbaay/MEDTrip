@@ -6,11 +6,11 @@
         <a title="Add {{ institutionMedicalProcedureType.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('admin_institution_medicalProcedure_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}) }}">Add Procedure</a>
     </div>
     
-    <div class="details">
+    <div class="details raw-content">
         {% if institutionMedicalProcedureType.description | length > 1000 %}
             {{ institutionMedicalProcedureType.description | slice(0, 1000)}}...
         {% else %}
-            {{ institutionMedicalProcedureType.description }}
+            {{ institutionMedicalProcedureType.description|raw }}
         {% endif %}
     </div>
     
@@ -26,7 +26,7 @@
     		{% set medicalProcedure = procedure.medicalProcedure %}
     		<tr>
     			<td>{{ medicalProcedure.name }}</td>
-    			<td>{{ procedure.description }}</td>  
+    			<td class="raw-content">{{ procedure.description|raw }}</td>  
     			<td>
     				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('admin_institution_medicalProcedure_edit', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id, impId:procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
 					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}

@@ -4,6 +4,8 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
 
@@ -96,7 +98,7 @@ class InstitutionUserController extends Controller
     			
     			// create event on editAccount and dispatch
     			$event = new EditInstitutionUserEvent($institutionUser);
-    			$this->get('event_dispatcher')->dispatch(InstitutionUserEvents::ON_EDIT_INSTITUTION_USER, $event);
+    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $event);
     			    			
     			$this->get('session')->setFlash('success', "Password changed!");
     		}    			
@@ -133,7 +135,7 @@ class InstitutionUserController extends Controller
                 
                 // create event on editAccount and dispatch
                 $event = new EditInstitutionUserEvent($institutionUser);
-                $this->get('event_dispatcher')->dispatch(InstitutionUserEvents::ON_EDIT_INSTITUTION_USER, $event);
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $event);
                 
                 $this->get('session')->setFlash('success', "Successfully updated account");
                 $refer = $this->get('session')->get('referer');
@@ -161,7 +163,7 @@ class InstitutionUserController extends Controller
                 
                 // create event on invite institutionUser and dispatch
                 $event = new CreateInstitutionUserInvitationEvent($institutionUserInvitation);
-                $this->get('event_dispatcher')->dispatch(InstitutionUserInvitation::ON_ADD_INSTITUTION_USER_INVITATION, $event);
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $event);
                  
                 if ($sendingResult) {
                     $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
