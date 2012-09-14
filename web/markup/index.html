@@ -1,0 +1,1713 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Health Care Abroad - front end</title>
+
+<meta charset="utf-8" />
+
+
+
+<!-- The Stylesheet -->
+
+<link href='/css/frontend/style.css' rel='stylesheet' type='text/css'>
+
+
+
+<!-- Google Fonts -->
+
+<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'> 
+
+
+
+<!-- favicon -->
+
+<link rel="shortcut icon" href="/frontend/favicon.png" />
+
+
+
+
+
+<!-- Mobile -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+
+<!--[if lt IE 9]>
+
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+<![endif]-->
+
+
+
+<!-- javaScript -->
+
+<script type="text/javascript" src="/js/main/jquery.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tools.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.cycle.all.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.jplayer.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tweet.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.prettyPhoto.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tipsy.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.li-scroller.1.0.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.fitvids.js"></script>
+
+<script type="text/javascript" src="/js/main/custom.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div class="fixed">
+
+<div id="top" class="top_bar">
+
+    <div class="inner">
+
+       
+
+     
+        
+            <div class="news_ticker">
+        
+                <div class="ticker_icon"></div>
+        
+                    <ul id="ticker01">
+        
+                        <li><span>&#9733;</span><a href="#">Sed ut perspiciatis unde</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Unde REVOLUTION &ndash; 25 October 2012</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">magni dolores eos</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">vel illum qui dolorem eum fugiat</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">quis nostrum exercitationem ullam</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Duis aute irure dolor in reprehenderit</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">magni dolores eos</a></li>
+        
+                    </ul>
+        
+            </div><!--News Ticker-->
+        
+
+       
+
+    </div> <!--End Inner-->
+
+</div> <!--End Topbar-->
+
+
+
+<header id="header">
+
+    <div class="top_line"></div>
+
+    <div class="inner">
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                    <img src="/images/frontend/logo.png" alt="#" />
+
+            </a>
+
+        </div> <!--End Logo-->
+
+        
+         <div class="search_box">
+
+           <!-- <form method="get" action="#">
+
+                <input type="submit" class="sb" value="Search" />
+
+                <input type="text" class="sf" value="Search here ..." name="s" onfocus="if(this.value == 'Search here ...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search here ...';}" />
+
+            </form> -->
+            
+            
+            
+            
+
+        </div> <!--Search Box-->
+        
+        
+        <form id="ui_element" class="sb_wrapper">
+                    <p>
+						<span class="sb_down"></span>
+						<input class="sb_input" type="text"/>
+						<input class="sb_search" type="submit" value=""/>
+					</p>
+					<ul class="sb_dropdown" style="display:none;">
+					    <h4><input type="checkbox"/><label for="all"> All Categories</h4></label>
+					    
+						<li class="sb_filter"><input type="checkbox"/>Procedures</li>
+						<li class="sb_filter"><input type="checkbox"/>Destinations</li>
+						
+					</ul>
+        </form>
+
+        
+    </div> <!--Inner-->
+
+
+</header> <!--End Header-->
+
+
+  <div class="social_mob">
+        
+            <img src="/images/frontend/widgets/sc_facebook.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_twitter.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_google.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_linkedin.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_rss.png" alt="#" />
+        
+  </div>
+
+  
+<nav id="navigation">
+
+    <div class="nav_wrap">
+
+    <div class="inner">
+
+        <ul class="nav">
+
+            <li class="home"><a href="index.html"></a></li>
+
+            <li><a href="#">Destinations</a></li>
+
+            <li><a href="#">Procedures</a>
+
+                <ul class="sub-menu">
+
+                    <li><a href="#">sub</a></li>
+
+                    <li><a href="#">sub2</a>
+
+                        <ul class="sub-menu">
+
+                            <li><a href="#">sub4</a></li>
+
+                            <li><a href="#">sub</a></li>
+
+                            <li><a href="#">sub2</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li><a href="#">sub3</a></li>
+
+                </ul>
+                
+      
+
+            </li>
+
+    <div class="social">
+            <img src="/images/frontend/widgets/sc_facebook.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_twitter.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_google.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_linkedin.png" alt="#" />
+            <img src="/images/frontend/widgets/sc_rss.png" alt="#" />           
+    </div>
+    
+    
+        </ul>
+
+                                <div class="menu-main-container" id="mobile_menu_secondary">
+                                
+                                    <select  name="mobileMainMenu" id="mobileMainMenu" class="mobileMainMenu" onchange="location.href = document.getElementById('mobileMainMenu').value;">
+                                
+                                        
+                                
+                                        <option value="#">Destinations</option>
+                                
+                                        <option value="#">Procedures</option>
+                                        
+                                        <option value="#"> - Sub One</option>
+                                        <option value="#"> - - Sub One 2</option>
+                                
+                                
+                                     </select>
+                                
+                                 </div>
+ 
+     
+    </div> <!--Inner-->
+
+    
+        
+    </div> <!--End Nav Wrap-->
+
+</nav> <!--End Navigation-->
+
+<div class="inner">
+
+
+
+<!-- News Ticker -->
+
+
+
+</div> <!--End Inner-->
+
+<div class="inner">
+
+    <div class="container">
+
+    <div class="main">
+
+<!--Feature Slider-->
+
+	<script type="text/javascript">
+
+            jQuery(document).ready(function ($){
+
+            // main slider
+
+               $('.slider').cycle({
+
+                    fx: 'fade',
+
+                    speed: 300,
+
+                    timeout:5000,
+
+                    pause: 1,
+
+                    cleartype: true,
+
+                    cleartypeNoBg: true,
+
+                    pager: 'ul.slider_nav',
+
+                    after: feature_after,
+
+                    before: onbefore,
+
+                    pagerAnchorBuilder: function(idx, slide) {
+
+                        return 'ul.slider_nav li:eq(' + (idx) + ')';
+
+                    }
+
+                    });
+
+                $('ul.slider_nav li').hover(function() { 
+
+                        $('.slider').cycle('pause'); 
+
+                    }, function () {
+
+                        $('.slider').cycle('resume'); 
+
+                      });
+
+            
+
+            
+
+              function feature_after() {
+
+            $('.slider_items .slider_caption').stop().animate({opacity:1, bottom:0},{queue:false,duration:300 });
+
+            $('.feature_video_icon, .feature_slide_icon, .feature_article_icon').stop().animate({top:0},{queue:true,duration:300});  
+
+                   }
+
+               
+
+              function onbefore() {
+
+               $('.slider_items .slider_caption').stop().animate({opacity:1, bottom:'-120px'},{queue:false,duration:300});
+
+               $('.feature_video_icon, .feature_slide_icon, .feature_article_icon').animate({top:'-40px'},{queue:true,duration:300});  
+
+                }  
+
+              
+
+            //slider nav
+
+            jQuery('.slider_nav li:not(.activeSlide) a').click( 
+
+                            function () {
+
+                                    jQuery('.slider_nav li a').css('opacity', 0.7);
+
+                                    jQuery(this).css('opacity', 1);
+
+                            }
+
+                    );
+
+                    
+
+            
+
+            jQuery('.slider_nav li:not(.activeSlide) a').hover( 
+
+                            function () {
+
+                                    jQuery(this).stop(true, true).animate({opacity: 1}, 300);
+
+                            }, function () {
+
+                                    jQuery(this).stop(true, true).animate({opacity: 0.7}, 300);
+
+                            }
+
+                    );
+
+            
+
+              });
+
+</script>
+
+<div class="box_outer" id="feature_outer">
+
+    <div class="Feature_news">
+
+	<div class="slider_wrap">
+
+                <div class="slider_items">
+
+                    <div class="slider">
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="Sed ut perspiciatis unde omnis iste natus error sit" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">Sed ut perspiciatis unde omnis iste natus error sit</a></h2>
+
+                                        <p>
+
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="Big Buck Bunny (HTML5) faucibus placerat eget at est" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">faucibus placerat eget at est</a></h2>
+
+                                        <p>
+
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="For some men, staying in shape may override body weight" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">Sed ut perspiciatis unde omnis iste natus error</a></h2>
+
+                                        <p>
+
+                                          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="Despite its early electoral success" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">Sed ut perspiciatis</a></h2>
+
+                                        <p>
+
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="Xbox aim to be ‘future of TV’" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">voluptatem accusantium doloremque laudantium, totam rem aperiam</a></h2>
+
+                                        <p>
+
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="Brazil 2014 will have goal-line technology" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">omnis iste natus error sit voluptatem accusantium doloremque laudantium</a></h2>
+
+                                        <p>
+
+                                           Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                        <div class="slider_item">
+
+                            <div style="position:relative; overflow:hidden;">
+
+                                <a href="#">
+
+                                    <img src="images/demo/slider.png"  alt="BP says Halliburton ‘intentionally destroyed evidence" />		
+
+                                    <span class='feature_article_icon'></span>
+
+                                </a>
+
+                                <div class="slider_caption">
+
+                                    <h2><a href="#">Lorem ipsum</a></h2>
+
+                                        <p>
+
+                                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+
+                                        </p>
+
+                                </div> <!--End Slider Caption-->
+
+                             </div>
+
+                        </div> <!--Slider Item-->
+
+
+
+                    </div> <!--Slider-->
+
+                </div> <!--Slider Items-->
+
+              
+
+            <div class="clear"></div>
+
+	</div> <!--Slider_wrap-->
+
+        </div> <!--End Feature news-->
+
+</div> <!--End Feature Outer-->
+
+
+
+<!--mini featured-->
+
+<script type="text/javascript">
+
+    jQuery(document).ready(function($) {
+
+    //latest vids wrap
+
+        var vids = $(".lates_feat_item");
+
+        for(var i = 0; i < vids.length; i+=4) {
+
+          vids.slice(i, i+4).wrapAll('<div class="four_items"></div>');
+
+        }
+
+    
+
+    //latest news video
+
+       $('.scroll_items').cycle({
+
+                fx: 'scrollHorz',
+
+                easing: 'swing',
+
+                speed: 3000,
+
+                timeout:7000,
+
+                pause: 1,
+
+                cleartype: true,
+
+                cleartypeNoBg: true,
+
+                pager: '.navi .navi_links',
+
+        });
+
+  
+
+    }); 
+
+</script>
+
+<div class="box_outer">
+
+        <div class="lates_feat_news">
+
+            <h3 class="widget_title">Featured Clinics</h3>
+
+                <div class="latest_vids_wrap">
+
+                    <div class="scrollable" id="scrolling_vids">   
+
+                 <!-- root element for the items -->
+
+                <div class="scroll_items">
+
+                    
+
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit, consectetur adipisicing eiusmod tempor incididunt ut labore et dolore magna aliqua.</a>
+
+                        </p>
+                        
+                        <div style="float:right; margin: 12px -12px 0 0;"> <img src="images/demo/ph.png" alt="put here" /> </div>
+
+                    </div><!--lates_feat_item-->
+
+                   
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                            <img src="images/demo/img.png" alt="put here" />
+
+                            
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->
+
+
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                          
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->
+
+
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                            <img src="images/demo/img.png" alt="put here" />
+
+                            
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->
+                    
+
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                            <img src="images/demo/img.png" alt="put here" />
+
+                            
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->
+                    
+
+                    <div class="lates_feat_item">
+
+                        <a href="#">                         
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet</a>
+
+                        </p>
+                        
+                        
+                        <div style="float:right; margin: 12px -12px 0 0;"> <img src="images/demo/awards.png" alt="put here" /> </div>
+                        
+
+                    </div><!--lates_feat_item-->
+                                      
+                    
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                            <img src="images/demo/img.png" alt="put here" />
+
+                            
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->
+                    
+                    
+                    <div class="lates_feat_item">
+
+                        <a href="#">
+
+                            <img src="images/demo/img.png" alt="put here" />
+
+                            
+
+                        </a>
+
+                        <p>
+
+                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
+
+                        </p>
+
+                    </div><!--lates_feat_item-->                    
+                    
+                                        
+                    
+              </div> <!--End Items-->
+
+           </div> <!--End scrollable-->
+
+            </div> <!--Latest Vids Wrap-->
+
+            <div class="navi"><div class="navi_links"></div></div>
+
+        </div><!--Latest Video News-->
+
+</div> <!--Box Outer-->
+
+
+<!--News Box-->
+
+   <div class="box_outer">
+
+   <div class="news_box">
+
+            <div class="news_box_heading">
+
+                <div class="nb_dots">
+
+                    <h2><a href="#">First Listing</a></h2>
+                    <div style="float:right;background-color:#40454d; padding: 1px 10px; color:#fff">View All</div>
+                </div>
+
+            </div> <!--End nb Heading-->
+
+        
+
+            <div class="news_box_left">
+
+                <div class="recent_news_item">
+
+                <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
+
+	    <div class="recent_news_img">
+
+	    <a href="#">
+
+                <img src="images/demo/box_thumb.png" alt="" title="" />
+
+                <span class='nb_slide_icon'></span>
+
+	    </a>
+
+	    </div>
+
+                <div class="recent_news_content">
+
+                <p class="recent_news_excpert">
+
+    Fusce sed augue ut augue mollis accumsan. Quisque urna dolor, sollicitudin id pharetra a, ultricies sed urna. Quisque quis turpis nibh. Cras eleifend vulputate congue. In semper ultrices sagittis. Duis ut nisi sit amet lorem consectetur dapibus vitae quis leo. Phasellus in tellus sem, quis ornare arcu... 
+
+                </p>
+
+		<div class="nb_meta">
+
+                <span class="news_date">December 11, 2011</span>
+
+		<span class="news_comments_count"><a href="#"><img src="images/demo/partner.jpg" alt="" title="" /></a></span>
+
+		</div> <!--End NB META-->
+
+                </div> <!--recent news Content-->
+
+                </div> <!--recent News Item-->
+
+            </div> <!--End News Box Left-->
+
+            <div class="news_box_right">
+
+		<div class="more_news_wrap">
+
+		<div style="float:right;">            
+                    <img src="images/more.jpg" alt="" title="" />
+		</div> <!--more_news_wrap-->
+
+		</div>
+
+            </div> <!--End News Box Right-->
+
+        </div> <!--News Box-->
+
+    </div> <!--Box Outer-->
+
+<!--End News Box-->
+
+<!--News Box-->
+
+   <div class="box_outer">
+
+   <div class="news_box">
+
+            <div class="news_box_heading">
+
+                <div class="nb_dots">
+
+                    <h2><a href="#">First Listing Two</a></h2>
+                    <div style="float:right;background-color:#40454d; padding: 1px 10px; color:#fff">View All</div>
+                </div>
+
+            </div> <!--End nb Heading-->
+
+        
+
+            <div class="news_box_left">
+
+                <div class="recent_news_item">
+
+                <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
+
+	    <div class="recent_news_img">
+
+	    <a href="#">
+
+                <img src="images/demo/box_thumb.png" alt="" title="" />
+
+                <span class='nb_slide_icon'></span>
+
+	    </a>
+
+	    </div>
+
+                <div class="recent_news_content">
+
+                <p class="recent_news_excpert">
+
+    Fusce sed augue ut augue mollis accumsan. Quisque urna dolor, sollicitudin id pharetra a, ultricies sed urna. Quisque quis turpis nibh. Cras eleifend vulputate congue. In semper ultrices sagittis. Duis ut nisi sit amet lorem consectetur dapibus vitae quis leo. Phasellus in tellus sem, quis ornare arcu... 
+
+                </p>
+
+		<div class="nb_meta">
+
+                <span class="news_date">December 11, 2011</span>
+
+		<span class="news_comments_count"><a href="#"><img src="images/demo/partner.jpg" alt="" title="" /></a></span>
+
+		</div> <!--End NB META-->
+
+                </div> <!--recent news Content-->
+
+                </div> <!--recent News Item-->
+
+            </div> <!--End News Box Left-->
+
+            <div class="news_box_right">
+
+		<div class="more_news_wrap">
+
+		<div style="float:right;">            
+                    <img src="images/more.jpg" alt="" title="" />
+		</div> <!--more_news_wrap-->
+
+		</div>
+
+            </div> <!--End News Box Right-->
+
+        </div> <!--News Box-->
+
+    </div> <!--Box Outer-->
+
+<!--End News Box-->
+
+
+<!--News Box-->
+
+   <div class="box_outer">
+
+   <div class="news_box">
+
+            <div class="news_box_heading">
+
+                <div class="nb_dots">
+
+                    <h2><a href="#">First Listing Three</a></h2>
+                    <div style="float:right;background-color:#40454d; padding: 1px 10px; color:#fff">View All</div>
+                </div>
+
+            </div> <!--End nb Heading-->
+
+        
+
+            <div class="news_box_left">
+
+                <div class="recent_news_item">
+
+                <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
+
+	    <div class="recent_news_img">
+
+	    <a href="#">
+
+                <img src="images/demo/box_thumb.png" alt="" title="" />
+
+                <span class='nb_slide_icon'></span>
+
+	    </a>
+
+	    </div>
+
+                <div class="recent_news_content">
+
+                <p class="recent_news_excpert">
+
+    Fusce sed augue ut augue mollis accumsan. Quisque urna dolor, sollicitudin id pharetra a, ultricies sed urna. Quisque quis turpis nibh. Cras eleifend vulputate congue. In semper ultrices sagittis. Duis ut nisi sit amet lorem consectetur dapibus vitae quis leo. Phasellus in tellus sem, quis ornare arcu... 
+
+                </p>
+
+		<div class="nb_meta">
+
+                <span class="news_date">December 11, 2011</span>
+
+		<span class="news_comments_count"><a href="#"><img src="images/demo/partner.jpg" alt="" title="" /></a></span>
+
+		</div> <!--End NB META-->
+
+                </div> <!--recent news Content-->
+
+                </div> <!--recent News Item-->
+
+            </div> <!--End News Box Left-->
+
+            <div class="news_box_right">
+
+		<div class="more_news_wrap">
+
+		<div style="float:right;">            
+                    <img src="images/more.jpg" alt="" title="" />
+		</div> <!--more_news_wrap-->
+
+		</div>
+
+            </div> <!--End News Box Right-->
+
+        </div> <!--News Box-->
+
+    </div> <!--Box Outer-->
+
+<!--End News Box-->
+
+
+<!--News Box-->
+
+   <div class="box_outer">
+
+   <div class="news_box">
+
+            <div class="news_box_heading">
+
+                <div class="nb_dots">
+
+                    <h2><a href="#">First Listing Four</a></h2>
+                    <div style="float:right;background-color:#40454d; padding: 1px 10px; color:#fff">View All</div>
+                </div>
+
+            </div> <!--End nb Heading-->
+
+        
+
+            <div class="news_box_left">
+
+                <div class="recent_news_item">
+
+                <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
+
+	    <div class="recent_news_img">
+
+	    <a href="#">
+
+                <img src="images/demo/box_thumb.png" alt="" title="" />
+
+                <span class='nb_slide_icon'></span>
+
+	    </a>
+
+	    </div>
+
+                <div class="recent_news_content">
+
+                <p class="recent_news_excpert">
+
+    Fusce sed augue ut augue mollis accumsan. Quisque urna dolor, sollicitudin id pharetra a, ultricies sed urna. Quisque quis turpis nibh. Cras eleifend vulputate congue. In semper ultrices sagittis. Duis ut nisi sit amet lorem consectetur dapibus vitae quis leo. Phasellus in tellus sem, quis ornare arcu... 
+
+                </p>
+
+		<div class="nb_meta">
+
+                <span class="news_date">December 11, 2011</span>
+
+		<span class="news_comments_count"><a href="#"><img src="images/demo/partner.jpg" alt="" title="" /></a></span>
+
+		</div> <!--End NB META-->
+
+                </div> <!--recent news Content-->
+
+                </div> <!--recent News Item-->
+
+            </div> <!--End News Box Left-->
+
+            <div class="news_box_right">
+
+		<div class="more_news_wrap">
+
+		<div style="float:right;">            
+                    <img src="images/more.jpg" alt="" title="" />
+		</div> <!--more_news_wrap-->
+
+		</div>
+
+            </div> <!--End News Box Right-->
+
+        </div> <!--News Box-->
+
+    </div> <!--Box Outer-->
+
+<!--End News Box-->
+
+          <div style="overflow:hidden; border:1px solid #e0e0e0; border-bottom:2px solid #d8d8d8; padding:4px; width:148px; margin-bottom:14px; background:#fff;">
+            <div class="pagination">
+            <img src="images/pagil.png">
+                <span class="current">1</span>
+                <a class="inactive" href="#">2</a>
+                <a class="inactive" href="#">3</a>
+                <a class="inactive" href="#">4</a>
+                <a class="inactive" href="#">5</a>
+            <img alt="rss" src="images/pagir.png">    
+            </div>
+        </div>
+
+    </div> <!--End Main-->
+    
+      <aside class="sidebar">
+
+       
+        <div class="box_outer">
+
+            <div class="widget">
+
+        <div class="tabbed_widget">
+
+<!-- the tabs -->
+
+<ul class="tabbed_nav">
+
+	<li class="tabbed1"><a href="#" class="current">Popular</a></li>
+
+	<li class="tabbed2"><a href="#">Recent</a></li>
+
+	<li class="tabbed3"><a href="#">Comments</a></li>
+
+	<li class="tabbed4"><a href="#">Tags</a></li>
+
+</ul>
+
+
+
+<!-- tab "panes" -->
+
+<div class="tabbed_container">
+
+	<div class="tabbed_content" style="display: block;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>		
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="images/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+		<div class="tagcloud tabbed_tag">
+
+                    <a href="#">aids</a>
+
+                    <a href="#">Barcelona</a>
+
+                    <a href="#">body</a>
+
+                    <a href="#">bugs</a>
+
+                    <a href="#">bunny</a>
+
+                    <a href="#">business</a>
+
+                    <a href="#">drugs</a>
+
+                    <a href="#">fake</a>
+
+                    <a href="#">GOP</a>
+
+                    <a href="#">human</a>
+
+                    <a href="#">men</a>
+
+                    <a href="#">obama</a>
+
+                    <a href="#">Real Madrid</a>
+
+                    <a href="#">time</a>
+
+                    <a href="#">usa</a>
+
+                    <a href="#">weight</a>
+
+                    <a href="#">world</a>
+
+                    <a href="#">yuk</a>
+
+                </div> <!--Tag Cloud-->
+
+	</div> <!--Tabbed Content-->
+
+</div>
+
+</div>
+
+        </div>
+
+        </div> <!--End Widget-->
+       
+        <div class="newsletter">
+                subscribe to our rss feeds<br />
+                <img alt="rss" src="images/rss.png" class="rs_icon" style="width:28px; height:28px;">
+
+                <form action="#">
+
+                    <input type="text" onblur="if(this.value=='')this.value='Your Email';" onfocus="if(this.value=='Your Email')this.value='';" value="Your Email" name="email" class="nsf">
+
+                    <input type="hidden" value="en_US" name="loc">
+
+                    <input type="submit" value="Subscribe" class="nsb">
+
+                </form>
+
+	</div> <!--End newsletter-->       
+       
+       
+    </aside> <!--End Sidebar-->
+    
+    </div> <!--End Container-->
+
+<!--Footer-->
+
+</div> <!--End Inner-->
+
+<footer id="footer">
+
+    <div class="footer_wrap">
+
+        <div class="foot_border"></div>
+
+            <div class="inner">
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Destinations</h3>
+
+                        <ul class="blog_posts_widget">
+
+                            <li class="blog_post">
+
+                                <a href="#"><img width="59" height="59" title="#" alt="#" src="images/demo/thumb.png" class="alignleft"></a>
+
+                                <p><a href="#">Destination One</a></p>
+
+                                <span class="pw_time">December 01, 2011</span>
+
+                            </li>
+
+                                            
+
+                            <li class="blog_post">
+
+                                <a href="#"><img width="59" height="59" title="Dual-core Meizu MX fully unveiled" alt="Dual-core Meizu MX fully unveiled" src="images/demo/thumb.png" class="alignleft"></a>
+
+                                                            <p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+                                    <span class="pw_time">December 06, 2011</span>
+
+                            </li>
+
+                                    
+
+                            <li class="blog_post">
+
+                                <a href="#">
+
+                                    <img width="59" height="59" title="Ontarians pay highest car insurance in Canada" alt="Ontarians pay highest car insurance in Canada" src="images/demo/thumb.png" class="alignleft">
+
+                                </a>
+
+                                <p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+                                    <span class="pw_time">December 06, 2011</span>
+
+                                                    </li>
+
+                    
+
+                        </ul>
+
+                </div> <!--Widget-->
+
+                </div><!--One Fourth-->
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Health Care Centers</h3>
+
+                            <ul>
+
+                                <li><a href="#">Visayan Community Hospital</a></li>
+
+                                <li><a href="#">Makati Health Care Clinic</a></li>
+
+                                <li><a href="#">Thailand Medical Institute</a></li>
+
+                                <li><a href="#">ChongHua Skin Care Clinic</a></li>
+
+                                <li><a href="#">Japan Eye Center</a></li>
+
+                            </ul>
+
+                    </div> <!--Widget-->
+
+                </div> <!--One Fourth-->
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                    <h3 class="widget_title">Directories</h3>
+
+                    <ul class="cat_w_list">
+
+                        <li><a href="#">Japan</a></li>
+
+                        <li><a href="#">Thailand</a></li>
+
+                        <li><a href="#">Brazil</a></li>
+
+                        <li><a href="#">Malaysia</a></li>
+
+                        <li> <a href="#">Australia</a></li>
+
+                        <li><a href="#">Canada</a></li>
+
+                        <li><a href="#">Philippines</a></li>
+
+                        <li><a href="#">Singapore</a></li>
+
+                        <li><a title="#">Dubai</a></li>
+
+                    </ul>
+
+                    </div> <!--Widget-->
+
+                </div><!--One Fourth-->
+
+                <div class="one_fourth last">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Another WIDGET</h3>
+
+                        <div class="custom_textwidget">
+                
+
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+                        </div>
+
+                    </div>
+
+                </div><!--One Fourth-->
+
+            </div> <!--End Inner-->
+
+    </div> <!--footer wrap-->
+
+</footer> <!--End Footer-->
+
+<div class="bottom_bar">
+
+    <div class="inner">
+
+
+
+<p class="copyrights">www.hca.com © 2012 | All Rights Reserved</p>
+
+    </div> <!--End Inner-->
+
+</div> <!--end bottom Bar-->
+
+</div> <!--End Fixed-->
+
+<div class="scrollTo_top">
+
+    <a title="Scroll To Top" href="#">
+
+	<img src="images/up.png" alt="Scroll To Top" />
+
+    </a>
+
+</div>
+
+
+		<!-- The JavaScript -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+				/**
+				* the element
+				*/
+				var $ui 		= $('#ui_element');
+				
+				/**
+				* on focus and on click display the dropdown, 
+				* and change the arrow image
+				*/
+				$ui.find('.sb_input').bind('focus click',function(){
+					$ui.find('.sb_down')
+					   .addClass('sb_up')
+					   .removeClass('sb_down')
+					   .andSelf()
+					   .find('.sb_dropdown')
+					   .show();
+				});
+				
+				/**
+				* on mouse leave hide the dropdown, 
+				* and change the arrow image
+				*/
+				$ui.bind('mouseleave',function(){
+					$ui.find('.sb_up')
+					   .addClass('sb_down')
+					   .removeClass('sb_up')
+					   .andSelf()
+					   .find('.sb_dropdown')
+					   .hide();
+				});
+				
+				/**
+				* selecting all checkboxes
+				*/
+				$ui.find('.sb_dropdown').find('label[for="all"]').prev().bind('click',function(){
+					$(this).parent().siblings().find(':checkbox').attr('checked',this.checked).attr('disabled',this.checked);
+				});
+            });
+        </script>	
+
+
+</body>
+
+</html>
+
