@@ -26,6 +26,16 @@ final class InstitutionMedicalCenterStatus {
         );
     }
 
+    static public function getStatusListForInstitutionContext()
+    {
+        return array(
+            self::APPROVED => 'Active',
+            self::DRAFT => 'Draft',
+            self::PENDING => 'Pending',
+            self::EXPIRED => 'Expired'
+        );
+    }
+
     static public function getUpdateStatusOptions()
     {
         return array(
@@ -38,4 +48,5 @@ final class InstitutionMedicalCenterStatus {
     {
         return in_array($status, array_keys(self::getStatusList()));
     }
+
 }

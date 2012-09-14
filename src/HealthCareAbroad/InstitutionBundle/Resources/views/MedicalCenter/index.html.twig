@@ -18,6 +18,9 @@
                 {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideMedicalProcedureTypeTask: true} %}
                 {# ----- end Related tasks ----- #}
 
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
                 <!--  start table-content  -->
                 <div id="table-content" style="width:75%">
 
