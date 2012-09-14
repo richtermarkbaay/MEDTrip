@@ -40,6 +40,18 @@ web_profiler:
     toolbar: false
     intercept_redirects: false
     
+    
+# TinyMCE Configuration
+stfalcon_tinymce:
+    include_jquery: false
+    tinymce_jquery: true
+    textarea_class: "tinymce"
+    theme: 
+        simple: %tinymce_simple_theme%
+        advanced: %tinymce_advanced_theme%
+        medium: %tinymce_medium_theme%
+        bbcode: %tinymce_bbcode_theme%
+    
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
