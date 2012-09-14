@@ -1,13 +1,22 @@
 {% extends 'PageBundle::layout.html.twig' %}
 {% block body %}
- <header>
-        <h1>Welcome to HealthCare Abroad</h1>
-</header>
-{% if app.session.hasFlash('flash.notice') %}
-        <div class="msg-notice">
-            {{ app.session.flash('flash.notice') }}
-        </div>
-    {% endif %}
+<body>
 
-  Hello
+<div class="fixed">
+
+	{% include 'PageBundle:Default:TopHeader.html.twig' %}
+	{% include 'PageBundle:Default:header.html.twig' %}
+	{% include 'PageBundle:Default:navigation.html.twig' %}
+	<div class="inner">	
+		<!-- News Ticker -->	
+	</div> <!--End Inner-->
+	<div class="inner">
+   		<div class="container">
+			{% include 'PageBundle:Main:mainContent.html.twig' %}
+			{% include 'PageBundle:Default:sidebar.html.twig' %}
+		</div>
+	</div>
+	{% include 'PageBundle:Footer:footer.html.twig' %}
+
+</div>
 {% endblock %}
