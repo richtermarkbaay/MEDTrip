@@ -39,11 +39,9 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution');
         $institutionMedicalCenters = $institutionRepository->getActiveInstitutionMedicalCenters($this->institution);
-        $draftInstitutionMedicalCenters = $institutionRepository->getDraftInstitutionMedicalCenters($this->institution);
 
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
-            'institutionMedicalCenters' => $institutionMedicalCenters,
-            'draftInstitutionMedicalCenters' => $draftInstitutionMedicalCenters
+            'institutionMedicalCenters' => $institutionMedicalCenters
         ));
     }
 

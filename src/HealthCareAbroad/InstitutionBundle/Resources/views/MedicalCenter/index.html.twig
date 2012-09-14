@@ -10,35 +10,23 @@
     </div>
 
     <!-- end page-heading -->
-    
+
     {% embed '::contentWrapper.admin.html.twig' %}
-        
+
         {% block wrappedContent %}
                 {# ----- Related tasks ----- #}
                 {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideMedicalProcedureTypeTask: true} %}
                 {# ----- end Related tasks ----- #}
-                
+
                 <!--  start table-content  -->
                 <div id="table-content" style="width:75%">
-                
+
                     {% include '::notice.admin.html.twig' %}
                     {% include 'InstitutionBundle:MedicalCenter:baseIndexTable.html.twig' with {'institutionMedicalCenters': institutionMedicalCenters} %}
 
-                    <!-- medical centers with DRAFT status -->
-                    {% if draftInstitutionMedicalCenters|length > 0 %}
-                    <div>
-                        The following medical centers have incomplete information. Click on one to resume inputting your data.
-                        <ul>
-                        {% for center in draftInstitutionMedicalCenters %}
-                            <li><a href="{{ path('institution_medicalCenter_editDraft', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></li>
-                        {% endfor %}
-                        </ul>				
-                    </div>                
-                    {% endif %}                                    
-                    
                 </div>
         {% endblock %}
-        
+
     {% endembed %}
 
 </div>
@@ -80,7 +68,7 @@
                 $("#dialog-container").dialog("open");
             });
         });
-    </script>	
+    </script>
 {% endblock %}
 
 
