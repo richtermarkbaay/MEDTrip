@@ -38,8 +38,8 @@ class DefaultController extends Controller
         $fileBag = $request->files;
 
         if ($fileBag->has('file')) {
-//             $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
-            $errorCode = 0;
+            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
+
             return $response->create('Error code: '.$errorCode);
 
         } else {

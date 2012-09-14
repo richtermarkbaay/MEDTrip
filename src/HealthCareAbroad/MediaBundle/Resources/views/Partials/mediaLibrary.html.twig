@@ -46,7 +46,7 @@
     <script type="text/javascript">
     $(function() {
 
-        $(".attachLink").click(function(e) {
+        $(".attachLink").unbind('click').click(function(e) {
             $.ajax({
                 url: e.target,
                 type: 'get',

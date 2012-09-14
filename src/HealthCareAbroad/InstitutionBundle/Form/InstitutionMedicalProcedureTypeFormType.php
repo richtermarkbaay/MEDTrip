@@ -40,7 +40,7 @@ class InstitutionMedicalProcedureTypeFormType extends AbstractType
 
         $builder->add('description', 'textarea', array('label' => 'Description:', 'constraints' => new NotBlank()));
     }
-    
+
     public function getName()
     {
         return 'institutionMedicalProcedureTypeForm';

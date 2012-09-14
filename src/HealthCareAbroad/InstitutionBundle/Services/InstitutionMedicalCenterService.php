@@ -1,11 +1,12 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
-use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Service class for InstitutionMedicalCenter
@@ -18,25 +19,51 @@ class InstitutionMedicalCenterService
      * @var Registry
      */
     private $doctrine;
-    
+
     /**
      * @var InstitutionMedicalCenterRepository
      */
     private $repository;
-    
+
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter');
     }
-    
+
     /**
      * Get InstitutionMedicalProcedureTypes of an InstitutionMedicalCenter
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      */
     public function getInstitutionMedicalProcedureTypesOfCenter(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getByInstitutionMedicalCenter($institutionMedicalCenter);
+    }
+
+    /**
+     * Remove draft institution medical center and associated procedure types
+     *
+     * @param Institution $institution
+     * @param int $institutionMedicalCenterId
+     */
+    public function deleteDraftInstitutionMedicalCenter(Institution $institution, $institutionMedicalCenterId)
+    {
+        $em = $this->doctrine->getEntityManager();
+
+        //TODO: check that the institution owns the center.
+        $center = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
+
+        if (InstitutionMedicalCenterStatus::DRAFT != $center->getStatus()) {
+            throw new Exception('Delete operation not allowed.');
+        }
+
+        //TODO: Use DQL DELETE statement to delete multiple entities of a type with a single command and without hydrating these entities
+        foreach($center->getInstitutionMedicalProcedureTypes() as $entity) {
+            $em->remove($entity);
+        }
+
+        $em->remove($center);
+        $em->flush();
     }
 }
