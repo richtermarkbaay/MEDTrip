@@ -1,65 +1,8 @@
+{% block content %}
+	{% block wrappedContent %}
 
-<div class="box_outer">
-	<div class="lates_feat_news">
-        <h3 class="widget_title">Featured Clinics</h3>
-        
-	        <div class="latest_vids_wrap">
-				<div class="scrollable" id="scrolling_vids">   
-	                 <!-- root element for the items -->
-	                <div class="scroll_items">
-	                    <div class="lates_feat_item">
-	                        <a href="#">
-	                            <img src="images/demo/img.png" alt="put here" />
-	                        </a>
-	                        <p>
-	                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
-	                        </p>
-	                    </div><!--lates_feat_item-->
-	                   
-	                    <div class="lates_feat_item">
-	                        <a href="#">
-	                            <img src="{{ asset('images/frontend/demo/img.png') }}" alt="put here" />
-	                        </a>
-	                        <p>
-	                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
-	                        </p>
-	                    </div><!--lates_feat_item-->
-	                    
-	                    <div class="lates_feat_item">
-	                        <a href="#">                         
-	                        </a>
-	                        <p>
-	                            <a href="#">Lorem ipsum dolor sit amet</a>
-	                        </p>                                       
-	                        <div style="float:right; margin: 12px -12px 0 0;"> <img src="{{ asset('images/frontend/demo/awards.png') }}" alt="put here" /> </div>                      
-	                    </div><!--lates_feat_item-->
-	                                                      
-	                    <div class="lates_feat_item">
-	                        <a href="#">
-	                            <img src="{{ asset('images/frontend/demo/img.png') }}" alt="put here" />
-	                        </a>
-	                        <p>
-	                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
-	                        </p>
-	                    </div><!--lates_feat_item-->
-	                 
-	                    <div class="lates_feat_item">
-	                        <a href="#">
-	                            <img src="{{ asset('images/frontend/demo/img.png') }}" alt="put here" />
-	                        </a>
-	                        <p>
-	                            <a href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do</a>
-	                        </p>
-	                    </div><!--lates_feat_item-->                           
-	              </div> <!--End Items-->
-	           </div> <!--End scrollable-->
-	       </div> <!--Latest Vids Wrap-->
-
-		<div class="navi"><div class="navi_links"></div></div>
-		
-    </div><!--Latest Video News-->
-</div> <!--Box Outer-->
-
+		{% include 'PageBundle:Main:featuredClinicPost.html.twig' %}
+	
 <!--News Box-->
 
 <div class="box_outer">
@@ -78,7 +21,7 @@
 				
 				<div class="recent_news_img">			
 				    <a href="#">	
-		                <img src="images/demo/box_thumb.png" alt="" title="" />			
+		                <img src="{{ asset('images/frontend/demo/box_thumb.png') }}" alt="" title="" />			
 		                <span class='nb_slide_icon'></span>		
 				    </a>	
 				</div>		
@@ -98,7 +41,7 @@
 		<div class="news_box_right">
 			<div class="more_news_wrap">	
 				<div style="float:right;">            
-		            <img src="images/more.jpg" alt="" title="" />
+		            <img src="{{ asset('images/frontend/more.jpg') }}" alt="" title="" />
 				</div> <!--more_news_wrap-->	
 			</div>
         </div> <!--End News Box Right-->
@@ -125,7 +68,7 @@
 
 			    <div class="recent_news_img">	
 				    <a href="#">
-			                <img src="images/demo/box_thumb.png" alt="" title="" />
+			                <img src="{{ asset('images/frontend/demo/box_thumb.png') }}" alt="" title="" />
 			                <span class='nb_slide_icon'></span>		
 				    </a>
 			    </div>
@@ -146,7 +89,7 @@
 		<div class="news_box_right">
 			<div class="more_news_wrap">
 				<div style="float:right;">            
-					<img src="images/more.jpg" alt="" title="" />
+					<img src="{{ asset('images/frontend/more.jpg') }}" alt="" title="" />
 				</div> <!--more_news_wrap-->
 			</div>
 		</div> <!--End News Box Right-->
@@ -193,7 +136,7 @@
 		<div class="news_box_right">
 			<div class="more_news_wrap">
 				<div style="float:right;">            
-		           <img src="images/more.jpg" alt="" title="" />
+		           <img src="{{ asset('images/frontend/more.jpg') }}" alt="" title="" />
 				</div> <!--more_news_wrap-->
 			</div>
 		</div> <!--End News Box Right-->
@@ -252,7 +195,7 @@
     
 		<div style="overflow:hidden; border:1px solid #e0e0e0; border-bottom:2px solid #d8d8d8; padding:4px; width:148px; margin-bottom:14px; background:#fff;">
             <div class="pagination">
-            <img src="images/pagil.png">
+            <img src="{{ asset('images/frontend/pagil.png') }}">
                 <span class="current">1</span>
                 <a class="inactive" href="#">2</a>
                 <a class="inactive" href="#">3</a>
@@ -261,4 +204,5 @@
             <img alt="rss" src="{{ asset('images/frontend/pagir.png') }}">    
             </div>
         </div>
-    
+{% endblock %}  
+{% endblock %}  
