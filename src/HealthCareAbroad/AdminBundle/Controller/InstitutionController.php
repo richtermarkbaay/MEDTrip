@@ -17,18 +17,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
 
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvents;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvents;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvents;
-
-use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalCenterEvent;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureEvent;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionMedicalProcedureTypeEvent;
-
-use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -125,11 +114,11 @@ class InstitutionController extends Controller
 		$em->persist($this->institution);
 		$em->flush($this->institution);
 
-		//TODO:: to create listener for the dispatch event of editInstitution Event
-		$event = new EditInstitutionEvent($this->institution);
-		$this->get('event_dispatcher')->dispatch(InstitutionEvents::ON_EDIT_INSTITUTION, $event);
+		// dispatch EDIT institution event
+		$event = $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, array('institution' => $this->institution));
+		$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
 
-		$request->getSession()->setFlash('success', '"'.$institution->getName().'" has been updated!');
+		$request->getSession()->setFlash('success', '"'.$this->institution->getName().'" has been updated!');
 
 		return $this->redirect($this->generateUrl('admin_institution_index'));
 	}
@@ -221,10 +210,10 @@ class InstitutionController extends Controller
 			$em->persist($this->institutionMedicalCenter);
 			$em->flush($this->institutionMedicalCenter);
 
-			//// create event on add institutionMedicalCenter and dispatch
-			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
-			$event = new CreateInstitutionMedicalCenterEvent($this->institutionMedicalCenter);
-			$this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $event);
+			// dispatch ADD or EDIT institutionMedicalCenter event
+			$actionEvent = $request->get('imcId') ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER;
+			$event = $this->get('events.factory')->create($actionEvent, array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+			$this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
 			$request->getSession()->setFlash('success', 'Medical center has been saved!');
 
@@ -279,9 +268,10 @@ class InstitutionController extends Controller
 		$em->persist($this->institutionMedicalCenter);
 		$em->flush($this->institutionMedicalCenter);
 
-        //// create event on editInstitutionMedicalCenter and dispatch
-        $event = new CreateInstitutionMedicalCenterEvent($this->institutionMedicalCenter);
-        $this->get('event_dispatcher')->dispatch(InstitutionMedicalCenterEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $event);
+		// dispatch EDIT institutionMedicalCenter event
+		$actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER;
+		$event = $this->get('events.factory')->create($actionEvent, array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+		$this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
 		$request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getMedicalCenter()->getName().'" status has been updated!');
 
@@ -313,8 +303,6 @@ class InstitutionController extends Controller
 	 */
 	public function editProcedureTypeAction()
 	{
-		//$this->institutionMedicalProcedureType->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-
 		$form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $this->institutionMedicalProcedureType);
 
 		return $this->render("AdminBundle:Institution:modalForm.medicalProcedureType.html.twig", array(
@@ -352,10 +340,12 @@ class InstitutionController extends Controller
 			$em->persist($this->institutionMedicalProcedureType);
 			$em->flush($this->institutionMedicalProcedureType);
 
-			//// create event on add medicalProcedureTypes and dispatch
-			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
-			$event = new CreateInstitutionMedicalProcedureTypeEvent($this->institutionMedicalProcedureType);
-			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureTypeEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
+    		// dispatch EDIT institutionMedicalProcedureType event
+    		$actionEvent = $request->get('imptId') 
+    		    ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE 
+    		    : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE;
+    		$event = $this->get('events.factory')->create($actionEvent, array('institutionMedicalProcedureType' => $this->institutionMedicalProcedureType));
+    		$this->get('event_dispatcher')->dispatch($actionEvent, $event);
 			
 			$request->getSession()->setFlash('success', 'Successfully saved institution procedure type.');
 
@@ -452,10 +442,12 @@ class InstitutionController extends Controller
 			$em->persist($this->institutionMedicalProcedure);
 			$em->flush($this->institutionMedicalProcedure);
 			
-			//// create event on addInstitutionMedicalProcedure and dispatch
-			// TODO - Need to check first if the action is ADD or EDIT then do the respective log action.
-			$event = new CreateInstitutionMedicalProcedureEvent($this->institutionMedicalProcedure);
-			$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE, $event);
+    		// dispatch ADD or EDIT institutionMedicalProcedure event
+    		$actionEvent = $request->get('impId') 
+    		    ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE 
+    		    : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE;
+    		$event = $this->get('events.factory')->create($actionEvent, array('institutionMedicalProcedure' => $this->institutionMedicalProcedure));
+    		$this->get('event_dispatcher')->dispatch($actionEvent, $event);
 			
 			$request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionMedicalProcedureType->getMedicalProcedureType()->getName()}\" procedure type.");
 
@@ -485,9 +477,10 @@ class InstitutionController extends Controller
 		$em->persist($this->institutionMedicalProcedure);
 		$em->flush($this->institutionMedicalProcedure);
 		
-		//// create event on editInsitutionMedicalProcedure and dispatch
-		$event = new CreateInstitutionMedicalProcedureEvent($this->institutionMedicalProcedure);
-		$this->get('event_dispatcher')->dispatch(InstitutionMedicalProcedureEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
+		// dispatch ADD or EDIT institutionMedicalProcedure event
+		$actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE;
+		$event = $this->get('events.factory')->create($actionEvent, array('institutionMedicalProcedure' => $this->institutionMedicalProcedure));
+		$this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
 		$response = new Response(json_encode(true));
 		$response->headers->set('Content-Type', 'application/json');

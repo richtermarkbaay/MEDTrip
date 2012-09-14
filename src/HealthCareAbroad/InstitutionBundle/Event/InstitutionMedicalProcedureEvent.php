@@ -1,22 +1,12 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
-use Symfony\Component\EventDispatcher\Event;
-
-abstract class InstitutionMedicalProcedureEvent extends Event
+class InstitutionMedicalProcedureEvent extends BaseEvent
 {
-    protected $procedure;
-    
-    public function __construct(InstitutionMedicalProcedure $procedure)
-    {
-        $this->procedure = $procedure;
-    }
-
     public function getInstitutionMedicalProcedure()
     {
-        return $this->procedure;
+        return $this->data;
     }
-    
 }
