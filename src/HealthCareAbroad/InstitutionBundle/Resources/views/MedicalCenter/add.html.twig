@@ -9,46 +9,60 @@
     <!--  start page-heading -->
     <div id="page-heading">
         <h1>
-            {% if isNew %} 
-                Add a new medical center
+            {% set hasDraft = hasDraft is defined and hasDraft %}
+            {% if hasDraft %}
+                Edit draft: {{ institutionMedicalCenter.medicalCenter.name }}
             {% else %}
-                Edit {{ institutionMedicalCenter.medicalCenter.name }} medical center
-            {% endif %}       
+                Add medical center
+            {% endif %}
         </h1>
     </div>
     <!-- end page-heading -->
-    
+
     {% embed '::contentWrapper.admin.html.twig' %}
-        
+
         {% block wrappedContent %}
-            
+
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: isNew?true:false, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
-            
+
             <!--  start table-content  -->
             <div id="table-content">
-            
+
                 {% include '::notice.admin.html.twig' %}
-                
+
                 {% include '::stepHolder.base.admin.html.twig' with {
                     steps: [
                         {title: 'Center Details', 'selected': true},
                         {title: 'Add Gallery'},
                         {title: 'Add Procedure Types'},
                         {title: 'Preview', 'selected': false},
-                    ] }
+                 ]}
               %}
-            
-                {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_add', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %}
-                
+
+                <form novalidate="novalidate" action="{{ path('institution_medicalCenter_add', {'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+
+                    {{ form_row(form.medicalCenter) }}
+                    {{ form_row(form.description) }}
+                    {{ form_rest(form) }}
+
+                    {% if hasDraft %}
+                    <div><a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcId': institutionMedicalCenter.id }) }}">Delete draft</a></div>
+                    {% endif %}
+
+                    <input style="" type="submit" name="submit" value="Next" class="green-button" />
+                    <input type="reset" value="" class="form-reset"  />
+                </form>
+
+                {#% include 'InstitutionBundle:MedicalCenter:form_draft.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_add', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %#}
             </div>
             <!--  end table-content  -->
-                    
+
         {% endblock %}
-        
+
     {% endembed %}
-    
+
 </div>
 
 <!--  end content -->

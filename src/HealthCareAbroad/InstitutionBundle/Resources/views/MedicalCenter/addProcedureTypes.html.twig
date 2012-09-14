@@ -1,0 +1,115 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'medical_centers'%}
+{% block title %}{{ parent() }} Add Procedure Types {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add procedure types to {{ institutionMedicalCenter.medicalCenter.name }} medical center</h1>
+    </div>
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {# ----- end Related tasks ----- #}
+
+            <!--  start table-content  -->
+            <div id="table-content">
+                <div style="width:75%;">
+                    {% include '::notice.admin.html.twig' %}
+
+                    {% include '::stepHolder.base.admin.html.twig' with {
+                        steps: [
+                            {title: 'Center Details', 'selected': true},
+                            {title: 'Add Media', 'selected': true},
+                            {title: 'Add Procedure Types', 'selected': true},
+                            {title: 'Preview', 'selected': false},
+                     ] }
+                  %}
+
+                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="procedureTypeList">
+                        <tr>
+                            <th class="table-header-repeat line-left minwidth-1"> <a href="#">Procedure Type</a></th>
+                            <th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+                        </tr>
+
+                        <tr><td id="messageBar" colspan="2" align="center"></td></tr>
+
+                        {% for procedureType in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                            <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                                <td valign="top">{{ procedureType.medicalProcedureType.name }}</td>
+                                <td>{{ procedureType.description }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td id="emptyList" colspan="2" align="center"> Add procedure types to {{ institutionMedicalCenter.medicalCenter.name }} </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+
+                    <form name="procedureTypeForm" id="procedureTypeForm" novalidate="novalidate" action="{{ path('institution_medicalCenter_saveProcedureType', {'imcId': app.request.get('imcId')}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                        <!-- start id-form -->
+                        <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+
+                            {{ form_row(form.medicalProcedureType) }}
+                            {{ form_row(form.description) }}
+
+                            <tr>
+                                <th>&nbsp;</th>
+                                <td>
+                                    <input type="submit" name="submit" value="Add Procedure Type"/>
+                                </td>
+                                <td></td>
+                            </tr>
+
+                            {{ form_rest(form) }}
+
+                        </table>
+                        <!-- end id-form  -->
+                    </form>
+
+                    <div class="clear">&nbsp;</div>
+
+                    <form action="{{ path('institution_medicalCenter_preview', {'imcId': institutionMedicalCenter.id }) }}" method="GET" name="nextStep" id="nextStep">
+                        <input type="submit" name="submit" value="Next" class="green-button" />
+                    </form>
+
+                </div>
+
+            </div>
+            <!--  end table-content  -->
+
+        {% endblock %}
+
+    {% endembed %}
+
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+
+    {% block inlineJavascriptCode %}
+        <script type="text/javascript">
+
+        $(function() {
+            $('#nextStep').submit(function(e) {
+                if ($('#emptyList').length) {
+                    alert('Please add at least one procedure type.');
+                    return false;
+                } else {
+                    $('#nextStep').submit();
+                }
+            });
+        });
+
+        </script>
+    {% endblock %}
+
+{% endblock %}
