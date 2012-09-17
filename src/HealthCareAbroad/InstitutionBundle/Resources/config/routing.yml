@@ -61,11 +61,11 @@ institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
 
-#institution_accept_user_invitation:
-#    pattern:  /accounts/accept-invitation/{token}
-#    defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
-#    requirements:    
-#       _method:  GET
+institution_accept_user_invitation:
+    pattern:  /accounts/accept-invitation/{token}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
+    requirements:    
+       _method:  GET
 #
 #InstitutionBundle_create_token:
 #    pattern:  /createtoken

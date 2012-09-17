@@ -1,25 +1,32 @@
 <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
-    			        
-	<tr>
-	    <th class="table-header-check"></th>
-		<th class="table-header-repeat line-left minwidth-1"> <a href="#">Medical Centers</a></th>
-		<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
-		<th class="table-header-options line-left"><a href="#">Options</a> </th>
-	</tr>
-	
-	{% for center in institutionMedicalCenters %}
-	    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-	        <td></td>
-			<td><a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
-			<td class="raw-content">{{ center.description|raw }}</td>
-			<td class="options-width">
-				[<a href="{{ path('institution_medicalCenter_edit', {'imcId': center.id })}}" title="View medical procedure types of {{ center.medicalCenter | title }}">View Medical Procedure Types</a>]
-			</td>
-		</tr>
-	{% else %}
-	    <tr class="">
-	        <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
-	    </tr>    
-	{% endfor %}
-	
+
+    <tr>
+        <th class="table-header-check"></th>
+        <th class="table-header-repeat line-left minwidth-1"> <a href="#">Medical Centers</a></th>
+        <th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+        <th class="table-header-options line-left"><a href="#">Options</a> </th>
+    </tr>
+
+    {# TODO: Don't hardcode value  #}
+    {% if app.request.get('status') and app.request.get('status') == '4' %}
+        {% set routeName = 'institution_medicalCenter_add' %}
+    {% else %}
+        {% set routeName = 'institution_medicalCenter_edit' %}
+    {% endif %}
+
+    {% for center in institutionMedicalCenters %}
+        <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+            <td></td>
+            <td><a href="{{ path(routeName, {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
+            <td class="raw-content">{{ center.description|raw }}</td>
+            <td class="options-width">
+                [<a href="{{ path(routeName, {'imcId': center.id })}}" title="View medical procedure types of {{ center.medicalCenter | title }}">View Medical Procedure Types</a>]
+            </td>
+        </tr>
+    {% else %}
+        <tr class="">
+            <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
+        </tr>
+    {% endfor %}
+
 </table>

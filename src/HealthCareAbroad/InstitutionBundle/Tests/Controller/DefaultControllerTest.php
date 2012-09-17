@@ -20,4 +20,20 @@ class DefaultControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
     }
+    
+    public function testError403()
+    {
+        $uri = '/institution/access-denied';
+        $client = static::createClient();
+        
+        // test access with not logged in user
+        $client->request('GET', $uri);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());// expecting a redirect to login form
+        $this->assertTrue($this->isRedirectedToLoginPage($client));
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("You do not have proper credentials to access this page")')->count(), 'Expecting text "You do not have proper credentials to access this page"');
+    }
 }

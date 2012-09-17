@@ -111,13 +111,9 @@ class InstitutionSignUpController  extends Controller
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
            	    
            	    //login to institution
-           	    $loginOk = $this->get('services.institution_user')->login($user->getEmail(), $userForm->get('password')->getData());
-           	    if ($loginOk) {
-           	        
-           	        return $this->redirect($this->generateUrl('institution_edit_information'));
-           	    }
+           	    $this->get('services.institution_user')->login($user->getEmail(), $userForm->get('password')->getData());
            	    
-           	    return $this->redirect($this->generateUrl('institution_login'));
+           	    return $this->redirect($this->generateUrl('institution_edit_information'));
             }
 		}
 		

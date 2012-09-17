@@ -19,3 +19,22 @@ services:
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
             - { name: kernel.event_listener, event: event.institution.add, method: onAdd }
+            
+    
+    ### --------- institution user type event listeners --------- ###
+    
+    listener.log.institution_user_type_role.add:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserTypeListener
+        arguments: [@doctrine]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_type_role.add, method: onAddUserRole }
+            
+    listener.log.institution_user_type_role.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserTypeListener
+        arguments: [@doctrine]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_type_role.delete, method: onDeleteUserRole }
+    
+    
+    ### --------- end institution user type event listeners --------- ###
+        

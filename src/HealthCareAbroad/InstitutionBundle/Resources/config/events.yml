@@ -2,7 +2,7 @@
 
 parameters:
     # add institution event class
-    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
+    event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
     
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
 
@@ -20,4 +20,8 @@ parameters:
     # institutionMedicalProcedure event class
     event.institution_medical_procedure.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
     event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
+    
+    # institution user type events
+    event.institution_user_type_role.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
+    event.institution_user_type_role.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
     

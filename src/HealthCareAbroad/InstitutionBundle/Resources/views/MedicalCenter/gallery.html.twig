@@ -65,7 +65,7 @@
 
                     <div class="clear">&nbsp;</div>
 
-                    <form action="{{ path('institution_medicalCenter_index') }}" method="GET" name="nextStep" id="nextStep">
+                    <form action="{{ path('institution_medicalCenter_addProcedureTypes', { 'imcId': institutionMedicalCenter.id}) }}" method="GET" name="nextStep" id="nextStep">
                         <input type="submit" name="submit" value="Next" class="green-button" />
                     </form>
 
@@ -97,7 +97,7 @@
 <div class="clear">&nbsp;</div>
 
     {% block inlineJavascriptCode %}
-
+<!--
         <style type="text/css">
             .fancybox-type-iframe .fancybox-nav {width: 80px;}
             .fancybox-type-iframe .fancybox-nav span {visibility: visible;}
@@ -112,7 +112,7 @@
         <script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.3') }}"></script>
         <link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.6') }}" type="text/css" media="screen" />
         <script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.6') }}"></script>
-
+ -->
         <style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
         <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
         <script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
@@ -120,12 +120,12 @@
 
         <script type="text/javascript">
         $(function() {
-
+/*
             $(".fancybox").fancybox({
                 helpers     : { media	: {} },
                 margin      : [20, 60, 20, 60]
             });
-
+*/
             $('#nextStep').submit(function(e) {
                 if ($('#noMedia').length) {
                     alert('Please upload your media or attach one from the Media Gallery.');
@@ -142,8 +142,7 @@
                 unique_names : true,
                 resize : {height : 500, quality : 90},
                 filters : [
-                    {title : "Image files", extensions : "jpg,gif,png"},
-                    {title : "Zip files", extensions : "zip"}
+                    {title : "Image files", extensions : "jpg,gif,png"}
                 ],
                 flash_swf_url : '/plupload/js/plupload.flash.swf',
                 silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
@@ -182,8 +181,10 @@
                 }
             });
 
-            $ ("#uploadFormButton").button().click(function() {
+            $ ("#uploadFormButton").click(function() {
                 $("#uploadForm").dialog("open");
+
+                return false;
             });
 
             $("#mediaGallery").dialog({
@@ -196,8 +197,10 @@
                 }
             });
 
-            $ ("#mediaGalleryButton").button().click(function() {
+            $ ("#mediaGalleryButton").click(function() {
                 $("#mediaGallery").dialog("open");
+
+                return false;
             });
 
             var updateMediaList = function() {

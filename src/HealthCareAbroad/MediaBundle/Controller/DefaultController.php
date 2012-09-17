@@ -38,8 +38,8 @@ class DefaultController extends Controller
         $fileBag = $request->files;
 
         if ($fileBag->has('file')) {
-//             $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
-            $errorCode = 0;
+            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
+
             return $response->create('Error code: '.$errorCode);
 
         } else {
@@ -92,9 +92,7 @@ class DefaultController extends Controller
 
     public function ajaxAttachMedicalCenterMediaAction(Request $request)
     {
-        //$success = $this->get('services.media')->addMedicalCenterMedia($request->get('imcId'), $request->get('mediaId'));
-
-        $success = 1;
+        $success = $this->get('services.media')->addMedicalCenterMedia($request->get('imcId'), $request->get('mediaId'));
 
         $response = new Response(json_encode($success));
         $response->headers->set('Content-Type', 'application/json');

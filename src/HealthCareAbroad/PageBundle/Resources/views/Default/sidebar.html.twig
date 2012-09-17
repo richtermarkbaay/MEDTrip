@@ -1,0 +1,27 @@
+<aside class="sidebar">
+
+	<div class="box_outer">
+	
+		<div class="widget">
+		
+			<div class="tabbed_widget">
+
+			<!-- the tabs -->
+			<ul class="tabbed_nav">		
+				<li class="tabbed1"><a href="#" class="current">Popular</a></li>			
+				<li class="tabbed2"><a href="#">Recent</a></li>			
+				<li class="tabbed3"><a href="#">Comments</a></li>			
+				<li class="tabbed4"><a href="#">Tags</a></li>			
+			</ul>
+			
+				<div class="tabbed_container">
+				<!-- sidebar post -->
+					{% include 'PageBundle:Sidebar:popularPost.html.twig' %}
+				</div>
+			</div>
+		</div>
+	</div> <!--End Widget-->
+	       
+		<!-- Newsletter -->      
+       {% include 'PageBundle:Sidebar:newsletter.html.twig' %}
+</aside> <!--End Sidebar-->
