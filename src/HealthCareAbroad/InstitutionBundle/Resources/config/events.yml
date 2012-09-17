@@ -22,6 +22,6 @@ parameters:
     event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
     
     # institution user type events
-    event.institution_user_type_role.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
-    event.institution_user_type_role.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
+    event.institution_user_type.add_role: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
+    event.institution_user_type.delete_role: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
     

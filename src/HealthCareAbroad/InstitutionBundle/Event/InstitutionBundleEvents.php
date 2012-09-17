@@ -27,8 +27,8 @@ final class InstitutionBundleEvents
     
     const ON_ADD_INSTITUTION_USER_INVITATION = 'event.institution_user_invitation.add';
     
-    const ON_ADD_INSTITUTION_USER_TYPE_ROLE= 'event.institution_user_type_role.add';
-    const ON_DELETE_INSTITUTION_USER_TYPE_ROLE = 'event.institution_user_type_role.delete';
+    const ON_ADD_INSTITUTION_USER_TYPE_ROLE= 'event.institution_user_type.add_role';
+    const ON_DELETE_INSTITUTION_USER_TYPE_ROLE = 'event.institution_user_type.delete_role';
     
     const ON_ADD_INSTITUTION_USER_TYPE= 'event.institution_user_type.add';
     const ON_EDIT_INSTITUTION_USER_TYPE = 'event.institution_user_type.edit';

@@ -7,10 +7,10 @@ services:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
             
     listener.log.institution_user.login:
-        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserListener
-        arguments: [@doctrine]
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user.login, method: onLogin }
+            - { name: kernel.event_listener, event: event.institution_user.login, method: onCommonLogAction }
             
     listener.user.institution.create:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
@@ -23,18 +23,28 @@ services:
     
     ### --------- institution user type event listeners --------- ###
     
-    listener.log.institution_user_type_role.add:
-        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserTypeListener
-        arguments: [@doctrine]
+    listener.log.institution_user_type.add_role:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user_type_role.add, method: onAddUserRole }
+            - { name: kernel.event_listener, event: event.institution_user_type.add_role, method: onCommonLogAction }
             
-    listener.log.institution_user_type_role.delete:
-        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionUserTypeListener
-        arguments: [@doctrine]
+    listener.log.institution_user_type.delete_role:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.institution_user_type_role.delete, method: onDeleteUserRole }
+            - { name: kernel.event_listener, event: event.institution_user_type.delete_role, method: onCommonLogAction }
     
     
     ### --------- end institution user type event listeners --------- ###
+    
+    ### --------- institution user invitation event listeners --------- ###
+    listener.log.institution_user_invitation.add:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_user_invitation.add, method: onCommonLogAction }
+        
+        
+    ### --------- end institution user invitation event listeners --------- ###
         
