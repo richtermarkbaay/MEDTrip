@@ -1,0 +1,17 @@
+HealthCareAbroad\LogBundle\Entity\LogClass:
+    type: entity
+    table: log_classes
+    repositoryClass: HealthCareAbroad\LogBundle\Repository\LogClassRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 500
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -1,4 +1,8 @@
 services:
+    services.log:
+        class: HealthCareAbroad\LogBundle\Services\LogService
+        arguments: [@service_container]
+
     services.log.entity_version:
         class: HealthCareAbroad\LogBundle\Services\EntityVersionService
         arguments: [@doctrine]
