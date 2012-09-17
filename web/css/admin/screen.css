@@ -615,7 +615,7 @@ form.basic-form > div {
 }
 
 form.basic-form > div > ul {
-	color: #D00000;
+	color: #D000006;
 	bottom: -17px;
 	padding: 0 6px;
     font-size: 12px;
@@ -1573,12 +1573,12 @@ span.bar {
 input.green-button,
 .button-type {
 	color: #FFFFFF;
-	font-size: 11px;
-	font-weight: bold;
-	padding: 8px 10px; 
+	padding: 7px 10px;
+	font-size: 11px; 
+    font-weight: bold;
 	border-radius: 5px;
 	border: medium none; 
-	background: #759E1A;
+	background: #8EB041;
 	display: inline-block;
 	cursor: pointer;
 	margin-right: 10px;
@@ -1640,6 +1640,7 @@ a.icon-type:hover {
 
 #filter-wrapper a.button-type {
 	float: right;
+	padding: 8px 10px;
 	margin-right: 10px;
 }
 #filter-wrapper label {
@@ -1671,8 +1672,9 @@ a.icon-type:hover {
 .ui-dialog-titlebar {
 	border: none;
 	color: #759E1A;
-	padding: 15px 20px;
+	padding: 25px 0 15px 35px;
 	background: none;
+	font-size: 15px;
 }
 
 .ui-dialog-titlebar-close {
@@ -1724,6 +1726,22 @@ a.icon-type:hover {
 .raw-content *:last-child {
 	margin-bottom: 0;
 }
+
+/* Override jQuery UI style */
+.ui-widget {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.ui-widget-content a {
+    color: #FFFFFF;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: inherit;
+}
+/* End of Override jQuery UI style */
+
 
 /* jQuery UI accordion Style */
 .ui-accordion .ui-accordion-header {
@@ -1790,6 +1808,7 @@ a.icon-type:hover {
 	float: left; 
 	width: 12em; 
 	border: none;
+	font-size: 13px;
 	background: #E6E6E6;
 	padding: .2em .1em .2em .4em;
 	border-top-right-radius: 0;
@@ -1811,21 +1830,18 @@ a.icon-type:hover {
 }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
 	z-index: 1;
-	padding-right: .5em;
+	padding-right: .6em;
 	margin: 0.1em 0 0.3em;
 	border: none !important;
 	background: none repeat scroll 0 0 #F5F5F5;
 }
 .ui-tabs-vertical .ui-tabs-panel {
 	float: right; 
-	width: 623px; 
+	width: 629px; 
 	height: auto;
 	border: 5px solid #E6E6E6;
 	border-top-right-radius: 4px;
 	background: none repeat scroll 0 0 #F5F5F5;
-}
-.ui-widget-content a {
-	color: #FFFFFF;
 }
 /* end */
     
@@ -1942,6 +1958,7 @@ a.icon-type:hover {
 	padding: 3px 8px;
 	background-color: #fff;
 }
+
 /* end Institution Medical Center styles */
 
 /** versioning styles **/
