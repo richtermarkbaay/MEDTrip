@@ -37,18 +37,20 @@
 		    </div>
 	    
 	        </ul>
-                <div class="menu-main-container" id="mobile_menu_secondary">
-                                
-                    <select  name="mobileMainMenu" id="mobileMainMenu" class="mobileMainMenu">   
-	                    <option value="#">Destinations</option>                               
-	                    <option value="#">Procedures</option>                                        
-	                    <option value="#"> - Sub One</option>
-	                    <option value="#"> - - Sub One 2</option>                                                              
-                     </select>
-                                
-            	 </div>
+      <div class="menu-main-container" id="mobile_menu_secondary">                                
+ 			<select  name="mobileMainMenu" id="mobileMainMenu" class="mobileMainMenu" onchange="location.href = document.getElementById('mobileMainMenu').value;">
+                                                              
+				<option value="#">Destinations</option>                   
+				<option value="#">Procedures</option>                                       
+				<option value="#"> - Sub One</option>
+				<option value="#"> - - Sub One 2</option>
+
+			</select>
+		</div>
+ 
  	     
 	    </div> <!--Inner-->       
     </div> <!--End Nav Wrap-->
 
 </nav> <!--End Navigation-->
+
