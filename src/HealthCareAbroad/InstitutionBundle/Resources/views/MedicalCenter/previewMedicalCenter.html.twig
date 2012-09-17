@@ -34,7 +34,13 @@
                         ] }
                   %}
 
-                      {{ dump(institutionMedicalCenter) }}
+                      Listings Page: <br/><br/>
+                     {{ institutionMedicalCenter.medicalCenter.name }}<br/><br/>
+
+                     Procedure Types:<br/><br/>
+                     {% for instProcedureType in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                         {{ instProcedureType.medicalProcedureType.name }}
+                     {% endfor %}
 
                     <div class="clear">&nbsp;</div>
 

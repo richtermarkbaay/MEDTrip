@@ -18,7 +18,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
  * TODO: these business rules should be moved to a service class
  *
  * A newly added MedicalCenter has status DRAFT and will have this status until
- * at least one procedure type is added to it. After which the status will change
+ * at least one procedure type is added to it, after which the status will change
  * to PENDING. A MedicalCenter with status PENDING should have at least one media
  * attached to it.
  *
@@ -28,7 +28,9 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class MedicalCenterController extends InstitutionAwareController
 {
     /**
-     * Displays a list of of active institution medical centers.
+     * Displays a list of of active/approved institution medical centers by default.
+     * Can also display a list of DRAFT, PENDING, and EXPIRED medical centers.
+     * Uses the ListFilterBeforeController to get the filtered list.
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
