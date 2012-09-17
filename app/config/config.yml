@@ -25,6 +25,7 @@ twig:
     globals:
         site_name: HealthCareAbroad.com
         tinymce:
+            textarea_class: %tinymce_textarea_class%
             theme: 
                 simple: %tinymce_simple_theme%
                 advanced: %tinymce_advanced_theme%
@@ -72,7 +73,7 @@ swiftmailer:
 stfalcon_tinymce:
     include_jquery: false
     tinymce_jquery: true
-    textarea_class: "tinymce"
+    textarea_class: %tinymce_textarea_class%
     theme: 
         simple: %tinymce_simple_theme%
         advanced: %tinymce_advanced_theme%

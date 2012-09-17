@@ -611,31 +611,18 @@ form.basic-form {
 form.basic-form > div {
 	max-width: 700px;
 	position: relative;
-	margin-bottom: 25px;
+	margin-bottom: 35px;
 }
 
 form.basic-form > div > ul {
-	color: #FFFFFF;
-	right: -20px;
+	color: #D00000;
+	bottom: -17px;
 	padding: 0 6px;
+    font-size: 12px;
 	border-radius: 5px;
 	position: absolute;
 	display: inline-block;
 	list-style: none outside none;
-	background: url("/images/admin/forms/error_left.gif") no-repeat scroll 0 0 transparent;
-}
-
-form.basic-form > div > ul li:first-child {
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
-form.basic-form > div > ul li {
-	padding: 10px;
-	background: #D80000;
-}
-form.basic-form > div > ul li:last-child {
-	border-bottom-left-radius: 5px;
-	border-bottom-right-radius: 5px;
 }
 
 form.basic-form label {
@@ -674,14 +661,15 @@ form.basic-form input[type=password],
 	}
 form.basic-form textarea,
 .form-textarea	{
-	background: url(/images/admin/forms/form_textarea.gif) no-repeat;
-	border: none;
-	color: #393939;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
 	height: 92px;
-	padding: 6px;
 	width: 378px;
+    padding: 6px;
+    color: #393939;
+    font-size: 12px;
+    max-width: 560px;
+    border-radius: 5px;
+    border: 1px solid #AAAAAA;
+    font-family: Arial, Helvetica, sans-serif;
 	}
 	
 form.basic-form span.fixed-value{
@@ -1968,12 +1956,29 @@ ul.version-edit-list label.field {
 
 
 /** TinyMCE styles **/
+
+/*.tinymce + span.mceEditor,
 textarea.tinymce {
 	width: 470px !important;
     height: 150px !important;
+    box-shadow: 0px 0px 2px 1px red;
+    border-radius: 5px;
+}*/
+
+textarea.tinymce {
+	z-index: 0;
+	visibility: hidden;
+	position: absolute;
+	display: inline-block !important;
 }
 
 .tinymce + span.mceEditor{
+	z-index: 1;
 	display: inline-block;
 }
+
+form:not([novalidate=novalidate]) span.mceEditor.required {
+    box-shadow: 0px 0px 2px 1px red;
+}
+
 /** End of TinyMCE styles **/
