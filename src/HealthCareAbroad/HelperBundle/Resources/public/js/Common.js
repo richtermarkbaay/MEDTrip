@@ -19,6 +19,52 @@ var HCA = {
 	}
 };
 
+
+function tinymceSetup(ed, e)
+{
+	// Tweak HTML5 Client Validation and apply it in tinymce editor.
+	var form = $('#' + ed.id).closest('form');
+	if(!form.is('[novalidate]')) {
+
+		ed.onKeyUp.add(function(ed, e) {
+			if('' != ed.getContent({format : 'text'})) {
+				$('#' + ed.id + '_parent').removeClass('required');				
+			}
+	    });
+
+		ed.onSubmit.add(function(ed, e) {
+			if('' == ed.getContent({format : 'text'})) {
+				$('#' + ed.id + '_parent').addClass('required');
+				e.preventDefault();
+			}
+	    });
+
+		ed.onChange.add(function(ed,e){
+			ed.save();
+		});
+
+		ed.onUndo.add(function(ed,e){
+			ed.save();
+
+			if('' != ed.getContent({format : 'text'}))  {
+				$('#' + ed.id + '_parent').removeClass('required');
+			}
+		});
+
+		form.find('input[type=submit]').click(function(){
+			var $textareas = $(this).parent().find('textarea.' + HCA.tinymceConfig.textarea_class);
+
+			$textareas.each(function(){
+				if($(this).val() == '') {
+					$(this).next('span.mceEditor').addClass('required');
+					return false;
+				}
+			});
+		});
+	}
+}
+
+
 HCA.autocomplete = {
 
 	init : function()

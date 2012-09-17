@@ -13,17 +13,21 @@
         	<script src="{{ asset_url }}"></script>
         {% endjavascripts %}
             <script type="text/javascript">
-                var berty = '{{ tinymce.theme.simple|json_encode|raw }}';
+            $(function(){
                 HCA.init({
                     autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}",
 
                     tinymceConfig: {
+                        textarea_class: "{{ tinymce.textarea_class }}",
                         themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),
                         themeMedium: $.parseJSON('{{ tinymce.theme.medium|json_encode|raw }}'),
                         themeBbCode: $.parseJSON('{{ tinymce.theme.bbcode|json_encode|raw }}'),
                         themeAdvanced: $.parseJSON('{{ tinymce.theme.advanced|json_encode|raw }}')
                     }
+
 				});
+            })
+
 			</script>
         
         {% block stylesheets %}

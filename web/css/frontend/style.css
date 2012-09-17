@@ -2,8 +2,8 @@
 /*	0.	CSS Reset & Clearfix
 /*-----------------------------------------------------------------------------------*/
 
-   @import "css/frontend/prettyPhoto.css";
-   @import "css/frontend/shortcodes.css";
+   @import "css/prettyPhoto.css";
+   @import "css/shortcodes.css";
 
  html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, embed, object {
 	margin: 0;
@@ -2247,7 +2247,7 @@ pre, code {
 }
 
 .single_article_content blockquote {
-           background: url("/images/frontend/quote.png") no-repeat scroll left top transparent;
+    background: url("/images/frontend/quote.png") no-repeat scroll left top transparent;
     font-family: Georgia,"Times New Roman",Times,serif;
     font-size: 12px;
     font-style: italic;
@@ -2474,8 +2474,55 @@ margin: 0 10px 0 0;
         
 }
 
+.fb { 
+        width:30px;
+        height:30px;
+        background:url(/images/frontend/social_icons.png) no-repeat -140px -1px;
+        border: none;
+	    outline: none !important;
+}
 
+.linkedin { 
+        width:25px;
+        height:25px;
+        background:url(/images/frontend/social_icons.png) no-repeat -255px 0px;
+        border: 0;
+	    outline: 0;
+}
 
+.youtube { 
+        width:25px;
+        height:25px;
+        background:url(/images/frontend/social_icons.png) no-repeat -371px 0px;
+        border: 0;
+	    outline: 0;
+}
+
+.twitter { 
+        width:25px;
+        height:25px;
+        background:url(/images/frontend/social_icons.png) no-repeat -167px -1px;
+        border: 0;
+	    outline: 0;
+}
+
+.google { 
+        width:25px;
+        height:25px;
+        background:url(/images/frontend/social_icons.png) no-repeat -197px -1px;
+        border: 0;
+	    outline: 0;
+}
+
+.rss { 
+        width:25px;
+        height:25px;
+        background:url(/images/frontend/social_icons.png) no-repeat -111px -1px;
+        border: 0;
+	    outline: 0;
+}
+
+            
 /****************************************************************
  *		@media Qurey
  ****************************************************************/
@@ -3060,15 +3107,16 @@ ul.sb_dropdown{
 	background: #999; 
 	background: -webkit-gradient(linear, left top, left bottom, from(#f3faff), to(#ffffff)); 
 	background: -moz-linear-gradient(top, #ffffff, #f3faff);
-	font-size:24px;
+	font-size:12px;
 	font-family:"Myriad Pro", "Trebuchet MS", sans-serif;
 	-moz-box-shadow:1px 1px 3px #555;
 	-webkit-box-shadow:1px 1px 3px #555;
 	-box-shadow:1px 1px 3px #555;
 	outline:none;
-	padding:6px 5px 6px 20px;
+	color:#ccc;
+	padding:6px 5px 6px 12px;
 	text-shadow:1px 1px 1px #fff;
-	width:212px;
+	width:250px;
 	float:left;
 	margin:3px 0px;
 	
@@ -3123,7 +3171,7 @@ ul.sb_dropdown li.sb_filter:hover{
 	background:url(/images/frontend/gradient02.png) repeat-x top left;
 }
 
-span.sb_up,
+/*span.sb_up,
 span.sb_down{
 	display:inline-block;
 	margin-top:3px;
@@ -3149,6 +3197,8 @@ span.sb_up{
 span.sb_down{
 	background-image:url(/images/frontend/t/down.png);
 }
+*/
+
 input.sb_search{
 	background:url(/images/frontend/search.png) no-repeat center center;
 	height:53px;
