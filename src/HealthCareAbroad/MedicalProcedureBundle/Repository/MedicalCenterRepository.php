@@ -26,20 +26,20 @@ class MedicalCenterRepository extends EntityRepository
             WHERE c.name LIKE :term
             ORDER BY c.name ASC"
         ;
-        
+
         $query = $this->_em->createQuery($dql);
         $query->setParameter('term', "%$term%");
         $query->setMaxResults($limit);
 
         return $query->getResult();
     }
-    
+
     function autoCompleteSearch($term = '', $limit = 10)
     {
-        $dql = "SELECT MedicalCenter.id, MedicalCenter.name as value 
-                FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter 
-                WHERE MedicalCenter.name LIKE :term 
-                AND MedicalCenter.status = 1 
+        $dql = "SELECT MedicalCenter.id, MedicalCenter.name as value
+                FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter
+                WHERE MedicalCenter.name LIKE :term
+                AND MedicalCenter.status = 1
                 ORDER BY MedicalCenter.name ASC";
 
         $query = $this->_em->createQuery($dql);
@@ -50,7 +50,7 @@ class MedicalCenterRepository extends EntityRepository
     }
 
     /**
-     * Get Active MedicalCenters 
+     * Get Active MedicalCenters
      *
      * @return Doctrine\ORM\QueryBuilder
      */
@@ -63,30 +63,52 @@ class MedicalCenterRepository extends EntityRepository
     }
 
     /**
-     * Get MedicalCenters that are not yet linked to a specific institution
+     * Get MedicalCenters that have associated procedure types but are not yet
+     * linked to a specific institution.
      *
      * @param Institution $institution
      * @return Doctrine\ORM\QueryBuilder
      */
     public function getQueryBuilderForUnselectedInstitutionMedicalCenters(Institution $institution)
     {
-        $usedMedicalCenterIds = array();
+        $invalidMedicalCenterIds = array();
         foreach ($institution->getInstitutionMedicalCenters() as $e) {
-            $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
+            $invalidMedicalCenterIds[] = $e->getMedicalCenter()->getId();
         }
-         
+
+        foreach ($this->getIdsOfMedicalCentersWithNoProcedureTypes() as $center) {
+            if (!in_array($center['id'], $invalidMedicalCenterIds)) {
+                $invalidMedicalCenterIds[] = $center['id'];
+            }
+        }
+
         $qb = $this->createQueryBuilder('a');
-        $qb->add('where', 'a.status = :active');
-        if (!empty($usedMedicalCenterIds)) {
-            $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
+        $qb->where('a.status = :active');
+
+        if (!empty($invalidMedicalCenterIds)) {
+            $qb->andWhere($qb->expr()->notIn('a.id', $invalidMedicalCenterIds));
         }
-        
+
         $qb->orderBy('a.name', 'ASC')
         ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
-         
+
         return $qb;
     }
-    
+
+    private function getIdsOfMedicalCentersWithNoProcedureTypes()
+    {
+        $dql = "
+            SELECT a.id
+            FROM MedicalProcedureBundle:MedicalCenter AS a
+            LEFT JOIN a.medicalProcedureTypes AS b
+            WHERE a.status=1 AND b.id IS NULL"
+        ;
+
+        $query = $this->_em->createQuery($dql);
+
+        return $query->getResult();
+    }
+
     /**
      * Get MedicalCenters that are not yet linked to a specific institution excluding
      * the medical centers with status InstitutionMedicalCenterStatus::DRAFT
@@ -103,19 +125,19 @@ class MedicalCenterRepository extends EntityRepository
             }
             $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();
         }
-    
+
         $qb = $this->createQueryBuilder('a');
         $qb->add('where', 'a.status = :active');
         if (!empty($usedMedicalCenterIds)) {
             $qb->andWhere($qb->expr()->notIn('a.id', $usedMedicalCenterIds));
         }
-         
+
         $qb->orderBy('a.name', 'ASC')
         ->setParameter('active', MedicalCenter::STATUS_ACTIVE);
-    
+
         return $qb;
-    }	
-    
+    }
+
     /**
      * Get MedicalCenters that are linked to a specific institution. This is used in the InstitutionMedicalCenterListType
      *
@@ -130,7 +152,7 @@ class MedicalCenterRepository extends EntityRepository
             ->innerJoin('a.institutionMedicalCenters', 'b')
             ->add('where', 'b.institution = :institutionId')
             ->setParameter('institutionId', $institution->getId());
-            
-        return $qb;	    
+
+        return $qb;
     }
 }
