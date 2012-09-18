@@ -41,6 +41,16 @@ abstract class SiteUser implements UserInterface
         return $this->accountId;
     }
     
+    /**
+     * Alias for getAccountId
+     * 
+     * @return bigint
+     */
+    public function getId()
+    {
+        return $this->accountId;
+    }
+    
     public function setEmail($email)
     {
         $this->email = $email;

@@ -36,19 +36,10 @@ services:
             - { name: twig.extension }
             
     ## listeners below
-    listener.user.institution_user.create:
-        class: HealthCareAbroad\UserBundle\Listener\InstitutionUserListener
-        calls:
-            - [setEntityManager, [@doctrine.orm.entity_manager]]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_user.create, method: onCreate }
     listener.event.institution_user_password.change:
         class: HealthCareAbroad\UserBundle\Listener\InstitutionUserListener
         calls:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
         tags:
             - { name: kernel.event_listener, event: event.institution_user_password.change, method: onChangePassword }        
-    listener.mailer.institution_user.create:
-        class: HealthCareAbroad\MailerBundle\Listener\InstitutionUserListener
-        tags:
-            - { name: kernel.event_listener, event: event.institution_user.create, method: onCreate }
+    

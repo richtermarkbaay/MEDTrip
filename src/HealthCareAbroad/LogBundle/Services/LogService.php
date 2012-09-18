@@ -41,7 +41,7 @@ class LogService
         $em->flush();
     }
     
-    public function saveLogClass(LogClass &$logClass)
+    public function saveLogClass(LogClass $logClass)
     {
         $em = $this->doctrine->getEntityManager();
         $em->persist($logClass);
@@ -60,20 +60,30 @@ class LogService
             throw ListenerException::logClassDoesNotExist($className);
         }
         
-        if (\array_key_exists($className, self::$logClassMap)) {
-            $logClass = self::$logClassMap[$className];
-        }
-        else {
-            $logClass = $this->doctrine->getRepository('LogBundle:LogClass')->findOneBy(array('name' => $className));
+//         if (\array_key_exists($className, self::$logClassMap)) {
+//             $logClass = self::$logClassMap[$className];
+//         }
+//         else {
+//             $logClass = $this->doctrine->getRepository('LogBundle:LogClass')->findOneBy(array('name' => $className));
+            
+//             if (!$logClass) {
+//                 $logClass = new LogClass();
+//                 $logClass->setName($className);
+//                 $this->saveLogClass($logClass);
+//             }
+//             else {
+//                 self::$logClassMap[$className] = $logClass;
+//             }
+//         }
+
+        $logClass = $this->doctrine->getRepository('LogBundle:LogClass')->findOneBy(array('name' => $className));
         
-            if (!$logClass) {
-                $logClass = new LogClass();
-                $logClass->setName($className);
-                $this->saveLogClass($logClass);
-            }
-            self::$logClassMap[$className] = $logClass;
+        if (!$logClass) {
+            $logClass = new LogClass();
+            $logClass->setName($className);
+            $this->saveLogClass($logClass);
         }
-        
+                
         return $logClass;
     }
 }
