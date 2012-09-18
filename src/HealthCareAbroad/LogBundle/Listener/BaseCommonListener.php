@@ -54,6 +54,9 @@ abstract class BaseCommonListener
         if (null != $securityContext && null != $securityContext->getToken()) {
             $this->loggedAccountId = $this->container->get('session')->get('accountId', null);
         }
+        else {
+            $this->loggedAccountId = 0;
+        }
     }
     
     /**
