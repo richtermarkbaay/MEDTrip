@@ -12,6 +12,7 @@ services:
             
     services.institution_user:
         class: %services.institution_user_class%
+        arguments: [@service_container]
         calls:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
@@ -34,12 +35,3 @@ services:
             - [setUserService, [@services.user]]
         tags:
             - { name: twig.extension }
-            
-    ## listeners below
-    listener.event.institution_user_password.change:
-        class: HealthCareAbroad\UserBundle\Listener\InstitutionUserListener
-        calls:
-            - [setEntityManager, [@doctrine.orm.entity_manager]]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_user_password.change, method: onChangePassword }        
-    

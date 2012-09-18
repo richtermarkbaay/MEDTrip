@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
@@ -30,10 +32,6 @@ class InstitutionUserService extends UserService
         if ($user) {
         	
         	$userRoles = $user->getInstitutionUserType()->getInstitutionUserRole();//$user->getInstitutionUserType();
-        	//var_dump($userRoles);exit;
-        	
-        	//$roles = array();
-        	//$roles[] = $userRoles->getName();
         	
         	$roles = array();
         	foreach ($userRoles as $userRole) {
@@ -52,6 +50,9 @@ class InstitutionUserService extends UserService
             $this->session->set('accountId', $user->getAccountId());
             $this->session->set('institutionId', $user->getInstitution()->getId());
             $this->session->set('institutionName', $user->getInstitution()->getName());
+            
+            $this->container->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->container->get('events.factory')->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
+            
             return true;
         }
         return false;

@@ -6,7 +6,7 @@ parameters:
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
 
     # institution user related events
-    event.institution_user.login: HealthCareAbroad\UserBundle\Event\InstitutionUserEvent
+    event.institution_user.login: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
     event.institution_user.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent
     event.institution_user.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
     event.institution_user.change_password: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
