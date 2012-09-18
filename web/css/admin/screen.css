@@ -1826,19 +1826,20 @@ div.raw-content {
 	border: none;
 	font-size: 13px;
 	background: #E6E6E6;
-	padding: .2em 0 .2em .4em;
+	padding: 4px 4px 4px 5px;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 .ui-tabs-vertical .ui-tabs-nav li { 
 	clear: left; 
-	width: 153px;
+	width: 144px;
+	padding-right: 10px;
 	margin: 0 -1px .2em 0;
 	white-space: pre-wrap;
 	border: 1px solid #CCCCCC !important; 
 }
 .ui-tabs-vertical .ui-tabs-nav li a { 
-	width: 150px;
+	width: 100%;
 	display:block;
 	padding-right: 0;
 	padding-left: 10px;
@@ -1846,8 +1847,8 @@ div.raw-content {
 }
 .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-selected { 
 	z-index: 1;
-	padding-right: .6em;
-	margin: 0.1em 0 0.3em;
+	padding-right: 1.5em;
+	margin: 0 0 0.3em;
 	border: none !important;
 	background: none repeat scroll 0 0 #F5F5F5;
 }
