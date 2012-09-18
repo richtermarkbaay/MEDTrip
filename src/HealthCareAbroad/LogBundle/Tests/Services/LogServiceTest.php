@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\LogBundle\Tests\Services;
 
+use HealthCareAbroad\LogBundle\Entity\LogClass;
+
 use HealthCareAbroad\LogBundle\Services\LogService;
 
 use HealthCareAbroad\LogBundle\Entity\Log;
@@ -33,8 +35,10 @@ class LogServiceTest extends LogBundleUnitTestCase
         $this->assertEquals($countBefore+1, $countAfter, 'Expecting added object count after saving to database');
         
         // test get class for already recorded log class
-        $this->service->getLogClassByName($className);
+        $logClass = $this->service->getLogClassByName($className);
         $this->assertEquals($countAfter, \count($this->doctrine->getRepository('LogBundle:LogClass')->findAll()), 'Expecting same object count after getting log class of recorded class');
+        
+        return $logClass;
     }
     
     /**
@@ -43,5 +47,26 @@ class LogServiceTest extends LogBundleUnitTestCase
     public function testGetLogClassByNameOfNoneExistingClass()
     {
         $logClass = $this->service->getLogClassByName('ThisClassShouldNeverEverExist13456');
+    }
+    
+    /**
+     * @depends testGetLogClassByName
+     * 
+     * @param LogClass $logClass
+     */
+    public function testSave(LogClass $logClass)
+    {   
+        $log = new Log();
+        $log->setAccountId(1);
+        $log->setAction('add');
+        $log->setApplicationContext(1);
+        $log->setLogClass($logClass);
+        $log->setObjectId(1);
+        
+        $this->assertEquals(0, $log->getId());
+        $this->service->save($log);
+        
+        $this->assertGreaterThan(0, $log->getId());
+        
     }
 }
