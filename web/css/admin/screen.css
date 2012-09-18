@@ -615,7 +615,7 @@ form.basic-form > div {
 }
 
 form.basic-form > div > ul {
-	color: #D000006;
+	color: #D00000;
 	bottom: -17px;
 	padding: 0 6px;
     font-size: 12px;
@@ -1662,6 +1662,17 @@ a.icon-type:hover {
 	text-overflow: ellipsis;
 }*/
 
+.ajax-loading {
+	width: 145px;
+    color: #888888;
+    font-size: 13px;
+	padding: 10px 45px; 
+	margin: 20px auto 50px;
+    text-transform: uppercase;  	
+    background: url(/images/admin/ajax-loader.gif) no-repeat scroll 0px 0px transparent; 
+}
+
+
 /* jQuery UI Dialg Style */
 
 .ui-dialog {
@@ -1810,13 +1821,13 @@ a.icon-type:hover {
 	border: none;
 	font-size: 13px;
 	background: #E6E6E6;
-	padding: .2em .1em .2em .4em;
+	padding: .2em 0 .2em .4em;
 	border-top-right-radius: 0;
 	border-bottom-right-radius: 0;
 }
 .ui-tabs-vertical .ui-tabs-nav li { 
 	clear: left; 
-	width: 100%;
+	width: 153px;
 	margin: 0 -1px .2em 0;
 	white-space: pre-wrap;
 	border: 1px solid #CCCCCC !important; 
@@ -1836,9 +1847,9 @@ a.icon-type:hover {
 	background: none repeat scroll 0 0 #F5F5F5;
 }
 .ui-tabs-vertical .ui-tabs-panel {
-	float: right; 
 	width: 629px; 
 	height: auto;
+	margin-left: 160px;
 	border: 5px solid #E6E6E6;
 	border-top-right-radius: 4px;
 	background: none repeat scroll 0 0 #F5F5F5;
