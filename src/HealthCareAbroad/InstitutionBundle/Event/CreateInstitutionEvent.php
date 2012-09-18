@@ -10,6 +10,6 @@ class CreateInstitutionEvent extends InstitutionEvent
      */
     public function getInstitutionUser()
     {
-        return isset($this->data['institutionUser']) ? $this->data['institutionUser'] : null;
+        return $this->getOption('institutionUser');
     }
 }

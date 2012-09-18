@@ -17,6 +17,6 @@ class InstitutionEvent extends BaseEvent
      */
     public function getInstitution()
     {
-        return isset($this->data['institution']) ? $this->data['institution'] : null;
+        return $this->data;
     }
 }
