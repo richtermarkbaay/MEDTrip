@@ -2462,70 +2462,112 @@ margin: 0 10px 0 0;
 .mobileTopMenu, .mobileMainMenu {
        display: none;
 }
+
 .social_mob {
        display: none;
-       height:48px; 
-       padding-left:90px; 
-       background-color:#fff;
 }
 
-.social {
-        float:right; margin-top:6px;
+#navigation .nav_wrap ul.social {
+    margin-bottom:0;
+    position:absolute;
+    right:0;
+    top:5px;
         
 }
 
-.fb { 
-        width:30px;
-        height:30px;
-        background:url(/images/frontend/social_icons.png) no-repeat -140px -1px;
-        border: none;
-	    outline: none !important;
+#navigation .nav_wrap ul.social li {
+    float:right;
+    margin-right:4px;
 }
 
-.linkedin { 
-        width:25px;
-        height:25px;
-        background:url(/images/frontend/social_icons.png) no-repeat -255px 0px;
-        border: 0;
-	    outline: 0;
+#navigation .nav_wrap ul.social li a {
+    display:inline-block;
+    width:27px;
+    height:27px;
+    font-size:0px;
+    background:url(/images/frontend/social_icons.png) no-repeat;
 }
 
-.youtube { 
-        width:25px;
-        height:25px;
-        background:url(/images/frontend/social_icons.png) no-repeat -371px 0px;
-        border: 0;
-	    outline: 0;
+
+#navigation .nav_wrap ul.social li.fb a { 
+	    background-position:-140px 0;
 }
 
-.twitter { 
-        width:25px;
-        height:25px;
-        background:url(/images/frontend/social_icons.png) no-repeat -167px -1px;
-        border: 0;
-	    outline: 0;
+#navigation .nav_wrap ul.social li.linkedin a{ 
+        background-position:-255px 0;
 }
 
-.google { 
-        width:25px;
-        height:25px;
-        background:url(/images/frontend/social_icons.png) no-repeat -197px -1px;
-        border: 0;
-	    outline: 0;
+#navigation .nav_wrap ul.social li.youtube a{ 
+	    background-position:-371px 0;
+	    
 }
 
-.rss { 
-        width:25px;
-        height:25px;
-        background:url(/images/frontend/social_icons.png) no-repeat -111px -1px;
-        border: 0;
-	    outline: 0;
+#navigation .nav_wrap ul.social li.twitter a{ 
+        background-position:-167px 0;        
+}
+
+#navigation .nav_wrap ul.social li.google a{ 
+        background-position:-197px 0;
+}
+
+#navigation .nav_wrap ul.social li.rss a{ 
+        background-position:-111px 0;
 }
 
             
 /****************************************************************
  *		@media Qurey
  ****************************************************************/
+
+
+.social_mob ul.social2 {
+    margin-bottom:0;
+   
+    right:0;
+    top:5px;
+        
+}
+
+.social_mob ul.social2 li {
+    float:left;
+    margin-right:4px;
+}
+
+.social_mob ul.social2 li a {
+    display:inline-block;
+    width:27px;
+    height:27px;
+    font-size:0px;
+    background:url(/images/frontend/social_icons.png) no-repeat;
+}
+
+
+.social_mob ul.social2 li.fb2 a { 
+	    background-position:-140px 0;
+}
+
+.social_mob ul.social2 li.linkedin2 a{ 
+        background-position:-255px 0;
+}
+
+.social_mob ul.social2 li.youtube2 a{ 
+	    background-position:-371px 0;
+	    
+}
+
+.social_mob ul.social2 li.twitter2 a{ 
+        background-position:-167px 0;        
+}
+
+.social_mob ul.social2 li.google2 a{ 
+        background-position:-197px 0;
+}
+
+.social_mob ul.social2 li.rss2 a{ 
+        background-position:-111px 0;
+}
+
+
 
 	/* Smaller than standard 960 (devices and browsers) */
 	@media only screen and (max-width: 959px) {}
@@ -2672,6 +2714,13 @@ margin: 0 10px 0 0;
 	      #navigation ul.nav {
 		     display: none;
 	      }
+	      #navigation ul.social{
+	        display: none;
+	      }
+	      .social_mob {
+               display: block;
+          }
+
 	      .mobileMainMenu {
 		     margin-top:5px;
 		     max-width: 767px;
@@ -2682,6 +2731,9 @@ margin: 0 10px 0 0;
 		     font-family: play;
 		     font-size: 14px;
 	      }
+	      
+	      
+	      
 	      /*Feature*/
 	      .slider {
 		     height: 230px;     
@@ -2904,6 +2956,18 @@ margin: 0 10px 0 0;
 	      #navigation ul.nav {
 		     display: none;
 	      }
+	      #navigation ul.social{
+	        display: none;
+	      }
+	      
+	      .social_mob {
+               height:48px; 
+               padding-left:90px; 
+               background-color:#fff;
+               font-size:0px;
+               color:#f00;
+          }
+          
 	      .mobileMainMenu {
 		     margin-top:5px;
 		     max-width: 767px;
