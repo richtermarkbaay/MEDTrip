@@ -31,10 +31,11 @@ class EventFactory
      * Create an event class by event name. Event class should be declared as container parameter with $eventName as its key
      * 
      * @param string $eventName
-     * @param mixed $data
+     * @param object $data subject Entity of this event 
+     * @param array $options Key-value pair array of options
      * @return Symfony\Component\EventDispatcher\Event
      */
-    public function create($eventName, $data=null)
+    public function create($eventName, $data=null, $options=array())
     {
         try {
             $eventClass = $this->container->getParameter($eventName);
@@ -56,6 +57,10 @@ class EventFactory
         
         if ($event instanceof BaseEvent) {
             $event->setData($data);
+            
+            foreach ($options as $key => $value) {
+                $event->addOption($key, $value);
+            }
         }
         
         return $event;

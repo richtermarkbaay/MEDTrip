@@ -105,7 +105,7 @@ class InstitutionSignUpController  extends Controller
            	    
            	    // dispatch create institution event
            	    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION, 
-                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION, array('institution' => $institution, 'institutionUser' => $user)
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $user)
                 ));
            	    
            	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");

@@ -612,11 +612,12 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `account_id` bigint(20) unsigned NOT NULL,
   `application_context` tinyint(1) NOT NULL,
   `action` char(100) NOT NULL,
+  `object_id` bigint(20) unsigned NOT NULL,
   `log_class_id` int(10) unsigned NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `log_class_id` (`log_class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 
 -- --------------------------------------------------------
