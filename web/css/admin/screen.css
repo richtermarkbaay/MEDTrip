@@ -1723,10 +1723,9 @@ a.icon-type:hover {
 	position: fixed;
 }
 
-.raw-content {
+div.raw-content {
     padding: 10px;
-	background: #FFFFFF;
-    border: 1px solid #EFEFEF;
+    border: 1px solid #EEEEEE;
 }
 
 .raw-content ul,
