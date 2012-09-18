@@ -27,3 +27,35 @@
 		</form>
 	{% endblock %}
 {% endembed %}
+
+
+{% block inlineJavascriptCode %}
+	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
+	<script type="text/javascript">
+		$(function(){
+		    InstitutionMedicalCenter.setCommonDialog($('#dialog-container'), {
+			    position: ['center', 100],
+			    autoOpen: false,
+			    width: 750,
+			    modal: true,
+			    resizable: false,
+			    close: function() { $('#dialog-container').empty(); }
+			});
+
+		    InstitutionMedicalCenter.commonDialog.find('form').submit(function(){
+		        $.post($(this).attr('action'), $(this).serialize(), function(result) {
+		        	if($.isPlainObject(result)) {
+		        	    window.location = result.redirect_url;
+		            } else {
+		            	InstitutionMedicalCenter.commonDialog.html(result);
+		            	InstitutionMedicalCenter.commonDialog.find('.tinymce').tinymce(HCA.tinymceConfig.themeSimple);
+		            }
+		        });
+
+		        InstitutionMedicalCenter.commonDialog.html('<div class="ajax-loading">saving request . . .</div>');
+		        
+		        return false;
+		    });
+		});
+	</script>
+{% endblock %}
