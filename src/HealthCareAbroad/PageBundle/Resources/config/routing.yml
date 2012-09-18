@@ -7,3 +7,27 @@ page_inquire:
     defaults: { _controller: PageBundle:Inquiry:index }
     requirements:
        _method:  GET|POST
+
+page_popular_sidebar:
+    pattern: /popular
+    defaults: { _controller: PageBundle:Sidebar:popular }
+    requirements:
+        _method: GET|POST
+
+page_recent_sidebar:
+    pattern: /recent
+    defaults: { _controller: PageBundle:Sidebar:recent }
+    requirements:
+        _method: GET|POST
+        
+page_comments_sidebar:
+    pattern: /comments
+    defaults: { _controller: PageBundle:Sidebar:comments }
+    requirements:
+        _method: GET|POST
+
+page_tags_sidebar:
+    pattern: /tags
+    defaults: { _controller: PageBundle:Sidebar:tags }
+    requirements:
+        _method: GET|POST
