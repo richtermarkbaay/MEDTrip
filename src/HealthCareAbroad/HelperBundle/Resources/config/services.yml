@@ -53,6 +53,14 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.inline_javascript.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension
+        public: false
+        calls:
+            - [setTwig, [@twig]]
+        tags:
+            - { name: twig.extension }
 
     form.country_list:
         class: "%services.country_list%"
