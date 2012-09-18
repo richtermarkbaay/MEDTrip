@@ -1,0 +1,43 @@
+HealthCareAbroad\LogBundle\Entity\Log:
+    type: entity
+    table: logs
+    repositoryClass: HealthCareAbroad\LogBundle\Repository\LogRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        accountId:
+            type: bigint
+            unsigned: true
+            nullable: false
+            column: account_id
+        applicationContext:
+            type: integer
+            unsigned: true
+            nullable: false
+            column: application_context
+        action:
+            type: string
+            length: 100
+            nullable: false
+        objectId:
+            type: bigint
+            unsigned: true
+            nullable: false
+            column: object_id
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    manyToOne:
+        logClass:
+            targetEntity: HealthCareAbroad\LogBundle\Entity\LogClass
+            inversedBy: logClasess
+            joinColumn:
+                name: log_class_id
+                referencedColumnName: id
+    lifecycleCallbacks: {  }
