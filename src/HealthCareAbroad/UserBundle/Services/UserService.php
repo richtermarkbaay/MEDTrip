@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Symfony\Component\Security\Core\SecurityContext;
 
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidSiteUserOperationException;
@@ -46,9 +48,14 @@ class UserService
      */
     protected $session;
     
-    public function __construct()
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+    
+    public function __construct(ContainerInterface $container=null)
     {
-            
+        $this->container = $container;
     }
     
     public function setSession($session)

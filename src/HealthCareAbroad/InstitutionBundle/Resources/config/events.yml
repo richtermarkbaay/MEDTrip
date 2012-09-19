@@ -1,13 +1,18 @@
 #list down the event classes used in this bundle
 
 parameters:
-    # add institution event class
+    # institution event classes
     event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
-    
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
 
-    # user login event class
-    event.institution_user.login: HealthCareAbroad\UserBundle\Event\InstitutionUserEvent
+    # institution user related events
+    event.institution_user.login: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
+    event.institution_user.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent
+    event.institution_user.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
+    event.institution_user.change_password: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
+    
+    # institution user invitation events
+    event.institution_user_invitation.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserInvitationEvent
 
     # institutionMedicalCenter event class
     event.institution_medical_center.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
