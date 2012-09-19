@@ -2,19 +2,11 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-
-
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
-
-use HealthCareAbroad\UserBundle\Event\UserEvents;
-use HealthCareAbroad\UserBundle\Event\CreateInstitutionUserEvent;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserInvitationEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserInvitationEvents;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvents;
-use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionUserEvent;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -92,10 +84,9 @@ class InstitutionUserController extends Controller
     			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
     			$institutionUserService->update($institutionUser);
     			
-    			// create event on editAccount and dispatch
-    			$event = new EditInstitutionUserEvent($institutionUser);
-    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $event);
-    			    			
+    			// dispatch event
+    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
+
     			$this->get('session')->setFlash('success', "Password changed!");
     		}    			
     	}
@@ -131,8 +122,7 @@ class InstitutionUserController extends Controller
                 $institutionUser = $this->get('services.institution_user')->update($institutionUser);
                 
                 // create event on editAccount and dispatch
-                $event = new EditInstitutionUserEvent($institutionUser);
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $event);
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
                 
                 $this->get('session')->setFlash('success', "Successfully updated account");
                 $refer = $this->get('session')->get('referer');
@@ -205,13 +195,12 @@ class InstitutionUserController extends Controller
         $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
         $this->get('services.institution_user')->create($institutionUser);
         
-        // create event regarding institution user creation
-        $event = new CreateInstitutionUserEvent($institutionUser);
-        $event->setTemporaryPassword($temporaryPassword);
-        $event->setUsedInvitation($invitation);
-        
-        // dispatch the event
-        $this->get('event_dispatcher')->dispatch(UserEvents::ON_CREATE_INSTITUTION_USER, $event);
+        // dispatch event regarding institution user creation
+        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $this->get('events.factory')
+            ->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $institutionUser, array(
+                CreateInstitutionUserEvent::OPTION_TEMPORARY_PASSWORD => $temporaryPassword,
+                CreateInstitutionUserEvent::OPTION_USED_INVITATION => $invitation,
+        )));
         
         // login to institution
         $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);

@@ -24,6 +24,8 @@ final class InstitutionBundleEvents
     const ON_ADD_INSTITUTION_USER = 'event.institution_user.add';
     const ON_EDIT_INSTITUTION_USER = 'event.institution_user.edit';
     const ON_DELETE_INSTITUTION_USER = 'event.institution_user.delete';
+    const ON_LOGIN_INSTITUTION_USER = 'event.institution_user.login';
+    const ON_CHANGE_PASSWORD_INSTITUTION_USER  = 'event.institution_user.change_password';
     
     const ON_ADD_INSTITUTION_USER_INVITATION = 'event.institution_user_invitation.add';
     

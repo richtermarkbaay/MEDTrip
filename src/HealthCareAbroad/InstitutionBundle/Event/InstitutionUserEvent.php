@@ -1,5 +1,6 @@
 <?php
-namespace HealthCareAbroad\UserBundle\Event;
+
+namespace HealthCareAbroad\InstitutionBundle\Event;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
@@ -7,6 +8,6 @@ class InstitutionUserEvent extends BaseEvent
 {
     public function getInstitutionUser()
     {
-        return $this->data;
+        return $this->getData();
     }
 }

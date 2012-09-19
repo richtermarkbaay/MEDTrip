@@ -27,17 +27,6 @@ class InstitutionUser extends SiteUser
      */
     private $institutionUserType;
 
-
-    /**
-     * Get accountId
-     *
-     * @return bigint 
-     */
-    public function getAccountId()
-    {
-        return $this->accountId;
-    }
-
     /**
      * Set dateCreated
      *

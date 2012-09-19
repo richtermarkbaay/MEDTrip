@@ -82,3 +82,9 @@ InstitutionBundle_confirmed_token:
     defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
     requirements:
        _method: GET
+
+institution_exception_report_create:
+    pattern: /institution/404
+    defaults: { _controller: InstitutionBundle:Default:errorReport }
+    requirements:    
+        _method:  GET|POST

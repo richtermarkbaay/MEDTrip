@@ -83,7 +83,7 @@ admin_settings:
         _method:  GET
             
 admin_exception_report_create:
-    pattern: /admin/settings/user-types/error-report
+    pattern: /admin/404  
     defaults: { _controller: AdminBundle:Default:errorReport }
     requirements:    
         _method:  GET|POST

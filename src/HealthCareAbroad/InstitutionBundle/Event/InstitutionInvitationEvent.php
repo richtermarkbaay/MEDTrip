@@ -2,20 +2,12 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
-abstract class InstitutionInvitationEvent extends Event
+class InstitutionInvitationEvent extends BaseEvent
 {
-	public $invitation;
-	
-	public function __construct(InstitutionInvitation $invitation)
-	{
-		$this->invitation = $invitation;
-	}
-	
 	public function getInvitation()
 	{
-		return $this->invitation;
+		return $this->getData();
 	}
 }
