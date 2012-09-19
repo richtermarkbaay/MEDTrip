@@ -38,4 +38,8 @@ final class AdminBundleEvents
     const ON_ADD_MEDICAL_PROCEDURE_TYPE = 'event.medical_procedure_type.add';
     const ON_EDIT_MEDICAL_PROCEDURE_TYPE = 'event.medical_procedure_type.edit';
     const ON_DELETE_MEDICAL_PROCEDURE_TYPE = 'event.medical_procedure_type.delete';
+    
+    const ON_ADD_NEWS = 'event.news.add';
+    const ON_EDIT_NEWS = 'event.news.edit';
+    const ON_DELETE_NEWS = 'event.news.delete';
 }

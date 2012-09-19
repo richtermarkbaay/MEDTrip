@@ -64,3 +64,10 @@ parameters:
     event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
     event.medical_procedure_type.delete: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
     
+    #
+    # news related events
+    #
+    event.news.add: HealthCareAbroad\AdminBundle\Event\NewsEvent
+    event.news.edit: HealthCareAbroad\AdminBundle\Event\NewsEvent
+    event.news.delete: HealthCareAbroad\AdminBundle\Event\NewsEvent
+    

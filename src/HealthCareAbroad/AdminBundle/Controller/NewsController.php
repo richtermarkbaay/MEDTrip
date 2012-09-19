@@ -5,8 +5,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\NewsEvents;
-use HealthCareAbroad\AdminBundle\Events\CreateNewsEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\HelperBundle\Entity\News;
@@ -75,17 +75,9 @@ class NewsController extends Controller
 			$em->persist($news);
 			$em->flush($news);
 	
-			if($id) {
-				//// create event on add News and dispatch
-				$event = new CreateNewsEvent($news);
-				$this->get('event_dispatcher')->dispatch(NewsEvents::ON_ADD_NEWS, $event);
-			}
-			else
-			{
-				//// create event on edit News and dispatch
-				$event = new CreateNewsEvent($news);
-				$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
-			}
+			// dispatch event
+			$eventName = $id ? AdminBundleEvents::ON_EDIT_NEWS : AdminBundleEvents::ON_ADD_NEWS;
+			$this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $news));
 				
 			$request->getSession()->setFlash('success', 'News has been saved!');
 			
@@ -119,9 +111,8 @@ class NewsController extends Controller
 			$em->persist($news);
 			$em->flush($news);
 
-			//// create event on edit status and dispatch
-			$event = new CreateNewsEvent($news);
-			$this->get('event_dispatcher')->dispatch(NewsEvents::ON_EDIT_NEWS, $event);
+			// dispatch event
+			$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_NEWS, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_NEWS, $news));
 			
 			$result = true;
 		}
