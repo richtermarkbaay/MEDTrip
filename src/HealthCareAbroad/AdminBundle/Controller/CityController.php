@@ -5,10 +5,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\CityEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateCityEvent;
-
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -82,17 +79,9 @@ class CityController extends Controller
                $em->persist($city);
                $em->flush($city);
 
-               if($id) {
-                   //// create event on addCity and dispatch
-                   $event = new CreateCityEvent($city);
-                   $this->get('event_dispatcher')->dispatch(CityEvents::ON_ADD_CITY, $event);
-               }
-               else
-               {
-                   //// create event on editCity and dispatch
-                   $event = new CreateCityEvent($city);
-                   $this->get('event_dispatcher')->dispatch(CityEvents::ON_EDIT_CITY, $event);
-               }
+               // dispatch event
+               $eventName = $id ? AdminBundleEvents::ON_ADD_CITY : AdminBundleEvents::ON_EDIT_CITY;
+               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
 
                $request->getSession()->setFlash('success', 'City has been saved!');
                return $this->redirect($this->generateUrl('admin_city_index'));
@@ -123,9 +112,8 @@ class CityController extends Controller
             $em->persist($city);
             $em->flush($city);
 
-            //// create event on addRoleToUserType and dispatch
-            $event = new CreateCityEvent($city);
-            $this->get('event_dispatcher')->dispatch(CityEvents::ON_EDIT_CITY, $event);
+            // dispatch event
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_CITY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_CITY, $city));
 
             $result = true;
         }

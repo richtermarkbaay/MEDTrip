@@ -18,4 +18,8 @@ final class AdminBundleEvents
     const ON_DELETE_ADMIN_USER_TYPE = 'event.admin_user_type.delete';
     const ON_ADD_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.add_role';
     const ON_DELETE_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.delete_role';
+    
+    const ON_ADD_CITY = 'event.city.add';
+    const ON_EDIT_CITY = 'event.city.edit';
+    const ON_DELETE_CITY = 'event.city.delete';
 }
