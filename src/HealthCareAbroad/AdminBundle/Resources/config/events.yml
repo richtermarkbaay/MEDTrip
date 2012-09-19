@@ -19,3 +19,12 @@ parameters:
     event.admin_user.edit: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
     event.admin_user.login: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
     event.admin_user.change_password: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+    
+    #
+    # admin user type related events
+    #
+    event.admin_user_type.add: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
+    event.admin_user_type.edit: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
+    event.admin_user_type.delete: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
+    event.admin_user_type.add_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
+    event.admin_user_type.delete_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
