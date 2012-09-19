@@ -87,7 +87,7 @@ class DefaultController extends Controller
            	   	$sendResult = $this->get('event_dispatcher')->dispatch(ErrorReportEvent::ON_CREATE_REPORT, $event);
 	    	    	
            	   	if ($sendResult) {         	   		 
-           	   		$this->get('session')->setFlash('success', "Successfully sent error report to HealthCareAbroad");
+           	   		$this->get('session')->setFlash('success', "Successfully sent error report to HealthCareAbroad");		
            	   	}
            	   	else {
            	   		$this->get('session')->setFlash('error', "Failed to send Report to HealthCareAbroad");
