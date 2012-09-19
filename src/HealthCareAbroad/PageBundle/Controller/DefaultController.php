@@ -41,7 +41,7 @@ class DefaultController extends Controller
     		
     		if ($form->isValid()) {
     			
-    			$errorReport->setLoggedUserId($userId);
+    			$errorReport->setLoggedUserId(0);
     			$errorReport->setStatus(1);
     			$em->persist($errorReport);
     			$em->flush($errorReport);
