@@ -3,87 +3,93 @@
 {% set selectedSubTab = 'institutions_index'%}
 
 {% block content %}
-	<div id="content">
+    <div id="content">
 
-		<div id="page-heading"><h3>List of Institutions</h3></div>
+        <div id="page-heading"><h3>List of Institutions</h3></div>
 
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
-			
-			{% include '::notice.admin.html.twig' %}
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            
+            {% include '::notice.admin.html.twig' %}
 
-			<!-- Render Filter Box -->
-			
-			{% autoescape false %}
-				{{ listFilters is defined ? listFilters : '' }}
-			{% endautoescape %}
+            <!-- Render Filter Box -->
+            {% autoescape false %}
+                {{ listFilters is defined ? listFilters : '' }}
+            {% endautoescape %}
 
-			<table class="generic-table" width="70%">
-			<tr>
-				<th><a href="#">Name</a></th>
-				<th><a href="#">Description</a></th>
-				<th><a href="#">Status</a></th>
-				<th width="200" class="actions"><a href="#">Actions</a></th>
-			</tr>
+            <div style="width:70%">
+                <table class="generic-table" width="100%">
+                <tr>
+                    <th><a href="#">Name</a></th>
+                    <th><a href="#">Description</a></th>
+                    <th><a href="#">Status</a></th>
+                    <th width="200" class="actions">Actions</th>
+                </tr>
 
-			{% for institution in institutions %}
-				<tr id="institution-{{institution.id}}">
-					<td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
-					<td><a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
-					<td class="status">{{ statusList[institution.status] }}</td>
-					<td align="center">
-    					<a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" class="icon-type">centers</a> 
-						<a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status icon-type">
-							change status
-						</a>
-				</tr>
-			{% else  %}
-				<tr><td class="empty-list" colspan="4">No records yet!</td></tr>
-			{% endfor %}
-			</table>
-			{% endblock %}
-		{% endembed %}
-	</div>
+                {% for institution in institutions %}
+                    <tr id="institution-{{institution.id}}">
+                        <td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
+                        <td><a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
+                        <td class="status">{{ statusList[institution.status] }}</td>
+                        <td align="center">
+                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" class="icon-type">centers</a> 
+                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status icon-type">
+                                change status
+                            </a>
+                    </tr>
+                {% else  %}
+                    <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                {% endfor %}
+                </table>
 
-	<div id="update-status-container" title="Edit Institution Status">
-		<p>
-			<strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
-			Select an option below to update its status.
-		</p>
-		<select id="selected-status">
-			{% for label,value in updateStatusOptions %}
-				<option value="{{value}}">{{label}}</option>
-			{% endfor %}
-		</select>
-		<a id="update-status-button" href="#" class="button-type">Confirm</a>
-	</div>
-	
+                {% if pager.isPaginable %}
+                    {{ paginate(pager, 'admin_institution_index', app.request.query.all) }}
+                {% endif %}
+            </div>
+            
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+    <div id="update-status-container" title="Edit Institution Status">
+        <p>
+            <strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
+            Select an option below to update its status.
+        </p>
+        <select id="selected-status">
+            {% for label,value in updateStatusOptions %}
+                <option value="{{value}}">{{label}}</option>
+            {% endfor %}
+        </select>
+        <a id="update-status-button" href="#" class="button-type">Confirm</a>
+    </div>
+    
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
-	$(function(){
+    $(function(){
 
-		$("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
+        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
 
-		$("a.show-update-status").click(function() {
+        $("a.show-update-status").click(function() {
 
-			var url = $(this).attr('href');
-			var institutionId = $(this).attr('id').split('-').pop();
-			var currentStatus = $('#institution-'+institutionId+' > td.status').html();
-			var institutionName = $('#institution-'+institutionId+' td > a.name').html();
+            var url = $(this).attr('href');
+            var institutionId = $(this).attr('id').split('-').pop();
+            var currentStatus = $('#institution-'+institutionId+' > td.status').html();
+            var institutionName = $('#institution-'+institutionId+' td > a.name').html();
 
-			$('#current-status').html(currentStatus);
-			$('#current-institution').html(institutionName);
+            $('#current-status').html(currentStatus);
+            $('#current-institution').html(institutionName);
 
-			$('#update-status-button').attr('href', url + '/' + $('#selected-status').val());
-			$('#selected-status').change(function(){
-				$('#update-status-button').attr('href', url + '/' + $(this).val());
-			});
-			
-			$("#update-status-container").dialog("open");
-			return false;
-		});
-	});
+            $('#update-status-button').attr('href', url + '/' + $('#selected-status').val());
+            $('#selected-status').change(function(){
+                $('#update-status-button').attr('href', url + '/' + $(this).val());
+            });
+            
+            $("#update-status-container").dialog("open");
+            return false;
+        });
+    });
 </script>
 {% endblock %}

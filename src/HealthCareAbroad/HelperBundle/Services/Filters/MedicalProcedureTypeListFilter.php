@@ -8,48 +8,52 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 class MedicalProcedureTypeListFilter extends ListFilter
 {
 
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType');		
-		
-		// Add medicalCenter in validCriteria
-		$this->addValidCriteria('medicalCenter');
-	}
+    function __construct($doctrine)
+    {
+        parent::__construct($doctrine);
+        
+        // Add medicalCenter in validCriteria
+        $this->addValidCriteria('medicalCenter');
+    }
 
-	function setFilterOptions()
-	{
-		$this->setMedicalCenterFilterOption();	
+    function setFilterOptions()
+    {
+        $this->setMedicalCenterFilterOption();    
 
-		$this->setStatusFilterOption();
-	}
+        $this->setStatusFilterOption();
+    }
 
-	function setMedicalCenterFilterOption()
-	{		
+    function setMedicalCenterFilterOption()
+    {        
 
-		// Set The Filter Option 
-		$medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
-		$options = array(ListFilter::FILTER_KEY_ALL => 'All');
-		foreach($medicalCenters as $each) {
-			$options[$each->getId()] = $each->getName();
-		}
+        // Set The Filter Option 
+        $medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        foreach($medicalCenters as $each) {
+            $options[$each->getId()] = $each->getName();
+        }
 
-		$this->filterOptions['medicalCenter'] = array(
-			'label' => 'Medical Center',
-			'selected' => $this->queryParams['medicalCenter'],
-			'options' => $options
-		);
-	}
-	
-	function setFilteredResult()
-	{
-		$medicalCenterId = $this->queryParams['medicalCenter'];
+        $this->filterOptions['medicalCenter'] = array(
+            'label' => 'Medical Center',
+            'selected' => $this->queryParams['medicalCenter'],
+            'options' => $options
+        );
+    }
 
-		if($medicalCenterId != ListFilter::FILTER_KEY_ALL) {
-			$medicalCenter = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);			
-			$this->criteria['medicalCenter'] = $medicalCenter;
-		}
+    function buildQueryBuilder()
+    {
+        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:MedicalProcedureType', 'a');
+    
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
+         
+        if ($this->queryParams['medicalCenter'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.medicalCenter = :medicalCenter');
+            $this->queryBuilder->setParameter('medicalCenter', $this->criteria['medicalCenter']);
+        }
 
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        $this->queryBuilder->add('orderBy', 'a.name ASC');
+    }
 }

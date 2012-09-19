@@ -1,6 +1,6 @@
 admin_medicalCenter_index:
     pattern:  /admin/medical-centers
-    defaults: { _controller: AdminBundle:MedicalCenter:index, status: 1 }
+    defaults: { _controller: AdminBundle:MedicalCenter:index }
     requirements:
         _method:  GET
 

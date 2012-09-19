@@ -5,29 +5,28 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-
+use Doctrine\DBAL\Query\QueryBuilder;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class InstitutionListFilter extends ListFilter
 {
+    function setFilterOptions()
+    {
+        $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + InstitutionStatus::getStatusList();
+        $this->setStatusFilterOption($statusOptions);
+    }
 
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $this->doctrine->getEntityManager()->getRepository('InstitutionBundle:Institution');
+    function buildQueryBuilder()
+    {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+        $this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
 
-	}
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
 
-	function setFilterOptions()
-	{
-		$statusOptions = array('all' => 'All') + InstitutionStatus::getStatusList();
-		$this->setStatusFilterOption($statusOptions);
-	}
-
-	function setFilteredResult()
-	{
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        $this->queryBuilder->add('orderBy', 'a.name ASC');
+    }
 }

@@ -1,6 +1,6 @@
 admin_country_index:
     pattern:  /admin/countries
-    defaults: { _controller: AdminBundle:Country:index, status: 1 }
+    defaults: { _controller: AdminBundle:Country:index }
     requirements:    
         _method:  GET
 

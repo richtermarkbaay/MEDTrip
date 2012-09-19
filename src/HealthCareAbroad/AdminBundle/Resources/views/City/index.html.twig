@@ -37,7 +37,7 @@
                         </tr>
 
                         {% for city in cities %}
-                            <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                            <tr>
                                 <td>{{ city.name }}</td>
                                 <td>{{ city.country.name }}</td>
                                 <td>{{ city.status ? 'Active' : 'Inactive' }}</td>

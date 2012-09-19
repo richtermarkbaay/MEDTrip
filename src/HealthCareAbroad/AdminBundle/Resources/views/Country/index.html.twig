@@ -27,31 +27,33 @@
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
-                {% if pager.isPaginable %}
-                   {{ paginate(pager, 'admin_country_index', app.request.query.all) }}
-                {% endif %}
-
-                <table id="country-list" class="generic-table" width="70%">
-                <tr>
-                    <th><a href="">Name</a></th>
-                    <th><a href="">Status</a></th>
-                    <th class="actions" width="200"><a href="">Action</a></th>
-                </tr>
-
-                {% for country in countries %}
-                    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                        <td>{{ country.name }}</td>
-                        <td>{{ country.status ? 'Active' : 'Inactive' }}</td>
-                        <td align="center">
-                            <a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                            {% set class = country.status ? 'icon-2' : 'icon-5' %}
-                            <a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                        </td>
+                <div style="width: 70%">
+                    <table id="country-list" class="generic-table" width="100%">
+                    <tr>
+                        <th><a href="">Name</a></th>
+                        <th><a href="">Status</a></th>
+                        <th class="actions" width="200">Action</th>
                     </tr>
-                {% else  %}
-                    <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
-                {% endfor %}
-                </table>
+
+                    {% for country in countries %}
+                        <tr>
+                            <td>{{ country.name }}</td>
+                            <td>{{ country.status ? 'Active' : 'Inactive' }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                {% set class = country.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    </table>
+                    
+                    {% if pager.isPaginable %}
+                       {{ paginate(pager, 'admin_country_index', app.request.query.all) }}
+                    {% endif %}
+                </div>
 
             {% endblock %}
         {% endembed %}

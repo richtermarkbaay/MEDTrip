@@ -21,16 +21,17 @@
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
-                {% if pager.isPaginable %}
-                   {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
-                {% endif %}
 
                 <!--  start table-content  -->
-                <div id="table-content" style="width:75%">
+                <div id="table-content" style="width:70%">
 
                     {% include '::notice.admin.html.twig' %}
+
                     {% include 'InstitutionBundle:MedicalCenter:baseIndexTable.html.twig' with {'institutionMedicalCenters': institutionMedicalCenters} %}
 
+                    {% if pager.isPaginable %}
+                       {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
+                    {% endif %}
                 </div>
         {% endblock %}
 
