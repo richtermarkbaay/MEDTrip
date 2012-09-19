@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use Doctrine\ORM\QueryBuilder;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\MediaBundle\Entity\Media;

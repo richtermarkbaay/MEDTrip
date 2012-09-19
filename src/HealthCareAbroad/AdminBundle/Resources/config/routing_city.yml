@@ -1,21 +1,21 @@
 admin_city_index:
     pattern:  /admin/cities
-    defaults: { _controller: AdminBundle:City:index, status: 1, country: all }
-    requirements:    
+    defaults: { _controller: AdminBundle:City:index }
+    requirements:
         _method:  GET
 
 admin_city_add:
     pattern:  /admin/city/add
     defaults: { _controller: AdminBundle:City:add }
-    requirements:    
+    requirements:
         _method:  GET
-        
+
 admin_city_create:
     pattern:  /admin/city/add
     defaults: { _controller: AdminBundle:City:save }
     requirements:
          _method: POST
-         
+
 admin_city_edit:
     pattern:  /admin/city/edit/{id}
     defaults: { _controller: AdminBundle:City:edit, id: ~ }

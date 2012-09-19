@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <!-- provided by config -->
+        <parameter key="chromedia_pager.pager.limit" />
+        <parameter key="chromedia_pager.pager.max_pages" />
+        <parameter key="chromedia_pager.pager.template" />
+        <!-- hardcoded -->
+        <parameter key="chromedia_pager.templating.helper.pager.class">HealthCareAbroad\PagerBundle\Templating\Helper\PagerHelper</parameter>
+        <parameter key="chromedia_pager.twig.extension.pager.class">HealthCareAbroad\PagerBundle\Twig\Extension\PagerExtension</parameter>
+        <parameter key="chromedia_pager.pager.class">HealthCareAbroad\PagerBundle\Pager</parameter>
+    </parameters>
+
+    <services>
+        <service id="chromedia_pager.twig.extension.pager" class="%chromedia_pager.twig.extension.pager.class%">
+            <argument type="service" id="service_container" />
+            <tag name="twig.extension" alias="pager" />
+        </service>
+        <service id="chromedia_pager.templating.helper.pager" class="%chromedia_pager.templating.helper.pager.class%">
+            <argument type="service" id="templating" />
+            <argument type="service" id="router" />
+            <argument type="string">%chromedia_pager.pager.template%</argument>
+            <tag name="templating.helper" alias="pager" />
+        </service>
+        <service id="chromedia_pager.pager" class="%chromedia_pager.pager.class%" scope="prototype">
+            <argument />
+            <argument type="collection">
+                <argument key="limit">%chromedia_pager.pager.limit%</argument>
+                <argument key="max_pages">%chromedia_pager.pager.max_pages%</argument>
+            </argument>
+        </service>
+    </services>
+
+</container>

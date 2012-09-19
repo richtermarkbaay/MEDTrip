@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Controller;
 
+use HealthCareAbroad\PagerBundle\Pager;
+
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +17,13 @@ class DefaultController extends Controller
     {
         $institutionId = $request->getSession()->get('institutionId');
 
+        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($institutionId)->toArray());
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 10));
+
         return $this->render('MediaBundle:Institution:gallery.html.twig', array(
                 'institutionId' => $institutionId,
-                'institutionMedia' => $this->get('services.media')->retrieveAllMedia($institutionId)
+                //'institutionMedia' => $this->get('services.media')->retrieveAllMedia($institutionId)
+                'institutionMedia' => $pager
         ));
     }
 

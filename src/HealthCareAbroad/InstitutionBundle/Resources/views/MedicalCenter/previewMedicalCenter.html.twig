@@ -23,7 +23,7 @@
             <!--  start table-content  -->
             <div id="table-content">
                 <div style="width:75%;">
-                    {% include '::notice.admin.html.twig' %}
+                    
 
                     {% include '::stepHolder.base.admin.html.twig' with {
                         steps: [
@@ -32,7 +32,9 @@
                             {title: 'Add Procedure Types', 'selected': true},
                             {title: 'Preview', 'selected': true},
                         ] }
-                  %}
+                     %}
+                     
+                     {% include '::notice.admin.html.twig' %}
 
                       Listings Page: <br/><br/>
                      {{ institutionMedicalCenter.medicalCenter.name }}<br/><br/>
@@ -42,11 +44,9 @@
                          {{ instProcedureType.medicalProcedureType.name }}
                      {% endfor %}
 
-                    <div class="clear">&nbsp;</div>
+                    <div class="clear"></div>
 
-                    <form action="{{ path('institution_medicalCenter_index') }}" method="GET" name="nextStep" id="nextStep">
-                        <input type="submit" name="submit" value="Done" class="green-button" />
-                    </form>
+                    <a href="{{ path('institution_medicalCenter_index') }}" class="button-type">Done</a>
 
                 </div>
 
@@ -58,10 +58,4 @@
     {% endembed %}
 
 </div>
-
-<!--  end content -->
-<div class="clear">&nbsp;</div>
-
-    {% block inlineJavascriptCode %}
-    {% endblock %}
 {% endblock %}

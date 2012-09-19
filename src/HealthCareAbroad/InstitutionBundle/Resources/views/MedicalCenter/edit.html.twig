@@ -32,7 +32,7 @@
                     <ul>
                         <li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
                         {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
-                            <li><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+                            <li id="procedure-type-{{ impt.id }}"><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
                         {% endfor %}
                     </ul>
 
@@ -96,6 +96,10 @@
 
                 return false;
             });
+
+			{% if app.request.get('imptId') %}
+		        $("#tab-container #procedure-type-{{ app.request.get('imptId') }} a").click();
+		    {% endif %}		
         });
     </script>
 {% endblock %}

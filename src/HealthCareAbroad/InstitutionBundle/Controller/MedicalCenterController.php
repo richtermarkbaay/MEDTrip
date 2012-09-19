@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -40,7 +44,20 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution');
 
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
-            'institutionMedicalCenters' => $this->filteredResult
+            'institutionMedicalCenters' => $this->filteredResult,
+            'pager' => $this->pager
+        ));
+    }
+
+    public function testAction(Request $request)
+    {
+        $page = $request->get('page');
+
+        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia(1)->toArray());
+        $pager = new Pager($adapter, array('page' => $page, 'limit' => 12));
+
+        return $this->render('InstitutionBundle:MedicalCenter:test.html.twig', array(
+                    'pager' => $pager
         ));
     }
 
@@ -236,8 +253,8 @@ class MedicalCenterController extends InstitutionAwareController
 
         if (!$form->isValid()) {
             return $this->render('InstitutionBundle:MedicalCenter:addProcedureTypes.html.twig', array(
-                            'institutionMedicalCenter' => $institutionMedicalCenter,
-                            'form' => $form->createView()
+                'institutionMedicalCenter' => $institutionMedicalCenter,
+                'form' => $form->createView()
             ));
         }
 
@@ -252,7 +269,13 @@ class MedicalCenterController extends InstitutionAwareController
 
         $request->getSession()->setFlash('success', "Successfully added {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
 
-        return $this->redirect($this->generateUrl('institution_medicalCenter_addProcedureTypes', array('imcId' => $request->get('imcId'))));
+        if($request->get('submit') == 'Next') {
+            $redirectUrl = $this->generateUrl('institution_medicalCenter_preview', array('imcId' => $request->get('imcId')));
+        } else {
+            $redirectUrl = $this->generateUrl('institution_medicalCenter_addProcedureTypes', array('imcId' => $request->get('imcId')));
+        }
+        
+        return $this->redirect($redirectUrl);
     }
 
     /**

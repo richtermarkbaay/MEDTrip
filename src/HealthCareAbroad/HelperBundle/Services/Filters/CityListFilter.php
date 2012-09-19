@@ -1,54 +1,60 @@
-<?php 
+<?php
 /**
  * @autor Adelbert D. Silla
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use Doctrine\ORM\QueryBuilder;
+
 class CityListFilter extends ListFilter
 {
 
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('HelperBundle:City');		
-		
-		// Add country in validCriteria
-		$this->addValidCriteria('country');
-	}
+    function __construct($doctrine)
+    {
+        parent::__construct($doctrine);
 
-	function setFilterOptions()
-	{
-		$this->setCountryFilterOption();	
+        // Add country in validCriteria
+        $this->addValidCriteria('country');
+    }
 
-		$this->setStatusFilterOption();
-	}
+    function setFilterOptions()
+    {
+        $this->setCountryFilterOption();
 
-	function setCountryFilterOption()
-	{		
+        $this->setStatusFilterOption();
+    }
 
-		// Set The Filter Option 
-		$countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findByStatus(1);
-		$options = array('all' => 'All');
-		foreach($countries as $each) {
-			$options[$each->getId()] = $each->getName();
-		}
+    function setCountryFilterOption()
+    {
 
-		$this->filterOptions['country'] = array(
-			'label' => 'Country',
-			'selected' => $this->queryParams['country'],
-			'options' => $options
-		);
-	}
-	
-	function setFilteredResult()
-	{
-		if($this->queryParams['country'] != 'all') {
-			$countryId = $this->queryParams['country'];
-			$country = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->find($countryId);			
-			$this->criteria['country'] = $country;
-		}
+        // Set The Filter Option
+        $countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findByStatus(1);
+        $options = array('all' => 'All');
+        foreach($countries as $each) {
+            $options[$each->getId()] = $each->getName();
+        }
 
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        $this->filterOptions['country'] = array(
+            'label' => 'Country',
+            'selected' => $this->queryParams['country'],
+            'options' => $options
+        );
+    }
+
+    function setQueryBuilder()
+    {
+        $this->queryBuilder = new QueryBuilder($this->doctrine->getEntityManager());
+        $this->queryBuilder->select('c')->from('HelperBundle:City', 'c');
+
+        if ($this->queryParams['country'] != 'all') {
+            $this->queryBuilder->where('c.country = :country');
+            $this->queryBuilder->setParameter('country', $this->queryParams['country']);
+        }
+
+        if ($this->queryParams['status'] != 'all') {
+            $this->queryBuilder->andWhere('c.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
+    }
 }

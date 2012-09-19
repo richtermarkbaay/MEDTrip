@@ -1,8 +1,9 @@
 institution_gallery:
-    pattern: /institution/gallery
-    defaults: { _controller: MediaBundle:Default:gallery }
+    pattern: /institution/gallery/{page}
+    defaults: { _controller: MediaBundle:Default:gallery, page: 1 }
     requirements:
         _method: GET
+        page: \d+
 
 institution_gallery_add:
     pattern:  /institution/gallery/add
