@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\LogBundle\Listener\Institution;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use HealthCareAbroad\HelperBundle\Classes\ApplicationContexts;
 
 use HealthCareAbroad\LogBundle\Entity\Log;
