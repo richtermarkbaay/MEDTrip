@@ -21,6 +21,7 @@ services:
             - [setSecurityContext, [@security.context]]
     services.admin_user:
         class: %services.admin_user_class%
+        arguments: [@service_container]
         calls:
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]

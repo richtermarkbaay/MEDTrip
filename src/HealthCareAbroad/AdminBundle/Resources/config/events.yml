@@ -1,0 +1,21 @@
+#
+# List down the events that will be dispatched in this bundle.
+# Parameter will be in the following format:
+#    $event_name: $target_entity_qualified_name    
+#
+# Event name convention is:
+#        event.{subject_entity}.{event_action}
+#
+# Sample parameter:
+#    event.admin_user.add: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+#
+
+parameters:
+
+    #
+    # admin user related events
+    #
+    event.admin_user.add: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+    event.admin_user.edit: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+    event.admin_user.login: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+    event.admin_user.change_password: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
