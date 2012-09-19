@@ -1,9 +1,7 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\MedicalCenterEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalCenterEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,10 +75,9 @@ class MedicalCenterController extends Controller
    			$em->persist($medicalCenter);
    			$em->flush($medicalCenter);
 
-   			
-   			//// create event on addMedicalcenter and dispatch
-   			$event = new CreateMedicalCenterEvent($medicalCenter);
-   			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_ADD_MEDICAL_CENTER, $event);
+            // dispatch event   			
+   			$eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_CENTER : AdminBundleEvents::ON_ADD_MEDICAL_CENTER;
+   			$this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $medicalCenter));
    			
    			$request->getSession()->setFlash('success', 'Medical center saved!');
 
@@ -115,9 +112,7 @@ class MedicalCenterController extends Controller
 			$em->persist($medicalCenter);
 			$em->flush($medicalCenter);
 			
-			//// create event on editMedicalCEnter and dispatch
-			$event = new CreateMedicalCenterEvent($medicalCenter);
-			$this->get('event_dispatcher')->dispatch(MedicalCenterEvents::ON_EDIT_MEDICAL_CENTER, $event);
+			$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $medicalCenter));
 			
 			$result = true;
 		}
