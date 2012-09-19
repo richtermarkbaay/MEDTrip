@@ -60,6 +60,25 @@ font-size: 12px;
 	min-width: 780px;
 	padding: 20px 0px 30px 0px;
 	}
+#errorContent    {
+    color: #333333 !important;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    margin: auto;
+    max-width: 1260px;
+    min-width: 780px;
+    padding: 20px 0px 30px 0px;
+    width: 600px
+    }
+#errorBody    {
+
+    background: #EFEFEF;
+    }
+#errorContent h1{
+	font-weight:bold;
+	
+}
 #content-inner	{
 	color: #333;
 	font-family: Arial, Helvetica, sans-serif;

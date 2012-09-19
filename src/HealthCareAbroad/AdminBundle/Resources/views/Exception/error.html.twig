@@ -1,44 +1,59 @@
-
-{% block content %}
-<!-- start content -->
-<div id="content">
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-			<!--  start table-content  -->
-			<div id="table-content">
-			    
-		        {% if reportSubmitted is defined and reportSubmitted %}
-		        {% include '::notice.admin.html.twig' %}
-			    {% else %}
-    		    <h1>Oops! An error occurred</h1>
-    		    
-                <h2 style="margin-top: 20px;">The server returned a "{{ status_code }} {{ status_text }}".</h2>
-                {% endif %}     
-    		        
-                <div style="margin-top: 20px;">
-                    Something is broken and this has been logged. Please let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused.
-                                 
-			        <form style="margin-top:20px;" action="{{ path('admin_exception_report_create') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-							
-						{{ form_row(form.reporterName) }}					
-						{{ form_row(form.details) }}
-						{{ form_rest(form) }}
-		
-				   		<input type="submit" class="form-submit" name="submit"/>
-				   		
-					</form>
-                    
-                </div>
-    			
-			</div>
-			<!--  end table-content  -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	{% block javascripts %}
+        <script src="{{ asset('js/jquery/jquery-1.8.0.min.js') }}"></script>
+         <script src="{{ asset('js/jquery/jquery-ui-1.8.23.custom.min.js') }}"></script>
+          <script src="{{ asset('bundles/helper/js/Common.js') }}"></script>
+    {% endblock %}
+           
+		{% block stylesheets %}
+        	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/admin/screen.css') }}" type="text/css" rel="stylesheet"/>
         {% endblock %}
-        
-    {% endembed %}
-    
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
-{% endblock %}
+        </head>
+<body id="errorBody">
+	{% block content %}
+	<!-- start content -->
+	<div id="errorContent">
+	    
+	        {% block wrappedContent %}
+				<!--  start table-content  -->
+				<div id="table-content">
+				    
+			        {% if reportSubmitted is defined and reportSubmitted %}
+			        {% include '::notice.admin.html.twig' %}
+		             <h1>Oops! An error occurred</h1>
+				    {% else %}
+	    		    <h1>Oops! An error occurred</h1>
+	    		    
+	                <h2 style="margin-top: 20px;">The server returned a "{{ status_code }} {{ status_text }}".</h2>
+	                {% endif %}     
+	    		        
+	                <div style="margin-top: 20px;">
+	                    Something is broken and this has been logged. Please let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused.
+	                                 
+				        <form style="margin-top:20px;" action="{{ path('admin_exception_report_create') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+								
+							{{ form_row(form.reporterName) }}					
+							{{ form_row(form.details) }}
+							{{ form_rest(form) }}
+			
+					   		<input type="submit" class="form-submit" name="submit"/>
+					   		
+						</form>
+	                    
+	                </div>
+	    			
+				</div>
+				<!--  end table-content  -->
+	        {% endblock %}
+	
+	    
+	</div>
+	<!--  end content -->
+	<div class="clear">&nbsp;</div>
+	{% endblock %}
+</body>
+</html>
