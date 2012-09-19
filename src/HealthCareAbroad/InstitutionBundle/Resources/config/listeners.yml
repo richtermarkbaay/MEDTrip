@@ -5,7 +5,7 @@ services:
            - [setDoctrine, [@doctrine]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            
+
     listener.institution.add:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener
         calls:
@@ -13,7 +13,7 @@ services:
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
             - { name: kernel.event_listener, event: event.institution.add, method: onAdd }
-    
+
     ### --------- institution invitation event listeners --------- ###
     listener.log.institution_invitation.add:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
@@ -21,63 +21,100 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.institution_invitation.add, method: onCommonLogAction }
     ### --------- end institution invitation event listeners --------- ###
-            
-            
+
+
     ### --------- institution user related event listeners --------- ###
     listener.institution_user.add:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionUserListener
         arguments: [@service_container]
         tags:
             - {name: kernel.event_listener, event: event.institution_user.add, method: onAdd }
-            
+
     listener.log.institution_user.add:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user.add, method: onCommonLogAction }
-            
+
     listener.log.institution_user.edit:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user.edit, method: onCommonLogAction }
-            
+
     listener.log.institution_user.change_password:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user.change_password, method: onCommonLogAction }
-            
+
     listener.log.institution_user.login:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user.login, method: onCommonLogAction }
     ### --------- end institution user related event listeners --------- ###
-            
-    
+
+
     ### --------- institution user type event listeners --------- ###
     listener.log.institution_user_type.add_role:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user_type.add_role, method: onCommonLogAction }
-            
+
     listener.log.institution_user_type.delete_role:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user_type.delete_role, method: onCommonLogAction }
     ### --------- end institution user type event listeners --------- ###
-    
-    
+
+
     ### --------- institution user invitation event listeners --------- ###
     listener.log.institution_user_invitation.add:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_user_invitation.add, method: onCommonLogAction }
-        
-        
+
+
     ### --------- end institution user invitation event listeners --------- ###
-        
+
+    ### --------- institution medical center event listeners --------- ###
+    listener.log.institution_medical_center.add:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.add, method: onCommonLogAction }
+    listener.log.institution_medical_center.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onCommonLogAction }
+    listener.log.institution_medical_center.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onCommonLogAction }
+
+    ### --------- end institution medical center event listeners --------- ###
+
+    ### --------- institution medical procedure type event listeners --------- ###
+    listener.log.institution_medical_procedure_type.add:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.add, method: onCommonLogAction }
+    listener.log.institution_medical_procedure_type.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.edit, method: onCommonLogAction }
+    listener.log.institution_medical_procedure_type.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_medical_procedure_type.delete, method: onCommonLogAction }
+    ### --------- end institution medical procedure type event listeners --------- ###
+

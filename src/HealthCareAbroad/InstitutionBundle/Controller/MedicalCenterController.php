@@ -159,6 +159,7 @@ class MedicalCenterController extends InstitutionAwareController
     /**
      * Saves a draft institution medical center. This is called after the
      * submitting the form in the FIRST STEP of adding/updating medical centers.
+     *
      * Dispatches an event upon successful save.
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
@@ -201,12 +202,10 @@ class MedicalCenterController extends InstitutionAwareController
         $em->persist($institutionMedicalCenter);
         $em->flush();
 
-        if ($hasDraft) {
-            $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER);
-        }
-        else {
-            $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER);
-        }
+        $this->dispatchEvent(
+            $hasDraft ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+            $institutionMedicalCenter
+        );
 
         $request->getSession()->setFlash('success', "Successfully ".($hasDraft?'updated ':'added ')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
 
@@ -214,7 +213,6 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * TODO: refactor -> move to addProcedureTypeAction ?
      *
      * Adds a procedure type to a draft institution medical center. This is called
      * after the submitting the form in the THIRD STEP of adding/updating medical
@@ -227,7 +225,6 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function saveProcedureTypeAction(Request $request)
     {
-
         if (!$request->get('imcId', 0)) {
             throw $this->createNotFoundException("Invalid institution medical center id.");
         }
@@ -254,7 +251,8 @@ class MedicalCenterController extends InstitutionAwareController
         $em->persist($institutionMedicalProcedureType);
         $em->flush();
 
-        //TODO: dispatch event?
+        $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $institutionMedicalCenter);
+        $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $institutionMedicalProcedureType);
 
         $request->getSession()->setFlash('success', "Successfully added {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
 
@@ -273,6 +271,8 @@ class MedicalCenterController extends InstitutionAwareController
      * removed but the media itself is retained in the institution's media
      * library/gallery.
      *
+     * Dispatches an event upon success, passing in a proxy for deleted object.
+     *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      *
      * @param Request $request
@@ -285,10 +285,16 @@ class MedicalCenterController extends InstitutionAwareController
 
         $this->get('services.institutionMedicalCenter')->deleteDraftInstitutionMedicalCenter($this->institution, $request->get('imcId'));
 
+        $proxy = $this->getDoctrine()->getEntityManager()->getReference('HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter', $request->get('imcId'));
+
+        $this->dispatchEvent(InstitutionBundleEvents::ON_DELETE_INSTITUTION_MEDICAL_CENTER, $proxy);
+
         return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
     }
 
     /**
+     * Displays form for editing an institution medical center
+     *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
     public function editAction(Request $request)
@@ -299,6 +305,7 @@ class MedicalCenterController extends InstitutionAwareController
             throw $this->createNotFoundException("Invalid institution medical center.");
         }
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
+
         return $this->render('InstitutionBundle:MedicalCenter:edit.html.twig', array(
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'form' => $form->createView(),
@@ -306,6 +313,10 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
+     * Saves an institution medical center
+     *
+     * Dispatches an event upon successful save.
+     *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      *
      */
@@ -335,12 +346,10 @@ class MedicalCenterController extends InstitutionAwareController
             $em->persist($institutionMedicalCenter);
             $em->flush();
 
-            if ($isNew) {
-                $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER);
-            }
-            else {
-                $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER);
-            }
+            $this->dispatchEvent(
+                $isNew ? InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
+                $institutionMedicalCenter
+            );
 
             $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
 
@@ -382,22 +391,12 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Convenience function for dispatching events related to medical centers
-     *
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
-     * @param boolean $isNewObject
+     * Convenience function for dispatching events for logs
      */
-    private function dispatchEvent($eventName, $dependentEntities = array())
+    private function dispatchEvent($eventName, $loggedEntity, $optionalArguments = array())
     {
-        $event = $this->get('events.factory')->create($eventName, $dependentEntities);
+        $event = $this->get('events.factory')->create($eventName, $loggedEntity, $optionalArguments);
         $this->get('event_dispatcher')->dispatch($eventName, $event);
-
-        //sample code
-        /*
-        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
-            $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION, array('institution' => $institution, 'institutionUser' => $user)
-        ));
-        */
     }
 
     private function _errorResponse($message, $code=500)

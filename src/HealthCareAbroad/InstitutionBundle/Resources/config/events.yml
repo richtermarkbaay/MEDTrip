@@ -1,7 +1,7 @@
 #
 # List down the events that will be dispatched in this bundle.
 # Parameter will be in the following format:
-#    $event_name: $target_entity_qualified_name    
+#    $event_name: $target_entity_qualified_name
 #
 # Event name convention is:
 #        event.{subject_entity}.{event_action}
@@ -14,32 +14,33 @@ parameters:
     # institution event classes
     event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
-    
+
     # institution invitation event classes
-    event.institution_invitation.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvent 
+    event.institution_invitation.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvent
 
     # institution user related events
     event.institution_user.login: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
     event.institution_user.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent
     event.institution_user.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
     event.institution_user.change_password: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent
-    
+
     # institution user invitation events
     event.institution_user_invitation.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserInvitationEvent
 
     # institutionMedicalCenter event class
     event.institution_medical_center.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
     event.institution_medical_center.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
+    event.institution_medical_center.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
 
     # institutionMedicalProcedureType event class
     event.institution_medical_procedure_type.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
     event.institution_medical_procedure_type.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
+    event.institution_medical_procedure_type.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
 
     # institutionMedicalProcedure event class
     event.institution_medical_procedure.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
     event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
-    
+
     # institution user type events
     event.institution_user_type.add_role: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
     event.institution_user_type.delete_role: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
-    

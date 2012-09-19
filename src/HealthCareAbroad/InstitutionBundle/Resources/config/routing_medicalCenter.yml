@@ -1,7 +1,7 @@
 ## imcId variable is institution_medical_center.id
 institution_medicalCenter_index:
     pattern: /medical-centers
-    defaults: { _controller: InstitutionBundle:MedicalCenter:index, status: 2 }
+    defaults: { _controller: InstitutionBundle:MedicalCenter:index}
     requirements:
         _method:  GET
 

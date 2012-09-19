@@ -46,6 +46,8 @@ class InstitutionMedicalCenterService
      *
      * @param Institution $institution
      * @param int $institutionMedicalCenterId
+     * @throws Exception
+     * @return InstitutionMedicalCenter $institutionMedicalCenter
      */
     public function deleteDraftInstitutionMedicalCenter(Institution $institution, $institutionMedicalCenterId)
     {
@@ -58,6 +60,8 @@ class InstitutionMedicalCenterService
             throw new Exception('Delete operation not allowed.');
         }
 
+        //NOTE: Supposedly a DRAFT institution medical center will have no procedure types
+        // so the loop below will never run. But this specification can change.
         //TODO: Use DQL DELETE statement to delete multiple entities of a type with a single command and without hydrating these entities
         foreach($center->getInstitutionMedicalProcedureTypes() as $entity) {
             $em->remove($entity);
@@ -65,5 +69,7 @@ class InstitutionMedicalCenterService
 
         $em->remove($center);
         $em->flush();
+
+        return $center;
     }
 }
