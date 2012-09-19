@@ -35,3 +35,10 @@ parameters:
     event.city.add: HealthCareAbroad\AdminBundle\Event\CityEvent
     event.city.edit: HealthCareAbroad\AdminBundle\Event\CityEvent
     event.city.delete: HealthCareAbroad\AdminBundle\Event\CityEvent
+    
+    #
+    # country related events
+    #
+    event.country.add: HealthCareAbroad\AdminBundle\Event\CountryEvent
+    event.country.edit: HealthCareAbroad\AdminBundle\Event\CountryEvent
+    event.country.delete: HealthCareAbroad\AdminBundle\Event\CountryEvent

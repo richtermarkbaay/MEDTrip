@@ -80,7 +80,7 @@ class CityController extends Controller
                $em->flush($city);
 
                // dispatch event
-               $eventName = $id ? AdminBundleEvents::ON_ADD_CITY : AdminBundleEvents::ON_EDIT_CITY;
+               $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
                $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
 
                $request->getSession()->setFlash('success', 'City has been saved!');

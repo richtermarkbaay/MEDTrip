@@ -22,4 +22,8 @@ final class AdminBundleEvents
     const ON_ADD_CITY = 'event.city.add';
     const ON_EDIT_CITY = 'event.city.edit';
     const ON_DELETE_CITY = 'event.city.delete';
+    
+    const ON_ADD_COUNTRY = 'event.country.add';
+    const ON_EDIT_COUNTRY = 'event.country.edit';
+    const ON_DELETE_COUNTRY = 'event.country.delete';
 }

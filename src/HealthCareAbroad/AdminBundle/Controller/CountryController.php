@@ -1,10 +1,7 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\CountryEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateCountryEvent;
-
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\HelperBundle\Entity\Country;
@@ -77,16 +74,10 @@ class CountryController extends Controller
                $em->persist($country);
                $em->flush($country);
 
-               if($id) {
-                   //// create event on addCountry and dispatch
-                   $event = new CreateCountryEvent($country);
-                   $this->get('event_dispatcher')->dispatch(CountryEvents::ON_ADD_COUNTRY, $event);
-               }
-               else {
-                   //// create event on editCountry and dispatch
-                   $event = new CreateCountryEvent($country);
-                   $this->get('event_dispatcher')->dispatch(CountryEvents::ON_EDIT_COUNTRY, $event);
-               }
+               // dispatch event
+               $eventName = $id ? AdminBundleEvents::ON_EDIT_COUNTRY : AdminBundleEvents::ON_ADD_COUNTRY;
+               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $country));
+               
                $request->getSession()->setFlash('success', 'Country has been saved!');
 
                return $this->redirect($this->generateUrl('admin_country_index'));
@@ -115,9 +106,8 @@ class CountryController extends Controller
             $em->persist($country);
             $em->flush($country);
 
-            //// create event on editCountry and dispatch
-            $event = new CreateCountryEvent($country);
-            $this->get('event_dispatcher')->dispatch(CountryEvents::ON_EDIT_COUNTRY, $event);
+            // dispatch event
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_COUNTRY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_COUNTRY, $country));
 
             $result = true;
         }
