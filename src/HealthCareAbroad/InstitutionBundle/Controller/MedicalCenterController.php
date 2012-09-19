@@ -32,9 +32,10 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class MedicalCenterController extends InstitutionAwareController
 {
     /**
-     * Displays a list of of active/approved institution medical centers by default.
+     * Displays a list of of ACTIVE/APPROVED institution medical centers by default.
      * Can also display a list of DRAFT, PENDING, and EXPIRED medical centers.
-     * Uses the ListFilterBeforeController to get the filtered list.
+     *
+     * Uses the ListFilterBeforeController to get the filtered list and the pager.
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -46,18 +47,6 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
             'institutionMedicalCenters' => $this->filteredResult,
             'pager' => $this->pager
-        ));
-    }
-
-    public function testAction(Request $request)
-    {
-        $page = $request->get('page');
-
-        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia(1)->toArray());
-        $pager = new Pager($adapter, array('page' => $page, 'limit' => 12));
-
-        return $this->render('InstitutionBundle:MedicalCenter:test.html.twig', array(
-                    'pager' => $pager
         ));
     }
 
@@ -274,7 +263,7 @@ class MedicalCenterController extends InstitutionAwareController
         } else {
             $redirectUrl = $this->generateUrl('institution_medicalCenter_addProcedureTypes', array('imcId' => $request->get('imcId')));
         }
-        
+
         return $this->redirect($redirectUrl);
     }
 
