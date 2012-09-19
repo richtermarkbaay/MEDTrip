@@ -32,8 +32,14 @@
         {
             "package": "gedmo/doctrine-extensions",
             "version": "dev-master",
-            "source-reference": "628b372ac6345dea7b67b8b164ce84101b1109a3",
-            "commit-date": "1347552311"
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "c52b23174a74010beed6e24b543f7fb8249abe93",
+            "commit-date": "1347664039"
         },
         {
             "package": "guzzle/guzzle",
@@ -64,8 +70,8 @@
         {
             "package": "knplabs/gaufrette",
             "version": "dev-master",
-            "source-reference": "5ac439cd46eb461043e6bb73dae717528f674a57",
-            "commit-date": "1347117279"
+            "source-reference": "v0.1.1",
+            "commit-date": "1347953999"
         },
         {
             "package": "kriswallsmith/assetic",
@@ -76,8 +82,8 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "source-reference": "22b57658cbcedc24bb9ad72f9cc05b7d83c228c9",
-            "commit-date": "1347558609"
+            "source-reference": "a6baab9b4c4361aca51bf90ee47c1586dff3cb0c",
+            "commit-date": "1347622188"
         },
         {
             "package": "monolog/monolog",
@@ -88,8 +94,8 @@
         {
             "package": "monolog/monolog",
             "version": "dev-master",
-            "source-reference": "0f3dc95c4a0ed7d17bec237d07af3da6c0c1071a",
-            "commit-date": "1347363321"
+            "source-reference": "09b3a80cfaf3e323e348a5e817afeee98d5e6b48",
+            "commit-date": "1347983448"
         },
         {
             "package": "nikic/php-parser",
@@ -154,8 +160,8 @@
         {
             "package": "symfony/symfony",
             "version": "2.1.x-dev",
-            "source-reference": "f23fd03732e115fd15ec675c0ada4cba20a035d1",
-            "commit-date": "1347354770"
+            "source-reference": "8cb1ff3f5d8669d14af170d552d51c01226a31be",
+            "commit-date": "1348026606"
         },
         {
             "package": "twig/extensions",
@@ -166,14 +172,14 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.9.x-dev",
-            "alias-version": "1.9.9999999.9999999-dev"
+            "alias-pretty-version": "1.10.x-dev",
+            "alias-version": "1.10.9999999.9999999-dev"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "956a66e6da304ead2aa2632acc01118b360d19d3",
-            "commit-date": "1347542132"
+            "source-reference": "b4d1d62b82e83c6fd3d5a6cd46a186de64275bb4",
+            "commit-date": "1347961095"
         }
     ],
     "packages-dev": null,
