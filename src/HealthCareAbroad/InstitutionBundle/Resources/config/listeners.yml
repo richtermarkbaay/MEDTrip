@@ -13,6 +13,14 @@ services:
            - [setInstitutionUserService, [@services.institution_user]]
         tags:
             - { name: kernel.event_listener, event: event.institution.add, method: onAdd }
+    
+    ### --------- institution invitation event listeners --------- ###
+    listener.log.institution_invitation.add:
+        class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.add, method: onCommonLogAction }
+    ### --------- end institution invitation event listeners --------- ###
             
             
     ### --------- institution user related event listeners --------- ###
