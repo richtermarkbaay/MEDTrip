@@ -8,10 +8,6 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
-use HealthCareAbroad\AdminBundle\Events\AdminUserRoleEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateAdminUserRoleEvent;
-
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

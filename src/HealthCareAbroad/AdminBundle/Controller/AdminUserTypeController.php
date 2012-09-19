@@ -6,9 +6,7 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\AdminUserTypeEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateAdminUserTypeEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use HealthCareAbroad\UserBundle\Form\AdminUserTypeFormType;
 
@@ -82,6 +80,7 @@ class AdminUserTypeController extends Controller
         
         $id = $request->get('id', 0);
         $userType = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->find($id);
+        $isNew = false;
         
         if ($id && !$userType) {
             throw $this->createNotFoundException();
@@ -89,6 +88,7 @@ class AdminUserTypeController extends Controller
         elseif (!$id) {
             $userType = new AdminUserType();
             $userType->setStatus(AdminUserType::STATUS_ACTIVE);
+            $isNew = true;
         }
                 
         $form = $this->createForm(new AdminUserTypeFormType(), $userType);
@@ -99,9 +99,9 @@ class AdminUserTypeController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            //// create event on addUserType and dispatch
-            $event = new CreateAdminUserTypeEvent($userType);
-            $this->get('event_dispatcher')->dispatch(AdminUserTypeEvents::ON_ADD_ADMIN_USER_TYPE, $event);
+            // dispatch event
+            $eventName = $isNew ? AdminBundleEvents::ON_ADD_ADMIN_USER_TYPE : AdminBundleEvents::ON_EDIT_ADMIN_USER_TYPE;
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $userType));
             
             $request->getSession()->setFlash("success", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('admin_userType_index'));
