@@ -1,7 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'medical_centers'%}
 {% block title %}{{ parent() }} {{ newObject ? "Add Medical Procedure Type" : "Edit Medical Procedure Type"}} {% endblock %}
-{% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
 <!-- start content -->
@@ -31,26 +30,15 @@
 			
 			    {% include '::notice.admin.html.twig' %}
 			
-			    <form novalidate="novalidate" action="{{ newObject ? path('institution_medicalCenter_addProcedureType_save', {'imcId': app.request.get('imcId')} ) : path('institution_medicalCenter_editProcedureType_save', {'imcId': app.request.get('imcId'), 'imptId': app.request.get('imptId')} ) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-    			    
-    			    <!-- start id-form -->
-            		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-            		    
-            		    {{ form_row(form.medicalProcedureType) }}
-                        {{ form_row(form.description) }}
-                        
-                        <tr>
-                    		<th>&nbsp;</th>
-                    		<td valign="top">
-                    			<input type="submit" name="submit" value="" class="form-submit" />
-                    			<input type="reset" value="" class="form-reset"  />
-                    		</td>
-                    		<td></td>
-                    	</tr>
-                        
-                        {{ form_rest(form) }}
-                        
-                	</table>
+                <form novalidate="novalidate" action="{{ newObject ? path('institution_medicalCenter_addProcedureType_save', {'imcId': app.request.get('imcId')} ) : path('institution_medicalCenter_editProcedureType_save', {'imcId': app.request.get('imcId'), 'imptId': app.request.get('imptId')} ) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+
+                     <!-- start id-form -->
+                    {{ form_row(form.medicalProcedureType) }}
+                    {{ form_row(form.description) }}
+                    {{ form_rest(form) }}
+
+                    <input type="submit" name="submit" value="" class="form-submit" />
+                    <input type="reset" value="" class="form-reset"  />
                 	<!-- end id-form  -->
             	</form>
             	
@@ -74,7 +62,7 @@
 </div>
 
 <!--  end content -->
-<div class="clear">&nbsp;</div>
+
 {% endblock %}
 
 {% block inlineJavascriptCode %}

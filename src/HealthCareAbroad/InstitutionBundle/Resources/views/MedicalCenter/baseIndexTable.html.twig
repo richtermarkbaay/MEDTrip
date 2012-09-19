@@ -15,7 +15,7 @@
     {% endif %}
 
     {% for center in institutionMedicalCenters %}
-        <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+        <tr>
             <td></td>
             <td><a href="{{ path(routeName, {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
             <td class="raw-content">{{ center.description|raw }}</td>
@@ -24,8 +24,8 @@
             </td>
         </tr>
     {% else %}
-        <tr class="">
-            <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
+        <tr>
+            <td colspan="4" class="empty-list"> empty result. </td>
         </tr>
     {% endfor %}
 
