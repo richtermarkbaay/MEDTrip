@@ -27,34 +27,35 @@
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
-                {% if pager.isPaginable %}
-                   {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
-                {% endif %}
+                <div style="width: 70%">
+                    <table id="city-list" class="generic-table" width="100%">
+                        <tr>
+                            <th><a href="">Name</a></th>
+                            <th><a href="">Country</a></th>
+                            <th><a href="">Status</a></th>
+                            <th class="actions" width="100">Action</th>
+                        </tr>
 
-                <table id="city-list" class="generic-table" width="70%">
-                <tr>
-                    <th><a href="">Name</a></th>
-                    <th><a href="">Country</a></th>
-                    <th><a href="">Status</a></th>
-                    <th class="actions" width="100"><a href="">Action</a></th>
-                </tr>
-
-                {% for city in cities %}
-                    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                        <td>{{ city.name }}</td>
-                        <td>{{ city.country.name }}</td>
-                        <td>{{ city.status ? 'Active' : 'Inactive' }}</td>
-                        <td align="center">
-                            <a href="{{ path('admin_city_edit', {id:city.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                            {% set class = city.status ? 'icon-2' : 'icon-5' %}
-                            <a href="{{ path('admin_city_updateStatus', {id:city.id}) }}" title="{{ city.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                        </td>
-                    </tr>
-                {% else  %}
-                    <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
-                {% endfor %}
-                </table>
-
+                        {% for city in cities %}
+                            <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                                <td>{{ city.name }}</td>
+                                <td>{{ city.country.name }}</td>
+                                <td>{{ city.status ? 'Active' : 'Inactive' }}</td>
+                                <td align="center">
+                                    <a href="{{ path('admin_city_edit', {id:city.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                    {% set class = city.status ? 'icon-2' : 'icon-5' %}
+                                    <a href="{{ path('admin_city_updateStatus', {id:city.id}) }}" title="{{ city.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                </td>
+                            </tr>
+                        {% else  %}
+                            <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                        {% endfor %}
+                    </table>
+                    {% if pager.isPaginable %}
+                        {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
+                    {% endif %}
+                </div>
+                
             {% endblock %}
         {% endembed %}
     </div>

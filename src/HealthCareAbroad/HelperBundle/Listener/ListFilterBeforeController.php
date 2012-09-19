@@ -61,17 +61,12 @@ class ListFilterBeforeController
 
             $listFilter->prepare($params);
 
-            $controller[0]->filteredResult = $listFilter->getFilteredResult();
             $controller[0]->pager = $listFilter->getPager();
-
-            $urlParams = $request->get('_route_params');
-
-            if(isset($params['limit']))
-                $urlParams['limit'] = $params['limit'];
+            $controller[0]->filteredResult = $listFilter->getFilteredResult();
 
             $listFilters = $this->twig->render('HelperBundle:Default:filters.html.twig', array(
                 'filters' => $listFilter->getFilterOptions(),
-                'url' => $this->router->generate($routeName, $urlParams)
+                'url' => $this->router->generate($routeName, $request->get('_route_params'))
             ));
 
             $this->twig->addGlobal('listFilters', $listFilters);
