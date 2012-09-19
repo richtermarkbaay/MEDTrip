@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
+
 use HealthCareAbroad\AdminBundle\Events\AdminUserRoleEvents;
 
 use HealthCareAbroad\AdminBundle\Events\CreateAdminUserRoleEvent;
@@ -79,10 +81,8 @@ class AdminUserRoleController extends Controller
             $em->persist($userType);
             $em->flush();
             
-            //// create event on addRoleToUserType and dispatch
-            $event = new CreateAdminUserRoleEvent($roles);
-            $this->get('event_dispatcher')->dispatch(AdminUserRoleEvents::ON_ADD_ADMIN_USER_ROLE, $event);
-            
+            // dispatch event
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADD_ADMIN_USER_TYPE_ROLE, $this->get('events.factory')->create(AdminBundleEvents::ON_ADD_ADMIN_USER_TYPE_ROLE, $userType));
         }
         catch (\PDOException $e) {
             return $this->_errorResponse(500, $e->getMessage());
@@ -110,6 +110,9 @@ class AdminUserRoleController extends Controller
         
         $em->persist($userType);
         $em->flush();
+        
+        // dispatch event
+        $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_DELETE_ADMIN_USER_TYPE_ROLE, $this->get('events.factory')->create(AdminBundleEvents::ON_DELETE_ADMIN_USER_TYPE_ROLE, $userType));
         
         return $this->_jsonResponse(array('success' => 1));
     }

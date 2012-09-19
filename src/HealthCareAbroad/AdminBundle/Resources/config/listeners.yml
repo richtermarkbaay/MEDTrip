@@ -30,7 +30,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.admin_user.login, method: onCommonLogAction }
             
-    listener.admin_user.change_password:
+    listener.log.admin_user.change_password:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
@@ -39,5 +39,35 @@ services:
     #
     # listeners for admin user type related events
     #
-    
+    listener.log.admin_user_type.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin_user_type.add, method: onCommonLogAction }
+            
+    listener.log.admin_user_type.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin_user_type.edit, method: onCommonLogAction }
+            
+    listener.log.admin_user_type.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin_user_type.delete, method: onCommonLogAction }
+            
+    listener.log.admin_user_type.add_role:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin_user_type.add_role, method: onCommonLogAction }
+            
+    listener.log.admin_user_type.delete_role:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin_user_type.delete_role, method: onCommonLogAction }
+            
+            
     
