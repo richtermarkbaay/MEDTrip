@@ -236,8 +236,8 @@ class MedicalCenterController extends InstitutionAwareController
 
         if (!$form->isValid()) {
             return $this->render('InstitutionBundle:MedicalCenter:addProcedureTypes.html.twig', array(
-                            'institutionMedicalCenter' => $institutionMedicalCenter,
-                            'form' => $form->createView()
+                'institutionMedicalCenter' => $institutionMedicalCenter,
+                'form' => $form->createView()
             ));
         }
 
@@ -252,7 +252,13 @@ class MedicalCenterController extends InstitutionAwareController
 
         $request->getSession()->setFlash('success', "Successfully added {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
 
-        return $this->redirect($this->generateUrl('institution_medicalCenter_addProcedureTypes', array('imcId' => $request->get('imcId'))));
+        if($request->get('submit') == 'Next') {
+            $redirectUrl = $this->generateUrl('institution_medicalCenter_preview', array('imcId' => $request->get('imcId')));
+        } else {
+            $redirectUrl = $this->generateUrl('institution_medicalCenter_addProcedureTypes', array('imcId' => $request->get('imcId')));
+        }
+        
+        return $this->redirect($redirectUrl);
     }
 
     /**

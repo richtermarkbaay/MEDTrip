@@ -23,7 +23,6 @@
             <!--  start table-content  -->
             <div id="table-content">
                 <div style="width:75%;">
-                    {% include '::notice.admin.html.twig' %}
 
                     {% include '::stepHolder.base.admin.html.twig' with {
                         steps: [
@@ -32,7 +31,9 @@
                             {title: 'Add Procedure Types'},
                             {title: 'Preview', 'selected': false},
                         ] }
-                  %}
+                    %}
+
+                    {% include '::notice.admin.html.twig' %}
 
                     <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="mediaList">
 
@@ -57,17 +58,10 @@
                     </table>
 
                     <div>
-                        <ul>
-                            <li><a href="#" id="uploadFormButton">Upload media from your computer</a></li>
-                            <li><a href="#" id="mediaGalleryButton">Attach media from Media Gallery</a></li>
-                        </ul>
+                        <a href="#" id="uploadFormButton" class="button-type">Upload media from your computer</a>
+                        <a href="#" id="mediaGalleryButton" class="button-type">Attach media from Media Gallery</a>
+                        <a id="next-step" href="{{ path('institution_medicalCenter_addProcedureTypes', {imcId:institutionMedicalCenter.id}) }}" class="button-type" style="display:{{ institutionMedicalCenter.media|length ? 'inline-block' : 'none' }}">Next</a>
                     </div>
-
-                    <div class="clear">&nbsp;</div>
-
-                    <form action="{{ path('institution_medicalCenter_addProcedureTypes', { 'imcId': institutionMedicalCenter.id}) }}" method="GET" name="nextStep" id="nextStep">
-                        <input type="submit" name="submit" value="Next" class="green-button" />
-                    </form>
 
                 </div>
 
@@ -120,21 +114,6 @@
 
         <script type="text/javascript">
         $(function() {
-/*
-            $(".fancybox").fancybox({
-                helpers     : { media	: {} },
-                margin      : [20, 60, 20, 60]
-            });
-*/
-            $('#nextStep').submit(function(e) {
-                if ($('#noMedia').length) {
-                    alert('Please upload your media or attach one from the Media Gallery.');
-                    return false;
-                } else {
-                    $('#nextStep').submit();
-                }
-            });
-
             $("#uploader").plupload({
                 runtimes : 'html5',
                 url : '{{ path('media_upload_medicalCenter', {'imcId': institutionMedicalCenter.id}) }}',
@@ -212,9 +191,10 @@
                     type: 'get',
                     dataType: 'json',
                     success: function(response) {
-
                         $('#mediaList').html(response.html).hide().slideDown('slow');
-
+                        if(response.count) {
+                        	$('#next-step').show();
+                        }
                     },
                     error: function() {
                         $('#messageBar').html('An error occurred while processing your request. Please try again.');

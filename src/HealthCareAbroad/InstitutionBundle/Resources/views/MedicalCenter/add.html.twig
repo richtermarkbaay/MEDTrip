@@ -28,7 +28,7 @@
             {# ----- end Related tasks ----- #}
 
             <!--  start table-content  -->
-            <div id="table-content">
+            <div id="table-content" style="width:70%">
 
                 {% include '::notice.admin.html.twig' %}
 
@@ -47,12 +47,14 @@
                     {{ form_row(form.description) }}
                     {{ form_rest(form) }}
 
+                    <input type="reset" value="Reset" class="form-reset"/>
                     {% if hasDraft %}
-                    <div><a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcId': institutionMedicalCenter.id }) }}">Delete draft</a></div>
+                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcId': institutionMedicalCenter.id }) }}" class="button-type">Delete draft</a>
                     {% endif %}
 
-                    <input style="" type="submit" name="submit" value="Next" class="green-button" />
-                    <input type="reset" value="" class="form-reset"  />
+
+                    <input type="submit" name="submit" value="Next" class="green-button" />
+
                 </form>
 
                 {#% include 'InstitutionBundle:MedicalCenter:form_draft.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_add', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter} %#}
