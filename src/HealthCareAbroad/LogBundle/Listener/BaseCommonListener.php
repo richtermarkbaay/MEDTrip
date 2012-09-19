@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\LogBundle\Listener;
 
+use HealthCareAbroad\LogBundle\Entity\Log;
+
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
 use HealthCareAbroad\LogBundle\Services\LogService;
