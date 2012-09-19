@@ -132,6 +132,48 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.medical_center.delete, method: onCommonLogAction }
+            
+    #
+    # listeners  for medical procedure related events
+    #
+    listener.log.medical_procedure.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure.add, method: onCommonLogAction }
+            
+    listener.log.medical_procedure.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure.edit, method: onCommonLogAction }
+                    
+    listener.log.medical_procedure.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure.delete, method: onCommonLogAction }
+            
+    #
+    # listeners  for medical procedure type related events
+    #
+    listener.log.medical_procedure_type.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure_type.add, method: onCommonLogAction }
+            
+    listener.log.medical_procedure_type.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure_type.edit, method: onCommonLogAction }
+                    
+    listener.log.medical_procedure_type.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_procedure_type.delete, method: onCommonLogAction }
     
     
     

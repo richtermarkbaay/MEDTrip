@@ -2,9 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\MedicalProcedureTypeEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalProcedureTypeEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
 
@@ -130,16 +128,8 @@ class MedicalProcedureTypeController extends Controller
 			$em->persist($procedureType);
 			$em->flush($procedureType);
 	
-			if($id) {
-				//// create event on addMedicalProcedureType and dispatch
-				$event = new CreateMedicalProcedureTypeEvent($procedureType);
-				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_ADD_MEDICAL_PROCEDURE_TYPE, $event);
-			}
-			else{
-				//// create event on editMedicalProcedureType and dispatch
-				$event = new CreateMedicalProcedureTypeEvent($procedureType);
-				$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
-			}
+			$eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE : AdminBundleEvents::ON_ADD_MEDICAL_PROCEDURE_TYPE;
+			$this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $procedureType));
 			
 			$request->getSession()->setFlash('success', $id ? "Successfully updated {$procedureType->getName()}." : "Successfully added {$procedureType->getName()}.");
 
@@ -191,9 +181,8 @@ class MedicalProcedureTypeController extends Controller
 			$em->persist($procedureType);
 			$em->flush($procedureType);
 			
-			//// create event on editMedicalProcedureType and dispatch
-			$event = new CreateMedicalProcedureTypeEvent($procedureType);
-			$this->get('event_dispatcher')->dispatch(MedicalProcedureTypeEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $event);
+			// dispatch event
+			$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE_TYPE, $procedureType));
 			
 			$result = true;
 		}

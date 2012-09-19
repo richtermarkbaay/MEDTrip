@@ -50,3 +50,17 @@ parameters:
     event.medical_center.edit: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
     event.medical_center.delete: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
     
+    #
+    # medical procedure related events
+    #
+    event.medical_procedure.add: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
+    event.medical_procedure.edit: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
+    event.medical_procedure.delete: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
+    
+    #
+    # medical procedure type related events
+    #
+    event.medical_procedure_type.add: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
+    event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
+    event.medical_procedure_type.delete: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
+    

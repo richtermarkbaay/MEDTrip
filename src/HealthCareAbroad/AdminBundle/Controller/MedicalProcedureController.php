@@ -2,9 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\AdminBundle\Events\MedicalProcedureEvents;
-
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalProcedureEvent;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
 
@@ -124,9 +122,9 @@ class MedicalProcedureController extends Controller
 			$em->persist($procedure);
 			$em->flush($procedure);
 
-			//// create event on addMedicalProcedure and dispatch
-			$event = new CreateMedicalProcedureEvent($procedure);
-			$this->get('event_dispatcher')->dispatch(MedicalProcedureEvents::ON_ADD_MEDICAL_PROCEDURE, $event);
+			// dispatch event
+			$eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE : AdminBundleEvents::ON_ADD_MEDICAL_PROCEDURE;
+			$this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $procedure));
 			
 			$request->getSession()->setFlash('success', 'Medical Procedure has been saved!');
 			
@@ -183,9 +181,8 @@ class MedicalProcedureController extends Controller
 			$em->persist($procedure);
 			$em->flush($procedure);
 			
-			//// create event on editMEdicalProcedure and dispatch
-			$event = new CreateMedicalProcedureEvent($procedure);
-			$this->get('event_dispatcher')->dispatch(MedicalProcedureEvents::ON_EDIT_MEDICAL_PROCEDURE, $event);
+			// dispatch event
+			$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE, $procedure));
 			
 			$result = true;
 		}
