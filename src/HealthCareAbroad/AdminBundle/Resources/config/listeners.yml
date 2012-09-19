@@ -1,0 +1,37 @@
+#
+# List down listeners for events dispatched in AdminBundle. Naming convention for listener is 
+#    listener.{listener_class_bundle}.{subject}.{event_action}
+#    
+# Sample:
+#    listener.mailer.admin_user.change_password
+#
+
+
+services:
+
+    #
+    # listeners for admin user related events
+    #
+    listener.log.admin_user.add: 
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.add, method: onCommonLogAction }
+    
+    listener.log.admin_user.edit: 
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.edit, method: onCommonLogAction }
+            
+    listener.log.admin_user.login: 
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.login, method: onCommonLogAction }
+            
+    listener.admin_user.change_password
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.institution_invitation.change_password, method: onCommonLogAction }
