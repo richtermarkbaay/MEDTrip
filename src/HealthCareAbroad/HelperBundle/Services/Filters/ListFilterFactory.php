@@ -38,7 +38,7 @@ final class ListFilterFactory
 
     /**
      * @desc This is the list of valid ListFilter Classes.
-     * 		 New ListFilter class should be added here first with the corresponding routeName as its key or index.
+     *          New ListFilter class should be added here first with the corresponding routeName as its key or index.
      *
      * @return multitype:string
      */
@@ -53,7 +53,7 @@ final class ListFilterFactory
             'admin_procedureType_index' => 'MedicalProcedureTypeListFilter',
             'admin_medicalProcedure_index' => 'MedicalProcedureListFilter',
             'admin_institution_manageCenters' => 'InstitutionMedicalCenterListFilter',
-            'admin_institution_manageProcedureTypes' => 'InstitutionMedicalProcedureTypeListFilter',
+//            'admin_institution_manageProcedureTypes' => 'InstitutionMedicalProcedureTypeListFilter',
             'institution_medicalCenter_index' => 'InstitutionMedicalCenterListFilter'
         );
     }

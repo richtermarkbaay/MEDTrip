@@ -5,52 +5,54 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use Doctrine\ORM\EntityManager;
-
 class MedicalProcedureListFilter extends ListFilter
 {
 
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedure');		
-		
-		// Add medicalProcedureType in validCriteria
-		$this->addValidCriteria('medicalProcedureType');
-	}
+    function __construct($doctrine)
+    {
+        parent::__construct($doctrine);
 
-	function setFilterOptions()
-	{
-		$this->setMedicalProcedureTypeFilterOption();
+        // Add medicalProcedureType in validCriteria
+        $this->addValidCriteria('medicalProcedureType');
+    }
 
-		$this->setStatusFilterOption();
-	}
+    function setFilterOptions()
+    {
+        $this->setMedicalProcedureTypeFilterOption();
 
-	function setMedicalProcedureTypeFilterOption()
-	{		
-		// Set The Filter Option 
-		$procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
-		$options = array('all' => 'All');
-		foreach($procedureTypes as $each) {
-			$options[$each->getId()] = $each->getName();
-		}
+        $this->setStatusFilterOption();
+    }
 
-		$this->filterOptions['medicalProcedureType'] = array(
-			'label' => 'Procedure Type',
-			'selected' => $this->queryParams['medicalProcedureType'],
-			'options' => $options
-		);
-	}
+    function setMedicalProcedureTypeFilterOption()
+    {        
+        // Set The Filter Option 
+        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        foreach($procedureTypes as $each) {
+            $options[$each->getId()] = $each->getName();
+        }
 
-	function setFilteredResult()
-	{
-		$procedureTypeId = $this->queryParams['medicalProcedureType'];
+        $this->filterOptions['medicalProcedureType'] = array(
+            'label' => 'Procedure Type',
+            'selected' => $this->queryParams['medicalProcedureType'],
+            'options' => $options
+        );
+    }
 
-		if($procedureTypeId != 'all') {
-			$procedureType = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedureTypeId);			
-			$this->criteria['medicalProcedureType'] = $procedureType;
-		}
+    function buildQueryBuilder()
+    {
+        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:MedicalProcedure', 'a');
 
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
+        
+        if ($this->queryParams['medicalProcedureType'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.medicalProcedureType = :medicalProcedureType');
+            $this->queryBuilder->setParameter('medicalProcedureType', $this->criteria['medicalProcedureType']);
+        }
+        
+        $this->queryBuilder->add('orderBy', 'a.name ASC');
+    }
 }

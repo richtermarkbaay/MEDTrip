@@ -1,10 +1,8 @@
-<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
-
+<table width="100%" class="generic-table" id="medical-centers-list">
     <tr>
-        <th class="table-header-check"></th>
-        <th class="table-header-repeat line-left minwidth-1"> <a href="#">Medical Centers</a></th>
-        <th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
-        <th class="table-header-options line-left"><a href="#">Options</a> </th>
+        <th class="minwidth-1"> <a href="#">Medical Centers</a></th>
+        <th class="minwidth-1"><a href="#">Description</a></th>
+        <th class="actions">Actions</th>
     </tr>
 
     {# TODO: Don't hardcode value  #}
@@ -16,7 +14,6 @@
 
     {% for center in institutionMedicalCenters %}
         <tr>
-            <td></td>
             <td><a href="{{ path(routeName, {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
             <td class="raw-content">{{ center.description|raw }}</td>
             <td class="options-width">
@@ -25,8 +22,7 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="4" class="empty-list"> empty result. </td>
+            <td colspan="3" class="empty-list"> empty result. </td>
         </tr>
     {% endfor %}
-
 </table>

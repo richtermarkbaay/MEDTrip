@@ -5,8 +5,6 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-
 use Doctrine\ORM\QueryBuilder;
 
 class CountryListFilter extends ListFilter
@@ -17,14 +15,15 @@ class CountryListFilter extends ListFilter
         $this->setStatusFilterOption();
     }
 
-    function setQueryBuilder()
+    function buildQueryBuilder()
     {
-        $this->queryBuilder = new QueryBuilder($this->doctrine->getEntityManager());
         $this->queryBuilder->select('c')->from('HelperBundle:Country', 'c');
 
-        if ($this->queryParams['status'] != 'all') {
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('c.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
+
+        $this->queryBuilder->add('orderBy', 'c.name ASC');
     }
 }

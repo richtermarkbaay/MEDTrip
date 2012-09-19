@@ -56,37 +56,37 @@ class AdminUserController extends Controller
      */
     public function editAccountAction()
     {
-    	$accountId = $this->getRequest()->getSession()->get('accountId');
+        $accountId = $this->getRequest()->getSession()->get('accountId');
 
-    	//get user's data
-    	$adminUser = $this->get('services.admin_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        //get user's data
+        $adminUser = $this->get('services.admin_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
         if (!$adminUser) {
             throw $this->createNotFoundException('Cannot update invalid account.');
         }
-    	$form = $this->createForm(new UserAccountDetailType(), $adminUser);
-    	
-    	if ($this->getRequest()->isMethod('POST')) {
-			$form->bindRequest($this->getRequest());
-			
-	    	if($form->isValid()) {
-	    		
-	    		$user = $this->get('services.admin_user')->update($adminUser);
-	    		if(!$user) {
-	    			//TODO:: send notification to hca admin
-	    			$this->get('session')->setFlash('error', "Unable to update account");
-	    			 
-	    		}
-	    		
-	    		// dispatch event
-	    		$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADMIN_USER, $adminUser));
-	    		
-	    		$this->get('session')->setFlash('success', "Successfully updated account");
-	    	}
-    	}
-    	return $this->render('AdminBundle:AdminUser:edit.html.twig', array(
-    			'form' => $form->createView(),
-    			'user' => $adminUser
-    			));
+        $form = $this->createForm(new UserAccountDetailType(), $adminUser);
+        
+        if ($this->getRequest()->isMethod('POST')) {
+            $form->bindRequest($this->getRequest());
+            
+            if($form->isValid()) {
+                
+                $user = $this->get('services.admin_user')->update($adminUser);
+                if(!$user) {
+                    //TODO:: send notification to hca admin
+                    $this->get('session')->setFlash('error', "Unable to update account");
+                     
+                }
+                
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADMIN_USER, $adminUser));
+                
+                $this->get('session')->setFlash('success', "Successfully updated account");
+            }
+        }
+        return $this->render('AdminBundle:AdminUser:edit.html.twig', array(
+                'form' => $form->createView(),
+                'user' => $adminUser
+                ));
     }
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
@@ -94,34 +94,34 @@ class AdminUserController extends Controller
      */
     public function changePasswordAction()
     {
-    	$accountId = $this->getRequest()->getSession()->get('accountId');
-    	
-    	//get user's data
-    	$adminUser = $this->get('services.admin_user')->findById($accountId, true);
-    	if(!$adminUser) {
-    		throw $this->createNotFoundException('Cannot update invalid account');
-    	}
-    	
-    	$form = $this->createForm(new AdminUserChangePasswordType(), $adminUser);
-    	
-    	if ($this->getRequest()->isMethod('POST')) {
-	    	$form->bindRequest($this->getRequest());
-	    	
-	    	if($form->isValid()) {
-	    			
-	    		$adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
-	    		$adminUser = $this->get('services.admin_user')->update($adminUser);
-	    		
-	    		// dispatch event
-	    		$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_CHANGE_PASSWORD_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_CHANGE_PASSWORD_ADMIN_USER, $adminUser));
-	    		
-	    		$this->get('session')->setFlash('success', "Password changed!");
-	    		return $this->redirect($this->generateUrl('admin_homepage'));
-	    	}
-    	}
-    	return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(
-    			'form' => $form->createView(),
-    			));
+        $accountId = $this->getRequest()->getSession()->get('accountId');
+        
+        //get user's data
+        $adminUser = $this->get('services.admin_user')->findById($accountId, true);
+        if(!$adminUser) {
+            throw $this->createNotFoundException('Cannot update invalid account');
+        }
+        
+        $form = $this->createForm(new AdminUserChangePasswordType(), $adminUser);
+        
+        if ($this->getRequest()->isMethod('POST')) {
+            $form->bindRequest($this->getRequest());
+            
+            if($form->isValid()) {
+                    
+                $adminUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+                $adminUser = $this->get('services.admin_user')->update($adminUser);
+                
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_CHANGE_PASSWORD_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_CHANGE_PASSWORD_ADMIN_USER, $adminUser));
+                
+                $this->get('session')->setFlash('success', "Password changed!");
+                return $this->redirect($this->generateUrl('admin_homepage'));
+            }
+        }
+        return $this->render('AdminBundle:AdminUser:changePassword.html.twig', array(
+                'form' => $form->createView(),
+                ));
     }
     /**
      * View all admin users

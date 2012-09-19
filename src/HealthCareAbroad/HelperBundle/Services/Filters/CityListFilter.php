@@ -5,8 +5,6 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use Doctrine\ORM\QueryBuilder;
-
 class CityListFilter extends ListFilter
 {
 
@@ -27,10 +25,9 @@ class CityListFilter extends ListFilter
 
     function setCountryFilterOption()
     {
-
         // Set The Filter Option
         $countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findByStatus(1);
-        $options = array('all' => 'All');
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($countries as $each) {
             $options[$each->getId()] = $each->getName();
         }
@@ -42,19 +39,20 @@ class CityListFilter extends ListFilter
         );
     }
 
-    function setQueryBuilder()
+    function buildQueryBuilder()
     {
-        $this->queryBuilder = new QueryBuilder($this->doctrine->getEntityManager());
         $this->queryBuilder->select('c')->from('HelperBundle:City', 'c');
 
-        if ($this->queryParams['country'] != 'all') {
+        if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('c.country = :country');
             $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
 
-        if ($this->queryParams['status'] != 'all') {
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('c.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
+
+        $this->queryBuilder->add('orderBy', 'c.name ASC');
     }
 }

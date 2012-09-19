@@ -1,6 +1,6 @@
 admin_news_index:
     pattern:  /admin/news
-    defaults: { _controller: AdminBundle:News:index, status: 1 }
+    defaults: { _controller: AdminBundle:News:index }
     requirements:    
         _method:  GET
 

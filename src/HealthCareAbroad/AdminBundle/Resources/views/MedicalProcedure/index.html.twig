@@ -28,29 +28,35 @@
 			<!-- Render Filter Box -->				
 			{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
+			<div style="width:70%">
+    			<table id="medical-procedure-list" class="generic-table" width="100%">
+        			<tr>
+        				<th class="minwidth-1"><a href="">Procedure</a></th>
+        				<th class="minwidth-1"><a href="">Procedure Type</a></th>
+        				<th class="actions">Actions</th>
+        			</tr>
 
-			<table id="medical-procedure-list" class="generic-table" width="70%">
-			<tr>
-				<th class="minwidth-1"><a href="">Procedure</a></th>
-				<th class="minwidth-1"><a href="">Procedure Type</a></th>
-				<th class="actions"><a href="">Actions</a></th>
-			</tr>
+        			{% for procedure in procedures %}
+        				<tr>
+        					<td>{{ procedure.name }}</td>
+        					<td>{{ procedure.MedicalProcedureType.name }}</td>
+        					<td align="center">
+        				
+        					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+        						{% set class = procedure.status ? 'icon-2' : 'icon-5' %}
+        						<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>					
+        					</td>
+        				</tr>
+        			{% else  %}
+        				<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+        			{% endfor %}
+    			</table>
 
-			{% for procedure in procedures %}
-				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-					<td>{{ procedure.name }}</td>
-					<td>{{ procedure.MedicalProcedureType.name }}</td>
-					<td align="center">
-					
-					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-						{% set class = procedure.status ? 'icon-2' : 'icon-5' %}
-						<a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>					
-					</td>
-				</tr>
-			{% else  %}
-				<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
-			{% endfor %}
-			</table>
+                {% if pager.isPaginable %}
+                   {{ paginate(pager, 'admin_medicalProcedure_index', app.request.query.all) }}
+                {% endif %}   
+			</div>
+
 			{% endblock %}
 		{% endembed %}
 	</div>

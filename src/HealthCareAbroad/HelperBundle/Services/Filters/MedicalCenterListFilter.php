@@ -8,19 +8,20 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 class MedicalCenterListFilter extends ListFilter
 {
 
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter');
-	}
+    function setFilterOptions()
+    {
+        $this->setStatusFilterOption();
+    }
 
-	function setFilterOptions()
-	{
-		$this->setStatusFilterOption();
-	}
+    function buildQueryBuilder()
+    {
+        $this->queryBuilder->select('c')->from('MedicalProcedureBundle:MedicalCenter', 'c');
 
-	function setFilteredResult()
-	{
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('c.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
+        
+        $this->queryBuilder->add('orderBy', 'c.name ASC');
+    }
 }

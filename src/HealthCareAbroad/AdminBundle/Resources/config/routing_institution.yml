@@ -1,6 +1,6 @@
 admin_institution_index:
     pattern:  /admin/institutions
-    defaults: { _controller: AdminBundle:Institution:index, status: all }
+    defaults: { _controller: AdminBundle:Institution:index }
 
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status/{status}

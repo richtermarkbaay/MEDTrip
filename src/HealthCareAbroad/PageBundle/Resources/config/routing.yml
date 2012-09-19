@@ -33,7 +33,7 @@ page_tags_sidebar:
         _method: GET|POST
         
 page_exception_report_create:
-    pattern: /404
+    pattern: /error
     defaults: { _controller: PageBundle:Default:errorReport }
     requirements:    
         _method:  GET|POST

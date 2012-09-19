@@ -13,6 +13,7 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 abstract class ListFilter
 {
     const FILTER_KEY_ALL = 'all';
+    const FILTER_LABEL_ALL = 'All';
 
     protected $doctrine;
 
@@ -38,17 +39,17 @@ abstract class ListFilter
      * @desc Default options value for Status Filter Option
      * @var array
      */
-    protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', 'all' => 'All');
+    protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL);
 
     public function __construct($doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->entityRepository = $doctrine->getEntityManager()->getRepository('HelperBundle:Country');
+        $this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
     }
 
     abstract function setFilterOptions();
 
-    abstract function setQueryBuilder();
+    abstract function buildQueryBuilder();
 
     /**
      * @desc Prepare the ListFilter object
@@ -60,7 +61,7 @@ abstract class ListFilter
 
         $this->setFilterOptions();
 
-        $this->setQueryBuilder();
+        $this->buildQueryBuilder();
 
         $this->setPager();
 
@@ -78,11 +79,11 @@ abstract class ListFilter
         foreach($this->validCriteria as $key) {
 
             if(isset($queryParams[$key])) {
-                if(!is_null($queryParams[$key]) && $queryParams[$key] != 'all')
+                if(!is_null($queryParams[$key]) && $queryParams[$key] != self::FILTER_KEY_ALL)
                     $this->criteria[$key] = $queryParams[$key];
             }
 
-            else $this->queryParams[$key] = 'all';
+            else $this->queryParams[$key] = self::FILTER_KEY_ALL;
         }
     }
 

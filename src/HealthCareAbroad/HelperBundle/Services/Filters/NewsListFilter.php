@@ -7,20 +7,21 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 class NewsListFilter extends ListFilter
 {
-	
-	function __construct($doctrine)
-	{
-		$this->doctrine = $doctrine;
-		$this->entityRepository = $doctrine->getEntityManager()->getRepository('HelperBundle:News');
-	}
 
-	function setFilterOptions()
-	{
-		$this->setStatusFilterOption();
-	}
+    function setFilterOptions()
+    {
+        $this->setStatusFilterOption();
+    }
+    
+    function buildQueryBuilder()
+    {
+        $this->queryBuilder->select('a')->from('HelperBundle:News', 'a');
+    
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
 
-	function setFilteredResult()
-	{
-		$this->filteredResult = $this->entityRepository->findBy($this->criteria);
-	}
+        $this->queryBuilder->add('orderBy', 'a.dateCreated ASC');
+    }
 }
