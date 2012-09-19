@@ -4,53 +4,57 @@
 
 {% block content %}
 
-	<div id="content">
+    <div id="content">
 
-		<div id="page-heading"><h2>List of Countries</h2></div>
+        <div id="page-heading"><h2>List of Countries</h2></div>
 
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
 
-				{% include '::notice.admin.html.twig' %}
+                {% include '::notice.admin.html.twig' %}
 
-            	{% set contents = [{
-						'title': 'Add country', 
-						'description': 'Add new country',
-						'class': 'add-icon',
-						'href': path('admin_country_add'), 
-						'links': [{'title': 'Add a country', 'href': path('admin_country_add')}]
-					}]
-            	%}
+                {% set contents = [{
+                        'title': 'Add country',
+                        'description': 'Add new country',
+                        'class': 'add-icon',
+                        'href': path('admin_country_add'),
+                        'links': [{'title': 'Add a country', 'href': path('admin_country_add')}]
+                    }]
+                %}
 
-				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
-				<!-- Render Filter Box -->				
-				{% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}	
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
-				<table id="country-list" class="generic-table" width="70%">
-				<tr>
-					<th><a href="">Name</a></th>
-					<th><a href="">Status</a></th>
-					<th class="actions" width="200"><a href="">Action</a></th>
-				</tr>
+                {% if pager.isPaginable %}
+                   {{ paginate(pager, 'admin_country_index', app.request.query.all) }}
+                {% endif %}
 
-				{% for country in countries %}
-					<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-						<td>{{ country.name }}</td>
-						<td>{{ country.status ? 'Active' : 'Inactive' }}</td>
-						<td align="center">
-							<a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-							{% set class = country.status ? 'icon-2' : 'icon-5' %}
-							<a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-						</td>
-					</tr>
-				{% else  %}
-					<tr><td class="empty-list" colspan="3">No records yet!</td></tr>
-				{% endfor %}
-				</table>
-						
-			{% endblock %}
-		{% endembed %}
-	</div>
+                <table id="country-list" class="generic-table" width="70%">
+                <tr>
+                    <th><a href="">Name</a></th>
+                    <th><a href="">Status</a></th>
+                    <th class="actions" width="200"><a href="">Action</a></th>
+                </tr>
+
+                {% for country in countries %}
+                    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                        <td>{{ country.name }}</td>
+                        <td>{{ country.status ? 'Active' : 'Inactive' }}</td>
+                        <td align="center">
+                            <a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                            {% set class = country.status ? 'icon-2' : 'icon-5' %}
+                            <a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                        </td>
+                    </tr>
+                {% else  %}
+                    <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                {% endfor %}
+                </table>
+
+            {% endblock %}
+        {% endembed %}
+    </div>
 
 {% endblock %}

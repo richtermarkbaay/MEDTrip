@@ -4,36 +4,36 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 
 class AppKernel extends Kernel
 {
-    // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization     
+    // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
     protected function initializeContainer()
     {
         static $first = true;
-    
+
         if ('test' !== $this->getEnvironment()) {
             parent::initializeContainer();
             return;
         }
-    
+
         $debug = $this->debug;
-    
+
         if (!$first) {
             // disable debug mode on all but the first initialization
             $this->debug = false;
         }
-    
+
         // will not work with --process-isolation
         $first = false;
-    
+
         try {
             parent::initializeContainer();
         } catch (\Exception $e) {
             $this->debug = $debug;
             throw $e;
         }
-    
+
         $this->debug = $debug;
     }
-    
+
     public function registerBundles()
     {
         $bundles = array(
@@ -48,13 +48,14 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-        	//new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
-        	new HealthCareAbroad\AdminBundle\AdminBundle(),
+            //new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
+            new HealthCareAbroad\PagerBundle\PagerBundle(),
+            new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
-        	//new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
+            //new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
             new HealthCareAbroad\PageBundle\PageBundle(),
-        	new HealthCareAbroad\MediaBundle\MediaBundle(),
+            new HealthCareAbroad\MediaBundle\MediaBundle(),
             new HealthCareAbroad\MailerBundle\MailerBundle(),
             new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
             new HealthCareAbroad\MedicalProcedureBundle\MedicalProcedureBundle(),

@@ -10,13 +10,13 @@
         <h1>Media Gallery</h1>
     </div>
     <!-- end page-heading -->
-    
+
     {% embed '::contentWrapper.admin.html.twig' %}
-        
+
         {% block wrappedContent %}
             {# ----- Related tasks ----- #}
             {% include 'MediaBundle:Institution:relatedTasksGallery.html.twig' %}
-            {# ----- end Related tasks ----- #}        
+            {# ----- end Related tasks ----- #}
 
                 <!--  start table-content  -->
                 <div id="table-content" style="width:75%;">
@@ -37,18 +37,17 @@
                             </select>
                         </div>
                         <a href="#" class="button-type">GO</a>
-                    </div>    			    
-    
+                    </div>
+
                     <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
                         <thead>
                             <tr>
                                 <td colspan="4">
                                     <div style="float: right;>
-                                        <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
-                                        <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
-                                        <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
-                                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
-                                    </div>																		    			                																
+                                        {% if institutionMedia.isPaginable %}
+                                            {{ paginate(institutionMedia, 'institution_gallery') }}
+                                        {% endif %}
+                                    </div>
                                 </td>
                             </tr>
                         </thead>
@@ -59,39 +58,39 @@
                                         <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
                                         <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
                                         <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
-                                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>							
-                                    </div>																		    			                								
+                                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>
+                                    </div>
                                 </td>
                             </tr>
                         </tfoot>
-                       
+
                         {% set mediaCount = 0 %}
                         {% for media in institutionMedia %}
-                        
+
                             {% if (loop.index - 1) % 4 == 0 %}
-                                {% set mediaCount = 1 %}			
+                                {% set mediaCount = 1 %}
                                 <tr>
                             {% else %}
                                 {% set mediaCount = mediaCount + 1 %}
                             {% endif %}
-                            
+
                                     <td valign="top">{{ media(media, 'gallery', {'institutionId': institutionId}) | raw }}</td>
 
-                            {% if mediaCount == 4 %}									
+                            {% if mediaCount == 4 %}
                                 </tr>
                             {% endif %}
-                                
+
                         {% else %}
                             <tr class="">
                                 <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
-                            </tr>    
+                            </tr>
                         {% endfor %}
-                        
+
                     </table>
                 </div>
-                
+
         {% endblock %}
-        
+
     {% endembed %}
 
 </div>
@@ -103,17 +102,17 @@
         <label for="caption">Caption</label>
         <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
     </form>
-</div>                        	
+</div>
 
 <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
     <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
     <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path('media_delete') }}" method="post">
         <input type="hidden" name="media_id" id="media_id" />
-    </form>    
-</div>                        	
+    </form>
+</div>
 
 {% endblock %}
-                            
+
 {# TODO: there has to be a better way to load all these #}
 {% block inlineJavascriptCode %}
 
@@ -143,29 +142,29 @@ $(document).ready(function() {
 
     $(".fancybox").fancybox({
         helpers     : { media	: {} },
-        margin      : [20, 60, 20, 60]		
+        margin      : [20, 60, 20, 60]
     });
 
-    var media_id, media_caption, link; 
+    var media_id, media_caption, link;
 
     var showMessage = function(parent, message) {
         $message = $('<div style="display:none;">'+ message + '</div>');
         parent.append($message);
         $message.fadeIn('slow', function(){setTimeout(function(){$message.remove()}, 1000)});
     };
-    
+
     $("#edit-media-form-dialog").dialog({
         autoOpen: false,
         resizable: false,
         height: 120,
         width: 300,
         modal: true,
-        open: function(event, ui) { 
+        open: function(event, ui) {
             //hide close button.
             //$(this).parent().children().children('.ui-dialog-titlebar-close').hide();
             //$(".ui-dialog-titlebar-close", $(this).parent()).hide();
-            
-            $('#caption').val(media_caption.trim());     
+
+            $('#caption').val(media_caption.trim());
         },
         buttons: {
             "Save": function() {
@@ -186,7 +185,7 @@ $(document).ready(function() {
         buttons: {
             "Delete media": function() {
                 /*
-                TODO: it might be better if we don't do ajax here. e.g. normal form submission or link. 
+                TODO: it might be better if we don't do ajax here. e.g. normal form submission or link.
                 */
                 $.ajax({
                     url: $('#deleteMediaForm').attr('action') + '/' + media_id,
@@ -200,14 +199,14 @@ $(document).ready(function() {
                         } else {
                             window.location.reload();
                         }
-                        
+
                     },
                     error: function() {
                         alert('Server error');
                         $("#edit-media-form-dialog").dialog("close");
                     }
                 });
-                
+
                 $( this ).dialog( "close" );
             },
             Cancel: function() {
@@ -215,12 +214,12 @@ $(document).ready(function() {
             }
         }
     });
-    
+
     $(".attached-edit-form").click(function() {
         media_id = this.id.substring(12);/*'link_caption'+id*/
         media_caption = this.innerHTML;
         link = this;
-        
+
     $("#edit-media-form-dialog").dialog("open");
         return false;
     });
@@ -229,12 +228,12 @@ $(document).ready(function() {
         media_id = this.id.substring(11);/*'link_delete'+id*/
         $("#delete-media-dialog").dialog("open");
         return false;
-    });	
+    });
 
 
     $('#editMediaForm').submit(function() {
         var caption = $('#caption').val();
-        
+
         $.ajax({
             url: $('#editMediaForm').attr('action'),
             data: {id: media_id, caption: caption},
@@ -249,14 +248,14 @@ $(document).ready(function() {
                 } else {
                     alert('Application error');
                 }
-                
+
             },
             error: function() {
                 alert('Server error');
                 $("#edit-media-form-dialog").dialog("close");
             }
         });
-    
+
         return false;
     });
 });

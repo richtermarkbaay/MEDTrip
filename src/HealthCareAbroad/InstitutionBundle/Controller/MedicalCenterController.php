@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -41,6 +45,18 @@ class MedicalCenterController extends InstitutionAwareController
 
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', array(
             'institutionMedicalCenters' => $this->filteredResult
+        ));
+    }
+
+    public function testAction(Request $request)
+    {
+        $page = $request->get('page');
+
+        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia(1)->toArray());
+        $pager = new Pager($adapter, array('page' => $page, 'limit' => 12));
+
+        return $this->render('InstitutionBundle:MedicalCenter:test.html.twig', array(
+                    'pager' => $pager
         ));
     }
 

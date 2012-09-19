@@ -1,0 +1,6 @@
+{% if pager.isPaginable %}
+   {{ paginate(pager, 'institution_test') }}
+{% endif %}
+{% for media in pager.getResults %}
+   <p>{{ media.caption }}</p>
+{% endfor %}
