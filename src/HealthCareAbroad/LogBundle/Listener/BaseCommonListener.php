@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\LogBundle\Listener;
 
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
+
 use HealthCareAbroad\LogBundle\Services\LogService;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
