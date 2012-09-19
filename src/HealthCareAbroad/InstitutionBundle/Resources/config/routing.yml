@@ -84,7 +84,7 @@ InstitutionBundle_confirmed_token:
        _method: GET
 
 institution_exception_report_create:
-    pattern: /institution/404
+    pattern: /institution/error
     defaults: { _controller: InstitutionBundle:Default:errorReport }
     requirements:    
         _method:  GET|POST
