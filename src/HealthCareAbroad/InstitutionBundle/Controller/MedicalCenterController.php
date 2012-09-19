@@ -285,7 +285,8 @@ class MedicalCenterController extends InstitutionAwareController
 
         $this->get('services.institutionMedicalCenter')->deleteDraftInstitutionMedicalCenter($this->institution, $request->get('imcId'));
 
-        $proxy = $this->getDoctrine()->getEntityManager()->getReference('HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter', $request->get('imcId'));
+        //$proxy = $this->getDoctrine()->getEntityManager()->getReference('HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter', $request->get('imcId'));
+        $proxy = $this->getDoctrine()->getEntityManager()->getPartialReference('HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter', $request->get('imcId'));
 
         $this->dispatchEvent(InstitutionBundleEvents::ON_DELETE_INSTITUTION_MEDICAL_CENTER, $proxy);
 
