@@ -12,8 +12,7 @@ class CityListFilter extends ListFilter
 
     function __construct($doctrine)
     {
-        $this->doctrine = $doctrine;
-        $this->entityRepository = $doctrine->getEntityManager()->getRepository('HelperBundle:City');
+        parent::__construct($doctrine);
 
         // Add country in validCriteria
         $this->addValidCriteria('country');

@@ -32,7 +32,7 @@ abstract class ListFilter
 
     protected $pager;
 
-    protected $pagerDefaultOptions = array('limit' => 1, 'page' => 1);
+    protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
 
     /**
      * @desc Default options value for Status Filter Option
@@ -40,12 +40,10 @@ abstract class ListFilter
      */
     protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', 'all' => 'All');
 
-    function __construct($doctrine)
+    public function __construct($doctrine)
     {
         $this->doctrine = $doctrine;
         $this->entityRepository = $doctrine->getEntityManager()->getRepository('HelperBundle:Country');
-
-        $this->queryBuilder = new QueryBuilder($this->doctrine->getEntityManager());
     }
 
     abstract function setFilterOptions();
