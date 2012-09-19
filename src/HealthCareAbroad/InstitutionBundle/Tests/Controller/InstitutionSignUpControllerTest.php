@@ -35,7 +35,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 				'institutionUserForm[firstName]' => 'test name',
 				'institutionUserForm[middleName]' => 'middle',
 				'institutionUserForm[lastName]' => 'last',
-				'institutionUserForm[email]' => 'test@yahoo.com',
+				'institutionUserForm[email]' => 'test-sign-up-institutiont@chromedia.com',
 				'institutionUserForm[password]' => $this->userPassword,
 				'institutionUserForm[confirm_password]' => $this->userPassword,
 		);
@@ -92,12 +92,12 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 	
 		$formValues = array(
 				'institutionInvitation[name]' => 'alnie jacobe',
-				'institutionInvitation[email]' => 'test@yahoo.com',
+				'institutionInvitation[email]' => 'test-sign-up-institutiont@chromedia.com',
 		);
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $formValues);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-		$this->assertGreaterThan(0,$crawler->filter('html:contains("Invitation sent to test@yahoo.com")')->count());
+		$this->assertGreaterThan(0,$crawler->filter('html:contains("Invitation sent to test-sign-up-institutiont@chromedia.com")')->count());
 	
 		//test for missing email field
 		$invalidValues = $formValues;

@@ -4,6 +4,9 @@ parameters:
     # institution event classes
     event.institution.add: HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent
     event.institution.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent
+    
+    # institution invitation event classes
+    event.institution_invitation.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvent 
 
     # institution user related events
     event.institution_user.login: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserEvent

@@ -31,3 +31,9 @@ page_tags_sidebar:
     defaults: { _controller: PageBundle:Sidebar:tags }
     requirements:
         _method: GET|POST
+        
+page_exception_report_create:
+    pattern: /404
+    defaults: { _controller: PageBundle:Default:errorReport }
+    requirements:    
+        _method:  GET|POST
