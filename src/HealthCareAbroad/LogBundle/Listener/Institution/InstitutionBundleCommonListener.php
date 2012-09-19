@@ -10,20 +10,16 @@ use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
 use HealthCareAbroad\LogBundle\Listener\BaseCommonListener;
 
+/**
+ * Common Log system listener for events dispatched in the Admin bundle. Logs for this events will be specifically marked as ApplicationContext::INSTITUTION_ADMIN  
+ * 
+ * @author Allejo Chris G. Velarde
+ */
 class InstitutionBundleCommonListener extends BaseCommonListener
 {
-    public function onCommonLogAction(BaseEvent $event)
+    public function __construct(ContainerInterface $container)
     {
-        $eventObject = $event->getData();
-        $logAction = $this->getLogActionOfEventName($event->getName());
-        $logClass = $this->logService->getLogClassByName(\get_class($event->getData()));
-        
-        $log = new Log();
-        $log->setAccountId($this->loggedAccountId);
-        $log->setAction($logAction);
-        $log->setApplicationContext(ApplicationContexts::INSTITUTION_ADMIN);
-        $log->setObjectId($eventObject->getId());
-        $log->setLogClass($logClass);
-        $this->logService->save($log);
+        parent::__construct($container);
+        $this->applicationContext = ApplicationContexts::INSTITUTION_ADMIN;
     }
 }

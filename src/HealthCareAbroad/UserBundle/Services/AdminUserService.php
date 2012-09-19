@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use ChromediaUtilities\Helpers\SecurityHelper;
@@ -49,6 +51,9 @@ class AdminUserService extends UserService
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
             $this->securityContext->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
+            
+            // dispatch event
+            $this->container->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->container->get('events.factory')->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
             
             return true;
         }

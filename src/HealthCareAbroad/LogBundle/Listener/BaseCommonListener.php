@@ -35,6 +35,8 @@ abstract class BaseCommonListener
      */
     protected $logService;
     
+    protected $applicationContext;
+    
     /**
      * @var array
      */
@@ -57,6 +59,26 @@ abstract class BaseCommonListener
         else {
             $this->loggedAccountId = 0;
         }
+    }
+    
+    /**
+     * Common BaseEvent listener. This will create a new log of the event and persist it to the database.
+     * 
+     * @param BaseEvent $event
+     */
+    public function onCommonLogAction(BaseEvent $event)
+    {
+        $eventObject = $event->getData();
+        $logAction = $this->getLogActionOfEventName($event->getName());
+        $logClass = $this->logService->getLogClassByName(\get_class($event->getData()));
+    
+        $log = new Log();
+        $log->setAccountId($this->loggedAccountId);
+        $log->setAction($logAction);
+        $log->setApplicationContext($this->applicationContext);
+        $log->setObjectId($eventObject->getId());
+        $log->setLogClass($logClass);
+        $this->logService->save($log);
     }
     
     /**

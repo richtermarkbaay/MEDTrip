@@ -1,4 +1,14 @@
-#list down the event classes used in this bundle
+#
+# List down the events that will be dispatched in this bundle.
+# Parameter will be in the following format:
+#    $event_name: $target_entity_qualified_name    
+#
+# Event name convention is:
+#        event.{subject_entity}.{event_action}
+#
+# Sample parameter:
+#    event.admin_user.create: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
+#
 
 parameters:
     # institution event classes
