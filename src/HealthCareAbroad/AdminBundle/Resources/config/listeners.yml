@@ -110,3 +110,28 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.country.delete, method: onCommonLogAction }
+            
+            
+    #
+    # listeners  for medical center related events
+    #
+    listener.log.medical_center.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_center.add, method: onCommonLogAction }
+            
+    listener.log.medical_center.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_center.edit, method: onCommonLogAction }
+                    
+    listener.log.medical_center.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.medical_center.delete, method: onCommonLogAction }
+    
+    
+    

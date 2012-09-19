@@ -26,4 +26,8 @@ final class AdminBundleEvents
     const ON_ADD_COUNTRY = 'event.country.add';
     const ON_EDIT_COUNTRY = 'event.country.edit';
     const ON_DELETE_COUNTRY = 'event.country.delete';
+    
+    const ON_ADD_MEDICAL_CENTER = 'event.medical_center.add';
+    const ON_EDIT_MEDICAL_CENTER = 'event.medical_center.edit';
+    const ON_DELETE_MEDICAL_CENTER = 'event.medical_center.delete';
 }

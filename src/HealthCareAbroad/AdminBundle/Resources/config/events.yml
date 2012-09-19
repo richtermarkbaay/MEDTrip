@@ -42,3 +42,11 @@ parameters:
     event.country.add: HealthCareAbroad\AdminBundle\Event\CountryEvent
     event.country.edit: HealthCareAbroad\AdminBundle\Event\CountryEvent
     event.country.delete: HealthCareAbroad\AdminBundle\Event\CountryEvent
+    
+    #
+    # medical center related events
+    #
+    event.medical_center.add: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
+    event.medical_center.edit: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
+    event.medical_center.delete: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
+    
