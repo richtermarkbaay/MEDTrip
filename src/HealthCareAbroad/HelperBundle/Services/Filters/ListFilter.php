@@ -37,7 +37,7 @@ abstract class ListFilter
 
     protected $pager;
 
-    protected $pagerDefaultOptions = array('limit' => 5, 'page' => 1);
+    protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
 
     /**
      * @desc Default options value for Status Filter Option
