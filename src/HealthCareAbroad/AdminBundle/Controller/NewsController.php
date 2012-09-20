@@ -123,5 +123,22 @@ class NewsController extends Controller
         return $response;
     }
     
+    /**
+     * Show a news entry
+     */
+    public function showAction($id, $slug)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $news = $em->getRepository('HelperBundle:News')->find($id);
+
+        if (!$news) {
+            throw $this->createNotFoundException('Unable to find News post.');
+        }
+        
+        return $this->render('InstitutionBundle:News:index.html.twig', array(
+            'news'      => $news
+        ));
+    }
 
 }

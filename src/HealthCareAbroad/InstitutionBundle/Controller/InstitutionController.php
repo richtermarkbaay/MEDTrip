@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 	
 class InstitutionController  extends InstitutionAwareController
 {
@@ -46,8 +47,7 @@ class InstitutionController  extends InstitutionAwareController
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 				
 				//create event on editInstitution and dispatch
-				$event = new EditInstitutionEvent($institution);
-				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
+				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('evens.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
 			}
 		}
 		
@@ -59,4 +59,3 @@ class InstitutionController  extends InstitutionAwareController
 	}
 	
 }
-?>

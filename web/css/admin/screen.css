@@ -2064,4 +2064,12 @@ form:not([novalidate=novalidate]) span.mceEditor.required {
     color: #ff9346;
 }
 
+.news{
+	padding:5px;
+	border-bottom: 1px solid #ccc;
+}
+.continue{
+	text-align:right;
+}
+
 /** End of Pager styles **/
