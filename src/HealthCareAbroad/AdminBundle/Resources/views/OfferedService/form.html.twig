@@ -1,0 +1,35 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_offered_service' %}
+
+{% block content %}
+
+	<div id="content">
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Service</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+            {% set contents = [{
+					'title': 'View all Offered Service', 
+					'description': 'View the list of Offered Service',
+					'href': path('admin_offered_service_index'), 
+					'links': [{'title': 'View Offered Service', 'href': path('admin_offered_service_index')}]
+				}]
+            %}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+
+				{{ form_row(form.name) }}
+				{{ form_row(form.status) }}
+				{{ form_rest(form) }}
+
+			    <input type="submit" class="form-submit" name="submit"/>
+			</form>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

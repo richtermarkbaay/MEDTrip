@@ -71,3 +71,10 @@ parameters:
     event.news.edit: HealthCareAbroad\AdminBundle\Event\NewsEvent
     event.news.delete: HealthCareAbroad\AdminBundle\Event\NewsEvent
     
+    #
+    # offered service related events
+    #
+    event.offered_service.add: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
+    event.offered_service.edit: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
+    event.offered_service.delete: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
+    
