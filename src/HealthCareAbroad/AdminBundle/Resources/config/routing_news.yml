@@ -35,3 +35,10 @@ admin_news_updateStatus:
     defaults: { _controller: AdminBundle:News:updateStatus, id: ~ }
     requirements:
         id: \d+
+
+admin_news_show:
+    pattern:  /{id}/{slug}
+    defaults: { _controller: AdminBundle:News:show }
+    requirements:
+        _method:  GET
+        id: \d+

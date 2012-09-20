@@ -111,8 +111,7 @@ class InstitutionUserTypeController extends Controller
             $em->flush();
             
             // create event on edit and create userTypes and dispatch
-            $event = new CreateInstitutionUserTypeEvent($userType);
-            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_TYPE, $event);
+            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_TYPE, $this->get('evens.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_TYPE, $userType));
             
             $request->getSession()->setFlash("success", "{$userType->getName()} user type saved.");
             return $this->redirect($this->generateUrl('institution_userType_index'));

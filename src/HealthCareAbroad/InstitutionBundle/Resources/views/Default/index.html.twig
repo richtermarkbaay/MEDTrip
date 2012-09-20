@@ -54,23 +54,22 @@
                     <br />
                     <br />
                     <h3>News</h3>
-
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-                    <br />
-                    <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-                    <br />
-                    <br />
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                    adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-
-
-
+			
+					 {% for newsData in news %}
+				        <article class="news">	
+				            <header>
+				                <h2><a href="{{ path('admin_news_show', { 'id': newsData.id, 'slug': newsData.slug }) }}">{{ newsData.title }}</a></h2>
+				            </header>
+							 <div class="date"><time datetime="{{ newsData.dateCreated|date('c') }}">{{ newsData.dateCreated|date('l, F j, Y') }}</time></div>
+				            <div class="snippet">
+				                <p>{{ newsData.description(500)|raw }}</p>
+				                <p class="continue"><a href="{{ path('admin_news_show', { 'id': newsData.id, 'slug': newsData.slug }) }}">Continue reading...</a></p>
+				            </div>
+			
+				        </article>
+				    {% else %}
+				        <p>There are no news entries for HealthCareAbroad</p>
+				    {% endfor %}
 
             </div>
             <!--  end table-content  -->

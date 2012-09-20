@@ -15,7 +15,8 @@ class NewsFormType extends AbstractType
 		$status = array(News::STATUS_ACTIVE => 'active', News::STATUS_INACTIVE => 'inactive');
 		
 		$builder->add('title', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+		$builder->add('description', 'textarea', array('constraints' => new NotBlank(), 'attr' => array('class' => 'tinymce')));
+		
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 	
