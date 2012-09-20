@@ -1,0 +1,59 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_offered_service' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Services Offered</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add Offered Service', 
+                        'description': 'Add Offered Service',
+                        'class': 'add-icon',
+                        'href': path('admin_offered_service_add'), 
+                        'links': [{'title': 'Add a Offered Services', 'href': path('admin_offered_service_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+                <div style="width: 70%">
+                    <table id="news-list" class="generic-table" width="100%">
+                        <tr>
+                            <th><a href="">Name</a></th>
+                            <th><a href="">Status</a></th>
+                            <th class="actions" width="150">Action</th>
+                        </tr>
+				     {% for service in offeredService %}
+                        <tr>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.status ? 'Active' : 'Inactive' }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_offered_service_edit', {id:service.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                {% set class = service.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_offered_service_updateStatus', {id:service.id}) }}" title="{{ service.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    
+                    </table>
+                  
+                  
+                  
+                  
+                </div>
+                        
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

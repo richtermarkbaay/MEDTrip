@@ -39,7 +39,7 @@
                         {% for newsData in news %}
                             <tr>
                                 <td>{{ newsData.title }}</td>
-                                <td>{{ newsData.description}}</td>
+                                <td>{{ newsData.description|raw}}</td>
                                 <td>{{ newsData.status ? 'Active' : 'Inactive' }}</td>
                                 <td align="center">
                                     <a href="{{ path('admin_news_edit', {id:newsData.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>

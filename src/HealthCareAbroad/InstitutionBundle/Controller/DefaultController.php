@@ -26,9 +26,14 @@ class DefaultController extends InstitutionAwareController
         $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution');
 
         $draftInstitutionMedicalCenters = $institutionRepository->getDraftInstitutionMedicalCenters($this->institution);
-
+        
+        $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
+        
+        $news = $newsRepository->getLatestNews();
+       
         return $this->render('InstitutionBundle:Default:index.html.twig', array(
-                        'draftInstitutionMedicalCenters' => $draftInstitutionMedicalCenters
+                        'draftInstitutionMedicalCenters' => $draftInstitutionMedicalCenters,
+        				'news' => $news
         ));
     }
 

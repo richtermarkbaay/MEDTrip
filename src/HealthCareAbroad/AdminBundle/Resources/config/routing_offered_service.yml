@@ -1,0 +1,37 @@
+admin_offered_service_index:
+    pattern:  /admin/offered_service
+    defaults: { _controller: AdminBundle:OfferedService:index }
+    requirements:    
+        _method:  GET
+
+admin_offered_service_add:
+    pattern:  /admin/offered_service/add
+    defaults: { _controller: AdminBundle:OfferedService:add }
+    requirements:    
+        _method:  GET
+        
+admin_offered_service_create:
+    pattern:  /admin/offered_service/add
+    defaults: { _controller: AdminBundle:OfferedService:save }
+    requirements:
+         _method: POST
+         
+admin_offered_service_edit:
+    pattern:  /admin/offered_service/edit/{id}
+    defaults: { _controller: AdminBundle:OfferedService:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_offered_service_update:
+    pattern:  /admin/offered_service/edit/{id}
+    defaults: { _controller: AdminBundle:OfferedService:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_offered_service_updateStatus:
+    pattern:  /admin/offered_service/update-status/{id}
+    defaults: { _controller: AdminBundle:OfferedService:updateStatus, id: ~ }
+    requirements:
+        id: \d+

@@ -22,6 +22,20 @@ class NewsRepository extends EntityRepository
 		return $arrNews;
 	}
 	
+	public function getLatestNews($limit = null)
+	{
+		$qb = $this->createQueryBuilder('b')
+		->select('b')
+		->add('from', 'HelperBundle:News b')
+		->addOrderBy('b.dateCreated', 'DESC');
+		
+		if (false === is_null($limit))
+			$qb->setMaxResults($limit);
+		
+		return $qb->getQuery()
+		->getResult();
+	}
+	
 	public function getQueryBuilderForNews()
 	{
 		return $this->_em->createQueryBuilder()

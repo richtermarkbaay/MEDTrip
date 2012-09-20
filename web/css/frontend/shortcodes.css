@@ -51,7 +51,7 @@ a.image_sc img {
  *  Buttons
  ***************************************************************/
 .single_article_content a.button {
-    background-image: url("/images/button_bg.png");
+    background-image: url(/images/frontend/button_bg.png);
     border-radius: 3px 3px 3px 3px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
     display: inline-block;
@@ -147,30 +147,30 @@ a.button:active {
  ***************************************************************/
  
  .list1 li, .list2 li, .list3 li, .list4 li, .list5 li, .list6 li, .list7 li, .list8 li, .list9 li, .list10 li, .list11 li, .list12 li {
-	background:url(/images/list_styles_black.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_black.png) no-repeat top left;
 	padding-left:30px;
 	line-height:22px;
 	font-size:13px;
  }
  .blue_list li {
-	background:url(/images/list_styles_blue.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_blue.png) no-repeat top left;
  }
 
  .gray_list li {
-	background:url(/images/list_styles_gray.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_gray.png) no-repeat top left;
  }
 
 .green_list li {
-	background:url(/images/list_styles_green.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_green.png) no-repeat top left;
  }
  .orange_list li {
-	background:url(/images/list_styles_orange.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_orange.png) no-repeat top left;
  }
   .pink_list li {
-	background:url(/images/list_styles_pink.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_pink.png) no-repeat top left;
  }
   .red_list li {
-	background:url(/images/list_styles_red.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_red.png) no-repeat top left;
  }
  .list1 li {
 	background-position:-342px 0;
@@ -225,30 +225,30 @@ a.button:active {
  ***************************************************************/
  
  .widget ul.list1 li, .widget ul.list2 li, .widget ul.list3 li, .widget ul.list4 li, .widget ul.list5 li, .widget ul.list6 li, .widget ul.list7 li, .widget ul.list8 li, .widget ul.list9 li, .widget ul.list10 li, .widget ul.list11 li, .widget ul.list12 li {
-	background:url(/images/list_styles_black.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_black.png) no-repeat top left;
 	padding-left:30px;
 	line-height:22px;
 	font-size:13px;
  }
  .widget ul.blue_list li {
-	background:url(/images/list_styles_blue.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_blue.png) no-repeat top left;
  }
 
  .widget ul.gray_list li {
-	background:url(/images/list_styles_gray.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_gray.png) no-repeat top left;
  }
 
 .widget ul.green_list li {
-	background:url(/images/list_styles_green.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_green.png) no-repeat top left;
  }
  .widget ul.orange_list li {
-	background:url(/images/list_styles_orange.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_orange.png) no-repeat top left;
  }
   .widget ul.pink_list li {
-	background:url(/images/list_styles_pink.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_pink.png) no-repeat top left;
  }
   .widget ul.red_list li {
-	background:url(/images/list_styles_red.png) no-repeat top left;
+	background:url(/images/frontend/list_styles_red.png) no-repeat top left;
  }
  .widget ul.list1 li {
 	background-position:-342px 0;
@@ -316,7 +316,7 @@ a.button:active {
 code.code_content {
        margin-bottom:0;
        border-left:3px solid #6CE26C;
-       background:url(/images/code.png);
+       background:url(/images/frontend/code.png);
        padding:0px 10px;
 }
 code.code_content p {
@@ -413,13 +413,18 @@ ul.custom_tabs li.current {
 /*-----------------------------------------------------------------------------------*/
 
 .custom_tabs2_container {
-	background:#fff url(/images/custom_tab_bg.png) repeat-y;
+	background:#fff url(/images/frontend/custom_tab_bg.png) repeat-y;
 	overflow:hidden;
 	-moz-border-radius:5px;
 	border-radius:5px;
 	border:1px solid #efefef;
 	margin-bottom:20px;
 }
+
+.custom_tabs2_wrap .one_half {
+	width: 99.3332%;
+}
+
 .left_tabs {
 	float:left;
 	width:193px;
@@ -449,12 +454,12 @@ ul.custom_tabs2 li a {
 	text-shadow: 0 1px 0 #fff;
 	}
 ul.custom_tabs2 li.current  {
-	background:#f2f2f2 url(/images/tab_arrow.png) no-repeat right center;
+	background:#f2f2f2 url(/images/frontend/tab_arrow.png) no-repeat right center;
 
 }
 
 ul.custom_tabs2 li.current span.big_arrow {
-	background: url(/images/spr.png) no-repeat left top ;
+	background: url(/images/frontend/spr.png) no-repeat left top ;
 	background-position:-349px -67px;
 }
 
@@ -522,15 +527,15 @@ h4.toggle  {
 	cursor:pointer;
 	font-weight:bold !important;
 	font-size:14px !important;
-	background:url(/images/toggle_arrow.png) no-repeat right top ;
+	background:url(/images/frontend/toggle_arrow.png) no-repeat right top ;
 	margin-bottom:0;
 }
 h4.active_toggle {
-	background:url(/images/toggle_arrow.png) no-repeat right -125px ;
+	background:url(/images/frontend/toggle_arrow.png) no-repeat right -125px ;
 }
 
 .closed h4.toggle  {
-	background:url(/images/toggle_arrow.png) no-repeat right -125px ;
+	background:url(/images/frontend/toggle_arrow.png) no-repeat right -125px ;
 }
 .closed h4.active_toggle {
 	background-position: right 0;
@@ -560,20 +565,21 @@ h4.active_toggle {
 }
 
 h4.toggle_min  {
+    margin-top:12px;
 	padding-right:30px;
 	line-height:25px;
 	cursor:pointer;
 	padding-left:20px;
 	font-weight:bold !important;
-	font-size:16px !important;
-	background:url(/images/toggle_plus.png) no-repeat 0 -56px ;
+	font-size:11px !important;
+	background:url(/images/frontend/toggle_plus.png) no-repeat 0 -56px ;
 }
 h4.active_toggle_min {
-	background:url(/images/toggle_plus.png) no-repeat 0 7px ;
+	background:url(/images/frontend/toggle_plus.png) no-repeat 0 7px ;
 }
 
 .closed_min h4.toggle_min {
-	background:url(/images/toggle_plus.png) no-repeat 0 7px ;
+	background:url(/images/frontend/toggle_plus.png) no-repeat 0 7px ;
 }
 
 .closed_min h4.active_toggle_min {
@@ -590,6 +596,7 @@ h4.active_toggle_min {
 	border:1px solid #e0e0e0;
 	-moz-border-radius:5px;
 	border-radius:5px;
+	margin-top:-14px;
 	
 }
 
@@ -644,11 +651,11 @@ margin-bottom: 25px;
 
 .brdr2 {
 height:22px;
-background:url(/images/brdr2.png) no-repeat center;
+background:url(/images/frontend/brdr2.png) no-repeat center;
 margin-bottom: 25px; 
 }
 .brdr3 {
-      background:url(/images/dots_pat.png) repeat-x;
+      background:url(/images/frontend/dots_pat.png) repeat-x;
       height:13px;
       margin-bottom:25px;
 
@@ -759,7 +766,7 @@ h1.box_price span {
     padding: 5px; font-size: 10px;
     opacity: 0.8; filter: alpha(opacity=80);
     background-repeat: no-repeat;
-    background-image: url(/images/tipsy.gif); }
+    background-image: url(/images/frontend/tipsy.gif); }
   .tipsy-inner { padding: 5px 8px 4px 8px; background-color: black; color: white; max-width: 200px; text-align: center; }
   .tipsy-inner { -moz-border-radius:3px; -webkit-border-radius:3px; }
   .tipsy-north { background-position: top center; }
@@ -782,7 +789,7 @@ h1.box_price span {
 }
 .single_article_content .tweet_list li {
 	padding-left:26px;
-	background:url(/images/twitter_icon.png) no-repeat 0 5px;
+	background:url(/images/frontend/twitter_icon.png) no-repeat 0 5px;
 	margin-bottom:10px;
 	font-family:georgia;
 	list-style:none;

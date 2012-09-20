@@ -1048,7 +1048,7 @@ Copyright (c) 2005-2007 Stu Nicholls. All rights reserved. This stylesheet and t
 	position: absolute;
 	text-align: left;
 	top: 37px;
-	width: 750px;
+	width: 865px;
 	z-index: 100;
 	}
 .nav .current .show	{
@@ -2062,6 +2062,14 @@ form:not([novalidate=novalidate]) span.mceEditor.required {
 .pager b {
     border: 1px solid #ddd;
     color: #ff9346;
+}
+
+.news{
+	padding:5px;
+	border-bottom: 1px solid #ccc;
+}
+.continue{
+	text-align:right;
 }
 
 /** End of Pager styles **/

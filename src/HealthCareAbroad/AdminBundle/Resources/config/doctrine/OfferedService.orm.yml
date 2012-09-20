@@ -1,0 +1,25 @@
+HealthCareAbroad\AdminBundle\Entity\OfferedService:
+    type: entity
+    table: offered_services
+    repositoryClass: HealthCareAbroad\AdminBundle\Repository\OfferedServiceRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    lifecycleCallbacks: {  }
