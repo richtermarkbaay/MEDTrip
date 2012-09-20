@@ -27,12 +27,22 @@
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
                 <div style="width: 70%">
-                    <table id="city-list" class="generic-table" width="100%">
+                    <table id="city-list" class="generic-table sortable-list" width="100%">
                         <tr>
-                            <th><a href="">Name</a></th>
-                            <th><a href="">Country</a></th>
-                            <th><a href="">Status</a></th>
+                            <th id="column-name">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
+                            </th>
+                            <th id="column-country">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a>
+                            </th>
+                            <th id="column-status">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'status' ? 'sort-' ~ sortOrder : '' }}">Status</a>
+                            </th>
                             <th class="actions" width="100">Action</th>
                         </tr>
 
@@ -51,6 +61,7 @@
                             <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                         {% endfor %}
                     </table>
+                    
                     {% if pager.isPaginable %}
                         {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
                     {% endif %}

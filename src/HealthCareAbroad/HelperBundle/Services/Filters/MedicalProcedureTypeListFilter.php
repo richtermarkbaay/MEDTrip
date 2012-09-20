@@ -54,6 +54,15 @@ class MedicalProcedureTypeListFilter extends ListFilter
             $this->queryBuilder->setParameter('medicalCenter', $this->criteria['medicalCenter']);
         }
 
-        $this->queryBuilder->add('orderBy', 'a.name ASC');
+        if($this->sortBy == 'medicalCenter') {
+            $this->queryBuilder->leftJoin('a.medicalCenter', 'b');
+            $sort = 'b.name ' . $this->sortOrder;
+
+        } else {
+            $sortBy = $this->sortBy ? $this->sortBy : 'name';
+            $sort = "a.$sortBy " . $this->sortOrder;
+        }
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

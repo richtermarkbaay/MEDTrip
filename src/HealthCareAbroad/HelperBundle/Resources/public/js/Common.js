@@ -152,5 +152,30 @@ $(function(){
 		});
 	});	
 
+	$(".sortable-list th a").click(function(){
+		var arrUrl = $(this).attr('href').split('?');
+		var url = arrUrl[0];
+		var sortBy = $(this).parent().attr('id').split('-').pop();
+		var sortOrder = $(this).hasClass('sort-asc') ? 'desc' : 'asc';
+		var queryParam = {};
+		
+		if(arrUrl.length > 1) {
+			var arrParams = arrUrl[1].split('&');
+			var keyValue;
+
+			for(var i=0; i< arrParams.length; i++) {
+				keyValue = arrParams[i].split('=');
+				if(keyValue[1] != 'all') {
+					queryParam[keyValue[0]] = keyValue[1];					
+				}
+			}
+		}
+		queryParam.sortBy = sortBy;
+		queryParam.sortOrder = sortOrder;
+
+		url += '?' + $.param(queryParam);
+
+		$(this).attr('href', url);
+	});
 
 });
