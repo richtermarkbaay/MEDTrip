@@ -22,6 +22,9 @@ class NewsListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        $this->queryBuilder->add('orderBy', 'a.dateCreated ASC');
+        $sortBy = $this->sortBy ? $this->sortBy : 'title';
+        $sort = "a.$sortBy " . $this->sortOrder;            
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

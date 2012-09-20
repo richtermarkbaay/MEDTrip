@@ -24,6 +24,10 @@ abstract class ListFilter
     protected $queryParams = array();
 
     protected $validCriteria = array('status');
+    
+    protected $sortBy;
+
+    protected $sortOrder = 'asc';
 
     protected $filterOptions = array();
 
@@ -33,7 +37,7 @@ abstract class ListFilter
 
     protected $pager;
 
-    protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
+    protected $pagerDefaultOptions = array('limit' => 5, 'page' => 1);
 
     /**
      * @desc Default options value for Status Filter Option
@@ -85,6 +89,13 @@ abstract class ListFilter
 
             else $this->queryParams[$key] = self::FILTER_KEY_ALL;
         }
+
+        if (isset($this->queryParams['sortBy'])) {
+            $this->sortBy = $this->queryParams['sortBy'];
+        }
+
+        if (isset($this->queryParams['sortOrder']))
+            $this->sortOrder = $this->queryParams['sortOrder'];
     }
 
     /**

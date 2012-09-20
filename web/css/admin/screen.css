@@ -354,7 +354,7 @@ a:hover.icon-5	{
 	margin-bottom: 20px;
 	}
 .generic-table th {
-	padding: 12px 10px;
+	padding: 0;
 	text-align: left;
 	padding-right: 10px;
 	background: #555555;
@@ -374,7 +374,9 @@ a:hover.icon-5	{
 	}
 .generic-table th a{
 	color: #FFFFFF;	
+    display: block;
 	font-size: 13px;
+	padding: 12px 10px;
 	}
 .generic-table th a:hover{
 	color:#94b52c;
@@ -1686,6 +1688,18 @@ a.icon-type:hover {
     background: url(/images/admin/ajax-loader.gif) no-repeat scroll 0px 0px transparent; 
 }
 
+.sortable-list th > a[class=sort-asc]:hover,
+.sortable-list th > a.sort-asc,
+.sortable-list th > a.sort-desc {
+	display: block;
+	background: url(/images/admin/table/sort_down.png) no-repeat scroll right 8px transparent;
+}
+
+
+.sortable-list th > a:hover,
+.sortable-list th > a.sort-asc {
+    background: url(/images/admin/table/sort_up.png) no-repeat scroll right 13px transparent;    
+}
 
 /* jQuery UI Dialg Style */
 
@@ -1976,7 +1990,7 @@ div.raw-content {
 	width: 100%;
 }
 
-.tabbed-medical-procedure-type-detail table.generic-table th {
+.tabbed-medical-procedure-type-detail table.generic-table th a {
 	font-size: 11px;
 	padding: 8px 10px;
 }

@@ -40,19 +40,27 @@ class CityListFilter extends ListFilter
     }
 
     function buildQueryBuilder()
-    {
-        $this->queryBuilder->select('c')->from('HelperBundle:City', 'c');
+    {   
+        $this->queryBuilder->select('a')->from('HelperBundle:City', 'a');
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('c.country = :country');
+            $this->queryBuilder->where('a.country = :country');
             $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('c.status = :status');
+            $this->queryBuilder->andWhere('a.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        $this->queryBuilder->add('orderBy', 'c.name ASC');
+        if($this->sortBy == 'country') {
+            $this->queryBuilder->leftJoin('a.country', 'b');
+            $sort = 'b.name ' . $this->sortOrder;
+        } else {
+            $sortBy = $this->sortBy ? $this->sortBy : 'name';
+            $sort = "a.$sortBy " . $this->sortOrder;            
+        }
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }
