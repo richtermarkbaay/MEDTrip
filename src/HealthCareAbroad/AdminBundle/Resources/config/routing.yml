@@ -3,6 +3,11 @@
 AdminBundle_medicalCenter:
     resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /
+    
+# Routes for Admin AdvertisementController #
+AdminBundle_advertisement:
+    resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
+    prefix:   /
 
 # Routes for Admin MedicalProcedureTypeController #
 AdminBundle_medicalProcedureType:
