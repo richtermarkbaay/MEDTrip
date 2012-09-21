@@ -1,0 +1,50 @@
+<aside class="sidebar">
+
+	<div class="box_outer">
+	
+		<div class="widget">
+		
+			<div class="tabbed_widget">
+
+			<!-- the tabs -->
+			<ul class="tabbed_nav">		
+				<li class="tabbed1"><a class="sidebar_tabbed_links" href="{{ path('page_popular_sidebar') }}" class="current">Popular</a></li>			
+				<li class="tabbed2"><a class="sidebar_tabbed_links" href="{{ path('page_recent_sidebar') }}">Recent</a></li>			
+				<li class="tabbed3"><a class="sidebar_tabbed_links" href="{{ path('page_comments_sidebar') }}">Comments</a></li>			
+				<li class="tabbed4"><a class="sidebar_tabbed_links" href="{{ path('page_tags_sidebar') }}">Tags</a></li>			
+			</ul>
+			
+				<div class="tabbed_container" id="tabbed_container_sidebar">
+				<!-- sidebar post -->
+					{% include 'FrontendBundle:Sidebar:popularPost.html.twig' %}
+					{% include 'FrontendBundle:Sidebar:recent.html.twig' %}
+					{% include 'FrontendBundle:Sidebar:comments.html.twig' %}
+					{% include 'FrontendBundle:Sidebar:tags.html.twig' %}
+				
+				</div>
+			</div>
+		</div>
+	</div> <!--End Widget-->
+	       
+		<!-- Newsletter -->      
+       {% include 'FrontendBundle:Sidebar:newsletter.html.twig' %}
+</aside> <!--End Sidebar-->
+	
+<script type="text/javascript">
+$(function(){
+	$('a.sidebar_tabbed_links').click(function(){
+
+		var link = $(this);
+
+		$.ajax({
+			url: link.attr('href'),
+			success: function(json) {
+				$('div.tabbed_container_sidebar').html(json.html);
+			}
+		});
+		return false;
+	});
+
+});
+
+</script>
