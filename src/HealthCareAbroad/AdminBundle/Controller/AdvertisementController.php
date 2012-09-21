@@ -43,8 +43,14 @@ class AdvertisementController extends Controller
         }
     }
     
+    /**
+     * Management page of Advertisements.
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
-    {
+    {   
         return $this->render('AdminBundle:Advertisement:index.html.twig');
     }
     
@@ -142,6 +148,12 @@ class AdvertisementController extends Controller
         ));
     }
     
+    /**
+     * This page will be the third step when creating a new advertisement.
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function addInvoiceAction(Request $request)
     {
         return $this->render('AdminBundle:Advertisement:addInvoice.html.twig', array(
@@ -149,9 +161,49 @@ class AdvertisementController extends Controller
         ));
     }
     
+    /**
+     * This will be the last page when creating a new advertisement
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function previewAction(Request $request)
     {
         return $this->render('AdminBundle:Advertisement:preview.html.twig', array(
+            'advertisement' => $this->advertisement
+        ));
+    }
+    
+    /**
+     * This is the edit advertisement page
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request)
+    {
+        $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                try {
+                    $advertisement = $this->factory->save($form->getData());
+                
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $advertisement));
+                    
+                    $request->getSession()->setFlash("success", "Successfully updated advertisement.");
+                }
+                catch (\Exception $e) {
+                    $request->getSession()->setFlash("error", "Failed to updated advertisement due to unexpected error.");
+                }
+                
+                return $this->redirect($this->generateUrl("admin_advertisement_index"));
+            }
+        }
+        
+        return $this->render('AdminBundle:Advertisement:edit.html.twig', array(
+            'form' => $form->createView(),
             'advertisement' => $this->advertisement
         ));
     }

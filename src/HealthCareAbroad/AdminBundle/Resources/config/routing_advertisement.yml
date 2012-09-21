@@ -30,3 +30,10 @@ admin_advertisement_preview:
     requirements:
         _method: GET
         advertisementId: \d+
+        
+admin_advertisement_edit:
+    pattern:  /admin/advertisements/{advertisementId}/edit
+    defaults: { _controller: AdminBundle:Advertisement:edit }
+    requirements:
+        _method: GET|POST
+        advertisementId: \d+
