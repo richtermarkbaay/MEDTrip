@@ -18,6 +18,8 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 			'debug'			=> true,
 	);
 	
+	private static $clientWithLoggedUser = null;
+	
 	public static function setUpBeforeClass()
 	{
 		\HCA_DatabaseManager::getInstance()
@@ -42,12 +44,16 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
-		$client = static::createClient(\array_merge($this->defaultClientOptions, $options));
-		$crawler = $client->request('GET', '/admin/login');
-		$form = $crawler->selectButton('submit')->form();
-		$client->submit($form, $this->formValues);
+	    if (null === self::$clientWithLoggedUser)
+	    {
+	        self::$clientWithLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
+	        $crawler = self::$clientWithLoggedUser->request('GET', '/admin/login');
+	        $form = $crawler->selectButton('submit')->form();
+	        self::$clientWithLoggedUser->submit($form, $this->formValues);
+	    }
+		
 
-		return $client;
+		return self::$clientWithLoggedUser;
 	}
 	
 	protected function getBrowserWithMockLoggedUser($options = array())
@@ -56,6 +62,8 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 				'PHP_AUTH_USER' => 'developer',
 				'PHP_AUTH_PW'   => '123456',
 		));
+		
+		
 		return $client;
 	}
 	
