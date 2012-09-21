@@ -6,6 +6,12 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
+
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
+
+use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory;
+
 use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementFormType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +20,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class AdvertisementController extends Controller
 {
+    /**
+     * @var AdvertisementFactory
+     */
+    private $factory;
+    
+    /**
+     * @var Advertisement
+     */
+    private $advertisement;
+    
+    public function preExecute()
+    {
+        $this->factory = $this->get('services.advertisement.factory');
+        
+        if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
+            $this->advertisement = $this->factory->findById($advertisementId);
+            
+            if (!$this->advertisement) {
+                throw $this->createNotFoundException("Invalid advertisement.");
+            }
+        }
+    }
+    
     public function indexAction(Request $request)
     {
         return $this->render('AdminBundle:Advertisement:index.html.twig');
@@ -36,8 +65,6 @@ class AdvertisementController extends Controller
             $form->bind($request);
             
             if ($form->isValid()) {
-                
-                //$advertisement = $this->get('services.advertisement.factory')->createInstanceByType($form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData());
                 
                 // set session data for this draft advertisement
                 $data = array(
@@ -79,20 +106,53 @@ class AdvertisementController extends Controller
         $advertisement = $this->get('services.advertisement.factory')->createInstanceByType($draftData[AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE]);
         $advertisement->setInstitution($institution);
         
-        $form = $this->createForm(new AdvertisementFormType(), null,
-            array(
-                AdvertisementFormType::OPTION_IS_NEW => true,
-                AdvertisementFormType::OPTION_FORCED_HIDDEN_FIELDS => array(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE, AdvertisementFormType::FIELD_INSTITUTION
-        )));
+        $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($advertisement), $advertisement);
         
         if ($request->isMethod('POST')) {
+            $form->bind($request);
             
+            if ($form->isValid()) {
+                
+                try {
+                    $advertisement = $this->factory->save($form->getData());
+                    
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $advertisement));
+                    $redirectUrl = $this->generateUrl('admin_advertisement_addInvoice', array('advertisementId' => $advertisement->getId()));
+                    
+                    $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
+                }
+                catch (\Exception $e) {
+                    $request->getSession()->setFlash("error", "Failed to save advertisement due to unexpected error.");
+                    $redirectUrl = $this->generateUrl("admin_advertisement_index");
+                }
+                // unset this draft in session
+                unset($draftAdvertisements[$uid]); 
+                $request->getSession()->get('draftAdvertisements', $draftAdvertisements);
+                
+                return $this->redirect($redirectUrl);
+            }
         }
         
         return $this->render('AdminBundle:Advertisement:add.html.twig', array(
             'form' => $form->createView(),
             'selectedStep' => 'step2',
-            'nextButtonLabel' => 'Save and Go to Invoice'
+            'nextButtonLabel' => 'Save and Go to Invoice',
+            'formAction' => $this->generateUrl('admin_advertisement_addSpecificDetail', array('uid' => $uid))
+        ));
+    }
+    
+    public function addInvoiceAction(Request $request)
+    {
+        return $this->render('AdminBundle:Advertisement:addInvoice.html.twig', array(
+            'advertisement' => $this->advertisement
+        ));
+    }
+    
+    public function previewAction(Request $request)
+    {
+        return $this->render('AdminBundle:Advertisement:preview.html.twig', array(
+            'advertisement' => $this->advertisement
         ));
     }
 }
