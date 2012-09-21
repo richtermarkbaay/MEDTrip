@@ -1,0 +1,18 @@
+parameters:
+    services.inquiry_list: HealthCareAbroad\FrontendBundle\Form\ListType\InquirySubjectListType
+    services.inquiry_class: HealthCareAbroad\FrontendBundle\Services\InquireService
+
+services:
+    services.inquire:
+        class: %services.inquiry_class%
+        arguments: [@doctrine]]
+        calls:
+            
+    form.inquiry_subject_list:
+        class: "%services.inquiry_list%"
+        calls:
+            - [setContainer, [@service_container]]
+        tags:
+            - { name: form.type, alias: inquiry_subject_list }
+
+

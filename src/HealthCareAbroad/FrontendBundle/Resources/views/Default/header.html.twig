@@ -1,0 +1,45 @@
+<header id="header">
+
+    <div class="top_line">
+    
+    </div>
+    <div class="inner">
+
+        <div class="logo">
+
+            <a href="index.html">
+                   <img src="{{ asset('images/frontend/logo.png') }}" alt="#" />
+            </a>
+
+		</div> <!--End Logo-->
+        
+		<div class="search_box">
+
+           <!-- <form method="get" action="#">
+
+                <input type="submit" class="sb" value="Search" />
+
+                <input type="text" class="sf" value="Search here ..." name="s"" />
+
+            </form> -->
+            
+        </div> <!--Search Box-->
+	        
+        <form id="ui_element" class="sb_wrapper">
+                <p>
+				<span class="sb_down"></span>
+				<input class="sb_input" type="text"/>
+				<input class="sb_search" type="submit" value=""/>
+			</p>
+			<ul class="sb_dropdown" style="display:none;">
+			    <h4><input type="checkbox"/><label for="all"> All Categories</h4></label>
+						    
+				<li class="sb_filter"><input type="checkbox"/>Procedures</li>
+				<li class="sb_filter"><input type="checkbox"/>Destinations</li>
+							
+			</ul>
+	    </form>
+    
+    </div> <!--Inner-->
+
+</header> <!--End Header-->

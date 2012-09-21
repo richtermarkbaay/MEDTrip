@@ -1,0 +1,24 @@
+<footer id="footer">
+
+    <div class="footer_wrap">
+        <div class="foot_border"></div>
+            <div class="inner">
+                <!-- Destination -->
+				{% include 'FrontendBundle:Footer:footerDestination.html.twig' %}
+				
+				<!-- Health Care Centers -->
+           
+				{% include 'FrontendBundle:Footer:footerHealthCenters.html.twig' %}
+				
+                <!-- Directories -->
+                {% include 'FrontendBundle:Footer:footerDirectories.html.twig' %}
+                
+        		<!-- Another Widget here -->
+        		 {% include 'FrontendBundle:Footer:footerWidget.html.twig' %}
+        		 
+            </div> <!--End Inner-->
+    </div> <!--footer wrap-->
+
+</footer> <!--End Footer-->
+
+{% include 'FrontendBundle:Footer:footerBottomBar.html.twig' %}

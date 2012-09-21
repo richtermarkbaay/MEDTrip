@@ -1,0 +1,48 @@
+{% extends '::base.frontend.html.twig' %}
+
+{% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
+
+
+{% block body %}
+	<body>
+ 
+	  	<div class="fixed">		
+	  		{% block top_header %}
+				{% include 'FrontendBundle:Default:TopHeader.html.twig' %}
+			{% endblock %}
+			
+			{% block header %}
+				{% include 'FrontendBundle:Default:header.html.twig' %}
+			{% endblock %}
+			
+			{% block main_navigation %}
+				{% include 'FrontendBundle:Default:navigation.html.twig' %}
+			{% endblock %}
+			<div class="inner">	
+				<!-- News Ticker -->	
+			</div> <!--End Inner-->
+			
+			<div class="inner">
+		   		<div class="container">
+		   			 {% block content %}{% endblock %}
+				</div>
+			</div>
+			
+			{% block footer %}
+				{% include 'FrontendBundle:Footer:footer.html.twig' %}
+			{% endblock %}
+		
+		</div>
+		
+		<div class="scrollTo_top">
+		
+		    <a title="Scroll To Top" href="#">
+			<img src="{{ asset('images/frontend/up.png') }}" alt="Scroll To Top" />
+		    </a>
+		
+		</div>
+  		{{ outputInlineJavascript() | raw }}
+	</body>  	
+{% endblock %}
+
+

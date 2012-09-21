@@ -1,0 +1,39 @@
+main_homepage:
+    pattern:  /
+    defaults: { _controller: FrontendBundle:Default:index }
+    
+page_inquire:
+    pattern:  /inquire
+    defaults: { _controller: FrontendBundle:Inquiry:index }
+    requirements:
+       _method:  GET|POST
+
+page_popular_sidebar:
+    pattern: /popular
+    defaults: { _controller: FrontendBundle:Sidebar:popular }
+    requirements:
+        _method: GET|POST
+
+page_recent_sidebar:
+    pattern: /recent
+    defaults: { _controller: FrontendBundle:Sidebar:recent }
+    requirements:
+        _method: GET|POST
+        
+page_comments_sidebar:
+    pattern: /comments
+    defaults: { _controller: FrontendBundle:Sidebar:comments }
+    requirements:
+        _method: GET|POST
+
+page_tags_sidebar:
+    pattern: /tags
+    defaults: { _controller: FrontendBundle:Sidebar:tags }
+    requirements:
+        _method: GET|POST
+        
+page_exception_report_create:
+    pattern: /error
+    defaults: { _controller: FrontendBundle:Default:errorReport }
+    requirements:    
+        _method:  GET|POST
