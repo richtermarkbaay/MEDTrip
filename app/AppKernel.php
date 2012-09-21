@@ -18,7 +18,7 @@ class AppKernel extends Kernel
 
         if (!$first) {
             // disable debug mode on all but the first initialization
-            $this->debug = false;
+            $this->debug = true;
         }
 
         // will not work with --process-isolation

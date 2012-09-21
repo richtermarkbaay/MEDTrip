@@ -20,7 +20,7 @@ parameters:
     chromedia_accounts_uri: http://accounts.test.chromedia.com/app_dev.php
     
     ## TinyMCE theme params
-    tinymce_textarea_class: tinymce
+    tinymce_textarea_class: "tinymce"
 
     tinymce_simple_theme:
         mode: "textareas"
