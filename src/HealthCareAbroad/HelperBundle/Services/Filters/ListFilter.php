@@ -17,8 +17,6 @@ abstract class ListFilter
 
     protected $doctrine;
 
-    protected $entityRepository;
-
     protected $criteria = array();
 
     protected $queryParams = array();
