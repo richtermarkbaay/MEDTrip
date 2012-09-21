@@ -1,0 +1,18 @@
+admin_advertisement_index:
+    pattern:  /admin/advertisements
+    defaults: { _controller: AdminBundle:Advertisement:index }
+    requirements:
+        _method:  GET
+        
+        
+admin_advertisement_addBasicDetail:
+    pattern:  /admin/advertisements/add/step-one
+    defaults: { _controller: AdminBundle:Advertisement:addBasicDetail }
+    requirements:
+        _method: GET|POST
+        
+admin_advertisement_addSpecificDetail:
+    pattern:  /admin/advertisements/add/step-two
+    defaults: { _controller: AdminBundle:Advertisement:addSpecificDetail }
+    requirements:
+        _method: GET|POST

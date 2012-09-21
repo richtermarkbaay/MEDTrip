@@ -15,6 +15,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected $loginRelativeUri = '/institution/login';
    
     protected $doctrine;
+    static protected $clientWithLoggedUser=null; 
+    
     public static function setUpBeforeClass()
     {
         \HCA_DatabaseManager::getInstance()
@@ -50,12 +52,15 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     
     protected function getBrowserWithActualLoggedInUser()
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/institution/login');
+        if (self::$clientWithLoggedUser === null) {
+            self::$clientWithLoggedUser = static::createClient();
+            $crawler = self::$clientWithLoggedUser->request('GET', '/institution/login');
+            
+            $form = $crawler->selectButton('submit')->form();
+            self::$clientWithLoggedUser->submit($form, $this->formValues);
+        }
         
-        $form = $crawler->selectButton('submit')->form();
-        $client->submit($form, $this->formValues);
-        return $client;
+        return self::$clientWithLoggedUser;
         
     }
     

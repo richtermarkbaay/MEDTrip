@@ -27,6 +27,9 @@ class InstitutionListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        $this->queryBuilder->add('orderBy', 'a.name ASC');
+        $sortBy = $this->sortBy ? $this->sortBy : 'name';
+        $sort = "a.$sortBy " . $this->sortOrder;
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

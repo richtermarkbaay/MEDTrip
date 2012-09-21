@@ -28,11 +28,20 @@
                 <!-- Render Filter Box -->                
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
                 <div style="width: 70%">
-                    <table id="medical-center-list" class="generic-table" width="100%">
+                    <table id="medical-center-list" class="generic-table sortable-list" width="100%">
                     <tr>
-                        <th class="minwidth-1"><a href="">Name</a></th>
-                        <th class="minwidth-1"><a href="">Description</a></th>
+                        <th id="column-name" class="minwidth-1">
+                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
+                        </th>
+                        <th id="column-description" class="minwidth-1">
+                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a>
+                        </th>
+
                         <th class="actions" width="210">Action</th>
                     </tr>
 

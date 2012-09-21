@@ -823,16 +823,112 @@ CREATE TABLE IF NOT EXISTS `version_entries` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gallery`
+--
+
+DROP TABLE IF EXISTS `gallery`;
+CREATE TABLE IF NOT EXISTS `gallery` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `gallery`
+--
+
+INSERT INTO `gallery` (`id`, `institution_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gallery_media`
+--
+
+DROP TABLE IF EXISTS `gallery_media`;
+CREATE TABLE IF NOT EXISTS `gallery_media` (
+  `gallery_id` int(10) unsigned NOT NULL,
+  `media_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`gallery_id`,`media_id`),
+  KEY `gallery_id` (`gallery_id`),
+  KEY `media_id` (`media_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_medical_center_media`
+--
+
+DROP TABLE IF EXISTS `institution_medical_center_media`;
+CREATE TABLE IF NOT EXISTS `institution_medical_center_media` (
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `media_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`institution_medical_center_id`,`media_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`),
+  KEY `media_id` (`media_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `media`
+--
+
+DROP TABLE IF EXISTS `media`;
+CREATE TABLE IF NOT EXISTS `media` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `caption` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `context` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `content_type` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `metadata` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `width` int(10) unsigned DEFAULT NULL,
+  `height` int(10) unsigned DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+
+
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `gallery`
+--
+ALTER TABLE `gallery`
+  ADD CONSTRAINT `gallery_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `gallery_media`
+--
+ALTER TABLE `gallery_media`
+  ADD CONSTRAINT `gallery_media_ibfk_1` FOREIGN KEY (`gallery_id`) REFERENCES `gallery` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `gallery_media_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_medical_center_media`
+--
+ALTER TABLE `institution_medical_center_media`
+  ADD CONSTRAINT `institution_medical_center_media_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`),
+  ADD CONSTRAINT `institution_medical_center_media_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `admin_users`
 --
 ALTER TABLE `admin_users`
   ADD CONSTRAINT `admin_users_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`);
-  
+
 --
 -- Constraints for table `admin_user_type_roles`
 --

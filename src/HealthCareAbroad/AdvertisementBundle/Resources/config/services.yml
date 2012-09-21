@@ -1,0 +1,4 @@
+services:
+    services.advertisement.factory:
+        class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory
+        arguments: [@service_container]

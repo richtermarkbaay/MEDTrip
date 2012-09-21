@@ -1,0 +1,32 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'advertisements' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>Advertisment Management</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add Advertisement', 
+                        'description': 'Create a new advertisement',
+                        'class': 'add-icon',
+                        'href': path('admin_advertisement_addBasicDetail'), 
+                        'links': [{'title': 'Add advertisement', 'href': path('admin_advertisement_addBasicDetail')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+                <div style="width: 70%">                     
+                </div>
+                
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

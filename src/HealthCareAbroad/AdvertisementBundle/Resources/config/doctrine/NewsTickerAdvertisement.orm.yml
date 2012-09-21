@@ -1,0 +1,4 @@
+HealthCareAbroad\AdvertisementBundle\Entity\NewsTickerAdvertisement:
+    type: entity
+    table: null
+    lifecycleCallbacks: {}

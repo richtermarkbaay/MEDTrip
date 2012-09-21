@@ -24,6 +24,9 @@ class CountryListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        $this->queryBuilder->add('orderBy', 'c.name ASC');
+        $sortBy = $this->sortBy ? $this->sortBy : 'name';
+        $sort = "c.$sortBy " . $this->sortOrder;            
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

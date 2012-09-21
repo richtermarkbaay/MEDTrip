@@ -27,13 +27,17 @@
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
                 <div style="width: 70%">
-                    <table id="news-list" class="generic-table" width="100%">
+                    <table id="news-list" class="generic-table sortable-list" width="100%">
                         <tr>
-                            <th><a href="">Title</a></th>
-                            <th><a href="">Description</a></th>
-                            <th><a href="">Status</a></th>
-                            <th class="actions" width="150">Action</th>
+                            <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
+                            <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                            <th id="column-status" width="80"><a href="{{ app.request.uri }}" class="{{ sortBy == 'status' ? 'sort-' ~ sortOrder : '' }}">Status</a></th>
+                            <th class="actions" width="100">Action</th>
                         </tr>
 
                         {% for newsData in news %}

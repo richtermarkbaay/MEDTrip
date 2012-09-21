@@ -4,10 +4,10 @@
         {{ form_row(form.description) }}
         {{ form_rest(form) }}
 
-        {% if hideFormButtons is not defined or not hideFormButtons %}
-        <input style="" type="submit" name="submit" value="Next" class="green-button" />
-        <input type="reset" value="" class="form-reset"  />
-        {% endif %}
+        {#% if hideFormButtons is not defined or not hideFormButtons %#}
+        <input type="reset" value="Reset" class="form-reset"  />
+        <input style="" type="submit" name="submit" value="Save" class="green-button" />
+        {#% endif %#}
 
         <!-- end id-form  -->
 </form>

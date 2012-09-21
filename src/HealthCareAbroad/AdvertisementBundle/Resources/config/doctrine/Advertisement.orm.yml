@@ -1,0 +1,44 @@
+HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
+    type: entity
+    table: advertisements
+    repositoryClass: HealthCareAbroad\AdvertisementBundle\Repository\AdvertisementRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        title:
+            type: string
+            length: 250
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: integer
+            length: 1
+            nullable: true
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn: 
+        name: advertisement_type
+        type: integer
+        length: 10
+    discriminatorMap:
+        1: NewsTickerAdvertisement
+        2: FeaturedInstitutionAdvertisement
+        3: FeaturedListingAdvertisement
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            inversedBy: institutions
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
+    lifecycleCallbacks: {}

@@ -34,6 +34,12 @@ class InstitutionMedicalCenterListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        $this->queryBuilder->add('orderBy', 'b.name ASC');
+        if(!$this->sortBy || $this->sortBy == 'medicalCenter') {
+            $sort = 'b.name ' . $this->sortOrder;
+        } else {
+            $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;            
+        }
+
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

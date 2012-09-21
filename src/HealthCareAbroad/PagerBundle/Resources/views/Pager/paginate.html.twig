@@ -1,3 +1,7 @@
+<div style="float:left;display: none"><input type="checkbox" id="sort-all-pages">
+    <label for="sort-all-pages">Sort Current Page Only</label>
+</div>
+                        
 <ul class="pager">
    {% if pager.isFirstPage == false %}
         <li class="first"><a href="{{ paginate_path(route, pager.getFirstPage, parameters) }}">&laquo;</a></li>
