@@ -26,14 +26,22 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     public function testUpdateStatus()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/institution/1/update-status/1');
-    
+    	$status = 1;
+    	$crawler = $client->request('GET', '/admin/institution/1/update-status/'.$status);
+
     	$response = $client->getResponse();
 
     	// check of redirect url /admin/institutions
     	$this->assertEquals('/admin/institutions', $client->getResponse()->headers->get('location'));
-
     	$this->assertEquals(302, $response->getStatusCode());
+
+    	$crawler = $client->followRedirect(true);
+
+    	$isValidStatus = $crawler->filter('#message-red')->count() == 0;
+    	$this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
+
+    	$isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
+    	$this->assertTrue($isStatusUpdated, 'Unable to update status!');
     }
 
     /////// Manage Institution Medical Centers Tests //
@@ -53,26 +61,52 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
     		'institutionMedicalCenter[medicalCenter]' => 2,
-    		'institutionMedicalCenter[description]' => 'This center is added from test.',
-    		'institutionMedicalCenter[status]' => 1
+    		'institutionMedicalCenter[description]' => 'This center is added from test.'
     	);
 
-    	$form = $crawler->selectButton('submit')->form();
+    	$form = $crawler->selectButton('submit')->first()->form();
     	$crawler = $client->submit($form, $formData);
 
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
-    	// check of redirect url /admin/institution/1/manage-centers
-    	$this->assertEquals('/admin/institution/1/manage-centers', $client->getResponse()->headers->get('location'));
+    	// check of redirect url /admin/institution/1/medical-center/edit/{id}
+    	$this->assertEquals('/admin/institution/1/medical-center/edit/2', $client->getResponse()->headers->get('location'));
     	 
     	 
     	// redirect request
     	$crawler = $client->followRedirect(true);
 
-    	// check if the redirected response content has the newly medical center
-    	$isAdded = $crawler->filter('#medical-centers-list > tr > td:contains("'.$formData['institutionMedicalCenter[description]'].'")')->count() > 0;
+    	// check if the redirected response content has the correct text
+        $isAdded = $crawler->filter('#page-heading h2:contains("Edit Medical Center")')->count() > 0;
     	$this->assertTrue($isAdded);
+	}
+	
+	public function testAddMedicalCenterAndAddAnother()
+	{
+	    $client = $this->getBrowserWithActualLoggedInUser();
+	    $crawler = $client->request('GET', '/admin/institution/1/medical-center/add');
+
+	    $formData = array(
+            'institutionMedicalCenter[medicalCenter]' => 3,
+            'institutionMedicalCenter[description]' => 'This center is added from test and redirect to AddAnother.'
+	    );
+	
+	    $form = $crawler->selectButton('submit')->last()->form();
+	    $crawler = $client->submit($form, $formData);
+	
+	    // check if redirect code 302
+	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+	
+	    // check of redirect url /admin/institution/1/medical-center/add
+	    $this->assertEquals('/admin/institution/1/medical-center/add', $client->getResponse()->headers->get('location'));
+
+	    // redirect request
+	    $crawler = $client->followRedirect(true);
+	
+	    // check if the redirected response content has the newly medical center
+	    $isAdded = $crawler->filter('#page-heading h2:contains("Add Medical Center")')->count() > 0;
+	    $this->assertTrue($isAdded, 'Incorrect redirect url after adding and add another');
 	}
 
 	public function testEditMedicalCenter()
@@ -81,9 +115,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->request('GET', '/admin/institution/1/medical-center/edit/2');
 
 		$formData = array(
-				'institutionMedicalCenter[medicalCenter]' => 2,
-				'institutionMedicalCenter[description]' => 'This center is added from test. Updated',
-				'institutionMedicalCenter[status]' => 1
+			'institutionMedicalCenter[medicalCenter]' => 2,
+			'institutionMedicalCenter[description]' => 'This center is added from test. Updated'
 		);
 
 		$form = $crawler->selectButton('submit')->form();
@@ -93,15 +126,14 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
 	
 		// check of redirect url /admin/institution/1/manage-centers
-		$this->assertEquals('/admin/institution/1/manage-centers', $client->getResponse()->headers->get('location'));
-	
+		$this->assertEquals('/admin/institution/1/medical-center/edit/2', $client->getResponse()->headers->get('location'));
 	
 		// redirect request
 		$crawler = $client->followRedirect(true);
 	
 		// check if the redirected response content has the newly medical center
-		$isAdded = $crawler->filter('#medical-centers-list > tr > td:contains("'.$formData['institutionMedicalCenter[description]'].'")')->count() > 0;
-		$this->assertTrue($isAdded);
+    	$isAdded = $crawler->filter('#message-green')->count() > 0;
+    	$this->assertTrue($isAdded, 'Failed updating medicalCenter.');
 	}
 	
 	public function testAddDuplicateMedicalCenters()
@@ -126,13 +158,12 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 	
 		$formData = array(
 			'institutionMedicalCenter[medicalCenter]' => '',
-			'institutionMedicalCenter[description]' => 'This center is added from test. Updated',
-			'institutionMedicalCenter[status]' => 1
+			'institutionMedicalCenter[description]' => 'This center is added from test. Updated'
 		);
 
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $formData);
-	
+
 		$this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
 		$this->assertGreaterThan(0, $crawler->filter('form.basic-form > div ul')->count(), 'No validation message!');
 	}
@@ -142,164 +173,194 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$client = $this->getBrowserWithActualLoggedInUser();
 	
 		$formData = array(
-				'medicalCenter[name]' => 'saveUsingGet',
-				'medicalCenter[description]' => 'test invalid medical center method.',
-				'medicalCenter[status]' => 1
+			'medicalCenter[name]' => 'saveUsingGet',
+			'medicalCenter[description]' => 'test invalid medical center method.'
 		);
+
 		$crawler = $client->request('GET', '/admin/institution/1/medical-center/test-save', $formData);
+
 		$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
+	}
+	
+	public function testMedicalCenterUpdateStatus()
+	{
+	    $client = $this->getBrowserWithActualLoggedInUser();
+	    $status = 8;
+	    $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/update-status/' . $status);
+	
+	    $response = $client->getResponse();
+	    
+	    // check of redirect url /admin/institution/1/manage-centers
+	    $this->assertEquals('/admin/institution/1/manage-centers', $client->getResponse()->headers->get('location'));
+	    $this->assertEquals(302, $response->getStatusCode(), 'Incorrect redirect url');
+
+	    $crawler = $client->followRedirect(true);
+
+	    $isValidStatus = $crawler->filter('#message-red')->count() == 0;
+	    $this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
+	
+	    $isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
+	    $this->assertTrue($isStatusUpdated, 'Unable to update status!');
 	}
 	/////// END of Manage Institution Medical Centers Tests //
 
 
-// 	/////// Manage Institution Medical Procedure Types Tests //
-// 	public function testManageProcedureTypes()
-// 	{
-// 		$heading = 'Manage Institution Procedure Types';
-
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$crawler = $client->request('GET', '/admin/institution/1/manage-procedure-types');
-
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());		
-// 		$this->assertGreaterThan(0, $crawler->filter('html:contains("'.$heading.'")')->count(), 'Cannot find "'.$heading.'" heading.');
-// 	}
-	
-// 	public function testAddProcedureTypes()
-// 	{
-// 		$heading = 'Manage Institution Procedure Types';
+	/////// Medical Procedure Types Tests //
+	public function testAddProcedureType()
+	{
+	    $url = '/admin/institution/1/medical-center/2/procedure-type/add';
+		$client = $this->getBrowserWithActualLoggedInUser();
 		
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$postParams = array('procedure_types' =>array(2));
-// 		$crawler = $client->request('POST', '/admin/institution/1/manage-procedure-types/2', $postParams);
+		$crawler = $client->request('GET', $url);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-// 		$this->assertGreaterThan(0, $crawler->filter('html:contains("'.$heading.'")')->count(), 'Cannot find "'.$heading.'" heading.');
-// 	}
+		$isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+		$this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
+
+		$formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
+            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test. got it?'
+        );
+
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $formData);
+
+		$isSuccess = is_object(json_decode($client->getResponse()->getContent()));
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+	}
 	
-// 	public function testAddDuplicateProcedureTypes()
-// 	{
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$postParams = array('procedure_types' =>array(1,3));
-// 		$crawler = $client->request('POST', '/admin/institution/1/manage-procedure-types/2', $postParams);
-
-// 		$this->assertEquals(500, $client->getResponse()->getStatusCode());
-// 		$duplicateNotCreated = \trim($crawler->filter('div.text_exception > h1')->text()) != "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry";
-// 		$this->assertTrue($duplicateNotCreated, 'institution_medical_procedure_types Duplicate Entry.');
-// 	}
-// 	/////// END of Manage Institution Medical Procedure Types Tests //
-
-
-
-// 	/////// Manage Institution Medical Procedures Tests //
-// 	public function testManageProcedures()
-// 	{
-// 		$heading = 'List of Institutions Medical Procedures';
-	
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$crawler = $client->request('GET', '/admin/institution/1/manage-procedures');
-
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-// 		$this->assertGreaterThan(0, $crawler->filter('html:contains("'.$heading.'")')->count(), 'Cannot find "'.$heading.'" heading.');
-// 	}
-
-// 	public function testAddProcedureWithoutProcedure()
-// 	{
-// 		$heading = 'List of Institutions Medical Procedures';
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-	
-// 		$postParams['institutionMedicalProcedure'] = array(
-// 			'description' => 'this is generated from testAddInactiveProcedure',
-// 			'status' => 1
-// 		);
-
-// 		$crawler = $client->request('POST', '/admin/institution/1/save-medical-procedure', $postParams);
-
-// 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
-
-// 		$expectedRedirectUrl = '/admin/institution/1/manage-procedures';
-// 		$this->assertEquals($expectedRedirectUrl, substr($client->getResponse()->headers->get('location'), 0, strlen($expectedRedirectUrl)));
-  
-// 		// Redirect result
-// 		$crawler = $client->followRedirect(true);
-
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	public function testEditProcedureTypes()
+	{
+	    $url = '/admin/institution/1/medical-center/2/procedure-type/edit/1';
+		$client = $this->getBrowserWithActualLoggedInUser();
 		
-// 		$hasNotBeenAdded = "Medical Procedure does not exists or already inactive!" == \trim($crawler->filter('#content-table-inner > #message-red')->text());
-// 		$this->assertTrue($hasNotBeenAdded);
-// 	}
+		$crawler = $client->request('GET', $url);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-// 	public function testAddProcedure()
-// 	{ 
-// 		$heading = 'List of Institutions Medical Procedures';
-// 		$client = $this->getBrowserWithActualLoggedInUser();
+		$isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+		$this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
-// 		$postParams['institutionMedicalProcedure'] = array(
-// 			'medical_procedure' => 3,
-// 			'description' => 'this is generated from test',
-// 			'status' => 1
-// 		);
+		$formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
+            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test got it? yes, updated!'
+        );
 
-// 		$crawler = $client->request('POST', '/admin/institution/1/save-medical-procedure', $postParams);
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $formData);
+
+		$isSuccess = is_object(json_decode($client->getResponse()->getContent()));
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+	}
+	
+	public function testSaveInvalidDataProcedureType()
+	{
+	    $url = '/admin/institution/1/medical-center/1/procedure-type/add';
+	    $client = $this->getBrowserWithActualLoggedInUser();
+
+	    $crawler = $client->request('GET', $url);
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	
+	    $isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+	    $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
+
+	    $formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 1,
+            'institutionMedicalProcedureTypeForm[description]' => ''
+	    );
+
+	    $form = $crawler->selectButton('submit')->form();
+	    $crawler = $client->submit($form, $formData);
+	
+	    $isNotSuccess = !is_object(json_decode($client->getResponse()->getContent()));
+
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isNotSuccess, 'Invalid Data should not be saved!');
+	     
+	}
+	/////// END of Manage Institution Medical Procedure Types Tests //
 
 
-// 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-// 		$expectedRedirectUrl = '/admin/institution/1/manage-procedures';
-// 		$this->assertEquals($expectedRedirectUrl, substr($client->getResponse()->headers->get('location'), 0, strlen($expectedRedirectUrl)));
-
-// 		// Redirect result eagerly wanted to learn deep regarding
-// 		$crawler = $client->followRedirect(true);
-
-// 		// Check if status is 200 and the newly added procedure does exists in the list.
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-// 		$this->assertGreaterThan(0, $crawler->filter('table#institution-procedure-list > tr > td:contains("testProcedure2")')->count(), 'Cannot find newly added procedure.');
-// 	}
-
-// 	public function testAddDuplicateProcedure()
-// 	{
-// 		$heading = 'List of Institutions Medical Procedures';
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-
-// 		$postParams['institutionMedicalProcedure'] = array(
-// 				'medical_procedure' => 3,
-// 				'description' => 'this is generated from test',
-// 				'status' => 1
-// 		);
-
-// 		$crawler = $client->request('POST', '/admin/institution/1/save-medical-procedure', $postParams);
+	/////// Medical Procedure Tests //
+	public function testAddProcedure()
+	{
+	    $url = '/admin/institution/1/medical-center/2/procedure-type/add';
+		$client = $this->getBrowserWithActualLoggedInUser();
 		
-// 		$this->assertEquals(500, $client->getResponse()->getStatusCode());
+		$crawler = $client->request('GET', $url);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-// 		$duplicateNotCreated = \trim($crawler->filter('div.text_exception > h1')->text()) != "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry";
-// 		$this->assertTrue($duplicateNotCreated, "institution_medical_procedures Duplicate Entry.");
-// 	}
+		$isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+		$this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
+
+		$formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
+            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test. got it?'
+        );
+
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $formData);
+
+		$isSuccess = is_object(json_decode($client->getResponse()->getContent()));
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+	}
 	
-// 	public function testUpdateProcedureStatus()
-// 	{
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$params = array('institution_medical_procedure_id' => 1);
-// 		$crawler = $client->request('GET', '/admin/institution/update-procedure-status', $params);
+	public function testEditProcedure()
+	{
+	    $url = '/admin/institution/1/medical-center/2/procedure-type/edit/1';
+		$client = $this->getBrowserWithActualLoggedInUser();
+		
+		$crawler = $client->request('GET', $url);
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-// 		$this->assertEquals("true", $client->getResponse()->getContent(), "Unable to update procedure status.");
-// 		$this->assertEquals("Response code: 200", "Response code: " . $client->getResponse()->getStatusCode());
-// 	}
+		$isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+		$this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
+		$formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
+            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test got it? yes, updated!'
+        );
+
+		$form = $crawler->selectButton('submit')->form();
+		$crawler = $client->submit($form, $formData);
+
+		$isSuccess = is_object(json_decode($client->getResponse()->getContent()));
+
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+	}
 	
-// 	public function testLoadProcedureTypes()
-// 	{
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$params = array('medical_center_id' => 1);
-// 		$crawler = $client->request('GET', '/admin/medical-center/load-procedure-types', $params);
+	public function testSaveInvalidDataProcedure()
+	{
+	    $url = '/admin/institution/1/medical-center/1/procedure-type/add';
+	    $client = $this->getBrowserWithActualLoggedInUser();
 
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-// 	}
+	    $crawler = $client->request('GET', $url);
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
 	
-// 	public function testLoadProcedures()
-// 	{
-// 		$client = $this->getBrowserWithActualLoggedInUser();
-// 		$params = array('institution_id' => 1, 'procedure_type_id' => 1);
-// 		$crawler = $client->request('GET', '/admin/procedure-type/load-procedures', $params);
+	    $isCorrectForm = $crawler->filter("#content-table-inner form.basic-form[action='$url']")->count() > 0;
+	    $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
-// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-// 	}
+	    $formData = array(
+            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 1,
+            'institutionMedicalProcedureTypeForm[description]' => ''
+	    );
+
+	    $form = $crawler->selectButton('submit')->form();
+	    $crawler = $client->submit($form, $formData);
+	
+	    $isNotSuccess = !is_object(json_decode($client->getResponse()->getContent()));
+
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertTrue($isNotSuccess, 'Invalid Data should not be saved!');
+	     
+	}
+	/////// END of Medical Procedure Tests //
+	
 }

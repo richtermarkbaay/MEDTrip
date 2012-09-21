@@ -40,7 +40,7 @@
                         <tr>
                             <th id="column-medicalCenter" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'medicalCenter' ? 'sort-' ~ sortOrder : default }}">Medical Centers</a></th>
                             <th id="column-description" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
-                            <th id="column-status" width="100"><a href="{{ app.request.uri }}" class="{{ sortBy == 'status' ? 'sort-' ~ sortOrder : '' }}">Status</a></th>
+                            <th width="100">Status</th>
                             <th width="80" class="actions">Actions</th>
                         </tr>
 
@@ -51,7 +51,7 @@
                                 <td class="status">{{ centerStatusList[center.status] }}</td>
                                 <td class="options-width">
                                     <a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="icon-1 info-tooltip edit-medical-center"></a>
-                                    <a id="status-{{ center.id }}" href="{{ path('admin_institution_medicalCenter_updateStatus', {imcId:center.id}) }}" class="show-update-status icon-type">change status</a>
+                                    <a id="status-{{ center.id }}" href="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId,imcId:center.id}) }}" class="show-update-status icon-type">change status</a>
                                 </td>
                             </tr>
                         {% else %}

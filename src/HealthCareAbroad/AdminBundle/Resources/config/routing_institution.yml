@@ -54,22 +54,16 @@ admin_institution_medicalCenter_update:
         _method: POST
 
 admin_institution_medicalCenter_updateStatus:
-    pattern:  /admin/institution/medical-center/{imcId}/update-status/{status}
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status/{status}
     defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus, status: ~ }
     requirements:
-         imcId: \d+
-         status: \d+
+        institutionId: \d+
+        imcId: \d+
+        status: \d+
 # End of Manage Centers Routes #
 
 
 # Manage Procedure Types Routes #
-admin_institution_manageProcedureTypes: 
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/manage-procedure-types
-    defaults: { _controller: AdminBundle:Institution:manageProcedureTypes, status: 1 }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-
 admin_institution_procedureType_add:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/add
     defaults: { _controller: AdminBundle:Institution:addProcedureType }
