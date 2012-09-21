@@ -33,6 +33,23 @@ abstract class Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
+    
+    /**
+     * @var int
+     */
+    protected $type;
+    
+    final public function getType()
+    {
+        return $this->type;
+    }
+    
+    final public function getTypeLabel()
+    {
+        $r = AdvertisementTypes::getList();
+        
+        return $r[$this->type];
+    }
 
 
     /**

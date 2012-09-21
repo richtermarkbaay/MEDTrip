@@ -1,15 +1,14 @@
+
+
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'advertisements' %}
 {% set selectedSubTab = '' %}
-{% set selectedStep = selectedStep is defined ? selectedStep : 'step1' %}
-{% set nextButtonLabel = nextButtonLabel is defined ? nextButtonLabel: 'Next' %}
-{% set formAction = formAction is defined ? formAction : path('admin_advertisement_addBasicDetail') %}
 
 {% block content %}
 
 	<div id="content">
 	
-		<div id="page-heading"><h2>Create New {{ form.vars.value.typeLabel is defined ? form.vars.value.typeLabel : '' }} Advertisement </h2></div>
+		<div id="page-heading"><h2>Create new advertisement - Preview Page</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -26,23 +25,36 @@
 			
 			    <!--  start table-content  -->
                 <div id="table-content" style="width:70%">
+                    
                     {% include '::notice.admin.html.twig' %}
 				
     				{% include '::stepHolder.base.admin.html.twig' with {
     				    steps: [
-                            {title: 'Basic Detail', 'selected': (selectedStep == 'step1')},
-                            {title: 'Specific Detail', 'selected': (selectedStep == 'step2')},
+                            {title: 'Basic Detail'},
+                            {title: 'Specific Detail'},
                             {title: 'Generate Invoice'},
-                            {title: 'Preview', 'selected': false},
+                            {title: 'Preview', 'selected': true},
                         ]}
                     %}
                     
     				<!-- start form -->
-    				<form action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-    
-    					{{ form_rest(form) }}
-    					
-    				    <input type="submit" value="{{ nextButtonLabel }}" class="green-button" name="submit"/>
+    				<form action="#" method="post"  class="basic-form">
+    				    
+    				    <div>
+    				        <label>Institution</label>
+                            <span class="fixed-value"> {{ advertisement.institution.name }}</span>
+                        </div>
+                        
+                        <div>
+    				        <label>Title</label>
+                            <span class="fixed-value"> {{ advertisement.title }}</span>
+                        </div>
+                        
+                        <div>
+    				        <label>Description</label>
+                            <span class="fixed-value"> {{ advertisement.description }}</span>
+                        </div>
+    				    
     				</form>
                 </div>
 				

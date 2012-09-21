@@ -20,7 +20,7 @@ class InstitutionMedicalCenterListType extends AbstractType
  	
  	private $institution;
 
-	public function __construct(Institution $institution) {
+	public function __construct(Institution $institution=null) {
 		$this->institution = $institution;
 	}
 	
