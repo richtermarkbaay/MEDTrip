@@ -51,7 +51,7 @@ class CityControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
-    	// check of redirect url /admin/cities
+    	// check if redirect url /admin/cities
     	$this->assertEquals('/admin/cities', $client->getResponse()->headers->get('location'));
     	 
     	 
@@ -66,7 +66,7 @@ class CityControllerTest extends AdminBundleWebTestCase
     public function testEditSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/city/edit/1');
+    	$crawler = $client->request('GET', '/admin/city/edit/2');
     
     	$formData = array(
     			'city[name]' => 'TestCity1 Updated',
@@ -147,5 +147,29 @@ class CityControllerTest extends AdminBundleWebTestCase
     	);
     	$crawler = $client->request('GET', '/admin/city/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
+    }
+    
+    public function testIndexWithFilters()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+    
+        // Test Filter Active Status
+        $crawler = $client->request('GET', '/admin/cities?status=1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllActive = $crawler->filter('#city-list tr a.icon-5')->count() == 0;
+        $this->assertEquals(true, $isAllActive, 'ListFilter is not working properly!');
+
+        // Test Filter Inactive Status
+        $crawler = $client->request('GET', '/admin/cities?status=0');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllInactive = $crawler->filter('#city-list tr a.icon-2')->count() == 0;
+        $this->assertEquals(true, $isAllInactive, 'ListFilter is not working properly!');
+
+        // Test Filter country and status
+        $crawler = $client->request('GET', '/admin/cities?country1=&status=1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isFiltered = $crawler->filter('#city-list tr > td.country:not(:contains("Philippines"))')->count() == 0;
+        $isAllActive = $crawler->filter('#city-list tr a.icon-5')->count() == 0;
+        $this->assertEquals(true, $isFiltered && $isAllActive, 'Filter contry and status is not working properly!');
     }
 }

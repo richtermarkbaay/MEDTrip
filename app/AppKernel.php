@@ -18,7 +18,7 @@ class AppKernel extends Kernel
 
         if (!$first) {
             // disable debug mode on all but the first initialization
-            $this->debug = true;
+            $this->debug = false;
         }
 
         // will not work with --process-isolation
@@ -54,7 +54,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\UserBundle\UserBundle(),
             //new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
-            new HealthCareAbroad\PageBundle\PageBundle(),
+            new HealthCareAbroad\FrontendBundle\FrontendBundle(),
             new HealthCareAbroad\MediaBundle\MediaBundle(),
             new HealthCareAbroad\MailerBundle\MailerBundle(),
             new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
