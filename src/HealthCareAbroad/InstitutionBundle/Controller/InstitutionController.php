@@ -14,6 +14,10 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
+use HealthCareAbroad\AdminBundle\Entity\OfferedService;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServiceType;
+
 use HealthCareAbroad\HelperBundle\Services\LocationService;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,7 +39,7 @@ class InstitutionController  extends InstitutionAwareController
 		
 		//render template      
 		$form = $this->createForm(new InstitutionDetailType(), $this->institution);
-		
+
 		//update institution details
 		if ($request->isMethod('POST')) {
 			
@@ -47,7 +51,7 @@ class InstitutionController  extends InstitutionAwareController
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 				
 				//create event on editInstitution and dispatch
-				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('evens.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
 			}
 		}
 		

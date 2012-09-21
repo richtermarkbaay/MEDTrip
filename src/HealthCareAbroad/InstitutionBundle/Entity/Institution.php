@@ -99,6 +99,12 @@ class Institution
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionUsers;
+    
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionOfferedServices;
 
     public function __construct()
     {
@@ -564,5 +570,38 @@ class Institution
     public function getInstitutionUsers()
     {
         return $this->institutionUsers;
+    }
+
+
+    /**
+     * Add institutionOfferedServices
+     *
+     * @param HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices
+     * @return Institution
+     */
+    public function addInstitutionOfferedService(\HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices)
+    {
+        $this->institutionOfferedServices[] = $institutionOfferedServices;
+        return $this;
+    }
+
+    /**
+     * Remove institutionOfferedServices
+     *
+     * @param HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices
+     */
+    public function removeInstitutionOfferedService(\HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices)
+    {
+        $this->institutionOfferedServices->removeElement($institutionOfferedServices);
+    }
+
+    /**
+     * Get institutionOfferedServices
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionOfferedServices()
+    {
+        return $this->institutionOfferedServices;
     }
 }

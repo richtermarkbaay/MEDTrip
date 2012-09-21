@@ -61,6 +61,22 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser
             mappedBy: institution
     manyToMany:
+        institutionOfferedServices:
+            targetEntity: HealthCareAbroad\AdminBundle\Entity\OfferedService
+            cascade: { }
+            mappedBy: null
+            inversedBy: institution
+            joinTable:
+                name: institution_offered_services
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: offered_service_id
+                        referencedColumnName: id
+                            
         contactDetail:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
             cascade: {  }

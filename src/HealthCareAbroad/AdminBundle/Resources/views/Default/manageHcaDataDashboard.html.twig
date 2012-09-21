@@ -30,7 +30,7 @@
 	        %}
 	        
 			{# ----- Offered Service Related tasks ----- #}
-			{% set manageOfferedServiceTasks = {title: 'Offered Service Tasks Management', 'description': 'View all available Service Offered or add new one.', 'href': path('admin_offered_service_index'), 'links': [{title:'View Services Offered',href: path('admin_offered_service_index')}, {title:'Add Offered Service', href: path('admin_offered_service_add')}] } %}
+			{% set manageOfferedServiceTasks = {title: 'Service Offered Management', 'description': 'View all available Service Offered or add new one.', 'href': path('admin_offered_service_index'), 'links': [{title:'View Services Offered',href: path('admin_offered_service_index')}, {title:'Add Offered Service', href: path('admin_offered_service_add')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
 		        {'headerTitle': 'Manage Services Offered', 'contents': [ manageOfferedServiceTasks]} 

@@ -19,3 +19,8 @@ services:
           - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: institution_list }
+            
+    form.offeredService_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType
+        tags:
+            - { name: form.type, alias: offeredService_list }

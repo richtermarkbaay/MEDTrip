@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
@@ -23,6 +25,7 @@ class InstitutionDetailType extends AbstractType
     	$builder
     	->add('name', 'text', array('constraints' => new NotBlank()));
     	$builder->add('description', 'textarea', array('constraints' => new NotBlank()));
+    	$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true,));
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
     	$builder->add('address1','text', array('constraints' => new NotBlank()));

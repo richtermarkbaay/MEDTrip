@@ -38,9 +38,24 @@ class OfferedServiceRepository extends EntityRepository
 
 	public function getQueryBuilderForOfferedService()
 	{
-		return $this->_em->createQueryBuilder()
+		return $this->_em->createQueryBuilder('c')
 		->add('select', 'c')
 		->add('from', 'AdminBundle:OfferedService c')
 		->add('where', 'c.status = 1');
+	}
+	
+	/**
+	 * Get Active Service Offered
+	 *
+	 * @return Doctrine\ORM\QueryBuilder
+	 */
+	public function getBuilderForOfferedServices()
+	{
+	        $qb = $this->getEntityManager()->createQueryBuilder();
+      		  $qb->select('a')
+            ->from('AdminBundle:OfferedService', 'a')
+            ->add('where', 'b.status = 1');
+
+        return $qb;
 	}
 }
