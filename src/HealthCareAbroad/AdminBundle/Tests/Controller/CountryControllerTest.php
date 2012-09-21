@@ -143,4 +143,21 @@ class CountryControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/country/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
     }
+    
+    public function testIndexWithFilters()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+    
+        // Test Filter Active Status
+        $crawler = $client->request('GET', '/admin/countries?status=1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllActive = $crawler->filter('#country-list tr a.icon-5')->count() == 0;
+        $this->assertEquals(true, $isAllActive, 'ListFilter status=1 is not working properly!');
+
+        // Test Filter Inactive Status
+        $crawler = $client->request('GET', '/admin/countries?status=0');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllInactive = $crawler->filter('#country-list tr a.icon-2')->count() == 0;
+        $this->assertEquals(true, $isAllInactive, 'ListFilter status=0 is not working properly!');
+    }
 }

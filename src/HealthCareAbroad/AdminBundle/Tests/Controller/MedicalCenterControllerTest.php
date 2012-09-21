@@ -43,22 +43,55 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
     		'medicalCenter[status]' => 1
     	);
 
-    	$form = $crawler->selectButton('submit')->form();
+    	$form = $crawler->selectButton('submit')->first()->form();
     	$crawler = $client->submit($form, $formData);
 
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
     	// check of redirect url /admin/medical-centers
-    	$this->assertEquals('/admin/medical-centers', $client->getResponse()->headers->get('location'));
-    	 
-    	 
+    	$this->assertEquals('/admin/medical-center/edit/4', $client->getResponse()->headers->get('location'));
+
     	// redirect request
     	$crawler = $client->followRedirect(true);
 
     	// check if the redirected response content has the newly added medical center
-    	$isAdded = $crawler->filter('#medical-center-list > tr > td:contains("'.$formData['medicalCenter[name]'].'")')->count() > 0;
+    	$isAdded = $crawler->filter('#page-heading h2:contains("Edit Medical Center")')->count() > 0;
     	$this->assertTrue($isAdded);
+
+    	$isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
+    	$this->assertTrue($isMessageShow, 'Save message does not show!');
+    }
+    
+    public function testSaveAndAddAnother()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/medical-center/add');
+    
+        $formData = array(
+            'medicalCenter[name]' => 'addedby Institution fromtest2',
+            'medicalCenter[description]' => 'The quick brown fox added from test.',
+            'medicalCenter[status]' => 1
+        );
+    
+        $form = $crawler->selectButton('submit')->last()->form();
+        $crawler = $client->submit($form, $formData);
+    
+        // check if redirect code 302
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    
+        // check of redirect url /admin/medical-centers
+        $this->assertEquals('/admin/medical-center/add', $client->getResponse()->headers->get('location'));
+    
+        // redirect request
+        $crawler = $client->followRedirect(true);
+    
+        // check if the redirected response content has the newly added medical center
+        $isAdded = $crawler->filter('#page-heading h2:contains("Add Medical Center")')->count() > 0;
+        $this->assertTrue($isAdded);
+        
+        $isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
+        $this->assertTrue($isMessageShow, 'Save message does not show!');
     }
     
     public function testEditSave()
@@ -79,15 +112,18 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     
     	// check of redirect url /admin/medical-centers
-    	$this->assertEquals('/admin/medical-centers', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/medical-center/edit/1', $client->getResponse()->headers->get('location'));
     
     
     	// redirect request
     	$crawler = $client->followRedirect(true);
     
     	// check if the redirected response content has the newly added medical center name
-    	$isAdded = $crawler->filter('#medical-center-list > tr > td:contains("'.$formData['medicalCenter[name]'].'")')->count() > 0;
+    	$isAdded = $crawler->filter('#page-heading h2:contains("Edit Medical Center")')->count() > 0;
     	$this->assertTrue($isAdded);
+
+    	$isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
+    	$this->assertTrue($isMessageShow, 'Save message does not show!');
     }
 
     public function testCreateDuplicate()
@@ -145,5 +181,22 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
     	);
     	$crawler = $client->request('GET', '/admin/medical-center/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
+    }
+
+    public function testIndexWithFilters()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+    
+        // Test Filter Active Status
+        $crawler = $client->request('GET', '/admin/medical-centers?status=1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllActive = $crawler->filter('#medical-center-list tr a.icon-5')->count() == 0;
+        $this->assertEquals(true, $isAllActive, 'ListFilter is not working properly!');
+    
+        // Test Filter Inactive Status
+        $crawler = $client->request('GET', '/admin/medical-centers?status=0');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $isAllInactive = $crawler->filter('#medical-center-list tr a.icon-2')->count() == 0;
+        $this->assertEquals(true, $isAllInactive, 'ListFilter is not working properly!');
     }
 }
