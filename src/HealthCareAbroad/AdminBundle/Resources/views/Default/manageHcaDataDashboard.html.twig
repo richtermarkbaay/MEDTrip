@@ -29,11 +29,12 @@
 		        {'headerTitle': 'Manage Locations', 'contents': [manageCountriesTask, manageCitiesTask]} 
 	        %}
 	        
-			{# ----- Offered Service Related tasks ----- #}
+			{# ----- Offered Service Related and Language tasks ----- #}
 			{% set manageOfferedServiceTasks = {title: 'Service Offered Management', 'description': 'View all available Service Offered or add new one.', 'href': path('admin_offered_service_index'), 'links': [{title:'View Services Offered',href: path('admin_offered_service_index')}, {title:'Add Offered Service', href: path('admin_offered_service_add')}] } %}
+		    {% set manageLanguageTasks = {title: 'Language Management', 'description': 'View all available Language', 'href': path('admin_language_index'), 'links': [{title:'View Language',href: path('admin_language_index')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'headerTitle': 'Manage Services Offered', 'contents': [ manageOfferedServiceTasks]} 
+		        {'headerTitle': 'Manage Form Datas', 'contents': [ manageOfferedServiceTasks, manageLanguageTasks]} 
 	        %}
 	       
 			<div id="table-content" style="width: 70%">

@@ -50,4 +50,8 @@ final class AdminBundleEvents
     const ON_ADD_OFFERED_SERVICE = 'event.offered_service.add';
     const ON_EDIT_OFFERED_SERVICE = 'event.offered_service.edit';
     const ON_DELETE_OFFERED_SERVICE = 'event.offered_service.delete';
+    
+    const ON_ADD_LANGUAGE = 'event.language.add';
+    const ON_EDIT_LANGUAGE = 'event.language.edit';
+    const ON_DELETE_LANGUAGE = 'event.language.delete';
 }

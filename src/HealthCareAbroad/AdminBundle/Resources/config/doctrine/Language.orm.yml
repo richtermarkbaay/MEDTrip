@@ -1,0 +1,27 @@
+HealthCareAbroad\AdminBundle\Entity\Language:
+    type: entity
+    table: languages
+    repositoryClass: HealthCareAbroad\AdminBundle\Repository\LanguageRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        isoCode:
+            type: string
+            length: 5
+            fixed: true
+            nullable: false
+            column: iso_code
+        name:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+        status:
+            type: boolean
+            nullable: false
+    lifecycleCallbacks: {  }
