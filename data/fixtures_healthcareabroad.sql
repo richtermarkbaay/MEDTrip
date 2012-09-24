@@ -143,6 +143,26 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 (1, 'Test User Type with super admin role', 3),
 (2, 'Normal user type', 2);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advertisements`
+--
+
+DROP TABLE IF EXISTS `advertisements`;
+CREATE TABLE IF NOT EXISTS `advertisements` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `advertisement_type` int(10) unsigned NOT NULL,
+  `title` char(250) NOT NULL,
+  `description` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='advertisement table';
+
 
 -- --------------------------------------------------------
 
@@ -936,6 +956,13 @@ ALTER TABLE `admin_users`
 ALTER TABLE `admin_user_type_roles`
   ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
+
+
+--
+-- Constraints for table `advertisements`
+--
+ALTER TABLE `advertisements`
+  ADD CONSTRAINT `advertisements_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cities`
