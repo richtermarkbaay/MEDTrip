@@ -24,7 +24,8 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	{
 		\HCA_DatabaseManager::getInstance()
 		->restoreDatabaseState()
-		->restoreGlobalAccountsDatabaseState();
+		//->restoreGlobalAccountsDatabaseState()
+		;
 	}
 	
 	public function setUp()
@@ -33,13 +34,6 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 				'userLogin[email]' => $this->userEmail,
 				'userLogin[password]' => $this->userPassword
 		);
-	}
-	
-	protected function requestUrlWithNoLoggedInUser($uri, $method="GET")
-	{
-		$client = static::createClient();
-		$client->request($method, $uri);
-		return $client;
 	}
 	
 	protected function getBrowserWithActualLoggedInUser($options = array())
@@ -76,5 +70,40 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 			$this->doctrine = HCA_DatabaseManager::getInstance()->getDoctrine();
 		}
 		return $this->doctrine;
+	}
+	
+	/**
+	 * Convenienve function to request URI with no logged user
+	 * 
+	 * @param string $uri
+	 * @param string $method
+	 * @return client
+	 */
+	protected function requestUrlWithNoLoggedInUser($uri, $method="GET")
+	{
+	    $client = static::createClient();
+	    $client->request($method, $uri);
+	    return $client;
+	}
+	
+	/**
+	 * Convenience function to get location response headers
+	 *
+	 * @param unknown_type $client
+	 */
+	protected function getLocationResponseHeader($client)
+	{
+	    return $client->getResponse()->headers->get('location');
+	}
+	
+	/**
+	 * Convenienve function to check if location header is the login page.
+	 *
+	 * @param unknown_type $client
+	 */
+	protected function isRedirectedToLoginPage($client)
+	{
+	    $location = $this->getLocationResponseHeader($client);
+	    return $location == '/admin/login' || $location == 'http://localhost/admin/login';
 	}
 }

@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 class AdvertisementController extends Controller
 {
     /**
@@ -56,7 +58,7 @@ class AdvertisementController extends Controller
     
     /**
      * This is the first step when adding an advertisement
-     * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      */
     public function addBasicDetailAction(Request $request)
@@ -68,23 +70,21 @@ class AdvertisementController extends Controller
         )));
         
         if ($request->isMethod('POST')) {
-            $form->bind($request);
             
-            if ($form->isValid()) {
+            $form->bind($request);
                 
-                // set session data for this draft advertisement
-                $data = array(
-                    AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE => $form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData(),
-                    AdvertisementFormType::FIELD_INSTITUTION => $form->get(AdvertisementFormType::FIELD_INSTITUTION)->getData()->getId()
-                );
-                $draftAdvertisements = $request->getSession()->get('draftAdvertisements', array());
-                $uid = \uniqid();
-                $draftAdvertisements[$uid] = $data;
-                // update draftAdvertisements session data
-                $request->getSession()->set('draftAdvertisements', $draftAdvertisements);
-                
-                return $this->redirect($this->generateUrl('admin_advertisement_addSpecificDetail', array('uid'=>$uid)));
-            }
+            // set session data for this draft advertisement
+            $data = array(
+                AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE => $form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData(),
+                AdvertisementFormType::FIELD_INSTITUTION => $form->get(AdvertisementFormType::FIELD_INSTITUTION)->getData()->getId()
+            );
+            $draftAdvertisements = $request->getSession()->get('draftAdvertisements', array());
+            $uid = \uniqid();
+            $draftAdvertisements[$uid] = $data;
+            // update draftAdvertisements session data
+            $request->getSession()->set('draftAdvertisements', $draftAdvertisements);
+            
+            return $this->redirect($this->generateUrl('admin_advertisement_addSpecificDetail', array('uid'=>$uid)));
         }
         
         return $this->render('AdminBundle:Advertisement:add.html.twig', array(
@@ -95,6 +95,7 @@ class AdvertisementController extends Controller
     /**
      * This is the second step in creating an advertisement
      * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      */
     public function addSpecificDetailAction(Request $request)
@@ -151,6 +152,7 @@ class AdvertisementController extends Controller
     /**
      * This page will be the third step when creating a new advertisement.
      * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -177,6 +179,7 @@ class AdvertisementController extends Controller
     /**
      * This is the edit advertisement page
      * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
