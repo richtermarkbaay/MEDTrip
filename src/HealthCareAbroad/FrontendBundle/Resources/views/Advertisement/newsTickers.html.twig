@@ -1,0 +1,25 @@
+<div id="top" class="top_bar">
+
+    <div class="inner">
+    
+        {% if advertisements is not empty %}
+    		<div class="news_ticker">
+            
+    			<div class="ticker_icon"></div>
+    			
+    			<ul id="ticker01">
+    			    
+    			    {% for newsTicker in advertisements %}
+    			    
+    			        <li><span>&#9733;</span><a href="#">{{ newsTicker.title }}</a></li>
+    			    
+    			    {% endfor %}
+            
+    			</ul>
+    			       
+    		</div><!--News Ticker-->
+		{% endif %}
+		
+    </div> <!--End Inner-->
+    
+</div> <!--End Topbar-->

@@ -8,7 +8,8 @@
  
 	  	<div class="fixed">		
 	  		{% block top_header %}
-				{% include 'FrontendBundle:Default:TopHeader.html.twig' %}
+	  		    <!-- news ticker advertisements -->
+				{% render 'FrontendBundle:Advertisement:showNewsTickerAdvertisement' %}
 			{% endblock %}
 			
 			{% block header %}
