@@ -77,4 +77,11 @@ parameters:
     event.offered_service.add: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
     event.offered_service.edit: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
     event.offered_service.delete: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
+
+    #
+    # language related events
+    #
+    event.language.add: HealthCareAbroad\AdminBundle\Event\LanguageEvent
+    event.language.edit: HealthCareAbroad\AdminBundle\Event\LanguageEvent
+    event.language.delete: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     
