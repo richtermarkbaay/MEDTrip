@@ -438,6 +438,10 @@ class InstitutionController extends Controller
     {
         $request = $this->getRequest();
 
+        if (!$request->isMethod('POST')) {
+            return new Response('Unsupported method', 405);
+        }
+
         if (!$this->institutionMedicalProcedure) {
             $this->institutionMedicalProcedure = new InstitutionMedicalProcedure();
             $this->institutionMedicalProcedure->setInstitutionMedicalProcedureType($this->institutionMedicalProcedureType);

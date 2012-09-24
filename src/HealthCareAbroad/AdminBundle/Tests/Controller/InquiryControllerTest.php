@@ -19,7 +19,7 @@ class InquiryControllerTest extends AdminBundleWebTestCase
     public function testIndex()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/inquire');
+        $crawler = $client->request('GET', '/admin/inquiries');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Inquiries")')->count(), 'No Output!');

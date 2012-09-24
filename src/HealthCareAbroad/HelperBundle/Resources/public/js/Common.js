@@ -139,7 +139,7 @@ $(function(){
 		var url = elem.attr('href');
 		elem.attr('href', 'javascript:void(0)');
 
-		$.getJSON(url, function(result){
+		$.post(url, function(result){
 			if(result) {
 				elem.hasClass('icon-2') 
 					? elem.removeClass('icon-2').addClass('icon-5').attr('title', 'Activate')
@@ -149,7 +149,7 @@ $(function(){
 				alert('Unable to activate or deactivate.');
 			}
 			elem.attr('href', url);
-		});
+		}, "json");
 	});	
 
 	$(".sortable-list th a").click(function(){
