@@ -1,8 +1,8 @@
 <?php
 /**
+ * Factory class for advertisement. This class is only concerned with creating advertisement instance and related objects.
  * 
  * @author Allejo Chris G. Velarde
- *
  */
 
 namespace HealthCareAbroad\AdvertisementBundle\Services;

@@ -1,0 +1,44 @@
+admin_language_index:
+    pattern:  /admin/language
+    defaults: { _controller: AdminBundle:Language:index }
+    requirements:    
+        _method:  GET
+
+admin_language_add:
+    pattern:  /admin/language/add
+    defaults: { _controller: AdminBundle:Language:add }
+    requirements:    
+        _method:  GET
+        
+admin_language_create:
+    pattern:  /admin/language/add
+    defaults: { _controller: AdminBundle:Language:save }
+    requirements:
+         _method: POST
+         
+admin_language_edit:
+    pattern:  /admin/language/edit/{id}
+    defaults: { _controller: AdminBundle:Language:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_language_update:
+    pattern:  /admin/language/edit/{id}
+    defaults: { _controller: AdminBundle:Language:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_language_updateStatus:
+    pattern:  /admin/language/update-status/{id}
+    defaults: { _controller: AdminBundle:language:updateStatus, id: ~ }
+    requirements:
+        id: \d+
+
+admin_language_show:
+    pattern:  /{id}/{slug}
+    defaults: { _controller: AdminBundle:Language:show }
+    requirements:
+        _method:  GET
+        id: \d+

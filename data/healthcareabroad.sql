@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2012 at 10:04 AM
+-- Generation Time: Sep 24, 2012 at 10:22 AM
 -- Server version: 5.5.24
 -- PHP Version: 5.3.10-1ubuntu3.2
 
@@ -98,6 +98,26 @@ CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `advertisements`
+--
+
+DROP TABLE IF EXISTS `advertisements`;
+CREATE TABLE IF NOT EXISTS `advertisements` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `advertisement_type` int(10) unsigned NOT NULL,
+  `title` char(250) NOT NULL,
+  `description` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='advertisement table';
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `breadcrumb_tree`
 --
 
@@ -164,6 +184,37 @@ CREATE TABLE IF NOT EXISTS `countries` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `doctors`
+--
+
+DROP TABLE IF EXISTS `doctors`;
+CREATE TABLE IF NOT EXISTS `doctors` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` char(250) NOT NULL,
+  `middle_name` char(250) NOT NULL,
+  `last_name` char(250) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `entity_classes`
+--
+
+DROP TABLE IF EXISTS `entity_classes`;
+CREATE TABLE IF NOT EXISTS `entity_classes` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL COMMENT 'fully qualified class name',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='list of classes often used in tables with generic objects';
 
 -- --------------------------------------------------------
 
@@ -308,6 +359,25 @@ CREATE TABLE IF NOT EXISTS `institution_contact_details` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `institution_doctors`
+--
+
+DROP TABLE IF EXISTS `institution_doctors`;
+CREATE TABLE IF NOT EXISTS `institution_doctors` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `doctor_id` bigint(20) unsigned NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_id` (`institution_id`,`doctor_id`),
+  KEY `doctor_id` (`doctor_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institution_groups`
 --
 
@@ -436,6 +506,20 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `institution_offered_services`
+--
+
+DROP TABLE IF EXISTS `institution_offered_services`;
+CREATE TABLE IF NOT EXISTS `institution_offered_services` (
+  `institution_id` int(10) unsigned NOT NULL,
+  `offered_service_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_id`,`offered_service_id`),
+  KEY `offered_service_id` (`offered_service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institution_users`
 --
 
@@ -532,6 +616,21 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expiration_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `languages`
+--
+
+DROP TABLE IF EXISTS `languages`;
+CREATE TABLE IF NOT EXISTS `languages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `iso_code` char(5) NOT NULL,
+  `name` char(100) NOT NULL,
+  `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -708,9 +807,9 @@ CREATE TABLE IF NOT EXISTS `offered_services` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -727,6 +826,22 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test_autosuggest`
+--
+
+DROP TABLE IF EXISTS `test_autosuggest`;
+CREATE TABLE IF NOT EXISTS `test_autosuggest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `medical_procedure_type_id` int(11) unsigned DEFAULT NULL,
+  `name` varchar(143) DEFAULT NULL,
+  `slug` varchar(250) NOT NULL,
+  `status` int(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -791,6 +906,13 @@ ALTER TABLE `institution_contact_details`
   ADD CONSTRAINT `institution_contact_details_ibfk_3` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `institution_doctors`
+--
+ALTER TABLE `institution_doctors`
+  ADD CONSTRAINT `institution_doctors_ibfk_2` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_doctors_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `institution_invitations`
 --
 ALTER TABLE `institution_invitations`
@@ -830,6 +952,13 @@ ALTER TABLE `institution_medical_procedures`
 ALTER TABLE `institution_medical_procedure_types`
   ADD CONSTRAINT `institution_medical_procedure_types_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `institution_medical_procedure_types_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_offered_services`
+--
+ALTER TABLE `institution_offered_services`
+  ADD CONSTRAINT `institution_offered_services_ibfk_2` FOREIGN KEY (`offered_service_id`) REFERENCES `offered_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_offered_services_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_users`

@@ -1,0 +1,96 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_language' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Language</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add Language', 
+                        'description': 'Add Languagee',
+                        'class': 'add-edit-language add-icon',
+                        'href': path('admin_language_add'), 
+                        'links': [{'class': 'add-edit-language add-icon', 'title': 'Add a Language', 'href': path('admin_language_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			<!--  start table-content  -->
+				<div id="table-content"   style="width:70%;">
+
+                    <table id="news-list" class="generic-table" width="100%">
+                        <tr>         	 
+                            <th><a href="">Name</a></th>
+                            <th><a href="">Iso Code</a></th>
+                            <th><a href="">Status</a></th>
+                            <th class="actions" width="150">Action</th>
+                        </tr>
+				     {% for languageData in Language %}
+                        <tr>
+                            <td>{{ languageData.name }}</td>
+                             <td>{{ languageData.isoCode }}</td>
+                            <td>{{ languageData.status ? 'Active' : 'Inactive' }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_language_edit', {id:languageData.id}) }}" title="Edit" class="add-edit-language edit icon-1 info-tooltip"></a>
+                                {% set class = languageData.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_language_updateStatus', {id:languageData.id}) }}" title="{{ languageData.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    
+                    </table>
+ 
+                </div>
+                        
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+   
+    <script type="text/javascript">
+        $(function(){
+        	$('#dialog-container').dialog({
+                position: ['center', 100],
+                autoOpen: false,
+                width: 750,
+                modal: true,
+                resizable: false,
+                close: function() {}
+            });
+
+            $('a.add-edit-language').click(function(){
+            	var elem = $(this);
+				var _url = elem.attr('href');
+
+				$("#dialog-container").empty();
+				$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Language Type');
+                $('#dialog-container').dialog({
+                    open: function() {
+                        $.ajax(_url)
+                            .done(function (data) {                        
+                            	$('#dialog-container').html(data);
+                            }
+                        );
+                    },
+                });
+
+            	$('#dialog-container').dialog("open");
+
+                 	return false;           
+            });
+        });
+    </script>
+{% endblock %}

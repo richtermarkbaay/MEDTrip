@@ -16,8 +16,11 @@
 				</div> <!--End Feature news-->
 			</div> <!--End Feature Outer-->	
 			
-			{% include 'FrontendBundle:Main:featuredClinicPost.html.twig' %} <!-- featured CLinic Slider Post -->
-			{% include 'FrontendBundle:Main:featuredPost.html.twig' %} <!-- Featured loop Post -->
+			<!-- featured institution advertisement Slider Post -->
+			{% render 'FrontendBundle:Advertisement:showFeaturedInstitutionAdvertisement' %}
+			
+			<!-- featured listings -->
+			{% render 'FrontendBundle:Advertisement:showFeaturedListingAdvertisement' %} 
 			
 		</div> <!--End Main-->
 		<!-- Sidebar Navigation -->
