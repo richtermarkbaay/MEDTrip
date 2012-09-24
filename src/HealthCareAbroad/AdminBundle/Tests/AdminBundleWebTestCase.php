@@ -38,7 +38,9 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
-	    if (null === self::$clientWithLoggedUser)
+	    $freshLogin = \array_key_exists('freshLogin', $options) && $options['freshLogin'];
+	    
+	    if (null === self::$clientWithLoggedUser || $freshLogin)
 	    {
 	        self::$clientWithLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
 	        $crawler = self::$clientWithLoggedUser->request('GET', '/admin/login');
