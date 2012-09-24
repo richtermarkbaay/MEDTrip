@@ -26,6 +26,16 @@ class InstitutionService
      */
     protected $institutionUserService;
     
+    /**
+     * Layer to repository find by Id. We may apply caching here
+     * 
+     * @param int $id
+     */
+    public function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->find($id); 
+    }
+    
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;

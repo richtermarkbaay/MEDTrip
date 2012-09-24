@@ -9,6 +9,11 @@ class FeaturedInstitutionAdvertisement extends Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $object;
+    
+    public function __construct()
+    {
+        $this->type = AdvertisementTypes::FEATURED_INSTITUTION;
+    }
 
 
     /**

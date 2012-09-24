@@ -1,0 +1,32 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+{% block content %}
+	{% block wrappedContent %}
+	
+		<div class="main">
+			<div class="box_outer" id="feature_outer">
+		    	<div class="Feature_news">
+					<div class="slider_wrap">
+						<div class="slider_items">
+							<div class="slider">
+									{% include 'FrontendBundle:Main:featuredSlider.html.twig' %}
+								</div> <!--Slider-->
+							</div> <!--Slider Items-->
+						<div class="clear"></div>
+					</div> <!--Slider_wrap-->
+				</div> <!--End Feature news-->
+			</div> <!--End Feature Outer-->	
+			
+			{% include 'FrontendBundle:Main:featuredClinicPost.html.twig' %} <!-- featured CLinic Slider Post -->
+			{% include 'FrontendBundle:Main:featuredPost.html.twig' %} <!-- Featured loop Post -->
+			
+		</div> <!--End Main-->
+		<!-- Sidebar Navigation -->
+		{% block right_navigation %}
+			{% include 'FrontendBundle:Default:sidebar.html.twig' %}
+		{% endblock %}
+		
+	{% endblock %}
+	
+	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+
+{% endblock %}

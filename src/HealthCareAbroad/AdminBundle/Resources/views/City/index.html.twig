@@ -40,16 +40,14 @@
                             <th id="column-country">
                                 <a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a>
                             </th>
-                            <th id="column-status">
-                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'status' ? 'sort-' ~ sortOrder : '' }}">Status</a>
-                            </th>
+                            <th>Status</th>
                             <th class="actions" width="100">Action</th>
                         </tr>
 
                         {% for city in cities %}
                             <tr>
                                 <td>{{ city.name }}</td>
-                                <td>{{ city.country.name }}</td>
+                                <td class="country">{{ city.country.name }}</td>
                                 <td>{{ city.status ? 'Active' : 'Inactive' }}</td>
                                 <td align="center">
                                     <a href="{{ path('admin_city_edit', {id:city.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>

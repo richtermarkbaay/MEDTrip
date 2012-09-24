@@ -30,6 +30,13 @@ parameters:
     event.admin_user_type.delete_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
     
     #
+    # advertisement related events
+    #
+    event.advertisement.add: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    event.advertisement.edit: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    event.advertisement.delete: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    
+    #
     # city related events
     #
     event.city.add: HealthCareAbroad\AdminBundle\Event\CityEvent

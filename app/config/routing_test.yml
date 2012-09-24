@@ -45,7 +45,7 @@ admin_news_testSave:
          _method: GET
 
 admin_institution_medicalCenter_testAdd:
-    pattern:  /admin/institution{institutionId}/medical-center/test-save
+    pattern:  /admin/institution/{institutionId}/medical-center/test-save
     defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
     requirements:
          institutionId: \d+
