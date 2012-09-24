@@ -50,5 +50,22 @@ admin_institution_medicalCenter_testAdd:
     requirements:
          institutionId: \d+
          _method: GET
+         
+admin_institution_procedureType_testAdd:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/test-save
+    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET
+
+admin_institution_procedure_testAdd:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/procedure/test-save
+    defaults: { _controller: AdminBundle:Institution:saveProcedure }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        imptId: \d+
+        _method: GET
 _main:
     resource: routing.yml

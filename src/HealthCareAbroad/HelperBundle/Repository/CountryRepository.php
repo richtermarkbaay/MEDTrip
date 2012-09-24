@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Repository;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -27,6 +29,7 @@ class CountryRepository extends EntityRepository
 		return $this->_em->createQueryBuilder()
 		->add('select', 'c')
 		->add('from', 'HelperBundle:Country c')
-		->add('where', 'c.status = 1');
+		->add('where', 'c.status = :status')
+		->setParameter('status', Country::STATUS_ACTIVE);
 	}
 }

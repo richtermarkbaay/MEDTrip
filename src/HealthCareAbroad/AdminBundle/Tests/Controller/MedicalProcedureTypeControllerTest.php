@@ -23,6 +23,23 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Medical Procedure Type")')->count(), '"Add Medical Procedure Type" string not found!');
     }
+    
+    public function testAddFromMedicalCenter()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/procedure-type/add?medicalCenterId=1');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Medical Procedure Type")')->count(), '"Add Medical Procedure Type" string not found!');
+    }
+    
+    public function testAddWithInvalidMedicalCenter()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/procedure-type/add?medicalCenterId=10010');
+    
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
 
     public function testEdit()
     {
@@ -31,6 +48,14 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
     	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Medical Procedure Type")')->count(), '"Edit Medical Procedure Type" string not found!');
+    }
+    
+    public function testEditWithInvalidProcedureType()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/procedure-type/edit/10010');
+    
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 
 	public function testAddSave()
@@ -52,7 +77,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
     	// check of redirect url /admin/medical-procedure-types
-    	$this->assertEquals('/admin/procedure-type/edit/3', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/procedure-type/edit/4', $client->getResponse()->headers->get('location'));
 
     	// redirect request
 		$crawler = $client->followRedirect(true);
@@ -61,7 +86,7 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
 		$isAdded = $crawler->filter('#page-heading > h2:contains("Edit Medical Procedure Type")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
-    
+
     public function testAddSaveAndAddAnother()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
@@ -120,6 +145,23 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
     	$this->assertTrue($isAdded);
     }
 
+    public function testEditSaveInvalidProcedureType()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+
+        $formData = array(
+            'medicalProcedureType[name]' => 'TestNewlyAdded MedProcType Updated',
+            'medicalProcedureType[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+            'medicalProcedureType[medicalCenter]' => 1,
+            'medicalProcedureType[status]' => 1
+        );
+        
+        $crawler = $client->request('POST', '/admin/procedure-type/edit/10010', $formData);
+    
+        // check if redirect code 302
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
+
     public function testCreateDuplicate()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
@@ -164,6 +206,25 @@ class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
     	$this->assertGreaterThan(0, $crawler->filter('form.basic-form > div ul')->count(), 'No validation message!');
+    }
+    
+    public function testEditSaveInvalidData()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/procedure-type/edit/1');
+    
+        $formData = array(
+                        'medicalProcedureType[name]' => '',
+                        'medicalProcedureType[description]' => 'the description',
+                        'medicalProcedureType[medicalCenter]' => 1,
+                        'medicalProcedureType[status]' => 1
+        );
+
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formData);
+    
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
+        $this->assertGreaterThan(0, $crawler->filter('form.basic-form > div ul')->count(), 'No validation message!');
     }
     
     public function testSaveInvalidMethod()
