@@ -1,7 +1,21 @@
+## ADMIN BUNDLE
 search_admin_showWidget:
     pattern:  /admin/search/widget/{context}
     defaults: { _controller: SearchBundle:Default:showWidget }
-    
+
 search_admin_initiate:
     pattern: /admin/search
     defaults: { _controller: SearchBundle:Default:initiate }
+
+## FRONTEND BUNDLE
+search_frontend_homepage:
+    pattern: /frontend/search
+    defaults: { _controller: SearchBundle:Frontend:searchHomepage }
+
+search_frontend_ajaxLoadTreatments:
+    pattern: /search/ajaxLoadTreatments
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
+
+search_frontend_ajaxLoadDestinations:
+    pattern: /search/ajaxLoadDestinations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
