@@ -16,5 +16,21 @@ final class AdvertisementTypes
             self::FEATURED_INSTITUTION => 'Featured Institution',
             self::FEATURED_LISTING => 'Featured Listing'
         );
-    } 
+    }
+    
+    /**
+     * Get the class mapping for Advertisement type
+     * 
+     * @static
+     * @access public
+     * @return array
+     */
+    static public function getDiscriminatorMapping()
+    {
+        return  array(
+            AdvertisementTypes::NEWS_TICKER => 'HealthCareAbroad\AdvertisementBundle\Entity\NewsTickerAdvertisement',
+            AdvertisementTypes::FEATURED_INSTITUTION => 'HealthCareAbroad\AdvertisementBundle\Entity\FeaturedInstitutionAdvertisement',
+            AdvertisementTypes::FEATURED_LISTING => 'HealthCareAbroad\AdvertisementBundle\Entity\FeaturedListingAdvertisement'
+        );
+    }
 }

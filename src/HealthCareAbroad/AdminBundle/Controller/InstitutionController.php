@@ -258,10 +258,12 @@ class InstitutionController extends Controller
         $request = $this->getRequest();
         $status = $request->get('status');
 
+        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
+        
         if(!InstitutionMedicalCenterStatus::isValid($status)) {
             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
 
-            return $this->redirect($request->headers->get('referer'));
+            return $this->redirect($redirectUrl);
         }
 
         $this->institutionMedicalCenter->setStatus($status);
@@ -277,7 +279,7 @@ class InstitutionController extends Controller
 
         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getMedicalCenter()->getName().'" status has been updated!');
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($redirectUrl);
     }
 
 
@@ -435,6 +437,10 @@ class InstitutionController extends Controller
     public function saveProcedureAction()
     {
         $request = $this->getRequest();
+
+        if (!$request->isMethod('POST')) {
+            return new Response('Unsupported method', 405);
+        }
 
         if (!$this->institutionMedicalProcedure) {
             $this->institutionMedicalProcedure = new InstitutionMedicalProcedure();

@@ -19,6 +19,10 @@ final class AdminBundleEvents
     const ON_ADD_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.add_role';
     const ON_DELETE_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.delete_role';
     
+    const ON_ADD_ADVERTISEMENT = 'event.advertisement.add';
+    const ON_EDIT_ADVERTISEMENT = 'event.advertisement.edit';
+    const ON_DELETE_ADVERTISEMENT = 'event.advertisement.delete';
+    
     const ON_ADD_CITY = 'event.city.add';
     const ON_EDIT_CITY = 'event.city.edit';
     const ON_DELETE_CITY = 'event.city.delete';
@@ -46,4 +50,8 @@ final class AdminBundleEvents
     const ON_ADD_OFFERED_SERVICE = 'event.offered_service.add';
     const ON_EDIT_OFFERED_SERVICE = 'event.offered_service.edit';
     const ON_DELETE_OFFERED_SERVICE = 'event.offered_service.delete';
+    
+    const ON_ADD_LANGUAGE = 'event.language.add';
+    const ON_EDIT_LANGUAGE = 'event.language.edit';
+    const ON_DELETE_LANGUAGE = 'event.language.delete';
 }

@@ -30,6 +30,13 @@ parameters:
     event.admin_user_type.delete_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
     
     #
+    # advertisement related events
+    #
+    event.advertisement.add: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    event.advertisement.edit: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    event.advertisement.delete: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
+    
+    #
     # city related events
     #
     event.city.add: HealthCareAbroad\AdminBundle\Event\CityEvent
@@ -77,4 +84,11 @@ parameters:
     event.offered_service.add: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
     event.offered_service.edit: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
     event.offered_service.delete: HealthCareAbroad\AdminBundle\Event\OfferedServiceEvent
+
+    #
+    # language related events
+    #
+    event.language.add: HealthCareAbroad\AdminBundle\Event\LanguageEvent
+    event.language.edit: HealthCareAbroad\AdminBundle\Event\LanguageEvent
+    event.language.delete: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     

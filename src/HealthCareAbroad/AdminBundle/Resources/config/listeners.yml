@@ -70,6 +70,25 @@ services:
             - { name: kernel.event_listener, event: event.admin_user_type.delete_role, method: onCommonLogAction }
             
     #
+    # listeners for advertisement related events
+    #
+    listener.log.advertisement.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.advertisement.add, method: onCommonLogAction }
+    listener.log.advertisement.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.advertisement.edit, method: onCommonLogAction }
+    listener.log.advertisement.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.advertisement.delete, method: onCommonLogAction }
+            
+    #
     # listeners for city related events
     #
     listener.log.city.add:

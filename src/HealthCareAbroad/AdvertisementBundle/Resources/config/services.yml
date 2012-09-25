@@ -1,4 +1,32 @@
 services:
+    services.advertisement:
+        class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementService
+        arguments: [@service_container]
+
     services.advertisement.factory:
         class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory
         arguments: [@service_container]
+        
+    form.advertisement:
+        class: HealthCareAbroad\AdvertisementBundle\Form\AdvertisementFormType
+        arguments: [@service_container]
+        tags:
+            - {name: form.type, alias: advertisement }
+        
+    form.advertisement.featuredInstitution:
+        class: HealthCareAbroad\AdvertisementBundle\Form\FeaturedInstitutionAdvertisementFormType
+        arguments: [@service_container]
+        tags:
+            - {name: form.type, alias: featuredInstitutionAdvertisement }
+        
+    form.advertisement.featuredListing:
+        class: HealthCareAbroad\AdvertisementBundle\Form\FeaturedListingAdvertisementFormType
+        arguments: [@service_container]
+        tags:
+            - {name: form.type, alias: featuredListingAdvertisement }
+            
+    form.advertisement.newsTicker:
+        class: HealthCareAbroad\AdvertisementBundle\Form\NewsTickerAdvertisementFormType
+        arguments: [@service_container]
+        tags:
+            - {name: form.type }

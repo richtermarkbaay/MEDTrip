@@ -42,18 +42,16 @@ class MedicalProcedureTypeController extends Controller
         $params = $formActionParams = array();
         $procedureType = new MedicalProcedureType();
 
-        $medicalCenterId = $this->getRequest()->get('medicalCenterId');
+        $medicalCenterId = (int)$this->getRequest()->get('medicalCenterId');
 
         if($medicalCenterId) {
             $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($medicalCenterId);
-            
+
             if(!$medicalCenter) {
                 throw $this->createNotFoundException("Invalid Medical Center.");
             }
 
             $procedureType->setMedicalCenter($medicalCenter);
-
-            //$params['isAddFromSpecificCenter'] = true;
             $formActionParams['medicalCenterId'] = $medicalCenterId;
         }
         

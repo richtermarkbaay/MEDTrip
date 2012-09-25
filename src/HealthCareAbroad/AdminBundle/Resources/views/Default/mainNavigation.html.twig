@@ -57,9 +57,7 @@
                 		<li class="{{ selectedSubTab == 'manage_cities' ? 'sub_show' : '' }}">
                 		    <a href="{{ path('admin_city_index') }}">Manage Cities</a>
             		    </li>
-            		   	<li class="{{ selectedSubTab == 'manage_offered_service' ? 'sub_show' : '' }}">
-                		    <a href="{{ path('admin_offered_service_index') }}">Manage Services Offered</a>
-            		    </li>
+            	
                 	</ul>
                 </div>
                 <!--[if lte IE 6]></td></tr></table></a><![endif]-->
@@ -67,6 +65,26 @@
         </ul>
         {# endif #}
     
+        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_ADVERTISEMENTS', 'CAN_MANAGE_ADVERTISEMENTS')") %}
+        <div class="nav-divider">&nbsp;</div>
+        <ul class="{{ selectedTab == 'advertisements' ? 'current' : 'select' }}">
+            <li>
+                <a href="{{ path('admin_advertisement_index') }}"><b>Ads</b><!--[if IE 7]><!--></a><!--<![endif]-->
+                <!--[if lte IE 6]><table><tr><td><![endif]-->
+                {#-----
+                <div class="select_sub {{ selectedTab == 'inquire' ? 'show' : '' }}">
+                    <ul class="sub">
+                        <li class="{{ selectedSubTab == 'inquire_index' ? 'sub_show' : '' }}">
+                            <a href="{{ path('admin_inquire') }}">View all</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+                ------#}
+                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+            </li>
+        </ul>
+        {% endif %}
         
         {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
         <div class="nav-divider">&nbsp;</div>

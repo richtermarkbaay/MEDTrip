@@ -1,0 +1,52 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'advertisements' %}
+{% set selectedSubTab = '' %}
+
+{% block content %}
+
+	<div id="content">
+	
+		<div id="page-heading"><h2>Create new advertisement - Invoice Page</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			    {% set contents = [{
+                        'title': 'Back to Advertisement Management', 
+                        'description': 'Go back to advertisement page',
+                        'href': path('admin_advertisement_index'), 
+                        'links': [{'title': 'Click here to go back', 'href': path('admin_advertisement_index')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			    <!--  start table-content  -->
+                <div id="table-content" style="width:70%">
+                    
+                    {% include '::notice.admin.html.twig' %}
+				
+    				{% include '::stepHolder.base.admin.html.twig' with {
+    				    steps: [
+                            {title: 'Basic Detail'},
+                            {title: 'Specific Detail'},
+                            {title: 'Generate Invoice', 'selected': true},
+                            {title: 'Preview'},
+                        ]}
+                    %}
+                    
+    				<!-- start form -->
+    				<form action="{{ path('admin_advertisement_addInvoice', {'advertisementId': advertisement.id}) }}" method="post"  class="basic-form">
+    				    
+    				    <h1>Soon to be implemented</h1>  
+    					
+    					{# <input type="submit" value="Generate Invoice" class="green-button" name="submit"/> #}
+    				    <a href="{{ path('admin_advertisement_preview', { 'advertisementId': advertisement.id }) }}" class="button-type">Skip to Preview</a>
+    				</form>
+                </div>
+				
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

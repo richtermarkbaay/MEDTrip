@@ -16,3 +16,24 @@ admin_advertisement_addSpecificDetail:
     defaults: { _controller: AdminBundle:Advertisement:addSpecificDetail }
     requirements:
         _method: GET|POST
+        
+admin_advertisement_addInvoice:
+    pattern:  /admin/advertisements/{advertisementId}/add-invoice
+    defaults: { _controller: AdminBundle:Advertisement:addInvoice }
+    requirements:
+        _method: GET|POST
+        advertisementId: \d+
+        
+admin_advertisement_preview:
+    pattern:  /admin/advertisements/{advertisementId}/preview
+    defaults: { _controller: AdminBundle:Advertisement:preview }
+    requirements:
+        _method: GET
+        advertisementId: \d+
+        
+admin_advertisement_edit:
+    pattern:  /admin/advertisements/{advertisementId}/edit
+    defaults: { _controller: AdminBundle:Advertisement:edit }
+    requirements:
+        _method: GET|POST
+        advertisementId: \d+

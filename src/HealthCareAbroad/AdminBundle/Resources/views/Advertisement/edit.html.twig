@@ -1,0 +1,41 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'advertisements' %}
+{% set selectedSubTab = '' %}
+
+{% block content %}
+
+	<div id="content">
+	
+		<div id="page-heading"><h2>Edit Advertisement </h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+			    {% set contents = [{
+                        'title': 'Back to Advertisement Management', 
+                        'description': 'Go back to advertisement page',
+                        'href': path('admin_advertisement_index'), 
+                        'links': [{'title': 'Click here to go back', 'href': path('admin_advertisement_index')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			    <!--  start table-content  -->
+                <div id="table-content" style="width:70%">
+                    {% include '::notice.admin.html.twig' %}
+                    
+    				<!-- start form -->
+    				<form action="{{ path('admin_advertisement_edit', {advertisementId: advertisement.id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
+    
+    					{{ form_rest(form) }}
+    					
+    				    <input type="submit" value="Submit" class="green-button" name="submit"/>
+    				</form>
+                </div>
+				
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}

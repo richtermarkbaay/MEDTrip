@@ -38,7 +38,7 @@ services:
         class: %services.location_class%
         calls:
             - [setDoctrine, [@doctrine]]
-    
+
     #services.inquire:
     #    class: %services.inquiry_class%
     #    calls:

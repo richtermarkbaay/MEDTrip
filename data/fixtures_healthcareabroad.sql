@@ -143,6 +143,26 @@ INSERT INTO `admin_user_types` (`id`, `name`, `status`) VALUES
 (1, 'Test User Type with super admin role', 3),
 (2, 'Normal user type', 2);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `advertisements`
+--
+
+DROP TABLE IF EXISTS `advertisements`;
+CREATE TABLE IF NOT EXISTS `advertisements` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `advertisement_type` int(10) unsigned NOT NULL,
+  `title` char(250) NOT NULL,
+  `description` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='advertisement table';
+
 
 -- --------------------------------------------------------
 
@@ -678,7 +698,8 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
 INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
 (1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1),
 (2, 'centerAddedFromAdminTest1', 'the quick brown fox is very slow.', '2012-08-08 08:42:47', '', 1),
-(3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:47', '1', 1);
+(3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:50', '', 1),
+(4, 'centerAddedFromAdminTest3', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1);
 
 -- --------------------------------------------------------
 
@@ -733,8 +754,8 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
 
 INSERT INTO `medical_procedure_types` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 1, 'Procedure Type1', 'the quick is not slow. the quick is not slow.the quick is not slow.the quick is not slow.the quick is not slow.', '2012-08-30 06:13:31', '2012-08-29 16:00:00', 'procedure-type1', 1),
-(2, 2, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1);
-
+(2, 2, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1),
+(3, 3, 'procType with center3', 'sdf sdf sdafd afds f', '2012-09-21 07:17:08', '2012-09-20 16:00:00', '', 1);
 
 -- --------------------------------------------------------
 
@@ -935,6 +956,13 @@ ALTER TABLE `admin_users`
 ALTER TABLE `admin_user_type_roles`
   ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
+
+
+--
+-- Constraints for table `advertisements`
+--
+ALTER TABLE `advertisements`
+  ADD CONSTRAINT `advertisements_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cities`
