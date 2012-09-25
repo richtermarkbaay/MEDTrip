@@ -9,7 +9,7 @@
 
 	<div id="content">
 	
-		<div id="page-heading"><h2>Create New {{ form.vars.value.typeLabel is defined ? form.vars.value.typeLabel : '' }} Advertisement </h2></div>
+		<div id="page-heading"><h2>Create {{ form.vars.value.typeLabel is defined ? form.vars.value.typeLabel : 'New' }} Advertisement </h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}

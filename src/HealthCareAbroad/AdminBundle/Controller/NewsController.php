@@ -64,6 +64,10 @@ class NewsController extends Controller
     {
         $request = $this->getRequest();
     
+        if('POST' != $request->getMethod()) {
+        	return new Response("Save requires POST method!", 405);
+        }
+        
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();    
         $news = $id ? $em->getRepository('HelperBundle:News')->find($id) : new News();    
@@ -92,7 +96,6 @@ class NewsController extends Controller
                 'formAction' => $formAction
         ));
     }
-    
     
     /**
      * Delete News / Update status into INACTIVE
