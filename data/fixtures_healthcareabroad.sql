@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 --
 
 INSERT INTO `admin_users` (`account_id`, `admin_user_type_id`, `status`) VALUES
-(2, 1, 1);
+(2, 1, 1),
+(5, 2, 1);
 
 
 -- --------------------------------------------------------
