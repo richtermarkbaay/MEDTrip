@@ -157,7 +157,7 @@ admin_institution_medicalProcedure_update:
         
 admin_institution_medicalProcedure_updateStatus:
     pattern:  /admin/institution/procedure/{impId}/update-status/{status}
-    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus }
+    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus, status: ~ }
     requirements:
         impId: \d+
         _method: POST
