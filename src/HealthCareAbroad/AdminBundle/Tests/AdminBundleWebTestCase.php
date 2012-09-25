@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Tests;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 use \HCA_DatabaseManager;
@@ -11,6 +13,10 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	protected $userEmail = 'test.adminuser@chromedia.com';
 	protected $userPassword = '123456';
+	
+	protected $normalUserEmail = 'test.anotheradminuser@chromedia.com';
+	protected $normalUserPassword = '123456';
+	
 	protected $formValues = array();
 	
 	private $defaultClientOptions = array(
@@ -20,11 +26,15 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	private static $clientWithLoggedUser = null;
 	
+	private static $clientWithNormalLoggedUser = null;
+	
+	private static $validToken = null;
+	
 	public static function setUpBeforeClass()
 	{
 		\HCA_DatabaseManager::getInstance()
 		->restoreDatabaseState()
-		//->restoreGlobalAccountsDatabaseState()
+		->restoreGlobalAccountsDatabaseState()
 		;
 	}
 	
@@ -33,34 +43,52 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 		$this->formValues = array(
 				'userLogin[email]' => $this->userEmail,
 				'userLogin[password]' => $this->userPassword
-		);
+		);	
 	}
 	
 	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
 	    $freshLogin = \array_key_exists('freshLogin', $options) && $options['freshLogin'];
 	    
-	    if (null === self::$clientWithLoggedUser || $freshLogin)
+	    if (null === self::$clientWithLoggedUser )
 	    {
 	        self::$clientWithLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
 	        $crawler = self::$clientWithLoggedUser->request('GET', '/admin/login');
 	        $form = $crawler->selectButton('submit')->form();
 	        self::$clientWithLoggedUser->submit($form, $this->formValues);
+	        
+	        echo "\n======= Logging in {$this->userEmail}::{$this->userPassword}\n\n";
 	    }
-		
-
-		return self::$clientWithLoggedUser;
+	    
+	    return self::$clientWithLoggedUser;
+	    
 	}
 	
 	protected function getBrowserWithMockLoggedUser($options = array())
 	{
-		$client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
-				'PHP_AUTH_USER' => 'developer',
-				'PHP_AUTH_PW'   => '123456',
-		));
-		
-		
-		return $client;
+
+// 	    if (null === self::$clientWithNormalLoggedUser)
+// 	    {
+	         
+// 	        self::$clientWithNormalLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
+// 	        $crawler = self::$clientWithNormalLoggedUser->request('GET', '/admin/login');
+// 	        $form = $crawler->selectButton('submit')->form();
+// 	        self::$clientWithNormalLoggedUser->submit($form, array(
+// 				'userLogin[email]' => $this->normalUserEmail,
+// 				'userLogin[password]' => $this->normalUserPassword
+// 		    ));
+// 	    }
+	     
+// 	    return self::$clientWithNormalLoggedUser;
+
+	    if (null !== self::$clientWithLoggedUser ) {
+	        self::$clientWithLoggedUser = null;
+	    }
+	    $client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
+            'PHP_AUTH_USER' => 'developer',
+            'PHP_AUTH_PW'   => '123456',
+	    ));
+	    return $client;
 	}
 	
 	/**
