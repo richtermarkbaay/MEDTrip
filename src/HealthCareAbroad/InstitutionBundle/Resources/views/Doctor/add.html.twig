@@ -1,0 +1,76 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'staff'%}
+{% block title %}{{ parent() }} Add Doctor {% endblock %}
+
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add Doctor to {{institution}}</h1>
+    </div>
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:Doctor:relatedTasks.html.twig' %}
+            {# ----- end Related tasks ----- #}
+
+            <!--  start table-content  -->
+            <div id="table-content" style="width:70%">
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% include '::stepHolder.base.admin.html.twig' with {
+                    steps: [
+                        {title: 'Search Doctor', 'selected': true},
+                        {title: 'Fill out Doctor Details'},
+                        {title: 'Add Doctor', 'selected': false}
+                 ]}
+                %}
+
+                <form novalidate="novalidate" action="{{ path('institution_doctor_add') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+
+                    {{ form_row(form.firstName) }}
+                    {{ form_rest(form) }}
+
+                    <input type="reset" value="Reset" class="form-reset"/>
+                    <input type="submit" name="submit" value="Next" class="green-button" />
+
+                </form>
+
+            </div>
+            <!--  end table-content  -->
+
+        {% endblock %}
+    {% endembed %}
+
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+ Ê 
+<script>
+    $(function() {
+        var availableTags = $.parseJSON('{{ doctorsJSON|raw }}');
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $("#institutionDoctorSearch_firstName").keydown(function() {
+            alert('s');
+        });
+        
+    });
+</script>
+{% endblock %}

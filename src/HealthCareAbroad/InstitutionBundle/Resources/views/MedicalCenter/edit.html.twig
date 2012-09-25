@@ -36,7 +36,6 @@
                         {% endfor %}
                     </ul>
 
-
                     <div id="tab-overview-imc-{{institutionMedicalCenter.id}}">
                         {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_edit', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter, 'hideFormButtons': true} %}
                     </div>
