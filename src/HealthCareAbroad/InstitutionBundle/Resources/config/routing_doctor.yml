@@ -1,0 +1,29 @@
+institution_view_all_doctors:
+    pattern: /doctors
+    defaults: { _controller: InstitutionBundle:Doctor:index }
+    requirements:
+        _method:  GET
+        
+institution_doctor_add:
+    pattern: /doctors/add
+    defaults: { _controller: InstitutionBundle:Doctor:add }
+    requirements:
+        _method: GET
+
+institution_doctor_add_save:
+    pattern: /doctors/add
+    defaults: { _controller: InstitutionBundle:Doctor:save }
+    requirements:
+        _method: GET|POST
+        
+institution_doctor_edit:
+    pattern: /doctors/edit/{idId}
+    defaults: { _controller: InstitutionBundle:Doctor:edit }
+    requirements:
+        _method: GET
+
+institution_doctor_edit_save:
+    pattern: /doctors/edit/{idId}
+    defaults: { _controller: InstitutionBundle:Doctor:save }
+    requirements:
+       _method: GET|POST

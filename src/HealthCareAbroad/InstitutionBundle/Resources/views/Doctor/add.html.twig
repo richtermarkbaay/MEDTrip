@@ -1,0 +1,74 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'staff'%}
+{% block title %}{{ parent() }} Add Doctor {% endblock %}
+
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add Doctor to {institution}</h1>
+    </div>
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+
+            {# ----- Related tasks ----- #}
+            {% include 'InstitutionBundle:Doctor:relatedTasks.html.twig' %}
+            {# ----- end Related tasks ----- #}
+
+            <!--  start table-content  -->
+            <div id="table-content" style="width:70%">
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% include '::stepHolder.base.admin.html.twig' with {
+                    steps: [
+                        {title: 'Search Doctor', 'selected': true},
+                        {title: 'Fill out Doctor Details'},
+                        {title: 'Add Doctor', 'selected': false}
+                 ]}
+              %}
+
+                <form novalidate="novalidate" action="{{ path('institution_doctor_add') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+
+                    {{ form_row(form.Name) }}
+                    {{ form_rest(form) }}
+
+                    <input type="reset" value="Reset" class="form-reset"/>
+                    <input type="submit" name="submit" value="Next" class="green-button" />
+
+                </form>
+
+            </div>
+            <!--  end table-content  -->
+
+        {% endblock %}
+    {% endembed %}
+
+</div>
+
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script>
+    $(function() {
+        
+
+        $( "#institutionDoctorSearch_firstName" ).autocomplete({
+            source: "search.php",
+            minLength: 2,
+            select: function( event, ui ) {
+                log( ui.item ?
+                    "Selected: " + ui.item.value + " aka " + ui.item.id :
+                    "Nothing selected, input was " + this.value );
+            }
+        });
+    });
+    </script>
+{% endblock %}
