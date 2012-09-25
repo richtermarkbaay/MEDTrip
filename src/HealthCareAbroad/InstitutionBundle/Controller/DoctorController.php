@@ -64,7 +64,6 @@ class DoctorController extends InstitutionAwareController
     {
         if ($doctorId = $request->get('idId', 0)) {
             $institutionDoctor = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor')->find($doctorId);
-            echo get_class($institutionDoctor); 
             if (!$institutionDoctor) {
                 throw $this->createNotFoundException("Invalid institution doctor.");
             }
