@@ -32,10 +32,11 @@ class DoctorController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionDoctorSearchFormType());
         
         $institution = $this->institution->getName();
-        //$doctors = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor');
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor')->getActiveDoctors();
         return $this->render('InstitutionBundle:Doctor:add.html.twig', array(
                 'form' => $form->createView(),
-                'institution' => $institution
+                'institution' => $institution,
+                'doctorsJSON' => $doctors
     	));
     }
     

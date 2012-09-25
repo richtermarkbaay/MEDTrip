@@ -8,7 +8,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-        <h1>Add Doctor to {institution}</h1>
+        <h1>Add Doctor to {{institution}}</h1>
     </div>
     <!-- end page-heading -->
 
@@ -31,11 +31,11 @@
                         {title: 'Fill out Doctor Details'},
                         {title: 'Add Doctor', 'selected': false}
                  ]}
-              %}
+                %}
 
                 <form novalidate="novalidate" action="{{ path('institution_doctor_add') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
-                    {{ form_row(form.Name) }}
+                    {{ form_row(form.firstName) }}
                     {{ form_rest(form) }}
 
                     <input type="reset" value="Reset" class="form-reset"/>
@@ -56,19 +56,21 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+ Ê 
 <script>
     $(function() {
-        
+        var availableTags = $.parseJSON('{{ doctorsJSON|raw }}');
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
 
-        $( "#institutionDoctorSearch_firstName" ).autocomplete({
-            source: "search.php",
-            minLength: 2,
-            select: function( event, ui ) {
-                log( ui.item ?
-                    "Selected: " + ui.item.value + " aka " + ui.item.id :
-                    "Nothing selected, input was " + this.value );
-            }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        $("#institutionDoctorSearch_firstName").keydown(function() {
+            alert('s');
         });
+        
     });
-    </script>
+</script>
 {% endblock %}
