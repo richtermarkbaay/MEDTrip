@@ -3,8 +3,8 @@ admin_institution_index:
     defaults: { _controller: AdminBundle:Institution:index }
 
 admin_institution_updateStatus:
-    pattern:  /admin/institution/{institutionId}/update-status/{status}
-    defaults: { _controller: AdminBundle:Institution:updateStatus, status: ~ }
+    pattern:  /admin/institution/{institutionId}/update-status
+    defaults: { _controller: AdminBundle:Institution:updateStatus }
     requirements:
         institutionId: \d+
         status: \d+
@@ -55,8 +55,8 @@ admin_institution_medicalCenter_update:
         _method: POST
 
 admin_institution_medicalCenter_updateStatus:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status/{status}
-    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus, status: ~ }
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status
+    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
     requirements:
         institutionId: \d+
         imcId: \d+

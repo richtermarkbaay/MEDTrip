@@ -2086,5 +2086,12 @@ form:not([novalidate=novalidate]) span.mceEditor.required {
 .continue{
 	text-align:right;
 }
+#institutionDetail_institutionOfferedServices{
+	margin-left:120px;
+	
+}
+.ui-corner-all{
+	color:#000000 !important;	
+}
 
 /** End of Pager styles **/

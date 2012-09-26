@@ -1,0 +1,117 @@
+<form action="{{ path('search_frontend_homepage') }}" id="ui_element" class="sb_wrapper">
+
+    <input type="hidden" id="treatment_id" name="treatment_id" value=""/>
+    <input type="hidden" id="destination_id" name="destination_id" value=""/>
+
+    <ul>
+        <!-- <span class="sb_down"></span> -->
+        <li>
+            <input id="sb_treatment" type="text" value="treatment" />
+        </li>
+        <li>
+            <input id="sb_destination" class="sb_input" type="text" value="destination" />
+        </li>
+    </ul>
+
+    <input class="sb_search" type="submit" value="&nbsp;"/>
+
+    <!--
+    <ul class="sb_dropdown" style="display:none;">
+        <h4><input type="checkbox"/><label for="all"> All Categories</h4></label>
+
+        <li class="sb_filter"><input type="checkbox"/>Procedures</li>
+        <li class="sb_filter"><input type="checkbox"/>Destinations</li>
+     </ul>
+     -->
+
+</form>
+
+<style>
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
+}
+
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+
+/*
+ * html .ui-autocomplete {
+      height: 100px;
+    }*/
+</style>
+
+<script type="text/javascript">
+$(function() {
+    $('#sb_treatment').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('search_frontend_ajaxLoadTreatments') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    prevTerm: $('#destination_id').val()
+                },
+                success: function(data) {
+                    response($.each(data, function(item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        delay: 1000,
+        minLength: 3,
+        focus: function( event, ui ) {
+            $("#sb_treatment" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( "#sb_treatment" ).val( ui.item.label );
+            $( "#treatment_id" ).val( ui.item.value );
+
+            return false;
+        }
+    });
+
+    $('#sb_destination').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('search_frontend_ajaxLoadDestinations') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    prevTerm: $('#treatment_id').val()
+                },
+                success: function(data) {
+                    response( $.each(data, function(item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        delay: 1000,
+        minLength: 3,
+        focus: function( event, ui ) {
+            $("#sb_destination").val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( "#sb_destination" ).val( ui.item.label );
+            $( "#destination_id" ).val( ui.item.value );
+
+            return false;
+        }
+    });
+});
+</script>
