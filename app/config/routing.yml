@@ -17,10 +17,6 @@ MailerBundle:
     resource: "@MailerBundle/Resources/config/routing.yml"
     prefix:   /
 
-FrontendBundle:
-    resource: "@FrontendBundle/Resources/config/routing.yml"
-    prefix:   /
-
 
 #ProcedureBundle:
 #    resource: "@ProcedureBundle/Resources/config/routing.yml"
@@ -43,3 +39,9 @@ AdminBundle:
 #_internal:
 #    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
 #    prefix:   /_internal
+
+
+# This MUST be in the last line
+FrontendBundle:
+    resource: "@FrontendBundle/Resources/config/routing.yml"
+    prefix:   /

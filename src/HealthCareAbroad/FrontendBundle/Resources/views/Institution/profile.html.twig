@@ -1,0 +1,77 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+{% block content %}
+	{% block wrappedContent %}
+
+        <div class="main">        
+
+            <div class="box_outer">        
+               <div class="news_box">
+            
+                    <div class="listing_box_heading">
+                        <h3><a href="#">{{ institution.name }}</a></h3>
+                    </div> <!--End nb Heading-->
+            
+                    <div class="recent_news_item">
+                        <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
+            
+                	    <div class="imgBlock">
+                    	    <div class="recent_news_img" style="opacity: 1;">
+                    	        <a href="#"><img title="" alt="" src="/images/frontend/sam.png"></a>
+                    	    </div>
+                    	    <a href="#"><img title="" alt="" src="/images/frontend/awards.png"></a>
+                	    </div>
+            
+                        <div class="recent_news_content">
+                            <p>{{ institution.description }}</p>
+                    		<div class="nb_meta"></div> <!--End NB META-->
+                        </div>
+            
+                        <!--recent news Content-->
+                        <div class="clear"></div>
+
+                        <div class="brdr3"></div>
+                                
+                        <!-- Gallery -->
+                            {% include 'FrontendBundle:Institution:profileGallery.html.twig' with {media: null } %}
+                        <!-- End of Gallery -->
+            
+                        <div class="clear"></div>
+                        
+                        <!-- Medical Centers or Listings -->        
+                            {% include 'FrontendBundle:Institution:listings.html.twig' with {institution: institution, currentCenterSlug: app.request.get('centerSlug') } %}
+                        <!-- End of Medical Center or Listings -->
+                
+                        <div class="clear"></div>
+                
+                        <div class="accordion">
+                            <!-- Doctors -->
+                            {% include 'FrontendBundle:Institution:doctors.html.twig' %}
+                            <!-- End of Doctors -->
+                
+                            <h2 class="acc_title">Location</h2>
+                            <div class="acc_content">
+                             <a href="#"><img alt="" src="/images/frontend/demo/map.png"></a>
+                            by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be</div>
+                            
+                            
+                            <h2 class="acc_title">Contact Location</h2>
+                            <div class="acc_content">{{ institution.address1 }}, {{ institution.city.name }}, {{ institution.country.name }}</div>
+                            
+                        </div>
+            
+                    </div> <!--recent News Item-->
+            
+                </div> <!--News Box-->
+            </div> <!--Box Outer-->
+
+        </div>
+	
+		<!-- Sidebar Navigation -->
+		{% block right_navigation %}
+			{% include 'FrontendBundle:Default:sidebar.html.twig' %}
+		{% endblock %}
+		
+	{% endblock %}
+
+	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+{% endblock %}

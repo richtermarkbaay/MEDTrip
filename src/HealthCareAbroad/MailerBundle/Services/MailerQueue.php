@@ -23,6 +23,9 @@ class MailerQueue
      */
     private $doctrine;
     
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -43,14 +46,46 @@ class MailerQueue
         $messageQueue = new MailQueue();
         $messageQueue->setMessageData($serializedData);
         $messageQueue->setStatus(MailStatuses::PENDING);
-        $messageQueue->setSendAt($sendDate);
+        $messageQueue->setSendAt(new \DateTime($sendDate));
         $messageQueue->setFailedAttempts(0);
-        $messageQueue->setCreatedAt(new \DateTime($sendDate));
+        $messageQueue->setCreatedAt(new \DateTime('now'));
         
         $em = $this->doctrine->getEntityManager();
         $em->persist($messageQueue);
         $em->flush();
         
         return $this;
+    }
+    
+    /**
+     * Remove a queued message
+     * 
+     * @param MailQueue $messageQueue
+     */
+    public function remove(MailQueue $messageQueue)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->remove($messageQueue);
+        $em->flush();
+    }
+    
+    /**
+     * Get all mails in queue that are ready for sending. 
+     * Mails ready for sending are flagged as either PENDING or FAILED with sendAt date less than CURRENT_TIMESTAMP
+     * 
+     * @return array MailerQueue
+     */
+    public function getMailsReadyForSending()
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $result = $qb->select('a')
+            ->from('MailerBundle:MailQueue', 'a')
+            ->where('a.status = :pending_status')
+            ->andWhere('a.sendAt <= CURRENT_TIMESTAMP()')
+            ->setParameter('pending_status', MailStatuses::PENDING)
+            ->getQuery()
+            ->getResult();
+        
+        return $result;
     }
 }
