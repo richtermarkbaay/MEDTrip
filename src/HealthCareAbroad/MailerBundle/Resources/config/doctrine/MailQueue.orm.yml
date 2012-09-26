@@ -1,0 +1,32 @@
+HealthCareAbroad\MailerBundle\Entity\MailQueue:
+    type: entity
+    table: mail_queue
+    repositoryClass: HealthCareAbroad\MailerBundle\Repository\MailQueueRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            unsigned: true
+            generator:
+                strategy: IDENTITY
+        messageData:
+            type: text
+            nullable: false
+            column: message_data
+        sendAt:
+            type: datetime
+            nullable: false
+            column: send_at
+        createdAt:
+            type: datetime
+            nullable: false
+            column: created_at
+        failedAttempts:
+            type: integer
+            nullable: true
+            unsigned: true
+            column: failed_attempts
+        status:
+            type: smallint
+            length: 1

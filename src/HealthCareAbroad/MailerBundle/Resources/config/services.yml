@@ -2,6 +2,10 @@ parameters:
 #    mailer.example.class: HealthCareAbroad\MailerBundle\Example
 
 services:
-#    mailer.example:
-#        class: %mailer.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.mailer.message:
+        class: HealthCareAbroad\MailerBundle\Services\MessageService
+        arguments: [@service_container]
+        
+    services.mailer.queue:
+        class: HealthCareAbroad\MailerBundle\Services\MailerQueue
+        arguments: [@service_container]

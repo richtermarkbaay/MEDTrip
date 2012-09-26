@@ -27,3 +27,10 @@ institution_doctor_edit_save:
     defaults: { _controller: InstitutionBundle:Doctor:save }
     requirements:
        _method: GET|POST
+
+institution_doctor_search:
+    pattern: /doctors/search
+    defaults: { _controller: InstitutionBundle:Doctor:search }
+    requirements:
+       _methods: GET|POST
+       
