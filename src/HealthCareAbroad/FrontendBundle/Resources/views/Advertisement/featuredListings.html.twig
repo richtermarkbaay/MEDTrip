@@ -1,6 +1,7 @@
 {% for featuredListing in advertisements %}
 
     {% set listing = featuredListing.object %}
+    
     <div class="box_outer">
 
        <div class="news_box">
@@ -16,7 +17,7 @@
                     <h4 class="recent_news_title"><a href="#">{{ listing.medicalCenter.name }}</a></h4>
     				
     				<div class="recent_news_img">			
-    				    <a href="#">	
+    				    <a href="#" class="track_stats">	
     		                <img src="{{ asset('images/frontend/demo/box_thumb.png') }}" alt="" title="" />			
     		                <span class='nb_slide_icon'></span>		
     				    </a>	

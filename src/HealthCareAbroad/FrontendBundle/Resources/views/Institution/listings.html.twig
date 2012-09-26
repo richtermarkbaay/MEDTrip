@@ -1,0 +1,25 @@
+<div class="custom_tabs2_container">
+    <div class="left_tabs">
+        <ul class="custom_tabs2">
+            {% for center in institution.institutionMedicalCenters %}
+            {% set params = {countrySlug: institution.country.slug, citySlug: institution.city.slug, centerSlug: center.medicalCenter.slug, institutionSlug: institution.slug} %}
+            <li class="center-{{ center.medicalCenter.slug }}"><a href="{{ path('page_institution_listing',params) }}">{{center.medicalCenter.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="custom_tabs2_wrap">
+    {% for center in institution.institutionMedicalCenters %}
+        <div style="display: none;" class="custom_tabs2_content">
+            {{ center.description | raw }}        
+        </div>
+
+    {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$('.center-{{ currentCenterSlug }} > a').click();
+})
+
+</script>

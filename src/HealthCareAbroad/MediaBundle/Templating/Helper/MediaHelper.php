@@ -47,6 +47,7 @@ class MediaHelper extends Helper
     
     private function getTemplate($format)
     {
+        $format = $format ? $format : 'default';
         return 'MediaBundle:Helper:'.$format.'Helper.html.twig';	
     }
 
