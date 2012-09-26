@@ -9,7 +9,7 @@ parameters:
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
     services.language_list: HealthCareAbroad\HelperBundle\Form\ListType\LanguageListType
-    
+
 services:
     
     # factory class for creating named events
@@ -76,6 +76,7 @@ services:
             - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: city_list }
+
     form.tagtype_list:
         class: "%services.tagtype_list%"
         tags:

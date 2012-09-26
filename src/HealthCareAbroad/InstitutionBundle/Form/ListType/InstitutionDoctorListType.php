@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\DoctorTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
@@ -19,7 +19,6 @@ class InstitutionDoctorSearchFormType extends AbstractType
     {
         $transformer = new DoctorTransformer($this->doctrine->getEntityManager());
         $builder->prependNormTransformer($transformer);
-    	$builder->add('firstName', 'text', array('label' => 'Search Doctor\'s Name'));
     }
     
     public function getParent()
@@ -28,6 +27,6 @@ class InstitutionDoctorSearchFormType extends AbstractType
     }
     public function getName()
     {
-        return 'institutionDoctorSearch';
+        return 'doctor_list';
     }
 }
