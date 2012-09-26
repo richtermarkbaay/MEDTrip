@@ -5,10 +5,17 @@ institution_view_all_doctors:
         _method:  GET
         
 institution_doctor_add:
-    pattern: /doctors/add
+    pattern: /doctors/add/step-one
     defaults: { _controller: InstitutionBundle:Doctor:add }
     requirements:
-        _method: GET
+        _method: GET|POST
+
+       
+institution_doctor_fill_data:
+    pattern:  /doctors/add/step-two
+    defaults: { _controller: InstitutionBundle:Doctor:addDetail }
+    requirements:
+        _method: GET|POST
 
 institution_doctor_add_save:
     pattern: /doctors/add

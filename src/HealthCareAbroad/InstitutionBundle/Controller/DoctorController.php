@@ -114,4 +114,13 @@ class DoctorController extends InstitutionAwareController
         
         return $response;
     }
+    
+    public function addDetailAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionDoctorFormType());
+        
+        return $this->render('InstitutionBundle:Doctor:addDetail.html.twig', array(
+                        'form' => $form->createView()
+        ));
+    }
 }
