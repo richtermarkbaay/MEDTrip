@@ -173,7 +173,7 @@ class SearchService
 
         if ($destinationIds['cityId']) {
             $sql .= "
-            AND f.id = :cityId
+            AND f.city_id = :cityId
             ";
         }
 
@@ -191,7 +191,7 @@ class SearchService
 
         if ($destinationIds['cityId']) {
             $sql .= "
-            AND f.id = :cityId
+            AND d.city_id = :cityId
             ";
         }
 
