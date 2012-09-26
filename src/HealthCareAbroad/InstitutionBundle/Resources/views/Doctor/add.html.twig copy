@@ -1,0 +1,67 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'staff'%}
+{% block title %}{{ parent() }} Edit Doctor {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Edit Details</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+                        
+                        <!--  start table-content  -->
+                        <div id="table-content">
+                            {% include '::notice.admin.html.twig' %}
+                        
+                            <form novalidate="novalidate" action="{{ path('institution_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                                <!-- start id-form -->
+                                <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                                    
+                                    {{ form_row(form.firstName) }}
+                                    {{ form_row(form.middleName) }}
+                                    {{ form_row(form.lastName) }}
+                                    
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <td valign="top">
+                                                <input type="reset" value="Reset" class="form-reset"  />
+                                                <input type="submit" name="submit" value="Submit" class="green-button" />   
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    
+                                    {{ form_rest(form) }}
+                                    
+                                </table>
+                                <!-- end id-form  -->
+                            </form>
+                        </div>
+                        <!--  end table-content  -->
+                    </td>
+                    <td style="vertical-align: top; ">
+                        {% block relatedTasks %}
+                            {% include 'InstitutionBundle:Doctor:relatedTasks.html.twig' %}
+                        {% endblock %}
+                    </td>
+                </tr>
+            </table>
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+
+

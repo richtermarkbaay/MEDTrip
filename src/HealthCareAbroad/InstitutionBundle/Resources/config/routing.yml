@@ -22,6 +22,12 @@ InstitutionBundle_userType:
 InstitutionBundle_userRole:
     resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
     prefix:   /institution
+
+# Routes for DoctorController #
+InstitutionBundle_doctor:
+    resource: "@InstitutionBundle/Resources/config/routing_doctor.yml"
+    prefix:   /institution
+    
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }

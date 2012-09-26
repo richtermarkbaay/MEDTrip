@@ -126,3 +126,14 @@ admin_error403:
 admin_homepage:
     pattern:  /admin
     defaults: { _controller: AdminBundle:Default:index }
+    
+
+#page_institution_listing:
+#    pattern: /{countrySlug}/{citySlug}/{centerSlug}/{institutionSlug}
+#    defaults: { _controller: FrontendBundle:Institution:listing }
+#    requirements:
+#        countrySlug: ".+"
+#        citySlug: ".+"
+#        centerSlug: ".+"
+#        institutionSlug: ".+"
+#        _method:  GET

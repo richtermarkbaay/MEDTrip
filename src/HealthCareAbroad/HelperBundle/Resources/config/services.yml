@@ -8,7 +8,7 @@ parameters:
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
-
+    
 services:
     
     # factory class for creating named events
@@ -38,6 +38,11 @@ services:
         class: %services.location_class%
         calls:
             - [setDoctrine, [@doctrine]]
+
+    #services.inquire:
+    #    class: %services.inquiry_class%
+    #    calls:
+    #        - [setDoctrine, [@doctrine]]
             
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
