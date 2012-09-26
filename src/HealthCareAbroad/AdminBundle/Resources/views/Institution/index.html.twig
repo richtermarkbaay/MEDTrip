@@ -59,7 +59,7 @@
             Select an option below to update its status.
         </p>
         <form id="update-status-form" method="POST">
-        <select id="selected-status">
+        <select name="status" id="selected-status">
             {% for label,value in updateStatusOptions %}
                 <option value="{{value}}">{{label}}</option>
             {% endfor %}
@@ -87,10 +87,7 @@
             $('#current-status').html(currentStatus);
             $('#current-institution').html(institutionName);
 
-            $('#update-status-form').attr('action', url + '/' + $('#selected-status').val());
-            $('#selected-status').change(function(){
-                $('#update-status-form').attr('action', url + '/' + $(this).val());
-            });
+            $('#update-status-form').attr('action', url);
             
             $("#update-status-container").dialog("open");
             return false;

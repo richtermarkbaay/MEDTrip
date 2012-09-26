@@ -77,7 +77,7 @@
             Select an option below to update its status.
         </p>
         <form id="update-status-form" method="POST">
-            <select id="selected-status">
+            <select name="status" id="selected-status">
                 {% for label,value in updateCenterStatusOptions %}
                     <option value="{{value}}">{{label}}</option>
                 {% endfor %}
@@ -98,21 +98,16 @@
         $("a.show-update-status").click(function() {
 
             var url = $(this).attr('href');
-
             var institutionMedicalCenterId = $(this).attr('id').split('-').pop();
-
             var currentStatus = $('#medical-center-'+institutionMedicalCenterId+' > td.status').html();
             var institutionMedicalCenterName = $('#medical-center-'+institutionMedicalCenterId+' > td.name').html();
 
             $('#current-status').html(currentStatus);
             $('#current-institution-center').html(institutionMedicalCenterName);
+            $('#update-status-form').attr('action', url);
 
-            $('#update-status-form').attr('action', url + '/' + $('#selected-status').val());
-            $('#selected-status').change(function(){
-                $('#update-status-form').attr('action', url + '/' + $(this).val());
-            });
-            
             $("#update-status-container").dialog("open");
+
             return false;
         });
     });
