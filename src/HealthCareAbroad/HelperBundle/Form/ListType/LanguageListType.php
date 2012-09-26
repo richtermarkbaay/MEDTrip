@@ -1,39 +1,37 @@
 <?php
-namespace HealthCareAbroad\InstitutionBundle\Form\Transformer;
+namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
-use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\LanguageTransformer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormBuilderInterface;
 
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use HealthCareAbroad\AdminBundle\Entity\Language;
 
-use Symfony\Component\Form\DataTransformerInterface;
-
-class LanguageTransformer implements DataTransformerInterface
+class LanguageListType extends AbstractType 
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
-    
-    /**
-     * @var InstitutionService
-     */
-    private $languageService;
-    
-    public function __construct(ContainerInterface $container=null)
+	
+	protected  $doctrine;
+	
+	function setDoctrine($doctrine)
+	{
+		$this->doctrine = $doctrine;
+	}
+	
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		$transformer = new LanguageTransformer($this->doctrine->getEntityManager());
+		$builder->prependNormTransformer($transformer);
+	}
+   
+    public function getParent()
     {
-        $this->container = $container;
-        $this->languageService = $this->container->get('services.language');
+        return 'text';
     }
-    
-    public function transform($institution)
+
+    public function getName()
     {
-        return $institution->getId();
-    }
-    
-    public function reverseTransform($id)
-    {
-        return $this->institutionService->findById($id);
+        return 'language_autocomplete';
     }
 }
