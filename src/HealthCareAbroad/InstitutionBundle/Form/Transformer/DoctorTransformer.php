@@ -1,5 +1,5 @@
 <?php 
-namespace HealthCareAbroad\InstitutionBundle\Form\DataTransformer;
+namespace HealthCareAbroad\InstitutionBundle\Form\Transformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -53,7 +53,7 @@ class DoctorTransformer implements DataTransformerInterface
     	$doctorObjects = new ArrayCollection();
 
     	if($stringDoctors == '')
-    		return $cityObjects;
+    		return $doctorObjects;
 
     	$doctors = explode(',', $stringDoctors);
 

@@ -104,9 +104,7 @@ class DoctorController extends InstitutionAwareController
         
         foreach($doctors as $each) {
             $data[] = array('id' => $each->getId(), 
-                            'firstName' => $each->getFirstName(),
-                            'middleName' => $each->getMiddleName(),
-                            'lastName' => $each->getLastName());
+                            'name' => $each->getFirstName() . " " . $each->getMiddleName() . " " . $each->getLastName());
         }
         
         $response = new Response(json_encode($data));

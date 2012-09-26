@@ -28,6 +28,6 @@ services:
     form.doctor_list:
         class: "%services.doctor_list%"
         calls:
-            - [setContainer, [@service_container]]
+            - [setDoctrine, [@doctrine]]
         tags:
             - { name: form.type, alias: doctor_list }

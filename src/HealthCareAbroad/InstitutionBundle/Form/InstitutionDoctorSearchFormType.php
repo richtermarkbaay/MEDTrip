@@ -7,25 +7,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 
+use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorListType;
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\DoctorTransformer;
+
 class InstitutionDoctorSearchFormType extends AbstractType
 {
-    private $container;
-    
-    public function setContainer(ContainerInterface $container = null) {
-        $this->container = $container;
-    }
-    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new DoctorTransformer($this->doctrine->getEntityManager());
-        $builder->prependNormTransformer($transformer);
-    	$builder->add('firstName', 'text', array('label' => 'Search Doctor\'s Name'));
+        $builder->add('firstName', 'doctor_list', array('label' => 'Search Doctor\'s Name'));
     }
     
-    public function getParent()
-    {
-        return "text";
-    }
     public function getName()
     {
         return 'institutionDoctorSearch';

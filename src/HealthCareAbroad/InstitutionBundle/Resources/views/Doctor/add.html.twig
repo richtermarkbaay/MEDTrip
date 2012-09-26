@@ -84,9 +84,8 @@
                         success: function( data ) {
                             response( $.map( data, function( item ) {
                                 return {
-                                    label: item.firstName +" "+ item.middleName + " " + item.lastName,
-                                    value: item.firstName +" "+ item.middleName + " " + item.lastName,
-                                    id: item.id
+                                    label: item.name,
+                                    value: item.name
                                 }
                             }));
                             
