@@ -61,6 +61,7 @@ admin_institution_medicalCenter_updateStatus:
         institutionId: \d+
         imcId: \d+
         status: \d+
+        _method: POST
 # End of Manage Centers Routes #
 
 
