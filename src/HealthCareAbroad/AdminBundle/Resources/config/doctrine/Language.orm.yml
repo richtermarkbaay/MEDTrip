@@ -24,4 +24,12 @@ HealthCareAbroad\AdminBundle\Entity\Language:
         status:
             type: boolean
             nullable: false
+    manyToMany:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {}
+            mappedBy: institutionLanguagesSpoken
+            inversedBy: null
+            joinTable: null
+            orderBy: null
     lifecycleCallbacks: {  }

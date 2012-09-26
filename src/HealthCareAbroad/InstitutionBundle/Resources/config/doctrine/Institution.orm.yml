@@ -76,6 +76,22 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                         name: offered_service_id
                         referencedColumnName: id
+                                          
+        institutionLanguagesSpoken:
+            targetEntity: HealthCareAbroad\AdminBundle\Entity\Language
+            cascade: { }
+            mappedBy: null
+            inversedBy: institution
+            joinTable:
+                name: institution_languages_spoken
+                joinColumns:
+                    -
+                       name: institution_id
+                       referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                       name: language_id
+                       referencedColumnName: id
                             
         contactDetail:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
