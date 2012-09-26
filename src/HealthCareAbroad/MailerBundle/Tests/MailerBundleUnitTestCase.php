@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\MailerBundle\Tests;
 
+use \HCA_DatabaseManager;
+
 class MailerBundleUnitTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $doctrine = null;
