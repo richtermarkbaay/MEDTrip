@@ -1,0 +1,35 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+{% block content %}
+    {% block wrappedContent %}
+
+        <div class="main">
+            <div class="box_outer">
+
+                You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}procedureType.name{% endif %}
+
+                <ul>
+                {% for center in centers %}
+                    <li>
+                        <!-- Hardcode for now -->
+                        <a href="/{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ procedureType.name }}" >
+                            {{ center.medicalCenter.name }}
+                        </a>
+                    </li>
+                {% else %}
+                    No medical centers found.
+                {% endfor %}
+                </ul>
+
+            </div>
+
+        </div> <!--End Main-->
+        <!-- Sidebar Navigation -->
+        {% block right_navigation %}
+            {% include 'FrontendBundle:Default:sidebar.html.twig' %}
+        {% endblock %}
+
+    {% endblock %}
+
+    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
+
+{% endblock %}
