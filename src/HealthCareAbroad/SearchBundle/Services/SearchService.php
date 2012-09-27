@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use HealthCareAbroad\SearchBundle\Constants;
@@ -50,7 +52,7 @@ class SearchService
      * @param mixed $destinationId
      * @return string
      */
-    public function getJsonEncodedTreatmentsByName($name, $destinationId = 0)
+    public function getTreatmentsByName($name, $destinationId = 0)
     {
         $result = array();
 
@@ -68,10 +70,10 @@ class SearchService
             $result[] = array('label' => $label, 'value' => $value);
         }
 
-        return \json_encode($result);
+        return $result;
     }
 
-    public function getJsonEncodedDestinationsByName($name, $treatmentId = 0)
+    public function getDestinationsByName($name, $treatmentId = 0)
     {
         $result = array();
 
@@ -89,7 +91,7 @@ class SearchService
             $result[] = array('label' => $label, 'value' => $value);
         }
 
-        return \json_encode($result);
+        return $result;
     }
 
     /**
@@ -141,29 +143,12 @@ class SearchService
         $connection = $this->entityManager->getConnection();
 
         $destinationIds = $this->parseIds($destinationId, 'destination');
-/*
-        $sql = "
-        SELECT a.id, b.name
-        FROM institution_medical_procedures AS a
-        LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
-        LEFT JOIN institution_medical_procedure_types AS c ON a.institution_medical_procedure_type_id = c.id
-        LEFT JOIN institution_medical_centers AS d ON c.institution_medical_center_id = d.id
-        LEFT JOIN institutions AS e ON d.institution_id = e.id
-        WHERE b.name LIKE :procedureTerm
-        AND e.country_id = :countryId
-        ";
 
-        if ($destination['cityId']) {
-            $sql .= ' AND e.id = :cityId ';
-        }
-*/
         $sql ="
             SELECT a.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
             FROM institution_medical_procedures AS a
             LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
             LEFT JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id
-
-
             LEFT JOIN institution_medical_procedure_types AS d ON a.institution_medical_procedure_type_id = d.id
             LEFT JOIN institution_medical_centers AS e ON d.institution_medical_center_id = e.id
             LEFT JOIN institutions AS f ON e.institution_id = f.id

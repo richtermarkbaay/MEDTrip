@@ -9,7 +9,7 @@ search_admin_initiate:
 
 ## FRONTEND BUNDLE
 search_frontend_homepage:
-    pattern: /frontend/search
+    pattern: /search
     defaults: { _controller: SearchBundle:Frontend:searchHomepage }
 
 search_frontend_ajaxLoadTreatments:
@@ -19,3 +19,40 @@ search_frontend_ajaxLoadTreatments:
 search_frontend_ajaxLoadDestinations:
     pattern: /search/ajaxLoadDestinations
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
+
+search_frontend_results_countries:
+    pattern: /search/destinations/{country}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsCountries }
+
+search_frontend_results_cities:
+    pattern: /search/destinations/{country}/{city}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsCities }
+
+search_frontend_results_procedureTypes:
+    pattern: /search/treatment/{medicalCenter}/{procedureType}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
+
+# The following routes was moved to the FrontendBundle routing.yml
+# This is kept here for reference. Please don't remove.
+#search_frontend_results_country_procedureTypes:
+#    pattern: /{country}/{medicalCenter}/{procedureType}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsProcedureTypes }
+#    requirements:
+#        country: ".+"
+#        medicalCenter: ".+"
+#        procedureType: ".+"
+#        _method:  GET
+
+#search_frontend_results_city_procedureTypes:
+#    pattern: /{country}/{city}/{medicalCenter}/{procedureType}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsProcedureTypes }
+#    requirements:
+#        country: ".+"
+#        city: ".+"
+#        medicalCenter: ".+"
+#        procedureType: ".+"
+#        _method:  GET
+
+search_frontend_results_medicalCenters:
+    pattern: /search/treatment/{medicalCenter}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsMedicalCenters }

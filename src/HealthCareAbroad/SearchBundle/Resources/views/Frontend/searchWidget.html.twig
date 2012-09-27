@@ -67,8 +67,8 @@ $(function() {
                 }
             });
         },
-        delay: 1000,
-        minLength: 3,
+        delay: 200,
+        minLength: 1,
         focus: function( event, ui ) {
             $("#sb_treatment" ).val( ui.item.label );
             return false;
@@ -78,6 +78,9 @@ $(function() {
             $( "#treatment_id" ).val( ui.item.value );
 
             return false;
+        },
+        change: function(event, ui) {
+            $( "#treatment_id" ).val(ui.item && ui.item.value ? ui.item.value : '');
         }
     });
 
@@ -100,8 +103,8 @@ $(function() {
                 }
             });
         },
-        delay: 1000,
-        minLength: 3,
+        delay: 200,
+        minLength: 1,
         focus: function( event, ui ) {
             $("#sb_destination").val( ui.item.label );
             return false;
@@ -111,6 +114,9 @@ $(function() {
             $( "#destination_id" ).val( ui.item.value );
 
             return false;
+        },
+        change: function(event, ui) {
+            $( "#destination_id" ).val(ui.item && ui.item.value ? ui.item.value : '');
         }
     });
 });
