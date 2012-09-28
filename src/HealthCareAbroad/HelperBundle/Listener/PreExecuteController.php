@@ -20,6 +20,12 @@ class PreExecuteController
 	 */
 	public function onKernelController(FilterControllerEvent $event)
 	{
+	    // do this filter only if there is a matched route
+	    if (null === $event->getRequest()->attributes->get('_route')) {
+	        
+	        return;
+	    }
+	    
 	    if(HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
 
 	        $controllers = $event->getController();
