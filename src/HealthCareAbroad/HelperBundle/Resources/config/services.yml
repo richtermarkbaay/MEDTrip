@@ -4,14 +4,19 @@ parameters:
     services.location_class: HealthCareAbroad\HelperBundle\Services\LocationService
     services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
+    services.alert_class: HealthCareAbroad\HelperBundle\Services\AlertService
     services.country_list: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
-    
+
 services:
     
     # factory class for creating named events
+    events.alert:
+        class: %services.alert_class%
+        arguments: [@service_container]
+
     events.factory:
         class: HealthCareAbroad\HelperBundle\Factory\EventFactory
         arguments: [@service_container]

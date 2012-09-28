@@ -3,15 +3,19 @@ parameters:
     services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
 
 services:
+    services.alert:
+        class: HealthCareAbroad\HelperBundle\Services\AlertService
+        arguments: [@doctrine]
+
     services.institution:
         class: %services.institution_class%
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
 
     services.institutionMedicalCenter:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
 
     form.institution_list:
         class: "%services.institution_list%"
