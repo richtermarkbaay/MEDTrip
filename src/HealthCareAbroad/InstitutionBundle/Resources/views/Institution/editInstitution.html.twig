@@ -57,6 +57,8 @@
    <script>
 	$(function() {
 		var availableTags = $.parseJSON('{{ languagesJSON | raw}}');
+		var originalTags = availableTags;
+		var selectedTags = [];
 
 		function split( val ) {
 	
@@ -68,17 +70,80 @@
 		}
 		$( "#institutionDetail_institutionLanguagesSpoken")
 		
-
+            
 			// don't navigate away from the field on tab when selecting an item
+			.bind("keyup", function(event){
+			    
+				console.log("keycode pressed "+event.keyCode);
+				if ( $(this).data('autocomplete').term){
+
+				    var currentTerms = $(this).val().split(',');
+				    $.each(currentTerms, function(c, cval){
+				        currentTerms[c] = $.trim(cval);
+				    });
+				    var temp = [];
+				    var removedSelectedTags = [];
+				    $.each(selectedTags, function(i, val){
+					    temp.push(val);
+				    });
+
+				    tempLength = temp.length;
+				    
+				    for (i=0; i<tempLength; i++) {
+				        
+				        if ($.inArray(temp[i].value, currentTerms) < 0) {
+				            
+				            $.each(selectedTags, function(x, val){
+					            if (val && val.value == temp[i].value) {
+					                selectedTags.splice(x,1);
+					                removedSelectedTags.push(temp[i]);
+					                return;
+					            }
+				            });
+				        }
+				    }
+				    $.merge(availableTags, removedSelectedTags);
+				}
+			    
+			})
 			.bind( "keydown", function( event ) {
 				if ( event.keyCode === $.ui.keyCode.TAB &&						
 			
 						$( this ).data( "autocomplete" ).menu.active ) {
 					event.preventDefault();					
 				}
+
+				
+				
 			})
 			.autocomplete({
 				minLength: 1,
+				create: function(event, ui) {
+	                currentTerms = $(this).val().split(',');
+	                $.each(currentTerms, function(c, cval){
+				        currentTerms[c] = $.trim(cval);
+				    });
+	                if (currentTerms.length > 0) {
+		                $.each(currentTerms, function(xi, val){
+		                    $.each(availableTags, function(ii, ival){
+			                    if (ival && ival.value==val) {
+			                        availableTags.splice(ii, 1);
+			                        selectedTags.push(ival);
+			                        return;
+			                    }
+		                    });
+		                    console.log(val);
+		                });
+	                    /**$.each(availableTags, function(i, val){
+	                        if (val && $.inArray(val.value, currentTerms) < 0)  {
+		                        console.log(val.value+" already selected");
+	                            selectedTags.push({'value': val.value, 'id': val.id});
+						        //availableTags.splice(i, 1);
+						        return;
+	                        }
+						});**/
+	                }
+	            },
 				source: function(request, response) {
 							response( $.ui.autocomplete.filter(
 							availableTags, extractLast( request.term ) ) );
@@ -100,6 +165,13 @@
 						this.value = terms.join( ", " );
 
 						//alert($( "#institutionDetail_institutionLanguagesSpoken").val());
+						$.each(availableTags, function(i, val){
+						    if (val && val.id == ui.item.id) {
+							    selectedTags.push({'value': val.value, 'id': val.id});
+						        availableTags.splice(i, 1);
+						        return;
+						    }
+						});
 		
 						return false;
 					}

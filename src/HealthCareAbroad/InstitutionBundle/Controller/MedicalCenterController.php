@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 /**
- * Purpose: Controller for Institution Medical Center (weh naa ko documentation)
+ * Controller for Institution Medical Center
  *
  *
  * TODO: these business rules should be moved to a service class
@@ -270,6 +270,9 @@ class MedicalCenterController extends InstitutionAwareController
      * procedure types are also deleted. Any associations to media files are
      * removed but the media itself is retained in the institution's media
      * library/gallery.
+     *
+     * Note: A institution medical with status DRAFT shouldn't have procedure
+     * types. Will update code when this spec is confirmed.
      *
      * Dispatches an event upon success, passing in a proxy for deleted object.
      *

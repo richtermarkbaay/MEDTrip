@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Health Care Abroad - front end</title>
+
+<meta charset="utf-8" />
+
+
+
+<!-- The Stylesheet -->
+
+<link href='/css/frontend/style.css' rel='stylesheet' type='text/css'>
+
+
+
+<!-- Google Fonts -->
+
+<link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'> 
+
+
+
+<!-- favicon -->
+
+<link rel="shortcut icon" href="favicon.png" />
+
+
+
+
+
+<!-- Mobile -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+
+<!--[if lt IE 9]>
+
+<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+
+<![endif]-->
+
+
+
+<!-- javaScript -->
+
+<script type="text/javascript" src="/js/main/jquery.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tools.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.cycle.all.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.jplayer.min.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tweet.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.prettyPhoto.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.tipsy.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.li-scroller.1.0.js"></script>
+
+<script type="text/javascript" src="/js/main/jquery.fitvids.js"></script>
+
+<script type="text/javascript" src="/js/main/custom.js"></script>
+
+
+
+</head>
+
+<body>
+
+<div class="fixed">
+
+<div id="top" class="top_bar">
+
+    <div class="inner">
+
+       
+
+     
+        
+            <div class="news_ticker">
+        
+                <div class="ticker_icon"></div>
+        
+                    <ul id="ticker01">
+        
+                        <li><span>&#9733;</span><a href="#">Sed ut perspiciatis unde</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Unde REVOLUTION &ndash; 25 October 2012</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">magni dolores eos</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">vel illum qui dolorem eum fugiat</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">quis nostrum exercitationem ullam</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">Duis aute irure dolor in reprehenderit</a></li>
+        
+                        <li><span>&#9733;</span><a href="#">magni dolores eos</a></li>
+        
+                    </ul>
+        
+            </div><!--News Ticker-->
+        
+
+       
+
+    </div> <!--End Inner-->
+
+</div> <!--End Topbar-->
+
+
+
+<header id="header">
+
+    <div class="top_line"></div>
+
+    <div class="inner">
+
+        <div class="logo">
+
+            <a href="index.html">
+
+                    <img src="/images/frontend/logo.png" alt="#" />
+
+            </a>
+
+        </div> <!--End Logo-->
+
+        
+         <div class="search_box">
+
+           <!-- <form method="get" action="#">
+
+                <input type="submit" class="sb" value="Search" />
+
+                <input type="text" class="sf" value="Search here ..." name="s" onfocus="if(this.value == 'Search here ...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search here ...';}" />
+
+            </form> -->
+            
+            
+            
+            
+
+        </div> <!--Search Box-->
+        
+        
+            <form id="ui_element" class="sb_wrapper">
+                    <p>
+						<span class="sb_down"></span>
+						<input type="text" onblur="if(this.value=='')this.value='Search';" onfocus="if(this.value=='Search')this.value='';" value="Search" name="email">
+
+
+						<input class="sb_search" type="submit" value=""/>
+					</p>
+					<ul class="sb_dropdown" style="display:none;">
+					    <h4><input type="checkbox"/><label for="all"> All Categories</h4></label>
+					    
+						<li class="sb_filter"><input type="checkbox"/>Procedures</li>
+						<li class="sb_filter"><input type="checkbox"/>Destinations</li>
+						
+					</ul>
+        </form>
+
+        
+    </div> <!--Inner-->
+
+
+</header> <!--End Header-->
+
+
+  
+<nav id="navigation">
+
+    <div class="nav_wrap">
+
+    <div class="inner">
+
+        <ul class="nav">
+
+            <li class="home"><a href="index.html"></a></li>
+
+            <li><a href="#">Destinations</a></li>
+
+            <li><a href="#">Procedures</a>
+
+                <ul class="sub-menu">
+
+                    <li><a href="#">sub</a></li>
+
+                    <li><a href="#">sub2</a>
+
+                        <ul class="sub-menu">
+
+                            <li><a href="#">sub4</a></li>
+
+                            <li><a href="#">sub</a></li>
+
+                            <li><a href="#">sub2</a></li>
+
+                        </ul>
+
+                    </li>
+
+                    <li><a href="#">sub3</a></li>
+
+                </ul>
+ 
+            </li>
+   
+    
+    </ul>
+        
+    
+        
+
+                                <div class="menu-main-container" id="mobile_menu_secondary">
+                                
+                                    <select  name="mobileMainMenu" id="mobileMainMenu" class="mobileMainMenu" onchange="location.href = document.getElementById('mobileMainMenu').value;">
+                                
+                                        
+                                
+                                        <option value="#">Destinations</option>
+                                
+                                        <option value="#">Procedures</option>
+                                        
+                                        <option value="#"> - Sub One</option>
+                                        <option value="#"> - - Sub One 2</option>
+                                
+                                
+                                     </select>
+                                
+                                 </div>
+         <ul class="social">
+                <li class="fb"><a href="#">facebook</a></li>
+                <li class="linkedin"><a href="#">linkedin</a></li>
+                <li class="twitter"><a href="#">twitter</a></li>
+                <li class="youtube"><a href="#">youtube</a></li>
+                <li class="google"><a href="#">google</a></li>
+                <li class="rss"><a href="#">rss</a></li>
+        </ul>
+     
+    </div> <!--Inner-->
+
+
+
+
+        
+        
+    </div> <!--End Nav Wrap-->
+
+</nav> <!--End Navigation-->
+
+<div class="inner">
+
+
+</div> <!--End Inner-->
+
+<div class="inner">
+
+    <div class="container">
+
+    <div class="main">
+
+
+
+<!--Listing Box-->
+
+   <div class="box_outer">
+
+   <div class="news_box">
+
+            <div class="listing_box_heading">
+
+                <div class="nb_dots">
+
+                    <h3><a href="#">First Listing</a></h3>
+                    
+                </div>
+
+            </div> <!--End nb Heading-->
+
+        
+
+            <div class="news_box_left">
+
+                <div class="recent_news_item">
+          
+
+
+
+<div class="custom_tabs2_container">
+    <div class="left_tabs">
+        <ul class="custom_tabs2">
+        <li class="current"><a href="#">Respiratory Care Unit</a></li>
+        <li class=""><a href="#">Skin Care Clinic</a></li>
+        <li class=""><a href="#">Neurology</a></li>
+        </ul>
+    </div>
+    <div class="custom_tabs2_wrap">
+    
+    <div class="custom_tabs2_content" style="display: block;">
+    <div style="text-align:left;" class="imgsc_left"><a rel="group" title="" href="/images/frontend/demo/facility01.png" class="image_sc lightbox_img" target="_blank"><img alt="" src="/images/frontend/demo/facility01.png" style="" class="light"></a></div>
+    There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look,..but the majority have suffered alteration in some form, by injected humour, or randomised words which don’t look
+    <br /><br />
+            <ul class="list">
+                     <h4>Another List Here</h4>
+                        <li class="check"><img class="arrow" /><a href="#">list style arrow sample lorem ipsum</a></li>
+                        <li class="check"><img class="arrow" /><a href="#">Duis aute irure dolor in reprehenderit in voluptate </a></li>
+                        <li class="check"><img class="arrow" /><a href="#">consectetur adipisicing elit, sed do eiusmod </a></li>
+                        <li class="check"><img class="arrow" /><a href="#">voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor </a></li>
+                       
+            </ul>
+            
+            
+    <br /><br />        
+    
+    
+    <div class="one_half">
+
+    <div class="toggle_wrap closed">
+    <h4 class="toggle">Cosmetic Procedures</h4>
+        <div class="toggle_content toggle_closed">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable
+        <br /> <br />
+            <strong>“WE ARE GREAT IN MEDICAL SERVICE”</strong>
+                <br /><br />
+                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua pariatur.
+                
+                <div style="padding-top:22px; float:right;">
+                 Accredited by: <a href="#"><img src="/images/frontend/demo/accredit.png" alt="" class="alignright"></a>
+                </div>
+        </div>
+    </div>
+    </div>
+    
+    <div class="clear"></div>
+     <div class="one_half">
+
+    <div class="toggle_wrap closed">
+    <h4 class="toggle">Medical Procedures</h4>
+    <div class="toggle_content toggle_closed">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+    </div>
+    </div>
+    <div class="clear"></div>
+    
+     <div class="one_half">
+
+    <div class="toggle_wrap closed">
+    <h4 class="toggle">Arthritis Procedures</h4>
+    <div class="toggle_content toggle_closed">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+    </div>
+    </div>
+    
+    <div class="clear"></div>
+     <div class="one_half last">
+
+    <div class="toggle_wrap closed">
+    <h4 class="toggle">General Surgeon Procedures</h4>
+    <div class="toggle_content toggle_closed">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+    </div>
+    </div>
+    
+    <div class="clear"></div>
+     <div class="one_half last">
+
+    <div class="toggle_wrap closed">
+    <h4 class="toggle">Toggle Title Here</h4>
+    <div class="toggle_content toggle_closed">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+    </div>
+    </div>
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    <div class="custom_tabs2_content" style="display: none;">by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be</div>
+    
+    
+    <div class="custom_tabs2_content" style="display: none;">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+    </div>
+    
+    
+</div>
+
+<div class="clear"></div>
+
+        <div class="accordion">
+        
+                    <h2 class="acc_title">Doctors and Staffs</h2>
+                    <div class="acc_content2"></div>
+                   
+                    <h2 class="acc_title">Location</h2>
+                    <div class="acc_content">
+                     <a href="#"><img src="/images/frontend/demo/map.png" alt=""></a>
+                    by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be</div>
+                    
+                    
+                    <h2 class="acc_title">Contact Location</h2>
+                    <div class="acc_content">tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable</div>
+                    
+                    
+        </div>
+
+
+                </div> <!--recent News Item-->
+
+            </div> <!--End News Box Left-->
+
+            <div class="news_box_right">
+
+		<div class="more_news_wrap">
+
+		
+
+		</div>
+
+            </div> <!--End News Box Right-->
+
+        </div> <!--News Box-->
+
+    </div> <!--Box Outer-->
+
+<!--End Listing  Box-->
+
+    </div> <!--End Main-->
+    
+      <aside class="sidebar">
+
+       
+        <div class="box_outer">
+
+            <div class="widget">
+
+        <div class="tabbed_widget">
+
+<!-- the tabs -->
+
+<ul class="tabbed_nav">
+
+	<li class="tabbed1"><a href="#" class="current">Popular</a></li>
+
+	<li class="tabbed2"><a href="#">Recent</a></li>
+
+	<li class="tabbed3"><a href="#">Comments</a></li>
+
+	<li class="tabbed4"><a href="#">Tags</a></li>
+
+</ul>
+
+
+
+<!-- tab "panes" -->
+
+<div class="tabbed_container">
+
+	<div class="tabbed_content" style="display: block;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>		
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+	<ul class="blog_posts_widget">
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+		    <p><a href="#">Facebook making a phone that nobody wants?</a></p>
+
+                    <span class="pw_time">December 01, 2011</span>
+
+                </li>
+
+		
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+			
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">Italian prime minister presents €30 billion budget plan</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+		<li class="blog_post">
+
+                    <a href="#"><img src="/images/frontend/demo/thumb.png" alt="" class="alignleft"></a>
+
+			      		<p><a href="#">El Clasico: Real Madrid vs. Barcelona</a></p>
+
+		<span class="pw_time">December 06, 2011</span>
+
+		</li>
+
+
+
+	</ul>
+
+	</div> <!--Tabbed Content-->
+
+
+
+	<div class="tabbed_content" style="display: none;">
+
+		<div class="tagcloud tabbed_tag">
+
+                    <a href="#">aids</a>
+
+                    <a href="#">Barcelona</a>
+
+                    <a href="#">body</a>
+
+                    <a href="#">bugs</a>
+
+                    <a href="#">bunny</a>
+
+                    <a href="#">business</a>
+
+                    <a href="#">drugs</a>
+
+                    <a href="#">fake</a>
+
+                    <a href="#">GOP</a>
+
+                    <a href="#">human</a>
+
+                    <a href="#">men</a>
+
+                    <a href="#">obama</a>
+
+                    <a href="#">Real Madrid</a>
+
+                    <a href="#">time</a>
+
+                    <a href="#">usa</a>
+
+                    <a href="#">weight</a>
+
+                    <a href="#">world</a>
+
+                    <a href="#">yuk</a>
+
+                </div> <!--Tag Cloud-->
+
+	</div> <!--Tabbed Content-->
+
+</div>
+
+</div>
+
+        </div>
+
+        </div> <!--End Widget-->
+       
+        <div class="newsletter">
+                subscribe to our rss feeds<br />
+                <img alt="rss" src="/images/frontend/rss.png" class="rs_icon" style="width:28px; height:28px;">
+
+                <form action="#">
+
+                    <input type="text" onblur="if(this.value=='')this.value='Your Email';" onfocus="if(this.value=='Your Email')this.value='';" value="Your Email" name="email" class="nsf">
+
+                    <input type="hidden" value="en_US" name="loc">
+
+                    <input type="submit" value="Subscribe" class="nsb">
+
+                </form>
+    
+	</div> <!--End newsletter-->       
+       
+    
+    
+      <div class="social_mob">
+        
+            <!--<div class="fb"></div>
+            <div class="linkedin"></div>
+            <div class="youtube"></div>
+            <div class="twitter"></div>
+            <div class="google"></div>
+            <div class="rss"></div>-->
+            
+            
+
+                
+        <ul class="social2">
+                <li class="fb2"><a href="#">facebook</a></li>
+                <li class="linkedin2"><a href="#">linkedin</a></li>
+                <li class="twitter2"><a href="#">twitter</a></li>
+                <li class="youtube2"><a href="#">youtube</a></li>
+                <li class="google2"><a href="#">google</a></li>
+                <li class="rss2"><a href="#">rss</a></li>
+        </ul>
+            
+            
+    
+           
+        
+    </div>
+    
+       
+    </aside> <!--End Sidebar-->
+    
+    </div> <!--End Container-->
+
+<!--Footer-->
+
+</div> <!--End Inner-->
+
+<footer id="footer">
+
+    <div class="footer_wrap">
+
+        <div class="foot_border"></div>
+
+            <div class="inner">
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Destinations</h3>
+
+                        <ul class="blog_posts_widget">
+
+                            <li class="blog_post">
+
+                                <a href="#"><img width="59" height="59" title="#" alt="#" src="/images/frontend/demo/thumb.png" class="alignleft"></a>
+
+                                <p><a href="#">Destination One</a></p>
+
+                                <span class="pw_time">December 01, 2011</span>
+
+                            </li>
+
+                                            
+
+                            <li class="blog_post">
+
+                                <a href="#"><img width="59" height="59" title="Dual-core Meizu MX fully unveiled" alt="Dual-core Meizu MX fully unveiled" src="/images/frontend/demo/thumb.png" class="alignleft"></a>
+
+                                                            <p><a href="#">Dual-core Meizu MX fully unveiled</a></p>
+
+                                    <span class="pw_time">December 06, 2011</span>
+
+                            </li>
+
+                                    
+
+                            <li class="blog_post">
+
+                                <a href="#">
+
+                                    <img width="59" height="59" title="Ontarians pay highest car insurance in Canada" alt="Ontarians pay highest car insurance in Canada" src="/images/frontend/demo/thumb.png" class="alignleft">
+
+                                </a>
+
+                                <p><a href="#">Ontarians pay highest car insurance in Canada</a></p>
+
+                                    <span class="pw_time">December 06, 2011</span>
+
+                                                    </li>
+
+                    
+
+                        </ul>
+
+                </div> <!--Widget-->
+
+                </div><!--One Fourth-->
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Health Care Centers</h3>
+
+                            <ul>
+
+                                <li><a href="#">Visayan Community Hospital</a></li>
+
+                                <li><a href="#">Makati Health Care Clinic</a></li>
+
+                                <li><a href="#">Thailand Medical Institute</a></li>
+
+                                <li><a href="#">ChongHua Skin Care Clinic</a></li>
+
+                                <li><a href="#">Japan Eye Center</a></li>
+
+                            </ul>
+
+                    </div> <!--Widget-->
+
+                </div> <!--One Fourth-->
+
+                <div class="one_fourth">
+
+                    <div class="widget">
+
+                    <h3 class="widget_title">Directories</h3>
+
+                    <ul class="cat_w_list">
+
+                        <li><a href="#">Japan</a></li>
+
+                        <li><a href="#">Thailand</a></li>
+
+                        <li><a href="#">Brazil</a></li>
+
+                        <li><a href="#">Malaysia</a></li>
+
+                        <li> <a href="#">Australia</a></li>
+
+                        <li><a href="#">Canada</a></li>
+
+                        <li><a href="#">Philippines</a></li>
+
+                        <li><a href="#">Singapore</a></li>
+
+                        <li><a title="#">Dubai</a></li>
+
+                    </ul>
+
+                    </div> <!--Widget-->
+
+                </div><!--One Fourth-->
+
+                <div class="one_fourth last">
+
+                    <div class="widget">
+
+                        <h3 class="widget_title">Another WIDGET</h3>
+
+                        <div class="custom_textwidget">
+                
+
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+                        </div>
+
+                    </div>
+
+                </div><!--One Fourth-->
+
+            </div> <!--End Inner-->
+
+    </div> <!--footer wrap-->
+
+</footer> <!--End Footer-->
+
+<div class="bottom_bar">
+
+    <div class="inner">
+
+
+
+<p class="copyrights">www.hca.com © 2012 | All Rights Reserved</p>
+
+    </div> <!--End Inner-->
+
+</div> <!--end bottom Bar-->
+
+</div> <!--End Fixed-->
+
+<div class="scrollTo_top">
+
+    <a title="Scroll To Top" href="#">
+
+	<img src="/images/frontend/up.png" alt="Scroll To Top" />
+
+    </a>
+
+</div>
+
+
+		<!-- The JavaScript -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(function() {
+				/**
+				* the element
+				*/
+				var $ui 		= $('#ui_element');
+				
+				/**
+				* on focus and on click display the dropdown, 
+				* and change the arrow image
+				*/
+				$ui.find('.sb_input').bind('focus click',function(){
+					$ui.find('.sb_down')
+					   .addClass('sb_up')
+					   .removeClass('sb_down')
+					   .andSelf()
+					   .find('.sb_dropdown')
+					   .show();
+				});
+				
+				/**
+				* on mouse leave hide the dropdown, 
+				* and change the arrow image
+				*/
+				$ui.bind('mouseleave',function(){
+					$ui.find('.sb_up')
+					   .addClass('sb_down')
+					   .removeClass('sb_up')
+					   .andSelf()
+					   .find('.sb_dropdown')
+					   .hide();
+				});
+				
+				/**
+				* selecting all checkboxes
+				*/
+				$ui.find('.sb_dropdown').find('label[for="all"]').prev().bind('click',function(){
+					$(this).parent().siblings().find(':checkbox').attr('checked',this.checked).attr('disabled',this.checked);
+				});
+            });
+        </script>	
+
+
+</body>
+
+</html>

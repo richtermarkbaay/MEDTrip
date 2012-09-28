@@ -2,6 +2,14 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
+
+use HealthCareAbroad\HelperBundle\Entity\City;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
@@ -19,6 +27,61 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
+    public function getMedicalCentersByTreatment(MedicalProcedureType $procedureType, MedicalProcedure $procedure = null)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('a')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->leftJoin('a.medicalCenter', 'b')
+            ->leftJoin('b.medicalProcedureTypes', 'c');
+
+        if ($procedure) {
+            $qb->leftJoin('c.medicalProcedures', 'd')
+                ->where('d = :procedure')
+                ->setParameter('procedure', $procedure);
+        }
+        else {
+            $qb->where('c = :procedureType')
+                ->setParameter('procedureType', $procedureType);
+        }
+
+        $qb->orderBy('b.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getMedicalCentersByCountry(Country $country)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('a')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->leftJoin('a.institution', 'b')
+            ->leftJoin('a.medicalCenter', 'c')
+            ->where('b.country = :countryId')
+            ->andWhere('a.status = :status')
+            ->setParameter('countryId', $country->getId())
+            ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED)
+            ->orderBy('c.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function getMedicalCentersByCity(City $country)
+    {
+        $qb = $this->_em->createQueryBuilder()
+        ->select('a')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        ->leftJoin('a.institution', 'b')
+        ->leftJoin('a.medicalCenter', 'c')
+        ->where('b.country = :countryId')
+        ->andWhere('a.status = :status')
+        ->setParameter('countryId', $country->getId())
+        ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED)
+        ->orderBy('c.name', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function getCountByMedicalCenterId($medicalCenterId) {
         $qb = $this->_em->createQueryBuilder();
 
