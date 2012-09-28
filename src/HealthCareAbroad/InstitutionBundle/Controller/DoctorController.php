@@ -50,7 +50,6 @@ class DoctorController extends InstitutionAwareController
      */
     public function editAction(Request $request)
     {
-        echo  $doctorId = $request->get('idId', 0);exit;
         $doctorId = $request->get('idId', 0);
         $institutionDoctor = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor')->find($doctorId);
         
