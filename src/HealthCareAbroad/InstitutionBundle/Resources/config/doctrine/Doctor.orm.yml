@@ -34,12 +34,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Doctor:
         status:
             type: boolean
             nullable: false
-    manyToMany:
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            cascade: {  }
+    oneToMany:
+        institutionDoctors:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor
             mappedBy: doctor
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

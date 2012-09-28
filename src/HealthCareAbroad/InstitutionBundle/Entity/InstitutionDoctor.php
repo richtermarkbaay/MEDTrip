@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 class InstitutionDoctor
 {
     /**
+     * Institution Doctors that are active
+     */
+    const STATUS_ACTIVE = 1;
+    /**
      * @var bigint $id
      */
     private $id;

@@ -27,4 +27,5 @@ class InstitutionDoctorRepository extends EntityRepository
         ->setParameter('institutionId', $institutionId);
         return $qb->getQuery()->getResult();
     }
+    
 }
