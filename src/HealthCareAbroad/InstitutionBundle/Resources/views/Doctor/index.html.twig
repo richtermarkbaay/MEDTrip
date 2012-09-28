@@ -21,9 +21,7 @@
                         <!--  start table-content  -->
                         <div id="table-content">
                              
-                            {% if app.session.hasFlash('notice') %}
-                                {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-                            {% endif %}
+                            {% include '::notice.admin.html.twig' %}
             
                                 <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
                                     <tr>
@@ -41,8 +39,7 @@
                                             <td>{{ doctor.middleName | title }}</td>
                                             <td class="options-width">
                                                 <a href="{{ path('institution_doctor_edit', {'idId': doctor.id }) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                                <a href="#" title="Delete" class="icon-2 info-tooltip"></a>
-                                                <a href="#" title="Activate " class="icon-5 info-tooltip"></a>
+                                                <a href="{{ path('institution_doctor_delete', {'idId': doctor.id }) }}" title="Delete" class="icon-2 info-tooltip"></a>
                                             </td>
                                         </tr>
                                         {% set even = even ? false : true %}    
@@ -68,4 +65,55 @@
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script>
+    $(function() {
+        $("#institutionDoctorSearch_firstName")
+           
+            .bind("keydown", function(event) {
+                if(event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
+                    event.preventDefault();
+                }
+                if(event.keyCode == 46 || event.keyCode == 8 ) {
+                    $("#institutionDoctorSearch_id").val(0);
+                    console.log($("#institutionDoctorSearch_id").val())
+                }
+                                   
+            })
+            .autocomplete({
+                source: function( request, response ) {
+                    $.ajax({
+                        url: searchDoctorsNameUrl,
+                        type: 'get',
+                        dataType: "json",
+                        data: {
+                            name_startsWith: request.term
+                        },
+                        success: function( data ) {
+                            response( $.map( data, function( item ) {
+                                return {
+                                    label: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    value: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    id: item.id
+                                }
+                            }));
+                            
+                        }
+                    });
+                },
+                minLength: 1,
+                select: function( event, ui ) {
+                    $("#institutionDoctorSearch_id").val(ui.item.id);
+                },
+                open: function() {
+                    $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+                },
+                close: function() {
+                    $( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+                }
+            });
+    });
+</script>
 {% endblock %}

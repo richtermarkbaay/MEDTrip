@@ -43,9 +43,9 @@ class InstitutionController  extends InstitutionAwareController
 		
 		//update institution details
 		if ($request->isMethod('POST')) {
-
 			$form->bindRequest($request);			
 			if ($form->isValid()) {
+			    var_dump($form->getData());exit;
 				$institution = $this->get('services.institution')->updateInstitution($form->getData());
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 
