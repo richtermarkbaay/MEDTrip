@@ -36,6 +36,8 @@
                 <form action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.firstName) }}
+                    {{ form_row(form.middleName) }}
+                    {{ form_row(form.lastName) }}
                     {{ form_rest(form) }}
 
                     <input type="reset" value="Reset" class="form-reset"/>
@@ -84,8 +86,9 @@
                         success: function( data ) {
                             response( $.map( data, function( item ) {
                                 return {
-                                    label: item.name,
-                                    value: item.name
+                                    label: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    value: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    id: item.id
                                 }
                             }));
                             

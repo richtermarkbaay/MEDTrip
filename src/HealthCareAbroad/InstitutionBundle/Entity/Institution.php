@@ -104,13 +104,19 @@ class Institution
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionOfferedServices;
+    public $institutionOfferedServices;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    public $institutionLanguagesSpoken;
+    
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
     
     //---- status operations
     public function setAsActive()
@@ -572,7 +578,6 @@ class Institution
         return $this->institutionUsers;
     }
 
-
     /**
      * Add institutionOfferedServices
      *
@@ -603,5 +608,37 @@ class Institution
     public function getInstitutionOfferedServices()
     {
         return $this->institutionOfferedServices;
+    }
+    
+    /**
+     * Add institution Language Spoken
+     *
+     * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
+     * @return Institution
+     */
+    public function addInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
+    {
+    	$this->institutionLanguagesSpoken[] = $institutionLanguagesSpoken;
+    	return $this;
+    }
+    
+    /**
+     * Remove institution Language Spoken
+     *
+     * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
+     */
+    public function removeInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
+    {
+    	$this->institutionLanguagesSpoken->removeElement($institutionLanguagesSpoken);
+    }
+    
+    /**
+     * Get institution Language SPoken
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getInstitutionLanguagesSpoken()
+    {
+    	return $this->institutionLanguagesSpoken;
     }
 }

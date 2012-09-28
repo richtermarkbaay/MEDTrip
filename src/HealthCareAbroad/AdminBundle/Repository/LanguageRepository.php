@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class LanguageRepository extends EntityRepository
 {
-	public function getLatestlanguage($limit = null)
+	public function getActiveLanguages($limit = null)
 	{
 		$qb = $this->createQueryBuilder('b')
 		->select('b')

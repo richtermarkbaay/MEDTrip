@@ -108,4 +108,46 @@ class Language
     {
         return $this->status;
     }
+    
+/**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institution;
+
+    public function __construct()
+    {
+        $this->institution = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add institution
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @return InstitutionLanguagesSpoken
+     */
+    public function addInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    {
+        $this->institution[] = $institution;
+        return $this;
+    }
+
+    /**
+     * Remove institution
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     */
+    public function removeInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    {
+        $this->institution->removeElement($institution);
+    }
+
+    /**
+     * Get institution
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitution()
+    {
+        return $this->institution;
+    }
 }

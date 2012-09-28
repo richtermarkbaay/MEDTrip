@@ -38,28 +38,35 @@ class InstitutionController  extends InstitutionAwareController
 		$request = $this->getRequest();
 		
 		//render template      
-		$form = $this->createForm(new InstitutionDetailType(), $this->institution);
-
+		$form = $this->createForm(new InstitutionDetailType(), $this->institution);		
+		$languages = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
+		
 		//update institution details
 		if ($request->isMethod('POST')) {
-			
-			$form->bindRequest($request);
-			
+
+			$form->bindRequest($request);			
 			if ($form->isValid()) {
-				
-				$institution = $this->get('services.institution')->updateInstitution($this->institution);
+				$institution = $this->get('services.institution')->updateInstitution($form->getData());
 				$this->get('session')->setFlash('notice', "Successfully updated account");
-				
+
 				//create event on editInstitution and dispatch
 				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
 			}
 		}
 		
-		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
+		$languageArr = array();
+		foreach ($languages as $e) {
+			$languageArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+		}
+
+ 		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
 				'form' => $form->createView(),
-				'institution' => $this->institution
+				'institution' => $this->institution,
+				'languagesJSON' => \json_encode($languageArr)
 		));
 		
 	}
+	
+	
 	
 }

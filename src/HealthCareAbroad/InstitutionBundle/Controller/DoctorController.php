@@ -35,8 +35,7 @@ class DoctorController extends InstitutionAwareController
         $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor')->getActiveDoctors();
         return $this->render('InstitutionBundle:Doctor:add.html.twig', array(
                 'form' => $form->createView(),
-                'institution' => $institution,
-                'doctorsJSON' => $doctors
+                'institution' => $institution
     	));
     }
     
@@ -52,7 +51,7 @@ class DoctorController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:Doctor:edit.html.twig', array(
                         'institutionDoctor' => $institutionDoctor,
-                        'form' => $form->createView(),
+                        'form' => $form->createView()
         ));
     }
     
@@ -64,7 +63,6 @@ class DoctorController extends InstitutionAwareController
     {
         if ($doctorId = $request->get('idId', 0)) {
             $institutionDoctor = $this->getDoctrine()->getRepository('InstitutionBundle:Doctor')->find($doctorId);
-            echo get_class($institutionDoctor); 
             if (!$institutionDoctor) {
                 throw $this->createNotFoundException("Invalid institution doctor.");
             }
@@ -96,5 +94,31 @@ class DoctorController extends InstitutionAwareController
                             'institutionDoctor' => $institutionDoctor
             ));
         }
+    }
+    
+    public function searchAction(Request $request)
+    {
+        $searchTerm = $request->get('name_startsWith');
+        $data = array();
+        $doctors = $this->getDoctrine()->getRepository("InstitutionBundle:Doctor")->getDoctorsBySearchTerm($searchTerm);
+        
+        foreach($doctors as $each) {
+            $data[] = array('id' => $each->getId(), 
+                            'name' => $each->getFirstName() . " " . $each->getMiddleName() . " " . $each->getLastName());
+        }
+        
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
+    }
+    
+    public function addDetailAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionDoctorFormType());
+        
+        return $this->render('InstitutionBundle:Doctor:addDetail.html.twig', array(
+                        'form' => $form->createView()
+        ));
     }
 }

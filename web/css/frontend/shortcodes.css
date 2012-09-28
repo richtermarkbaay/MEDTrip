@@ -504,6 +504,15 @@ ul.custom_tabs2 li.current span.big_arrow {
 	display:none;
 
 }
+
+
+.accordion .acc_content2 {
+	border-bottom:1px solid #efefef;
+	
+	display:none;
+
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*	6.	Toggle ShortCode
 /*-----------------------------------------------------------------------------------*/
