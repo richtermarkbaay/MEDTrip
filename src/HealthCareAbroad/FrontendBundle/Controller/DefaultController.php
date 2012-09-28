@@ -24,6 +24,13 @@ class DefaultController extends Controller
         return $this->render('FrontendBundle:Default:index.html.twig', array());
     }
     
+    public function commonLandingAction()
+    {
+        var_dump($this->getRequest()->attributes->get('_route_params'));
+        echo "adi na ha landing action"; exit;
+        //return $this->render('FrontendBundle:Default:index.html.twig', array());
+    }
+    
     /**
      * Add Error Report
      *

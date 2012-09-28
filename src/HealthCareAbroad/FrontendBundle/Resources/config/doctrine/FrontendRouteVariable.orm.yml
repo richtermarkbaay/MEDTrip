@@ -1,0 +1,26 @@
+HealthCareAbroad\FrontendBundle\Entity\FrontendRouteVariable:
+    type: entity
+    table: frontend_route_variables
+    repositoryClass: HealthCareAbroad\FrontendBundle\Repository\FrontendRouteVariableRepository
+    fields:
+        frontendRouteId:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            column: frontend_route_id
+            generator:
+                strategy: NONE
+        name:
+            type: string
+            length: 100
+            nullable: false
+        value:
+            type: bigint
+            unsigned: true
+    oneToOne:
+        frontendRoute:
+            targetEntity: HealthCareAbroad\FrontendBundle\Entity\FrontendRoute
+            joinColumn:
+                name: frontend_route_id
+                referencedColumnName: id

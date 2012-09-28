@@ -1,0 +1,27 @@
+HealthCareAbroad\FrontendBundle\Entity\FrontendRoute:
+    type: entity
+    table: frontend_routes
+    repositoryClass: HealthCareAbroad\FrontendBundle\Repository\FrontendRouteRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        uri:
+            type: string
+            length: 500
+            nullable: false
+        variables:
+            type: text
+            nullable: false
+        status:
+            type: smallint
+            length: 1
+            unsigned: true
+    oneToMany:
+        frontendRouteVariables:
+            targetEntity: HealthCareAbroad\FrontendBundle\Entity\FrontendRouteVariable
+            mappedBy: frontendRoute
