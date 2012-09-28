@@ -337,6 +337,45 @@ CREATE TABLE IF NOT EXISTS `error_reports` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `frontend_routes`
+--
+
+DROP TABLE IF EXISTS `frontend_routes`;
+CREATE TABLE IF NOT EXISTS `frontend_routes` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uri` varchar(500) NOT NULL,
+  `variables` text NOT NULL COMMENT 'JSON variables for this route',
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uri` (`uri`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='frontend dynamic routes';
+
+
+--
+-- Dumping data for table `frontend_routes`
+--
+
+INSERT INTO `frontend_routes` (`id`, `uri`, `variables`, `status`) VALUES
+(1, '/usa/new-york/some-data/for-database-storage', '{"countryId":1,"cityId":"1"}', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `frontend_route_variables`
+--
+
+DROP TABLE IF EXISTS `frontend_route_variables`;
+CREATE TABLE IF NOT EXISTS `frontend_route_variables` (
+  `frontend_route_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `value` bigint(20) NOT NULL,
+  KEY `frontend_route_id` (`frontend_route_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institution_contact_details`
 --
 
@@ -988,6 +1027,12 @@ ALTER TABLE `advertisements`
 --
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `frontend_route_variables`
+--
+ALTER TABLE `frontend_route_variables`
+  ADD CONSTRAINT `frontend_route_variables_ibfk_1` FOREIGN KEY (`frontend_route_id`) REFERENCES `frontend_routes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `inquiries`
