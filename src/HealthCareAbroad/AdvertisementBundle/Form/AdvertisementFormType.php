@@ -79,7 +79,7 @@ class AdvertisementFormType extends AbstractType
     {
         $builder->add('title', 'text', array('constraints' => array(new NotBlank())));
         $builder->add('description', 'textarea', array('constraints' => array(new NotBlank())));
-        $builder->add($builder->create('institution', 'hidden')->prependNormTransformer(new InstitutionTransformer($this->container)));
+        $builder->add($builder->create('institution', 'hidden')->prependNormTransformer($this->container->get('services.institution_list_transformer')));
     }
     
     protected function setFormData($options)

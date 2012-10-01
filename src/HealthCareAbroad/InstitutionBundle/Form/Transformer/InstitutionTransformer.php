@@ -12,10 +12,15 @@ use Symfony\Component\Form\DataTransformerInterface;
 class InstitutionTransformer implements DataTransformerInterface
 {
     /**
-     * @var ContainerInterface
+     * @var InstitutionService
      */
-    private $container;
-        
+    private $institutionService;
+    
+    public function setInstitutionService(InstitutionService $service)
+    {
+        $this->institutionService = $service;
+    }
+    
     public function transform($institution)
     {
         return $institution->getId();
