@@ -13,7 +13,7 @@ class InstitutionListFilter extends ListFilter
 {
     function setFilterOptions()
     {
-        $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + InstitutionStatus::getStatusList();
+        $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + InstitutionStatus::getBitValueLabels();
         $this->setStatusFilterOption($statusOptions);
     }
 
