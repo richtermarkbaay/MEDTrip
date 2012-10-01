@@ -5,7 +5,7 @@
         <div class="main">
             <div class="box_outer">
 
-                You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}procedureType.name{% endif %}
+                You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{procedureType.name}}{% endif %}
 
                 <ul>
                 {% for center in centers %}
@@ -16,7 +16,7 @@
                         </a>
                     </li>
                 {% else %}
-                    No medical centers found.
+                    <li>No medical centers found.</li>
                 {% endfor %}
                 </ul>
 

@@ -1,10 +1,9 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\HelperBundle\Entity\Country;
-
 use Doctrine\ORM\Query\ResultSetMapping;
-
 use HealthCareAbroad\SearchBundle\Constants;
 use Doctrine\ORM\EntityManager;
 
@@ -56,7 +55,7 @@ class SearchService
     {
         $result = array();
 
-        if (empty($destinationId)) {
+        if (empty($destinationId) || $destinationId == '0-0') {
             $procedures = $this->searchTreatmentsByName($name);
         } else {
             $procedures = $this->searchTreatmentsByNameWithDestination($name, $destinationId);
@@ -77,7 +76,7 @@ class SearchService
     {
         $result = array();
 
-        if (empty($treatmentId)) {
+        if (empty($treatmentId) || $treatmentId == '0-0') {
             $destinations = $this->searchDestinationsByName($name);
         } else {
             $destinations = $this->searchDestinationsByNameWithTreatment($name, $treatmentId);
@@ -92,6 +91,11 @@ class SearchService
         }
 
         return $result;
+    }
+
+    public function getCountriesWithProcedureType(MedicalProcedureType $medicalProcedureType)
+    {
+
     }
 
     /**
@@ -183,6 +187,7 @@ class SearchService
         $sql .= "
             ORDER BY medical_procedure_type_name ASC, medical_procedure_name ASC
         ";
+
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('treatmentTerm', '%'.$treatmentTerm.'%');
