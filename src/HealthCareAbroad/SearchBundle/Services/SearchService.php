@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use Doctrine\ORM\QueryBuilder;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -56,15 +58,15 @@ class SearchService
         $result = array();
 
         if (empty($destinationId) || $destinationId == '0-0') {
-            $procedures = $this->searchTreatmentsByName($name);
+            $treatments = $this->searchTreatmentsByName($name);
         } else {
-            $procedures = $this->searchTreatmentsByNameWithDestination($name, $destinationId);
+            $treatments = $this->searchTreatmentsByNameWithDestination($name, $destinationId);
         }
 
-        foreach ($procedures as $p ) {
+        foreach ($treatments as $t ) {
             // use medical procedure type name if medical procedure name is empty
-            $label = $p['medical_procedure_name'] ? $p['medical_procedure_name'] : $p['medical_procedure_type_name'];
-            $value = $p['medical_procedure_type_id'].'-'.$p['medical_procedure_id'];
+            $label = $t['medical_procedure_name'] ? $t['medical_procedure_name'] : $t['medical_procedure_type_name'];
+            $value = $t['medical_procedure_type_id'].'-'.$t['medical_procedure_id'];
 
             $result[] = array('label' => $label, 'value' => $value);
         }
@@ -95,7 +97,87 @@ class SearchService
 
     public function getCountriesWithProcedureType(MedicalProcedureType $medicalProcedureType)
     {
+//         $qb = $this->entityManager->createQueryBuilder()
+//             ->select('a')
+//             ->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
+//             ->leftJoin('a.institutionMedicalCenter', 'b')
+//             ->leftJoin('b.institution', 'c')
+//             ->leftJoin('c.country', 'd')
+//             ->leftJoin('a.medicalProcedureType', 'z')
+//             ->where('z = :medicalProcedureType')
+//             ->setParameter('medicalProcedureType', $medicalProcedureType);
+            //->orderBy('country.name', 'ASC');
+        //             ->select('a')
+        //             ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        //             ->leftJoin('a.institution', 'b')
+        //             ->leftJoin('b.country', 'country')
+        //             ->leftJoin('a.medicalCenter', 'c')
+        //             ->leftJoin('c.medicalProcedureType', 'd')
+        //             ->where('d = :medicalProcedureType')
+        //             ->setParameter('medicalProcedureType', $medicalProcedureType)
+        //             ->orderBy('country.name', 'ASC');
 
+        //                 ->select('country')
+        //                 ->from('InstitutionBundle:Institution', 'a')
+        //                 ->leftJoin('a.medicalCenter', 'b')
+        //                 ->leftJoin('b.medicalProcedureType', 'c')
+        //                 ->leftJoin('a.country', 'country')
+        //
+        //
+//         return $qb->getQuery()->getResult();
+
+
+/*
+
+// Equivalent DQL query: "select u from User u join u.address a WHERE u.name = ?1"
+// User owns association to an Address and the Address is loaded in the query.
+$rsm = new ResultSetMapping;
+$rsm->addEntityResult('User', 'u');
+$rsm->addFieldResult('u', 'id', 'id');
+$rsm->addFieldResult('u', 'name', 'name');
+$rsm->addJoinedEntityResult('Address' , 'a', 'u', 'address');
+$rsm->addFieldResult('a', 'address_id', 'id');
+$rsm->addFieldResult('a', 'street', 'street');
+$rsm->addFieldResult('a', 'city', 'city');
+
+$sql = 'SELECT u.id, u.name, a.id AS address_id, a.street, a.city FROM users u ' .
+       'INNER JOIN address a ON u.address_id = a.id WHERE u.name = ?';
+
+*/
+
+        $sql = '
+            SELECT country.id AS countryId, country.name AS countryName
+            FROM institution_medical_procedure_types AS a
+            LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
+            LEFT JOIN institutions AS c ON b.institution_id = c.id
+            LEFT JOIN countries AS country ON c.country_id = country.id
+            LEFT JOIN medical_procedure_types AS d ON a.medical_procedure_type_id = d.id
+            WHERE d.id = :medicalProcedureTypeId
+        ';
+
+        $sql = '
+            SELECT country.id AS countryId, country.name AS countryName
+            FROM institutions AS a, institution_medical_procedure_types AS b
+            LEFT JOIN institution_medical_centers AS c ON a.institution_medical_center_id = b.id
+            LEFT JOIN medical_procedure_types AS d ON a.medical_procedure_type_id = b.id
+            LEFT JOIN countries AS country ON a.country_id = country.id
+            WHERE a.id = b.institution_Id
+            AND d.id = :medicalProcedureTypeId
+        ';
+
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('InstitutionBundle:InstitutionMedicalProcedureType', 'a');
+        $rsm->addJoinedEntityResult('InstitutionBundle:InstitutionMedicalCenter', 'b', 'a', 'institutionMedicalCenter');
+        $rsm->addJoinedEntityResult('InstitutionBundle:Institution', 'c', 'b', 'institutions');
+        $rsm->addJoinedEntityResult('HelperBundle:Country', 'country', 'c', 'country');
+        $rsm->addFieldResult('country', 'countryId', 'id');
+        $rsm->addFieldResult('country', 'name', 'name');
+        $rsm->addJoinedEntityResult('MedicalProcedureBundle:MedicalProcedureType', 'd', 'c', 'medicalProcedureType');
+
+        $query = $this->entityManager->createNativeQuery($sql, $rsm);
+        $query->setParameter('medicalProcedureTypeId', $medicalProcedureType->getId());
+
+        return $query->getResult();
     }
 
     /**
@@ -108,7 +190,7 @@ class SearchService
         $connection = $this->entityManager->getConnection();
 
         $sql ="
-            SELECT a.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
+            SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
             FROM institution_medical_procedures AS a
             LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
             LEFT JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id
@@ -117,7 +199,7 @@ class SearchService
 
             UNION
 
-            SELECT 0, '', a.id, b.name
+            SELECT 0, '', b.id, b.name
             FROM institution_medical_procedure_types AS a
             LEFT JOIN medical_procedure_types AS b ON a.medical_procedure_type_id = b.id
             WHERE a.status = 1 AND b.name LIKE :name
@@ -149,7 +231,7 @@ class SearchService
         $destinationIds = $this->parseIds($destinationId, 'destination');
 
         $sql ="
-            SELECT a.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
+            SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
             FROM institution_medical_procedures AS a
             LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
             LEFT JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id
@@ -169,7 +251,7 @@ class SearchService
         $sql .= "
             UNION
 
-            SELECT 0, '', a.id, b.name
+            SELECT 0, '', b.id, b.name
             FROM institution_medical_procedure_types AS a
             LEFT JOIN medical_procedure_types AS b ON a.medical_procedure_type_id = b.id
             LEFT JOIN institution_medical_centers AS c ON a.institution_medical_center_id = a.id

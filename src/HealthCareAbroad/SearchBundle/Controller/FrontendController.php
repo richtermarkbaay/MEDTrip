@@ -362,7 +362,10 @@ class FrontendController extends Controller
         }
 
         $centers = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($procedureType, $procedure);
-        $countries = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getCountriesHavingProcedureType($procedureType);
+        //$countries = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getCountriesWithProcedureType($procedureType);
+        $countries = $this->get('services.search')->getCountriesWithProcedureType($procedureType);
+
+var_dump($countries); exit;
 
         return $this->render('SearchBundle:Frontend:medicalCentersTreatment.html.twig', array(
             'centers' => $centers,
