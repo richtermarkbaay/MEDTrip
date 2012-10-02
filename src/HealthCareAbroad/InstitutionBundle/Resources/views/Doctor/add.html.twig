@@ -60,11 +60,46 @@
 {% block inlineJavascriptCode %}
 <script>
     $(function() {
-     $("#institutionSearch").hide();
-        function split(val) {
-            return val.split( /, \s*/);
+        $("#institutionSearch").hide();
+        
+        function toggleAlert() {
+            var alertDiv = document.getElementById("alert");
+            alertDiv.style.display = alertDiv.style.display == "block" ? "none" : "block";
+            toggleDisabled(document.getElementById("content"));
         }
         
+        function toggleDisabled(el) {
+            try {
+                el.disabled = el.disabled ? false : true;
+            }
+            catch(E){}
+            
+            if (el.childNodes && el.childNodes.length > 0) {
+                for (var x = 0; x < el.childNodes.length; x++) {
+                    toggleDisabled(el.childNodes[x]);
+                }
+            }
+        }
+        
+        document.onkeydown = function(event)
+        {
+            if(event.keyCode == 46 || event.keyCode == 8 ) {
+                $("#institutionDoctorSearch_id").val(0);
+                var div = document.getElementById($("#boxSearch"));
+                if (div) {    
+                    div.innerHtml() = "";
+                    div.parentNode.removeChild(div);
+                }
+                $("#boxSearch").remove();
+                $("#institutionSearch").empty();
+                $('#institutionSearch').attr('disabled', true);
+                $("#institutionSearch").hide();                    
+                $("#institutionDoctorSearch_firstName").show(); 
+                $("#institutionDoctorSearch_firstName").val('');
+                placeCaretAtEnd( $("#institutionDoctorSearch_firstName") );
+                    
+            }
+        }
         function placeCaretAtEnd(el) {
             el.focus();
             if (typeof window.getSelection != "undefined"
@@ -82,9 +117,7 @@
                 textRange.select();
             }
         }
-        
        
-        
         function extractLast(term){
             return split(term).pop();
         }
@@ -97,13 +130,11 @@
                 }
                 
                 if(event.keyCode == 46 || event.keyCode == 8 ) {
-                    alert('test');
                     $("#institutionDoctorSearch_id").val(0);
                     $("#boxSearch").empty();
+                    $("#institutionSearch").innerHTML();
                     $("#institutionSearch").hide();                    
                     $("#institutionDoctorSearch_firstName").show(); 
-                    
-                    console.log($("#institutionDoctorSearch_id").val())
                 }
                 
             })
@@ -135,8 +166,9 @@
                     $("#institutionDoctorSearch_firstName").hide();
                     $("#institutionSearch").show();
                     $("#institutionSearch").append("<div id='boxSearch'>"+ui.item.value+" </div> ");
-                    
-                     placeCaretAtEnd( document.getElementById("institutionSearch") );
+                    toggleDisabled($("#institutionSearch"));
+                    toggleDisabled($("#boxSearch"));
+                    // placeCaretAtEnd( document.getElementById("institutionSearch") );
                     
                     
                 },
