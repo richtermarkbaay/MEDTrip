@@ -168,77 +168,6 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inquiries`
---
-
-CREATE TABLE IF NOT EXISTS `inquiries` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(100) NOT NULL,
-  `last_name` varchar(100) NOT NULL,
-  `email` char(100) NOT NULL,
-  `message` text NOT NULL,
-  `inquiry_subject_id` int(10) unsigned DEFAULT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `inquiry_subject_id` (`inquiry_subject_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `inquiry_subjects`
---
-
-CREATE TABLE IF NOT EXISTS `inquiry_subjects` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  `slug` char(100) NOT NULL,
-  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
---
--- Dumping data for table `inquiry_subjects`
---
-
-INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(1, 'membership', 'test', 1);
-INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(2, 'fees', 'saf', 1);
--- --------------------------------------------------------
-
---
--- Table structure for table `institutions`
---
-
-DROP TABLE IF EXISTS `institutions`;
-CREATE TABLE IF NOT EXISTS `institutions` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
-  `description` text NOT NULL,
-  `logo` varchar(100) NOT NULL,
-  `address1` text NOT NULL,
-  `address2` text NOT NULL,
-  `city_id` int(10) unsigned NOT NULL,
-  `country_id` int(10) unsigned NOT NULL,
-  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `slug` char(100) NOT NULL,
-  `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `city_id` (`city_id`),
-  KEY `country_id` (`country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `institutions`
---
-INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1),
-(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `cities`
 --
 
@@ -376,6 +305,78 @@ CREATE TABLE IF NOT EXISTS `frontend_route_variables` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inquiries`
+--
+
+CREATE TABLE IF NOT EXISTS `inquiries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `email` char(100) NOT NULL,
+  `message` text NOT NULL,
+  `inquiry_subject_id` int(10) unsigned DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `inquiry_subject_id` (`inquiry_subject_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inquiry_subjects`
+--
+
+CREATE TABLE IF NOT EXISTS `inquiry_subjects` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+--
+-- Dumping data for table `inquiry_subjects`
+--
+
+INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(1, 'membership', 'test', 1);
+INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(2, 'fees', 'saf', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institutions`
+--
+
+DROP TABLE IF EXISTS `institutions`;
+CREATE TABLE IF NOT EXISTS `institutions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `logo` varchar(100) NOT NULL,
+  `address1` text NOT NULL,
+  `address2` text NOT NULL,
+  `city_id` int(10) unsigned NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `city_id` (`city_id`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `institutions`
+--
+INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1),
+(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institution_contact_details`
 --
 
@@ -424,6 +425,21 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
 
 INSERT INTO `institution_invitations` (`id`, `email`, `message`, `name`, `invitation_token_id`, `date_created`, `status`) VALUES
 (1, 'test-invited-institution-user@chromedia.com', 'lorem ipsum', 'Test', '1', '2012-08-02 06:21:36', 1);
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_languages_spoken`
+--
+
+DROP TABLE IF EXISTS `institution_languages_spoken`;
+CREATE TABLE IF NOT EXISTS `institution_languages_spoken` (
+  `institution_id` int(10) unsigned NOT NULL,
+  `language_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_id`,`language_id`),
+  KEY `language_id` (`language_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -509,6 +525,23 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
   UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`medical_procedure_type_id`),
   KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_offered_services`
+--
+
+DROP TABLE IF EXISTS `institution_offered_services`;
+CREATE TABLE IF NOT EXISTS `institution_offered_services` (
+  `institution_id` int(10) unsigned NOT NULL,
+  `offered_service_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_id`,`offered_service_id`),
+  KEY `offered_service_id` (`offered_service_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 
 -- --------------------------------------------------------
@@ -659,6 +692,21 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
 INSERT INTO `invitation_tokens` (`id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
 (1, '94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7', '2012-08-02 06:19:20', '2012-09-01 06:19:20', 1);
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `languages`
+--
+
+DROP TABLE IF EXISTS `languages`;
+CREATE TABLE IF NOT EXISTS `languages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `iso_code` char(5) NOT NULL,
+  `name` char(100) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -865,6 +913,46 @@ CREATE TABLE IF NOT EXISTS `news` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+-- phpMyAdmin SQL Dump
+-- version 3.4.10.1deb1
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Oct 02, 2012 at 10:47 AM
+-- Server version: 5.5.24
+-- PHP Version: 5.3.10-1ubuntu3.2
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `healthcareabroad`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `offered_services`
+--
+
+DROP TABLE IF EXISTS `offered_services`;
+CREATE TABLE IF NOT EXISTS `offered_services` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1',
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `offered_services`
+--
+
+INSERT INTO `offered_services` (`id`, `name`, `status`, `date_created`) VALUES
+(1, 'spa massage', 1, '2012-09-20 03:59:22'),
+(2, 'Pedicure', 1, '2012-09-21 01:53:29');
+
+
 -- --------------------------------------------------------
 
 --
@@ -1061,6 +1149,13 @@ ALTER TABLE `institution_contact_details`
 --
 ALTER TABLE `institution_invitations`
   ADD CONSTRAINT `institution_invitations_ibfk_1` FOREIGN KEY (`invitation_token_id`) REFERENCES `invitation_tokens` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  
+--
+-- Constraints for table `institution_languages_spoken`
+--
+ALTER TABLE `institution_languages_spoken`
+  ADD CONSTRAINT `institution_languages_spoken_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_languages_spoken_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `languages` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_media`
@@ -1088,6 +1183,13 @@ ALTER TABLE `institution_medical_procedures`
 ALTER TABLE `institution_medical_procedure_types`
   ADD CONSTRAINT `institution_medical_procedure_types_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `institution_medical_procedure_types_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_offered_services`
+--
+ALTER TABLE `institution_offered_services`
+  ADD CONSTRAINT `institution_offered_services_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_offered_services_ibfk_2` FOREIGN KEY (`offered_service_id`) REFERENCES `offered_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_users`

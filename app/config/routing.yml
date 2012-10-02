@@ -1,3 +1,7 @@
+memcache:
+    resource: "@MemcacheBundle/Resources/config/routing.yml"
+    prefix:   /
+
 advertisement:
     resource: "@AdvertisementBundle/Resources/config/routing.yml"
     prefix:   /
