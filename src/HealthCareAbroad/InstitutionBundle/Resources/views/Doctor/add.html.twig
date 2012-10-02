@@ -36,6 +36,7 @@
                 <form action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.firstName) }}
+                    <div><div id="institutionSearch" contentEditable="true"></div></div>
                     {{ form_row(form.id) }}
                     {{ form_rest(form) }}
 
@@ -59,25 +60,52 @@
 {% block inlineJavascriptCode %}
 <script>
     $(function() {
+     $("#institutionSearch").hide();
         function split(val) {
             return val.split( /, \s*/);
         }
+        
+        function placeCaretAtEnd(el) {
+            el.focus();
+            if (typeof window.getSelection != "undefined"
+                    && typeof document.createRange != "undefined") {
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (typeof document.body.createTextRange != "undefined") {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        }
+        
+       
         
         function extractLast(term){
             return split(term).pop();
         }
         var searchDoctorsNameUrl = "{{ path('institution_doctor_search') }}";
+        
         $("#institutionDoctorSearch_firstName")
-           
             .bind("keydown", function(event) {
                 if(event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
                     event.preventDefault();
                 }
+                
                 if(event.keyCode == 46 || event.keyCode == 8 ) {
+                    alert('test');
                     $("#institutionDoctorSearch_id").val(0);
+                    $("#boxSearch").empty();
+                    $("#institutionSearch").hide();                    
+                    $("#institutionDoctorSearch_firstName").show(); 
+                    
                     console.log($("#institutionDoctorSearch_id").val())
                 }
-                                   
+                
             })
             .autocomplete({
                 source: function( request, response ) {
@@ -103,6 +131,14 @@
                 minLength: 1,
                 select: function( event, ui ) {
                     $("#institutionDoctorSearch_id").val(ui.item.id);
+                    var id = ui.item.id;
+                    $("#institutionDoctorSearch_firstName").hide();
+                    $("#institutionSearch").show();
+                    $("#institutionSearch").append("<div id='boxSearch'>"+ui.item.value+" </div> ");
+                    
+                     placeCaretAtEnd( document.getElementById("institutionSearch") );
+                    
+                    
                 },
                 open: function() {
                     $( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
