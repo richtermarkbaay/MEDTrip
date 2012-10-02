@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Entity;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 final class InstitutionStatus {
     
     const ACTIVE = 1;
@@ -14,6 +16,10 @@ final class InstitutionStatus {
     const SUSPENDED = 16;
     
     const USER_TYPE = "SUPER_ADMIN";
+    
+    private static $bits; 
+    
+    private static $bitValueLabels;
     
     public static function getStatusList()
     {
@@ -38,4 +44,68 @@ final class InstitutionStatus {
     public static function isValid($value) {
         return in_array($value, array_keys(self::getStatusList()));
     }
+    
+    /**
+     * Get the bit equivalent value for APPROVED status
+     */
+    public static function getBitValueForApprovedStatus()
+    {
+        return static::getBitValue(static::APPROVED);
+    }
+    
+    public static function getBitValueForSuspendedStatus()
+    {
+        return static::getBitValue(static::SUSPENDED);
+    }
+    
+    public static function getBitValueForUnapprovedStatus()
+    {
+        return static::getBitValue(static::UNAPPROVED);
+    }
+    
+    public static function getBitValueForActiveStatus()
+    {
+        return self::ACTIVE;
+    }
+    
+    public static function getBitValueForInactiveStatus()
+    {
+        return self::INACTIVE;
+    }
+    
+    /**
+     * Get bit value of status
+     * @param int $status
+     */
+    public static function getBitValue($status)
+    {
+        return \array_key_exists($status, static::$bits) ? static::$bits[$status] : null;
+    }
+    
+    public static function getBitValueLabels()
+    {
+        return static::$bitValueLabels;
+    }
+    
+    public static function _setStaticValues()
+    {
+        static::$bits = array(
+            self::ACTIVE => self::ACTIVE,
+            self::INACTIVE => self::INACTIVE,
+            self::APPROVED => self::ACTIVE + self::APPROVED,
+            self::UNAPPROVED => self::ACTIVE + self::UNAPPROVED,
+            self::SUSPENDED => self::ACTIVE + self::SUSPENDED
+        );
+        
+        $list = static::getStatusList();
+        static::$bitValueLabels = array();
+        
+        foreach (static::$bits as $key => $v) {
+            if (\array_key_exists($key, $list)) {
+                static::$bitValueLabels[$v] = $list[$key];
+            }
+        }
+    }
 }
+
+InstitutionStatus::_setStaticValues();

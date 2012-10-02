@@ -35,8 +35,9 @@ class InstitutionDetailType extends AbstractType
     	$builder->add('address1','text', array('constraints' => new NotBlank()));
     	$builder->add('address2','text', array('constraints' => new NotBlank()));
 
-    	$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => 'Languages'));
- }
+    	$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
+ 		
+    }
     
     public function getName()
     {

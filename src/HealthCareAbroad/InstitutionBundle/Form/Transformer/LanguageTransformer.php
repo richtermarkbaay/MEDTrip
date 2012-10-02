@@ -40,7 +40,7 @@ class LanguageTransformer implements DataTransformerInterface
 			$languagesName[] = $language->getName();
 		}
 		
-		return implode(', ', $languagesName);
+		return implode(',', $languagesName);
     }
 
     /**

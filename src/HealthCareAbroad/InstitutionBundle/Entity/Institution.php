@@ -9,16 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-    const ACTIVE = 1;
-    
-    const INACTIVE = 2;
-    
-    const UNAPPROVED = 4;
-    
-    const APPROVED = 8;
-    
-    const SUSPENDED = 16;
-    
     const USER_TYPE = "SUPER_ADMIN";
 	/**
      * @var integer $id
@@ -121,27 +111,27 @@ class Institution
     //---- status operations
     public function setAsActive()
     {
-        $this->status = self::ACTIVE;
+        $this->status = InstitutionStatus::getBitValueForActiveStatus();
     }
     
     public function setAsInactive()
     {
-        $this->status = self::INACTIVE;
+        $this->status = InstitutionStatus::getBitValueForInactiveStatus();
     }
     
     public function setAsUnapproved()
     {
-        $this->status = self::ACTIVE + self::UNAPPROVED;   
+        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();   
     }
     
     public function setAsApproved()
     {
-        $this->status = self::ACTIVE + self::APPROVED;
+        $this->status = InstitutionStatus::getBitValueForApprovedStatus();
     }
     
     public function setAsSuspended()
     {
-        $this->status = self::ACTIVE + self::SUSPENDED;
+        $this->status = InstitutionStatus::getBitValueForSuspendedStatus();
     }
     
     /**
@@ -151,7 +141,7 @@ class Institution
      */
     public function isActive()
     {
-        return self::ACTIVE == ($this->status & self::ACTIVE);
+        return InstitutionStatus::ACTIVE == ($this->status & InstitutionStatus::ACTIVE);
     }
     
     /**
@@ -161,7 +151,7 @@ class Institution
      */
     public function isInactive()
     {
-        return $this->status == self::INACTIVE;
+        return $this->status == InstitutionStatus::getBitValueForInactiveStatus();
     }
     
     /**
@@ -171,7 +161,7 @@ class Institution
      */
     public function isUnapproved()
     {
-        return $this->status == self::ACTIVE + self::UNAPPROVED;
+        return $this->status == InstitutionStatus::getBitValueForUnapprovedStatus();
     }
     
     /**
@@ -181,7 +171,7 @@ class Institution
      */
     public function isApproved()
     {
-        return $this->status == self::ACTIVE + self::APPROVED;
+        return $this->status == InstitutionStatus::getBitValueForApprovedStatus();
     }
     
     /**
@@ -191,7 +181,7 @@ class Institution
      */
     public function isSuspended()
     {
-        return $this->status == self::ACTIVE + self::SUSPENDED;
+        return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
     }
     //---- end status operations
     

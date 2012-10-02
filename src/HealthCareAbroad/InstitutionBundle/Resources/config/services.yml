@@ -11,6 +11,11 @@ services:
     services.institutionMedicalCenter:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         arguments: [@doctrine]]
+        
+    services.institution_list_transformer:
+        class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer
+        calls: 
+            - [setInstitutionService, [@services.institution]]
 
     form.institution_list:
         class: "%services.institution_list%"
