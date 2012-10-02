@@ -27,7 +27,9 @@
         </div>
         -->
         <!--Search Box-->
-        {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'homepage' } %}
+        {% block searchBox %}
+            {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'homepage' } %}
+        {% endblock %}
 
     </div> <!--Inner-->
 

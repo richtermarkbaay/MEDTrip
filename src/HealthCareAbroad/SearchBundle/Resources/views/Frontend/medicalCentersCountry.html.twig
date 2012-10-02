@@ -1,5 +1,11 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block searchBox %}
+    {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'destinationsPage', 'countryId': country.id, 'countryName' : country.name} %}
+{% endblock %}
+
 {% block content %}
+
     {% block wrappedContent %}
 
         <div class="main">
@@ -13,7 +19,7 @@
                         <a href="/{{ country.slug }}/{{ center.medicalCenter.slug }}" >{{ center.medicalCenter.name }}</a>
                     </li>
                 {% else %}
-                    No medical centers found.
+                    <li>No medical centers found.</li>
                 {% endfor %}
                 </ul>
 

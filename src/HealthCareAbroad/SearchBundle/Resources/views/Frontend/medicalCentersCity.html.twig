@@ -1,4 +1,15 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block searchBox %}
+    {% render "SearchBundle:Frontend:showWidget" with {
+        'context': 'destinationsPage',
+        'countryId': city.country.id,
+        'countryName': city.country.name,
+        'cityId': city.id,
+        'cityName' : city.name}
+    %}
+{% endblock %}
+
 {% block content %}
     {% block wrappedContent %}
 
@@ -14,13 +25,18 @@
                         <a href="/{{ city.country.slug }}/{{ city.slug }}/{{ center.medicalCenter.slug }}" >{{ center.medicalCenter.name }}</a>
                     </li>
                 {% else %}
-                    No medical centers found.
+                    <li>No medical centers found.</li>
                 {% endfor %}
                 </ul>
 
             </div>
 
         </div> <!--End Main-->
+
+        <script>
+
+        </script>
+
         <!-- Sidebar Navigation -->
         {% block right_navigation %}
             {% include 'FrontendBundle:Default:sidebar.html.twig' %}

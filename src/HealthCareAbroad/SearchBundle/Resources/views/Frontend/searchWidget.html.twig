@@ -1,7 +1,7 @@
 <form action="{{ path('search_frontend_homepage') }}" id="ui_element" class="sb_wrapper">
 
     <input type="hidden" id="treatment_id" name="treatment_id" value=""/>
-    <input type="hidden" id="destination_id" name="destination_id" value=""/>
+    <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
 
     <ul>
         <!-- <span class="sb_down"></span> -->
@@ -9,7 +9,7 @@
             <input id="sb_treatment" type="text" value="treatment" />
         </li>
         <li>
-            <input id="sb_destination" class="sb_input" type="text" value="destination" />
+            <input id="sb_destination" class="sb_input" type="text" value="{{ options.destinationLabel }}" />
         </li>
     </ul>
 
@@ -53,35 +53,29 @@ $(function() {
             $.ajax({
                 url: "{{ path('search_frontend_ajaxLoadTreatments') }}",
                 dataType: "json",
-                data: {
-                    term: request.term,
-                    prevTerm: $('#destination_id').val()
-                },
+                data: { term: request.term, prevTerm: $('#destination_id').val() },
                 success: function(data) {
                     response($.each(data, function(item) {
-                        return {
-                            label: item.label,
-                            value: item.value
-                        }
+                        return { label: item.label, value: item.value }
                     }));
                 }
             });
         },
-        delay: 200,
-        minLength: 1,
         focus: function( event, ui ) {
-            $("#sb_treatment" ).val( ui.item.label );
+            $("#sb_treatment").val( ui.item.label );
             return false;
         },
         select: function( event, ui ) {
-            $( "#sb_treatment" ).val( ui.item.label );
-            $( "#treatment_id" ).val( ui.item.value );
+            $("#sb_treatment").val( ui.item.label );
+            $("#treatment_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $( "#treatment_id" ).val(ui.item && ui.item.value ? ui.item.value : '');
-        }
+            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0-0');
+        },
+        delay: 200,
+        minLength: 1
     });
 
     $('#sb_destination').autocomplete({
@@ -103,21 +97,22 @@ $(function() {
                 }
             });
         },
-        delay: 200,
-        minLength: 1,
         focus: function( event, ui ) {
             $("#sb_destination").val( ui.item.label );
             return false;
         },
         select: function( event, ui ) {
-            $( "#sb_destination" ).val( ui.item.label );
-            $( "#destination_id" ).val( ui.item.value );
+            $("#sb_destination").val( ui.item.label );
+            $("#destination_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $( "#destination_id" ).val(ui.item && ui.item.value ? ui.item.value : '');
-        }
+            $("#destination_id").val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+        },
+        delay: 200,
+        minLength: 1
     });
+
 });
 </script>
