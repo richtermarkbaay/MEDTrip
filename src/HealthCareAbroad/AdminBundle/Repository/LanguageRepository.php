@@ -26,4 +26,19 @@ class LanguageRepository extends EntityRepository
 		return $qb->getQuery()
 		->getResult();
 	}
+	
+	function getInstitutionLanguage($institutionId)
+	{
+		$conn = $this->_em->getConnection();
+		$qry = "SELECT b.name,b.id FROM institution_languages_spoken AS a " .
+						"JOIN languages AS b ON a.language_id = b.id " .
+						"JOIN  institutions AS c ON a.institution_id = c.id " .
+						"WHERE a.institution_id = $institutionId ";
+	
+
+		
+		$result = $conn->executeQuery($qry)->fetchAll();
+
+		return $result;
+	}
 }

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -19,7 +21,7 @@ class InstitutionListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
 			'class' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution',
-			'query_builder' => $this->container->get("services.institution")->getInstitutions()
+			'query_builder' => function(EntityRepository $er){ return $er->getQueryBuilderForApprovedInstitutions(); }
         ));
     }
    
