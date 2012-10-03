@@ -1,0 +1,17 @@
+<?php
+
+namespace HealthCareAbroad\InstitutionBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor
+ */
+class InstitutionDoctor
+{
+    /**
+     * Institution Doctors that are active
+     */
+    const STATUS_ACTIVE = 1;
+    
+}

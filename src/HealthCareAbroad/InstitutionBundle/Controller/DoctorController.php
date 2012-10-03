@@ -39,6 +39,7 @@ class DoctorController extends InstitutionAwareController
     {      
         $form = $this->createForm(new InstitutionDoctorSearchFormType());
         
+
         return $this->render('InstitutionBundle:Doctor:add.html.twig', array(
                 'form' => $form->createView(),
                 'institution' => $this->institution
@@ -159,7 +160,6 @@ class DoctorController extends InstitutionAwareController
         
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
-        
         return $response;
     }
     
@@ -178,11 +178,13 @@ class DoctorController extends InstitutionAwareController
                 $form = $this->createForm(new InstitutionDoctorFormType(),$doctor);
             }
         }
-        
+        $specialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionDoctor')->getDoctorSpecialization();
+
         return $this->render('InstitutionBundle:Doctor:addDetail.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'idId' => $doctorId
+                'form' => $form->createView(),
+                'institution' => $this->institution,
+                'idId' => $doctorId,
+                'specialization' => $specialization
         ));
     }
     

@@ -61,7 +61,6 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
         }
         
         return self::$clientWithLoggedUser;
-        
     }
     
     protected function getBrowserWithMockLoggedUser()

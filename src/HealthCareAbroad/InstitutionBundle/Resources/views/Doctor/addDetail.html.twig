@@ -29,7 +29,6 @@
                     steps: [
                         {title: 'Search Doctor'},
                         {title: 'Fill out Doctor Details', 'selected': true},
-                        {title: 'Add Doctor', 'selected': false}
                  ]}
                 %}
 
@@ -38,10 +37,10 @@
                     {{ form_row(form.firstName) }}
                     {{ form_row(form.middleName) }}
                     {{ form_row(form.lastName) }}
+                    
                     {{ form_rest(form) }}
-
                     <input type="reset" value="Reset" class="form-reset"/>
-                    <input type="submit" name="submit" value="Next" class="green-button" />
+                    <input type="submit" name="submit" value="Submit" class="green-button" />
 
                 </form>
 
@@ -55,4 +54,20 @@
 
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script>
+    $(function() {
+        var doctorId = {{idId}};
+        
+        if(doctorId) {
+            document.getElementById("institutionDoctor_firstName").disabled = true;
+            document.getElementById("institutionDoctor_middleName").disabled = true;
+            document.getElementById("institutionDoctor_lastName").disabled = true;
+        }
+    
+    });
+</script>
+
 {% endblock %}
