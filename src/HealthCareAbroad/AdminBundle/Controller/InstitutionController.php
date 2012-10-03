@@ -80,7 +80,8 @@ class InstitutionController extends Controller
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
-            'statusList' => InstitutionStatus::getStatusList(),
+            //'statusList' => InstitutionStatus::getStatusList(),
+            'statusList' => InstitutionStatus::getBitValueLabels(),
             'updateStatusOptions' => InstitutionStatus::getUpdateStatusOptions()
         );
 
@@ -108,7 +109,7 @@ class InstitutionController extends Controller
             return $this->redirect($this->generateUrl('admin_institution_index'));
         }
 
-        $this->institution->setStatus($request->get('status'));
+        $this->institution->setStatus(InstitutionStatus::getBitValue($request->get('status')));
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($this->institution);

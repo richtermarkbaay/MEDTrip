@@ -359,8 +359,6 @@ ul.custom_tabs {
 	height:34px;
 	width:100%;
 	float:left;
-	border-bottom:1px solid #efefef;
-	
 }
 .widget ul.custom_tabs {
 	margin:0;
@@ -397,7 +395,7 @@ ul.custom_tabs li.current {
 .custom_tabs_wrap {
 	clear:both;
 	background:#fff;
-	border:1px solid #efefef;
+	
 	border-top:none;
 	padding:10px;
 	margin-bottom:25px;
@@ -694,9 +692,9 @@ margin-bottom: 25px;
 	color: #2E6093;
 }
 .box_note {
-    background-color: #FFF8CB;
-    border: 1px solid #FFEB70;
-    color: #985D00;
+    background-color: #f1f1f1;
+    border: 1px solid #e4e4e4;
+    color: #777;
     }
 
 .box_error {
@@ -714,7 +712,7 @@ margin-bottom: 25px;
 .box_head {
 	margin:-12px -15px 10px -15px;
 	padding:0 10px;
-	text-align:center;
+	
 	line-height:38px;
 	background:#fcfcfc;
 	-moz-border-radius-topleft: inherit;
@@ -722,6 +720,8 @@ margin-bottom: 25px;
 	border-top-left-radius: inherit;
 	border-top-right-radius: inherit;
 }
+.box_head .nl img{padding-top:9px;}
+.box_head h1{}
 .box ul {
 	margin-bottom:10px;
 }

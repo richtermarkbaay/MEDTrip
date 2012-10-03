@@ -18,7 +18,7 @@ institution_doctor_fill_data:
         _method: GET|POST
 
 institution_doctor_add_save:
-    pattern: /doctors/add
+    pattern: /doctors/add/{idId}
     defaults: { _controller: InstitutionBundle:Doctor:save }
     requirements:
         _method: GET|POST
@@ -29,9 +29,15 @@ institution_doctor_edit:
     requirements:
         _method: GET
 
+institution_doctor_delete:
+    pattern: /doctors/delete/{idId}
+    defaults: { _controller: InstitutionBundle:Doctor:delete }
+    requirements:
+        _method: GET
+
 institution_doctor_edit_save:
     pattern: /doctors/edit/{idId}
-    defaults: { _controller: InstitutionBundle:Doctor:save }
+    defaults: { _controller: InstitutionBundle:Doctor:update }
     requirements:
        _method: GET|POST
 

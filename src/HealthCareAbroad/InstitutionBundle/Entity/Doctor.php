@@ -13,7 +13,6 @@ class Doctor
      * Doctors that are active
      */
     const STATUS_ACTIVE = 1;
-   
     /**
      * @var bigint $id
      */
@@ -47,11 +46,11 @@ class Doctor
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institution;
+    private $institutionDoctors;
 
     public function __construct()
     {
-        $this->institution = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionDoctors = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -175,34 +174,34 @@ class Doctor
     }
 
     /**
-     * Add institution
+     * Add institutionDoctors
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor $institutionDoctors
      * @return Doctor
      */
-    public function addInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    public function addInstitutionDoctor(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor $institutionDoctors)
     {
-        $this->institution[] = $institution;
+        $this->institutionDoctors[] = $institutionDoctors;
         return $this;
     }
 
     /**
-     * Remove institution
+     * Remove institutionDoctors
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor $institutionDoctors
      */
-    public function removeInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    public function removeInstitutionDoctor(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor $institutionDoctors)
     {
-        $this->institution->removeElement($institution);
+        $this->institutionDoctors->removeElement($institutionDoctors);
     }
 
     /**
-     * Get institution
+     * Get institutionDoctors
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getInstitution()
+    public function getInstitutionDoctors()
     {
-        return $this->institution;
+        return $this->institutionDoctors;
     }
 }

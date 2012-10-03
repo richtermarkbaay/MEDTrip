@@ -52,16 +52,15 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     
     protected function getBrowserWithActualLoggedInUser()
     {
-        if (self::$clientWithLoggedUser === null) {
+        //if (self::$clientWithLoggedUser === null) {
             self::$clientWithLoggedUser = static::createClient();
             $crawler = self::$clientWithLoggedUser->request('GET', '/institution/login');
             
             $form = $crawler->selectButton('submit')->form();
             self::$clientWithLoggedUser->submit($form, $this->formValues);
-        }
+        //}
         
         return self::$clientWithLoggedUser;
-        
     }
     
     protected function getBrowserWithMockLoggedUser()

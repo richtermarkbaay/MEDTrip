@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Doctor;
 
 use Doctrine\ORM\EntityRepository;
@@ -20,25 +22,28 @@ class DoctorRepository extends EntityRepository
     public function getActiveDoctors()
     {
         $dql = "SELECT a FROM InstitutionBundle:Doctor a WHERE a.status = :active";
-        $query = $this->getEntityManager()->createQuery($dql)
+        $query = $this->getEntityManager()->createQuery($dql)    
                       ->setParameter('active', Doctor::STATUS_ACTIVE);
         
         return $query->getResult();
     }
     
-    public function getDoctorsBySearchTerm($searchTerm)
+    public function getDoctorsBySearchTerm($searchTerm, $institutionId)
     {
-        $dql = "SELECT a FROM InstitutionBundle:Doctor a 
-                WHERE a.status = :active AND (
-                      a.firstName LIKE :searchTerm OR 
-                      a.middleName LIKE :searchTerm OR 
-                      a.lastName LIKE :searchTerm )
-                ORDER BY a.firstName ASC";
         
-        $query = $this->getEntityManager()->createQuery($dql)
-        ->setParameter('searchTerm', '%'.$searchTerm.'%')
-        ->setParameter('active', Doctor::STATUS_ACTIVE);
+        $query = $this->getEntityManager()->createQueryBuilder()
+                ->select('a')
+                ->from('InstitutionBundle:Doctor', 'a')
+                ->leftJoin('a.institutionDoctors', 'b', Join::WITH, 'b.institution = :institution')
+                ->where('a.status = :active')
+                ->andWhere('b.id IS NULL')
+                ->andWhere('a.firstName LIKE :searchTerm OR a.middleName LIKE :searchTerm OR a.lastName LIKE :searchTerm')
+                ->setParameter('searchTerm', '%'.$searchTerm.'%')
+                ->setParameter('institution', $institutionId)
+                ->setParameter('active', Doctor::STATUS_ACTIVE)
+                ->getQuery();
 
         return $query->getResult();
     }
+    
 }

@@ -9,6 +9,11 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor:
             nullable: false
             generator:
                 strategy: IDENTITY
+        specialization:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
         dateCreated:
             type: datetime
             nullable: false

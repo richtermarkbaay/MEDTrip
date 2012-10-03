@@ -3,6 +3,23 @@ parameters:
     services.inquiry_class: HealthCareAbroad\FrontendBundle\Services\InquireService
 
 services:
+    services.frontend.router:
+        class: HealthCareAbroad\FrontendBundle\Services\FrontendRouteService
+        scope: request
+        calls:
+            - [setLogger, [@logger]]
+            - [setDoctrine, [@doctrine]]
+            - [setRequest, [@request]]
+            - [setSession, [@session]]
+    
+    listener.frontend.router:
+        class: HealthCareAbroad\FrontendBundle\Listener\DefaultRouterListener
+        scope: request
+        calls:
+            - [setRouterService, [@services.frontend.router]]
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 33 }
+    
     services.inquire:
         class: %services.inquiry_class%
         arguments: [@doctrine]]

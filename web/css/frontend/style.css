@@ -854,6 +854,7 @@ ul.slider_nav li.activeSlide a img {
     background:#2F3436;
     margin:0 -20px 20px -20px;
     color:#fff;
+    height:34px;
 }
 
 .news_box .listing_box_heading a {

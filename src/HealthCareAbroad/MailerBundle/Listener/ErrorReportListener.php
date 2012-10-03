@@ -51,13 +51,13 @@ class ErrorReportListener
     	->setBody($messageBody);
     	$sendResult = $this->mailer->send($message);
     	
-    	$message = $this->get('services.mailer.message')->createMessage()
-    	    ->setSubject()
-    	    ->setFrom('chris.velarde@chromedia.com', 'My Name Is')
-    	    ->addRecipient()
-    	    ->setBody($messageBody);
+//     	$message = $this->get('services.mailer.message')->createMessage()
+//     	    ->setSubject()
+//     	    ->setFrom('chris.velarde@chromedia.com', 'My Name Is')
+//     	    ->addRecipient()
+//     	    ->setBody($messageBody);
     	
-    	$this->get('services.mailer.queue')->add();
+//     	$this->get('services.mailer.queue')->add();
     	
     	return $sendResult;
     }

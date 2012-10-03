@@ -21,8 +21,10 @@
     RewriteRule ^app.php - [L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
+    #RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]
 
     # Change below before deploying to production
     RewriteRule ^(.*)$ app.php [QSA,L]
     #RewriteRule ^(.*)$ app_dev.php [QSA,L]
+
 </IfModule>

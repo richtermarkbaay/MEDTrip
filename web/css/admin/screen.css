@@ -28,7 +28,46 @@ font-size: 12px;
 	}
 #logo	a	{
 	display: block;
-	}
+    }
+    
+#boxSearch{
+    //background:url(/images/admin/shared/delete.png)  no-repeat top right;
+    /* border-radius: 5px 5px 5px 5px;
+    padding: 5px 25px !important;
+    color:#000 !important;
+    float: left !important;
+    margin: -5px 0px 0px 4px !important;
+    border: 1px solid #CCCCCC !important;
+    text-align: center !important;
+    background-color:skyblue;
+    display:block; */
+    height:16px;
+    width:180px;
+    background-color:skyblue;
+}
+
+institutionSearch {
+    margin: -45px 0px 0px 72px;
+    width: 600px;
+}
+
+#institutionSearch {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    background-color: white;
+    background-color: -moz-field;
+    box-shadow: 1px 1px 1px 0 lightgray inset;  
+    font: -moz-field;
+    font: -webkit-small-control;
+    margin: -79px 0px 49px 124px;
+    border: 1px solid #AAAAAA;
+    border-radius: 5px;
+    color: #393939;
+    padding: 8px;
+    width: 250px; 
+    height:14px;
+}
+
 #top-search	{
 	display: inline;
 	float: right;
@@ -37,7 +76,6 @@ font-size: 12px;
 	z-index: 20;
 	}
 	
- 
 .top-search-inp	{
 	background: url(/images/admin/shared/top_search_inp.gif) no-repeat;
 	border: none;
@@ -2093,5 +2131,25 @@ form:not([novalidate=novalidate]) span.mceEditor.required {
 .ui-corner-all{
 	color:#000000 !important;	
 }
+#tags{
+	
+	margin-left:120px;
+}
+.click{
+	background:url(/images/admin/shared/remove.png)  no-repeat center right;
+    /*background-color: #49AFCD;  */
+    border-radius: 5px 5px 5px 5px;
+    height:24px;
+    width:100px;
+    text-align: center;
+    color:#000;
+    padding: 5px 25px;
+    margin: 5px;
+    border: 1px solid #CCCCCC;
+}
 
+.click:hover{
+    background:url(/images/admin/shared/remove.png)  no-repeat center right #ccc;
+   
+}
 /** End of Pager styles **/

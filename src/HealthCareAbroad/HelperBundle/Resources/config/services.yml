@@ -130,7 +130,7 @@ services:
     listener.helper.preExecute:
         class: HealthCareAbroad\HelperBundle\Listener\PreExecuteController
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -10 }
 
     listener.mailer.error_report.create:
         class: HealthCareAbroad\MailerBundle\Listener\ErrorReportListener

@@ -31,12 +31,26 @@
                         
                         {{ form_row( form.address1 ) }}
                         {{ form_row( form.address2 ) }}
+                        <div>
+                        <label>New Language</label>
+                        <input type="text" value="" id="languageButton">             			
+             			</div>
+             			<div>
+             			{% if institutionLanguage %}
+             				<div id="tags">
+	             			{% for language in institutionLanguage %}
+	                			<a href="#" id="language{{ language.id }}" class="click"> {{ language.name }}</a>
+                			{% endfor %}
+                		{% else %}
+                			
+                		{% endif %}
+                			</div>
+                		</div>
              			{{ form_row( form.institutionLanguagesSpoken ) }}
-             			
 						<input type="reset" value="Reset" class="form-reset"  />
 						<input type="submit" name="submit" value="Submit" class="green-button" />                        
                         {{ form_rest(form) }}
-                
+                		
                     
                     <!-- end id-form  -->
                 </form>
@@ -45,7 +59,7 @@
         {% endblock %}
         
     {% endembed %}
-    
+
 </div>
 
 <!--  end content -->
@@ -57,6 +71,32 @@
    <script>
 	$(function() {
 		var availableTags = $.parseJSON('{{ languagesJSON | raw}}');
+
+		$.each(availableTags, function(i, val){
+			$("#language"+val.id).click(function() {
+				
+			    var currentTerms = $("#institutionDetail_institutionLanguagesSpoken").val().split(',');
+			    $.each(currentTerms, function (_k, _v){
+					currentTerms[_k] = $.trim(_v);    
+			    });
+				var text = $(this).text();	    	
+				
+	        	var b = $.inArray($.trim(text), currentTerms);
+
+				if (b <0 ) {
+						console.log("false no match");
+					}
+				else {
+					currentTerms.splice(b, 1);
+					
+					}
+				$('#institutionDetail_institutionLanguagesSpoken').val($.trim(currentTerms.join(', ')))
+	 
+					$(this).remove();
+				return false;		
+				});  
+		});	
+		
 		var originalTags = availableTags;
 		var selectedTags = [];
 
@@ -68,20 +108,27 @@
 
 			return split( term ).pop();			
 		}
-		$( "#institutionDetail_institutionLanguagesSpoken")
-		
-            
+		function log( message , id) {
+		//	console.log(id);
+			$( "<a/ href='#' id='language"+id+"' class='click' >" ).text( message ).prependTo( "#tags" );
+			$( "#tags" ).scrollTop( 0 );
+		}
+		function hidden( message ) {
+			//console.log($( "<textarea/>" ).text( message ).prependTo( "#institutionDetail_institutionLanguagesSpokenn" ));
+			$( message ).append( "#institutionDetail_institutionLanguagesSpoken" );
+		}
+
+		$( "#languageButton")
 			// don't navigate away from the field on tab when selecting an item
 			.bind("keyup", function(event){
 			    
-				console.log("keycode pressed "+event.keyCode);
 				if ( $(this).data('autocomplete').term){
-
-				    var currentTerms = $(this).val().split(',');
+				    var currentTerms = $("#institutionDetail_institutionLanguagesSpoken").val().split(',');
 				    $.each(currentTerms, function(c, cval){
 				        currentTerms[c] = $.trim(cval);
 				    });
 				    var temp = [];
+				    
 				    var removedSelectedTags = [];
 				    $.each(selectedTags, function(i, val){
 					    temp.push(val);
@@ -112,14 +159,12 @@
 						$( this ).data( "autocomplete" ).menu.active ) {
 					event.preventDefault();					
 				}
-
-				
-				
+			
 			})
 			.autocomplete({
 				minLength: 1,
 				create: function(event, ui) {
-	                currentTerms = $(this).val().split(',');
+	                currentTerms = $("#institutionDetail_institutionLanguagesSpoken").val().split(',');
 	                $.each(currentTerms, function(c, cval){
 				        currentTerms[c] = $.trim(cval);
 				    });
@@ -132,38 +177,36 @@
 			                        return;
 			                    }
 		                    });
-		                    console.log(val);
+		                    //console.log(val);
 		                });
-	                    /**$.each(availableTags, function(i, val){
-	                        if (val && $.inArray(val.value, currentTerms) < 0)  {
-		                        console.log(val.value+" already selected");
-	                            selectedTags.push({'value': val.value, 'id': val.id});
-						        //availableTags.splice(i, 1);
-						        return;
-	                        }
-						});**/
 	                }
 	            },
 				source: function(request, response) {
 							response( $.ui.autocomplete.filter(
 							availableTags, extractLast( request.term ) ) );
-
 					},
 					focus: function() {
 						// prevent value inserted on focus
 						return false;
 					},
 					select: function( event, ui ) {
+				
 						var terms = split( this.value );
 						// remove the current input
-						terms.pop();
-						// add the selected item
-						terms.push( ui.item.value );
-						// add placeholder to get the comma-and-space at the end
-						terms.push( "" );
 						
-						this.value = terms.join( ", " );
+						terms.pop();
+						// add the selected item					
+						terms.push( ui.item.value );
+						log( ui.item.value , ui.item.id );
+						// add placeholder to get the comma-and-space at the end
+						//terms.push( "" );			
+						this.value = terms.join( " " );
 
+						add_field = $("#institutionDetail_institutionLanguagesSpoken");
+						 
+						add_field.val( add_field.val()  + "," + this.value );
+
+						$( "#languageButton").val(' ');
 						//alert($( "#institutionDetail_institutionLanguagesSpoken").val());
 						$.each(availableTags, function(i, val){
 						    if (val && val.id == ui.item.id) {
@@ -171,11 +214,12 @@
 						        availableTags.splice(i, 1);
 						        return;
 						    }
-						});
-		
+						});		
 						return false;
 					}
 			});
+
+
 	});
 	</script>
 {% endblock %}

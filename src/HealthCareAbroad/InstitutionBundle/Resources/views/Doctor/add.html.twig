@@ -8,7 +8,7 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-        <h1>Add Doctor to {{institution}}</h1>
+        <h1>Add Doctor to {{institution.name}}</h1>
     </div>
     <!-- end page-heading -->
 
@@ -29,18 +29,18 @@
                     steps: [
                         {title: 'Search Doctor', 'selected': true},
                         {title: 'Fill out Doctor Details'},
-                        {title: 'Add Doctor', 'selected': false}
                  ]}
                 %}
 
-                <form action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                <form  novalidate="novalidate" action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.firstName) }}
+                    <div><div id="institutionSearch" ></div></div>
+                    {{ form_row(form.id) }}
                     {{ form_rest(form) }}
 
                     <input type="reset" value="Reset" class="form-reset"/>
                     <input type="submit" name="submit" value="Next" class="green-button" />
-
                 </form>
 
             </div>
@@ -57,11 +57,72 @@
 
 {% block inlineJavascriptCode %}
 <script>
+    function removeDoctor()
+    {
+        $("#institutionDoctorSearch_id").val(0);
+        var div = document.getElementById($("#boxSearch"));
+        if (div) {    
+            div.innerHtml() = "";
+            div.parentNode.removeChild(div);
+        }
+        $("#boxSearch").remove();
+        $("#institutionSearch").empty();
+        $('#institutionSearch').attr('disabled', true);
+        $("#institutionSearch").hide();                    
+        $("#institutionDoctorSearch_firstName").show(); 
+        $("#institutionDoctorSearch_firstName").val('');
+        placeCaretAtEnd( $("#institutionDoctorSearch_firstName") );
+    }
+    
     $(function() {
-        function split(val) {
-            return val.split( /, \s*/);
+        $("#institutionSearch").hide();
+        
+        function toggleAlert() {
+            var alertDiv = document.getElementById("alert");
+            alertDiv.style.display = alertDiv.style.display == "block" ? "none" : "block";
+            toggleDisabled(document.getElementById("content"));
         }
         
+        function toggleDisabled(el) {
+            try {
+                el.disabled = el.disabled ? false : true;
+            }
+            catch(E){}
+            
+            if (el.childNodes && el.childNodes.length > 0) {
+                for (var x = 0; x < el.childNodes.length; x++) {
+                    toggleDisabled(el.childNodes[x]);
+                }
+            }
+        }
+        
+        document.onkeydown = function(event)
+        {
+            if(event.keyCode == 46 || event.keyCode == 8 ) {
+                if( $("#boxSearch").is(":visible") )
+                {
+                    removeDoctor();
+                }   
+            }
+        }
+        function placeCaretAtEnd(el) {
+            el.focus();
+            if (typeof window.getSelection != "undefined"
+                    && typeof document.createRange != "undefined") {
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (typeof document.body.createTextRange != "undefined") {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        }
+       
         function extractLast(term){
             return split(term).pop();
         }
@@ -70,7 +131,16 @@
             .bind("keydown", function(event) {
                 if(event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
                     event.preventDefault();
-                }    
+                }
+                
+                if(event.keyCode == 46 || event.keyCode == 8 ) {
+                    $("#institutionDoctorSearch_id").val(0);
+                    $("#boxSearch").empty();
+                    $("#institutionSearch").innerHTML();
+                    $("#institutionSearch").hide();                    
+                    $("#institutionDoctorSearch_firstName").show(); 
+                }
+                
             })
             .autocomplete({
                 source: function( request, response ) {
@@ -84,17 +154,22 @@
                         success: function( data ) {
                             response( $.map( data, function( item ) {
                                 return {
-                                    label: item.name,
-                                    value: item.name
+                                    label: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    value: item.firstName +" "+ item.middleName + " " + item.lastName,
+                                    id: item.id
                                 }
                             }));
-                            
                         }
                     });
                 },
                 minLength: 1,
                 select: function( event, ui ) {
-                    $("#institutionDoctorSearch_firstName").val(ui.item.id);
+                    $("#institutionDoctorSearch_id").val(ui.item.id);
+                    $("#institutionDoctorSearch_firstName").hide();
+                    $("#institutionSearch").show();
+                    $( "<a/ href='#' id='boxSearch' class='click' onClick='removeDoctor();' return false; >" ).text( ui.item.value ).prependTo( "#institutionSearch" );
+                    document.getElementById("institutionSearch").disabled = true;
+                    toggleDisabled($("#institutionSearch"));
                     
                 },
                 open: function() {
@@ -105,5 +180,6 @@
                 }
             });
     });
+    
 </script>
 {% endblock %}

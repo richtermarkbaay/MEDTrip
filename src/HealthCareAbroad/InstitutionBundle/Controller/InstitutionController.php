@@ -37,13 +37,20 @@ class InstitutionController  extends InstitutionAwareController
 	{
 		$request = $this->getRequest();
 		
+		$institutionId = $this->getRequest()->get('institutionId', null);
+		
+		if (!$institutionId){
+			// no account id in parameter, editing currently logged in account
+			$session = $this->getRequest()->getSession();
+			$institutionId = $session->get('institutionId');
+		}
+		
 		//render template      
 		$form = $this->createForm(new InstitutionDetailType(), $this->institution);		
 		$languages = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
 		
 		//update institution details
 		if ($request->isMethod('POST')) {
-
 			$form->bindRequest($request);			
 			if ($form->isValid()) {
 				$institution = $this->get('services.institution')->updateInstitution($form->getData());
@@ -58,11 +65,13 @@ class InstitutionController  extends InstitutionAwareController
 		foreach ($languages as $e) {
 			$languageArr[] = array('value' => $e->getName(), 'id' => $e->getId());
 		}
-
+		$institutionLanguage = $this->getDoctrine()->getRepository('AdminBundle:Language')->getInstitutionLanguage($institutionId);
+		
  		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
 				'form' => $form->createView(),
 				'institution' => $this->institution,
-				'languagesJSON' => \json_encode($languageArr)
+				'languagesJSON' => \json_encode($languageArr),
+ 				'institutionLanguage' => $institutionLanguage
 		));
 		
 	}

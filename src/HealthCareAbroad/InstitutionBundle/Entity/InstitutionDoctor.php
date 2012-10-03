@@ -10,9 +10,19 @@ use Doctrine\ORM\Mapping as ORM;
 class InstitutionDoctor
 {
     /**
+     * Institution Doctors that are active
+     */
+    const STATUS_ACTIVE = 1;
+    
+    /**
      * @var bigint $id
      */
     private $id;
+
+    /**
+     * @var string $specialization
+     */
+    private $specialization;
 
     /**
      * @var datetime $dateCreated
@@ -48,6 +58,28 @@ class InstitutionDoctor
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set specialization
+     *
+     * @param string $specialization
+     * @return InstitutionDoctor
+     */
+    public function setSpecialization($specialization)
+    {
+        $this->specialization = $specialization;
+        return $this;
+    }
+
+    /**
+     * Get specialization
+     *
+     * @return string 
+     */
+    public function getSpecialization()
+    {
+        return $this->specialization;
     }
 
     /**

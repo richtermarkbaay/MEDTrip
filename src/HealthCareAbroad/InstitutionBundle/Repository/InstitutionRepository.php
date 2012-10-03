@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -69,5 +71,14 @@ class InstitutionRepository extends EntityRepository
         ->setParameter('active', InstitutionMedicalCenterStatus::DRAFT);
     
         return $query->getResult();
-    }    
+    }
+
+    public function getQueryBuilderForApprovedInstitutions()
+    {
+        $qb = $this->createQueryBuilder('a')
+            ->where('a.status = :approved_status')
+            ->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus());
+        
+        return $qb;
+    }
 }
