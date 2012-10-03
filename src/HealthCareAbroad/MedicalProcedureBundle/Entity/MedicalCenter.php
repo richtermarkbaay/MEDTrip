@@ -182,10 +182,10 @@ class MedicalCenter
     /**
      * Add medicalProcedureTypes
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes
      * @return MedicalCenter
      */
-    public function addMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
+    public function addTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes)
     {
         $this->medicalProcedureTypes[] = $medicalProcedureTypes;
         return $this;
@@ -194,9 +194,9 @@ class MedicalCenter
     /**
      * Remove medicalProcedureTypes
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes
      */
-    public function removeMedicalProcedureType(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType $medicalProcedureTypes)
+    public function removeTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes)
     {
         $this->medicalProcedureTypes->removeElement($medicalProcedureTypes);
     }
@@ -206,7 +206,7 @@ class MedicalCenter
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMedicalProcedureTypes()
+    public function getTreatments()
     {
         return $this->medicalProcedureTypes;
     }
