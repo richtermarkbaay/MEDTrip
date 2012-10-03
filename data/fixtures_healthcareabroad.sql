@@ -273,6 +273,7 @@ DROP TABLE IF EXISTS `frontend_routes`;
 CREATE TABLE IF NOT EXISTS `frontend_routes` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `uri` varchar(500) NOT NULL,
+  `controller` varchar(250) NOT NULL,
   `variables` text NOT NULL COMMENT 'JSON variables for this route',
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
