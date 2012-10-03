@@ -25,6 +25,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+
+        $alertService = $this->container->get('services.alert');
+        $alerts = $alertService->getAlerts();
+
 //         $mailer = $this->get('mailer');
 //         $message = \Swift_Message::newInstance()
 //         ->setSubject('New Error Report')

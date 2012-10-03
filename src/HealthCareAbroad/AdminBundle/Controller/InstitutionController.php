@@ -35,13 +35,12 @@ class InstitutionController extends Controller
     function preExecute() 
     {
         $request = $this->getRequest();
-
         // Check Institution
         if ($request->get('institutionId')) {
             $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
             
             if(!$this->institution) {
-                throw $this->createNotFoundException('Invalid institution');                
+                throw $this->createNotFoundException('Invalid Institution');                
             }
         }
 
@@ -206,7 +205,8 @@ class InstitutionController extends Controller
         $form->bind($request);
 
         if($form->isValid()) {
-            $this->institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
+            if(!$request->get('imcId'))
+                $this->institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
 
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($this->institutionMedicalCenter);
@@ -214,7 +214,7 @@ class InstitutionController extends Controller
 
             // dispatch ADD or EDIT institutionMedicalCenter event
             $actionEvent = $request->get('imcId') ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER;
-            $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter);
+            $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId()));
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
             $request->getSession()->setFlash('success', 'Medical center has been saved!');

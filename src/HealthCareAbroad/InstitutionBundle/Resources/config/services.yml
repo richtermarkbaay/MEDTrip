@@ -2,11 +2,8 @@ parameters:
     services.institution_class: HealthCareAbroad\InstitutionBundle\Services\InstitutionService
     services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
     services.doctor_list: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorListType
-services:
-    services.alert:
-        class: HealthCareAbroad\HelperBundle\Services\AlertService
-        arguments: [@doctrine]
 
+services:
     services.institution:
         class: %services.institution_class%
         arguments: [@doctrine]
