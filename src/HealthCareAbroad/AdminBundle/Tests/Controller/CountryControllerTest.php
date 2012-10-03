@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 

@@ -45,13 +45,13 @@ class MedicalProcedureController extends Controller
         $procedure = new MedicalProcedure();
 
         if($medicalProcedureTypeId = $this->getRequest()->get('medicalProcedureTypeId', 0)) {
-            $medicalProcedureType = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($medicalProcedureTypeId);
+            $medicalProcedureType = $this->getDoctrine()->getRepository('MedicalProcedureBundle:Treatment')->find($medicalProcedureTypeId);
 
             if(!$medicalProcedureType) {
                 throw $this->createNotFoundException("Invalid Medical Procedure Type.");
             }
 
-            $procedure->setMedicalProcedureType($medicalProcedureType);
+            $procedure->setTreatment($medicalProcedureType);
 
             $params['isAddFromSpecificType'] = true;
             $formActionParams['medicalProcedureTypeId'] = $medicalProcedureTypeId;

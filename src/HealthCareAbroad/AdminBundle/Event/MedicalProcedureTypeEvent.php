@@ -3,9 +3,9 @@ namespace HealthCareAbroad\AdminBundle\Event;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
-class MedicalProcedureTypeEvent extends BaseEvent
+class TreatmentEvent extends BaseEvent
 {
-    public function getMedicalProcedureType()
+    public function getTreatment()
     {
         return $this->getData();
     }

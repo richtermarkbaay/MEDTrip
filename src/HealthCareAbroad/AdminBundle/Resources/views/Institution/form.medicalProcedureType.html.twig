@@ -11,7 +11,7 @@
     	    {% if newProcedureType %} 
     	        Creat procedure type
 	        {% else %}
-	            Edit procedure type {# institutionMedicalProcedureType.medicalProcedureType.name #}
+	            Edit procedure type {# institutionTreatment.medicalProcedureType.name #}
 	         {% endif %}       
         </h2>
     </div>
@@ -43,12 +43,12 @@
 							'title': 'Add medical procedure', 
 							'description': 'Add medical procedure to this procedure type',
 							'class' : 'add-procedure add-icon',
-							'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}), 
+							'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionTreatment.id}), 
 							'links': [
 								{
 									'title': 'Add a medical procedure',
 									'class' : 'add-procedure',
-									'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}),
+									'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionTreatment.id}),
 								}
 							]
 						}])
@@ -59,7 +59,7 @@
 
 				{% set savePath = newProcedureType 
 					? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
-					: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionMedicalProcedureType.id}) %}
+					: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionTreatment.id}) %}
 
             	<form novalidate="novalidate" action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 					<div>
@@ -70,7 +70,7 @@
 					{% if not newProcedureType %}
 						<div>
 							<label>Procedure Type</label>
-							<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
+							<span class="fixed-value">{{ institutionTreatment.medicalProcedureType.name }}</span>
 						</div>
 					{% endif %}
 					
@@ -125,9 +125,9 @@
 				    					<th width="50"><a href="#">Options</a></th>
 				    				</tr>
 
-									{% set procedures = institutionMedicalProcedureType.institutionMedicalProcedures %}
+									{% set procedures = institutionTreatment.institutionMedicalProcedures %}
 
-									{% for procedure in institutionMedicalProcedureType.institutionMedicalProcedures  %}
+									{% for procedure in institutionTreatment.institutionMedicalProcedures  %}
 										{% set medicalProcedure = procedure.medicalProcedure %}
 										<tr>
 											<td>{{ medicalProcedure.name }}</td>

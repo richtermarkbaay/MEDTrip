@@ -35,13 +35,13 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure:
             gedmo:
                 - versioned
     manyToOne:
-        medicalProcedure:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure
+        treatmentProcedure:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                medical_procedure_id:
+                treatment_procedure_id:
                     referencedColumnName: id
             orphanRemoval: false
         institutionTreatment:
@@ -50,7 +50,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure:
             mappedBy: null
             inversedBy: null
             joinColumns:
-                institution_medical_procedure_type_id:
+                institution_treatment_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

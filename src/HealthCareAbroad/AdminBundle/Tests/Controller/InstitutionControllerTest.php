@@ -310,8 +310,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
-            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test. got it?'
+            'institutionTreatmentForm[medicalProcedureType]' => 2,
+            'institutionTreatmentForm[description]' => 'This medProceType is added from Admin Add test. got it?'
         );
 
         $form = $crawler->selectButton('submit')->form();
@@ -335,8 +335,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 2,
-            'institutionMedicalProcedureTypeForm[description]' => 'This medProceType is added from Admin Add test got it? yes, updated!'
+            'institutionTreatmentForm[medicalProcedureType]' => 2,
+            'institutionTreatmentForm[description]' => 'This medProceType is added from Admin Add test got it? yes, updated!'
         );
 
         $form = $crawler->selectButton('submit')->form();
@@ -368,8 +368,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 1,
-            'institutionMedicalProcedureTypeForm[description]' => ''
+            'institutionTreatmentForm[medicalProcedureType]' => 1,
+            'institutionTreatmentForm[description]' => ''
         );
 
         $form = $crawler->selectButton('submit')->form();
@@ -386,8 +386,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
     
         $formData = array(
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => 'saveUsingGet',
-            'institutionMedicalProcedureTypeForm[description]' => 'test invalid medical center method.'
+            'institutionTreatmentForm[medicalProcedureType]' => 'saveUsingGet',
+            'institutionTreatmentForm[description]' => 'test invalid medical center method.'
         );
 
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/procedure-type/test-save', $formData);

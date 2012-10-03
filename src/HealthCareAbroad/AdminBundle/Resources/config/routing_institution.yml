@@ -164,7 +164,7 @@ admin_institution_medicalProcedure_updateStatus:
 # End of Medical Procedure Routes #
 
 
-admin_loadMedicalProcedureTypes:
+admin_loadTreatments:
     pattern:  /admin/medical-center/load-procedure-types
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
     requirements:
@@ -172,7 +172,7 @@ admin_loadMedicalProcedureTypes:
 
 admin_loadMedicalProcedures:
     pattern:  /admin/procedure-type/load-procedures
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:loadProcedures, procedure_type_id: ~ }
+    defaults: { _controller: InstitutionBundle:Treatment:loadProcedures, procedure_type_id: ~ }
     requirements:
          institution_id: \d+
          procedure_type_id: \d+

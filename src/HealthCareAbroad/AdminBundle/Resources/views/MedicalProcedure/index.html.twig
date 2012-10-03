@@ -48,7 +48,7 @@
         			{% for procedure in procedures %}
         				<tr>
         					<td>{{ procedure.name }}</td>
-        					<td class="procedure-type">{{ procedure.MedicalProcedureType.name }}</td>
+        					<td class="procedure-type">{{ procedure.Treatment.name }}</td>
         					<td align="center">
         				
         					<a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>

@@ -3,7 +3,7 @@
 
 		{% set savePath = newProcedureType 
 			? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
-			: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionMedicalProcedureType.id}) %}
+			: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionTreatment.id}) %}
 		
 		<form action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 			<div>
@@ -14,7 +14,7 @@
 			{% if not newProcedureType %}
 				<div>
 					<label>Procedure Type</label>
-					<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
+					<span class="fixed-value">{{ institutionTreatment.medicalProcedureType.name }}</span>
 				</div>
 			{% endif %}
 

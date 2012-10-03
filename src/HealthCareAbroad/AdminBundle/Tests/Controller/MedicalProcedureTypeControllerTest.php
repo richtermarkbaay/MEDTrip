@@ -12,7 +12,7 @@ use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class MedicalProcedureTypeControllerTest extends AdminBundleWebTestCase
+class TreatmentControllerTest extends AdminBundleWebTestCase
 {
     
     public function testAdd()

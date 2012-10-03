@@ -488,50 +488,50 @@ INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `medical_cent
 -- --------------------------------------------------------
 
 --
--- Table structure for table `institution_medical_procedures`
+-- Table structure for table `institution_treatment_procedures`
 --
 
-DROP TABLE IF EXISTS `institution_medical_procedures`;
-CREATE TABLE IF NOT EXISTS `institution_medical_procedures` (
+DROP TABLE IF EXISTS `institution_treatment_procedures`;
+CREATE TABLE IF NOT EXISTS `institution_treatment_procedures` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_medical_procedure_type_id` bigint(20) unsigned NOT NULL,
-  `medical_procedure_id` int(10) unsigned NOT NULL,
+  `institution_treatment_id` bigint(20) unsigned NOT NULL,
+  `treatment_procedure_id` int(10) unsigned NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_medical_procedure_type_id` (`institution_medical_procedure_type_id`,`medical_procedure_id`),
-  KEY `medical_procedure_id` (`medical_procedure_id`)
+  UNIQUE KEY `institution_treatment_id` (`institution_treatment_id`,`treatment_procedure_id`),
+  KEY `treatment_procedure_id` (`treatment_procedure_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `institution_medical_procedure_types`
+-- Table structure for table `institution_treatments`
 --
 
-DROP TABLE IF EXISTS `institution_medical_procedure_types`;
-CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
+DROP TABLE IF EXISTS `institution_treatments`;
+CREATE TABLE IF NOT EXISTS `institution_treatments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_medical_center_id` bigint(20) unsigned NOT NULL,
-  `medical_procedure_type_id` int(11) unsigned NOT NULL,
+  `treatment_id` int(11) unsigned NOT NULL,
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`medical_procedure_type_id`),
-  KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
+  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`treatment_id`),
+  KEY `treatment_id` (`treatment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 --
--- Dumping data for table `institution_medical_procedure_types`
+-- Dumping data for table `institution_treatments`
 --
 
-INSERT INTO `institution_medical_procedure_types` (`id`, `institution_medical_center_id`, `medical_procedure_type_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+INSERT INTO `institution_treatments` (`id`, `institution_medical_center_id`, `treatment_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
 (1, 1, 1, '<p>asfdDASdas sdfsdf sdfsdf</p>', '2012-08-31 07:33:48', '2012-08-31 07:33:48', 1);
 
 
@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
 --
 
 INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VALUES
-(1, 'add_medical_procedure', 'Add medical procedure', 1),
+(1, 'add_treatment_procedure', 'Add medical procedure', 1),
 (2, 'SUPER_ADMIN', 'owner/admin', 3)
 ;
 
@@ -818,26 +818,26 @@ INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slu
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medical_procedures`
+-- Table structure for table `treatment_procedures`
 --
 
-DROP TABLE IF EXISTS `medical_procedures`;
-CREATE TABLE IF NOT EXISTS `medical_procedures` (
+DROP TABLE IF EXISTS `treatment_procedures`;
+CREATE TABLE IF NOT EXISTS `treatment_procedures` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `medical_procedure_type_id` int(10) unsigned NOT NULL,
+  `treatment_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `medical_procedure_type_id_2` (`medical_procedure_type_id`,`name`),
-  KEY `medical_procedure_type_id` (`medical_procedure_type_id`)
+  UNIQUE KEY `treatment_id_2` (`treatment_id`,`name`),
+  KEY `treatment_id` (`treatment_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `medical_procedures`
+-- Dumping data for table `treatment_procedures`
 --
 
-INSERT INTO `medical_procedures` (`id`, `medical_procedure_type_id`, `name`, `slug`, `status`) VALUES
+INSERT INTO `treatment_procedures` (`id`, `treatment_id`, `name`, `slug`, `status`) VALUES
 (1, 1, 'testProcedure1', 'testprocedure1', 1),
 (2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
 (3, 2, 'testProcedure2', 'testprocedure2', 1),
@@ -845,11 +845,11 @@ INSERT INTO `medical_procedures` (`id`, `medical_procedure_type_id`, `name`, `sl
 -- --------------------------------------------------------
 
 --
--- Table structure for table `medical_procedure_types`
+-- Table structure for table `treatments`
 --
 
-DROP TABLE IF EXISTS `medical_procedure_types`;
-CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
+DROP TABLE IF EXISTS `treatments`;
+CREATE TABLE IF NOT EXISTS `treatments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `medical_center_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
@@ -863,10 +863,10 @@ CREATE TABLE IF NOT EXISTS `medical_procedure_types` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `medical_procedure_types`
+-- Dumping data for table `treatments`
 --
 
-INSERT INTO `medical_procedure_types` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+INSERT INTO `treatments` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 1, 'Procedure Type1', 'the quick is not slow. the quick is not slow.the quick is not slow.the quick is not slow.the quick is not slow.', '2012-08-30 06:13:31', '2012-08-29 16:00:00', 'procedure-type1', 1),
 (2, 2, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1),
 (3, 3, 'procType with center3', 'sdf sdf sdafd afds f', '2012-09-21 07:17:08', '2012-09-20 16:00:00', '', 1);
@@ -1179,18 +1179,18 @@ ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_medical_procedures`
+-- Constraints for table `institution_treatment_procedures`
 --
-ALTER TABLE `institution_medical_procedures`
-  ADD CONSTRAINT `institution_medical_procedures_ibfk_2` FOREIGN KEY (`medical_procedure_id`) REFERENCES `medical_procedures` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_procedures_ibfk_1` FOREIGN KEY (`institution_medical_procedure_type_id`) REFERENCES `institution_medical_procedure_types` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `institution_treatment_procedures`
+  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_medical_procedure_types`
+-- Constraints for table `institution_treatments`
 --
-ALTER TABLE `institution_medical_procedure_types`
-  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_procedure_types_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `institution_treatments`
+  ADD CONSTRAINT `institution_treatments_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_offered_services`
@@ -1234,17 +1234,17 @@ ALTER TABLE `logs`
 
 
 --
--- Constraints for table `medical_procedures`
+-- Constraints for table `treatment_procedures`
 --
-ALTER TABLE `medical_procedures` ADD UNIQUE (`medical_procedure_type_id` , `name`);
-ALTER TABLE `medical_procedures`
-  ADD CONSTRAINT `medical_procedures_ibfk_1` FOREIGN KEY (`medical_procedure_type_id`) REFERENCES `medical_procedure_types` (`id`);
+ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
+ALTER TABLE `treatment_procedures`
+  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
 
 --
--- Constraints for table `medical_procedure_types`
+-- Constraints for table `treatments`
 --
-ALTER TABLE `medical_procedure_types`
-  ADD CONSTRAINT `medical_procedure_types_ibfk_1` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `treatments`
+  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medical_term_suggestion_details`

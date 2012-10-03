@@ -35,9 +35,9 @@ class InstitutionTreatmentProcedure
     private $status;
 
     /**
-     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure
+     * @var HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure
      */
-    private $medicalProcedure;
+    private $treatmentProcedure;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
@@ -144,25 +144,25 @@ class InstitutionTreatmentProcedure
     }
 
     /**
-     * Set medicalProcedure
+     * Set treatmentProcedure
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedure
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedure
      * @return InstitutionTreatmentProcedure
      */
-    public function setMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedure = null)
+    public function setTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedure = null)
     {
-        $this->medicalProcedure = $medicalProcedure;
+        $this->treatmentProcedure = $treatmentProcedure;
         return $this;
     }
 
     /**
-     * Get medicalProcedure
+     * Get treatmentProcedure
      *
-     * @return HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure 
+     * @return HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure 
      */
-    public function getMedicalProcedure()
+    public function getTreatmentProcedure()
     {
-        return $this->medicalProcedure;
+        return $this->treatmentProcedure;
     }
 
     /**

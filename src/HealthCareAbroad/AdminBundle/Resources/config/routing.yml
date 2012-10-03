@@ -9,7 +9,7 @@ AdminBundle_advertisement:
     resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
     prefix:   /
 
-# Routes for Admin MedicalProcedureTypeController #
+# Routes for Admin TreatmentController #
 AdminBundle_medicalProcedureType:
     resource: "@AdminBundle/Resources/config/routing_procedureType.yml"
     prefix:   /
