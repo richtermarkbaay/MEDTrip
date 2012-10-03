@@ -42,7 +42,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		
 		//test for existing email provided
 		$invalidFormValues = $formValues;
-		$invalidFormValues['institutionUserForm[email]'] = 'kristenstewart@yahoo.com';
+		$invalidFormValues['institutionUserForm[email]'] = 'test.institutionuser@chromedia.com';
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $invalidFormValues);
 		$this->assertEquals(500, $client->getResponse()->getStatusCode());

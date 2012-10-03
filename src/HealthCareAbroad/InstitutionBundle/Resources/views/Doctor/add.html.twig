@@ -29,20 +29,18 @@
                     steps: [
                         {title: 'Search Doctor', 'selected': true},
                         {title: 'Fill out Doctor Details'},
-                        {title: 'Add Doctor', 'selected': false}
                  ]}
                 %}
 
-                <form action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                <form  novalidate="novalidate" action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.firstName) }}
-                    <div><div id="institutionSearch" contentEditable="true"></div></div>
+                    <div><div id="institutionSearch" ></div></div>
                     {{ form_row(form.id) }}
                     {{ form_rest(form) }}
 
                     <input type="reset" value="Reset" class="form-reset"/>
                     <input type="submit" name="submit" value="Next" class="green-button" />
-
                 </form>
 
             </div>
@@ -59,6 +57,23 @@
 
 {% block inlineJavascriptCode %}
 <script>
+    function removeDoctor()
+    {
+        $("#institutionDoctorSearch_id").val(0);
+        var div = document.getElementById($("#boxSearch"));
+        if (div) {    
+            div.innerHtml() = "";
+            div.parentNode.removeChild(div);
+        }
+        $("#boxSearch").remove();
+        $("#institutionSearch").empty();
+        $('#institutionSearch').attr('disabled', true);
+        $("#institutionSearch").hide();                    
+        $("#institutionDoctorSearch_firstName").show(); 
+        $("#institutionDoctorSearch_firstName").val('');
+        placeCaretAtEnd( $("#institutionDoctorSearch_firstName") );
+    }
+    
     $(function() {
         $("#institutionSearch").hide();
         
@@ -84,20 +99,10 @@
         document.onkeydown = function(event)
         {
             if(event.keyCode == 46 || event.keyCode == 8 ) {
-                $("#institutionDoctorSearch_id").val(0);
-                var div = document.getElementById($("#boxSearch"));
-                if (div) {    
-                    div.innerHtml() = "";
-                    div.parentNode.removeChild(div);
-                }
-                $("#boxSearch").remove();
-                $("#institutionSearch").empty();
-                $('#institutionSearch').attr('disabled', true);
-                $("#institutionSearch").hide();                    
-                $("#institutionDoctorSearch_firstName").show(); 
-                $("#institutionDoctorSearch_firstName").val('');
-                placeCaretAtEnd( $("#institutionDoctorSearch_firstName") );
-                    
+                if( $("#boxSearch").is(":visible") )
+                {
+                    removeDoctor();
+                }   
             }
         }
         function placeCaretAtEnd(el) {
@@ -122,7 +127,6 @@
             return split(term).pop();
         }
         var searchDoctorsNameUrl = "{{ path('institution_doctor_search') }}";
-        
         $("#institutionDoctorSearch_firstName")
             .bind("keydown", function(event) {
                 if(event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
@@ -155,21 +159,17 @@
                                     id: item.id
                                 }
                             }));
-                            
                         }
                     });
                 },
                 minLength: 1,
                 select: function( event, ui ) {
                     $("#institutionDoctorSearch_id").val(ui.item.id);
-                    var id = ui.item.id;
                     $("#institutionDoctorSearch_firstName").hide();
                     $("#institutionSearch").show();
-                    $("#institutionSearch").append("<div id='boxSearch'>"+ui.item.value+" </div> ");
+                    $( "<a/ href='#' id='boxSearch' class='click' onClick='removeDoctor();' return false; >" ).text( ui.item.value ).prependTo( "#institutionSearch" );
+                    document.getElementById("institutionSearch").disabled = true;
                     toggleDisabled($("#institutionSearch"));
-                    toggleDisabled($("#boxSearch"));
-                    // placeCaretAtEnd( document.getElementById("institutionSearch") );
-                    
                     
                 },
                 open: function() {
@@ -180,5 +180,6 @@
                 }
             });
     });
+    
 </script>
 {% endblock %}

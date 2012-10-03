@@ -527,6 +527,14 @@ CREATE TABLE IF NOT EXISTS `institution_medical_procedure_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+--
+-- Dumping data for table `institution_medical_procedure_types`
+--
+
+INSERT INTO `institution_medical_procedure_types` (`id`, `institution_medical_center_id`, `medical_procedure_type_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, '<p>asfdDASdas sdfsdf sdfsdf</p>', '2012-08-31 07:33:48', '2012-08-31 07:33:48', 1);
+
+
 -- --------------------------------------------------------
 
 --

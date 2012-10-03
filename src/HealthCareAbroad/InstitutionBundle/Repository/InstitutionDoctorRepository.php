@@ -8,7 +8,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityRepository;
-
+use Symfony\Component\HttpFoundation\Response;
 /**
  * InstitutionDoctorRepository
  *
@@ -28,4 +28,15 @@ class InstitutionDoctorRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
     
+    public function getDoctorSpecialization()
+    {
+        $data[] = array('1' => 'Opthalmologist',
+                        '2' => 'Orthopedics',
+                        '3' => 'Pediatric');
+    
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
+    }
 }
