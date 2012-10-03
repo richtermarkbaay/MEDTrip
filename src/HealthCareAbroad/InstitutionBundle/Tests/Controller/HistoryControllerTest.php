@@ -13,9 +13,7 @@ class HistoryControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $editAccountUrl);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Edit History")')->count(), 'Expecting text "Edit History"');
         
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $formValues);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to the referer
     }
 }
