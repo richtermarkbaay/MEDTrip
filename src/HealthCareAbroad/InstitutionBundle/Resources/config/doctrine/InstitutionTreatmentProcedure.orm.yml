@@ -1,7 +1,7 @@
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure:
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure:
     type: entity
     table: institution_medical_procedures
-    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalProcedureRepository
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionTreatmentProcedureRepository
     gedmo:
         loggable:
             logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
@@ -44,8 +44,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure:
                 medical_procedure_id:
                     referencedColumnName: id
             orphanRemoval: false
-        institutionMedicalProcedureType:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
+        institutionTreatment:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
             cascade: {  }
             mappedBy: null
             inversedBy: null

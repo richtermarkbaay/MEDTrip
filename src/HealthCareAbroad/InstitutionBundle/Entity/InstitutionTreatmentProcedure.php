@@ -4,26 +4,16 @@ namespace HealthCareAbroad\InstitutionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure
- */
-class InstitutionMedicalProcedure
+class InstitutionTreatmentProcedure
 {
 	const STATUS_ACTIVE = 1;
 	
 	const STATUS_INACTIVE = 0;
-
     /**
      * @var bigint $id
      */
     private $id;
 
-    /**
-     * @var string $name
-     */
-    private $name;
-    
-    
     /**
      * @var text $description
      */
@@ -50,9 +40,9 @@ class InstitutionMedicalProcedure
     private $medicalProcedure;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
      */
-    private $institutionMedicalProcedureType;
+    private $institutionTreatment;
 
 
     /**
@@ -69,7 +59,7 @@ class InstitutionMedicalProcedure
      * Set description
      *
      * @param text $description
-     * @return InstitutionMedicalProcedure
+     * @return InstitutionTreatmentProcedure
      */
     public function setDescription($description)
     {
@@ -91,7 +81,7 @@ class InstitutionMedicalProcedure
      * Set dateModified
      *
      * @param datetime $dateModified
-     * @return InstitutionMedicalProcedure
+     * @return InstitutionTreatmentProcedure
      */
     public function setDateModified($dateModified)
     {
@@ -113,7 +103,7 @@ class InstitutionMedicalProcedure
      * Set dateCreated
      *
      * @param datetime $dateCreated
-     * @return InstitutionMedicalProcedure
+     * @return InstitutionTreatmentProcedure
      */
     public function setDateCreated($dateCreated)
     {
@@ -130,17 +120,12 @@ class InstitutionMedicalProcedure
     {
         return $this->dateCreated;
     }
-	
-    public function __toString()
-    {
-    	return $this->name;
-    }
-    
+
     /**
      * Set status
      *
      * @param smallint $status
-     * @return InstitutionMedicalProcedure
+     * @return InstitutionTreatmentProcedure
      */
     public function setStatus($status)
     {
@@ -162,7 +147,7 @@ class InstitutionMedicalProcedure
      * Set medicalProcedure
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedure
-     * @return InstitutionMedicalProcedure
+     * @return InstitutionTreatmentProcedure
      */
     public function setMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedure = null)
     {
@@ -181,24 +166,24 @@ class InstitutionMedicalProcedure
     }
 
     /**
-     * Set institutionMedicalProcedureType
+     * Set institutionTreatment
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureType
-     * @return InstitutionMedicalProcedure
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatment
+     * @return InstitutionTreatmentProcedure
      */
-    public function setInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureType = null)
+    public function setInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatment = null)
     {
-        $this->institutionMedicalProcedureType = $institutionMedicalProcedureType;
+        $this->institutionTreatment = $institutionTreatment;
         return $this;
     }
 
     /**
-     * Get institutionMedicalProcedureType
+     * Get institutionTreatment
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment 
      */
-    public function getInstitutionMedicalProcedureType()
+    public function getInstitutionTreatment()
     {
-        return $this->institutionMedicalProcedureType;
+        return $this->institutionTreatment;
     }
 }

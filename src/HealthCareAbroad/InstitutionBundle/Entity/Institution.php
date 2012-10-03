@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Institution
 {
     const USER_TYPE = "SUPER_ADMIN";
-	/**
+    /**
      * @var integer $id
      */
     private $id;
@@ -66,6 +66,16 @@ class Institution
     private $institutionMedicalCenters;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionTreatments;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionUsers;
+
+    /**
      * @var HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
@@ -78,35 +88,27 @@ class Institution
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $contactDetail;
-    
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionMedicalProcedureTypes;
-    
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionUsers;
-    
-    
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    public $institutionOfferedServices;
+    private $institutionOfferedServices;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    public $institutionLanguagesSpoken;
-    
+    private $institutionLanguagesSpoken;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $contactDetail;
+
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
     
     //---- status operations
     public function setAsActive()
@@ -121,7 +123,7 @@ class Institution
     
     public function setAsUnapproved()
     {
-        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();   
+        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();
     }
     
     public function setAsApproved()
@@ -136,7 +138,7 @@ class Institution
     
     /**
      * Check if this is institution is active
-     * 
+     *
      * @return boolean
      */
     public function isActive()
@@ -146,7 +148,7 @@ class Institution
     
     /**
      * Check if the institution is inactive
-     * 
+     *
      * @return boolean
      */
     public function isInactive()
@@ -184,7 +186,6 @@ class Institution
         return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
     }
     //---- end status operations
-    
     
     /**
      * Get id
@@ -427,6 +428,70 @@ class Institution
     }
 
     /**
+     * Add institutionTreatments
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
+     * @return Institution
+     */
+    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
+    {
+        $this->institutionTreatments[] = $institutionTreatments;
+        return $this;
+    }
+
+    /**
+     * Remove institutionTreatments
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
+     */
+    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
+    {
+        $this->institutionTreatments->removeElement($institutionTreatments);
+    }
+
+    /**
+     * Get institutionTreatments
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionTreatments()
+    {
+        return $this->institutionTreatments;
+    }
+
+    /**
+     * Add institutionUsers
+     *
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
+     * @return Institution
+     */
+    public function addInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
+    {
+        $this->institutionUsers[] = $institutionUsers;
+        return $this;
+    }
+
+    /**
+     * Remove institutionUsers
+     *
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
+     */
+    public function removeInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
+    {
+        $this->institutionUsers->removeElement($institutionUsers);
+    }
+
+    /**
+     * Get institutionUsers
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionUsers()
+    {
+        return $this->institutionUsers;
+    }
+
+    /**
      * Set country
      *
      * @param HealthCareAbroad\HelperBundle\Entity\Country $country
@@ -471,104 +536,6 @@ class Institution
     }
 
     /**
-     * Add contactDetail
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
-     * @return Institution
-     */
-    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
-    {
-        $this->contactDetail[] = $contactDetail;
-        return $this;
-    }
-
-    /**
-     * Remove contactDetail
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
-     */
-    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
-    {
-        $this->contactDetail->removeElement($contactDetail);
-    }
-
-    /**
-     * Get contactDetail
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getContactDetail()
-    {
-        return $this->contactDetail;
-    }
-
-
-    /**
-     * Add institutionMedicalProcedureTypes
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
-     * @return Institution
-     */
-    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
-    {
-        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
-        return $this;
-    }
-
-    /**
-     * Remove institutionMedicalProcedureTypes
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
-     */
-    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
-    {
-        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
-    }
-
-    /**
-     * Get institutionMedicalProcedureTypes
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionMedicalProcedureTypes()
-    {
-        return $this->institutionMedicalProcedureTypes;
-    }
-
-
-    /**
-     * Add institutionUsers
-     *
-     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
-     * @return Institution
-     */
-    public function addInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
-    {
-        $this->institutionUsers[] = $institutionUsers;
-        return $this;
-    }
-
-    /**
-     * Remove institutionUsers
-     *
-     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers
-     */
-    public function removeInstitutionUser(\HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUsers)
-    {
-        $this->institutionUsers->removeElement($institutionUsers);
-    }
-
-    /**
-     * Get institutionUsers
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionUsers()
-    {
-        return $this->institutionUsers;
-    }
-
-    /**
      * Add institutionOfferedServices
      *
      * @param HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices
@@ -599,36 +566,68 @@ class Institution
     {
         return $this->institutionOfferedServices;
     }
-    
+
     /**
-     * Add institution Language Spoken
+     * Add institutionLanguagesSpoken
      *
      * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
      * @return Institution
      */
     public function addInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
     {
-    	$this->institutionLanguagesSpoken[] = $institutionLanguagesSpoken;
-    	return $this;
+        $this->institutionLanguagesSpoken[] = $institutionLanguagesSpoken;
+        return $this;
     }
-    
+
     /**
-     * Remove institution Language Spoken
+     * Remove institutionLanguagesSpoken
      *
      * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
      */
     public function removeInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
     {
-    	$this->institutionLanguagesSpoken->removeElement($institutionLanguagesSpoken);
+        $this->institutionLanguagesSpoken->removeElement($institutionLanguagesSpoken);
     }
-    
+
     /**
-     * Get institution Language SPoken
+     * Get institutionLanguagesSpoken
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getInstitutionLanguagesSpoken()
     {
-    	return $this->institutionLanguagesSpoken;
+        return $this->institutionLanguagesSpoken;
+    }
+
+    /**
+     * Add contactDetail
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
+     * @return Institution
+     */
+    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
+    {
+        $this->contactDetail[] = $contactDetail;
+        return $this;
+    }
+
+    /**
+     * Remove contactDetail
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
+     */
+    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
+    {
+        $this->contactDetail->removeElement($contactDetail);
+    }
+
+    /**
+     * Get contactDetail
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getContactDetail()
+    {
+        return $this->contactDetail;
     }
 }

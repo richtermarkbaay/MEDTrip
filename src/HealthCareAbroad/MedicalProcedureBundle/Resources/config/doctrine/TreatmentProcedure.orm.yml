@@ -1,7 +1,7 @@
-HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
+HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure:
     type: entity
-    table: medical_procedures
-    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalProcedureRepository
+    table: treatment_procedures
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\TreatmentProcedureRepository
     gedmo:
         loggable:
             logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry    
@@ -36,17 +36,17 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
             gedmo:
                 - versioned
     oneToMany:
-        institutionMedicalProcedures:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure
-            mappedBy: medicalProcedure
+        institutionTreatmentProcedures:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure
+            mappedBy: treatmentProcedure
     manyToOne:
-        medicalProcedureType:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
+        treatment:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                medical_procedure_type_id:
+                treatment_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

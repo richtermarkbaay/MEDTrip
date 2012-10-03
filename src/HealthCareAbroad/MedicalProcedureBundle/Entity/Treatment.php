@@ -4,16 +4,11 @@ namespace HealthCareAbroad\MedicalProcedureBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
- */
-class MedicalProcedureType
+class Treatment
 {
 	const STATUS_ACTIVE = 1;
 	
 	const STATUS_INACTIVE = 0;
-
-    
     /**
      * @var integer $id
      */
@@ -52,12 +47,12 @@ class MedicalProcedureType
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $medicalProcedures;
+    private $treatmentProcedures;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionMedicalProcedureTypes;
+    private $institutionTreatments;
 
     /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
@@ -66,8 +61,8 @@ class MedicalProcedureType
 
     public function __construct()
     {
-        $this->medicalProcedures = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->treatmentProcedures = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -84,7 +79,7 @@ class MedicalProcedureType
      * Set name
      *
      * @param string $name
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setName($name)
     {
@@ -106,7 +101,7 @@ class MedicalProcedureType
      * Set description
      *
      * @param text $description
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setDescription($description)
     {
@@ -128,7 +123,7 @@ class MedicalProcedureType
      * Set dateModified
      *
      * @param datetime $dateModified
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setDateModified($dateModified)
     {
@@ -150,7 +145,7 @@ class MedicalProcedureType
      * Set dateCreated
      *
      * @param datetime $dateCreated
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setDateCreated($dateCreated)
     {
@@ -172,7 +167,7 @@ class MedicalProcedureType
      * Set slug
      *
      * @param string $slug
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setSlug($slug)
     {
@@ -194,7 +189,7 @@ class MedicalProcedureType
      * Set status
      *
      * @param smallint $status
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setStatus($status)
     {
@@ -213,74 +208,74 @@ class MedicalProcedureType
     }
 
     /**
-     * Add medicalProcedures
+     * Add treatmentProcedures
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
-     * @return MedicalProcedureType
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
+     * @return Treatment
      */
-    public function addMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    public function addTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->medicalProcedures[] = $medicalProcedures;
+        $this->treatmentProcedures[] = $treatmentProcedures;
         return $this;
     }
 
     /**
-     * Remove medicalProcedures
+     * Remove treatmentProcedures
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
      */
-    public function removeMedicalProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure $medicalProcedures)
+    public function removeTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->medicalProcedures->removeElement($medicalProcedures);
+        $this->treatmentProcedures->removeElement($treatmentProcedures);
     }
 
     /**
-     * Get medicalProcedures
+     * Get treatmentProcedures
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMedicalProcedures()
+    public function getTreatmentProcedures()
     {
-        return $this->medicalProcedures;
+        return $this->treatmentProcedures;
     }
 
     /**
-     * Add institutionMedicalProcedureTypes
+     * Add institutionTreatments
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
-     * @return MedicalProcedureType
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
+     * @return Treatment
      */
-    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
     {
-        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
+        $this->institutionTreatments[] = $institutionTreatments;
         return $this;
     }
 
     /**
-     * Remove institutionMedicalProcedureTypes
+     * Remove institutionTreatments
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
      */
-    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
+    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
     {
-        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
+        $this->institutionTreatments->removeElement($institutionTreatments);
     }
 
     /**
-     * Get institutionMedicalProcedureTypes
+     * Get institutionTreatments
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getInstitutionMedicalProcedureTypes()
+    public function getInstitutionTreatments()
     {
-        return $this->institutionMedicalProcedureTypes;
+        return $this->institutionTreatments;
     }
 
     /**
      * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
-     * @return MedicalProcedureType
+     * @return Treatment
      */
     public function setMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter = null)
     {

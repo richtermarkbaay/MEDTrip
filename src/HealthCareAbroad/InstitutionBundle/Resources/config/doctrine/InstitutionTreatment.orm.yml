@@ -1,7 +1,7 @@
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType:
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment:
     type: entity
-    table: institution_medical_procedure_types
-    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalProcedureTypeRepository
+    table: institution_treatments
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionTreatmentRepository
     gedmo:
         loggable:
             logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
@@ -36,19 +36,19 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType:
             gedmo:
                 - versioned
     oneToMany:
-        institutionMedicalProcedures:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure
-            mappedBy: institutionMedicalProcedureType
+        institutionTreatmentProcedures:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure
+            mappedBy: institutionTreatment
     manyToOne:
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            inversedBy: institutionMedicalProcedureTypes
+            inversedBy: institutionTreatments
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id
-        medicalProcedureType:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
-            inversedBy: medicalProcedureTypes
+        treatment:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment
+            inversedBy: treatments
             joinColumn:
-                name: medical_procedure_type_id
+                name: treatment_id
                 referencedColumnName: id

@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
 
@@ -10,7 +10,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -27,7 +27,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
-    public function getMedicalCentersByTreatment(MedicalProcedureType $procedureType, MedicalProcedure $procedure = null)
+    public function getMedicalCentersByTreatment(Treatment $procedureType, MedicalProcedure $procedure = null)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('a')
@@ -132,7 +132,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
      *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      */
-    public function getAvailableMedicalProcedureTypes(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getAvailableTreatments(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         //$dql = "SELECT p FROM InstitutionBundle:InstitutionMedicalCenter"
         $sql = "SELECT a.* FROM medical_procedure_types a, institution_medical_centers b ".
@@ -143,7 +143,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult("MedicalProcedureBundle:MedicalProcedureType", "a")
+        $rsm->addEntityResult("MedicalProcedureBundle:Treatment", "a")
             ->addFieldResult("a", "id", "id")
             ->addFieldResult("a", "medicalCenter", "medical_center_id")
             ->addFieldResult("a", "name", "name")
@@ -157,7 +157,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
             ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenter()->getId())
             ->setParameter('institution_id', $institutionMedicalCenter->getInstitution()->getId())
-            ->setParameter('active_medical_procedure_type', MedicalProcedureType::STATUS_ACTIVE);
+            ->setParameter('active_medical_procedure_type', Treatment::STATUS_ACTIVE);
 
         return $query->getResult();
     }
