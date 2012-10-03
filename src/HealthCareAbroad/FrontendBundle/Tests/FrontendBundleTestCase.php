@@ -7,23 +7,29 @@ use \HCA_DatabaseManager;
 abstract class FrontendBundleTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $doctrine = null;
-    
+
     protected $container = null;
-    
+
+    protected static $belayTeardownAfterClass = false;
+
     public static function setUpBeforeClass()
     {
         \HCA_DatabaseManager::getInstance()
         ->restoreDatabaseState()
         ->restoreGlobalAccountsDatabaseState();
     }
-    
+
     public static function tearDownAfterClass()
     {
+         if (self::$belayTeardownAfterClass) {
+             return;
+         }
+
          \HCA_DatabaseManager::getInstance()
          ->restoreDatabaseState()
          ->restoreGlobalAccountsDatabaseState();
     }
-    
+
     /**
      * @return \Doctrine\Bundle\DoctrineBundle\Registry
      */
@@ -34,7 +40,7 @@ abstract class FrontendBundleTestCase extends \PHPUnit_Framework_TestCase
         }
         return $this->doctrine;
     }
-    
+
     public function getServiceContainer()
     {
         if (\is_null($this->container)) {
