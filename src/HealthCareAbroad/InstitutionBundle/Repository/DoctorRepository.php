@@ -45,4 +45,5 @@ class DoctorRepository extends EntityRepository
 
         return $query->getResult();
     }
+    
 }
