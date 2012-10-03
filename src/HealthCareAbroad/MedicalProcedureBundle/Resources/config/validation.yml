@@ -10,7 +10,7 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
             - NotBlank: ~
 
 
-HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
+HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [name]
