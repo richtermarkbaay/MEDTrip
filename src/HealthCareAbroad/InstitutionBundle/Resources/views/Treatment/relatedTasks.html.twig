@@ -1,8 +1,8 @@
 {% set addTreatmentTask = {
-    title: 'Add new medical procedure type', 
+    title: 'Add new treatment', 
     isVisible: hideAddTreatment is defined and hideAddTreatment ? false: true,
     class: 'add-icon', 
-    description: 'Add a new medical procedure type that is offered in your institution', 
+    description: 'Add a new treatment that is offered in your institution', 
     href: path('institution_medicalCenter_addProcedureType', {'imcId': app.request.get('imcId')}), 
     links: [{'href': path('institution_medicalCenter_addProcedureType', {'imcId': app.request.get('imcId') }) }]
     } 
@@ -12,7 +12,7 @@
     title: 'Add Treatment Procedure', 
     isVisible: hideAddMedicalProcedure is defined and hideAddMedicalProcedure ? false: treatmentId is defined and treatmentId ,
     class: 'add-procedure add-icon', 
-    description: 'Add a medical procedure for this medical procedure type', 
+    description: 'Add a medical procedure for this treatment', 
     href: path('institution_treatment_addMedicalProcedure', {'imptId': app.request.get('imptId', 0)}), 
     links: [{title:'Click here to add a medical procedure', class: 'add-procedure','href': path('institution_treatment_addMedicalProcedure', {'imptId': app.request.get('imptId', 0)} ) }]
     } 
@@ -21,9 +21,9 @@
 {% set manageTreatmentsTask = {
     title: "Treatment Management", 
     isVisible: hideTreatmentManagement is defined and hideTreatmentManagement ? false : true, 
-    description: "Go back to your medical procedure types management page to view all your medical procedure types.", 
+    description: "Go back to your treatments management page to view all your treatments.", 
     href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')} ),
-    links: [{title: 'Click here to go to manage medical procedure types', href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')} )}]}
+    links: [{title: 'Click here to go to manage treatments', href: path('institution_medicalCenter_procedureTypes', {'imcId': app.request.get('imcId')} )}]}
 %}
 
 {% set dashboardTask = {

@@ -125,9 +125,9 @@
 				    					<th width="50"><a href="#">Options</a></th>
 				    				</tr>
 
-									{% set procedures = institutionTreatment.institutionMedicalProcedures %}
+									{% set procedures = institutionTreatment.institutionTreatmentProcedures %}
 
-									{% for procedure in institutionTreatment.institutionMedicalProcedures  %}
+									{% for procedure in institutionTreatment.institutionTreatmentProcedures  %}
 										{% set treatmentProcedure = procedure.treatmentProcedure %}
 										<tr>
 											<td>{{ treatmentProcedure.name }}</td>

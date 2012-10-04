@@ -9,7 +9,7 @@
     <div id="page-heading">
     	<h1>
     	    {% if newObject %} 
-    	        Add medical procedure type
+    	        Add treatment
 	        {% else %}
 	            Edit {{ institutionTreatment.treatment.name }}
 	         {% endif %}       
@@ -50,7 +50,7 @@
                 	    
                 	    <a class="add-edit-procedure button-type" href="{{ path('institution_treatment_addMedicalProcedure', {'imptId': institutionTreatment.id}) }}">Add Procedure</a>
                 	    
-                	    {% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':institutionTreatment.id ,'procedures' : institutionTreatment.institutionMedicalProcedures } %}
+                	    {% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':institutionTreatment.id ,'procedures' : institutionTreatment.institutionTreatmentProcedures } %}
                 	</div>
             	{% endif %}
 			</div>

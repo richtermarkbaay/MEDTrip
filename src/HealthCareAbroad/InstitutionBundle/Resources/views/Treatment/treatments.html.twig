@@ -9,8 +9,8 @@
 	    
 	    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': app.request.get('imcId'), 'imptId': procedureType.id } ) }}">Edit</a>
 		<a class="add-edit-procedure button-type" href="{{ path('institution_treatment_addMedicalProcedure', {'imptId': procedureType.id}) }}">Add Procedure</a>
-		{% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':procedureType.id,'procedures' : procedureType.institutionMedicalProcedures } %}
+		{% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':procedureType.id,'procedures' : procedureType.institutionTreatmentProcedures } %}
 	</div>
 {% else  %}
-	<div class="empty-list">No medical procedure types!</div>
+	<div class="empty-list">No treatments!</div>
 {% endfor %}

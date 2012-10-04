@@ -83,7 +83,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         
         $crawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved medical procedure type")')->count(), 'Expecting success message "Successfully saved medical procedure type" page after saving new medical-procedure-type');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved treatment")')->count(), 'Expecting success message "Successfully saved treatment" page after saving new medical-procedure-type');
     }
     
     /**
@@ -137,7 +137,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         
         $crawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved medical procedure type")')->count(), 'Expecting success message "Successfully saved medical procedure type" page after updating medical-procedure-type');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved treatment")')->count(), 'Expecting success message "Successfully saved treatment" page after updating medical-procedure-type');
     }
     
     public function testSave()

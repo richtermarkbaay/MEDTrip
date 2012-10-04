@@ -22,7 +22,7 @@
     		<th class="table-header-options line-left" width="80"><a href="#">Options</a></th>
     	</tr>
 
-        {% for procedure in institutionTreatment.institutionMedicalProcedures %}
+        {% for procedure in institutionTreatment.institutionTreatmentProcedures %}
     		{% set treatmentProcedure = procedure.treatmentProcedure %}
     		<tr>
     			<td>{{ treatmentProcedure.name }}</td>

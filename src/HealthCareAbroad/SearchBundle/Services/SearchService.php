@@ -64,7 +64,7 @@ class SearchService
         }
 
         foreach ($treatments as $t ) {
-            // use medical procedure type name if medical procedure name is empty
+            // use treatment name if medical procedure name is empty
             $label = $t['medical_procedure_name'] ? $t['medical_procedure_name'] : $t['medical_procedure_type_name'];
             $value = $t['medical_procedure_type_id'].'-'.$t['medical_procedure_id'];
 
@@ -215,7 +215,7 @@ $sql = 'SELECT u.id, u.name, a.id AS address_id, a.street, a.city FROM users u '
     }
 
     /**
-     * Search treatments (medical procedures or medical procedure types) located
+     * Search treatments (medical procedures or treatments) located
      * at destinations with $destinationId.
      *
      * @param string $treatmentTerm

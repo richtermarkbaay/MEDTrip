@@ -36,7 +36,7 @@ class TreatmentRepository extends EntityRepository
 	}
 	
 	/**
-	 * Get QueryBuilder for getting active medical procedure types that can be used for dropdown field types
+	 * Get QueryBuilder for getting active treatments that can be used for dropdown field types
 	 * 
 	 * @return Doctrine\ORM\QueryBuilder
 	 */
