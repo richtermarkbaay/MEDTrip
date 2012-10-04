@@ -2,6 +2,7 @@
 
 /*
  * author Alnie Jacobe
+ * @author Chaztine Blance
  */
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
@@ -51,7 +52,9 @@ class InstitutionController  extends InstitutionAwareController
 		
 		//update institution details
 		if ($request->isMethod('POST')) {
-			$form->bindRequest($request);			
+			
+			$form->bindRequest($request);	
+					
 			if ($form->isValid()) {
 				$institution = $this->get('services.institution')->updateInstitution($form->getData());
 				$this->get('session')->setFlash('notice', "Successfully updated account");
@@ -62,9 +65,12 @@ class InstitutionController  extends InstitutionAwareController
 		}
 		
 		$languageArr = array();
+		
 		foreach ($languages as $e) {
+			
 			$languageArr[] = array('value' => $e->getName(), 'id' => $e->getId());
 		}
+		
 		$institutionLanguage = $this->getDoctrine()->getRepository('AdminBundle:Language')->getInstitutionLanguage($institutionId);
 		
  		return $this->render('InstitutionBundle:Institution:editInstitution.html.twig', array(
