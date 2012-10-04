@@ -130,16 +130,10 @@ class TreatmentController extends InstitutionAwareController
             $em->persist($institutionTreatment);
             $em->flush($institutionTreatment);
             
-            if($isNew) {
-	            //// create event on adding institutionTreatments and dispatch
-	            $event = new CreateInstitutionTreatmentEvent($institutionTreatment);
-	            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
-            }
-            else {
-            	//// create event on editing institutionTreatments and dispatch
-            	$event = new CreateInstitutionTreatmentEvent($institutionTreatment);
-            	$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $event);
-            }
+            // dispatch event
+            $eventName = $isNew ? InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT : InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT; 
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $institutionTreatment));
+            
             $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
             
             $params = array('imcId' => $this->institutionMedicalCenter->getId());

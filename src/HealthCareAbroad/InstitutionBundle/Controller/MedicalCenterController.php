@@ -252,7 +252,7 @@ class MedicalCenterController extends InstitutionAwareController
         $em->flush();
 
         $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $institutionMedicalCenter);
-        $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $institutionTreatment);
+        $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT, $institutionTreatment);
 
         $request->getSession()->setFlash('success', "Successfully added {$institutionTreatment->getTreatment()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
 

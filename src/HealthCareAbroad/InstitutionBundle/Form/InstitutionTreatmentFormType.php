@@ -34,7 +34,7 @@ class InstitutionTreatmentFormType extends AbstractType
                 'query_builder' => function(EntityRepository $er) use ($institutionTreatment) {
                     return $er->getQueryBuilderForAvailableInstitutionTreatments($institutionTreatment->getInstitutionMedicalCenter());
                 },
-                'virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()
+                'virtual' => false, 'label' => 'Treatment:', 'constraints' => new NotBlank()
             ));
         }
 

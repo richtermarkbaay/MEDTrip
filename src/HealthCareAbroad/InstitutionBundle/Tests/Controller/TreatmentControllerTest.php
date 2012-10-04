@@ -50,24 +50,27 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Add Treatment")')->count(), 'Expecting page title to contain "Add Treatment"');
+        
+        $this->assertGreaterThan(0, $crawler->filter('form :contains("Treatment")')->count(), 'Expecting field "Treatment"');
         
         // valid form values
         $formValues = array(
             //'institutionTreatmentForm[medicalCenter]' => '1',
-            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[treatment]' => 2,
             'institutionTreatmentForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
             //'institutionTreatmentForm[medicalCenter]' => '1',
-            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[treatment]' => 2,
             'institutionTreatmentForm[description]' => '',
         );
         
         // test for submitting missing required fields
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $invalidFormValues);
+//         $form = $crawler->selectButton('submit')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+        $crawler = $client->request('POST', $uri, $invalidFormValues, array('X-Requested-With' => 'XMLHttpRequest'));
+        
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0,$crawler->filter('html:contains("This value should not be blank.")')->count(), 'Text "This value should not be blank." not found after validating form');
         
@@ -110,7 +113,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         // valid form values
         $formValues = array(
             //'institutionTreatmentForm[medicalCenter]' => '1',
-            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[treatment]' => 1,
             'institutionTreatmentForm[description]' => 'Test medical-procedure-type',
         );
         
@@ -142,7 +145,8 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
          
         // --- test not allowed methods
-        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave');
+        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave', array(), array('X-Requested-With' => 'XMLHttpRequest'));
+        
         $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
          
         $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave');
