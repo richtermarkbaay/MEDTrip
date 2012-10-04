@@ -61,7 +61,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 
         // test valid form submission
         $validFormValues = array(
-            'institutionMedicalCenter[medicalCenter]' => 2,
+            'institutionMedicalCenter[medicalCenter]' => 3,
             'institutionMedicalCenter[description]' => 'testsetsdfdsfdsfafsafsadf',
             //'institutionMedicalCenter[status]' => 1
         );
