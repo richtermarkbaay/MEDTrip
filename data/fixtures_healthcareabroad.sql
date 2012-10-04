@@ -716,6 +716,12 @@ CREATE TABLE IF NOT EXISTS `languages` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+
+--
+-- Dumping data for table `languages`
+--
+INSERT INTO `languages` (`id`, `iso_code`, `name`, `status`) VALUES(1, 'en', 'English', 1);
+
 -- --------------------------------------------------------
 
 --

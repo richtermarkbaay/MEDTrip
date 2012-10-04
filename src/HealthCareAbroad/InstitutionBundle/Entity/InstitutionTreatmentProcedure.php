@@ -186,4 +186,9 @@ class InstitutionTreatmentProcedure
     {
         return $this->institutionTreatment;
     }
+    
+    public function __toString()
+    {
+        return $this->treatmentProcedure ? $this->treatmentProcedure->getName() : null;
+    }
 }

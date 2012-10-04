@@ -8,7 +8,7 @@ class HistoryControllerTest extends InstitutionBundleWebTestCase
 {
     public function testShowHistory()
     {
-        $editAccountUrl = '/institution/edit-history?objectId=1&objectClass=SGVhbHRoQ2FyZUFicm9hZFxJbnN0aXR1dGlvbkJ1bmRsZVxFbnRpdHlcSW5zdGl0dXRpb25NZWRpY2FsUHJvY2VkdXJlVHlwZQ';
+        $editAccountUrl = '/institution/edit-history?objectId=1&objectClass=SGVhbHRoQ2FyZUFicm9hZFxJbnN0aXR1dGlvbkJ1bmRsZVxFbnRpdHlcSW5zdGl0dXRpb25UcmVhdG1lbnQ=';
        
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $editAccountUrl);

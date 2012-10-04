@@ -265,4 +265,9 @@ class InstitutionMedicalCenter
     {
         return $this->media;
     }
+    
+    public function __toString()
+    {
+        return $this->medicalCenter->getName();
+    }
 }

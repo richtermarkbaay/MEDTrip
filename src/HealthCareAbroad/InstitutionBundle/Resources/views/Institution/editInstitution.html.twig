@@ -41,10 +41,11 @@
 	             			{% for language in institutionLanguage %}
 	                			<a href="#" id="language{{ language.id }}" class="click"> {{ language.name }}</a>
                 			{% endfor %}
+                			</div>
                 		{% else %}
                 			
                 		{% endif %}
-                			</div>
+                			
                 		</div>
              			{{ form_row( form.institutionLanguagesSpoken ) }}
 						<input type="reset" value="Reset" class="form-reset"  />

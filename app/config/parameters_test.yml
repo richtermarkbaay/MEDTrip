@@ -13,6 +13,11 @@ parameters:
 
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
+    
+    alert_db:
+        port: 5984
+        host: 192.168.1.249
+        database: fixtures_alerts
 
 
     application_id:    1
