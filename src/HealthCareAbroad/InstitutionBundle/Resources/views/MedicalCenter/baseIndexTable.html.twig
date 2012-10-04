@@ -23,7 +23,7 @@
             <td><a href="{{ path(routeName, {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
             <td class="raw-content">{{ center.description|raw }}</td>
             <td>
-                <a href="{{ path(routeName, {'imcId': center.id })}}" class="icon-type" title="View medical procedure types of {{ center.medicalCenter | title }}">view procedure types</a>
+                <a href="{{ path(routeName, {'imcId': center.id })}}" class="icon-type" title="View treatments of {{ center.medicalCenter | title }}">view procedure types</a>
             </td>
         </tr>
     {% else %}

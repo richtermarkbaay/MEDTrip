@@ -134,7 +134,7 @@ class TreatmentController extends InstitutionAwareController
             $eventName = $isNew ? InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT : InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT; 
             $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $institutionTreatment));
             
-            $request->getSession()->setFlash('success', 'Successfully saved medical procedure type.');
+            $request->getSession()->setFlash('success', 'Successfully saved treatment.');
             
             $params = array('imcId' => $this->institutionMedicalCenter->getId());
             
@@ -254,7 +254,7 @@ class TreatmentController extends InstitutionAwareController
             	$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE, $event);
             }
             
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionTreatment->getTreatment()->getName()} medical procedure type.");
+            $request->getSession()->setFlash('success', "Successfully added a medical procedure to {$institutionTreatment->getTreatment()->getName()} treatment.");
             $url = $this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionTreatment->getInstitutionMedicalCenter()->getId(),'imptId' => $institutionTreatment->getId()));
             
             $response = new Response(json_encode(array('redirect_url' => $url)));

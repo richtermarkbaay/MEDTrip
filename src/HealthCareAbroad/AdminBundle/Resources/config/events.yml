@@ -65,7 +65,7 @@ parameters:
     event.medical_procedure.delete: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
     
     #
-    # medical procedure type related events
+    # treatment related events
     #
     event.medical_procedure_type.add: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
     event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
