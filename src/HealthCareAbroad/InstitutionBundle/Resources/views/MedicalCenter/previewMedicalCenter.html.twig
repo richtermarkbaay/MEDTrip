@@ -17,7 +17,7 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideTreatmentTask: true, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
 
             <!--  start table-content  -->
@@ -40,8 +40,8 @@
                      {{ institutionMedicalCenter.medicalCenter.name }}<br/><br/>
 
                      Procedure Types:<br/><br/>
-                     {% for instProcedureType in institutionMedicalCenter.institutionMedicalProcedureTypes %}
-                         {{ instProcedureType.medicalProcedureType.name }}
+                     {% for instProcedureType in institutionMedicalCenter.institutionTreatments %}
+                         {{ instProcedureType.treatment.name }}
                      {% endfor %}
 
                     <div class="clear"></div>

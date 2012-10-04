@@ -100,7 +100,7 @@ class MedicalCenterRepository extends EntityRepository
         $dql = "
             SELECT a.id
             FROM MedicalProcedureBundle:MedicalCenter AS a
-            LEFT JOIN a.medicalProcedureTypes AS b
+            LEFT JOIN a.treatments AS b
             WHERE a.status=1 AND b.id IS NULL"
         ;
 

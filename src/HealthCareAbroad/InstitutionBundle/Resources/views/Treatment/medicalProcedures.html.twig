@@ -1,0 +1,25 @@
+<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="medical-centers-list">
+	<tr>
+		<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+		<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+		<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+	</tr>
+
+    {% for procedure in procedures %}
+		{% set treatmentProcedure = procedure.treatmentProcedure %}
+		<tr>
+			<td>{{ treatmentProcedure.name }}</td>
+			<td>{{ procedure.description }}</td>  
+			<td>
+				<a href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': imptId, 'impId':procedure.id} ) }}" title="Edit {{ treatmentProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+				{% set class = treatmentProcedure.status ? 'icon-2' : 'icon-5' %}
+				<a href="#"
+					title="{{ treatmentProcedure.status ? 'Delete' : 'Activate' }}" 
+					class="update-status {{ class }} info-tooltip">
+				</a>
+			</td>
+		</tr>
+	{% else  %}
+		<tr><td colspan="3" class="empty-list">No Treatment Procedures yet!</td></tr>
+	{% endfor %}
+</table>

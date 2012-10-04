@@ -42,7 +42,7 @@ class MedicalProcedureTypeListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:MedicalProcedureType', 'a');
+        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:Treatment', 'a');
     
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.status = :status');

@@ -1,0 +1,54 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment:
+    type: entity
+    table: institution_treatments
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionTreatmentRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+            gedmo:
+                - versioned
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+            gedmo:
+                - versioned
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    oneToMany:
+        institutionTreatmentProcedures:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure
+            mappedBy: institutionTreatment
+    manyToOne:
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: institutionTreatments
+            joinColumn:
+                name: institution_medical_center_id
+                referencedColumnName: id
+        treatment:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment
+            inversedBy: treatments
+            joinColumn:
+                name: treatment_id
+                referencedColumnName: id

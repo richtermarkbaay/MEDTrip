@@ -19,7 +19,7 @@ class MedicalProcedureRepositoryTest extends WebTestCase
 
     public function testSearch()
     {
-        $results = $this->_em->getRepository('MedicalProcedureBundle:MedicalProcedure')->search('Test Medical Procedure');
+        $results = $this->_em->getRepository('MedicalProcedureBundle:TreatmentProcedure')->search('Test Treatment Procedure');
 
         $this->assertEquals(1, count($results));
     }

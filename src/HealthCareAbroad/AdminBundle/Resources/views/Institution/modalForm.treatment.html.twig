@@ -1,0 +1,59 @@
+{% embed '::contentWrapper.admin.html.twig' %}
+	{% block wrappedContent %}
+
+		{% set savePath = newProcedureType 
+			? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
+			: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionTreatment.id}) %}
+		
+		<form action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+			<div>
+				<label>Medical Center</label>
+				<span class="fixed-value">{{ institutionMedicalCenter.medicalCenter.name }}</span>
+			</div>
+		
+			{% if not newProcedureType %}
+				<div>
+					<label>Procedure Type</label>
+					<span class="fixed-value">{{ institutionTreatment.treatment.name }}</span>
+				</div>
+			{% endif %}
+
+			{{ form_row(form.treatment) }}
+			{{ form_row(form.description) }}
+			{{ form_rest(form) }}
+			<input type="submit" class="form-submit" name="submit"/>
+		</form>
+	{% endblock %}
+{% endembed %}
+
+
+{% block inlineJavascriptCode %}
+	<script type="text/javascript">
+		$(function(){
+	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+			$("#tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');
+
+			{% if app.request.get('imptId') %}
+				$("#tab-container #procedure-type-{{ app.request.get('imptId') }} a").click();
+			{% endif %}			
+
+			$('a.add-procedure-type').click(function(e){
+			    return InstitutionMedicalCenter.addProcedureType($(this));
+			});
+
+		    InstitutionMedicalCenter.commonDialog.find('form').submit(function(){
+		        $.post($(this).attr('action'), $(this).serialize(), function(result) {
+		        	if($.isPlainObject(result)) {
+		        	    window.location = result.redirect_url;
+		            } else {
+		            	InstitutionMedicalCenter.commonDialog.html(result);
+		            	InstitutionMedicalCenter.commonDialog.find('.tinymce').tinymce(HCA.tinymceConfig.themeSimple);
+		            }
+		        });
+
+		        InstitutionMedicalCenter.commonDialog.html('<div class="ajax-loading">saving request . . .</div>');
+		        return false;
+		    });
+		});
+	</script>
+{% endblock %}

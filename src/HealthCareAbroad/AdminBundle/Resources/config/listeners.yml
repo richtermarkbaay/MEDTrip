@@ -174,7 +174,7 @@ services:
             - { name: kernel.event_listener, event: event.medical_procedure.delete, method: onCommonLogAction }
             
     #
-    # listeners  for medical procedure type related events
+    # listeners  for treatment related events
     #
     listener.log.medical_procedure_type.add:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener

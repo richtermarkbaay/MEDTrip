@@ -25,22 +25,61 @@
             <!--  start table-content  -->
             <div id="table-content" style="width:70%">
                 {% include '::notice.admin.html.twig' %}
-                    <h3>Alerts</h3>
+                
+                    {% if hasAlerts %}
+                        <h3>Alerts</h3>
+                    {% endif %}
 
                     <!-- medical centers with DRAFT status -->
-                    {% if draftInstitutionMedicalCenters|length > 0 %}
+                    {% if expiredListingAlerts|length %}
+                    <div>
+                        <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
+                        Expired Listings.
+
+                        <div>
+                        {% for center in expiredListingAlerts %}
+                            <div style="width: 600px;border: 1px solid #efefef; padding: 5px; margin-bottom: 5px">
+                                <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                                <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a><br/>
+
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div><br/><br/>
+                    {% endif %}
+
+                    {% if draftAlerts|length %}
                     <div>
                         <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
                         The following medical centers have incomplete information. Click on one to resume inputting your data.
 
                         <div>
-                        {% for center in draftInstitutionMedicalCenters %}
-                            <a href="{{ path('institution_medicalCenter_editDraft', {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a><br/>
+                        {% for center in draftAlerts %}
+                            <div style="width: 600px;border: 1px solid #efefef; padding: 5px; margin-bottom: 5px">
+                                <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                                <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a><br/>
+                            </div>
                         {% endfor %}
                         </div>
                     </div>
                     {% endif %}
 
+                    {% if approvedListingAlerts|length %}
+                    <div>
+                        <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
+                        Approved Listings.
+
+                        <div>
+                        {% for center in approvedListingAlerts %}
+                            <div style="width: 600px;border: 1px solid #efefef; padding: 5px; margin-bottom: 5px">
+                                <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                                <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a><br/>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div><br/><br/>
+                    {% endif %}
+                    
                     <br />
                     <br />
                     Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur

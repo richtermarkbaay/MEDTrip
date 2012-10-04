@@ -3,7 +3,7 @@
 {% block content %}
 	<div id="content">
 
-		<div id="page-heading"><h3>List of Institutions Medical Procedures</h3></div>
+		<div id="page-heading"><h3>List of Institutions Treatment Procedures</h3></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
@@ -29,8 +29,8 @@
 
 			{% for procedure in institutionProcedures %}
 				<tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-					<td>{{ procedure.medicalProcedure.name }}</td>
-					<td>{{ procedure.medicalProcedure.medicalProcedureType.name }}</td>
+					<td>{{ procedure.treatmentProcedure.name }}</td>
+					<td>{{ procedure.treatmentProcedure.treatment.name }}</td>
 					<td>{{ procedure.description }}</td>
 					<td align="center">
 						<a href="{{ path('admin_institution_updateProcedureStatus', {institution_medical_procedure_id:procedure.id}) }}" class="update-status">
@@ -43,7 +43,7 @@
 			{% endfor %}
 			</table>
 
-			<h2 style="padding-top: 20px">Add New Medical Procedure</h2>
+			<h2 style="padding-top: 20px">Add New Treatment Procedure</h2>
 			<div style="border-top: 2px dashed #ddd;"></div>			
 			<form action="{{ path('admin_institution_saveMedicalProcedure', {id:id}) }}" method="post" {{ form_enctype(form) }} class="basic-form">
 				{{ form_row(form.medical_center) }}
@@ -61,15 +61,15 @@
 
 	{% block javascripts %}
 		{{ parent() }}
-		<script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+		<script src="{{ asset('bundles/institution/js/InstitutionTreatmentProcedure.js') }}"></script>
 		<script type="text/javascript">
 			var params = {
 				manageProceduresUrl : "{{ path('admin_institution_manageProcedures', {id:id}) }}",
-				loadProcedureTypesUrl : "{{ path('admin_loadMedicalProcedureTypes') }}",
+				loadProcedureTypesUrl : "{{ path('admin_loadTreatments') }}",
 				loadProceduresUrl : "{{ path('admin_loadMedicalProcedures', {institution_id:id}) }}",
 				updateProcedureStatusUrl : "{{ path('admin_institution_updateProcedureStatus') }}"
 			};
-			InstitutionMedicalProcedure.init(params);
+			InstitutionTreatmentProcedure.init(params);
 		</script>	
 	{% endblock %}
 

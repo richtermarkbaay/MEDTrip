@@ -5,11 +5,11 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureTypeFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentFormType;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -123,10 +123,10 @@ class MedicalCenterController extends InstitutionAwareController
         }
 
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-        $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
-        $institutionMedicalProcedureType->setInstitutionMedicalCenter($institutionMedicalCenter);
+        $institutionTreatment = new InstitutionTreatment();
+        $institutionTreatment->setInstitutionMedicalCenter($institutionMedicalCenter);
 
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType);
+        $form = $this->createForm(new InstitutionTreatmentFormType(), $institutionTreatment);
 
         return $this->render('InstitutionBundle:MedicalCenter:addProcedureTypes.html.twig', array(
                         'institutionMedicalCenter' => $institutionMedicalCenter,
@@ -230,11 +230,11 @@ class MedicalCenterController extends InstitutionAwareController
         }
 
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-        $institutionMedicalProcedureType = new InstitutionMedicalProcedureType();
-        $institutionMedicalProcedureType->setInstitutionMedicalCenter($institutionMedicalCenter);
-        $institutionMedicalProcedureType->setStatus(1);
+        $institutionTreatment = new InstitutionTreatment();
+        $institutionTreatment->setInstitutionMedicalCenter($institutionMedicalCenter);
+        $institutionTreatment->setStatus(1);
 
-        $form = $this->createForm(new InstitutionMedicalProcedureTypeFormType(), $institutionMedicalProcedureType);
+        $form = $this->createForm(new InstitutionTreatmentFormType(), $institutionTreatment);
         $form->bind($request);
 
         if (!$form->isValid()) {
@@ -248,13 +248,13 @@ class MedicalCenterController extends InstitutionAwareController
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($institutionMedicalCenter);
-        $em->persist($institutionMedicalProcedureType);
+        $em->persist($institutionTreatment);
         $em->flush();
 
         $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $institutionMedicalCenter);
-        $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE, $institutionMedicalProcedureType);
+        $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT, $institutionTreatment);
 
-        $request->getSession()->setFlash('success', "Successfully added {$institutionMedicalProcedureType->getMedicalProcedureType()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
+        $request->getSession()->setFlash('success', "Successfully added {$institutionTreatment->getTreatment()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
 
         if($request->get('submit') == 'Next') {
             $redirectUrl = $this->generateUrl('institution_medicalCenter_preview', array('imcId' => $request->get('imcId')));
@@ -383,7 +383,7 @@ class MedicalCenterController extends InstitutionAwareController
             throw $this->createNotFoundException('No InstitutionMedicalCenter found.');
         }
 
-        $procedureTypes =  $repo->getAvailableMedicalProcedureTypes($institutionMedicalCenter);
+        $procedureTypes =  $repo->getAvailableTreatments($institutionMedicalCenter);
         foreach($procedureTypes as $each) {
             $data[] = array('id' => $each->getId(), 'name' => $each->getName());
         }
@@ -399,6 +399,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     private function dispatchEvent($eventName, $loggedEntity, $optionalArguments = array())
     {
+        $optionalArguments['institutionId'] = $this->institution->getId();
         $event = $this->get('events.factory')->create($eventName, $loggedEntity, $optionalArguments);
         $this->get('event_dispatcher')->dispatch($eventName, $event);
     }

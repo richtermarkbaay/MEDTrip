@@ -3,7 +3,7 @@ namespace HealthCareAbroad\SearchBundle\Services;
 
 use Doctrine\ORM\QueryBuilder;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use Doctrine\ORM\Query\ResultSetMapping;
 use HealthCareAbroad\SearchBundle\Constants;
@@ -19,8 +19,8 @@ class SearchService
     private $repositoryMap = array(
         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
         Constants::SEARCH_CATEGORY_CENTER => 'MedicalProcedureBundle:MedicalCenter',
-        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:MedicalProcedureType',
-        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:MedicalProcedure'
+        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
+        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
     );
 
     /**
@@ -64,7 +64,7 @@ class SearchService
         }
 
         foreach ($treatments as $t ) {
-            // use medical procedure type name if medical procedure name is empty
+            // use treatment name if medical procedure name is empty
             $label = $t['medical_procedure_name'] ? $t['medical_procedure_name'] : $t['medical_procedure_type_name'];
             $value = $t['medical_procedure_type_id'].'-'.$t['medical_procedure_id'];
 
@@ -99,7 +99,7 @@ class SearchService
     {
 //         $qb = $this->entityManager->createQueryBuilder()
 //             ->select('a')
-//             ->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
+//             ->from('InstitutionBundle:InstitutionTreatmentProcedureType', 'a')
 //             ->leftJoin('a.institutionMedicalCenter', 'b')
 //             ->leftJoin('b.institution', 'c')
 //             ->leftJoin('c.country', 'd')
@@ -166,13 +166,13 @@ $sql = 'SELECT u.id, u.name, a.id AS address_id, a.street, a.city FROM users u '
         ';
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('InstitutionBundle:InstitutionMedicalProcedureType', 'a');
+        $rsm->addEntityResult('InstitutionBundle:InstitutionTreatmentProcedureType', 'a');
         $rsm->addJoinedEntityResult('InstitutionBundle:InstitutionMedicalCenter', 'b', 'a', 'institutionMedicalCenter');
         $rsm->addJoinedEntityResult('InstitutionBundle:Institution', 'c', 'b', 'institutions');
         $rsm->addJoinedEntityResult('HelperBundle:Country', 'country', 'c', 'country');
         $rsm->addFieldResult('country', 'countryId', 'id');
         $rsm->addFieldResult('country', 'name', 'name');
-        $rsm->addJoinedEntityResult('MedicalProcedureBundle:MedicalProcedureType', 'd', 'c', 'medicalProcedureType');
+        $rsm->addJoinedEntityResult('MedicalProcedureBundle:Treatment', 'd', 'c', 'medicalProcedureType');
 
         $query = $this->entityManager->createNativeQuery($sql, $rsm);
         $query->setParameter('medicalProcedureTypeId', $medicalProcedureType->getId());
@@ -215,7 +215,7 @@ $sql = 'SELECT u.id, u.name, a.id AS address_id, a.street, a.city FROM users u '
     }
 
     /**
-     * Search treatments (medical procedures or medical procedure types) located
+     * Search treatments (medical procedures or treatments) located
      * at destinations with $destinationId.
      *
      * @param string $treatmentTerm
