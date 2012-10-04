@@ -181,7 +181,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment Procedure")')->count(), 'Expecting text "Add Treatment Procedure"');
         
         $form = $crawler->selectButton('submit')->form();
-        $invalidValues = array('institutionMedicalProcedureForm[medicalProcedure]' => 0,
+        $invalidValues = array('institutionMedicalProcedureForm[treatmentProcedure]' => 0,
             'institutionMedicalProcedureForm[description]' => '',
             'institutionMedicalProcedureForm[status]' => 0
         );
@@ -191,7 +191,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value is not valid")')->count(), 'Expecting validation error message "This value is not valid"');
         
-        $validValues = array('institutionMedicalProcedureForm[medicalProcedure]' => 1,
+        $validValues = array('institutionMedicalProcedureForm[treatmentProcedure]' => 1,
             'institutionMedicalProcedureForm[description]' => 'sdfasdfasdf',
             'institutionMedicalProcedureForm[status]' => 1
         );

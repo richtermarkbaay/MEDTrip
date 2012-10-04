@@ -50,7 +50,7 @@
                 	    
                 	    <a class="add-edit-procedure button-type" href="{{ path('institution_treatment_addMedicalProcedure', {'imptId': institutionTreatment.id}) }}">Add Procedure</a>
                 	    
-                	    {% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':institutionTreatment.id ,'procedures' : institutionTreatment.institutionTreatmentProcedures } %}
+                	    {% include 'InstitutionBundle:Treatment:treatmentProcedures.html.twig' with {'imptId':institutionTreatment.id ,'procedures' : institutionTreatment.institutionTreatmentProcedures } %}
                 	</div>
             	{% endif %}
 			</div>

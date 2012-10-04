@@ -25,12 +25,12 @@
     	</tr>
     
         {% for procedure in institutionTreatment.institutionTreatmentProcedures %}
-    		{% set medicalProcedure = procedure.medicalProcedure %}
+    		{% set treatmentProcedure = procedure.treatmentProcedure %}
     		<tr>
-    			<td>{{ medicalProcedure.name }}</td>
+    			<td>{{ treatmentProcedure.name }}</td>
     			<td class="raw-content">{{ procedure.description|raw }}</td>  
     			<td>
-    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': institutionTreatment.id, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': institutionTreatment.id, 'impId':procedure.id} ) }}" title="Edit {{ treatmentProcedure.name }}" class="icon-1 add-edit-procedure"></a>
     			</td>
     		</tr>
     	{% else  %}

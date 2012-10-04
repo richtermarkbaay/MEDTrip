@@ -36,7 +36,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->leftJoin('b.treatments', 'c');
 
         if ($procedure) {
-            $qb->leftJoin('c.medicalProcedures', 'd')
+            $qb->leftJoin('c.treatmentProcedures', 'd')
                 ->where('d = :procedure')
                 ->setParameter('procedure', $procedure);
         }
