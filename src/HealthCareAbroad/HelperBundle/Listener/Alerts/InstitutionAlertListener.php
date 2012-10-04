@@ -7,17 +7,12 @@
 
 namespace HealthCareAbroad\HelperBundle\Listener\Alerts;
 
+use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 use HealthCareAbroad\HelperBundle\Services\AlertService;
-
-use HealthCareAbroad\HelperBundle\Entity\Alert;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-use HealthCareAbroad\HelperBundle\Event\BaseEvent;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class InstitutionAlertListener extends BaseAlertListener
 {    
@@ -30,48 +25,62 @@ class InstitutionAlertListener extends BaseAlertListener
      * 
      * @param BaseEvent $event
      */
-    public function onAddMedicalCenterAlertAction(BaseEvent $event)
-    {
-        $this->updateAlertData($event);
-    }
-
-    /**
-     *
-     * @param BaseEvent $event
-     */
-    public function onEditMedicalCenterAlertAction(BaseEvent $event)
-    {
-        $this->updateAlertData($event);
-    }
-    
-    /**
-     *
-     * @param BaseEvent $event
-     */
-    public function onDeleteMedicalCenterAlertAction(BaseEvent $event)
+    public function onAddMedicalCenterAction(BaseEvent $event)
     {
         $object = $event->getData();
 
-        $alertData = array(
-            'referenceData' => array('id' => $object->getId()),
+        $draftAlert = array(
+            'institutionId' => $event->getOption('institutionId'),
+            'referenceData' => array('id' => $object->getId(), 'name' => $object->getMedicalCenter()->getName()),
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
-            'type' => AlertTypes::DRAFT_LISTING
+            'type' => AlertTypes::DRAFT_LISTING,
+            'dateAlert' => date(AlertService::DATE_FORMAT),
+            'isDeletable' => false
         );
 
-        $alertId = $this->alertService->generateAlertId($alertData['referenceData']['id'], $alertData['class'], $alertData['type']);
+        $this->alertService->save($draftAlert);
+    }
 
-        $alertData = $this->alertService->getAlert($alertId);
+    
+    public function onEditMedicalCenterAction(BaseEvent $event)
+    {
+        $object = $event->getData();
 
-        if($alertData) {
-            $this->alertService->delete($alertId, $alertData['_rev']);
+        if($event->getOption('previousStatus') == InstitutionMedicalCenterStatus::DRAFT) {
+            $alertData = array();
+            $object = $event->getData();            
+
+            // REMOVE Draft Alert if exists!
+            $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::DRAFT_LISTING);
+            $draftAlert = $this->alertService->getAlert($alertId);
+            
+            if($draftAlert) {
+                $draftAlert['_deleted'] = true;
+                array_push($alertData, $draftAlert);
+            }
+            
+            if($object->getStatus() == InstitutionMedicalCenterStatus::PENDING) {
+                $pendingAlert = array(
+                    'institutionId' => $event->getOption('institutionId'),
+                    'referenceData' => array('id' => $object->getId(), 'name' => $object->getMedicalCenter()->getName()),
+                    'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
+                    'type' => AlertTypes::PENDING_LISTING,
+                    'dateAlert' => date(AlertService::DATE_FORMAT),
+                    'isDeletable' => false
+                );
+
+                array_push($alertData, $pendingAlert);
+            }
+
+            $this->alertService->multipleUpdate($alertData);
         }
     }
-    
+
     /**
-     * 
+     *
      * @param BaseEvent $event
      */
-    private function updateAlertData(BaseEvent $event)
+    public function onUpdateMedicalCenterStatusAction(BaseEvent $event)
     {
         $alertData = array();
         $object = $event->getData();
@@ -81,15 +90,11 @@ class InstitutionAlertListener extends BaseAlertListener
             'referenceData' => array('id' => $object->getId(), 'name' => $object->getMedicalCenter()->getName()),
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::DRAFT_LISTING,
-            'dateAlert' => date(AlertService::DATE_FORMAT)
+            'dateAlert' => date(AlertService::DATE_FORMAT),
+            'isDeletable' => true
         );
-        
+
         switch($object->getStatus()) {
-
-            case InstitutionMedicalCenterStatus::DRAFT :
-                array_push($alertData, $data);
-                break;
-
             case InstitutionMedicalCenterStatus::PENDING :
                 $pendingAlert = $data;
                 $pendingAlert['type'] = AlertTypes::PENDING_LISTING;
@@ -98,7 +103,7 @@ class InstitutionAlertListener extends BaseAlertListener
 
                 unset($pendingAlert['institutionId']);
                 array_push($alertData, $pendingAlert);
-                
+
                 // REMOVE Draft Alert if exists!
                 $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::DRAFT_LISTING);
                 $draftAlert = $this->alertService->getAlert($alertId);
@@ -135,9 +140,28 @@ class InstitutionAlertListener extends BaseAlertListener
                 break;
         }
 
-        $this->alertService->save($alertData);
-        
-        //exit;
+        $this->alertService->multipleUpdate($alertData);
     }
+    
+    /**
+     *
+     * @param BaseEvent $event
+     */
+    public function onDeleteMedicalCenterAction(BaseEvent $event)
+    {
+        $object = $event->getData();
+        $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::DRAFT_LISTING);
+
+        $alertData = $this->alertService->getAlert($alertId);
+
+        if($alertData) {
+            $this->alertService->delete($alertId, $alertData['_rev']);
+        }
+    }
+    
+    /**
+     * 
+     * @param BaseEvent $event
+     */
 
 }
