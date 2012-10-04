@@ -29,10 +29,10 @@ class InstitutionTreatmentProcedureFormType extends AbstractType
     	$institutionTreatment = $institutionMedicalProcedure->getInstitutionTreatment();
     	
     	if ($institutionMedicalProcedure->getId()) {
-    	    $builder->add('medicalProcedure', 'hidden', array('virtual' => true));
+    	    $builder->add('treatmentProcedure', 'hidden', array('virtual' => true));
     	}
     	else {
-    	    $builder->add('medicalProcedure', new TreatmentProcedureListType(), array(
+    	    $builder->add('treatmentProcedure', new TreatmentProcedureListType(), array(
                 'query_builder' => function (EntityRepository $er) use ($institutionTreatment) {
                     return $er->getQueryBuilderForAvailableInstitutionTreatmentProcedures($institutionTreatment);
         	    },

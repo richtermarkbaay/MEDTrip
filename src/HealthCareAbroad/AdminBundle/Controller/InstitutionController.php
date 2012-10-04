@@ -458,8 +458,8 @@ class InstitutionController extends Controller
             
             // dispatch ADD or EDIT institutionMedicalProcedure event
             $actionEvent = $request->get('impId') 
-                ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE 
-                : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_PROCEDURE;
+                ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE 
+                : InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT_PROCEDURE;
             $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
@@ -525,7 +525,7 @@ class InstitutionController extends Controller
         $em->flush($this->institutionMedicalProcedure);
         
         // dispatch ADD or EDIT institutionMedicalProcedure event
-        $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE;
+        $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE;
         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 

@@ -6,15 +6,15 @@
 	</tr>
 
     {% for procedure in procedures %}
-		{% set medicalProcedure = procedure.medicalProcedure %}
+		{% set treatmentProcedure = procedure.treatmentProcedure %}
 		<tr>
-			<td>{{ medicalProcedure.name }}</td>
+			<td>{{ treatmentProcedure.name }}</td>
 			<td>{{ procedure.description }}</td>  
 			<td>
-				<a href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': imptId, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
-				{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
+				<a href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': imptId, 'impId':procedure.id} ) }}" title="Edit {{ treatmentProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+				{% set class = treatmentProcedure.status ? 'icon-2' : 'icon-5' %}
 				<a href="#"
-					title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+					title="{{ treatmentProcedure.status ? 'Delete' : 'Activate' }}" 
 					class="update-status {{ class }} info-tooltip">
 				</a>
 			</td>
