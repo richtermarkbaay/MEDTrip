@@ -11,7 +11,7 @@
 			<td>{{ medicalProcedure.name }}</td>
 			<td>{{ procedure.description }}</td>  
 			<td>
-				<a href="{{ path('institution_medicalProcedureType_editMedicalProcedure', {'imptId': imptId, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+				<a href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': imptId, 'impId':procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
 				{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
 				<a href="#"
 					title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
@@ -20,6 +20,6 @@
 			</td>
 		</tr>
 	{% else  %}
-		<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+		<tr><td colspan="3" class="empty-list">No Treatment Procedures yet!</td></tr>
 	{% endfor %}
 </table>

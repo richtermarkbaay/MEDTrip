@@ -20,7 +20,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/medical-procedures');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Medical Procedures")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Treatment Procedures")')->count(), 'No Output!');
     }
 
     public function testAdd()
@@ -29,15 +29,15 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/add');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Medical Procedure")')->count(), '"Add Medical Procedure" string not found!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment Procedure")')->count(), '"Add Treatment Procedure" string not found!');
     }
     
     public function testAddWithProcedureType()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/medical-procedure/add?medicalProcedureTypeId=2');
+        $crawler = $client->request('GET', '/admin/medical-procedure/add?treatmentId=2');
         
-        $isCorrectSelected = (int)$crawler->filter('#medicalProcedure_medicalProcedureType > option[selected]')->attr('value') === 2;
+        $isCorrectSelected = (int)$crawler->filter('#treatmentProcedure_treatment > option[selected]')->attr('value') === 2;
 
         $this->assertTrue($isCorrectSelected, 'Incorrect selected procedure type!');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
@@ -46,7 +46,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     public function testAddInvalidProcedureType()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/medical-procedure/add?medicalProcedureTypeId=10010');
+        $crawler = $client->request('GET', '/admin/medical-procedure/add?treatmentId=10010');
     
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
@@ -57,7 +57,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/edit/1');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Medical Procedure")')->count(), '"Edit Medical Procedures" string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Treatment Procedure")')->count(), '"Edit Treatment Procedures" string not found!');
     }
     
     public function testEditInvalidProcedure()
@@ -74,9 +74,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/add');
     
     	$formData = array(
-    		'medicalProcedure[name]' => 'testeste new',
-   			'medicalProcedure[medicalProcedureType]' => 2,
-    		'medicalProcedure[status]' => 1
+    		'treatmentProcedure[name]' => 'testeste new',
+   			'treatmentProcedure[treatment]' => 2,
+    		'treatmentProcedure[status]' => 1
     	);
 
      	$form = $crawler->selectButton('submit')->first()->form();
@@ -92,7 +92,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->followRedirect(true);
 		
 		// check if the redirected response content has the newly added procedure name
-		$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Medical Procedure")')->count() > 0;
+		$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Treatment Procedure")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
     
@@ -102,9 +102,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/medical-procedure/add');
     
         $formData = array(
-            'medicalProcedure[name]' => 'testeste new withAddAnother',
-            'medicalProcedure[medicalProcedureType]' => 2,
-            'medicalProcedure[status]' => 1
+            'treatmentProcedure[name]' => 'testeste new withAddAnother',
+            'treatmentProcedure[treatment]' => 2,
+            'treatmentProcedure[status]' => 1
         );
     
         $form = $crawler->selectButton('submit')->last()->form();
@@ -121,7 +121,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added procedure name
-		$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Add Medical Procedure")')->count() > 0;
+		$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Add Treatment Procedure")')->count() > 0;
         $this->assertTrue($isAdded);
     }
 
@@ -131,9 +131,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/edit/1');
 
     	$formData = array(
-    			'medicalProcedure[name]' => 'testeste new updated',
-    			'medicalProcedure[medicalProcedureType]' => 2,
-    			'medicalProcedure[status]' => 1
+    			'treatmentProcedure[name]' => 'testeste new updated',
+    			'treatmentProcedure[treatment]' => 2,
+    			'treatmentProcedure[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->first()->form();
@@ -149,7 +149,7 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->followRedirect(true);
 
     	// check if the redirected response content has the newly added procedure name
-        $isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Medical Procedure")')->count() > 0;
+        $isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Treatment Procedure")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
     
@@ -158,9 +158,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
 
         $postData = array(
-            'medicalProcedure[name]' => '',
-            'medicalProcedure[medicalProcedureType]' => 2,
-            'medicalProcedure[status]' => 1
+            'treatmentProcedure[name]' => '',
+            'treatmentProcedure[treatment]' => 2,
+            'treatmentProcedure[status]' => 1
         );
         $crawler = $client->request('POST', '/admin/medical-procedure/edit/1', $postData);
 
@@ -174,16 +174,16 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/add');
     
     	$formData = array(
-			'medicalProcedure[name]' => 'testeste new updated',
-			'medicalProcedure[medicalProcedureType]' => 2,
-    		'medicalProcedure[status]' => 1
+			'treatmentProcedure[name]' => 'testeste new updated',
+			'treatmentProcedure[treatment]' => 2,
+    		'treatmentProcedure[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->form();
     	$crawler = $client->submit($form, $formData);
 
     	// check if status code is not 302
-    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Medical Procedure" must not be able to create an entry with duplicate ("medical_procedure_type_id", "name") fields.');
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Treatment Procedure" must not be able to create an entry with duplicate ("medical_procedure_type_id", "name") fields.');
     }
     
     public function testUpdateStatusAction(){
@@ -201,9 +201,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/medical-procedure/add');
 
     	$formData = array(
-			'medicalProcedure[name]' => '',
-			'medicalProcedure[medicalProcedureType]' => 2,
-			'medicalProcedure[status]' => 1
+			'treatmentProcedure[name]' => '',
+			'treatmentProcedure[treatment]' => 2,
+			'treatmentProcedure[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->form();
@@ -218,12 +218,12 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         
         $formData = array(
-            'medicalProcedure[name]' => '',
-            'medicalProcedure[medicalProcedureType]' => 2,
-            'medicalProcedure[status]' => 1
+            'treatmentProcedure[name]' => '',
+            'treatmentProcedure[treatment]' => 2,
+            'treatmentProcedure[status]' => 1
         );
 
-        $crawler = $client->request('POST', '/admin/medical-procedure/add?medicalProcedureTypeId=10010', $formData);
+        $crawler = $client->request('POST', '/admin/medical-procedure/add?treatmentId=10010', $formData);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
         $this->assertGreaterThan(0, $crawler->filter('form.basic-form > div ul')->count(), 'No validation message!');
@@ -234,9 +234,9 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
     	$client = $this->getBrowserWithActualLoggedInUser();
 
     	$formData = array(
-			'medicalProcedure[name]' => 'saveUsingGet',
-			'medicalProcedure[medicalProcedureType]' => 2,
-			'medicalProcedure[status]' => 1
+			'treatmentProcedure[name]' => 'saveUsingGet',
+			'treatmentProcedure[treatment]' => 2,
+			'treatmentProcedure[status]' => 1
     	);
     	$crawler = $client->request('GET', '/admin/medical-procedure/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
@@ -258,14 +258,14 @@ class MedicalProcedureControllerTest extends AdminBundleWebTestCase
         $isAllInactive = $crawler->filter('#medical-procedure-list tr a.icon-2')->count() == 0;
         $this->assertEquals(true, $isAllInactive, 'ListFilter is not working properly!');
     
-        // Test Filter medicalProcedureType
-        $crawler = $client->request('GET', '/admin/medical-procedures?medicalProcedureType=1');
+        // Test Filter treatment
+        $crawler = $client->request('GET', '/admin/medical-procedures?treatment=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $isFiltered = $crawler->filter('#medical-procedure-list tr > td.procedure-type:not(:contains("Procedure Type1"))')->count() == 0;
         $this->assertEquals(true, $isFiltered, 'Filter procedureType is not working properly!');
 
-        // Test Filter status And medicalProcedureType
-        $crawler = $client->request('GET', '/admin/medical-procedures?medicalProcedureType=2&status=1');
+        // Test Filter status And treatment
+        $crawler = $client->request('GET', '/admin/medical-procedures?treatment=2&status=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $isFiltered = $crawler->filter('#medical-procedure-list tr > td.procedure-type:not(:contains("Test Proc Type with center2"))')->count() == 0;
         $isAllActive = $crawler->filter('#medical-procedure-list tr a.icon-5')->count() == 0;

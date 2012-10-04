@@ -10,7 +10,7 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
  * @author Allejo Chris G. Velarde
  *
  */
-class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
+class TreatmentControllerTest extends InstitutionBundleWebTestCase
 {	
     
     public function testPreExecute()
@@ -35,7 +35,7 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Institution Panel Medical Procedure Types")')->count(), 'Expecting page title to contain "Institution Panel Medical Procedure Types"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Institution Panel Treatments")')->count(), 'Expecting page title to contain "Institution Panel Treatments"');
     }
     
     public function testAdd()
@@ -50,19 +50,19 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test with valid user
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Add Medical Procedure Type")')->count(), 'Expecting page title to contain "Add Medical Procedure Type"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Add Treatment")')->count(), 'Expecting page title to contain "Add Treatment"');
         
         // valid form values
         $formValues = array(
-            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
-            'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
+            //'institutionTreatmentForm[medicalCenter]' => '1',
+            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
-            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
-            'institutionMedicalProcedureTypeForm[description]' => '',
+            //'institutionTreatmentForm[medicalCenter]' => '1',
+            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[description]' => '',
         );
         
         // test for submitting missing required fields
@@ -105,19 +105,19 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test correct request
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Medical Procedure Type")')->count(), 'Expecting page title to contain "Edit Medical Procedure Type"');
+        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Treatment")')->count(), 'Expecting page title to contain "Edit Treatment"');
         
         // valid form values
         $formValues = array(
-            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
-            'institutionMedicalProcedureTypeForm[description]' => 'Test medical-procedure-type',
+            //'institutionTreatmentForm[medicalCenter]' => '1',
+            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[description]' => 'Test medical-procedure-type',
         );
         
         $invalidFormValues = array(
-            //'institutionMedicalProcedureTypeForm[medicalCenter]' => '1',
-            'institutionMedicalProcedureTypeForm[medicalProcedureType]' => '1',
-            'institutionMedicalProcedureTypeForm[description]' => '',
+            //'institutionTreatmentForm[medicalCenter]' => '1',
+            'institutionTreatmentForm[treatment]' => '1',
+            'institutionTreatmentForm[description]' => '',
         );
         
         // test for submitting missing required fields
@@ -174,7 +174,7 @@ class MedicalProcedureTypeControllerTest extends InstitutionBundleWebTestCase
         // test valid request
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Medical Procedure")')->count(), 'Expecting text "Add Medical Procedure"');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment Procedure")')->count(), 'Expecting text "Add Treatment Procedure"');
         
         $form = $crawler->selectButton('submit')->form();
         $invalidValues = array('institutionMedicalProcedureForm[medicalProcedure]' => 0,

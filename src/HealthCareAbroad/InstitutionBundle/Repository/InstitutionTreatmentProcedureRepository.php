@@ -14,15 +14,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionTreatmentProcedureRepository extends EntityRepository
 {
-	public function getCountByMedicalProcedureId($medicalProcedureId) {
+	public function getCountByMedicalProcedureId($treatmentProcedureId) {
 		$qb = $this->_em->createQueryBuilder();
 
 		$qb->select('count(a)')
 		->from('InstitutionBundle:InstitutionTreatmentProcedure', 'a')
 		->where('a.status = :active')
-		->andWhere('a.medicalProcedure = :medicalProcedureId')
+		->andWhere('a.treatmentProcedure = :treatmentProcedureId')
 		->setParameter('active', InstitutionTreatmentProcedure::STATUS_ACTIVE)
-		->setParameter('medicalProcedureId', $medicalProcedureId);
+		->setParameter('treatmentProcedureId', $treatmentProcedureId);
 	
 		$count = (int)$qb->getQuery()->getSingleScalarResult();
 
@@ -52,7 +52,7 @@ class InstitutionTreatmentProcedureRepository extends EntityRepository
 	{
 		$conn = $this->_em->getConnection();
 
-		$qry = "SELECT b.* FROM institution_medical_procedures AS a " .
+		$qry = "SELECT b.* FROM institution_treatment_procedures AS a " .
 				"JOIN medical_procedures AS b ON a.medical_procedure_id = b.id " .
 				"JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id ".
 				"WHERE a.institution_id = $institutionId AND b.medical_procedure_type_id = $procedureTypeId";

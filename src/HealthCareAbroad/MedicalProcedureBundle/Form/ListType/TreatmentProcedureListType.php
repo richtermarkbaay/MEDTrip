@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class MedicalProcedureListType extends AbstractType
+class TreatmentProcedureListType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -14,13 +14,13 @@ class MedicalProcedureListType extends AbstractType
             'virtual' => false,
             'empty_value' => 'Please select one',
             'property' => 'name',
-            'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure',
+            'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
         ));
     }
     
     public function getName()
     {
-        return 'medicalProcedureList';
+        return 'treatmentProcedureList';
     }
     
     public function getParent()

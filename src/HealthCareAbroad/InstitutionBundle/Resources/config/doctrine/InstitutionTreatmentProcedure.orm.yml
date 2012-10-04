@@ -1,6 +1,6 @@
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure:
     type: entity
-    table: institution_medical_procedures
+    table: institution_treatment_procedures
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionTreatmentProcedureRepository
     gedmo:
         loggable:

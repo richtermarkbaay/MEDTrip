@@ -33,7 +33,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->select('a')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
             ->leftJoin('a.medicalCenter', 'b')
-            ->leftJoin('b.medicalProcedureTypes', 'c');
+            ->leftJoin('b.treatments', 'c');
 
         if ($procedure) {
             $qb->leftJoin('c.medicalProcedures', 'd')
@@ -100,7 +100,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $conn = $this->_em->getConnection();
         $qry = "SELECT a.medical_procedure_type_id, b.id FROM institution_medical_procedure_types AS a " .
                 "JOIN medical_procedures AS b ON a.medical_procedure_type_id = b.medical_procedure_type_id " .
-                "JOIN institution_medical_procedures AS c ON b.id = c.medical_procedure_id ".
+                "JOIN institution_treatment_procedures AS c ON b.id = c.medical_procedure_id ".
                 "WHERE institution_medical_center_id = $medicalCenterId AND b.status = 1 AND c.status = 1 " .
                 "GROUP BY a.medical_procedure_type_id";
 

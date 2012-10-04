@@ -6,13 +6,13 @@ use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalProcedureTypeListType;
+use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\TreatmentListType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionMedicalCenterListType;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -20,19 +20,19 @@ use Symfony\Component\Form\AbstractType;
 
 use \Exception;
 
-class InstitutionMedicalProcedureTypeFormType extends AbstractType
+class InstitutionTreatmentFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $institutionMedicalProcedureType = $options['data'];
+        $institutionTreatment = $options['data'];
 
-        if ($institutionMedicalProcedureType->getId()) {
-            $builder->add('medicalProcedureType', 'hidden', array('virtual' => true));
+        if ($institutionTreatment->getId()) {
+            $builder->add('treatment', 'hidden', array('virtual' => true));
         }
         else {
-            $builder->add('medicalProcedureType', 'medicalproceduretype_list', array(
-                'query_builder' => function(EntityRepository $er) use ($institutionMedicalProcedureType) {
-                    return $er->getQueryBuilderForAvailableInstitutionMedicalProcedureTypes($institutionMedicalProcedureType->getInstitutionMedicalCenter());
+            $builder->add('treatment', 'medicalproceduretype_list', array(
+                'query_builder' => function(EntityRepository $er) use ($institutionTreatment) {
+                    return $er->getQueryBuilderForAvailableInstitutionTreatments($institutionTreatment->getInstitutionMedicalCenter());
                 },
                 'virtual' => false, 'label' => 'Procedure Type:', 'constraints' => new NotBlank()
             ));
@@ -43,6 +43,6 @@ class InstitutionMedicalProcedureTypeFormType extends AbstractType
 
     public function getName()
     {
-        return 'institutionMedicalProcedureTypeForm';
+        return 'institutionTreatmentForm';
     }
 }

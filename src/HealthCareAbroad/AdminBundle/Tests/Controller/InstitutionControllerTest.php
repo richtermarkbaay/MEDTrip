@@ -297,7 +297,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     /////// END of Manage Institution Medical Centers Tests //
 
 
-    /////// Medical Procedure Types Tests //
+    /////// Treatments Tests //
     public function testAddProcedureType()
     {
         $url = '/admin/institution/1/medical-center/2/procedure-type/add';
@@ -310,7 +310,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionTreatmentForm[medicalProcedureType]' => 2,
+            'institutionTreatmentForm[treatment]' => 2,
             'institutionTreatmentForm[description]' => 'This medProceType is added from Admin Add test. got it?'
         );
 
@@ -320,7 +320,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $isSuccess = is_object(json_decode($client->getResponse()->getContent()));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+        $this->assertTrue($isSuccess, 'Unable to save treatment');
     }
     
     public function testEditProcedureTypes()
@@ -335,7 +335,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionTreatmentForm[medicalProcedureType]' => 2,
+            'institutionTreatmentForm[treatment]' => 2,
             'institutionTreatmentForm[description]' => 'This medProceType is added from Admin Add test got it? yes, updated!'
         );
 
@@ -345,7 +345,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $isSuccess = is_object(json_decode($client->getResponse()->getContent()));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($isSuccess, 'Unable to save medicalProcedureType');
+        $this->assertTrue($isSuccess, 'Unable to save treatment');
     }
 
     public function testEditInvalidProcedureType()
@@ -368,7 +368,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionTreatmentForm[medicalProcedureType]' => 1,
+            'institutionTreatmentForm[treatment]' => 1,
             'institutionTreatmentForm[description]' => ''
         );
 
@@ -386,7 +386,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
     
         $formData = array(
-            'institutionTreatmentForm[medicalProcedureType]' => 'saveUsingGet',
+            'institutionTreatmentForm[treatment]' => 'saveUsingGet',
             'institutionTreatmentForm[description]' => 'test invalid medical center method.'
         );
 
@@ -394,11 +394,11 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     
         $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
     }
-    /////// END of Manage Institution Medical Procedure Types Tests //
+    /////// END of Manage Institution Treatments Tests //
 
 
 
-    /////// Medical Procedure Tests //
+    /////// Treatment Procedure Tests //
     public function testAddProcedure()
     {
         $url = '/admin/institution/1/medical-center/2/procedure-type/1/procedure/add';
@@ -411,7 +411,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureForm[medicalProcedure]' => 3,
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 3,
             'institutionMedicalProcedureForm[description]' => 'This Procedure is added from Admin Add test. got it?',
             'institutionMedicalProcedureForm[status]' => 1
         );
@@ -422,7 +422,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $isSuccess = is_object(json_decode($client->getResponse()->getContent()));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($isSuccess, 'Unable to save medicalProcedure');
+        $this->assertTrue($isSuccess, 'Unable to save treatmentProcedure');
     }
     
     public function testEditProcedure()
@@ -437,7 +437,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureForm[medicalProcedure]' => 3,
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 3,
             'institutionMedicalProcedureForm[description]' => 'This Procedure is added from Admin Add test. got it? updated',
             'institutionMedicalProcedureForm[status]' => 1
         );
@@ -448,7 +448,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $isSuccess = is_object(json_decode($client->getResponse()->getContent()));
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($isSuccess, 'Unable to save medicalProcedure');
+        $this->assertTrue($isSuccess, 'Unable to save treatmentProcedure');
     }
     
     public function testSaveProcedureInvalidData()
@@ -457,7 +457,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
     
         $formData = array(
-            'institutionMedicalProcedureForm[medicalProcedure]' => 3,
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 3,
             'institutionMedicalProcedureForm[description]' => '',
             'institutionMedicalProcedureForm[status]' => 1
         );
@@ -477,7 +477,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
 
         $formData = array(
-            'institutionMedicalProcedureForm[medicalProcedure]' => 3,
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 3,
             'institutionMedicalProcedureForm[description]' => '',
             'institutionMedicalProcedureForm[status]' => 1
         );
@@ -504,7 +504,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
     
         $formData = array(
-            'institutionMedicalProcedureForm[medicalProcedure]' => 'saveUsingGet',
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 'saveUsingGet',
             'institutionMedicalProcedureForm[description]' => 'test invalid medical center method.',
             'institutionMedicalProcedureForm[status]' => 1
         );
@@ -525,6 +525,6 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertEquals("true", $response->getContent());
     
     }
-    /////// END of Medical Procedure Tests //
+    /////// END of Treatment Procedure Tests //
     
 }

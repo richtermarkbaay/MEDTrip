@@ -26,7 +26,7 @@ class MedicalProcedureListFilter extends ListFilter
     function setMedicalProcedureTypeFilterOption()
     {        
         // Set The Filter Option 
-        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findByStatus(1);
+        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(1);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($procedureTypes as $each) {
             $options[$each->getId()] = $each->getName();
@@ -41,7 +41,7 @@ class MedicalProcedureListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:MedicalProcedure', 'a');
+        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:TreatmentProcedure', 'a');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.status = :status');

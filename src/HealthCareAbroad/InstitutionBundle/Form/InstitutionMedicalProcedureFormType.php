@@ -1,10 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalProcedureListType;
+use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\TreatmentProcedureListType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure;
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionMedicalCenterListType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
@@ -12,29 +12,29 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class InstitutionMedicalProcedureFormType extends AbstractType 
+class InstitutionTreatmentProcedureFormType extends AbstractType 
 {	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     	$status = array(
-    		InstitutionMedicalProcedure::STATUS_ACTIVE => 'active',
-    		InstitutionMedicalProcedure::STATUS_INACTIVE => 'inactive'
+    		InstitutionTreatmentProcedure::STATUS_ACTIVE => 'active',
+    		InstitutionTreatmentProcedure::STATUS_INACTIVE => 'inactive'
     	);
     	
     	$institutionMedicalProcedure = $options['data'];
     	
-    	if (!$institutionMedicalProcedure instanceof InstitutionMedicalProcedure) {
-    	    throw new \Exception(__CLASS__.' expects an instance of HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure as data');
+    	if (!$institutionMedicalProcedure instanceof InstitutionTreatmentProcedure) {
+    	    throw new \Exception(__CLASS__.' expects an instance of HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure as data');
     	}
-    	$institutionMedicalProcedureType = $institutionMedicalProcedure->getInstitutionMedicalProcedureType();
+    	$institutionTreatment = $institutionMedicalProcedure->getInstitutionTreatment();
     	
     	if ($institutionMedicalProcedure->getId()) {
     	    $builder->add('medicalProcedure', 'hidden', array('virtual' => true));
     	}
     	else {
-    	    $builder->add('medicalProcedure', new MedicalProcedureListType(), array(
-                'query_builder' => function (EntityRepository $er) use ($institutionMedicalProcedureType) {
-                    return $er->getQueryBuilderForAvailableInstitutionMedicalProcedures($institutionMedicalProcedureType);
+    	    $builder->add('medicalProcedure', new TreatmentProcedureListType(), array(
+                'query_builder' => function (EntityRepository $er) use ($institutionTreatment) {
+                    return $er->getQueryBuilderForAvailableInstitutionTreatmentProcedures($institutionTreatment);
         	    },
         	    'label'=>'Procedure',
         	    'required'=>true,

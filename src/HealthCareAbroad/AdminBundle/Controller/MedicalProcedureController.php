@@ -12,8 +12,8 @@ use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
-use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalProcedureFormType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\MedicalProcedureBundle\Form\TreatmentProcedureFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class MedicalProcedureController extends Controller
@@ -24,12 +24,12 @@ class MedicalProcedureController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $medicalProcedureTypeId = $request->get('medicalProcedureType', 0);
-        if ($medicalProcedureTypeId == ListFilter::FILTER_KEY_ALL) {
-            $medicalProcedureTypeId = 0;
+        $treatmentId = $request->get('treatment', 0);
+        if ($treatmentId == ListFilter::FILTER_KEY_ALL) {
+            $treatmentId = 0;
         }
 
-        $params = array('medicalProcedureTypeId' => $medicalProcedureTypeId,'procedures' => $this->filteredResult, 'pager' => $this->pager);
+        $params = array('treatmentId' => $treatmentId,'procedures' => $this->filteredResult, 'pager' => $this->pager);
 
         return $this->render('AdminBundle:MedicalProcedure:index.html.twig', $params);
     }
@@ -42,28 +42,28 @@ class MedicalProcedureController extends Controller
     public function addAction()
     {
         $params = $formActionParams = array();
-        $procedure = new MedicalProcedure();
+        $procedure = new TreatmentProcedure();
 
-        if($medicalProcedureTypeId = $this->getRequest()->get('medicalProcedureTypeId', 0)) {
-            $medicalProcedureType = $this->getDoctrine()->getRepository('MedicalProcedureBundle:Treatment')->find($medicalProcedureTypeId);
+        if($treatmentId = $this->getRequest()->get('treatmentId', 0)) {
+            $treatment = $this->getDoctrine()->getRepository('MedicalProcedureBundle:Treatment')->find($treatmentId);
 
-            if(!$medicalProcedureType) {
-                throw $this->createNotFoundException("Invalid Medical Procedure Type.");
+            if(!$treatment) {
+                throw $this->createNotFoundException("Invalid Treatment.");
             }
 
-            $procedure->setTreatment($medicalProcedureType);
+            $procedure->setTreatment($treatment);
 
             $params['isAddFromSpecificType'] = true;
-            $formActionParams['medicalProcedureTypeId'] = $medicalProcedureTypeId;
+            $formActionParams['treatmentId'] = $treatmentId;
         }
 
-        $medicalProcedureForm = new MedicalProcedureFormType();
-        $medicalProcedureForm->setDoctrine($this->getDoctrine());
+        $treatmentProcedureForm = new TreatmentProcedureFormType();
+        $treatmentProcedureForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureForm, $procedure);        
+        $form = $this->createForm($treatmentProcedureForm, $procedure);        
 
         $params['form'] = $form->createView();
-        $params['formAction'] = $this->generateUrl('admin_medicalProcedure_create', $formActionParams);
+        $params['formAction'] = $this->generateUrl('admin_treatmentProcedure_create', $formActionParams);
         return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
     
@@ -76,20 +76,20 @@ class MedicalProcedureController extends Controller
     public function editAction($id)
     {
         if($id) {
-            $procedure = $this->get('services.medical_procedure')->getMedicalProcedure($id);
+            $procedure = $this->get('services.medical_procedure')->getTreatmentProcedure($id);
             if(!$procedure) {
-                throw $this->createNotFoundException("Invalid Medical Procedure.");
+                throw $this->createNotFoundException("Invalid Treatment Procedure.");
             }
         }
 
-        $medicalProcedureForm = new MedicalProcedureFormType();
-        $medicalProcedureForm->setDoctrine($this->getDoctrine());
+        $treatmentProcedureForm = new TreatmentProcedureFormType();
+        $treatmentProcedureForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureForm, $procedure);
+        $form = $this->createForm($treatmentProcedureForm, $procedure);
 
         $params['form'] = $form->createView();
-        $params['formAction'] = $this->generateUrl('admin_medicalProcedure_update', array('id' => $procedure->getId()));
-        $params['hasInstitutionMedicalProcedures'] = (bool)count($procedure->getInstitutionMedicalProcedures()); // TODO - should be replaced with SELECT count(*) query
+        $params['formAction'] = $this->generateUrl('admin_treatmentProcedure_update', array('id' => $procedure->getId()));
+        $params['hasInstitutionTreatmentProcedures'] = (bool)count($procedure->getInstitutionTreatmentProcedures()); // TODO - should be replaced with SELECT count(*) query
         return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
     }
 
@@ -107,17 +107,17 @@ class MedicalProcedureController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         if($id) {
-            $procedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id);
+            $procedure = $em->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($id);
 
-            if(!$procedure) throw $this->createNotFoundException("Invalid Medical Procedure.");
+            if(!$procedure) throw $this->createNotFoundException("Invalid Treatment Procedure.");
             
-        } else $procedure = new MedicalProcedure();
+        } else $procedure = new TreatmentProcedure();
 
 
-        $medicalProcedureForm = new MedicalProcedureFormType();
-        $medicalProcedureForm->setDoctrine($this->getDoctrine());
+        $treatmentProcedureForm = new TreatmentProcedureFormType();
+        $treatmentProcedureForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureForm, $procedure);
+        $form = $this->createForm($treatmentProcedureForm, $procedure);
         $form->bind($request);
 
         if ($form->isValid()) {
@@ -128,35 +128,35 @@ class MedicalProcedureController extends Controller
             $eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_PROCEDURE : AdminBundleEvents::ON_ADD_MEDICAL_PROCEDURE;
             $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $procedure));
             
-            $request->getSession()->setFlash('success', 'Medical Procedure has been saved!');
+            $request->getSession()->setFlash('success', 'Treatment Procedure has been saved!');
             
             if($request->get('submit') == 'Save')
-                return $this->redirect($this->generateUrl('admin_medicalProcedure_edit', array('id' => $procedure->getId())));
+                return $this->redirect($this->generateUrl('admin_treatmentProcedure_edit', array('id' => $procedure->getId())));
             else {
-                $medicalProcedureTypeId = $request->get('medicalProcedureTypeId');
-                $addParams = $medicalProcedureTypeId ? array('medicalProcedureTypeId' => $medicalProcedureTypeId) : array();
+                $treatmentId = $request->get('treatmentId');
+                $addParams = $treatmentId ? array('treatmentId' => $treatmentId) : array();
             
-                return $this->redirect($this->generateUrl('admin_medicalProcedure_add', $addParams));
+                return $this->redirect($this->generateUrl('admin_treatmentProcedure_add', $addParams));
             }
 
         } else {
-            $medicalProcedureTypeId = $request->get('medicalProcedureTypeId');
+            $treatmentId = $request->get('treatmentId');
             $params = $formCreateParams = array();
 
-            if($medicalProcedureTypeId) {
+            if($treatmentId) {
                 $params['isAddFromSpecificType'] = true;
-                $formCreateParams['medicalProcedureTypeId'] = $medicalProcedureTypeId;
+                $formCreateParams['treatmentId'] = $treatmentId;
             }
 
             if(!$procedure->getId()) {
-                $formAction = $this->generateUrl('admin_medicalProcedure_create', $formCreateParams);
+                $formAction = $this->generateUrl('admin_treatmentProcedure_create', $formCreateParams);
             } else {
-                $formAction = $this->generateUrl('admin_medicalProcedure_update', array('id' => $procedure->getId()));
+                $formAction = $this->generateUrl('admin_treatmentProcedure_update', array('id' => $procedure->getId()));
             }
 
             $params['form'] = $form->createView();
             $params['formAction'] = $formAction;
-            $params['hasInstitutionMedicalProcedures'] = (bool)count($procedure->getInstitutionMedicalProcedures()); // TODO Should be replaced with SELECT count(*)
+            $params['hasInstitutionTreatmentProcedures'] = (bool)count($procedure->getInstitutionTreatmentProcedures()); // TODO Should be replaced with SELECT count(*)
             
             return $this->render('AdminBundle:MedicalProcedure:form.html.twig', $params);
         }
@@ -171,13 +171,13 @@ class MedicalProcedureController extends Controller
     public function updateStatusAction($id)
     {
         $result = false;
-        $procedure = $this->get('services.medical_procedure')->getMedicalProcedure($id);
+        $procedure = $this->get('services.medical_procedure')->getTreatmentProcedure($id);
 
         if($procedure) {
             $em = $this->getDoctrine()->getEntityManager();
-            $status = $procedure->getStatus() == MedicalProcedure::STATUS_ACTIVE 
-                    ? MedicalProcedure::STATUS_INACTIVE
-                    : MedicalProcedure::STATUS_ACTIVE;
+            $status = $procedure->getStatus() == TreatmentProcedure::STATUS_ACTIVE 
+                    ? TreatmentProcedure::STATUS_INACTIVE
+                    : TreatmentProcedure::STATUS_ACTIVE;
 
             $procedure->setStatus($status);
             $em->persist($procedure);

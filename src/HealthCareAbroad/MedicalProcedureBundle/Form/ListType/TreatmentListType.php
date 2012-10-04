@@ -5,7 +5,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class MedicalProcedureTypeListType extends AbstractType 
+class TreatmentListType extends AbstractType 
 {
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -13,9 +13,9 @@ class MedicalProcedureTypeListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
         	'label' => 'Procedure Type',
-			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType',
+			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment',
 // 			'query_builder' => function(EntityRepository $er) {
-// 			    return $er->getQueryBuilderForGettingAvailableMedicalProcedureTypes();
+// 			    return $er->getQueryBuilderForGettingAvailableTreatments();
 //             }
         ));
     }

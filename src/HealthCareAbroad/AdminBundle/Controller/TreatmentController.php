@@ -55,10 +55,10 @@ class TreatmentController extends Controller
             $formActionParams['medicalCenterId'] = $medicalCenterId;
         }
         
-        $medicalProcedureTypeForm = new TreatmentFormType();
-        $medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+        $treatmentForm = new TreatmentFormType();
+        $treatmentForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureTypeForm, $procedureType);
+        $form = $this->createForm($treatmentForm, $procedureType);
 
         $params['form'] = $form->createView();
         $params['formAction'] = $this->generateUrl('admin_procedureType_create', $formActionParams);
@@ -77,19 +77,19 @@ class TreatmentController extends Controller
         $procedureType = $this->getDoctrine()->getRepository('MedicalProcedureBundle:Treatment')->find($id);
 
         if(!$procedureType) {
-            throw $this->createNotFoundException("Invalid Medical Procedure Type.");
+            throw $this->createNotFoundException("Invalid Treatment.");
         }
 
-        $medicalProcedureTypeForm = new TreatmentFormType();
-        $medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+        $treatmentForm = new TreatmentFormType();
+        $treatmentForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureTypeForm, $procedureType);
+        $form = $this->createForm($treatmentForm, $procedureType);
 
         $params = array(
             'form' => $form->createView(),
             'formAction' =>  $this->generateUrl('admin_procedureType_update', array('id' => $procedureType->getId())),
-            'hasProcedures' => (bool)count($procedureType->getMedicalProcedures()),
-               'medicalProcedureType' => $procedureType
+            'hasProcedures' => (bool)count($procedureType->getTreatmentProcedures()),
+               'treatment' => $procedureType
         );
 
         return $this->render('AdminBundle:Treatment:form.html.twig', $params);
@@ -111,17 +111,17 @@ class TreatmentController extends Controller
         if($id) {
             $procedureType = $em->getRepository('MedicalProcedureBundle:Treatment')->find($id);
             if(!$procedureType) {
-                throw $this->createNotFoundException("Invalid Medical Procedure Type.");
+                throw $this->createNotFoundException("Invalid Treatment.");
             }
         } 
         else {
             $procedureType = new Treatment();
         }
 
-        $medicalProcedureTypeForm = new TreatmentFormType();
-        $medicalProcedureTypeForm->setDoctrine($this->getDoctrine());
+        $treatmentForm = new TreatmentFormType();
+        $treatmentForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($medicalProcedureTypeForm, $procedureType);
+        $form = $this->createForm($treatmentForm, $procedureType);
         $form->bind($request);
 
         if ($form->isValid()) {
@@ -154,7 +154,7 @@ class TreatmentController extends Controller
             $params = array(
                 'form' => $form->createView(),
                 'formAction' => $formAction,
-                   'hasProcedures' => (bool)count($procedureType->getMedicalProcedures())
+                   'hasProcedures' => (bool)count($procedureType->getTreatmentProcedures())
             );
             return $this->render('AdminBundle:Treatment:form.html.twig', $params);
         }

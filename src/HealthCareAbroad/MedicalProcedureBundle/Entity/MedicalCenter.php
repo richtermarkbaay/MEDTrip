@@ -45,7 +45,7 @@ class MedicalCenter
 
     public function __construct()
     {
-        $this->medicalProcedureType = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->treatment = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -176,39 +176,39 @@ class MedicalCenter
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $medicalProcedureTypes;
+    private $treatments;
 
 
     /**
-     * Add medicalProcedureTypes
+     * Add treatments
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $treatments
      * @return MedicalCenter
      */
-    public function addTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes)
+    public function addTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $treatments)
     {
-        $this->medicalProcedureTypes[] = $medicalProcedureTypes;
+        $this->treatments[] = $treatments;
         return $this;
     }
 
     /**
-     * Remove medicalProcedureTypes
+     * Remove treatments
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $treatments
      */
-    public function removeTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $medicalProcedureTypes)
+    public function removeTreatment(\HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment $treatments)
     {
-        $this->medicalProcedureTypes->removeElement($medicalProcedureTypes);
+        $this->treatments->removeElement($treatments);
     }
 
     /**
-     * Get medicalProcedureTypes
+     * Get treatments
      *
      * @return Doctrine\Common\Collections\Collection 
      */
     public function getTreatments()
     {
-        return $this->medicalProcedureTypes;
+        return $this->treatments;
     }
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection

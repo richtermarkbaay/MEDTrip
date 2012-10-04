@@ -49,7 +49,7 @@
 							<ul>
 								<li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
 								{% for impt in institutionMedicalCenter.institutionTreatments %}
-									<li id="procedure-type-{{impt.id}}"><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+									<li id="procedure-type-{{impt.id}}"><a href="#tab-impt-{{ impt.id }}">{{ impt.treatment.name }}</a></li>
 								{% endfor %}
 							</ul>
 
@@ -64,7 +64,7 @@
 
 							{% for impt in institutionMedicalCenter.institutionTreatments %}
 								<div id="tab-impt-{{ impt.id }}">
-									{% include 'AdminBundle:Institution:medicalProcedureTypeDetail.html.twig' with 
+									{% include 'AdminBundle:Institution:treatmentDetail.html.twig' with 
 										{institutionId: institutionId, institutionMedicalCenter: institutionMedicalCenter, institutionTreatment: impt } 
 									%}
 								</div>

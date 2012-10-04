@@ -9,17 +9,17 @@
 
 			<div>
 				<label>Procedure Type</label>
-				<span class="fixed-value">{{ institutionTreatment.medicalProcedureType.name }}</span>
+				<span class="fixed-value">{{ institutionTreatment.treatment.name }}</span>
 			</div>
 
 			{% if not isNew %}
 				<div>
 					<label>Procedure</label>
-					<span class="fixed-value">{{ medicalProcedureName }}</span>
+					<span class="fixed-value">{{ treatmentProcedureName }}</span>
 				</div>
 			{% endif %}
 			
-			{{ form_row(form.medicalProcedure) }}
+			{{ form_row(form.treatmentProcedure) }}
 			{{ form_row(form.description) }}
 			{{ form_row(form.status) }}
 			{{ form_rest(form) }}

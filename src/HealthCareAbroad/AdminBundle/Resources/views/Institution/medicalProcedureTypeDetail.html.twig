@@ -2,8 +2,8 @@
 <div class="tabbed-medical-procedure-type-detail" >
     
     <div class="action-buttons">    
-        <a title="Edit {{ institutionTreatment.medicalProcedureType.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('admin_institution_procedureType_edit', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id}) }}">Edit {{ institutionTreatment.medicalProcedureType.name }}</a>
-        <a title="Add {{ institutionTreatment.medicalProcedureType.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('admin_institution_medicalProcedure_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id}) }}">Add Procedure</a>
+        <a title="Edit {{ institutionTreatment.treatment.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('admin_institution_procedureType_edit', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id}) }}">Edit {{ institutionTreatment.treatment.name }}</a>
+        <a title="Add {{ institutionTreatment.treatment.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('admin_institution_treatmentProcedure_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id}) }}">Add Procedure</a>
     </div>
     
     <div class="details raw-content">
@@ -23,21 +23,21 @@
     	</tr>
 
         {% for procedure in institutionTreatment.institutionMedicalProcedures %}
-    		{% set medicalProcedure = procedure.medicalProcedure %}
+    		{% set treatmentProcedure = procedure.treatmentProcedure %}
     		<tr>
-    			<td>{{ medicalProcedure.name }}</td>
+    			<td>{{ treatmentProcedure.name }}</td>
     			<td class="raw-content">{{ procedure.description|raw }}</td>  
     			<td>
-    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('admin_institution_medicalProcedure_edit', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id, impId:procedure.id} ) }}" title="Edit {{ medicalProcedure.name }}" class="icon-1 add-edit-procedure"></a>
-					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
-					<a href="{{ path('admin_institution_medicalProcedure_updateStatus', {impId:procedure.id}) }}"
-						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('admin_institution_treatmentProcedure_edit', {institutionId: institutionId, imcId: institutionMedicalCenter.id, imptId: institutionTreatment.id, impId:procedure.id} ) }}" title="Edit {{ treatmentProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+					{% set class = treatmentProcedure.status ? 'icon-2' : 'icon-5' %}
+					<a href="{{ path('admin_institution_treatmentProcedure_updateStatus', {impId:procedure.id}) }}"
+						title="{{ treatmentProcedure.status ? 'Delete' : 'Activate' }}" 
 						class="update-status {{ class }} info-tooltip">
 					</a>
     			</td>
     		</tr>
     	{% else  %}
-    		<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+    		<tr><td colspan="3" class="empty-list">No Treatment Procedures yet!</td></tr>
     	{% endfor %}
     </table>
     

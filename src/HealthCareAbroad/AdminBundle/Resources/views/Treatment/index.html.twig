@@ -5,7 +5,7 @@
 {% block content %}
     <div id="content">
 
-        <div id="page-heading"><h2>List of Medical Procedure Types</h2></div>
+        <div id="page-heading"><h2>List of Treatments</h2></div>
 
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
@@ -59,7 +59,7 @@
                                 <a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                 {% set class = type.status ? 'icon-2' : 'icon-5' %}
                                 <a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                                    <a href="{{ path('admin_medicalProcedure_index', {medicalProcedureType:type.id}) }}" class="icon-type">procedures</a>
+                                    <a href="{{ path('admin_treatmentProcedure_index', {treatment:type.id}) }}" class="icon-type">procedures</a>
                             </td>
                         </tr>
                     {% else  %}

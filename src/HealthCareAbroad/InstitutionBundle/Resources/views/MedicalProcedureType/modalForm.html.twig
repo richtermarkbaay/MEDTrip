@@ -10,7 +10,7 @@
         
 		<form action="{{ formUrl }}" method="post" {{ form_enctype(form) }} class="basic-form">
 		
-			{{ form_row(form.medicalProcedureType) }}
+			{{ form_row(form.treatment) }}
             {{ form_row(form.description) }}
             {{ form_rest(form) }}
 		    <input type="submit" class="form-submit" name="submit"/>

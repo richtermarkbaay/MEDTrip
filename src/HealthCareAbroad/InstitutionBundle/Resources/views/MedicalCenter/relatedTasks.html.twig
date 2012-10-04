@@ -1,9 +1,9 @@
 {% set imcId = imcId is defined and imcId ? imcId : 0 %}
 
-{% set medicalProcedureTypeTask = {
-    title: 'Add Medical Procedure Type', 
+{% set treatmentTask = {
+    title: 'Add Treatment', 
     class: 'add-procedure-type add-icon',
-    isVisible: hideMedicalProcedureTypeTask is defined and hideMedicalProcedureTypeTask ? false: true,
+    isVisible: hideTreatmentTask is defined and hideTreatmentTask ? false: true,
     description: imcId is defined and imcId ? 'Create a new medical procedure type for this medical center': 'Add a new medical procedure type', 
     href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId }), 
     links: [
@@ -51,11 +51,11 @@
 
 {% if (institutionMedicalCenter is defined) %}
     {% include '::relatedTasks.base.admin.html.twig' with 
-        {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, viewHistoryTask, dashboardTask]} 
+        {'contents': [addMedicalCenterTask, treatmentTask, manageMedicalCentersTask, viewHistoryTask, dashboardTask]} 
     %}
 {% else %}
     {% include '::relatedTasks.base.admin.html.twig' with 
-        {'contents': [addMedicalCenterTask, medicalProcedureTypeTask, manageMedicalCentersTask, dashboardTask]} 
+        {'contents': [addMedicalCenterTask, treatmentTask, manageMedicalCentersTask, dashboardTask]} 
     %}
 {% endif %}
                         

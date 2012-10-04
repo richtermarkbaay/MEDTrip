@@ -1,9 +1,9 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Form;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalProcedureRepository;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType as MedicalProcedureTypeEntity;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment as TreatmentEntity;
 
 use Doctrine\ORM\EntityManager;
 
@@ -12,27 +12,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class MedicalProcedureTypeFormType extends AbstractType
+class TreatmentFormType extends AbstractType
 {
 	protected $doctrine;
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$medicalProcedureType = $options['data'];
+		$treatment = $options['data'];
 
 		$status = array(
-			MedicalProcedureType::STATUS_ACTIVE => 'active',
-			MedicalProcedureType::STATUS_INACTIVE => 'inactive'
+			Treatment::STATUS_ACTIVE => 'active',
+			Treatment::STATUS_INACTIVE => 'inactive'
 		);
 
-		if ($medicalProcedureType->getId()) {
-			$medicalProcedureRepo = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalProcedure');
- 			$hasMedicalProcedureType = $medicalProcedureRepo->getCountByMedicalProcedureTypeId($medicalProcedureType->getId());
+		if ($treatment->getId()) {
+			$treatmentProcedureRepo = $this->doctrine->getRepository('MedicalProcedureBundle:TreatmentProcedure');
+ 			$hasTreatment = $treatmentProcedureRepo->getCountByTreatmentId($treatment->getId());
 
- 			$institutionMedicalProcedureTypeRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedureType');
- 			$hasInstitutionMedicalProcedureType = $institutionMedicalProcedureTypeRepo->getCountByMedicalProcedureTypeId($medicalProcedureType->getId());
+ 			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment');
+ 			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
 
-			if($hasInstitutionMedicalProcedureType || $hasMedicalProcedureType) {
+			if($hasInstitutionTreatment || $hasTreatment) {
 		        $builder->add('medicalCenter', 'hidden', array('virtual' => true, 'label' => 'Medical Center', 'read_only' => true));
 			}
 			else {
@@ -51,13 +51,13 @@ class MedicalProcedureTypeFormType extends AbstractType
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-			'data_class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType',
+			'data_class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment',
 		));
 	}
 
 	public function getName()
 	{
-		return 'medicalProcedureType';
+		return 'treatment';
 	}
 	
 	function setDoctrine($doctrine) {

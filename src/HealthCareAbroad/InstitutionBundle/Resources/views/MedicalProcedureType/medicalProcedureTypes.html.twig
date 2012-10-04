@@ -1,5 +1,5 @@
-{% for procedureType in institutionMedicalProcedureTypes %}	 
-	<h3><a href="#">{{ procedureType.medicalProcedureType.name }}</a></h3>
+{% for procedureType in institutionTreatments %}	 
+	<h3><a href="#">{{ procedureType.treatment.name }}</a></h3>
 	
 	<div class="procedures">
 	    
@@ -8,8 +8,8 @@
     	</span>
 	    
 	    <a style="margin-left:5px;" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': app.request.get('imcId'), 'imptId': procedureType.id } ) }}">Edit</a>
-		<a class="add-edit-procedure button-type" href="{{ path('institution_medicalProcedureType_addMedicalProcedure', {'imptId': procedureType.id}) }}">Add Procedure</a>
-		{% include 'InstitutionBundle:MedicalProcedureType:medicalProcedures.html.twig' with {'imptId':procedureType.id,'procedures' : procedureType.institutionMedicalProcedures } %}
+		<a class="add-edit-procedure button-type" href="{{ path('institution_treatment_addMedicalProcedure', {'imptId': procedureType.id}) }}">Add Procedure</a>
+		{% include 'InstitutionBundle:Treatment:medicalProcedures.html.twig' with {'imptId':procedureType.id,'procedures' : procedureType.institutionMedicalProcedures } %}
 	</div>
 {% else  %}
 	<div class="empty-list">No medical procedure types!</div>

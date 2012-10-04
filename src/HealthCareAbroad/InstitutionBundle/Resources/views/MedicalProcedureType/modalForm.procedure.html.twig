@@ -1,8 +1,8 @@
 {% embed '::contentWrapper.admin.html.twig' %}
 	{% block wrappedContent %}
 	    {% set formUrl = app.request.get('impId') == 0 
-	        ? path('institution_medicalProcedureType_addMedicalProcedure_save', {'imptId':imptId} ) 
-	        : path('institution_medicalProcedureType_editMedicalProcedure_save', {'imptId':imptId, 'impId': impId} )
+	        ? path('institution_treatment_addMedicalProcedure_save', {'imptId':imptId} ) 
+	        : path('institution_treatment_editMedicalProcedure_save', {'imptId':imptId, 'impId': impId} )
         %}
 		<form action="{{ formUrl }}" method="post" {{ form_enctype(form) }} class="basic-form">
 			<div>

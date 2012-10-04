@@ -4,17 +4,17 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedure;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalProcedureFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentProcedureFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentFormType;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
@@ -63,9 +63,9 @@ class InstitutionController extends Controller
             }
         }
         
-        // Check InstitutionMedicalProcedure
+        // Check InstitutionTreatmentProcedure
         if ($request->get('impId')) {
-            $this->institutionMedicalProcedure = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalProcedure')->find($request->get('impId'));
+            $this->institutionMedicalProcedure = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatmentProcedure')->find($request->get('impId'));
         
             if(!$this->institutionMedicalProcedure) {
                 throw $this->createNotFoundException('Invalid InstitutionTreatment.');
@@ -294,7 +294,7 @@ class InstitutionController extends Controller
 
         $form = $this->createForm(new InstitutionTreatmentFormType(), $institutionTreatment);
 
-        return $this->render("AdminBundle:Institution:modalForm.medicalProcedureType.html.twig", array(
+        return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionTreatment' => $this->institutionTreatment,
@@ -310,7 +310,7 @@ class InstitutionController extends Controller
     {
         $form = $this->createForm(new InstitutionTreatmentFormType(), $this->institutionTreatment);
 
-        return $this->render("AdminBundle:Institution:modalForm.medicalProcedureType.html.twig", array(
+        return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionTreatment' => $this->institutionTreatment,
@@ -362,7 +362,7 @@ class InstitutionController extends Controller
             return $response;
         }
 
-        return $this->render('AdminBundle:Institution:modalForm.medicalProcedureType.html.twig', array(
+        return $this->render('AdminBundle:Institution:modalForm.treatment.html.twig', array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionTreatment' => $this->institutionTreatment,
@@ -379,9 +379,9 @@ class InstitutionController extends Controller
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
 
-        $institutionMedicalProcedure = new InstitutionMedicalProcedure();
+        $institutionMedicalProcedure = new InstitutionTreatmentProcedure();
         $institutionMedicalProcedure->setInstitutionTreatment($this->institutionTreatment);
-        $form = $this->createForm(new InstitutionMedicalProcedureFormType(), $institutionMedicalProcedure);
+        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $institutionMedicalProcedure);
 
         $formActionParams = array(
             'institutionId' => $this->institution->getId(),
@@ -389,7 +389,7 @@ class InstitutionController extends Controller
             'imptId' => $this->institutionTreatment->getId(),
         );
 
-        $formAction = $this->generateUrl('admin_institution_medicalProcedure_create', $formActionParams);
+        $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
         
         $params = array(
             'institutionId' => $this->institution->getId(),
@@ -408,7 +408,7 @@ class InstitutionController extends Controller
      */
     public function editProcedureAction()
     {
-        $form = $this->createForm(new InstitutionMedicalProcedureFormType(), $this->institutionMedicalProcedure);
+        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $this->institutionMedicalProcedure);
         $formActionParams = array(
             'institutionId' => $this->institution->getId(),
             'imcId' => $this->institutionMedicalCenter->getId(),
@@ -416,13 +416,13 @@ class InstitutionController extends Controller
             'impId' => $this->institutionMedicalProcedure->getId()
         );
 
-        $formAction = $this->generateUrl('admin_institution_medicalProcedure_update', $formActionParams);
+        $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
 
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionTreatment' => $this->institutionTreatment,
-            'medicalProcedureName' => $this->institutionMedicalProcedure->getMedicalProcedure()->getName(),
+            'treatmentProcedureName' => $this->institutionMedicalProcedure->getTreatmentProcedure()->getName(),
             'formAction' => $formAction,
             'isNew' => false,
             'form' => $form->createView()
@@ -444,11 +444,11 @@ class InstitutionController extends Controller
         }
 
         if (!$this->institutionMedicalProcedure) {
-            $this->institutionMedicalProcedure = new InstitutionMedicalProcedure();
+            $this->institutionMedicalProcedure = new InstitutionTreatmentProcedure();
             $this->institutionMedicalProcedure->setInstitutionTreatment($this->institutionTreatment);
         }
 
-        $form = $this->createForm(new InstitutionMedicalProcedureFormType(), $this->institutionMedicalProcedure);
+        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $this->institutionMedicalProcedure);
         $form->bindRequest($request);
 
         if ($form->isValid()) {
@@ -487,15 +487,15 @@ class InstitutionController extends Controller
             );
 
             if(!$request->get('impId')) {
-                $formAction = $this->generateUrl('admin_institution_medicalProcedure_create', $formActionParams);
+                $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
                 $params['isNew'] = true;
 
             } else {
                 $formActionParams['impId'] = $this->institutionMedicalProcedure->getId();
-                $formAction = $this->generateUrl('admin_institution_medicalProcedure_update', $formActionParams);
+                $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
 
                 $params['isNew'] = true;
-                $params['medicalProcedureName'] = $this->institutionMedicalProcedure->getMedicalProcedure()->getName();
+                $params['treatmentProcedureName'] = $this->institutionMedicalProcedure->getTreatmentProcedure()->getName();
             }
 
             $params['institutionId'] = $this->institution->getId();
@@ -514,9 +514,9 @@ class InstitutionController extends Controller
      */
     public function updateProcedureStatusAction()
     {
-        $status = $this->institutionMedicalProcedure->getStatus() == InstitutionMedicalProcedure::STATUS_ACTIVE
-            ? InstitutionMedicalProcedure::STATUS_INACTIVE
-            : InstitutionMedicalProcedure::STATUS_ACTIVE;
+        $status = $this->institutionMedicalProcedure->getStatus() == InstitutionTreatmentProcedure::STATUS_ACTIVE
+            ? InstitutionTreatmentProcedure::STATUS_INACTIVE
+            : InstitutionTreatmentProcedure::STATUS_ACTIVE;
 
         $this->institutionMedicalProcedure->setStatus($status);
         

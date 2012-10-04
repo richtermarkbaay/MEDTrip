@@ -6,7 +6,7 @@
 
     <div id="content">
 
-        <div id="page-heading"><h2>{{ form.vars.value.id  ? 'Edit' : 'Add' }} Medical Procedure Type</h2></div>
+        <div id="page-heading"><h2>{{ form.vars.value.id  ? 'Edit' : 'Add' }} Treatment</h2></div>
 
         {% embed '::contentWrapper.admin.html.twig' %}
         
@@ -17,25 +17,25 @@
                 {% set contents = [{
                         'title': 'View all procedure types', 
                         'description': 'View the list of medical procedure types',
-                        'href': path('admin_medicalProcedure_index'), 
-                        'links': [{'title': 'View procedure types', 'href': path('admin_medicalProcedure_index')}]
+                        'href': path('admin_treatmentProcedure_index'), 
+                        'links': [{'title': 'View procedure types', 'href': path('admin_treatmentProcedure_index')}]
                     }]
                 %}
     
-                {% if(medicalProcedureType is defined) %} 
+                {% if(treatment is defined) %} 
                     {% set contents = [{
                             'title': 'Add procedure', 
                             'class': 'add-icon',
                             'description': 'add new procedure for this procedure type',
-                            'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId:medicalProcedureType.id}), 
-                            'links': [{'title': 'add procedure', 'href': path('admin_medicalProcedure_add', {medicalProcedureTypeId: medicalProcedureType.id} )}]
+                            'href': path('admin_treatmentProcedure_add', {treatmentId:treatment.id}), 
+                            'links': [{'title': 'add procedure', 'href': path('admin_treatmentProcedure_add', {treatmentId: treatment.id} )}]
                         },
                         {
                             title: 'View version history',
-                            href: path('admin_showEditHistory', {'objectId': medicalProcedureType.id, 'objectClass': base64_encode(getClass(medicalProcedureType)) }),
+                            href: path('admin_showEditHistory', {'objectId': treatment.id, 'objectClass': base64_encode(getClass(treatment)) }),
                             class: 'view-edit-history-link',
                             description: 'Show all the changes made to this center type content',
-                            links: [{class: 'view-edit-history-link', title: 'View versions', href: path('admin_showEditHistory', {'objectId': medicalProcedureType.id, 'objectClass': base64_encode(getClass(medicalProcedureType)) }) }]
+                            links: [{class: 'view-edit-history-link', title: 'View versions', href: path('admin_showEditHistory', {'objectId': treatment.id, 'objectClass': base64_encode(getClass(treatment)) }) }]
                         }] | merge(contents)
                     %}
                 {% endif %}
@@ -67,7 +67,7 @@
                 
     
                 <!-- Display List of Procedures -->
-                {% set procedures = medicalProcedureType is defined ? medicalProcedureType.medicalProcedures : [] %}
+                {% set procedures = treatment is defined ? treatment.treatmentProcedures : [] %}
                 
                 {% if procedures is not empty %}
                 
@@ -85,9 +85,9 @@
                             <td>{{ procedure.name }}</td>
                             <td>{{ procedure.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
-                                <a href="{{ path('admin_medicalProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                <a href="{{ path('admin_treatmentProcedure_edit', {id:procedure.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                 {% set class = procedure.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_medicalProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_treatmentProcedure_updateStatus', {id:procedure.id}) }}" title="{{ procedure.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
                             </td>
                         </tr>
                     {% endfor %}
