@@ -177,5 +177,20 @@ $(function(){
 
 		$(this).attr('href', url);
 	});
+	
+	// remove Alert 
+	$('a.remove-alert').click(function(){
+		var elem = $(this);
+		var url = elem.attr('href');
+		elem.attr('href', 'javascript:void(0)');
 
+		$.post(url, function(result){
+			if(result.ok == true) {
+				elem.parent().fadeOut();
+			} else {
+				alert('Unable to remove alert');
+				elem.attr('href', url);
+			}
+		}, "json");
+	});	
 });
