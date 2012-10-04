@@ -810,7 +810,7 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
 --
 
 INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', '', 1),
+(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', 'sample-center', 1),
 (2, 'centerAddedFromAdminTest1', 'the quick brown fox is very slow.', '2012-08-08 08:42:47', '', 1),
 (3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:50', '', 1),
 (4, 'centerAddedFromAdminTest3', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1);
@@ -1157,7 +1157,7 @@ ALTER TABLE `institution_contact_details`
 --
 ALTER TABLE `institution_invitations`
   ADD CONSTRAINT `institution_invitations_ibfk_1` FOREIGN KEY (`invitation_token_id`) REFERENCES `invitation_tokens` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-  
+
 --
 -- Constraints for table `institution_languages_spoken`
 --

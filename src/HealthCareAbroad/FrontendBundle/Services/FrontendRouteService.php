@@ -47,6 +47,12 @@ class FrontendRouteService
      */
     private $request;
 
+    /**
+     *
+     * @var unknown
+     */
+    private $routeResolver;
+
     private $logContext=array('Frontend Route');
 
     public function setLogger(Logger $logger)
@@ -57,6 +63,11 @@ class FrontendRouteService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+
+    public function getDoctrine()
+    {
+        return $this->doctrine;
     }
 
     public function setSession(Session $session)
@@ -98,6 +109,172 @@ class FrontendRouteService
         }
 
         return $route;
+    }
+
+    /**
+     * Tries to add a route (URI) to the table of known dynamic routes. Will
+     * validate first if the route can resolve to a working page. Returns
+     * FrontendRoute and adds the route if valid, otherwise returns null.
+     *
+     * @param string $uri
+     * @return \HealthCareAbroad\FrontendBundle\Entity\FrontendRoute
+     * @todo Refactor
+     */
+    public function addRoute($uri)
+    {
+        $variables = $this->getVariablesFromUri($uri);
+
+        if (is_null($variables)) {
+            return null;
+        }
+
+        $route = new FrontendRoute();
+        $route->setUri($uri);
+        $route->setVariables($variables);
+        $route->setStatus(1);
+
+        $em = $this->doctrine->getManager();
+        $em->persist($route);
+        $em->flush($route);
+
+        return $route;
+    }
+
+    /**
+     * @todo refactor
+     * @param string $uri
+     * @return NULL|Ambigous <NULL, string>
+     */
+    private function getVariablesFromUri($uri)
+    {
+        $variables = null;
+
+        $country = null;
+        $city = null;
+        $center = null;
+        $clinic = null;
+        $procedureType = null;
+
+        // Possible routes:
+        //
+        // /country/city/center/clinic/treatment
+        // /country/city/center/clinic
+        // /country/city/center/treatment
+        // /country/city/center
+        // /country/center/treatment
+        // /country/center
+
+        // ALGORITHMN (BRUTE FORCE APPROACH)
+        // 1. get number of tokens
+        // 2. tokens = 2
+        //       sanity check country and center MATCH /country/center
+        // 3. tokens = 3
+        //       test if second token is a center
+        //       if true sanity check third token is a treatment MATCH /country/center/treatment
+        // 4. tokens = 4
+        //
+
+        $tokens = explode('/', substr($uri, 1));
+        $tokenCount = count($tokens);
+
+        if (count($tokens) < 2 || count($tokens) > 5) {
+            return null;
+        }
+
+        // first token should always be a country
+        if (is_null($country = $this->doctrine->getRepository('HelperBundle:Country')->findOneBy(array('slug' => $tokens[0])))) {
+            return null;
+        }
+
+        //MATCHED /country/...
+        // second token can either be a center or a city
+        //TODO: This assumes that there will be no name collisions between
+        // a center and a city.
+        if ($center = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy(array('slug' => $tokens[1]))) {
+            if ($tokenCount == 2) {
+                // MATCHED /country/center
+                $variables = json_encode(array('countryId' => $country->getId(), 'centerId' => $center->getId()));
+
+            } else if ($tokenCount == 3) {
+                if ($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findOneBy(array('slug' => $tokens[2]))) {
+                    // MATCHED /country/center/treatment
+                    $variables = json_encode(array(
+                                    'countryId' => $country->getId(),
+                                    'centerId' => $center->getId(),
+                                    'procedureTypeId' => $procedureType->getId()
+                    ));
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+
+        } else if ($city = $this->doctrine->getRepository('HelperBundle:City')->findOneBy(array('slug' => $tokens[1]))) {
+            //MATCHED /country/city/...
+            // third token should always be a center
+            if (is_null($center = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy(array('slug' => $tokens[2])))) {
+                return null;
+            }
+            if ($tokenCount == 3) {
+                //MATCHED /country/city/center
+                $variables = json_encode(array(
+                                'countryId' => $country->getId(),
+                                'cityId' => $city->getId(),
+                                'centerId' => $center->getId()
+                ));
+            } else if ($tokenCount == 4) {
+                //MATCHED /country/city/center/...
+                // fourth token can either be a treatment or clinic
+                //TODO: This assumes that there will be no name collisions between
+                // a treatment and a clinic.
+                if ($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findOneBy(array('slug' => $tokens[3]))) {
+                    //MATCHED /country/city/center/treatment
+                    $variables = json_encode(array(
+                                    'countryId' => $country->getId(),
+                                    'cityId' => $city->getId(),
+                                    'centerId' => $center->getId(),
+                                    'procedureTypeId' => $procedureType->getId()
+                    ));
+                } else if ($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3]))) {
+                    //MATCHED /country/city/center/clinic
+                    $variables = json_encode(array(
+                                    'countryId' => $country->getId(),
+                                    'cityId' => $city->getId(),
+                                    'centerId' => $center->getId(),
+                                    'institutionId' => $clinic->getId()
+                    ));
+                } else {
+                    return null;
+                }
+
+            } else if ($tokenCount == 5) {
+                //MATCHED /country/city/center/...
+                //fourth token should be a clinic while the fifth procedure type
+                if (is_null($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3])))) {
+                    return null;
+                }
+                if (is_null($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findOneBy(array('slug' => $tokens[4])))) {
+                    return null;
+                }
+                // MATCHED /country/city/center/clinic/treatment
+                $variables = json_encode(array(
+                                'countryId' => $country->getId(),
+                                'cityId' => $city->getId(),
+                                'centerId' => $center->getId(),
+                                'institutionId' => $clinic->getId(),
+                                'procedureTypeId' => $procedureType->getId()
+                ));
+
+            } else {
+                return null;
+            }
+
+        } else {
+            return null;
+        }
+
+        return $variables;
     }
 
     /**
