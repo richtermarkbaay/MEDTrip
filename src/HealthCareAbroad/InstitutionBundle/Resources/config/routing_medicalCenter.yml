@@ -71,7 +71,7 @@ institution_medicalCenter_edit_save:
     requirements:
         _method: POST
 
-institution_loadMedicalProcedureTypes:
+institution_loadTreatments:
     pattern:  /medical-centers/load-procedure-types
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
     requirements:

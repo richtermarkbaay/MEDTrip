@@ -60,16 +60,16 @@ parameters:
     #
     # medical procedure related events
     #
-    event.medical_procedure.add: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
-    event.medical_procedure.edit: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
-    event.medical_procedure.delete: HealthCareAbroad\AdminBundle\Event\MedicalProcedureEvent
+    event.medical_procedure.add: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
+    event.medical_procedure.edit: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
+    event.medical_procedure.delete: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
     
     #
     # medical procedure type related events
     #
-    event.medical_procedure_type.add: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
-    event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
-    event.medical_procedure_type.delete: HealthCareAbroad\AdminBundle\Event\MedicalProcedureTypeEvent
+    event.medical_procedure_type.add: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
+    event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
+    event.medical_procedure_type.delete: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
     
     #
     # news related events

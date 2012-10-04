@@ -19,7 +19,7 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: false, hideMedicalProcedureTypeTask: false, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: false, hideTreatmentTask: false, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
 
             <!--  start table-content  -->
@@ -31,8 +31,8 @@
 
                     <ul>
                         <li><a href="#tab-overview-imc-{{ institutionMedicalCenter.id }}">Overview</a></li>
-                        {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
-                            <li id="procedure-type-{{ impt.id }}"><a href="#tab-impt-{{ impt.id }}">{{ impt.medicalProcedureType.name }}</a></li>
+                        {% for impt in institutionMedicalCenter.institutionTreatments %}
+                            <li id="procedure-type-{{ impt.id }}"><a href="#tab-impt-{{ impt.id }}">{{ impt.treatment.name }}</a></li>
                         {% endfor %}
                     </ul>
 
@@ -40,9 +40,9 @@
                         {% include 'InstitutionBundle:MedicalCenter:form.html.twig' with {'form': form, 'formUrl': path('institution_medicalCenter_edit', {'imcId': institutionMedicalCenter.id }), 'institutionMedicalCenter': institutionMedicalCenter, 'hideFormButtons': true} %}
                     </div>
 
-                    {% for impt in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                    {% for impt in institutionMedicalCenter.institutionTreatments %}
                         <div id="tab-impt-{{ impt.id }}">
-                            {% include 'InstitutionBundle:MedicalCenter:medicalProcedureTypeDetail.html.twig' with {'institutionMedicalCenter': institutionMedicalCenter, 'institutionMedicalProcedureType': impt } %}
+                            {% include 'InstitutionBundle:MedicalCenter:treatmentDetail.html.twig' with {'institutionMedicalCenter': institutionMedicalCenter, 'institutionTreatment': impt } %}
                         </div>
                     {% endfor %}
 

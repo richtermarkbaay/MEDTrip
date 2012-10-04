@@ -17,9 +17,9 @@ final class InstitutionBundleEvents
     const ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE = 'event.institution_medical_procedure.edit';
     const ON_DELETE_INSTITUTION_MEDICAL_PROCEDURE = 'event.institution_medical_procedure.delete';
     
-    const ON_ADD_INSTITUTION_MEDICAL_PROCEDURE_TYPE = 'event.institution_medical_procedure_type.add';
-    const ON_EDIT_INSTITUTION_MEDICAL_PROCEDURE_TYPE = 'event.institution_medical_procedure_type.edit';
-    const ON_DELETE_INSTITUTION_MEDICAL_PROCEDURE_TYPE = 'event.institution_medical_procedure_type.delete';
+    const ON_ADD_INSTITUTION_TREATMENT = 'event.institution_medical_procedure_type.add';
+    const ON_EDIT_INSTITUTION_TREATMENT = 'event.institution_medical_procedure_type.edit';
+    const ON_DELETE_INSTITUTION_TREATMENT = 'event.institution_medical_procedure_type.delete';
     
     const ON_ADD_INSTITUTION_USER = 'event.institution_user.add';
     const ON_EDIT_INSTITUTION_USER = 'event.institution_user.edit';

@@ -32,13 +32,13 @@ class InstitutionMedicalCenterService
     }
 
     /**
-     * Get InstitutionMedicalProcedureTypes of an InstitutionMedicalCenter
+     * Get InstitutionTreatments of an InstitutionMedicalCenter
      *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      */
-    public function getInstitutionMedicalProcedureTypesOfCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getInstitutionTreatmentsOfCenter(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getByInstitutionMedicalCenter($institutionMedicalCenter);
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment')->getByInstitutionMedicalCenter($institutionMedicalCenter);
     }
 
     /**
@@ -63,7 +63,7 @@ class InstitutionMedicalCenterService
         //NOTE: Supposedly a DRAFT institution medical center will have no procedure types
         // so the loop below will never run. But this specification can change.
         //TODO: Use DQL DELETE statement to delete multiple entities of a type with a single command and without hydrating these entities
-        foreach($center->getInstitutionMedicalProcedureTypes() as $entity) {
+        foreach($center->getInstitutionTreatments() as $entity) {
             $em->remove($entity);
         }
 

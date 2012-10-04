@@ -16,7 +16,7 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideMedicalProcedureTypeTask: true, 'imcId': institutionMedicalCenter.id } %}
+            {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideAddMedicalCenter: true, hideTreatmentTask: true, 'imcId': institutionMedicalCenter.id } %}
             {# ----- end Related tasks ----- #}
 
             <!--  start table-content  -->
@@ -39,9 +39,9 @@
                             <th class="minwidth-1"><a href="#">Description</a></th>
                         </tr>
 
-                        {% for procedureType in institutionMedicalCenter.institutionMedicalProcedureTypes %}
+                        {% for procedureType in institutionMedicalCenter.institutionTreatments %}
                             <tr>
-                                <td valign="top">{{ procedureType.medicalProcedureType.name }}</td>
+                                <td valign="top">{{ procedureType.treatment.name }}</td>
                                 <td class="raw-content">{{ procedureType.description|raw }}</td>
                             </tr>
                         {% else %}
@@ -55,12 +55,12 @@
                     <form name="procedureTypeForm" id="procedureTypeForm" novalidate="novalidate" action="{{ path('institution_medicalCenter_saveProcedureType', {'imcId': app.request.get('imcId')}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                         <!-- start id-form -->
 
-                        {{ form_row(form.medicalProcedureType) }}
+                        {{ form_row(form.treatment) }}
                         {{ form_row(form.description) }}
                         {{ form_rest(form) }}
                         <input type="submit" name="submit" value="Save &amp; Add another" class="green-button"/>
                         
-                        {% if institutionMedicalCenter.institutionMedicalProcedureTypes | length %}
+                        {% if institutionMedicalCenter.institutionTreatments | length %}
                             <a href="{{ path('institution_medicalCenter_preview', {imcId:institutionMedicalCenter.id}) }}" class="button-type">Preview</a>
                         {% else %}
                             <input type="submit" name="submit" value="Next" class="green-button" />

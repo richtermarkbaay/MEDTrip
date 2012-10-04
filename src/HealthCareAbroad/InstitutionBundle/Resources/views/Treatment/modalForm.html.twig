@@ -1,0 +1,39 @@
+{# this is the modal form for institution medical procedure type #}
+
+{% embed '::contentWrapper.admin.html.twig' %}
+	{% block wrappedContent %}
+	
+	    {% set formUrl = newObject
+	        ? path('institution_medicalCenter_addProcedureType_save', {'imcId': app.request.get('imcId')} ) : 
+	        path('institution_medicalCenter_editProcedureType_save', {'imcId': app.request.get('imcId'), 'imptId': app.request.get('imptId')} )
+        %}
+        
+		<form action="{{ formUrl }}" method="post" {{ form_enctype(form) }} class="basic-form">
+		
+			{{ form_row(form.treatment) }}
+            {{ form_row(form.description) }}
+            {{ form_rest(form) }}
+		    <input type="submit" class="form-submit" name="submit"/>
+		</form>
+	{% endblock %}
+{% endembed %}
+
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    InstitutionMedicalCenter.commonDialog.find('form').submit(function(){
+        $.post($(this).attr('action'), $(this).serialize(), function(result) {
+        	if($.isPlainObject(result)) {
+        	    window.location = result.redirect_url;
+            } else {
+            	InstitutionMedicalCenter.commonDialog.html(result);
+            	InstitutionMedicalCenter.commonDialog.find('.tinymce').tinymce(HCA.tinymceConfig.themeSimple);
+            }
+        });
+
+        InstitutionMedicalCenter.commonDialog.html('<div class="ajax-loading">saving request . . .</div>');
+
+        return false;
+    });
+</script>
+{% endblock %}

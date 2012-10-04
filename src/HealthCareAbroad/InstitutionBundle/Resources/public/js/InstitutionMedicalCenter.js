@@ -19,7 +19,7 @@ var InstitutionMedicalCenter = {
      * Handler for click add procedure type buttons/links 
      */
     addProcedureType: function(linkElement) {
-        this.commonDialog.dialog('option','title', 'Add Medical Procedure Type');
+        this.commonDialog.dialog('option','title', 'Add Treatment');
         this._showCommonDialog(linkElement);
         return false;
     },
@@ -28,7 +28,7 @@ var InstitutionMedicalCenter = {
      * Handler for click edit procedure type button/links
      */
     editProcedureType: function(linkElement) {
-        this.commonDialog.dialog('option','title', 'Edit Medical Procedure Type');
+        this.commonDialog.dialog('option','title', 'Edit Treatment');
         this._showCommonDialog(linkElement);
         return false;
     },
@@ -39,7 +39,7 @@ var InstitutionMedicalCenter = {
      */
     addProcedure: function(linkElement) {
         if (this.commonDialog) {
-            this.commonDialog.dialog('option','title', 'Add Medical Procedure');
+            this.commonDialog.dialog('option','title', 'Add Treatment Procedure');
             this._showCommonDialog(linkElement);
         }
         return false;
@@ -50,7 +50,7 @@ var InstitutionMedicalCenter = {
      */
     editProcedure: function(linkElement) {
         if (this.commonDialog) {
-            this.commonDialog.dialog('option','title', 'Edit Medical Procedure');
+            this.commonDialog.dialog('option','title', 'Edit Treatment Procedure');
             this._showCommonDialog(linkElement);
         }
         return false;

@@ -32,14 +32,14 @@ parameters:
     event.institution_medical_center.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
     event.institution_medical_center.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalCenterEvent
 
-    # institutionMedicalProcedureType event class
-    event.institution_medical_procedure_type.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
-    event.institution_medical_procedure_type.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
-    event.institution_medical_procedure_type.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureTypeEvent
+    # institutionTreatment event class
+    event.institution_medical_procedure_type.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionTreatmentEvent
+    event.institution_medical_procedure_type.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionTreatmentEvent
+    event.institution_medical_procedure_type.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionTreatmentEvent
 
     # institutionMedicalProcedure event class
-    event.institution_medical_procedure.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
-    event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionMedicalProcedureEvent
+    event.institution_medical_procedure.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionTreatmentProcedureEvent
+    event.institution_medical_procedure.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionTreatmentProcedureEvent
 
     # institution user type role events
     event.institution_user_type.add_role: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeRoleEvent

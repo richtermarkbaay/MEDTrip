@@ -166,7 +166,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
 
     public function testInitiateShouldReturnArrayOfProcedureObjects()
     {
-        $term = 'Test Medical Procedure';
+        $term = 'Test Treatment Procedure';
         $actual = $this->service->initiate(array(
                 'term' => $term,
                 'category' => Constants::SEARCH_CATEGORY_PROCEDURE

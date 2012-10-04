@@ -11,7 +11,7 @@
     	    {% if newProcedureType %} 
     	        Creat procedure type
 	        {% else %}
-	            Edit procedure type {# institutionMedicalProcedureType.medicalProcedureType.name #}
+	            Edit procedure type {# institutionTreatment.treatment.name #}
 	         {% endif %}       
         </h2>
     </div>
@@ -43,12 +43,12 @@
 							'title': 'Add medical procedure', 
 							'description': 'Add medical procedure to this procedure type',
 							'class' : 'add-procedure add-icon',
-							'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}), 
+							'href': path('admin_institution_treatmentProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionTreatment.id}), 
 							'links': [
 								{
 									'title': 'Add a medical procedure',
 									'class' : 'add-procedure',
-									'href': path('admin_institution_medicalProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionMedicalProcedureType.id}),
+									'href': path('admin_institution_treatmentProcedure_add', {institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId: institutionTreatment.id}),
 								}
 							]
 						}])
@@ -59,7 +59,7 @@
 
 				{% set savePath = newProcedureType 
 					? path('admin_institution_procedureType_create',{institutionId:institution.id, imcId:institutionMedicalCenter.id}) 
-					: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionMedicalProcedureType.id}) %}
+					: path('admin_institution_procedureType_update',{institutionId:institution.id, imcId:institutionMedicalCenter.id, imptId:institutionTreatment.id}) %}
 
             	<form novalidate="novalidate" action="{{ savePath }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 					<div>
@@ -70,11 +70,11 @@
 					{% if not newProcedureType %}
 						<div>
 							<label>Procedure Type</label>
-							<span class="fixed-value">{{ institutionMedicalProcedureType.medicalProcedureType.name }}</span>
+							<span class="fixed-value">{{ institutionTreatment.treatment.name }}</span>
 						</div>
 					{% endif %}
 					
-	                {{ form_row(form.medicalProcedureType) }}
+	                {{ form_row(form.treatment) }}
 	                {{ form_row(form.description) }}
 	                {{ form_rest(form) }}
 	                <input type="submit" name="submit" value="" class="form-submit" />
@@ -86,7 +86,7 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/InstitutionMedicalProcedure.js') }}"></script>
+    <script src="{{ asset('bundles/institution/js/InstitutionTreatmentProcedure.js') }}"></script>
 	<script type="text/javascript">
 
         $(function(){
@@ -99,7 +99,7 @@
 
 				$("#dialog-container").empty();
 				$("#dialog-container").dialog({
-					title: 'Add Medical Procedure',
+					title: 'Add Treatment Procedure',
 					open: function() {
 						$.ajax(addProcedureUrl)
 							.done(function (data) {
@@ -117,7 +117,7 @@
 
                 {% if(not newProcedureType) %}
                 <br/><br/>
-				<h3>Medical Procedures</h3>
+				<h3>Treatment Procedures</h3>
 							    <table width="70%" class="generic-table" id="medical-centers-list">
 				    				<tr>
 				    					<th class="minwidth-1" width="200px"><a href="#">Procedures</a></th>
@@ -125,24 +125,24 @@
 				    					<th width="50"><a href="#">Options</a></th>
 				    				</tr>
 
-									{% set procedures = institutionMedicalProcedureType.institutionMedicalProcedures %}
+									{% set procedures = institutionTreatment.institutionMedicalProcedures %}
 
-									{% for procedure in institutionMedicalProcedureType.institutionMedicalProcedures  %}
-										{% set medicalProcedure = procedure.medicalProcedure %}
+									{% for procedure in institutionTreatment.institutionMedicalProcedures  %}
+										{% set treatmentProcedure = procedure.treatmentProcedure %}
 										<tr>
-											<td>{{ medicalProcedure.name }}</td>
+											<td>{{ treatmentProcedure.name }}</td>
 											<td>{{ procedure.description }}</td>  
 											<td>
 				            					<a href="#" title="Edit" class="icon-1 info-tooltip"></a>
-				            					{% set class = medicalProcedure.status ? 'icon-2' : 'icon-5' %}
-				            					<a href="{{ path('admin_institution_medicalProcedure_updateStatus', {impId: procedure.id}) }}"
-				            						title="{{ medicalProcedure.status ? 'Delete' : 'Activate' }}" 
+				            					{% set class = treatmentProcedure.status ? 'icon-2' : 'icon-5' %}
+				            					<a href="{{ path('admin_institution_treatmentProcedure_updateStatus', {impId: procedure.id}) }}"
+				            						title="{{ treatmentProcedure.status ? 'Delete' : 'Activate' }}" 
 				            						class="update-status {{ class }} info-tooltip">
 				            					</a>
 											</td>
 										</tr>
 									{% else  %}
-										<tr><td colspan="3" class="empty-list">No Medical Procedures yet!</td></tr>
+										<tr><td colspan="3" class="empty-list">No Treatment Procedures yet!</td></tr>
 									{% endfor %}
 								</table>
 							{% endif %}

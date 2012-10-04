@@ -15,7 +15,7 @@
 
             {# ----- Medical Terms Related tasks ----- #}
             {% set manageCentersTask = {"title": 'Medical Center Management', 'class': 'list-icon', 'description': 'View all available Medical Centers or add new one.', 'href': path('admin_medicalCenter_index'), 'links': [{title:'View Medical Centers',href: path('admin_medicalCenter_index')}, {title:'Add Medical Center', href: path('admin_medicalCenter_add')}]} %}
-            {% set manageProcedureTypesTasks = {title: 'Procedure Type Management', 'description': 'View all available Medical Procedure Types or add new one.', 'href': path('admin_procedureType_index'), 'links': [{title:'View Medical Procedure Types',href: path('admin_procedureType_index')}, {title:'Add Medical Procedure Type', href: path('admin_procedureType_add')}] } %}
+            {% set manageProcedureTypesTasks = {title: 'Procedure Type Management', 'description': 'View all available Treatments or add new one.', 'href': path('admin_procedureType_index'), 'links': [{title:'View Treatments',href: path('admin_procedureType_index')}, {title:'Add Treatment', href: path('admin_procedureType_add')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
 		        {'headerTitle': 'Manage Medical Related Data', 'contents': [manageCentersTask, manageProcedureTypesTasks]} 
