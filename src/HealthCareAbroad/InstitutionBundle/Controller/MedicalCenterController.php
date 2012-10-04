@@ -399,6 +399,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     private function dispatchEvent($eventName, $loggedEntity, $optionalArguments = array())
     {
+        $optionalArguments['institutionId'] = $this->institution->getId();
         $event = $this->get('events.factory')->create($eventName, $loggedEntity, $optionalArguments);
         $this->get('event_dispatcher')->dispatch($eventName, $event);
     }

@@ -119,6 +119,13 @@ admin_manageHcaData:
     pattern:  /admin/manage-hca-data
     defaults: { _controller: AdminBundle:Default:manageHcaData }
 
+admin_removeAlert:
+    pattern:  /admin/remove-alert/{id}/{rev}
+    defaults: { _controller: AdminBundle:Default:removeAlert }
+    requirements:
+        id: ".+"
+        rev: ".+"
+
 admin_error403:
     pattern: /admin/access-denied
     defaults: { _controller: AdminBundle:Default:error403 }

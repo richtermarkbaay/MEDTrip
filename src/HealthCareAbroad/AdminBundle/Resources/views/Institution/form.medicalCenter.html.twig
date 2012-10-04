@@ -12,22 +12,31 @@
 			{% block wrappedContent %}
 
 				{% include '::notice.admin.html.twig' %}
-				
+
 	            {% set contents = [{
 					'title': 'Back to institution centers', 
 					'description': 'View the list available medical centers',
 					'href': path('admin_institution_manageCenters', {institutionId: institutionId}), 
 					'links': [{'title': 'View medical centers', 'href': path('admin_institution_manageCenters', {institutionId: institutionId}) }]
-				}] %}
-	            
-	            {% if institutionMedicalCenter.id %}	            
-		            {% set addProcedureTypeTask = [{
-						'title': 'Add procedure type', 
-						'description': 'Add new procedure type for this medical center',
-						'class': 'add-procedure-type',
-						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id}), 
-						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id})}]
-					}] %}
+                }] %}
+
+	            {% if institutionMedicalCenter.id %}
+		            {% set addProcedureTypeTask = [
+    		            {
+    						'title': 'Add procedure type', 
+    						'description': 'Add new procedure type for this medical center',
+    						'class': 'add-procedure-type',
+    						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id}), 
+    						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenter.id})}]
+    					},
+        	            {
+        					'title': 'Update Center Status', 
+        					'description': 'Update center status.',
+        					'class': 'show-update-center-status',
+        					'href': 'javascript:void(0)',
+        					'links': [{'title': 'Update status', 'href': 'javascript:void(0)', 'class': 'show-update-center-status' }]
+        				}
+					] %}
 					
 					{% set contents = addProcedureTypeTask | merge(contents) %}
 	            {% endif %}
@@ -77,13 +86,32 @@
 		{% endembed %}
 	</div>
 
+    {% if institutionMedicalCenter.id %}
+    <div id="update-status-container" title="Update Center Status">
+        <div style="margin: 0 15px;padding: 15px; border: 1px solid #efefef;border-radius:5px;">
+            <p>
+                This center is currently <strong> {{ centerStatusList[institutionMedicalCenter.status] }} </strong>. 
+                Select an option below to update its status.
+            </p>
+            <br/>
+            <form id="update-status-form" method="POST" action="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId, imcId:institutionMedicalCenter.id}) }}">
+                <select name="status" id="selected-status">
+                    {% for label,value in updateCenterStatusOptions %}
+                        <option value="{{value}}">{{label}}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="green-button" value="Confirm"/>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 	<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
 	<script type="text/javascript">
 		$(function(){
-			
 		    InstitutionMedicalCenter.setCommonDialog($('#dialog-container'), {
 			    position: ['center', 100],
 			    autoOpen: false,
@@ -103,6 +131,12 @@
 			$('a.add-procedure-type').click(function(e){
 			    return InstitutionMedicalCenter.addProcedureType($(this));
 			});
+
+		    // Update Status Script 
+	        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
+	        $("a.show-update-center-status").click(function() {
+	            $("#update-status-container").dialog("open");
+	        });
 		});
 	</script>
 {% endblock %}

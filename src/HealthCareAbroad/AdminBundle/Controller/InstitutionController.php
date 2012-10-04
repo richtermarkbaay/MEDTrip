@@ -169,7 +169,7 @@ class InstitutionController extends Controller
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
     public function editMedicalCenterAction()
-    {    
+    {
         $form = $this->createForm(new InstitutionMedicalCenterType(), $this->institutionMedicalCenter);
 
         $formActionParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId());
@@ -178,6 +178,8 @@ class InstitutionController extends Controller
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
             'formAction' => $formAction,
             'form' => $form->createView()
         );
@@ -275,7 +277,7 @@ class InstitutionController extends Controller
 
         // dispatch EDIT institutionMedicalCenter event
         $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter);
+        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $this->institutionMedicalCenter->getInstitution()->getId()));
         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getMedicalCenter()->getName().'" status has been updated!');
