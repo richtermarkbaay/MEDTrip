@@ -25,7 +25,24 @@
 		        {% include '::notice.admin.html.twig' %}
 			
 			    <h2>Sub Heading </h2>
-    			<h3>Local Heading</h3>
+
+                {% if pendingListingAlerts|length %}
+			    <h3>Alerts</h3>
+                <div>
+                    <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
+                    Pending Listings.
+
+                    <div>
+                    {% for center in pendingListingAlerts %}
+                        <div style="width: 600px;border: 1px solid #efefef; padding: 5px; margin-bottom: 5px">
+                            <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                            <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a><br/>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div><br/><br/>
+                {% endif %}
+		    
 
     			<p>
 	    			Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur 
