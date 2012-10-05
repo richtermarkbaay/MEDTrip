@@ -1,7 +1,9 @@
 parameters:
-#    memcache.example.class: HealthCareAbroad\MemcacheBundle\Example
+    memcached.servers:
+        - { host: 127.0.0.1, port: 11211 }
+        - { host: 192.168.1.249, port: 11211 }
 
 services:
-#    memcache.example:
-#        class: %memcache.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.memcache:
+        class: HealthCareAbroad\MemcacheBundle\Services\MemcacheService
+        arguments: [%memcached.servers%]

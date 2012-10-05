@@ -39,8 +39,8 @@ final class InstitutionMedicalCenterStatus {
     static public function getUpdateStatusOptions()
     {
         return array(
-            'Approve/Activate' => self::APPROVED,
-            'Remove' => self::ARCHIVED
+            'Approve / Activate' => self::APPROVED,
+            'Deny / Remove' => self::ARCHIVED
         );
     }
 

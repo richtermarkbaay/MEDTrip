@@ -276,7 +276,7 @@ class InstitutionController extends Controller
         $em->flush($this->institutionMedicalCenter);
 
         // dispatch EDIT institutionMedicalCenter event
-        $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER;
+        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $this->institutionMedicalCenter->getInstitution()->getId()));
         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 

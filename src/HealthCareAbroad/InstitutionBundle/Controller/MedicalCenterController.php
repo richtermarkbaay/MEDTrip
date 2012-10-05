@@ -243,7 +243,7 @@ class MedicalCenterController extends InstitutionAwareController
                 'form' => $form->createView()
             ));
         }
-
+        $previousStatus = $institutionMedicalCenter->getStatus();
         $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::PENDING);
 
         $em = $this->getDoctrine()->getEntityManager();
@@ -251,7 +251,7 @@ class MedicalCenterController extends InstitutionAwareController
         $em->persist($institutionTreatment);
         $em->flush();
 
-        $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $institutionMedicalCenter);
+        $this->dispatchEvent(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $institutionMedicalCenter, array('previousStatus' => $previousStatus));
         $this->dispatchEvent(InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT, $institutionTreatment);
 
         $request->getSession()->setFlash('success', "Successfully added {$institutionTreatment->getTreatment()->getName()} to {$institutionMedicalCenter->getMedicalCenter()->getName()}");
