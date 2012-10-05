@@ -97,87 +97,37 @@ class SearchService
 
     public function getCountriesWithProcedureType(MedicalProcedureType $medicalProcedureType)
     {
-//         $qb = $this->entityManager->createQueryBuilder()
-//             ->select('a')
-//             ->from('InstitutionBundle:InstitutionMedicalProcedureType', 'a')
-//             ->leftJoin('a.institutionMedicalCenter', 'b')
-//             ->leftJoin('b.institution', 'c')
-//             ->leftJoin('c.country', 'd')
-//             ->leftJoin('a.medicalProcedureType', 'z')
-//             ->where('z = :medicalProcedureType')
-//             ->setParameter('medicalProcedureType', $medicalProcedureType);
-            //->orderBy('country.name', 'ASC');
-        //             ->select('a')
-        //             ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-        //             ->leftJoin('a.institution', 'b')
-        //             ->leftJoin('b.country', 'country')
-        //             ->leftJoin('a.medicalCenter', 'c')
-        //             ->leftJoin('c.medicalProcedureType', 'd')
-        //             ->where('d = :medicalProcedureType')
-        //             ->setParameter('medicalProcedureType', $medicalProcedureType)
-        //             ->orderBy('country.name', 'ASC');
-
-        //                 ->select('country')
-        //                 ->from('InstitutionBundle:Institution', 'a')
-        //                 ->leftJoin('a.medicalCenter', 'b')
-        //                 ->leftJoin('b.medicalProcedureType', 'c')
-        //                 ->leftJoin('a.country', 'country')
-        //
-        //
-//         return $qb->getQuery()->getResult();
-
-
-/*
-
-// Equivalent DQL query: "select u from User u join u.address a WHERE u.name = ?1"
-// User owns association to an Address and the Address is loaded in the query.
-$rsm = new ResultSetMapping;
-$rsm->addEntityResult('User', 'u');
-$rsm->addFieldResult('u', 'id', 'id');
-$rsm->addFieldResult('u', 'name', 'name');
-$rsm->addJoinedEntityResult('Address' , 'a', 'u', 'address');
-$rsm->addFieldResult('a', 'address_id', 'id');
-$rsm->addFieldResult('a', 'street', 'street');
-$rsm->addFieldResult('a', 'city', 'city');
-
-$sql = 'SELECT u.id, u.name, a.id AS address_id, a.street, a.city FROM users u ' .
-       'INNER JOIN address a ON u.address_id = a.id WHERE u.name = ?';
-
-*/
-
-        $sql = '
-            SELECT country.id AS countryId, country.name AS countryName
+        $sql = "
+            SELECT DISTINCT country.id, country.name
             FROM institution_medical_procedure_types AS a
             LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
             LEFT JOIN institutions AS c ON b.institution_id = c.id
             LEFT JOIN countries AS country ON c.country_id = country.id
             LEFT JOIN medical_procedure_types AS d ON a.medical_procedure_type_id = d.id
             WHERE d.id = :medicalProcedureTypeId
-        ';
+        ";
 
-        $sql = '
-            SELECT country.id AS countryId, country.name AS countryName
-            FROM institutions AS a, institution_medical_procedure_types AS b
-            LEFT JOIN institution_medical_centers AS c ON a.institution_medical_center_id = b.id
-            LEFT JOIN medical_procedure_types AS d ON a.medical_procedure_type_id = b.id
-            LEFT JOIN countries AS country ON a.country_id = country.id
-            WHERE a.id = b.institution_Id
-            AND d.id = :medicalProcedureTypeId
-        ';
+        // The above query works fine but I can't seem to make it work using DQL
+        // or native queries
+//         $rsm = new ResultSetMapping();
+//         $rsm->addEntityResult('InstitutionBundle:InstitutionMedicalProcedureType', 'a');
+//         $rsm->addJoinedEntityResult('InstitutionBundle:InstitutionMedicalCenter', 'b', 'a', 'institutionMedicalCenter');
+//         $rsm->addJoinedEntityResult('InstitutionBundle:Institution', 'c', 'b', 'institutions');
+//         $rsm->addJoinedEntityResult('HelperBundle:Country', 'country', 'c', 'country');
+//         $rsm->addFieldResult('country', 'countryId', 'id');
+//         $rsm->addFieldResult('country', 'name', 'name');
+//         $rsm->addJoinedEntityResult('MedicalProcedureBundle:MedicalProcedureType', 'd', 'c', 'medicalProcedureType');
 
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult('InstitutionBundle:InstitutionMedicalProcedureType', 'a');
-        $rsm->addJoinedEntityResult('InstitutionBundle:InstitutionMedicalCenter', 'b', 'a', 'institutionMedicalCenter');
-        $rsm->addJoinedEntityResult('InstitutionBundle:Institution', 'c', 'b', 'institutions');
-        $rsm->addJoinedEntityResult('HelperBundle:Country', 'country', 'c', 'country');
-        $rsm->addFieldResult('country', 'countryId', 'id');
-        $rsm->addFieldResult('country', 'name', 'name');
-        $rsm->addJoinedEntityResult('MedicalProcedureBundle:MedicalProcedureType', 'd', 'c', 'medicalProcedureType');
+//         $query = $this->entityManager->createNativeQuery($sql, $rsm);
+//         $query->setParameter('medicalProcedureTypeId', $medicalProcedureType->getId());
 
-        $query = $this->entityManager->createNativeQuery($sql, $rsm);
-        $query->setParameter('medicalProcedureTypeId', $medicalProcedureType->getId());
+//         return $query->getResult();
 
-        return $query->getResult();
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue('medicalProcedureTypeId', $medicalProcedureType->getId());
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     /**

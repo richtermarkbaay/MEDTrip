@@ -144,6 +144,7 @@ class FrontendController extends Controller
 
             case '_country_procedureType':
 
+                // TODO: remove
                 $parameters = array(
                     'medicalCenter' => $medicalCenter->getSlug(),
                     'procedureType' => $procedureType->getSlug(),
@@ -176,6 +177,8 @@ class FrontendController extends Controller
                 break;//safeguard against removal of return statement
 
             case '_city_procedureType':
+
+                // TODO: remove
                 $parameters = array(
                     'medicalCenter' => $medicalCenter->getSlug(),
                     'procedureType' => $procedureType->getSlug(),
@@ -210,55 +213,6 @@ class FrontendController extends Controller
         }
 
         return $this->redirect($this->generateUrl($route, $parameters));
-    }
-
-    /**
-     * TODO: check for invalid inputs
-     *
-     * @param string $treatment
-     * @param string $destination
-     */
-    private function parseSearchTerms($treatment, $destination)
-    {
-        $procedureTypeId = 0;
-        $procedureId = 0;
-        $countryId = 0;
-        $cityId = 0;
-
-        $searchTerms = array(
-            'context' => '',
-            'cityId' => 0,
-            'countryId' => 0,
-            'procedureTypeId' => 0,
-            'procedureId' => 0
-        );
-
-        if (!empty($treatment)) {
-            list($procedureTypeId, $procedureId) = explode('-', $treatment);
-            $searchTerms['procedureTypeId'] = $procedureTypeId;
-            $searchTerms['procedureId'] = $procedureId;
-        }
-
-        if (!empty($destination)) {
-            list($countryId, $cityId) = explode('-', $destination);
-
-            $searchTerms['countryId'] = $countryId;
-            $searchTerms['cityId'] = $cityId;
-        }
-
-        $context = '';
-        if ($cityId && $countryId) {
-            $context = '_city';
-        } else {
-            $context = '_country';
-        }
-        if ($procedureTypeId) {
-            $context = '_procedureType';
-        }
-
-        $searchTerms['context'] = $context;
-
-        return $searchTerms;
     }
 
     public function searchResultsCountriesAction(Request $request)
@@ -363,9 +317,10 @@ class FrontendController extends Controller
 
         $centers = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($procedureType, $procedure);
         //$countries = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getCountriesWithProcedureType($procedureType);
-        $countries = $this->get('services.search')->getCountriesWithProcedureType($procedureType);
 
-var_dump($countries); exit;
+        $countries = $this->appendCountryUrls(
+            $this->get('services.search')->getCountriesWithProcedureType($procedureType), $procedureType
+        );
 
         return $this->render('SearchBundle:Frontend:medicalCentersTreatment.html.twig', array(
             'centers' => $centers,
@@ -422,6 +377,71 @@ var_dump($countries); exit;
         }
 
         return $tokens;
+    }
+
+    private function appendCountryUrls($countries, $procedureType)
+    {
+        $center = $procedureType->getMedicalCenter();
+
+        $modifiedCountries = array();
+        foreach ($countries as $country) {
+            $modifiedCountry['id'] = $country['id'];
+            $modifiedCountry['name'] = $country['name'];
+            $modifiedCountry['url'] = '/'.$country['name'].'/'.$center->getSlug().'/'.$procedureType->getSlug();
+
+            $modifiedCountries[] = $modifiedCountry;
+        }
+
+        return $modifiedCountries;
+    }
+
+    /**
+     * TODO: check for invalid inputs
+     *
+     * @param string $treatment
+     * @param string $destination
+     */
+    private function parseSearchTerms($treatment, $destination)
+    {
+        $procedureTypeId = 0;
+        $procedureId = 0;
+        $countryId = 0;
+        $cityId = 0;
+
+        $searchTerms = array(
+                        'context' => '',
+                        'cityId' => 0,
+                        'countryId' => 0,
+                        'procedureTypeId' => 0,
+                        'procedureId' => 0
+        );
+
+        if (!empty($treatment)) {
+            list($procedureTypeId, $procedureId) = explode('-', $treatment);
+            $searchTerms['procedureTypeId'] = $procedureTypeId;
+            $searchTerms['procedureId'] = $procedureId;
+        }
+
+        if (!empty($destination)) {
+            list($countryId, $cityId) = explode('-', $destination);
+
+            $searchTerms['countryId'] = $countryId;
+            $searchTerms['cityId'] = $cityId;
+        }
+
+        $context = '';
+        if ($cityId && $countryId) {
+            $context = '_city';
+        } else {
+            $context = '_country';
+        }
+        if ($procedureTypeId) {
+            $context = '_procedureType';
+        }
+
+        $searchTerms['context'] = $context;
+
+        return $searchTerms;
     }
 
 }
