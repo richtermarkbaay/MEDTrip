@@ -9,9 +9,10 @@ class MemcacheService
      * Memcache key used for storing latests versions of a memcache key
      */
     const MEMCACHE_LATEST_VERSIONS_KEY = 'hca_key_latest_versions';
-
-    private $servers;
     
+    /**
+     * @var boolean if setup for Memcache client is already done
+     */
     private static $setupMemcacheComplete = false;
 
     /**
@@ -68,6 +69,13 @@ class MemcacheService
         return $latestKeyVersions[$key];
     }
     
+    /**
+     * Store data to memcached server. Return false if no Memcache is available.
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return boolean|\HealthCareAbroad\MemcacheBundle\Services\MemcacheService
+     */
     public function set($key, $value)
     {
         if (!$this->hasMemcache) {
@@ -83,8 +91,16 @@ class MemcacheService
 
         // save the value to memcache
         $this->memcache->set($newKey, $value);
+        
+        return $this;
     }
     
+    /**
+     * Get a stored value from memcached server
+     * 
+     * @param string $key
+     * @return Mixed
+     */
     public function get($key)
     {
         if (!$this->hasMemcache) {
