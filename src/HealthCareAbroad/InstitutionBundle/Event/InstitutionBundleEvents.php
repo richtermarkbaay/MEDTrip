@@ -12,6 +12,7 @@ final class InstitutionBundleEvents
     const ON_ADD_INSTITUTION_MEDICAL_CENTER = 'event.institution_medical_center.add';
     const ON_EDIT_INSTITUTION_MEDICAL_CENTER = 'event.institution_medical_center.edit';
     const ON_DELETE_INSTITUTION_MEDICAL_CENTER = 'event.institution_medical_center.delete';
+    const ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER = 'event.institution_medical_center.update_status';
     
     const ON_ADD_INSTITUTION_TREATMENT_PROCEDURE = 'event.institution_medical_procedure.add';
     const ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE = 'event.institution_medical_procedure.edit';

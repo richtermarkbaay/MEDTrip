@@ -72,7 +72,7 @@ class AlertService
             'recipient' => self::ADMIN_RECIPIENT,
             'dateAlert' => array('operator' => '<=', 'value' => date(self::DATE_FORMAT))
 	    );
-	
+
 	    $result = $this->couchDB->getBy($options);
 
 	    return $this->formatAlertData($result);
@@ -101,15 +101,18 @@ class AlertService
 	 */
 	function formatAlertData($data)
 	{
+	    $formattedData = array();
+
 	    if(!is_array($data))
 	        $data = json_decode($data, true);
 
-	    $formattedData = array();
-	    foreach($data['rows'] as $each) {
-	        $alert = $this->formatAlert($each['value']);
-	        $formattedData[$alert['type']][] = $alert;
+	    if(isset($data['total_rows']) && $data['total_rows'] > 0) {
+    	    foreach($data['rows'] as $each) {
+    	        $alert = $this->formatAlert($each['value']);
+    	        $formattedData[$alert['type']][] = $alert;
+    	    }
 	    }
-	
+
 	    return $formattedData;
 	}
 	
@@ -117,37 +120,58 @@ class AlertService
 	{
 	    return $data;
 	}
-	
+
     /**
      * 
      * @param array $arrayData
      */
-    function save(array $arrayData = array())
+    function save(array $alertData = array())
+    {
+        $data = $this->validateData($alertData);
+
+        $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
+        $alert = $this->getAlert($id);
+        $data['_id'] = $id;
+
+        if($alert) {
+            $data['_rev'] = $alert['_rev'];
+        }
+
+        return $this->couchDB->put($id, $data);
+    }
+
+    /**
+     *
+     * @param array $arrayData
+     */
+    function multipleUpdate(array $arrayData = array())
     {
         $start = (float)microtime();
-
+    
         if(!count($arrayData)) {
             return;
         }
-
+    
         foreach($arrayData as $key => $data) {
-
+    
             $data = $this->validateData($data);
-
+    
             $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
             $alert = $this->getAlert($id);
             $arrayData[$key]['_id'] = $id;
-
+    
             if($alert) {
                 $arrayData[$key]['_rev'] = $alert['_rev'];
             }
         }
-
+    
         $result = $this->couchDB->multipleUpdate($arrayData);
-
+    
         $end = (float)microtime();
         $time = $end - $start;
         //var_dump("processTime: " . $time);
+        
+        return $result;
     }
 
     /**
