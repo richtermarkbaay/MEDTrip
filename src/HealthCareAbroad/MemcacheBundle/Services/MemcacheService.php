@@ -19,7 +19,9 @@ class MemcacheService
      */
     private $hasMemcache = false;
 
-    
+    /**
+     * @var \Memcache
+     */
     private $memcache;
     
     public function __construct($servers=array())
@@ -37,6 +39,11 @@ class MemcacheService
         
     }
 
+    /**
+     * Update the latest version of the key
+     * @param string $key
+     * @param string $newKeyVersion
+     */
     private function _updateVersionKey($key, $newKeyVersion)
     {
         if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
@@ -46,10 +53,26 @@ class MemcacheService
         $this->memcache->set(self::MEMCACHE_LATEST_VERSIONS_KEY, $latestKeyVersions);
     }
     
+    /**
+     * Get the latest version of the key $key
+     * 
+     * @param string $key
+     */
+    private function _getLatestVersionKey($key)
+    {
+        if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
+            
+            return false;
+        }
+        
+        return $latestKeyVersions[$key];
+    }
+    
     public function set($key, $value)
     {
         if (!$this->hasMemcache) {
-            return;
+            
+            return false;
         }
 
         // add a timestamp to the key for new version of key
@@ -64,6 +87,11 @@ class MemcacheService
     
     public function get($key)
     {
+        if (!$this->hasMemcache) {
+            
+            return false;
+        }
         
+        return $this->memcache->get($this->_getLatestVersionKey($key));
     }
 }
