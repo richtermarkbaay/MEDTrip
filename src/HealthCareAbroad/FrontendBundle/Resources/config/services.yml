@@ -11,7 +11,7 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setRequest, [@request]]
             - [setSession, [@session]]
-    
+
     listener.frontend.router:
         class: HealthCareAbroad\FrontendBundle\Listener\DefaultRouterListener
         scope: request
@@ -19,12 +19,12 @@ services:
             - [setRouterService, [@services.frontend.router]]
         tags:
             - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 33 }
-    
+
     services.inquire:
         class: %services.inquiry_class%
         arguments: [@doctrine]]
         calls:
-            
+
     form.inquiry_subject_list:
         class: "%services.inquiry_list%"
         calls:

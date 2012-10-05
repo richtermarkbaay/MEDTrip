@@ -3,7 +3,7 @@ namespace HealthCareAbroad\FrontendBundle\Entity;
 
 class FrontendRoute
 {
-    
+
     /**
      * @var bigint $id
      */
@@ -13,6 +13,11 @@ class FrontendRoute
      * @var string $uri
      */
     private $uri;
+
+    /**
+     * @var string $controller
+     */
+    private $controller;
 
     /**
      * @var text $variables
@@ -33,11 +38,11 @@ class FrontendRoute
     {
         $this->frontendRouteVariables = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -59,11 +64,33 @@ class FrontendRoute
     /**
      * Get uri
      *
-     * @return string 
+     * @return string
      */
     public function getUri()
     {
         return $this->uri;
+    }
+
+    /**
+     * Set controller
+     *
+     * @param string $controller
+     * @return FrontendRoute
+     */
+    public function setController($controller)
+    {
+        $this->controller = $controller;
+        return $this;
+    }
+
+    /**
+     * Get controller
+     *
+     * @return string
+     */
+    public function getController()
+    {
+        return $this->controller;
     }
 
     /**
@@ -81,7 +108,7 @@ class FrontendRoute
     /**
      * Get variables
      *
-     * @return text 
+     * @return text
      */
     public function getVariables()
     {
@@ -103,7 +130,7 @@ class FrontendRoute
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -135,7 +162,7 @@ class FrontendRoute
     /**
      * Get frontendRouteVariables
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getFrontendRouteVariables()
     {

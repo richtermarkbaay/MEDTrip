@@ -36,19 +36,19 @@ class DefaultRouterListener
                 return;
             }
 
-            $routeObj = $this->routerService->match($request->getPathInfo());
+            $routeObj = null;
 
-            if (!$routeObj) {
-                $routeObj = $this->routerService->addRoute($request->getPathInfo());
+            if (is_null($routeObj = $this->routerService->match($pathInfo))) {
+                if (is_null($routeObj = $this->routerService->addRoute($pathInfo))) {
+
+                    return;
+                }
             }
 
-            // modify attributes only if we get a valid route object
-            if ($routeObj) {
-                $controller = 'FrontendBundle:Default:commonLanding';
-                $variables = \json_decode($routeObj->getVariables(), true);
-                $request->attributes->set('_controller', $controller);
-                $request->attributes->set('_route_params', $variables);
-            }
+            $controller = $routeObj->getController() ? $routeObj->getController() : 'FrontendBundle:Default:commonLanding';
+            $variables = \json_decode($routeObj->getVariables(), true);
+            $request->attributes->set('_controller', $controller);
+            $request->attributes->set('_route_params', $variables);
         }
     }
 }

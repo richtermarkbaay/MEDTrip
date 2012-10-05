@@ -98,32 +98,16 @@ class SearchService
     {
         $sql = "
             SELECT DISTINCT country.id, country.name
-            FROM institution_medical_procedure_types AS a
+            FROM institution_treatments AS a
             LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
             LEFT JOIN institutions AS c ON b.institution_id = c.id
             LEFT JOIN countries AS country ON c.country_id = country.id
-            LEFT JOIN medical_procedure_types AS d ON a.medical_procedure_type_id = d.id
-            WHERE d.id = :medicalProcedureTypeId
+            LEFT JOIN treatments AS d ON a.treatments_id = d.id
+            WHERE d.id = :treatmentId
         ";
 
-        // The above query works fine but I can't seem to make it work using DQL
-        // or native queries
-//         $rsm = new ResultSetMapping();
-//         $rsm->addEntityResult('InstitutionBundle:InstitutionMedicalProcedureType', 'a');
-//         $rsm->addJoinedEntityResult('InstitutionBundle:InstitutionMedicalCenter', 'b', 'a', 'institutionMedicalCenter');
-//         $rsm->addJoinedEntityResult('InstitutionBundle:Institution', 'c', 'b', 'institutions');
-//         $rsm->addJoinedEntityResult('HelperBundle:Country', 'country', 'c', 'country');
-//         $rsm->addFieldResult('country', 'countryId', 'id');
-//         $rsm->addFieldResult('country', 'name', 'name');
-//         $rsm->addJoinedEntityResult('MedicalProcedureBundle:MedicalProcedureType', 'd', 'c', 'medicalProcedureType');
-
-//         $query = $this->entityManager->createNativeQuery($sql, $rsm);
-//         $query->setParameter('medicalProcedureTypeId', $medicalProcedureType->getId());
-
-//         return $query->getResult();
-
         $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue('medicalProcedureTypeId', $medicalProcedureType->getId());
+        $stmt->bindValue('treatmentId', $treatment->getId());
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -140,17 +124,17 @@ class SearchService
 
         $sql ="
             SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
-            FROM institution_medical_procedures AS a
-            LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
-            LEFT JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id
+            FROM institution_treatment_procedures AS a
+            LEFT JOIN treatment_procedures AS b ON a.treatment_procedure_id = b.id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
             WHERE a.status = 1
             AND (b.name LIKE :name OR c.name LIKE :name)
 
             UNION
 
             SELECT 0, '', b.id, b.name
-            FROM institution_medical_procedure_types AS a
-            LEFT JOIN medical_procedure_types AS b ON a.medical_procedure_type_id = b.id
+            FROM institution_treatments AS a
+            LEFT JOIN treatments AS b ON a.treatment_id = b.id
             WHERE a.status = 1 AND b.name LIKE :name
 
             ORDER BY medical_procedure_type_name ASC, medical_procedure_name ASC
@@ -182,9 +166,9 @@ class SearchService
         $sql ="
             SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
             FROM institution_medical_procedures AS a
-            LEFT JOIN medical_procedures AS b ON a.medical_procedure_id = b.id
-            LEFT JOIN medical_procedure_types AS c ON b.medical_procedure_type_id = c.id
-            LEFT JOIN institution_medical_procedure_types AS d ON a.institution_medical_procedure_type_id = d.id
+            LEFT JOIN treatment_procedures AS b ON a.treatment_procedure_id = b.id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN institution_treatments AS d ON a.institution_treatment_id = d.id
             LEFT JOIN institution_medical_centers AS e ON d.institution_medical_center_id = e.id
             LEFT JOIN institutions AS f ON e.institution_id = f.id
             WHERE (b.name LIKE :treatmentTerm OR c.name LIKE :treatmentTerm)
@@ -201,8 +185,8 @@ class SearchService
             UNION
 
             SELECT 0, '', b.id, b.name
-            FROM institution_medical_procedure_types AS a
-            LEFT JOIN medical_procedure_types AS b ON a.medical_procedure_type_id = b.id
+            FROM institution_treatments AS a
+            LEFT JOIN treatments AS b ON a.treatment_id = b.id
             LEFT JOIN institution_medical_centers AS c ON a.institution_medical_center_id = a.id
             LEFT JOIN institutions AS d ON c.institution_id = d.id
             WHERE a.status = 1 AND b.name LIKE :treatmentTerm
@@ -288,8 +272,8 @@ class SearchService
                 SELECT a.id FROM cities AS a
                 LEFT JOIN institutions AS b ON a.id = b.city_id
                 LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_medical_procedure_types AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_medical_procedures AS e ON d.id = e.institution_medical_procedure_type_id
+                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
+                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
                 WHERE e.id = :treatmentId)
 
                 OR
@@ -298,8 +282,8 @@ class SearchService
                 SELECT a.id FROM countries AS a
                 LEFT JOIN institutions AS b ON a.id = b.country_id
                 LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_medical_procedure_types AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_medical_procedures AS e ON d.id = e.institution_medical_procedure_type_id
+                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
+                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
                 WHERE e.id = :treatmentId)
             )
 
@@ -312,8 +296,8 @@ class SearchService
                 SELECT a.id FROM countries AS a
                 LEFT JOIN institutions AS b ON a.id = b.country_id
                 LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_medical_procedure_types AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_medical_procedures AS e ON d.id = e.institution_medical_procedure_type_id
+                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
+                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
                 WHERE e.id = :treatmentId)
 
             ORDER BY country_name ASC, city_name ASC

@@ -5,21 +5,33 @@
         <div class="main">
             <div class="box_outer">
 
-                You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{procedureType.name}}{% endif %}
+                <!-- Country List -->
+                {% if countries|length %}
+                <div>
+                    <ul>
+                    {% for country in countries %}
+                        <li><a href="{{ country.url }}">{{ country.name }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
 
-                <ul>
-                {% for center in centers %}
-                    <li>
-                        <!-- Hardcode for now -->
-                        <a href="/{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ procedureType.name }}" >
-                            {{ center.medicalCenter.name }}
-                        </a>
-                    </li>
-                {% else %}
-                    <li>No medical centers found.</li>
-                {% endfor %}
-                </ul>
-
+                <!-- Search Results -->
+                <div>
+                    You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{procedureType.name}}{% endif %}
+                    <ul>
+                    {% for center in centers %}
+                        <li>
+                            <!-- Hardcode for now -->
+                            <a href="/{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ procedureType.name }}" >
+                                {{ center.medicalCenter.name }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li>No medical centers found.</li>
+                    {% endfor %}
+                    </ul>
+                </div>
             </div>
 
         </div> <!--End Main-->

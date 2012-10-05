@@ -115,7 +115,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertEmpty($actual, "Searched for \"$term\"");
     }
 
-    public function testInitiateShouldReturnArrayOfProcedureTypeObjects()
+    public function testInitiateShouldReturnArrayOfTreatmentObjects()
     {
         $term = "Procedure Type1";
         $actual = $this->service->initiate(array(
@@ -125,7 +125,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
         $this->assertNotEmpty($actual, "Searched for \"$term\"");
         $this->assertInstanceOf(
-                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\MedicalProcedureType', $actual[0],
+                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\Treatment', $actual[0],
                 'Method initiate() should return an array of ProcedureType objects');
 
         $term = "ProCedure Type1";
@@ -153,7 +153,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         */
     }
 
-    public function testInitiateSearchForProcedureTypesShouldReturnAnEmptyArray()
+    public function testInitiateSearchForTreatmentsShouldReturnAnEmptyArray()
     {
         $term = 'A procedure type that should not exist: '.$this->time;
         $actual = $this->service->initiate(array(
@@ -164,9 +164,9 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertEmpty($actual, "Searched for \"$term\"");
     }
 
-    public function testInitiateShouldReturnArrayOfProcedureObjects()
+    public function testInitiateShouldReturnArrayOfTreatmentProcedureObjects()
     {
-        $term = 'Test Treatment Procedure';
+        $term = 'Test Medical Procedure';
         $actual = $this->service->initiate(array(
                 'term' => $term,
                 'category' => Constants::SEARCH_CATEGORY_PROCEDURE
@@ -175,7 +175,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
         $this->assertNotEmpty($actual, "Searched for \"$term\"");
         $this->assertInstanceOf(
-                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\MedicalProcedure', $actual[0],
+                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\TreatmentProcedure', $actual[0],
                 'Method initiate() should return an array of MedicalProcedure objects');
 
 
@@ -205,7 +205,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         */
     }
 
-    public function testInitiateSearchForProceduresShouldReturnAnEmptyArray()
+    public function testInitiateSearchForTreatmentProceduresShouldReturnAnEmptyArray()
     {
         $term = 'A procedure that should not exist: '.$this->time;
         $actual = $this->service->initiate(array(
@@ -214,6 +214,55 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         ));
         $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
         $this->assertEmpty($actual, "Searched for \"$term\"");
+    }
+
+
+    public function testGetTreatmentsByName()
+    {
+        $name = "Type1";
+
+        $actual = $this->service->getTreatmentsByName($name);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Procedure Type1', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-0', $actual[0]['value']);
+
+        $actual = $this->service->getTreatmentsByName($name, null);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Procedure Type1', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-0', $actual[0]['value']);
+
+        $actual = $this->service->getTreatmentsByName($name, 0);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Procedure Type1', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-0', $actual[0]['value']);
+
+        $name = 'non-existent-treatment';
+
+        $actual = $this->service->getTreatmentsByName($name);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+
+        $actual = $this->service->getTreatmentsByName($name, null);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+
+        $actual = $this->service->getTreatmentsByName($name, 0);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+    }
+
+    public function testGetDestinationsByName()
+    {
+
     }
 
 }

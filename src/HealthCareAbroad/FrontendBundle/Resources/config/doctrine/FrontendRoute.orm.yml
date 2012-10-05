@@ -14,6 +14,10 @@ HealthCareAbroad\FrontendBundle\Entity\FrontendRoute:
             type: string
             length: 500
             nullable: false
+        controller:
+            type: string
+            length: 250
+            nullable: false
         variables:
             type: text
             nullable: false
