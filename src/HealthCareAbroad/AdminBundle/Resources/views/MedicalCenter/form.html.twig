@@ -50,7 +50,7 @@
 				    <input type="submit" value="Save &amp; Add another center" class="green-button" name="submit"/>
 				</form>
 				
-				{% set procedureTypes = medicalCenter is defined ? medicalCenter.medicalProcedureTypes : [] %}
+				{% set procedureTypes = medicalCenter is defined ? medicalCenter.treatments : [] %}
 				
 				{% if procedureTypes is not empty %}
 				
@@ -73,7 +73,7 @@
 								<a href="{{ path('admin_procedureType_edit', {id:type.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
 								{% set class = type.status ? 'icon-2' : 'icon-5' %}
 								<a href="{{ path('admin_procedureType_updateStatus', {id:type.id}) }}" title="{{ type.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-								<a href="{{ path('admin_medicalProcedure_index', {medicalProcedureTypeId:type.id}) }}" class="icon-type">procedures</a>
+								<a href="{{ path('admin_treatmentProcedure_index', {treatmentId:type.id}) }}" class="icon-type">procedures</a>
 							</td>
 						</tr>
 					{% endfor %}

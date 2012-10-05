@@ -3,9 +3,9 @@ InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /institution
     
-# Routes for Institution MedicalProcedureTypeController #
-InstitutionBundle_medicalProcedureType:
-    resource: "@InstitutionBundle/Resources/config/routing_medicalProcedureType.yml"
+# Routes for Institution TreatmentController #
+InstitutionBundle_treatment:
+    resource: "@InstitutionBundle/Resources/config/routing_treatment.yml"
     prefix:   /institution
     
 # Routes for InstitutionUserController #

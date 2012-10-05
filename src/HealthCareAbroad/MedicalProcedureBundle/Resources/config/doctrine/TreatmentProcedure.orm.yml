@@ -1,0 +1,52 @@
+HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure:
+    type: entity
+    table: treatment_procedures
+    repositoryClass: HealthCareAbroad\MedicalProcedureBundle\Repository\TreatmentProcedureRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry    
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            gedmo:
+                - versioned
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    oneToMany:
+        institutionTreatmentProcedures:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure
+            mappedBy: treatmentProcedure
+    manyToOne:
+        treatment:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                treatment_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

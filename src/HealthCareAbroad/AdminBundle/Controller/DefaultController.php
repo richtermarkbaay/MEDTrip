@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,6 +27,11 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+
+        $alertService = $this->container->get('services.alert');
+        $alerts = $alertService->getAdminAlerts();
+        $pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
+
 //         $mailer = $this->get('mailer');
 //         $message = \Swift_Message::newInstance()
 //         ->setSubject('New Error Report')
@@ -33,8 +40,11 @@ class DefaultController extends Controller
 //         ->setBody('watatadsfsdf');
 //         $sendResult = $mailer->send($message);
 //         exit;
-        
-        return $this->render('AdminBundle:Default:index.html.twig');
+        $params = array(
+            'pendingListingAlerts' => $pendingListingAlerts
+        );
+
+        return $this->render('AdminBundle:Default:index.html.twig', $params);
     }
 
     /**
@@ -43,6 +53,16 @@ class DefaultController extends Controller
     public function manageHcaDataAction()
     {
     	return $this->render('AdminBundle:Default:manageHcaDataDashboard.html.twig');
+    }
+
+    public function removeAlertAction($id, $rev)
+    {
+        $result = json_encode($this->get('services.alert')->delete($id, $rev));
+
+        $response = new Response($result);
+        $response->headers->set('Content-Type', 'application/json');
+        
+        return $response;
     }
 
     /**

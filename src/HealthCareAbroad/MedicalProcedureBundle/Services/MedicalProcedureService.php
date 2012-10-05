@@ -3,8 +3,8 @@ namespace HealthCareAbroad\MedicalProcedureBundle\Services;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\MedicalProcedureundle\Repository\MedicalProcedureRepository;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,15 +20,15 @@ class MedicalProcedureService
 		$this->entityManager = $this->container->get('doctrine')->getEntityManager();
 	}
 
-	public function getMedicalProcedure($id)
+	public function getTreatmentProcedure($id)
 	{
-		$result = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id);
+		$result = $this->entityManager->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($id);
 		return $result;
 	}
 	
-	public function getMedicalProcedureType($id)
+	public function getTreatment($id)
 	{
-		$result = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($id);
+		$result = $this->entityManager->getRepository('MedicalProcedureBundle:Treatment')->find($id);
 		return $result;
 		
 	}
@@ -41,7 +41,7 @@ class MedicalProcedureService
 		return $entity;
 	}
 
-	public function saveMedicalProcedureType(MedicalProcedureType $entity)
+	public function saveTreatment(Treatment $entity)
 	{
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
@@ -51,7 +51,7 @@ class MedicalProcedureService
 	
 	public function deleteMedicalProcedure($id)
 	{
-		$entity = $this->entityManager->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($id);
+		$entity = $this->entityManager->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($id);
 		$entity->setStatus(0);
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);

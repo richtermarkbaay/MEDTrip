@@ -10,7 +10,7 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
             - NotBlank: ~
 
 
-HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
+HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [name]
@@ -24,13 +24,13 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType:
             - NotBlank: ~
 
 
-HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedure:
+HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [name, medicalProcedureType]
+            fields: [name, treatment]
             message: This procedure and procedure type already exists!
     properties:
         name:
             - NotBlank: ~
-        medicalProcedureType: 
+        treatment: 
             - NotBlank: ~

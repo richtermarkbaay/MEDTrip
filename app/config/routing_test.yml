@@ -11,7 +11,7 @@ admin_medicalProcedure_testSave:
   
 admin_procedureType_testSave:
     pattern:  /admin/procedure-type/test-save
-    defaults: { _controller: AdminBundle:MedicalProcedureType:save }
+    defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          id: \d+
          _method: GET

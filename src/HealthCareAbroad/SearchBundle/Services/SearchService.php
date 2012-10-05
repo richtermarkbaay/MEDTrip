@@ -3,10 +3,10 @@ namespace HealthCareAbroad\SearchBundle\Services;
 
 use Doctrine\ORM\QueryBuilder;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType;
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
+use HealthCareAbroad\SearchBundle\Constants;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use Doctrine\ORM\Query\ResultSetMapping;
-use HealthCareAbroad\SearchBundle\Constants;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -19,8 +19,8 @@ class SearchService
     private $repositoryMap = array(
         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
         Constants::SEARCH_CATEGORY_CENTER => 'MedicalProcedureBundle:MedicalCenter',
-        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:MedicalProcedureType',
-        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:MedicalProcedure'
+        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
+        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
     );
 
     /**
@@ -64,7 +64,6 @@ class SearchService
         }
 
         foreach ($treatments as $t ) {
-            // use medical procedure type name if medical procedure name is empty
             $label = $t['medical_procedure_name'] ? $t['medical_procedure_name'] : $t['medical_procedure_type_name'];
             $value = $t['medical_procedure_type_id'].'-'.$t['medical_procedure_id'];
 
@@ -95,7 +94,7 @@ class SearchService
         return $result;
     }
 
-    public function getCountriesWithProcedureType(MedicalProcedureType $medicalProcedureType)
+    public function getCountriesWithTreatment(Treatment $treatment)
     {
         $sql = "
             SELECT DISTINCT country.id, country.name
@@ -165,7 +164,7 @@ class SearchService
     }
 
     /**
-     * Search treatments (medical procedures or medical procedure types) located
+     * Search treatments (medical procedures or treatments) located
      * at destinations with $destinationId.
      *
      * @param string $treatmentTerm

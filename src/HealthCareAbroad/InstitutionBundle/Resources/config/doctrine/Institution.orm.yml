@@ -54,8 +54,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             mappedBy: institution
-        institutionMedicalProcedureTypes:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType
+        institutionTreatments:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
             mappedBy: institution
         institutionUsers:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser

@@ -7,8 +7,8 @@ class DefaultControllerTest extends AdminBundleWebTestCase
 	private $searchTerms = array(
 			Constants::SEARCH_CATEGORY_INSTITUTION => 'Test Institution Medical Clinic',
 			Constants::SEARCH_CATEGORY_CENTER => 'AddedFromTest Center',
-			Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'Test Medical Procedure Type',
-			Constants::SEARCH_CATEGORY_PROCEDURE => 'Test Medical Procedure',
+			Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'Test Treatment',
+			Constants::SEARCH_CATEGORY_PROCEDURE => 'Test Treatment Procedure',
 	);
 	
 	public function setUp() {

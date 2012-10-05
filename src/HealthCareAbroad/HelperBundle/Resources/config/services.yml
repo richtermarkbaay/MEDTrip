@@ -4,6 +4,7 @@ parameters:
     services.location_class: HealthCareAbroad\HelperBundle\Services\LocationService
     services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
+    services.alert_class: HealthCareAbroad\HelperBundle\Services\AlertService
     services.country_list: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
     services.city_list: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
@@ -16,8 +17,7 @@ services:
     events.factory:
         class: HealthCareAbroad\HelperBundle\Factory\EventFactory
         arguments: [@service_container]
-        
-    
+
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
@@ -47,7 +47,7 @@ services:
             
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         
     services.miscellaneous.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
@@ -62,6 +62,10 @@ services:
             - [setTwig, [@twig]]
         tags:
             - { name: twig.extension }
+
+    services.alert:
+        class: %services.alert_class%
+        arguments: [@doctrine, @service_container]
 
     form.country_list:
         class: "%services.country_list%"

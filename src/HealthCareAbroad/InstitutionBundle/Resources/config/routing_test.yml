@@ -6,9 +6,9 @@ institution_medicalCenter_testSave:
         _method: GET|PUT|DELETE
         
         
-# route for testing InstitutionBundle:MedicalProcedureType:save
+# route for testing InstitutionBundle:Treatment:save
 institution_medicalCenter_testSave:
     pattern: /institution/medical-centers/{imcId}/medical-procedure-types/testSave
-    defaults: { _controller: InstitutionBundle:MedicalProcedureType:save }
+    defaults: { _controller: InstitutionBundle:Treatment:save }
     requirements:    
         _method: GET|PUT|DELETE

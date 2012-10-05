@@ -4,7 +4,7 @@ namespace HealthCareAbroad\AdminBundle\Listener;
 
 use Doctrine\ORM\EntityManager;
 
-use HealthCareAbroad\AdminBundle\Events\CreateMedicalProcedureEvent;
+use HealthCareAbroad\AdminBundle\Events\CreateTreatmentProcedureEvent;
 
 class MedicalProcedureLogListener
 {
@@ -19,15 +19,15 @@ class MedicalProcedureLogListener
         $this->em = $em;
     }
 
-    public function onDelete(CreateMedicalProcedureEvent $event){
+    public function onDelete(CreateTreatmentProcedureEvent $event){
 
     }
 
-    public function onEdit(CreateMedicalProcedureEvent $event){
+    public function onEdit(CreateTreatmentProcedureEvent $event){
          
     }
 
-    public function onAdd(CreateMedicalProcedureEvent $event)
+    public function onAdd(CreateTreatmentProcedureEvent $event)
     {
          
     }

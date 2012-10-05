@@ -37,10 +37,12 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
         		'institutionDetail[city]' => '1',
         		'institutionDetail[address1]' => 'edit address1',
         		'institutionDetail[address2]' => 'edit address2',
+                'institutionDetail[institutionLanguagesSpoken]' => 'English'
         );
 		
         $invalidFormValues = $formValues;
         $invalidFormValues['institutionDetail[name]'] = null;
+        
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');

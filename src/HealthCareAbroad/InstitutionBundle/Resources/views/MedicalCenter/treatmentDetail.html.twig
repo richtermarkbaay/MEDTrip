@@ -1,0 +1,56 @@
+
+<div class="tabbed-medical-procedure-type-detail" >
+    
+    <div class="action-buttons">    
+        <a title="Edit {{ institutionTreatment.treatment.name }}" onclick="return InstitutionMedicalCenter.editProcedureType($(this));" class="button-type" href="{{ path('institution_medicalCenter_editProcedureType', {'imcId': institutionMedicalCenter.id,'imptId': institutionTreatment.id}) }}">Edit {{ institutionTreatment.treatment.name }}</a>
+        <a title="Add {{ institutionTreatment.treatment.name }} Procedure" onclick="return InstitutionMedicalCenter.addProcedure($(this));" class="button-type" href="{{ path('institution_treatment_addMedicalProcedure', {'imptId': institutionTreatment.id}) }}">Add Procedure</a>
+        <a title="View History" class="button-type view-history" href="{{ path('institution_showEditHistory', {'objectId': institutionTreatment.id, 'objectClass': base64_encode(getClass(institutionTreatment)) }) }}">View History</a>
+        
+    </div>
+    
+    <div class="details raw-content">
+        {% if institutionTreatment.description | length > 1000 %}
+            {{ institutionTreatment.description | slice(0, 1000)}}...
+        {% else %}
+            {{ institutionTreatment.description|raw }}
+        {% endif %}
+    </div>
+    
+    
+    <table class="generic-table" id="medical-procedures-list">
+    	<tr>
+    		<th class="table-header-repeat line-left minwidth-1" width="200px"><a href="#">Procedures</a></th>
+    		<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
+    		<th class="table-header-options line-left" width="50"><a href="#">Options</a></th>
+    	</tr>
+    
+        {% for procedure in institutionTreatment.institutionTreatmentProcedures %}
+    		{% set treatmentProcedure = procedure.treatmentProcedure %}
+    		<tr>
+    			<td>{{ treatmentProcedure.name }}</td>
+    			<td class="raw-content">{{ procedure.description|raw }}</td>  
+    			<td>
+    				<a onclick="return InstitutionMedicalCenter.editProcedure($(this));" href="{{ path('institution_treatment_editMedicalProcedure', {'imptId': institutionTreatment.id, 'impId':procedure.id} ) }}" title="Edit {{ treatmentProcedure.name }}" class="icon-1 add-edit-procedure"></a>
+    			</td>
+    		</tr>
+    	{% else  %}
+    		<tr><td colspan="3" class="empty-list">No Treatment Procedures yet!</td></tr>
+    	{% endfor %}
+    </table>
+    
+</div>
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+            $('a.view-history').click(function(){
+                EntityVersionHistory.viewHistory($(this));
+                return false;
+            });
+            
+        });
+    </script>
+{% endblock %}

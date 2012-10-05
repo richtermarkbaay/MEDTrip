@@ -1,6 +1,10 @@
 <?php
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
+
+use HealthCareAbroad\HelperBundle\Services\AlertService;
+
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
@@ -23,17 +27,20 @@ class DefaultController extends InstitutionAwareController
      */
     public function indexAction()
     {
-        $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution');
+        $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
+        $draftAlerts = isset($institutionAlerts[AlertTypes::DRAFT_LISTING]) ? $institutionAlerts[AlertTypes::DRAFT_LISTING] : array();
+        $expiredListingAlerts = isset($institutionAlerts[AlertTypes::EXPIRED_LISTING]) ? $institutionAlerts[AlertTypes::EXPIRED_LISTING] : array();
+        $approvedListingAlerts = isset($institutionAlerts[AlertTypes::APPROVED_LISTING]) ? $institutionAlerts[AlertTypes::APPROVED_LISTING] : array();
 
-        $draftInstitutionMedicalCenters = $institutionRepository->getDraftInstitutionMedicalCenters($this->institution);
-        
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
-        
         $news = $newsRepository->getLatestNews();
-       
+
         return $this->render('InstitutionBundle:Default:index.html.twig', array(
-                        'draftInstitutionMedicalCenters' => $draftInstitutionMedicalCenters,
-        				'news' => $news
+            'hasAlerts' => count($institutionAlerts),
+            'draftAlerts' => $draftAlerts,
+            'expiredListingAlerts' => $expiredListingAlerts,
+            'approvedListingAlerts' => $approvedListingAlerts,
+    		'news' => $news
         ));
     }
 

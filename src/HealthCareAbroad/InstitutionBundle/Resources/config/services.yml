@@ -1,16 +1,18 @@
 parameters:
     services.institution_class: HealthCareAbroad\InstitutionBundle\Services\InstitutionService
     services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
+    services.doctor_list: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorListType
+
 services:
     services.institution:
         class: %services.institution_class%
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
 
     services.institutionMedicalCenter:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         
     services.institution_list_transformer:
         class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer
@@ -28,3 +30,10 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType
         tags:
             - { name: form.type, alias: offeredService_list }
+    
+    form.doctor_list:
+        class: "%services.doctor_list%"
+        calls:
+            - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: form.type, alias: doctor_list }

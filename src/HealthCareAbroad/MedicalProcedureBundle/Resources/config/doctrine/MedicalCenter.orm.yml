@@ -46,8 +46,8 @@ HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter:
             gedmo:
                 - versioned
     oneToMany:
-        medicalProcedureTypes:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalProcedureType
+        treatments:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment
             mappedBy: medicalCenter
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter

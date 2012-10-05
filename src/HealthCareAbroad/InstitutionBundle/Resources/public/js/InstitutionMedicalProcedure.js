@@ -1,13 +1,13 @@
-var InstitutionMedicalProcedure = {
+var InstitutionTreatmentProcedure = {
 	
 	selectedMedicalCenter: 0,
-	selectedMedicalProcedureType: 0,
+	selectedTreatment: 0,
 	manageProceduresUrl : "",
 	loadProcedureTypesUrl : "",
 	loadProceduresUrl : "",
 	updateProcedureStatusUrl : "",
 	medicalCenterDropdown: null,
-	medicalProcedureTypeDropdown: null,
+	treatmentDropdown: null,
 
 	init : function(params)
 	{
@@ -18,15 +18,15 @@ var InstitutionMedicalProcedure = {
 		this.updateProcedureStatusUrl = params.updateProcedureStatusUrl;
 		
 		// init containers
-		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('select#institutionMedicalProcedureTypeForm_medicalCenter');
-		this.medicalProcedureTypeDropdown = params.medicalProcedureTypeDropdown ? params.medicalProcedureTypeDropdown: $('select#institutionMedicalProcedureTypeForm_medicalProcedureType');
+		this.medicalCenterDropdown = params.medicalCenterDropdown ? params.medicalCenterDropdown : $('select#institutionTreatmentForm_medicalCenter');
+		this.treatmentDropdown = params.treatmentDropdown ? params.treatmentDropdown: $('select#institutionTreatmentForm_treatment');
 		this.selectedMedicalCenter = params.selectedMedicalCenter ? params.selectedMedicalCenter : 0;
-		this.selectedMedicalProcedureType = params.selectedMedicalProcedureType ? params.selectedMedicalProcedureType : 0;
+		this.selectedTreatment = params.selectedTreatment ? params.selectedTreatment : 0;
 		
-		if (InstitutionMedicalProcedure.selectedMedicalCenter) {
+		if (InstitutionTreatmentProcedure.selectedMedicalCenter) {
 			
-			InstitutionMedicalProcedure.medicalCenterDropdown.find('option').each(function(){
-				if (this.value == InstitutionMedicalProcedure.selectedMedicalCenter) {
+			InstitutionTreatmentProcedure.medicalCenterDropdown.find('option').each(function(){
+				if (this.value == InstitutionTreatmentProcedure.selectedMedicalCenter) {
 					this.selected = "selected";
 				}
 			});
@@ -37,7 +37,7 @@ var InstitutionMedicalProcedure = {
 		
 		/**
 		$('#procedure_filter').change(function(){
-			window.location = InstitutionMedicalProcedure.manageProceduresUrl + '?filter=' + $(this).val();
+			window.location = InstitutionTreatmentProcedure.manageProceduresUrl + '?filter=' + $(this).val();
 		});
 		
 		$('#institutionMedicalProcedure_procedure_type').click(function(){
@@ -55,37 +55,37 @@ var InstitutionMedicalProcedure = {
 
 	initMedicalCenterOnChangeEvent : function()
 	{
-		InstitutionMedicalProcedure.medicalCenterDropdown.change(function(){
+		InstitutionTreatmentProcedure.medicalCenterDropdown.change(function(){
 			
 			medicalCenterId = $(this).val() ? $(this).val() : 0;
 			
 			// no medical center id, do not request ajax anymore
 			if (!medicalCenterId) {
-				InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("");
+				InstitutionTreatmentProcedure.treatmentDropdown.attr('disabled', true).html("");
 				return false;
 			}
 			
-			InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("<option><i>Loading choices...</i></option>");
+			InstitutionTreatmentProcedure.treatmentDropdown.attr('disabled', true).html("<option><i>Loading choices...</i></option>");
 			
 			$.ajax({
-				url: InstitutionMedicalProcedure.loadProcedureTypesUrl,
+				url: InstitutionTreatmentProcedure.loadProcedureTypesUrl,
 				data: {medical_center_id: medicalCenterId},
 				type: 'get',
 				dataType: 'json',
 				success: function(types) {
 					if(!types.length) {
-						InstitutionMedicalProcedure.medicalProcedureTypeDropdown.html("")
+						InstitutionTreatmentProcedure.treatmentDropdown.html("")
 							.attr('disabled', true);
 						return false;
 					}
 
-					var options = InstitutionMedicalProcedure.convertToOptionsString(types);
-					InstitutionMedicalProcedure.medicalProcedureTypeDropdown.html(options)
+					var options = InstitutionTreatmentProcedure.convertToOptionsString(types);
+					InstitutionTreatmentProcedure.treatmentDropdown.html(options)
 						.attr('disabled', false)
 						.change();
 				},
 				error: function() {
-					InstitutionMedicalProcedure.medicalProcedureTypeDropdown.attr('disabled', true).html("");
+					InstitutionTreatmentProcedure.treatmentDropdown.attr('disabled', true).html("");
 				}
 			});
 		})
@@ -94,21 +94,21 @@ var InstitutionMedicalProcedure = {
 	/**
 	initMedicalProcedurTypeOnChangeEvent : function()
 	{
-		InstitutionMedicalProcedure.medicalProcedureTypeDropdown.change(function(){
+		InstitutionTreatmentProcedure.treatmentDropdown.change(function(){
 			if($(this).val()) {
 				$(this).prev('ul').hide();
 			}
 
 			var $procedureElem = $('#institutionMedicalProcedure_medical_procedure');
 
-			$.getJSON(InstitutionMedicalProcedure.loadProceduresUrl, {procedure_type_id: $(this).val()}, function(procedures){
+			$.getJSON(InstitutionTreatmentProcedure.loadProceduresUrl, {procedure_type_id: $(this).val()}, function(procedures){
 				
 				if(!procedures.length) {
 					alert('No Procedures yet for this type!.');
 					return false;
 				}
 
-				var options = InstitutionMedicalProcedure.convertToOptionsString(procedures);
+				var options = InstitutionTreatmentProcedure.convertToOptionsString(procedures);
 				$procedureElem.html(options).prev('ul').hide();
 			});
 		});
@@ -118,7 +118,7 @@ var InstitutionMedicalProcedure = {
 	{
 		var len = data.length, options = '';
 		for(var i=0; i< len; i++) {
-			options += '<option value="'+ data[i].id +'" ' + (InstitutionMedicalProcedure.selectedMedicalProcedureType==data[i].id?'selected': '') + '>' + data[i].name + '</option>';
+			options += '<option value="'+ data[i].id +'" ' + (InstitutionTreatmentProcedure.selectedTreatment==data[i].id?'selected': '') + '>' + data[i].name + '</option>';
 		}
 		return options;
 	}

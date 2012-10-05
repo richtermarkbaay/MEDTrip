@@ -49,7 +49,7 @@ class DefaultController extends Controller
 				break;
 
 			case Constants::SEARCH_CATEGORY_PROCEDURE_TYPE:
-				$template = 'AdminBundle:MedicalProcedureType:index.html.twig';
+				$template = 'AdminBundle:Treatment:index.html.twig';
 				$varName = 'procedureTypes';
 				break;
 		

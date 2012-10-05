@@ -97,7 +97,7 @@ class FrontendController extends Controller
         }
 
         if ($searchTerms['procedureTypeId']) {
-            $procedureType = $entityManager->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($searchTerms['procedureTypeId']);
+            $procedureType = $entityManager->getRepository('MedicalProcedureBundle:Treatment')->find($searchTerms['procedureTypeId']);
             $medicalCenter = $procedureType->getMedicalCenter();
         }
 
@@ -307,16 +307,17 @@ class FrontendController extends Controller
         $procedureType = null;
 
         if ($procedureId) {
-            $procedure = $em->getRepository('MedicalProcedureBundle:MedicalProcedure')->find($procedureId);
-            $procedureType = $procedure->getMedicalProcedureType();
+            $procedure = $em->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($procedureId);
+            $procedureType = $procedure->getTreatmentProcedureType();
         } else if ($procedureTypeId) {
-            $procedureType = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->find($procedureTypeId);
+            $procedureType = $em->getRepository('MedicalProcedureBundle:Treatment')->find($procedureTypeId);
         } else {
-            $procedureType = $em->getRepository('MedicalProcedureBundle:MedicalProcedureType')->findOneBy(array('slug' => $request->get('procedureType')));
+            $procedureType = $em->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $request->get('procedureType')));
         }
 
         $centers = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($procedureType, $procedure);
-        //$countries = $em->getRepository('InstitutionBundle:InstitutionMedicalProcedureType')->getCountriesWithProcedureType($procedureType);
+        //$countries = $em->getRepository('InstitutionBundle:InstitutionTreatmentProcedureType')->getCountriesWithProcedureType($procedureType);
+        $countries = $this->get('services.search')->getCountriesWithProcedureType($procedureType);
 
         $countries = $this->appendCountryUrls(
             $this->get('services.search')->getCountriesWithProcedureType($procedureType), $procedureType

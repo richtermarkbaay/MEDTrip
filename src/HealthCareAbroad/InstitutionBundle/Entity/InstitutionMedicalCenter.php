@@ -8,18 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
  * HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
  */
 class InstitutionMedicalCenter
-{
+{    
     /**
      * @var bigint $id
      */
     private $id;
 
-    /**
-     * @var string $name
-     */
-    private $name;
-    
-    
     /**
      * @var text $description
      */
@@ -41,6 +35,11 @@ class InstitutionMedicalCenter
     private $status;
 
     /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionTreatments;
+
+    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
      */
     private $medicalCenter;
@@ -49,27 +48,18 @@ class InstitutionMedicalCenter
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionMedicalProcedureTypes;
-    
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $media;    
-    
+    private $media;
+
     public function __construct()
     {
-        $this->institutionMedicalProcedureTypes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
-    public function __toString()
-    {
-    	return $this->name;
-    }
+    
     /**
      * Get id
      *
@@ -169,6 +159,38 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Add institutionTreatments
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
+    {
+        $this->institutionTreatments[] = $institutionTreatments;
+        return $this;
+    }
+
+    /**
+     * Remove institutionTreatments
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
+     */
+    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
+    {
+        $this->institutionTreatments->removeElement($institutionTreatments);
+    }
+
+    /**
+     * Get institutionTreatments
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionTreatments()
+    {
+        return $this->institutionTreatments;
+    }
+
+    /**
      * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
@@ -211,39 +233,7 @@ class InstitutionMedicalCenter
     {
         return $this->institution;
     }
-    
-    /**
-     * Add institutionMedicalProcedureTypes
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
-    {
-        $this->institutionMedicalProcedureTypes[] = $institutionMedicalProcedureTypes;
-        return $this;
-    }
 
-    /**
-     * Remove institutionMedicalProcedureTypes
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes
-     */
-    public function removeInstitutionMedicalProcedureType(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalProcedureType $institutionMedicalProcedureTypes)
-    {
-        $this->institutionMedicalProcedureTypes->removeElement($institutionMedicalProcedureTypes);
-    }
-
-    /**
-     * Get institutionMedicalProcedureTypes
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionMedicalProcedureTypes()
-    {
-        return $this->institutionMedicalProcedureTypes;
-    }
-    
     /**
      * Add media
      *
@@ -255,7 +245,7 @@ class InstitutionMedicalCenter
         $this->media[] = $media;
         return $this;
     }
-    
+
     /**
      * Remove media
      *
@@ -265,14 +255,19 @@ class InstitutionMedicalCenter
     {
         $this->media->removeElement($media);
     }
-    
+
     /**
      * Get media
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getMedia()
     {
         return $this->media;
-    }    
+    }
+    
+    public function __toString()
+    {
+        return $this->medicalCenter->getName();
+    }
 }
