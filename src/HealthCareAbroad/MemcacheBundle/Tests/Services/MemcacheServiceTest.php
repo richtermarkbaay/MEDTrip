@@ -8,11 +8,11 @@ class MemcacheServiceTest extends MemcacheBundleUnitTestCase
 {
     public function testSet()
     {
-        $this->getServiceContainer()->get('services.memcache');
+        $this->getServiceContainer()->get('services.memcache')->set('my_test_key', array('watasdfsfasf'));
     }
     
     public function testGet()
     {
-        $this->getServiceContainer()->get('services.memcache');
+        $this->getServiceContainer()->get('services.memcache')->get('my_test_key');
     }
 }

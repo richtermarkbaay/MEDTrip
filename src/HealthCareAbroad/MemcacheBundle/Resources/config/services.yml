@@ -1,6 +1,7 @@
 parameters:
     memcached.servers:
-        - {host: 192.168.1.249, port: 11211 }
+        - { host: 127.0.0.1, port: 11211 }
+        - { host: 192.168.1.249, port: 11211 }
 
 services:
     services.memcache:
