@@ -18,6 +18,8 @@ security:
                 users:
                     admin_authorized: { password: 123456, roles: 'SUPER_ADMIN' }
                     admin_not_authorized: { password: 123456, roles: 'ROLE_ADMIN' }
+                    institution_authorized: { password: 123456, roles: 'SUPER_ADMIN' }
+                    institution_not_authorized: {password: 123456, roles: 'INSTITUTION_USER' }
     
     firewalls:
         main:
@@ -53,8 +55,8 @@ security:
             #    path:   /demo/secured/logout
             #    target: /demo/
             #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
+            http_basic:
+                realm: "Secured Demo Area"
 
     access_control:
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

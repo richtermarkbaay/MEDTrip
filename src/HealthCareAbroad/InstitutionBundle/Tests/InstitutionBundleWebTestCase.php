@@ -52,21 +52,33 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     
     protected function getBrowserWithActualLoggedInUser()
     {
-        //if (self::$clientWithLoggedUser === null) {
-            self::$clientWithLoggedUser = static::createClient();
-            $crawler = self::$clientWithLoggedUser->request('GET', '/institution/login');
+//         //if (self::$clientWithLoggedUser === null) {
+//             self::$clientWithLoggedUser = static::createClient();
+//             $crawler = self::$clientWithLoggedUser->request('GET', '/institution/login');
             
-            $form = $crawler->selectButton('submit')->form();
-            self::$clientWithLoggedUser->submit($form, $this->formValues);
-        //}
+//             $form = $crawler->selectButton('submit')->form();
+//             self::$clientWithLoggedUser->submit($form, $this->formValues);
+//         //}
         
-        return self::$clientWithLoggedUser;
+//         return self::$clientWithLoggedUser;
+        
+        $client = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'institution_authorized',
+            'PHP_AUTH_PW'   => '123456',
+        ));
+        $session = $client->getContainer()->get('session');
+        $session->set('accountId', 1);
+        $session->set('institutionId', 1);
+        $session->set('institutionName', 'test institution');
+        $session->save();
+        
+        return $client;
     }
     
     protected function getBrowserWithMockLoggedUser()
     {
         $client = static::createClient(array(), array(
-            'PHP_AUTH_USER' => 'developer',
+            'PHP_AUTH_USER' => 'institution_not_authorized',
             'PHP_AUTH_PW'   => '123456',
         ));
     }
