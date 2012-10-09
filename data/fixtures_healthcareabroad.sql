@@ -372,7 +372,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 -- Dumping data for table `institutions`
 --
 INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 1),
+(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 9),
 (2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
 
 -- --------------------------------------------------------
