@@ -316,7 +316,7 @@ class SearchService
         list($majorId, $minorId) = \explode('-', $ids);
 
         if ('treatment' == $context) {
-            $majorLabel = 'medicalProcedureTypeId';
+            $majorLabel = 'treatmentId';
             $minorLabel = 'medicalProcedureId';
         } else if ('destination' == $context){
             $majorLabel = 'countryId';

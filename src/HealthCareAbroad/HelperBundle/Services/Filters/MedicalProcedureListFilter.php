@@ -12,8 +12,8 @@ class MedicalProcedureListFilter extends ListFilter
     {
         parent::__construct($doctrine);
 
-        // Add medicalProcedureType in validCriteria
-        $this->addValidCriteria('medicalProcedureType');
+        // Add treatment in validCriteria
+        $this->addValidCriteria('treatment');
     }
 
     function setFilterOptions()
@@ -32,9 +32,9 @@ class MedicalProcedureListFilter extends ListFilter
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['medicalProcedureType'] = array(
+        $this->filterOptions['treatment'] = array(
             'label' => 'Procedure Type',
-            'selected' => $this->queryParams['medicalProcedureType'],
+            'selected' => $this->queryParams['treatment'],
             'options' => $options
         );
     }
@@ -48,13 +48,13 @@ class MedicalProcedureListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
         
-        if ($this->queryParams['medicalProcedureType'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.medicalProcedureType = :medicalProcedureType');
-            $this->queryBuilder->setParameter('medicalProcedureType', $this->criteria['medicalProcedureType']);
+        if ($this->queryParams['treatment'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.treatment = :treatment');
+            $this->queryBuilder->setParameter('treatment', $this->criteria['treatment']);
         }
 
-        if($this->sortBy == 'medicalProcedureType') {
-            $this->queryBuilder->leftJoin('a.medicalProcedureType', 'b');
+        if($this->sortBy == 'treatment') {
+            $this->queryBuilder->leftJoin('a.treatment', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';

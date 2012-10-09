@@ -50,7 +50,7 @@ class MedicalCenterControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
     	// check of redirect url /admin/medical-centers
-    	$this->assertEquals('/admin/medical-center/edit/5', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/medical-center/edit/6', $client->getResponse()->headers->get('location'));
 
     	// redirect request
     	$crawler = $client->followRedirect(true);
