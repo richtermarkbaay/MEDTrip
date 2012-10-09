@@ -53,7 +53,7 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 		$institution->setCity($city);
 		$institution->setCountry($country);
 		
-		$result = $this->service->createInstitution($institution);
+		$result = $this->service->create($institution);
 		$this->assertNotEmpty($result);
 		
 	}
@@ -68,21 +68,6 @@ class InstitutionServiceTest extends InstitutionBundleTestCase
 	
 		$result = $this->service->updateInstitution($institutionValue);
 		$this->assertNotEmpty($result);
-	
-		//test for empty institution
-		$institutionValue = new Institution();
-		$institutionValue->setName('alnie');
-		$result = $this->service->updateInstitution($institutionValue);
-		$this->assertEmpty($result);
-	
-	}
-	public function testCreateEmptyInstitution()
-	{
-		//test for empty institution
-		$institution = new Institution();
-		$institution->setName('');
-		$result = $this->service->createInstitution($institution);
-		$this->assertEquals(NULL,$result);
 	
 	}
 	
