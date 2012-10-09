@@ -80,7 +80,7 @@ class TreatmentController extends InstitutionAwareController
     public function editAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
+            //throw $this->createNotFoundException();
         }
         
         $institutionTreatment = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatment')->find($request->get('imptId', 0));
@@ -101,7 +101,7 @@ class TreatmentController extends InstitutionAwareController
     public function saveAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
+            //throw $this->createNotFoundException();
         }
 
         if (!$request->isMethod('POST')) {
@@ -162,7 +162,7 @@ class TreatmentController extends InstitutionAwareController
     public function addMedicalProcedureAction(Request $request)
     {
         if(!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
+            //throw $this->createNotFoundException();
         }
 
         $institutionTreatment = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatment')->find($request->get('imptId', 0));
@@ -188,7 +188,7 @@ class TreatmentController extends InstitutionAwareController
     public function editMedicalProcedureAction(Request $request)
     {
         if(!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
+            //throw $this->createNotFoundException();
         }
 
         $institutionMedicalProcedure = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatmentProcedure')->find($request->get('impId',0));
@@ -213,7 +213,7 @@ class TreatmentController extends InstitutionAwareController
     public function saveMedicalProcedureAction(Request $request)
     {
         if(!$request->isXmlHttpRequest()) {
-            throw $this->createNotFoundException();
+            //throw $this->createNotFoundException();
         }
 
         $institutionTreatment = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatment')->find($request->get('imptId', 0));

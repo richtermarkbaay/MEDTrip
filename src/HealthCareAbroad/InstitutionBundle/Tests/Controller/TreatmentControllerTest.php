@@ -67,9 +67,9 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         );
         
         // test for submitting missing required fields
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $invalidFormValues);
-        $crawler = $client->request('POST', $uri, $invalidFormValues, array('X-Requested-With' => 'XMLHttpRequest'));
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        //$crawler = $client->request('POST', $uri, $invalidFormValues, array('X-Requested-With' => 'XMLHttpRequest'));
         
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0,$crawler->filter('html:contains("This value should not be blank.")')->count(), 'Text "This value should not be blank." not found after validating form');
@@ -79,11 +79,10 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
         
-        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "Expecting redirect after submitting correct data");
-        
-        $crawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved treatment")')->count(), 'Expecting success message "Successfully saved treatment" page after saving new medical-procedure-type');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "");
+        $this->assertEquals('application/json', $client->getResponse()->headers->get('content-type'));
+        $content = \json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals('/institution/medical-centers/edit/1', $content['redirect_url']);
     }
     
     /**
@@ -108,7 +107,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         // test correct request
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('title:contains("Edit Treatment")')->count(), 'Expecting page title to contain "Edit Treatment"');
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Description")')->count(), 'Expecting Description form field');
         
         // valid form values
         $formValues = array(
@@ -133,11 +132,10 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', $uri);
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "Expecting redirect after submitting correct data");
-        
-        $crawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully saved treatment")')->count(), 'Expecting success message "Successfully saved treatment" page after updating medical-procedure-type');
+        $this->assertEquals('application/json', $client->getResponse()->headers->get('content-type'));
+        $content = \json_decode($client->getResponse()->getContent(), true);
+        $this->assertEquals('/institution/medical-centers/edit/1?imptId=1', $content['redirect_url']);
     }
     
     public function testSave()
@@ -145,7 +143,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
          
         // --- test not allowed methods
-        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave', array(), array('X-Requested-With' => 'XMLHttpRequest'));
+        $client->request('GET', '/institution/medical-centers/1/medical-procedure-types/testSave', array());
         
         $this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
          
@@ -178,7 +176,11 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         // test valid request
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment Procedure")')->count(), 'Expecting text "Add Treatment Procedure"');
+        
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Medical Center")')->count(), 'Medical Center field is expected');
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Procedure Type")')->count(), 'Procedure Type field is expected');
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Procedure")')->count(), 'Procedure field is expected');
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Description")')->count(), 'Description field is expected');
         
         $form = $crawler->selectButton('submit')->form();
         $invalidValues = array('institutionMedicalProcedureForm[treatmentProcedure]' => 0,
@@ -196,11 +198,10 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
             'institutionMedicalProcedureForm[status]' => 1
         );
         $crawler = $client->submit($form, $validValues);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode(), "expecting redirect after successfully saving procedure");
-        
-        $crawler = $client->followRedirect();
-        
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Successfully added a medical procedure")')->count(), 'Expecting text "Successfully added a medical procedure"');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals('application/json', $client->getResponse()->headers->get('content-type'));
+        $content = \json_decode($client->getResponse()->getContent(),true);
+        $this->assertEquals('/institution/medical-centers/edit/1?imptId=1',$content['redirect_url']);
     }
     
     /**
