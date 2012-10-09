@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -41,8 +43,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     public function testUpdateStatus()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $status = 1;
-        $crawler = $client->request('POST', '/admin/institution/1/update-status/'.$status);
+        $status = InstitutionStatus::ACTIVE;
+        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $status));
 
         $response = $client->getResponse();
 
@@ -63,7 +65,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $invalidStatus = 35;
-        $crawler = $client->request('POST', '/admin/institution/1/update-status/'.$invalidStatus);
+        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $invalidStatus));
 
         $response = $client->getResponse();
         
@@ -95,7 +97,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/add');
 
         $formData = array(
-            'institutionMedicalCenter[medicalCenter]' => 2,
+            'institutionMedicalCenter[medicalCenter]' => 3,
             'institutionMedicalCenter[description]' => 'This center is added from test.'
         );
 
@@ -123,7 +125,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/add');
 
         $formData = array(
-            'institutionMedicalCenter[medicalCenter]' => 3,
+            'institutionMedicalCenter[medicalCenter]' => 5,
             'institutionMedicalCenter[description]' => 'This center is added from test and redirect to AddAnother.'
         );
     
@@ -150,7 +152,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/edit/2');
 
         $formData = array(
-            'institutionMedicalCenter[medicalCenter]' => 2,
+            'institutionMedicalCenter[medicalCenter]' => 3,
             'institutionMedicalCenter[description]' => 'This center is added from test. Updated'
         );
 
@@ -257,7 +259,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $status = 8;
-        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/update-status/' . $status);
+        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/update-status', array('status' => $status));
     
         $response = $client->getResponse();
         
@@ -278,7 +280,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $invalidStatus = 35;
-        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/update-status/'.$invalidStatus);
+        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/update-status', array('status' => $invalidStatus));
 
         $response = $client->getResponse();
 
@@ -310,7 +312,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionTreatmentForm[treatment]' => 2,
+            'institutionTreatmentForm[treatment]' => 3,
             'institutionTreatmentForm[description]' => 'This medProceType is added from Admin Add test. got it?'
         );
 
@@ -368,7 +370,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionTreatmentForm[treatment]' => 1,
+            'institutionTreatmentForm[treatment]' => 2,
             'institutionTreatmentForm[description]' => ''
         );
 
@@ -411,7 +413,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertTrue($isCorrectForm, 'Incorrect Add Procedure Type Form');
 
         $formData = array(
-            'institutionMedicalProcedureForm[treatmentProcedure]' => 3,
+            'institutionMedicalProcedureForm[treatmentProcedure]' => 1,
             'institutionMedicalProcedureForm[description]' => 'This Procedure is added from Admin Add test. got it?',
             'institutionMedicalProcedureForm[status]' => 1
         );
