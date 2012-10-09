@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Tests;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUser;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -48,19 +50,28 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	
 	protected function getBrowserWithActualLoggedInUser($options = array())
 	{
-	    $freshLogin = \array_key_exists('freshLogin', $options) && $options['freshLogin'];
+// 	    $freshLogin = \array_key_exists('freshLogin', $options) && $options['freshLogin'];
 	    
-	    if (null === self::$clientWithLoggedUser )
-	    {
-	        self::$clientWithLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
-	        $crawler = self::$clientWithLoggedUser->request('GET', '/admin/login');
-	        $form = $crawler->selectButton('submit')->form();
-	        self::$clientWithLoggedUser->submit($form, $this->formValues);
+// 	    if (null === self::$clientWithLoggedUser )
+// 	    {
+// 	        self::$clientWithLoggedUser = static::createClient(\array_merge($this->defaultClientOptions, $options));
+// 	        $crawler = self::$clientWithLoggedUser->request('GET', '/admin/login');
+// 	        $form = $crawler->selectButton('submit')->form();
+// 	        self::$clientWithLoggedUser->submit($form, $this->formValues);
 	        
-	        echo "\n======= Logging in {$this->userEmail}::{$this->userPassword}\n\n";
-	    }
+// 	        echo "\n======= Logging in {$this->userEmail}::{$this->userPassword}\n\n";
+// 	    }
 	    
-	    return self::$clientWithLoggedUser;
+// 	    return self::$clientWithLoggedUser;
+
+	    $client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
+	                    'PHP_AUTH_USER' => 'admin_authorized',
+	                    'PHP_AUTH_PW'   => '123456',
+	    ));
+	    $session = $client->getContainer()->get('session');
+	    $session->set('accountId', 2);
+	    $session->save();
+	    return $client;
 	    
 	}
 	
@@ -81,11 +92,11 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	     
 // 	    return self::$clientWithNormalLoggedUser;
 
-	    if (null !== self::$clientWithLoggedUser ) {
-	        self::$clientWithLoggedUser = null;
-	    }
+// 	    if (null !== self::$clientWithLoggedUser ) {
+// 	        self::$clientWithLoggedUser = null;
+// 	    }
 	    $client = static::createClient(\array_merge($this->defaultClientOptions, $options), array(
-            'PHP_AUTH_USER' => 'developer',
+            'PHP_AUTH_USER' => 'admin_not_authorized',
             'PHP_AUTH_PW'   => '123456',
 	    ));
 	    return $client;

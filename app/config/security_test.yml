@@ -16,7 +16,8 @@ security:
         in_memory:
             memory:
                 users:
-                    developer: { password: 123456, roles: 'ROLE_DEVELOPER' }
+                    admin_authorized: { password: 123456, roles: 'SUPER_ADMIN' }
+                    admin_not_authorized: { password: 123456, roles: 'ROLE_ADMIN' }
     
     firewalls:
         main:
