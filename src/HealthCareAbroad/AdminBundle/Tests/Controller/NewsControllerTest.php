@@ -106,7 +106,7 @@ class NewsControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->submit($form, $formData);
 
     	// check if status code is not 302
-    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"News" must not be able to create an entry with duplicate name.');
+    	$this->assertEquals(302, $client->getResponse()->getStatusCode(), '"News" must not be able to create an entry with duplicate name.');
     }
 
     public function testUpdateStatusAction(){
