@@ -1,5 +1,5 @@
 parameters:
-    services.medical_procedure.class: HealthCareAbroad\MedicalProcedureBundle\Services\MedicalProcedureService
+    services.medical_procedure.class: HealthCareAbroad\MedicalProcedureBundle\Services\TreatmentProcedureService
     services.medical_procedure_type_list: HealthCareAbroad\MedicalProcedureBundle\Form\ListType\TreatmentListType
 
 services:
