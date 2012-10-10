@@ -5,12 +5,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
-use HealthCareAbroad\MedicalProcedureundle\Repository\MedicalProcedureRepository;
+use HealthCareAbroad\MedicalProcedureundle\Repository\TreatmentProcedureRepository;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 
-class MedicalProcedureService
+class TreatmentProcedureService
 {
 	private $container;
 	private $entityManager;
@@ -33,7 +33,7 @@ class MedicalProcedureService
 		
 	}
 
-	public function saveMedicalProcedure(MedicalProcedure $entity)
+	public function saveTreatmentProcedure(TreatmentProcedure $entity)
 	{
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
@@ -49,7 +49,7 @@ class MedicalProcedureService
 		return $entity;
 	}
 	
-	public function deleteMedicalProcedure($id)
+	public function deleteTreatmentProcedure($id)
 	{
 		$entity = $this->entityManager->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($id);
 		$entity->setStatus(0);
