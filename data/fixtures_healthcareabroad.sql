@@ -849,7 +849,7 @@ INSERT INTO `treatment_procedures` (`id`, `treatment_id`, `name`, `slug`, `statu
 (1, 1, 'testProcedure1', 'testprocedure1', 1),
 (2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
 (3, 2, 'testProcedure2', 'testprocedure2', 1),
-(4, 1, 'Test Medical Procedure', 'test-medical-procedure', 1);
+(4, 1, 'Test Treatment Procedure', 'test-medical-procedure', 1);
 -- --------------------------------------------------------
 
 --
