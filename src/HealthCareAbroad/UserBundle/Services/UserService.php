@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Factory\EventFactory;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Security\Core\SecurityContext;
@@ -48,14 +50,21 @@ class UserService
      */
     protected $session;
     
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected $eventDispatcher;
     
-    public function __construct(ContainerInterface $container=null)
+    /**
+     * @var EventFactory
+     */
+    protected $eventFactory;
+    
+    public function setEventDispatcher($eventDispatcher)
     {
-        $this->container = $container;
+        $this->eventDispatcher = $eventDispatcher;
+    }
+    
+    public function setEventFactory(EventFactory $eventFactory)
+    {
+        $this->eventFactory = $eventFactory;
     }
     
     public function setSession($session)

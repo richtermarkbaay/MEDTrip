@@ -12,8 +12,9 @@ services:
             
     services.institution_user:
         class: %services.institution_user_class%
-        arguments: [@service_container]
         calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setEventFactory, [@events.factory]]
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
@@ -21,8 +22,9 @@ services:
             - [setSecurityContext, [@security.context]]
     services.admin_user:
         class: %services.admin_user_class%
-        arguments: [@service_container]
         calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setEventFactory, [@events.factory]]
             - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]

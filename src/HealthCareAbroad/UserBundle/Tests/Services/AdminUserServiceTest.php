@@ -27,6 +27,8 @@ class AdminUserServiceTest extends UserBundleTestCase
     public function setUp()
     {
         $this->service = new AdminUserService();
+        $this->service->setEventDispatcher($this->getServiceContainer()->get('event_dispatcher'));
+        $this->service->setEventFactory($this->getServiceContainer()->get('events.factory'));
         $this->service->setDoctrine($this->getDoctrine());
         $this->service->setChromediaRequest($this->getServiceContainer()->get('services.chromedia_request'));
         $this->service->setChromediaAccountsUri($this->getServiceContainer()->getParameter('chromedia_accounts_uri'));

@@ -53,7 +53,7 @@ class AdminUserService extends UserService
             $this->session->set('accountId', $user->getAccountId());
             
             // dispatch event
-            $this->container->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->container->get('events.factory')->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
+            $this->eventDispatcher->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->eventFactory->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
             
             return true;
         }
