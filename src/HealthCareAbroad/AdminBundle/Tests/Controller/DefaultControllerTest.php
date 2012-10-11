@@ -72,4 +72,18 @@ class DefaultControllerTest extends AdminBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
          
     }
+    
+    public function testManageHcaData()
+    {
+        $uri = '/admin/manage-hca-data';
+        $client = $this->requestUrlWithNoLoggedInUser($uri);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $this->assertTrue($this->isRedirectedToLoginPage($client));
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('h1:contains("Manage Health Care Abroad Data")')->count(), 'expecting header "Manage Health Care Abroad Data"');
+        
+    }
 }
