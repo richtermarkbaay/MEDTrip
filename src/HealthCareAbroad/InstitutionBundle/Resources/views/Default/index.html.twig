@@ -14,7 +14,7 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
+            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage specializations in your clinic or medical institution', 'href': path('institution_medicalCenter_index'), 'links': [{title:'Click here to view all centers',href: path('institution_medicalCenter_index')}, {title:'Click here to add center', href: path('institution_medicalCenter_add')}]} %}
 
             {% include '::relatedTasks.base.admin.html.twig' with
                 {'contents': [manageCentersTask]}
@@ -29,7 +29,7 @@
                         <h3>Alerts</h3>
                     {% endif %}
 
-                    <!-- medical centers with DRAFT status -->
+                    <!-- specializations with DRAFT status -->
                     {% if expiredListingAlerts|length %}
                     <div>
                         <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
@@ -50,7 +50,7 @@
                     {% if draftAlerts|length %}
                     <div>
                         <img src="/images/admin/forms/icon_list_arrow.gif" alt=""/>
-                        The following medical centers have incomplete information. Click on one to resume inputting your data.
+                        The following specializations have incomplete information. Click on one to resume inputting your data.
 
                         <div>
                         {% for center in draftAlerts %}

@@ -177,7 +177,7 @@ class TreatmentControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
-        $this->assertGreaterThan(0, $crawler->filter('form:contains("Medical Center")')->count(), 'Medical Center field is expected');
+        $this->assertGreaterThan(0, $crawler->filter('form:contains("Specialization")')->count(), 'Specialization field is expected');
         $this->assertGreaterThan(0, $crawler->filter('form:contains("Procedure Type")')->count(), 'Procedure Type field is expected');
         $this->assertGreaterThan(0, $crawler->filter('form:contains("Procedure")')->count(), 'Procedure field is expected');
         $this->assertGreaterThan(0, $crawler->filter('form:contains("Description")')->count(), 'Description field is expected');
