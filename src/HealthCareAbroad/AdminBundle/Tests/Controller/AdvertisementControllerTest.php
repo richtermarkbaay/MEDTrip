@@ -109,7 +109,52 @@ class AdvertisementControllerTest extends AdminBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Expected 200 status code for good request');
         $this->assertGreaterThan(0,$crawler->filter('html:contains("Successfully created advertisement. You may now generate invoice.")')->count(), 'Success text "Successfully created advertisement. You may now generate invoice." not found');
         
-        // TODO: test for generate invoice and preview page
     }
     
+    public function testEdit()
+    {
+        $uri = '/admin/advertisements/1/edit';
+        // test for unauthorized access
+        $client = $this->getBrowserWithMockLoggedUser();
+        $client->request('GET', $uri);
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        
+        $specificDetailFormValues = array(
+            'advertisement[title]' => 'this is a test',
+            'advertisement[description]' => 'lorem ipsum dolor'
+        );
+        
+        $invalidSpecificDetailFormValues = array(
+            'advertisement[title]' => '',
+            'advertisement[description]' => ''
+        );
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri);
+        $crawler = $client->submit($crawler->selectButton('submit')->form(), $invalidSpecificDetailFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Expected 200 status code for good request');
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("This value should not be blank.")')->count(), '"This value should not be blank." not found');
+        
+        $crawler = $client->submit($crawler->selectButton('submit')->form(), $specificDetailFormValues);
+        $crawler = $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Expected 200 status code for good request');
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Successfully updated advertisement.")')->count(), 'Success text "Successfully updated advertisement." not found');
+        
+    }
+    
+    public function testPreview()
+    {
+        $uri = '/admin/advertisements/1/preview';
+        $client = $this->getBrowserWithMockLoggedUser();
+        $client->request('GET', $uri);
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $client->request('GET', '/admin/advertisements/12312313123123123/preview');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Create new advertisement - Preview Page")')->count(), '"Create new advertisement - Preview Page" not found');
+    }
 }

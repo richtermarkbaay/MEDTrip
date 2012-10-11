@@ -166,6 +166,7 @@ class AdvertisementController extends Controller
     /**
      * This will be the last page when creating a new advertisement
      * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
