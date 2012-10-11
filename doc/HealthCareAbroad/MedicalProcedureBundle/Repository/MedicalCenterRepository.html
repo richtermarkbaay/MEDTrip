@@ -60,8 +60,28 @@
                     <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
                 </td>
                 <td class="last">
+                    <a href="#method_getBuilderForMedicalCenters">getBuilderForMedicalCenters</a>()
+                    <p>Get Active MedicalCenters</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
+                </td>
+                <td class="last">
                     <a href="#method_getQueryBuilderForUnselectedInstitutionMedicalCenters">getQueryBuilderForUnselectedInstitutionMedicalCenters</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution)
-                    <p>Get MedicalCenters that are not yet linked to a specific institution</p>
+                    <p>Get MedicalCenters that have associated procedure types but are not yet linked to a specific institution.</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
+                </td>
+                <td class="last">
+                    <a href="#method_getQueryBuilderForUnselectedInstitutionMedicalCentersButWithDraftsIncluded">getQueryBuilderForUnselectedInstitutionMedicalCentersButWithDraftsIncluded</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution)
+                    <p>Get MedicalCenters that are not yet linked to a specific institution excluding the medical centers with status InstitutionMedicalCenterStatus::DRAFT</p>
                 </td>
                 <td></td>
             </tr>
@@ -81,7 +101,7 @@
         <h2>Details</h2>
 
                         <h3 id="method_search">
-        <div class="location">at line 19</div>
+        <div class="location">at line 21</div>
         <code>            public            
     <strong>search</strong>($term = &#039;&#039;, $limit = 10)</code>
     </h3>
@@ -111,7 +131,7 @@
     </div>
 
                 <h3 id="method_autoCompleteSearch">
-        <div class="location">at line 35</div>
+        <div class="location">at line 37</div>
         <code>            public            
     <strong>autoCompleteSearch</strong>($term = &#039;&#039;, $limit = 10)</code>
     </h3>
@@ -140,13 +160,71 @@
                     </div>
     </div>
 
+                <h3 id="method_getBuilderForMedicalCenters">
+        <div class="location">at line 57</div>
+        <code>            public            <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
+    <strong>getBuilderForMedicalCenters</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get Active MedicalCenters</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_getQueryBuilderForUnselectedInstitutionMedicalCenters">
-        <div class="location">at line 56</div>
+        <div class="location">at line 72</div>
         <code>            public            <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
     <strong>getQueryBuilderForUnselectedInstitutionMedicalCenters</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution)</code>
     </h3>
     <div class="details">
-        <p>Get MedicalCenters that are not yet linked to a specific institution</p>
+        <p>Get MedicalCenters that have associated procedure types but are not yet linked to a specific institution.</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a></td>
+                <td>$institution</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getQueryBuilderForUnselectedInstitutionMedicalCentersButWithDraftsIncluded">
+        <div class="location">at line 119</div>
+        <code>            public            <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
+    <strong>getQueryBuilderForUnselectedInstitutionMedicalCentersButWithDraftsIncluded</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution)</code>
+    </h3>
+    <div class="details">
+        <p>Get MedicalCenters that are not yet linked to a specific institution excluding the medical centers with status InstitutionMedicalCenterStatus::DRAFT</p>
         <p></p>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -175,7 +253,7 @@
     </div>
 
                 <h3 id="method_getBuilderForMedicalCentersOfInstitution">
-        <div class="location">at line 81</div>
+        <div class="location">at line 147</div>
         <code>            public            <abbr title="HealthCareAbroad\MedicalProcedureBundle\Repository\Doctrine\ORM\QueryBuilder">QueryBuilder</abbr>
     <strong>getBuilderForMedicalCentersOfInstitution</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution)</code>
     </h3>

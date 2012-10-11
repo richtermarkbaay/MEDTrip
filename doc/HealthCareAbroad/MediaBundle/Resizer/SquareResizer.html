@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>HealthCareAbroad\MediaBundle\Resizer\SquareResizer | HealthCareAbroad API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">HealthCareAbroad API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../HealthCareAbroad/MediaBundle/Resizer.html">HealthCareAbroad\MediaBundle\Resizer</a>\SquareResizer</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>SquareResizer</strong>        implements
+        <a href="../../../HealthCareAbroad/MediaBundle/Resizer/Resizer.html"><abbr title="HealthCareAbroad\MediaBundle\Resizer\Resizer">Resizer</abbr></a></p>
+
+            <div class="description">
+            <p>This reziser crop the image when the width and height are specified.</p>
+            <p>Every time you specify the W and H, the script generate a square with the<br />
+ smaller size. For example, if width is 100 and height 80; the generated image<br />
+ will be 80x80.</p>
+        </div>
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(<abbr title="Imagine\Image\ImagineInterface">ImagineInterface</abbr> $adapter, string $mode)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_resize">resize</a>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, <abbr title="Gaufrette\File">File</abbr> $in, <abbr title="Gaufrette\File">File</abbr> $out, string $format, array $settings)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_getBox">getBox</a>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, array $settings)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 33</div>
+        <code>            public            
+    <strong>__construct</strong>(<abbr title="Imagine\Image\ImagineInterface">ImagineInterface</abbr> $adapter, string $mode)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Imagine\Image\ImagineInterface">ImagineInterface</abbr></td>
+                <td>$adapter</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$mode</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_resize">
+        <div class="location">at line 42</div>
+        <code>            public            
+    <strong>resize</strong>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, <abbr title="Gaufrette\File">File</abbr> $in, <abbr title="Gaufrette\File">File</abbr> $out, string $format, array $settings)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a></td>
+                <td>$media</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Gaufrette\File">File</abbr></td>
+                <td>$in</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Gaufrette\File">File</abbr></td>
+                <td>$out</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$format</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$settings</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getBox">
+        <div class="location">at line 85</div>
+        <code>            public            
+    <strong>getBox</strong>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, array $settings)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a></td>
+                <td>$media</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$settings</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>
