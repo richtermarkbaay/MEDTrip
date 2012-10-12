@@ -15,7 +15,13 @@ class AlertService
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     const ID_SEPARATOR = '.';
-    const ADMIN_RECIPIENT = 'Admin';
+    const NULL_DATE = '1970-01-01 00:00:00';
+
+    const ALL_ALERT_VIEW_URI = '_design/alerts/_view/all';
+    const RECIPIENT_ALERT_VIEW_URI = '_design/alerts/_view/recipient';
+    const REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/reference';
+    const TYPE_AND_REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/typeAndReference';
+
 
 	protected $doctrine;
 	protected $container;
@@ -34,14 +40,14 @@ class AlertService
 	 * 
 	 * @return array
 	 */
-	function getAlerts()
-	{
-	    $options['dateAlert'] = array('operator' => '<=', 'value' => date(self::DATE_FORMAT));
-        $alerts = $this->couchDB->getBy($options);
-        $alertData = $this->formatAlertData($alerts);
+// 	function getAlerts()
+// 	{
+// 	    $options['dateAlert'] = array('operator' => '<=', 'value' => date(self::DATE_FORMAT));
+//         $alerts = $this->couchDB->getBy($options);
+//         $alertData = $this->formatAlertData($alerts);
 
-        return $alertData;
-	}
+//         return $alertData;
+// 	}
 	
 	/**
 	 * 
@@ -50,32 +56,46 @@ class AlertService
 	 */
 	function getAlertsByInstitution(Institution $institution)
 	{
-	    $alerts = array();
-	    $options = array(
-            'institutionId' => $institution->getId(),
-            'dateAlert' => array('operator' => '<=', 'value' => date(self::DATE_FORMAT))
+        $params = array(
+            'keys' => array(
+                array($institution->getId(), AlertRecipient::INSTITUTION), 
+                array(null, AlertRecipient::ALL_ACTIVE_INSTITUTION)
+            )
         );
 
-	    $result = $this->couchDB->getBy($options);
-
-	    return $this->formatAlertData($result);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
 	}
-	
-	/**
-	 *
-	 * @return array
-	 */
-	function getAdminAlerts()
+
+    /**
+     * 
+     * @param int $accountId
+     * @return \HealthCareAbroad\HelperBundle\Services\Ambigous
+     */
+	function getAdminAlerts($accountId = null)
 	{
-	    $alerts = array();
-	    $options = array(
-            'recipient' => self::ADMIN_RECIPIENT,
-            'dateAlert' => array('operator' => '<=', 'value' => date(self::DATE_FORMAT))
-	    );
+        $params = array(
+            'keys' => array(
+                array(null, AlertRecipient::ALL_ACTIVE_ADMIN), 
+                array((int)$accountId, AlertRecipient::ADMIN)
+            )
+        );
 
-	    $result = $this->couchDB->getBy($options);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+	}
 
-	    return $this->formatAlertData($result);
+
+	/**
+	 * 
+	 * @param string $uri
+	 * @param array $params
+	 * @param bool $groupByType
+	 * @return Ambigous <\HealthCareAbroad\HelperBundle\Services\Ambigous, unknown, multitype:unknown >
+	 */
+	function getAlerts($uri = self::ALL_ALERT_VIEW_URI, $params = array(), $groupByType = false)
+	{
+	    $result = $this->couchDB->getView($uri, $params);
+
+	    return $this->formatAlertData($result, $groupByType);
 	}
 
 	/**
@@ -99,7 +119,7 @@ class AlertService
 	 * @param mixed $data
 	 * @return Ambigous <multitype:, unknown>
 	 */
-	function formatAlertData($data)
+	function formatAlertData($data, $groupByType = false)
 	{
 	    $formattedData = array();
 
@@ -107,9 +127,17 @@ class AlertService
 	        $data = json_decode($data, true);
 
 	    if(isset($data['total_rows']) && $data['total_rows'] > 0) {
-    	    foreach($data['rows'] as $each) {
-    	        $alert = $this->formatAlert($each['value']);
-    	        $formattedData[$alert['type']][] = $alert;
+	    
+    	    if(!$groupByType) {
+    	        foreach($data['rows'] as $each) {
+    	            $alert = $this->formatAlert($each['value']);
+    	            $formattedData[] = $alert;
+    	        }
+    	    } else {
+	            foreach($data['rows'] as $each) {
+	                $alert = $this->formatAlert($each['value']);
+	                $formattedData[$alert['type']][] = $alert;
+	            }
     	    }
 	    }
 
@@ -125,15 +153,15 @@ class AlertService
      * 
      * @param array $arrayData
      */
-    function save(array $alertData = array())
+    function save($alertData = array())
     {
         $data = $this->validateData($alertData);
 
-        $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
-        $alert = $this->getAlert($id);
-        $data['_id'] = $id;
-
-        if($alert) {
+        if(!isset($data['_id']) || !$data['_id']) {
+            $id = $this->generateAlertId();
+        } else {
+            $id = $data['_id'];
+            $alert = $this->getAlert($id);
             $data['_rev'] = $alert['_rev'];
         }
 
@@ -153,20 +181,18 @@ class AlertService
         }
     
         foreach($arrayData as $key => $data) {
-    
+
             $data = $this->validateData($data);
-    
-            $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
-            $alert = $this->getAlert($id);
-            $arrayData[$key]['_id'] = $id;
-    
-            if($alert) {
+
+            if(isset($data['_id']) && $alert = $this->getAlert($data['_id'])) {
                 $arrayData[$key]['_rev'] = $alert['_rev'];
+            } else {
+                $arrayData[$key]['_id'] = $this->generateAlertId();
             }
         }
     
         $result = $this->couchDB->multipleUpdate($arrayData);
-    
+
         $end = (float)microtime();
         $time = $end - $start;
         //var_dump("processTime: " . $time);
@@ -185,23 +211,11 @@ class AlertService
         return $this->couchDB->delete($id, $rev);
     }
 
-    /**
-     * 
-     * @param int $referenceId
-     * @param string $class
-     * @param string $type
-     * @throws \ErrorException
-     * @return string md5($id)
-     */
-    function generateAlertId($referenceId = null, $class = null, $type = null)
+    function generateAlertId()
     {
-        if(!$referenceId || !$class || !$type) {
-            throw new \ErrorException('Unable to generate Alert Id! Invalid parameter(s).');
-        }
+        $time = microtime();
 
-        $id = $referenceId . self::ID_SEPARATOR . $class . self::ID_SEPARATOR  . $type;
-
-        return md5($id);
+        return md5($time);
     }
 
     

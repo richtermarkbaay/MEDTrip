@@ -24,6 +24,8 @@ class CouchDatabase {
     
     public function getBy($criteria = array())
     {
+        $postData = $conditions = array();
+        
         foreach($criteria as $key => $value) {
             if(is_array($value) && isset($value['operator'])) {
 
@@ -33,18 +35,56 @@ class CouchDatabase {
                 $conditions[] = "doc.$key " . $value['operator'] . ' ' . $value['value'];
 
             } else {
+
                 $conditions[] = is_string($value['value']) ? "doc.$key == '$value'" : "doc.$key == $value";
             }
         }
 
-        $conditions = implode(' && ', $conditions);
-        $postData = array("map" => "function(doc){if($conditions) emit(doc.dateCreated, doc)}");
+        if(count($conditions)) {
+            $conditions = implode(' && ', $conditions);
+            if(isset($criteria['recipient.institution'])) {
+                $postData = array("map" => "function(doc){if($conditions) emit([doc.dateCreated, ], doc)}");
+            } else {
+                $postData = array("map" => "function(doc){if($conditions) emit(doc.dateCreated, doc)}");                
+            }
+
+        }
+
         $headers = array('Content-Type' => 'application/json');
         $response = $this->send('POST', '_temp_view?descending=true', $postData, $headers);
 
         return $response;
     }
-    
+
+    // GET an object
+    public function getView($uri, $params = array()) {
+
+        $stringParams = '';
+        foreach($params as $key => $val) {
+            $arrSubParams = array();
+            if(is_array($val)) {
+                foreach($val as $each) {
+                    array_push($arrSubParams, is_string($each) ? '"'.$each.'"'  : $each);
+                }
+
+                if(is_array($arrSubParams)) {
+                    $arrSubParams = json_encode($arrSubParams);
+                }
+
+                $stringParams .= "&$key=$arrSubParams";
+            } else {
+                
+                $stringParams .= '&' . (is_string($val) ? $key. '="' .$val .'"'  : "$key=$val");
+            }
+        }
+
+        $stringParams = substr($stringParams, 1);
+        
+        $result = $this->send('GET', "$uri?$stringParams");
+
+        return $result;
+    }
+
     // GET an object
     public function get($id, $params = array('rev' => 0)) {
         if($params['rev'] == 0)
@@ -58,16 +98,6 @@ class CouchDatabase {
         }
 
         return $response;
-    }
-
-    // GET All object
-    public function getAll($includeDocs = true) {
-        $uri = '_all_docs';
-        if($includeDocs) {
-            $uri .= '?include_docs=true';
-        }
-
-        return $this->send('GET', $uri);
     }
 
     // GET an attachment

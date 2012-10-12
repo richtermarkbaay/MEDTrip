@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Listener\Alerts;
 
+use HealthCareAbroad\HelperBundle\Services\AlertRecipient;
+
 use HealthCareAbroad\LogBundle\Exception\ListenerException;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
@@ -88,18 +90,16 @@ class InstitutionAlertListener extends BaseAlertListener
                 break;
 
             case InstitutionMedicalCenterStatus::APPROVED :
-                $x = $event->getOptions();
-
                 // Add Approved Listing Alert
                 if($approvedAlert = $this->createApprovedListingAlert($object, $event->getOptions())); {
                     array_push($alertData, $approvedAlert);                    
                 }
 
                 // ADD Expired Listing Alert
-                if($expiredAlert = $this->createExpiredListingAlert($object, $event->getOptions())) {
-                    array_push($alertData, $expiredAlert);
+                if($expiredAlert = $this->createExpiredListingAlerts($object, $event->getOptions())) {
+                    $alertData = array_merge($alertData, $expiredAlert);
                 }
-                
+
                 // REMOVE Pending Listing Alert if exists!
                 if($draftAlert = $this->createRemovePendingAlert($object, $event->getOptions())) {
                     array_push($alertData, $draftAlert);                    
@@ -118,27 +118,31 @@ class InstitutionAlertListener extends BaseAlertListener
     public function onDeleteMedicalCenterAction(BaseEvent $event)
     {
         $object = $event->getData();
-        $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::DRAFT_LISTING);
+        $param = array('key' => array((int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
 
-        $alertData = $this->alertService->getAlert($alertId);
+        $alerts = $this->alertService->getAlerts(AlertService::REFERENCE_ALERT_VIEW_URI, $param);
 
-        if($alertData) {
-            $this->alertService->delete($alertId, $alertData['_rev']);
+        if(count($alerts)) {
+            for($i=0; $i<count($alerts); $i++) {
+                $alerts[$i]['_deleted'] = true;
+            }
+
+            $this->alertService->multipleUpdate($alerts);
         }
     }
     
 
     /// Private Functions ///
-
     private function createApprovedListingAlert($object, $options)
     {
         $referenceData = array(
-            'id' => $object->getId(),
+            'id' => (int)$object->getId(),
             'name' => $object->getMedicalCenter()->getName()
         );
 
         $pendingAlert = array(
-            'institutionId' => $options->get('institutionId'),
+            'recipient' => $options->get('institutionId'),
+            'recipientType' => AlertRecipient::INSTITUTION,
             'referenceData' => $referenceData,
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::APPROVED_LISTING,
@@ -149,43 +153,45 @@ class InstitutionAlertListener extends BaseAlertListener
         return $pendingAlert;
     }
     
-    private function createExpiredListingAlert($object, $options)
+    private function createExpiredListingAlerts($object, $options)
     {
-        $recipient = array(
-            'admin' => AlertService::ADMIN_RECIPIENT,
+        $referenceData = array(
+            'id' => (int)$object->getId(),
+            'name' => $object->getMedicalCenter()->getName(),
             'institutionId' => $options->get('institutionId')
         );
 
-        $referenceData = array(
-            'id' => $object->getId(),
-            'name' => $object->getMedicalCenter()->getName()
-        );
-
+        // Set 30 Days to Expire Listing
         $dateAlert = strtotime('+30 day', strtotime(date(AlertService::DATE_FORMAT)));
         $dateAlert = date(AlertService::DATE_FORMAT, $dateAlert);
 
-        $expiredAlert = array(
-            'recipient' => $recipient,
+        $adminExpiredAlert = array(
+            'recipient' => null,
+            'recipientType' => AlertRecipient::ALL_ACTIVE_ADMIN,
             'referenceData' => $referenceData,
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::EXPIRED_LISTING,
             'dateAlert' => $dateAlert,
             'isDeletable' => true
         );
-        
-        return $expiredAlert;
+
+        $institutionExpiredAlert = $adminExpiredAlert;
+        $institutionExpiredAlert['recipient'] = $options->get('institutionId');
+        $institutionExpiredAlert['recipientType'] = AlertRecipient::INSTITUTION;
+
+        return array($adminExpiredAlert, $institutionExpiredAlert);
     }
 
     private function createPendingListingAlert($object, $options)
     {        
         $referenceData = array(
-            'id' => $object->getId(),
+            'id' => (int)$object->getId(),
             'name' => $object->getMedicalCenter()->getName(),
             'institutionId' => $options->get('institutionId')
         );
 
         $pendingAlert = array(
-            'recipient' => AlertService::ADMIN_RECIPIENT,
+            'recipientType' => AlertRecipient::ALL_ACTIVE_ADMIN,
             'referenceData' => $referenceData,
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::PENDING_LISTING,
@@ -199,7 +205,8 @@ class InstitutionAlertListener extends BaseAlertListener
     private function createDraftListingAlert($object, $options)
     {
         $draftAlert = array(
-            'institutionId' => $options->get('institutionId'),
+            'recipient' => $options->get('institutionId'),
+            'recipientType' => AlertRecipient::INSTITUTION,
             'referenceData' => array('id' => $object->getId(), 'name' => $object->getMedicalCenter()->getName()),
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::DRAFT_LISTING,
@@ -212,10 +219,12 @@ class InstitutionAlertListener extends BaseAlertListener
 
     private function createRemoveDraftAlert($object)
     {
-        $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::DRAFT_LISTING);
-        $draftAlert = $this->alertService->getAlert($alertId);
-        
-        if($draftAlert) {
+        $param = array('key' => array(AlertTypes::DRAFT_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
+        $result = $this->alertService->getAlerts(AlertService::TYPE_AND_REFERENCE_ALERT_VIEW_URI, $param);
+
+
+        if(count($result)) {
+            $draftAlert = $result[0];
             $draftAlert['_deleted'] = true;
         } else {
             $draftAlert = null;
@@ -226,10 +235,11 @@ class InstitutionAlertListener extends BaseAlertListener
 
     private function createRemovePendingAlert($object, $options)
     {
-        $alertId = $this->alertService->generateAlertId($object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER, AlertTypes::PENDING_LISTING);
-        $pendingAlert = $this->alertService->getAlert($alertId);
-    
-        if($pendingAlert) {
+        $param = array('key' => array(AlertTypes::PENDING_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
+        $result = $this->alertService->getAlerts(AlertService::TYPE_AND_REFERENCE_ALERT_VIEW_URI, $param);
+
+        if(count($result)) {
+            $pendingAlert = $result[0];
             $pendingAlert['_deleted'] = true;
         } else {
             $pendingAlert = null;
