@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -56,7 +56,7 @@ class InstitutionMedicalCenterService
         //TODO: check that the institution owns the center.
         $center = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
 
-        if (InstitutionMedicalCenterStatus::DRAFT != $center->getStatus()) {
+        if (InstitutionMedicalCenterGroupStatus::DRAFT != $center->getStatus()) {
             throw new Exception('Delete operation not allowed.');
         }
 

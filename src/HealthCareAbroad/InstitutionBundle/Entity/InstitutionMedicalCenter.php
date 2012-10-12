@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
  */
 class InstitutionMedicalCenter
-{    
+{
     /**
      * @var bigint $id
      */
@@ -45,9 +45,9 @@ class InstitutionMedicalCenter
     private $medicalCenter;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
      */
-    private $institution;
+    private $institutionMedicalCenterGroup;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -213,25 +213,25 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Set institution
+     * Set institutionMedicalCenterGroup
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroup
      * @return InstitutionMedicalCenter
      */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    public function setInstitutionMedicalCenterGroup(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroup = null)
     {
-        $this->institution = $institution;
+        $this->institutionMedicalCenterGroup = $institutionMedicalCenterGroup;
         return $this;
     }
 
     /**
-     * Get institution
+     * Get institutionMedicalCenterGroup
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup 
      */
-    public function getInstitution()
+    public function getInstitutionMedicalCenterGroup()
     {
-        return $this->institution;
+        return $this->institutionMedicalCenterGroup;
     }
 
     /**

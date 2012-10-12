@@ -45,11 +45,11 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             joinColumn:
                 name: medical_center_id
                 referencedColumnName: id
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            inversedBy: institutions
+        institutionMedicalCenterGroup:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
+            inversedBy: institutionMedicalCenters
             joinColumn:
-                name: institution_id
+                name: institution_medical_center_group_id
                 referencedColumnName: id
     manyToMany:
         media:

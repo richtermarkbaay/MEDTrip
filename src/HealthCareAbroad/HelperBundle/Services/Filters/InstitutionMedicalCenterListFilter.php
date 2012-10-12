@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 class InstitutionMedicalCenterListFilter extends ListFilter
 {
@@ -14,9 +14,9 @@ class InstitutionMedicalCenterListFilter extends ListFilter
         $statusFilterOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
 
         if (isset($this->queryParams['isInstitutionContext']) && $this->queryParams['isInstitutionContext']) {
-            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusListForInstitutionContext();
+            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusListForInstitutionContext();
         } else {
-            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusList();
+            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusList();
         }
 
         $this->setStatusFilterOption($statusFilterOptions);

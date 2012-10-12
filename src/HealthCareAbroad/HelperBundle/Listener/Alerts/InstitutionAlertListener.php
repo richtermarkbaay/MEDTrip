@@ -11,7 +11,7 @@ use HealthCareAbroad\LogBundle\Exception\ListenerException;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 use HealthCareAbroad\HelperBundle\Services\AlertService;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,7 +42,7 @@ class InstitutionAlertListener extends BaseAlertListener
     
     public function onEditMedicalCenterAction(BaseEvent $event)
     {
-        if($event->getOption('previousStatus') == InstitutionMedicalCenterStatus::DRAFT) {
+        if($event->getOption('previousStatus') == InstitutionMedicalCenterGroupStatus::DRAFT) {
             $alertData = array();
             $object = $event->getData();
 
@@ -51,7 +51,7 @@ class InstitutionAlertListener extends BaseAlertListener
                 array_push($alertData, $draftAlert);                    
             }
 
-            if($object->getStatus() == InstitutionMedicalCenterStatus::PENDING) {
+            if($object->getStatus() == InstitutionMedicalCenterGroupStatus::PENDING) {
                 $pendingAlert = $this->createPendingListingAlert($object, $event->getOptions());
                 array_push($alertData, $pendingAlert);
             }
@@ -74,7 +74,7 @@ class InstitutionAlertListener extends BaseAlertListener
         }
 
         switch($object->getStatus()) {
-            case InstitutionMedicalCenterStatus::PENDING :
+            case InstitutionMedicalCenterGroupStatus::PENDING :
 
                 // ADD Pending Listing Alert
                 $pendingAlert = $this->createPendingListingAlert($object, $event->getOptions());
@@ -87,7 +87,7 @@ class InstitutionAlertListener extends BaseAlertListener
 
                 break;
 
-            case InstitutionMedicalCenterStatus::APPROVED :
+            case InstitutionMedicalCenterGroupStatus::APPROVED :
                 $x = $event->getOptions();
 
                 // Add Approved Listing Alert
