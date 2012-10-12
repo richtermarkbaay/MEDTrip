@@ -42,7 +42,7 @@ var InstitutionTreatmentProcedure = {
 		
 		$('#institutionMedicalProcedure_procedure_type').click(function(){
 			if(!$('#institutionMedicalProcedure_medical_center').val()) {
-				alert('Please choose Medical Center first.');
+				alert('Please choose Specialization first.');
 			}
 		});
 		
@@ -59,7 +59,7 @@ var InstitutionTreatmentProcedure = {
 			
 			medicalCenterId = $(this).val() ? $(this).val() : 0;
 			
-			// no medical center id, do not request ajax anymore
+			// no specialization id, do not request ajax anymore
 			if (!medicalCenterId) {
 				InstitutionTreatmentProcedure.treatmentDropdown.attr('disabled', true).html("");
 				return false;

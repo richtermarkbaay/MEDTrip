@@ -81,7 +81,7 @@ services:
 
     ### --------- end institution user invitation event listeners --------- ###
 
-    ### --------- institution medical center event listeners --------- ###
+    ### --------- institution specialization event listeners --------- ###
     listener.log.institution_medical_center.add:
         class: HealthCareAbroad\LogBundle\Listener\Institution\InstitutionBundleCommonListener
         arguments: [@service_container]
@@ -98,7 +98,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onCommonLogAction }
 
-        ## institutoin medical center alert listeners ##
+        ## institutoin specialization alert listeners ##
     listener.alert.institution_medical_center.add:
         class: HealthCareAbroad\HelperBundle\Listener\Alerts\InstitutionAlertListener
         arguments: [@service_container]
@@ -122,9 +122,9 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onDeleteMedicalCenterAction }
-        ## institutoin medical center alert listners ##
+        ## institutoin specialization alert listners ##
 
-    ### --------- end institution medical center event listeners --------- ###
+    ### --------- end institution specialization event listeners --------- ###
 
     ### --------- institution treatment event listeners --------- ###
     listener.log.institution_medical_procedure_type.add:

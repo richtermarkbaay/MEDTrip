@@ -4,7 +4,7 @@
     title: 'Add Treatment', 
     class: 'add-procedure-type add-icon',
     isVisible: hideTreatmentTask is defined and hideTreatmentTask ? false: true,
-    description: imcId is defined and imcId ? 'Create a new treatment for this medical center': 'Add a new treatment', 
+    description: imcId is defined and imcId ? 'Create a new treatment for this specialization': 'Add a new treatment', 
     href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId }), 
     links: [
         {class: 'add-procedure-type', title: 'Add treatment', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId})}
@@ -12,12 +12,12 @@
 %}
 
 {% set addMedicalCenterTask = {
-    title: "Add Another Medical Center", 
+    title: "Add Another Specialization", 
     class: 'add-medical-center add-icon',
     isVisible: hideAddMedicalCenter is defined and hideAddMedicalCenter ? false : true, 
-    description: "Add a new medical center that is available in your institution", 
+    description: "Add a new specialization that is available in your institution", 
     href: path('institution_medicalCenter_add'),
-    links: [{title:'Click here to add a medical center',href: path('institution_medicalCenter_add')}]}
+    links: [{title:'Click here to add a specialization',href: path('institution_medicalCenter_add')}]}
 %}
 
 {% if (institutionMedicalCenter is defined)%}
@@ -34,11 +34,11 @@
 {% endif %}
 
 {% set manageMedicalCentersTask = {
-    title: "Manage Medical Centers", 
+    title: "Manage Specializations", 
     isVisible: hideManageMedicalCenters is defined and hideManageMedicalCenters ? false : true, 
-    description: "Go back to manage medical centers page to view all your available centers.", 
+    description: "Go back to manage specializations page to view all your available centers.", 
     href: path('institution_medicalCenter_index'),
-    links: [{title:'Click here to go to manage medical centers',href: path('institution_medicalCenter_index')}]}
+    links: [{title:'Click here to go to manage specializations',href: path('institution_medicalCenter_index')}]}
 %}
 
 {% set dashboardTask = {
