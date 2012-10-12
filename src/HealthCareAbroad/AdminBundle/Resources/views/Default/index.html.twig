@@ -52,7 +52,7 @@
                     <div>
                     {% for center in expiredListingAlerts %}
                         <div style="width: 600px;border: 1px solid #efefef; padding: 5px; margin-bottom: 5px">
-                            <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev, 'recipient': adminRecipient}) }}" class="remove-alert" style="float:right">remove</a>
+                            <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
                             <a href="{{ path('admin_institution_medicalCenter_edit', {'institutionId':center.referenceData.institutionId, 'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a><br/>
                         </div>
                     {% endfor %}

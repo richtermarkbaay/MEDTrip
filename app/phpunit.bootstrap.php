@@ -1,4 +1,8 @@
 <?php
+use HealthCareAbroad\HelperBundle\Services\AlertService;
+
+use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
+
 /**
  * @author Allejo Chris G. Velarde
  */
@@ -44,7 +48,7 @@ class HCA_ServiceManager
     
     private function __construct()
     {
-    
+
     }
     
     /**
@@ -137,6 +141,33 @@ class HCA_DatabaseManager
         return $this;
     }
     
+    public function restoreAlertCouchDbState()
+    {
+        $alertCouchDb = HCA_ServiceManager::getInstance()->getContainer()->getParameter('alert_db');
+
+        if ($alertCouchDb['database'] != 'fixtures_alerts'){
+            throw new \Exception("You must use `fixtures_alerts` couch database for testing instead of `{$alertCouchDb['database']}`");
+        }
+
+        $couchDb = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
+        $result = json_decode($couchDb->getView(AlertService::ALL_ALERT_VIEW_URI), true);
+        
+        if($result['total_rows']) {
+            $data = array();
+            $alerts = $result['rows'];
+            for($i=0; $i < count($alerts); $i++) {
+                $data[$i] = $alerts[$i]['value'];
+                $data[$i]['_deleted'] = true;
+
+            }
+
+            // DELETE Alert Documents
+            $couchDb->multipleUpdate($data);
+        }
+
+        return $this;
+    }
+
     public function restoreGlobalAccountsDatabaseState()
     {
         $connection = $this->doctrine->getConnection();

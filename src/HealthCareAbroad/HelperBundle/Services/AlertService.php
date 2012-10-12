@@ -35,19 +35,6 @@ class AlertService
 	    $alertCouchDb = $this->container->getParameter('alert_db');
 	    $this->couchDB = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
 	}
-
-	/**
-	 * 
-	 * @return array
-	 */
-// 	function getAlerts()
-// 	{
-// 	    $options['dateAlert'] = array('operator' => '<=', 'value' => date(self::DATE_FORMAT));
-//         $alerts = $this->couchDB->getBy($options);
-//         $alertData = $this->formatAlertData($alerts);
-
-//         return $alertData;
-// 	}
 	
 	/**
 	 * 
@@ -119,7 +106,7 @@ class AlertService
 	 * @param mixed $data
 	 * @return Ambigous <multitype:, unknown>
 	 */
-	function formatAlertData($data, $groupByType = false)
+	private function formatAlertData($data, $groupByType = false)
 	{
 	    $formattedData = array();
 
@@ -143,7 +130,12 @@ class AlertService
 
 	    return $formattedData;
 	}
-	
+
+	/**
+	 * TODO - Format Alert 
+	 * @param unknown_type $data
+	 * @return unknown
+	 */
 	function formatAlert($data = array())
 	{
 	    return $data;
@@ -190,7 +182,7 @@ class AlertService
                 $arrayData[$key]['_id'] = $this->generateAlertId();
             }
         }
-    
+
         $result = $this->couchDB->multipleUpdate($arrayData);
 
         $end = (float)microtime();
@@ -211,6 +203,10 @@ class AlertService
         return $this->couchDB->delete($id, $rev);
     }
 
+    /**
+     * 
+     * @return string genrated based on current microtime and encoded to md5()
+     */
     function generateAlertId()
     {
         $time = microtime();
@@ -220,22 +216,38 @@ class AlertService
 
     
     /**
-     * 
+     * TODO - Need to finalize validation Rules!
      * @param array $data
      * @return string
      */
     function validateData($data = array())
     {
-        if(!isset($data['referenceData']) || !isset($data['referenceData']['id']) || !isset($data['class']) || !AlertClasses::isValidClass($data['class'])) {
-            throw new \ErrorException('Invalid Alert Data!');
+        if(!isset($data['type'])) {
+            $data['type'] = AlertTypes::DEFAULT_TYPE;
         }
+
+        if(!isset($data['referenceData']) || !isset($data['referenceData']['id'])) {
+            throw new \ErrorException('Invalid Alert Data!' . json_encode($data));
+        }
+        
+        if(!AlertTypes::isValid($data['type'])) {
+            $message = 'Invalid alert type ' . $data['type'] . '. Valid values are: [' . implode(', ',array_values(AlertTypes::getAll())) . ']';
+            throw new \ErrorException($message);
+        }
+        
+        if(!isset($data['recipientType']) || !AlertRecipient::isValid($data['recipientType'])) {
+            $message = 'Invalid recipientType ' . $data['recipientType'] . '. Valid values are: [' . implode(', ',array_values(AlertRecipient::getAll())) . ']';
+            throw new \ErrorException($message);
+        }
+
+        if(!isset($data['class']) || !AlertClasses::isValidClass($data['class'])) {
+            $message = 'Invalid class value ' . $data['class'] . '. Valid values are: [' . implode(', ',array_values(AlertClasses::getClasses())) . ']';
+            throw new \ErrorException($message);            
+        }
+
 
         if(!isset($data['message']) || $data['message'] == '')
             $data['message'] = '';
-
-        if(!isset($data['type']) || $data['type'] == '') {
-            $data['type'] = AlertTypes::DEFAULT_TYPE;
-        }
 
         if(!isset($data['dateAlert'])) {
             $data['dateAlert'] = date(self::DATE_FORMAT);
