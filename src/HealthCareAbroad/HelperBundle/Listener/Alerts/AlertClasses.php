@@ -17,17 +17,14 @@ final class AlertClasses
 
     /**
      * 
-     * @param int $id
-     * @return Ambigous <string>
+     * @param unknown_type $id
+     * @return Ambigous <NULL, string>
      */
     static function getClassName($id)
     {
         $classes = self::getClasses();
-        if(!isset($classes[$id])) {
-            // Show Error
-        }
 
-        return $classes[$id];
+        return isset($classes[$id]) ? $classes[$id] : null;
     }
 
     /**
