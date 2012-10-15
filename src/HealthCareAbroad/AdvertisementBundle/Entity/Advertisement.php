@@ -34,10 +34,13 @@ abstract class Advertisement
      */
     private $institution;
     
+    
     /**
      * @var int
      */
     protected $type;
+    
+    protected $typeLabel;
     
     final public function getType()
     {
@@ -46,9 +49,7 @@ abstract class Advertisement
     
     final public function getTypeLabel()
     {
-        $r = AdvertisementTypes::getList();
-        
-        return $r[$this->type];
+    	return $this->typeLabel;
     }
 
 
@@ -149,6 +150,7 @@ abstract class Advertisement
     {
         return $this->status;
     }
+   
 
     /**
      * Set institution

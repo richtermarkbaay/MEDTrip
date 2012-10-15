@@ -29,10 +29,10 @@ class AdvertisementRepository extends EntityRepository
     public function getActiveAdvertisementsByType($advertisementType, QueryOption $option=null)
     {
         $qb = $this->getQueryBuilderForAdvertisementsByType($advertisementType, $option);
+        print_r($qb); return;
         
         $results = $qb->getQuery()->getResult();
-		
-
+  
         return $results;
     }
 	
@@ -48,10 +48,8 @@ class AdvertisementRepository extends EntityRepository
     	$qb = $this->getEntityManager()->createQueryBuilder()
     	->select('a')
     	->from($advertisementTypeClass, 'a')
-    	->where('a.status = :active_status')
-    	->setParameter('active_status', AdvertisementStatuses::ACTIVE)
     	;
-  
+
     	return $qb;
     }
 
