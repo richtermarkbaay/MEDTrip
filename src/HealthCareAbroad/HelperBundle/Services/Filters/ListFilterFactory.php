@@ -54,7 +54,8 @@ final class ListFilterFactory
             'admin_treatmentProcedure_index' => 'MedicalProcedureListFilter',
             'admin_institution_manageCenters' => 'InstitutionMedicalCenterListFilter',
 //            'admin_institution_manageProcedureTypes' => 'InstitutionTreatmentProcedureTypeListFilter',
-            'institution_medicalCenter_index' => 'InstitutionMedicalCenterListFilter'
+            'institution_medicalCenter_index' => 'InstitutionMedicalCenterListFilter',
+        	'admin_advertisement_index' => 'AdvertisementListFilter'
         );
     }
 

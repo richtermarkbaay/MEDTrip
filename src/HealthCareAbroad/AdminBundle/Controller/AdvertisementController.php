@@ -20,6 +20,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+
 class AdvertisementController extends Controller
 {
     /**
@@ -53,7 +55,18 @@ class AdvertisementController extends Controller
      */
     public function indexAction(Request $request)
     {   
-        return $this->render('AdminBundle:Advertisement:index.html.twig');
+        $advertisementTypeId = $request->get('advertisementTypes', 0);
+
+        if ($advertisementTypeId == ListFilter::FILTER_KEY_ALL) {
+
+        	$advertisementTypeId = 0;
+
+        }
+
+        $params = array('advertisementTypeId' => $advertisementTypeId,'advertisements' => $this->filteredResult, 'pager' => $this->pager);
+
+        return $this->render('AdminBundle:Advertisement:index.html.twig', $params);
+        
     }
     
     /**
