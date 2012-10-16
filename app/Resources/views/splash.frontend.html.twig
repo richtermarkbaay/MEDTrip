@@ -93,7 +93,16 @@
 						<!--Footer-->		
 					</div> <!--End Inner-->		
 				</header> <!--End Header-->
-		
+				
+	      <script type="text/javascript">
+		      $(function() {
+			      
+			      $('#newsletter_subscriber_email').focus(function() {
+			    	  $('#newsletter_subscriber_email').val('');
+			    	});
+		      });
+	      </script>
+				
 		</body>
     
     {% endblock %}
