@@ -35,4 +35,9 @@ abstract class InstitutionAwareController extends Controller
     {
         throw $this->createNotFoundException("Invalid institution");
     }
+    
+    protected function jsonResponse()
+    {
+        
+    }
 }

@@ -3,6 +3,11 @@ parameters:
     services.medical_procedure_type_list: HealthCareAbroad\MedicalProcedureBundle\Form\ListType\TreatmentListType
 
 services:
+    services.medical_center:
+        class: HealthCareAbroad\MedicalProcedureBundle\Services\MedicalCenterService
+        calls:
+            - [setMemcache, [@services.memcache]]
+            - [setDoctrine, [@doctrine]]
     services.medical_procedure:
         class: "%services.medical_procedure.class%"
         calls:

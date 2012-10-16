@@ -54,10 +54,10 @@ class MedicalCenterRepository extends EntityRepository
      *
      * @return Doctrine\ORM\QueryBuilder
      */
-    public function getBuilderForMedicalCenters()
+    public function getQueryBuilderForActiveMedicalCenters()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
+        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', MedicalCenter::STATUS_ACTIVE);
 
         return $qb;
     }

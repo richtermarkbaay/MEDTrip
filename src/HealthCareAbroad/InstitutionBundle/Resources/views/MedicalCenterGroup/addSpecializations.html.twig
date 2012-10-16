@@ -10,11 +10,7 @@
     <div id="page-heading">
         <h1>
             {% set hasDraft = hasDraft is defined and hasDraft %}
-            {% if hasDraft %}
-                Edit draft: {{ institutionMedicalCenterGroup.medicalCenter.name }}
-            {% else %}
-                Add specialization
-            {% endif %}
+            Add specialization
         </h1>
     </div>
     <!-- end page-heading -->
@@ -41,7 +37,7 @@
                  ]}
               %}
 
-                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id} ) }}" method="POST" class="basic-form">
+                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
 
                     <div>
                         <label class="required">Specialization</label>
@@ -52,7 +48,7 @@
                     <div>
                         <label class="required">Sub Specialization</label>
                         
-                        <select multiple="multiple" name="institutionTreatment" id="institutionTreatment"></select>
+                        <select name="institutionTreatment" id="institutionTreatment"></select>
                     </div>
                     
                     <div>
@@ -85,12 +81,13 @@
     <script type="text/javascript">
         $(function(){
             InstitutionMedicalCenterGroup.initSpecializationsForm({
+                'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenterGroup_loadAvailableSpecializations", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
                 'institutionMedicalCenterField': $('#institutionMedicalCenter'),
                 'institutionTreatmentField': $('#institutionTreatment'),
                 'institutionTreatmentProcedureField': $('#institutionTreatmentProcedure')
             });
 
-            InstitutionMedicalCenterGroup.loadAvailableSpecializations();
+            
         });
     </script>
 {% endblock %}

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterGroupService;
 
 use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterGroupRepository;
@@ -44,7 +46,12 @@ class MedicalCenterGroupController extends InstitutionAwareController
             
             // non-existent medical center group
             if (!$this->institutionMedicalCenterGroup) {
-                return $this->_redirectIndexWithFlashMessage('Invalid medical center group.', 'error');
+                if ($this->getRequest()->isXmlHttpRequest()) {
+                    throw $this->createNotFoundException('Invalid medical center group.');
+                }
+                else {
+                    return $this->_redirectIndexWithFlashMessage('Invalid medical center group.', 'error');
+                }
             }
             
             // medical center group does not belong to this institution
@@ -107,10 +114,39 @@ class MedicalCenterGroupController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-        
+    
     }
     
     public function saveAction(Request $request)
+    {
+    
+    }
+    
+    /**
+     * Ajax request handler for loading available specializations for an institution medical center group. 
+     * This is used in the dropdown data for the Specialization field in add center form.
+     * Current implementation implies that we can load all active MedicalCenters, since an InstitutionMedicalCenterGroup can have one or more InstitutionMedicalCenters 
+     * 
+     */
+    public function loadAvailableSpecializationsAction()
+    {
+        // load all active medical centers
+        $centers = $this->get('services.medical_center')->getAllActiveMedicalCenters();
+        $html = '';
+        foreach ($centers as $center) {
+            $html .= "<option value='{$center->getId()}'>{$center->getName()}</option>";
+        }
+        
+        return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Ajax handler for loading dropdown data 
+     * Expected GET parameters
+     *     - imcgId instituitonMedicalCenterGroupid
+     *     - medicalCenterId medicalCenterId
+     */
+    public function loadAvailableInstitutionTreatments()
     {
         
     }

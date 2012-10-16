@@ -20,6 +20,14 @@ institution_medicalCenterGroup_edit:
         _method: GET|POST
         imcgId: \d+
         
+        
+institution_medicalCenterGroup_loadAvailableSpecializations:
+    pattern: /medical-centers/load-available-specializations/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:loadAvailableSpecializations }
+    requirements:
+        _method: GET
+        imcgId: \d+
+        
 institution_medicalCenterGroup_index:
     pattern: /medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenterGroup:index }
