@@ -38,6 +38,8 @@ security:
             access_denied_url: /admin/access-denied
             form_login:
                 login_path: /admin/login
+                check_path: /admin/login-check
+                remember_me: true
             remember_me:
                key:  %secret%   
                lifetime: 1209600
