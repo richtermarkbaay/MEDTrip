@@ -1,0 +1,22 @@
+HealthCareAbroad\FrontendBundle\Entity\NewsletterSubscriber:
+    type: entity
+    table: newsletters_subscribers
+    repositoryClass: HealthCareAbroad\FrontendBundle\Repository\NewsletterSubscriberRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        email:
+            type: string
+            length: 50
+            fixed: true
+            nullable: false
+        ip_address:
+            type: string
+            length: 20
+            nullable: false
+    lifecycleCallbacks: {  }
