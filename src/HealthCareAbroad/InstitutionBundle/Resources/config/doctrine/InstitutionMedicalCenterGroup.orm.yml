@@ -36,6 +36,16 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
         status:
             type: smallint
             nullabe: false
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
     oneToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter

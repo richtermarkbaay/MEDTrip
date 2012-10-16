@@ -1,0 +1,27 @@
+institution_medicalCenterGroup_addDetails:
+    pattern: /medical-centers/add/details/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:addDetails, imcgId: ~ }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
+        
+institution_medicalCenterGroup_addSpecializations:
+    pattern: /medical-centers/add/specializations/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:addSpecializations }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
+        
+        
+institution_medicalCenterGroup_edit:
+    pattern: /medical-centers/edit/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:edit }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
+        
+institution_medicalCenterGroup_index:
+    pattern: /medical-centers
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:index }
+    requirements:
+        _method: GET

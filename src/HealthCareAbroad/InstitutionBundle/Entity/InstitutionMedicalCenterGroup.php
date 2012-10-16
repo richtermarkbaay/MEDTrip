@@ -1,6 +1,13 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
+ * @author Allejo Chris G. Velarde
+ *
+ */
 class InstitutionMedicalCenterGroup
 {
     /**
@@ -42,6 +49,11 @@ class InstitutionMedicalCenterGroup
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
+    
+    /**
+     * @var string $slug
+     */
+    private $slug;
 
     public function __construct()
     {
@@ -220,6 +232,28 @@ class InstitutionMedicalCenterGroup
     public function getInstitution()
     {
         return $this->institution;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return InstitutionMedicalCenterGroup
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
     
     public function __toString()
