@@ -33,7 +33,7 @@
 					<div style="width: 70%">
 	                    <table id="advertisement-list" class="generic-table sortable-list" width="100%">
 	                    <tr>
-	                        <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
+	                        <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
 	                       <th>Description</th>
 	                        <th>Advertisement Type</th>
 	                        <th>Status</th>
@@ -43,8 +43,8 @@
 	                    {% for advertisement in advertisements %}
 	                        <tr>
 	                            <td>{{ advertisement.title }}</td>
-	                            <td>{{ advertisement.description }}</td>
-	                            <td>{{ advertisement.type}}</td>
+	                            <td>{{ advertisement.description(30) }}</td>
+	                            <td>{{ advertisement.typeLabel}}</td>                    
 	                            <td>{{ advertisement.status ? 'Active' : 'Inactive' }}</td>
 	                           	
 	                        </tr>

@@ -8,6 +8,8 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
+
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory;
@@ -60,9 +62,8 @@ class AdvertisementController extends Controller
         if ($advertisementTypeId == ListFilter::FILTER_KEY_ALL) {
 
         	$advertisementTypeId = 0;
-
         }
-
+    
         $params = array('advertisementTypeId' => $advertisementTypeId,'advertisements' => $this->filteredResult, 'pager' => $this->pager);
 
         return $this->render('AdminBundle:Advertisement:index.html.twig', $params);

@@ -10,6 +10,8 @@ class FeaturedListingAdvertisement extends Advertisement
      */
     private $object;
     
+    protected $typeLabel = 'Featured Listing';
+    
     public function __construct()
     {
         $this->type = AdvertisementTypes::FEATURED_LISTING;

@@ -9,6 +9,7 @@ class FeaturedInstitutionAdvertisement extends Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $object;
+    protected $typeLabel = 'Featured Institution';
     
     public function __construct()
     {
