@@ -4,6 +4,7 @@ namespace HealthCareAbroad\AdvertisementBundle\Entity;
 abstract class Advertisement
 {
     
+    
     /**
      * @var bigint $id
      */
@@ -33,23 +34,6 @@ abstract class Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-    
-    /**
-     * @var int
-     */
-    protected $type;
-    
-    final public function getType()
-    {
-        return $this->type;
-    }
-    
-    final public function getTypeLabel()
-    {
-        $r = AdvertisementTypes::getList();
-        
-        return $r[$this->type];
-    }
 
 
     /**
@@ -170,5 +154,46 @@ abstract class Advertisement
     public function getInstitution()
     {
         return $this->institution;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $media;
+
+    public function __construct()
+    {
+        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return Advertisement
+     */
+    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media[] = $media;
+        return $this;
+    }
+
+    /**
+     * Remove media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     */
+    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media->removeElement($media);
+    }
+
+    /**
+     * Get media
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 }
