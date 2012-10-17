@@ -28,7 +28,7 @@ class ScriptCheckerCommand extends ContainerAwareCommand
 
         foreach($commandScripts as $script) {
             
-            if($script->getAttempts() < CommandScriptLog::MAX_ATTEMPT) {
+            if($script->getAttempts() > CommandScriptLog::MAX_ATTEMPT) {
                 $output->writeln($script->getAttempts());
                 // send email
 
@@ -74,9 +74,10 @@ class ScriptCheckerCommand extends ContainerAwareCommand
         if(!$scriptName) return false;
 
         $output = shell_exec("ps aux|grep $scriptName");
-        print($output);
         $arrOutput = explode("\n", trim($output));
-        var_dump(count($arrOutput));
+
+        print($output);
+
         return count($arrOutput) > 2 ? true : false;
     }
 }

@@ -29,28 +29,23 @@ class SenderCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
+
+        // Update Script Log
         $commandScript = $em->getRepository('HelperBundle:CommandScriptLog')->findOneByScriptName($this->getName());
-
-        if(!$commandScript) {
-            $commandScript = new CommandScriptLog();
-            $commandScript->setScriptName($this->getName())->setDescription($this->getDescription());
-        }
-
-        $commandScript->setLastDateStart(new \DateTime())->setStatus(CommandScriptLog::STATUS_START)->setAttempts($commandScript->getAttempts() + 1);
+        $commandScript->setLastRunDate(new \DateTime())->setStatus(CommandScriptLog::STATUS_ACTIVE);
         $em->persist($commandScript);
         $em->flush();
 
-
+        $mailer = $this->getContainer()->get('mailer');
         $mailerQueueService = $this->getContainer()->get('services.mailer.queue');
         $mails = $mailerQueueService->getMailsReadyForSending();
-        $mailer = $this->getContainer()->get('mailer');
 
         $sentMails = $failedMails = $deleteMails = array();
         
         foreach($mails as $each) {
 
             $data = \unserialize($each->getMessageData());
-            $result = true;//$mailer->send($data);
+            $result = $mailer->send($data);
 
             if(!$result) {
 
@@ -73,16 +68,11 @@ class SenderCommand extends ContainerAwareCommand
 
 
         // Delete both sent mails and those which reached the max attempts
-        //$mailerQueueService->deleteMailsByIds(array_merge($deleteMails, $sentMails));        
+        $mailerQueueService->deleteMailsByIds(array_merge($deleteMails, $sentMails));        
 
-
-        // Update commandScriptLog
-//         $commandScript->setLastDateCompleted(new \DateTime())->setStatus(CommandScriptLog::STATUS_COMPLETED);
-//         $em->persist($commandScript);
-//         $em->flush();
 
         // Print end of script
-        $output->writeln('end');
+        $output->writeln('end of script ' . $this->getName());
 
         sleep(1);
 

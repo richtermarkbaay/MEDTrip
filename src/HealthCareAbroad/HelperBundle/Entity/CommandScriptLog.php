@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CommandScriptLog
 {
-    const STATUS_START = 1;
-    const STATUS_COMPLETED = 2;
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
     
     const MAX_ATTEMPT = 5;
     
@@ -30,14 +30,9 @@ class CommandScriptLog
     private $description;
 
     /**
-     * @var datetime $lastDateStart
+     * @var datetime $lastRunDate
      */
-    private $lastDateStart;
-
-    /**
-     * @var datetime $lastDateCompleted
-     */
-    private $lastDateCompleted;
+    private $lastRunDate;
 
     /**
      * @var smallint $attempts
@@ -105,14 +100,14 @@ class CommandScriptLog
     }
 
     /**
-     * Set lastDateStart
+     * Set lastRunDate
      *
-     * @param datetime $lastDateStart
+     * @param datetime $lastRunDate
      * @return CommandScriptLog
      */
-    public function setLastDateStart($lastDateStart)
+    public function setLastRunDate($lastRunDate)
     {
-        $this->lastDateStart = $lastDateStart;
+        $this->lastRunDate = $lastRunDate;
         return $this;
     }
 
@@ -124,28 +119,6 @@ class CommandScriptLog
     public function getLastDateStart()
     {
         return $this->lastDateStart;
-    }
-
-    /**
-     * Set lastDateCompleted
-     *
-     * @param datetime $lastDateCompleted
-     * @return CommandScriptLog
-     */
-    public function setLastDateCompleted($lastDateCompleted)
-    {
-        $this->lastDateCompleted = $lastDateCompleted;
-        return $this;
-    }
-
-    /**
-     * Get lastDateCompleted
-     *
-     * @return datetime 
-     */
-    public function getLastDateCompleted()
-    {
-        return $this->lastDateCompleted;
     }
 
     /**

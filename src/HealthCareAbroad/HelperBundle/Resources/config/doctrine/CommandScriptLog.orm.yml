@@ -21,14 +21,10 @@ HealthCareAbroad\HelperBundle\Entity\CommandScriptLog:
             length: 500
             fixed: false
             nullable: false
-        lastDateStart:
+        lastRunDate:
             type: datetime
             nullable: false
-            column: last_date_start
-        lastDateCompleted:
-            type: datetime
-            nullable: false
-            column: last_date_completed
+            column: last_run_date
         attempts:
             type: smallint
             nullable: false
