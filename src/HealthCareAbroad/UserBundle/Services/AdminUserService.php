@@ -15,11 +15,11 @@ use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 class AdminUserService extends UserService
 {
-    public function getAccountData(AdminUser $user)
+    public function getAccountData(SiteUser $siteUser)
     {
-        return $this->getUser($user);
+        return $this->getUser($siteUser);
     }
-    
+
     public function getActiveUsers()
     {
         $users = $this->doctrine->getRepository('UserBundle:AdminUser')->getActiveUsers();
@@ -27,16 +27,16 @@ class AdminUserService extends UserService
         foreach ($users as $user) {
             $returnVal[] = $this->getAccountData($user);
         }
-        
+
         return $returnVal;
     }
-    
+
     public function login($email, $password)
     {
         $user = $this->findByEmailAndPassword($email, $password);
         if ($user) {
             $userRoles = $user->getAdminUserType()->getAdminUserRoles();
-            
+
             $roles = array();
             foreach ($userRoles as $userRole) {
                 // compare bitwise status for active
@@ -46,56 +46,56 @@ class AdminUserService extends UserService
             }
             // add generic role for an admin user
             $roles[] = 'ROLE_ADMIN';
-            
+
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', $roles);
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
             $this->securityContext->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
-            
+
             // dispatch event
             $this->container->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->container->get('events.factory')->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
-            
+
             return true;
         }
-        
+
         return false;
     }
-    
-    
+
+
     /**
      * Create an AdminUser
-     * 
+     *
      * @param AdminUser $user
      * @return HealthCareAbroad\UserBundle\Entity\SiteUser
      */
-    public function create(AdminUser $user)
+    public function create(SiteUser $siteUser)
     {
         // create user in chromedia global accounts
-        $user->setPassword(SecurityHelper::hash_sha256($user->getPassword()));// hash the password
-        $user = $this->createUser($user);
-        
+        $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));// hash the password
+        $siteUser = $this->createUser($siteUser);
+
         // persist to admin_users table
         $em = $this->doctrine->getEntityManager();
-        $em->persist($user);
+        $em->persist($siteUser);
         $em->flush();
-        
-        return $user;
+
+        return $siteUser;
     }
-    
-    
-    public function update(AdminUser $user)
+
+
+    public function update(SiteUser $siteUser)
     {
-    	//update data in chromedia global accounts
-    	if (!$user->getAccountId()) {
-    		return null;
-    	}
-    	
-        $user = $this->updateUser($user);
-        return $user;
+        //update data in chromedia global accounts
+        if (!$siteUser->getAccountId()) {
+            return null;
+        }
+
+        $siteUser = $this->updateUser($siteUser);
+        return $siteUser;
     }
     /**
      * Find an AdminUser based on email and password
-     * 
+     *
      * @param string $email
      * @param string $password
      * @return HealthCareAbroad\UserBundle\Entity\AdminUser
@@ -111,21 +111,21 @@ class AdminUserService extends UserService
             ),
             array('limit' => 1)
         );
-        
+
         if ($accountData) {
             // find an institution user
             $adminUser = $this->doctrine->getRepository('UserBundle:AdminUser')->findActiveUserById($accountData['id']);
-        
+
             if ($adminUser) {
                 // populate account data to SiteUser
                 $adminUser = $this->hydrateAccountData($adminUser, $accountData);
-        
+
                 return $adminUser;
             }
         }
         return null;
     }
-    
+
     /**
      * Find a AdminUser by accountId
      *
@@ -135,14 +135,14 @@ class AdminUserService extends UserService
      */
     public function findById($id, $activeOnly=true)
     {
-    	 
-    	// find a adminUser
-    	$repository = $this->doctrine->getRepository('UserBundle:AdminUser');
-    	$adminUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
-    
-    	return $adminUser
-    	? $this->getAccountData($adminUser) // find a matching global account for this AdminUser
-    	: null; // no AdminUser found
+
+        // find a adminUser
+        $repository = $this->doctrine->getRepository('UserBundle:AdminUser');
+        $adminUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
+
+        return $adminUser
+        ? $this->getAccountData($adminUser) // find a matching global account for this AdminUser
+        : null; // no AdminUser found
     }
-    
+
 }

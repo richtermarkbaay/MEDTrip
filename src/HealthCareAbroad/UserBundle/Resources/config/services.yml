@@ -2,37 +2,40 @@ parameters:
     services.user_class: HealthCareAbroad\UserBundle\Services\UserService
     services.institution_user_class: HealthCareAbroad\UserBundle\Services\InstitutionUserService
     services.admin_user_class: HealthCareAbroad\UserBundle\Services\AdminUserService
+    services.twig_user_class: HealthCareAbroad\UserBundle\Services\TwigUserService
 
 services:
+
     services.user:
         class: %services.user_class%
-        calls: 
+        abstract: true
+        arguments: [@service_container]
+        calls:
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            
+            - [setDoctrine, [@doctrine]]
+            - [setChromediaRequest, [@services.chromedia_request]]
+            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
+            - [setSession, [@session]]
+            - [setSecurityContext, [@security.context]]
+
     services.institution_user:
         class: %services.institution_user_class%
-        arguments: [@service_container]
-        calls:
-            - [setDoctrine, [@doctrine]]
-            - [setChromediaRequest, [@services.chromedia_request]]
-            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            - [setSession, [@session]]
-            - [setSecurityContext, [@security.context]]
+        parent: services.user
+
     services.admin_user:
         class: %services.admin_user_class%
-        arguments: [@service_container]
+        parent: services.user
         calls:
-            - [setDoctrine, [@doctrine]]
-            - [setChromediaRequest, [@services.chromedia_request]]
-            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            - [setSession, [@session]]
-            - [setSecurityContext, [@security.context]]
-            
+
+    services.twig.user:
+        class: %services.twig_user_class%
+        parent: services.user
+
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
         calls:
-            - [setUserService, [@services.user]]
+            - [setUserService, [@services.twig.user]]
         tags:
             - { name: twig.extension }
