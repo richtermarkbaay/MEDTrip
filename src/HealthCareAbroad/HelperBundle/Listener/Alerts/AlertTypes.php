@@ -22,5 +22,15 @@ final class AlertTypes
     const MONTH_BEFORE_EXPIRE_LISTING = 11;
 
 
+    static function isValid($type)
+    {
+        return in_array($type, self::getAll());
+    }
 
+    static function getAll()
+    {
+        $object = new \ReflectionClass('HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes');
+
+        return $object->getConstants();
+    }
 }

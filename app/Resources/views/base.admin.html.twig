@@ -17,7 +17,6 @@
             $(function(){
                 HCA.init({
                     autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}",
-
                     tinymceConfig: {
                         textarea_class: "{{ tinymce.textarea_class }}",
                         themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),

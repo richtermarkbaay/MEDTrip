@@ -40,7 +40,7 @@ class TreatmentController extends InstitutionAwareController
         if ($imcId) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$this->institutionMedicalCenter) {
-                throw $this->createNotFoundException("Invalid institution medical center");
+                throw $this->createNotFoundException("Invalid institution specialization");
             }    
         }
     }

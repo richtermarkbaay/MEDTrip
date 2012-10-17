@@ -15,6 +15,7 @@ abstract class HelperBundleTestCase extends \PHPUnit_Framework_TestCase
 	{
 		\HCA_DatabaseManager::getInstance()
 		->restoreDatabaseState()
+		->restoreAlertCouchDbState()
 		->restoreGlobalAccountsDatabaseState();
 	}
 	

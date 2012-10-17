@@ -21,32 +21,33 @@ class CouchDatabase {
         $this->host = $host;
         $this->port = $port;
     }
-    
-    public function getBy($criteria = array())
-    {
-        foreach($criteria as $key => $value) {
-            if(is_array($value) && isset($value['operator'])) {
 
-                if(is_string($value['value'])) {
-                    $value['value'] = "'" . $value['value'] . "'";
+    // Get _design/alerts/_view
+    public function getView($uri, $params = array()) {
+
+        if(isset($params['keys'])) {
+            $headers = array('Content-Type' => 'application/json');
+            $result = $this->send('POST', $uri, $params, $headers);
+
+        } else {
+            $stringParams = '';
+            foreach($params as $key => $val) {
+                if(is_array($val)) {
+                    $stringParams .= "&$key=" . json_encode($val);
+                } else {
+                    $stringParams .= '&' . (is_string($val) ? $key. '="' .$val .'"'  : "$key=$val");
                 }
-                $conditions[] = "doc.$key " . $value['operator'] . ' ' . $value['value'];
-
-            } else {
-                $conditions[] = is_string($value['value']) ? "doc.$key == '$value'" : "doc.$key == $value";
             }
+
+            $result = $this->send('GET', "$uri?" . substr($stringParams, 1));
         }
 
-        $conditions = implode(' && ', $conditions);
-        $postData = array("map" => "function(doc){if($conditions) emit(doc.dateCreated, doc)}");
-        $headers = array('Content-Type' => 'application/json');
-        $response = $this->send('POST', '_temp_view?descending=true', $postData, $headers);
-
-        return $response;
+        return $result;
     }
-    
+
     // GET an object
-    public function get($id, $params = array('rev' => 0)) {
+    public function get($id, $params = array('rev' => 0)) 
+    {
         if($params['rev'] == 0)
             unset($params['rev']);
 
@@ -60,23 +61,15 @@ class CouchDatabase {
         return $response;
     }
 
-    // GET All object
-    public function getAll($includeDocs = true) {
-        $uri = '_all_docs';
-        if($includeDocs) {
-            $uri .= '?include_docs=true';
-        }
-
-        return $this->send('GET', $uri);
-    }
-
     // GET an attachment
-    public function getAttachment($id, $attachment) {
+    public function getAttachment($id, $attachment) 
+    {
         return json_decode($this->send('GET', "$id/$attachment"));
     }
 
     // PUT an object
-    public function put($id, $object) {
+    public function put($id, $object) 
+    {
         return json_decode($this->send('PUT', "$id", $object), true);
     }
 
@@ -103,10 +96,10 @@ class CouchDatabase {
             return $response->getBody()->__toString();
 
         } catch(ClientErrorResponseException $e) {
-            return $e->getResponse()->getBody()->__toString();
+            throw new \ErrorException($e->getResponse());
         }
     }
-    
+
     private function formatResponse($response)
     {
         $formattedResponse = array(
@@ -118,4 +111,3 @@ class CouchDatabase {
         return $formattedResponse;
     }
 }
-?>

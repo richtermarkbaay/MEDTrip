@@ -24,6 +24,10 @@
         <div class="content">
                 <p>class    <strong>SearchService</strong></p>
 
+            <div class="description">
+            <p>Temporary holder of all search related functionality</p>
+            <p></p>
+        </div>
     
     
     
@@ -36,6 +40,36 @@
                 </td>
                 <td class="last">
                     <a href="#method___construct">__construct</a>(<abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)
+                    <p>Constructor</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_initiate">initiate</a>(array $searchCriteria = array())
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    string
+                </td>
+                <td class="last">
+                    <a href="#method_getTreatmentsByName">getTreatmentsByName</a>(string $name, mixed $destinationId)
+                    <p>Retrieves treatments (procedures or procedure types) by name with optional destination filter.</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_getDestinationsByName">getDestinationsByName</a>($name, $treatmentId)
                     <p></p>
                 </td>
                 <td></td>
@@ -45,8 +79,48 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_initiate">initiate</a>($searchCriteria = array())
+                    <a href="#method_getCountriesWithTreatment">getCountriesWithTreatment</a>(<a href="../../../HealthCareAbroad/MedicalProcedureBundle/Entity/Treatment.html"><abbr title="HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment">Treatment</abbr></a> $treatment)
                     <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_searchTreatmentsByName">searchTreatmentsByName</a>(string $name)
+                    <p>Searches treatments (procedures and procedure types) by name.</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_searchTreatmentsByNameWithDestination">searchTreatmentsByNameWithDestination</a>($treatmentTerm, $destinationId)
+                    <p>Search treatments (medical procedures or treatments) located at destinations with $destinationId.</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_searchDestinationsByName">searchDestinationsByName</a>($name)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_searchDestinationsByNameWithTreatment">searchDestinationsByNameWithTreatment</a>($destinationTerm, $treatmentId)
+                    <p>Searches destinations (city/country) by $destinationTerm where the treatment with $treatmentId is available.</p>
                 </td>
                 <td></td>
             </tr>
@@ -56,12 +130,12 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 12</div>
+        <div class="location">at line 31</div>
         <code>            public            
     <strong>__construct</strong>(<abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)</code>
     </h3>
     <div class="details">
-        <p></p>
+        <p>Constructor</p>
         <p></p>
         <div class="tags">
                             <h4>Parameters</h4>
@@ -81,9 +155,73 @@
     </div>
 
                 <h3 id="method_initiate">
-        <div class="location">at line 24</div>
+        <div class="location">at line 41</div>
         <code>            public            
-    <strong>initiate</strong>($searchCriteria = array())</code>
+    <strong>initiate</strong>(array $searchCriteria = array())</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>array</td>
+                <td>$searchCriteria</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getTreatmentsByName">
+        <div class="location">at line 56</div>
+        <code>            public            string
+    <strong>getTreatmentsByName</strong>(string $name, mixed $destinationId)</code>
+    </h3>
+    <div class="details">
+        <p>Retrieves treatments (procedures or procedure types) by name with optional destination filter.</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$destinationId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getDestinationsByName">
+        <div class="location">at line 76</div>
+        <code>            public            
+    <strong>getDestinationsByName</strong>($name, $treatmentId)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -94,7 +232,147 @@
                     <table>
                     <tr>
                 <td></td>
-                <td>$searchCriteria</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$treatmentId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getCountriesWithTreatment">
+        <div class="location">at line 97</div>
+        <code>            public            
+    <strong>getCountriesWithTreatment</strong>(<a href="../../../HealthCareAbroad/MedicalProcedureBundle/Entity/Treatment.html"><abbr title="HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment">Treatment</abbr></a> $treatment)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MedicalProcedureBundle/Entity/Treatment.html"><abbr title="HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment">Treatment</abbr></a></td>
+                <td>$treatment</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_searchTreatmentsByName">
+        <div class="location">at line 121</div>
+        <code>            public            
+    <strong>searchTreatmentsByName</strong>(string $name)</code>
+    </h3>
+    <div class="details">
+        <p>Searches treatments (procedures and procedure types) by name.</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_searchTreatmentsByNameWithDestination">
+        <div class="location">at line 160</div>
+        <code>            public            
+    <strong>searchTreatmentsByNameWithDestination</strong>($treatmentTerm, $destinationId)</code>
+    </h3>
+    <div class="details">
+        <p>Search treatments (medical procedures or treatments) located at destinations with $destinationId.</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$treatmentTerm</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$destinationId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_searchDestinationsByName">
+        <div class="location">at line 220</div>
+        <code>            public            
+    <strong>searchDestinationsByName</strong>($name)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_searchDestinationsByNameWithTreatment">
+        <div class="location">at line 255</div>
+        <code>            public            
+    <strong>searchDestinationsByNameWithTreatment</strong>($destinationTerm, $treatmentId)</code>
+    </h3>
+    <div class="details">
+        <p>Searches destinations (city/country) by $destinationTerm where the treatment with $treatmentId is available.</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$destinationTerm</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$treatmentId</td>
                 <td></td>
             </tr>
             </table>

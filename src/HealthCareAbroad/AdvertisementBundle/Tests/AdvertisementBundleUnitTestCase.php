@@ -20,6 +20,7 @@ abstract class AdvertisementBundleUnitTestCase extends \PHPUnit_Framework_TestCa
     {
          \HCA_DatabaseManager::getInstance()
          ->restoreDatabaseState()
+         ->restoreAlertCouchDbState()
          ->restoreGlobalAccountsDatabaseState();
     }
     

@@ -1,6 +1,5 @@
 <?php
 /**
- * Frontend Route service
  *
  * @author Allejo Chris G. Velarde
  */
@@ -15,7 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use HealthCareAbroad\FrontendBundle\Entity\FrontendRoute;
 
-
+/**
+ * Frontend route service. Handles routing of dynamic URLs in the frontend search.
+ */
 class FrontendRouteService
 {
 

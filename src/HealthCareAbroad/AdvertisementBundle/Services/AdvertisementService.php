@@ -1,10 +1,4 @@
 <?php
-/**
- * Service class for Advertisement
- * 
- * @author Allejo Chris G. Velarde
- *
- */
 namespace HealthCareAbroad\AdvertisementBundle\Services;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
@@ -21,6 +15,12 @@ use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * Service class for Advertisement
+ *
+ * @author Allejo Chris G. Velarde
+ *
+ */
 class AdvertisementService
 {
     /**

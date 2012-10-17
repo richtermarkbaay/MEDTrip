@@ -21,6 +21,7 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     {
         \HCA_DatabaseManager::getInstance()
         ->restoreDatabaseState()
+        ->restoreAlertCouchDbState()
         ->restoreGlobalAccountsDatabaseState();
     }
 

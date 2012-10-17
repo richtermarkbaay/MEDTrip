@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>HealthCareAbroad\PagerBundle\Pager | HealthCareAbroad API</title>
+                    <link rel="stylesheet" type="text/css" href="../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../classes.html">Classes</a></li>
+                            <li><a href="../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">HealthCareAbroad API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../HealthCareAbroad/PagerBundle.html">HealthCareAbroad\PagerBundle</a>\Pager</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>Pager</strong>        implements
+        <a href="http://php.net/Countable"><abbr title="Countable">Countable</abbr></a>, <a href="http://php.net/IteratorAggregate"><abbr title="IteratorAggregate">IteratorAggregate</abbr></a></p>
+
+            <div class="description">
+            <p>Pager</p>
+            <p></p>
+        </div>
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(<a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a> $adapter = null, array $options = array())
+                    <p>Constructor</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_count">count</a>()
+                    <p>Get the number results in the current page</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    int
+                </td>
+                <td class="last">
+                    <a href="#method_getPageCount">getPageCount</a>()
+                    <p>Get the number of pages of results</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_getIterator">getIterator</a>()
+                    <p>{@inheritDoc}</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setPage">setPage</a>(integer $page)
+                    <p>Sets the current page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getPage">getPage</a>()
+                    <p>Returns the current page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setLimit">setLimit</a>(integer $limit)
+                    <p>Sets the results limit for one page</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getLimit">getLimit</a>()
+                    <p>Returns the current results limit for one page</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setMaxPages">setMaxPages</a>(integer $maxPages)
+                    <p>Sets the number of pages shown</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getMaxPages">getMaxPages</a>()
+                    <p>Returns the number of pages shown</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getNextPage">getNextPage</a>()
+                    <p>Returns the next page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getPreviousPage">getPreviousPage</a>()
+                    <p>Returns the previous page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isFirstPage">isFirstPage</a>()
+                    <p>Returns true if the current page is first</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getFirstPage">getFirstPage</a>()
+                    <p>Returns the first page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isLastPage">isLastPage</a>()
+                    <p>Returns true if the current page is last</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    integer
+                </td>
+                <td class="last">
+                    <a href="#method_getLastPage">getLastPage</a>()
+                    <p>Returns the last page number</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_isPaginable">isPaginable</a>()
+                    <p>Returns true if the current result set requires pagination</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_getPages">getPages</a>()
+                    <p>Generates a page list</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    boolean
+                </td>
+                <td class="last">
+                    <a href="#method_hasResults">hasResults</a>()
+                    <p>Returns true if the current result set is not empty</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    array
+                </td>
+                <td class="last">
+                    <a href="#method_getResults">getResults</a>()
+                    <p>Returns results list for the current page and limit</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_getAdapter">getAdapter</a>()
+                    <p>Returns the current adapter instance</p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+                </td>
+                <td class="last">
+                    <a href="#method_setAdapter">setAdapter</a>(<a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a> $adapter)
+                    <p>Set the adapter to use</p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 42</div>
+        <code>            public            
+    <strong>__construct</strong>(<a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a> $adapter = null, array $options = array())</code>
+    </h3>
+    <div class="details">
+        <p>Constructor</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a></td>
+                <td>$adapter</td>
+                <td>The pager adapter</td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td>Additional options</td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_count">
+        <div class="location">at line 65</div>
+        <code>            public            int
+    <strong>count</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the number results in the current page</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getPageCount">
+        <div class="location">at line 73</div>
+        <code>            public            int
+    <strong>getPageCount</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Get the number of pages of results</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getIterator">
+        <div class="location">at line 81</div>
+        <code>            public            
+    <strong>getIterator</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>{@inheritDoc}</p>
+        <p></p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setPage">
+        <div class="location">at line 91</div>
+        <code>            public            <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+    <strong>setPage</strong>(integer $page)</code>
+    </h3>
+    <div class="details">
+        <p>Sets the current page number</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>integer</td>
+                <td>$page</td>
+                <td>The current page number</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a></td>
+            <td>instance</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getPage">
+        <div class="location">at line 103</div>
+        <code>            public            integer
+    <strong>getPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the current page number</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setLimit">
+        <div class="location">at line 117</div>
+        <code>            public            <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+    <strong>setLimit</strong>(integer $limit)</code>
+    </h3>
+    <div class="details">
+        <p>Sets the results limit for one page</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>integer</td>
+                <td>$limit</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a></td>
+            <td>instance</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getLimit">
+        <div class="location">at line 129</div>
+        <code>            public            integer
+    <strong>getLimit</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the current results limit for one page</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setMaxPages">
+        <div class="location">at line 141</div>
+        <code>            public            <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+    <strong>setMaxPages</strong>(integer $maxPages)</code>
+    </h3>
+    <div class="details">
+        <p>Sets the number of pages shown</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td>integer</td>
+                <td>$maxPages</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a></td>
+            <td>instance</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getMaxPages">
+        <div class="location">at line 153</div>
+        <code>            public            integer
+    <strong>getMaxPages</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the number of pages shown</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getNextPage">
+        <div class="location">at line 163</div>
+        <code>            public            integer
+    <strong>getNextPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the next page number</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getPreviousPage">
+        <div class="location">at line 173</div>
+        <code>            public            integer
+    <strong>getPreviousPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the previous page number</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isFirstPage">
+        <div class="location">at line 183</div>
+        <code>            public            boolean
+    <strong>isFirstPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns true if the current page is first</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getFirstPage">
+        <div class="location">at line 193</div>
+        <code>            public            integer
+    <strong>getFirstPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the first page number</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isLastPage">
+        <div class="location">at line 203</div>
+        <code>            public            boolean
+    <strong>isLastPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns true if the current page is last</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getLastPage">
+        <div class="location">at line 213</div>
+        <code>            public            integer
+    <strong>getLastPage</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the last page number</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>integer</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_isPaginable">
+        <div class="location">at line 223</div>
+        <code>            public            boolean
+    <strong>isPaginable</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns true if the current result set requires pagination</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getPages">
+        <div class="location">at line 234</div>
+        <code>            public            array
+    <strong>getPages</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Generates a page list</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td>The page list</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_hasResults">
+        <div class="location">at line 252</div>
+        <code>            public            boolean
+    <strong>hasResults</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns true if the current result set is not empty</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>boolean</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getResults">
+        <div class="location">at line 263</div>
+        <code>            public            array
+    <strong>getResults</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns results list for the current page and limit</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_getAdapter">
+        <div class="location">at line 273</div>
+        <code>            public            <a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a>
+    <strong>getAdapter</strong>()</code>
+    </h3>
+    <div class="details">
+        <p>Returns the current adapter instance</p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_setAdapter">
+        <div class="location">at line 283</div>
+        <code>            public            <a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a>
+    <strong>setAdapter</strong>(<a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a> $adapter)</code>
+    </h3>
+    <div class="details">
+        <p>Set the adapter to use</p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../HealthCareAbroad/PagerBundle/Adapter/PagerAdapterInterface.html"><abbr title="HealthCareAbroad\PagerBundle\Adapter\PagerAdapterInterface">PagerAdapterInterface</abbr></a></td>
+                <td>$adapter</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><a href="../../HealthCareAbroad/PagerBundle/Pager.html"><abbr title="HealthCareAbroad\PagerBundle\Pager">Pager</abbr></a></td>
+            <td>Provides a fluent interface</td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

@@ -66,7 +66,30 @@ a.image_sc img {
     position:relative;
     cursor:pointer;
     }
+    
+#newsletterButton{
+    background-image: url(/images/frontend/button_bg.png) !important;
+    border-radius: 3px 3px 3px 3px !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08) !important;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    height: 30px !important;
+    color:#fff !important;
+    line-height: 12px;
+    width: 83px;
+    text-decoration: none;
+    position:relative;
+    cursor:pointer;
+    margin-left: 5px !important;
+    }
+    
 .single_article_content a.button:hover {
+    opacity:0.9;
+    color:#fff;
+}
+
+input.button:hover {
     opacity:0.9;
     color:#fff;
 }
@@ -119,6 +142,10 @@ a.button:active {
 }
 .single_article_content a.black_b {
 	background-color:#141414;
+}
+
+#newsletterButton {
+    background-color:#141414 !important;
 }
 .single_article_content a.gray_b {
 	background-color:#c7c7c7;

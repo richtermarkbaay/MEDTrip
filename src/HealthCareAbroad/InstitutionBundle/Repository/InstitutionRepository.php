@@ -39,7 +39,7 @@ class InstitutionRepository extends EntityRepository
     }
 
     /**
-     * Get active institution medical centers
+     * Get active institution specializations
      * 
      * @param Institution $institution
      * @param QueryOptionBag $queryOptions
@@ -56,7 +56,7 @@ class InstitutionRepository extends EntityRepository
     }
     
     /**
-     * Get draft institution medical centers
+     * Get draft institution specializations
      *
      * @param Institution $institution
      * @param QueryOptionBag $queryOptions

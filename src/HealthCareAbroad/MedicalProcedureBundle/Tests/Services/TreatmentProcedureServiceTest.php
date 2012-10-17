@@ -12,15 +12,15 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\MedicalProcedureBundle\Tests\MedicalProcedureBundleTestCase;
 
-use HealthCareAbroad\MedicalProcedureBundle\Services\MedicalProcedureService;
+use HealthCareAbroad\MedicalProcedureBundle\Services\TreatmentProcedureService;
 
-class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
+class TreatmentProcedureServiceTest extends MedicalProcedureBundleTestCase
 {
     protected $service;
     
     public function setUp()
 	{
-		$this->service = new MedicalProcedureService();
+		$this->service = new TreatmentProcedureService();
 		$this->service->setContainer($this->getServiceContainer());
 	}
 
@@ -31,6 +31,8 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 
 	public function testCreateTreatment()
 	{
+	    $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find(1);
+	    
 		try {
 			
 			for($i = 0; $i< 3; $i++) {
@@ -41,7 +43,8 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 				->setName('ProcedureTypeTestUnit ' . $i)
 				->setDescription('this is a test description')
 				->setSlug('ProcedureTypeTestUnit')
-				->setStatus(1);
+				->setStatus(1)
+				->setMedicalCenter($medicalCenter);
 
 				$procedureType = $this->service->saveTreatment($procedureType);
 			}
@@ -53,19 +56,19 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 		$this->assertNotEmpty($procedureType);
 	}
 	
-	public function testSaveMedicalProcedure()
+	public function testSaveTreatmentProcedure()
 	{
 		
 		$procedureType = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->find(1);
 
-		$procedure = new MedicalProcedure();
+		$procedure = new TreatmentProcedure();
 		$procedure->setTreatment($procedureType);
 		$procedure->setName('medProdTest FromUnitTest');
 		$procedure->setSlug('medprodtest-fromunittest');
 		$procedure->setStatus(1);
         
         try {
-            $procedure = $this->service->saveMedicalProcedure($procedure);
+            $procedure = $this->service->saveTreatmentProcedure($procedure);
         }
         catch (\Exception $e)
         {
@@ -79,7 +82,7 @@ class MedicalProcedureServiceTest extends MedicalProcedureBundleTestCase
 	    return $procedure;
 	}
 	
-	public function testGetMedicalProcedure()
+	public function testGetTreatmentProcedure()
 	{
 		$procedure = $this->service->getTreatmentProcedure(1);
 		$this->assertNotEmpty($procedure);

@@ -71,16 +71,14 @@ class AdminUserController extends Controller
             if($form->isValid()) {
                 
                 $user = $this->get('services.admin_user')->update($adminUser);
-                if(!$user) {
-                    //TODO:: send notification to hca admin
-                    $this->get('session')->setFlash('error', "Unable to update account");
-                     
+                
+                if ($user) {
+                    $this->get('session')->setFlash('success', "Successfully updated account");
+                    
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADMIN_USER, $adminUser));
                 }
                 
-                // dispatch event
-                $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADMIN_USER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADMIN_USER, $adminUser));
-                
-                $this->get('session')->setFlash('success', "Successfully updated account");
             }
         }
         return $this->render('AdminBundle:AdminUser:edit.html.twig', array(

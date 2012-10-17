@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'medical_centers'%}
-{% block title %}{{ parent() }} Add Medical Center {% endblock %}
+{% block title %}{{ parent() }} Add Specialization {% endblock %}
 
 
 {% block content %}
@@ -13,7 +13,7 @@
             {% if hasDraft %}
                 Edit draft: {{ institutionMedicalCenter.medicalCenter.name }}
             {% else %}
-                Add medical center
+                Add specialization
             {% endif %}
         </h1>
     </div>

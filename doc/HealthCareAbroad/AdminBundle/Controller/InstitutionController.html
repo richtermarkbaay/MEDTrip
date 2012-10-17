@@ -35,6 +35,16 @@
                     
                 </td>
                 <td class="last">
+                    <a href="#method_preExecute">preExecute</a>()
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
                     <a href="#method_indexAction">indexAction</a>()
                     <p></p>
                 </td>
@@ -45,7 +55,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_updateStatusAction">updateStatusAction</a>(int $id)
+                    <a href="#method_viewAction">viewAction</a>(<abbr title="Symfony\Component\HttpFoundation\Request">Request</abbr> $request)
                     <p></p>
                 </td>
                 <td></td>
@@ -55,7 +65,17 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_manageCentersAction">manageCentersAction</a>(int $id)
+                    <a href="#method_updateStatusAction">updateStatusAction</a>()
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_manageCentersAction">manageCentersAction</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -75,7 +95,17 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_saveMedicalCenterAction">saveMedicalCenterAction</a>(int $id)
+                    <a href="#method_editMedicalCenterAction">editMedicalCenterAction</a>()
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_saveMedicalCenterAction">saveMedicalCenterAction</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -95,7 +125,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_manageProcedureTypesAction">manageProcedureTypesAction</a>(int $id)
+                    <a href="#method_addProcedureTypeAction">addProcedureTypeAction</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -105,7 +135,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_addProcedureTypeAction">addProcedureTypeAction</a>(int $id)
+                    <a href="#method_editProcedureTypeAction">editProcedureTypeAction</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -115,17 +145,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_editProcedureTypeAction">editProcedureTypeAction</a>(int $id)
-                    <p></p>
-                </td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td class="type">
-                    
-                </td>
-                <td class="last">
-                    <a href="#method_saveProcedureTypeAction">saveProcedureTypeAction</a>(int $id)
+                    <a href="#method_saveProcedureTypeAction">saveProcedureTypeAction</a>()
                     <p></p>
                 </td>
                 <td></td>
@@ -143,6 +163,16 @@
                     <tr>
                 <td class="type">
                     
+                </td>
+                <td class="last">
+                    <a href="#method_editProcedureAction">editProcedureAction</a>()
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    <abbr title="Symfony\Component\HttpFoundation\RedirectResponse">RedirectResponse</abbr>
                 </td>
                 <td class="last">
                     <a href="#method_saveProcedureAction">saveProcedureAction</a>()
@@ -165,8 +195,23 @@
 
         <h2>Details</h2>
 
-                        <h3 id="method_indexAction">
-        <div class="location">at line 28</div>
+                        <h3 id="method_preExecute">
+        <div class="location">at line 35</div>
+        <code>            public            
+    <strong>preExecute</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_indexAction">
+        <div class="location">at line 78</div>
         <code>            public            
     <strong>indexAction</strong>()</code>
     </h3>
@@ -180,10 +225,10 @@
                     </div>
     </div>
 
-                <h3 id="method_updateStatusAction">
-        <div class="location">at line 39</div>
+                <h3 id="method_viewAction">
+        <div class="location">at line 94</div>
         <code>            public            
-    <strong>updateStatusAction</strong>(int $id)</code>
+    <strong>viewAction</strong>(<abbr title="Symfony\Component\HttpFoundation\Request">Request</abbr> $request)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -193,12 +238,27 @@
 
                     <table>
                     <tr>
-                <td>int</td>
-                <td>$id</td>
+                <td><abbr title="Symfony\Component\HttpFoundation\Request">Request</abbr></td>
+                <td>$request</td>
                 <td></td>
             </tr>
             </table>
 
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_updateStatusAction">
+        <div class="location">at line 102</div>
+        <code>            public            
+    <strong>updateStatusAction</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
             
             
             
@@ -206,24 +266,14 @@
     </div>
 
                 <h3 id="method_manageCentersAction">
-        <div class="location">at line 66</div>
+        <div class="location">at line 130</div>
         <code>            public            
-    <strong>manageCentersAction</strong>(int $id)</code>
+    <strong>manageCentersAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
         <p></p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
             
             
             
@@ -231,7 +281,7 @@
     </div>
 
                 <h3 id="method_addMedicalCenterAction">
-        <div class="location">at line 84</div>
+        <div class="location">at line 148</div>
         <code>            public            
     <strong>addMedicalCenterAction</strong>()</code>
     </h3>
@@ -245,25 +295,30 @@
                     </div>
     </div>
 
-                <h3 id="method_saveMedicalCenterAction">
-        <div class="location">at line 109</div>
+                <h3 id="method_editMedicalCenterAction">
+        <div class="location">at line 171</div>
         <code>            public            
-    <strong>saveMedicalCenterAction</strong>(int $id)</code>
+    <strong>editMedicalCenterAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
         <p></p>
         <div class="tags">
-                            <h4>Parameters</h4>
+            
+            
+            
+                    </div>
+    </div>
 
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
+                <h3 id="method_saveMedicalCenterAction">
+        <div class="location">at line 194</div>
+        <code>            public            
+    <strong>saveMedicalCenterAction</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
             
             
             
@@ -271,7 +326,7 @@
     </div>
 
                 <h3 id="method_updateMedicalCenterStatusAction">
-        <div class="location">at line 139</div>
+        <div class="location">at line 259</div>
         <code>            public            
     <strong>updateMedicalCenterStatusAction</strong>()</code>
     </h3>
@@ -285,50 +340,15 @@
                     </div>
     </div>
 
-                <h3 id="method_manageProcedureTypesAction">
-        <div class="location">at line 168</div>
-        <code>            public            
-    <strong>manageProcedureTypesAction</strong>(int $id)</code>
-    </h3>
-    <div class="details">
-        <p></p>
-        <p></p>
-        <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
-            
-            
-            
-                    </div>
-    </div>
-
                 <h3 id="method_addProcedureTypeAction">
-        <div class="location">at line 188</div>
+        <div class="location">at line 292</div>
         <code>            public            
-    <strong>addProcedureTypeAction</strong>(int $id)</code>
+    <strong>addProcedureTypeAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
         <p></p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
             
             
             
@@ -336,24 +356,14 @@
     </div>
 
                 <h3 id="method_editProcedureTypeAction">
-        <div class="location">at line 212</div>
+        <div class="location">at line 311</div>
         <code>            public            
-    <strong>editProcedureTypeAction</strong>(int $id)</code>
+    <strong>editProcedureTypeAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
         <p></p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
             
             
             
@@ -361,24 +371,14 @@
     </div>
 
                 <h3 id="method_saveProcedureTypeAction">
-        <div class="location">at line 241</div>
+        <div class="location">at line 327</div>
         <code>            public            
-    <strong>saveProcedureTypeAction</strong>(int $id)</code>
+    <strong>saveProcedureTypeAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
         <p></p>
         <div class="tags">
-                            <h4>Parameters</h4>
-
-                    <table>
-                    <tr>
-                <td>int</td>
-                <td>$id</td>
-                <td></td>
-            </tr>
-            </table>
-
             
             
             
@@ -386,7 +386,7 @@
     </div>
 
                 <h3 id="method_addProcedureAction">
-        <div class="location">at line 292</div>
+        <div class="location">at line 379</div>
         <code>            public            
     <strong>addProcedureAction</strong>()</code>
     </h3>
@@ -400,10 +400,10 @@
                     </div>
     </div>
 
-                <h3 id="method_saveProcedureAction">
-        <div class="location">at line 321</div>
+                <h3 id="method_editProcedureAction">
+        <div class="location">at line 411</div>
         <code>            public            
-    <strong>saveProcedureAction</strong>()</code>
+    <strong>editProcedureAction</strong>()</code>
     </h3>
     <div class="details">
         <p></p>
@@ -415,8 +415,32 @@
                     </div>
     </div>
 
+                <h3 id="method_saveProcedureAction">
+        <div class="location">at line 440</div>
+        <code>            public            <abbr title="Symfony\Component\HttpFoundation\RedirectResponse">RedirectResponse</abbr>
+    <strong>saveProcedureAction</strong>()</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table>
+        <tr>
+            <td><abbr title="Symfony\Component\HttpFoundation\RedirectResponse">RedirectResponse</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                    </div>
+    </div>
+
                 <h3 id="method_updateProcedureStatusAction">
-        <div class="location">at line 351</div>
+        <div class="location">at line 517</div>
         <code>            public            
     <strong>updateProcedureStatusAction</strong>()</code>
     </h3>

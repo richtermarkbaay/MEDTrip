@@ -1,6 +1,8 @@
 <?php
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Services\AlertRecipient;
+
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
 
 use HealthCareAbroad\HelperBundle\Services\AlertService;
@@ -40,7 +42,7 @@ class DefaultController extends InstitutionAwareController
             'draftAlerts' => $draftAlerts,
             'expiredListingAlerts' => $expiredListingAlerts,
             'approvedListingAlerts' => $approvedListingAlerts,
-    		'news' => $news
+    		'news' => $news,
         ));
     }
 

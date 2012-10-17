@@ -4,7 +4,6 @@ namespace HealthCareAbroad\AdvertisementBundle\Entity;
 abstract class Advertisement
 {
     
-    
     /**
      * @var bigint $id
      */
@@ -34,7 +33,23 @@ abstract class Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-
+    
+    /**
+     * @var int
+     */
+    protected $type;
+    
+    protected $typeLabel;
+    
+    final public function getType()
+    {
+        return $this->type;
+    }
+    
+    final public function getTypeLabel()
+    {
+    	return $this->typeLabel;
+    }
 
     /**
      * Get id
@@ -133,6 +148,7 @@ abstract class Advertisement
     {
         return $this->status;
     }
+   
 
     /**
      * Set institution

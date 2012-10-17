@@ -39,6 +39,11 @@ class FilesystemManager
 		return $this->uploadRootDir;
 	}
 	
+	public function getAdsUploadRootDir()
+	{
+	    return $this->uploadRootDir . "/ads";
+	}
+	
 	public function getWebRootPath()
 	{
 		//TODO: use path generator
