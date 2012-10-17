@@ -1,0 +1,65 @@
+<html>
+    <head>
+        
+    </head>
+    <body>
+    <form name="form" id="form" action="">  
+
+<input type="radio" id="radioButton1" name="radioButton" value="in-campus" />
+<label for="radioButton1">Hospital or Clinic</label>
+<input type="radio" id="radioButton2" name="radioButton" value="of-campus" />
+<label for="radioButton2">Agent</label>
+<input type="radio" id="radioButton3" name="radioButton" value="of-campus" />
+<label for="radioButton2">Doctor</label>
+
+<select name="noOptions" id="noOptions" style="display: none"> 
+    <option value="Choose an Option" selected="selected">Choose an Option</option>
+</select>
+
+<select name="icOptions" id="icOptions" style="display: none"> 
+    <option value="Choose an Option" selected="selected">Choose an in-campus option</option>
+    <option value="icOption1">in-campus option 1</option>
+    <option value="icOption2">in-campus option 2</option>
+</select>
+
+<select name="ocOptions" id="ocOptions" style="display: none"> 
+    <option value="Choose an Option" selected="selected">Choose an off-campus option</option>
+    <option value="ocOption1">off-campus option 1</option>
+    <option value="ocOption2">off-campus option 2</option>
+</select>
+
+<select name="allOptions" id="allOptions" style="display: block"> 
+    <option value="Choose an Option" selected="selected">Choose an Option</option>
+    <option value="icOption1">in-campus option 1</option>
+    <option value="icOption2">in-campus option 2</option>
+    <option value="ocOption1">off-campus option 1</option>
+    <option value="ocOption2">off-campus option 2</option>
+</select>
+</form>
+
+<script>
+window.document.getElementById("noOptions").style.display = "block";
+window.document.getElementById("allOptions").style.display = "none";
+function changeOptions() {
+    var form = window.document.getElementById("form");
+    var icOptions = window.document.getElementById("icOptions");
+    var ocOptions = window.document.getElementById("ocOptions");
+
+    window.document.getElementById("noOptions").style.display = "none";
+
+    if (form.radioButton1.checked) {
+        ocOptions.style.display = "none";
+        icOptions.style.display = "block";
+        icOptions.selectedIndex = 0;
+    } else if (form.radioButton2.checked) {
+        icOptions.style.display = "none";
+        ocOptions.style.display = "block";
+        ocOptions.selectedIndex = 0;
+    }
+
+}
+window.document.getElementById("radioButton1").onclick = changeOptions;
+window.document.getElementById("radioButton2").onclick = changeOptions;
+</script>
+    </body>
+</html>
