@@ -42,19 +42,56 @@
                     <div>
                         <label class="required">Specialization</label>
                         
-                        <select name="institutionMedicalCenter" id="institutionMedicalCenter"></select>
+                        <select name="institutionMedicalCenter" id="ins2titutionMedicalCenter">
+                            <option>Pulmonology</option>
+                        </select>
                     </div>
-                    
+                    {#
                     <div>
                         <label class="required">Sub Specialization</label>
                         
-                        <select name="institutionTreatment" id="institutionTreatment"></select>
+                        <select multiple="multiple" name="institutionTreatment" id="institutionTreatment">
+                            <option>Geriatric</option>
+                            <option>Pediatric</option>
+                        </select>
                     </div>
                     
                     <div>
                         <label class="required">Treatment</label>
                         
-                        <select multiple="multiple" name="institutionTreatmentProcedure" id="institutionTreatmentProcedure"></select>
+                        <select multiple="multiple" name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
+                        <option>Nebulization</option>
+                        <option>Nebulization</option>
+                        </select>
+                    </div>
+                    #}
+                    
+                    <div>
+                        <label class="required">Treatments</label>
+                        
+                        <select  name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
+                        <option>Geriatric - Nebulization</option>
+                        <option selected>Pediatric - Nebulization</option>
+                        </select>
+                        
+                        <a href="#">[+]</a><a href="#">[-]</a>
+                    </div>
+                    
+                    <div>
+                        <label class="required"></label>
+                        <select  name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
+                        <option>Geriatric - Nebulization</option>
+                        <option>Pediatric - Nebulization</option>
+                        </select>
+                        
+                        <a href="#">[+]</a><a href="#">[-]</a>
+                    </div>
+                    
+                    
+                    <div>
+                        <label class="required">Details</label>
+                        
+                        <textarea rows="" cols="">Lorem ipsum dolor</textarea>
                     </div>
 
                     <input type="submit" name="submit" value="Save and Add Another" class="green-button" />
