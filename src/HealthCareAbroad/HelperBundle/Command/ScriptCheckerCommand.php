@@ -43,7 +43,7 @@ class ScriptCheckerCommand extends ContainerAwareCommand
                     $output->writeln($result);
                }
 
-                $script->setLastDateCompleted(new \DateTime());
+                //$script->setLastDateCompleted(new \DateTime());
             }
         }
 
