@@ -35,11 +35,6 @@ class InstitutionMedicalCenter
     private $status;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionTreatments;
-
-    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
      */
     private $medicalCenter;
@@ -52,12 +47,11 @@ class InstitutionMedicalCenter
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $media;
+    private $treatmentProcedures;
 
     public function __construct()
     {
-        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->treatmentProcedures = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -159,38 +153,6 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Add institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments[] = $institutionTreatments;
-        return $this;
-    }
-
-    /**
-     * Remove institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     */
-    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments->removeElement($institutionTreatments);
-    }
-
-    /**
-     * Get institutionTreatments
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionTreatments()
-    {
-        return $this->institutionTreatments;
-    }
-
-    /**
      * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
@@ -235,39 +197,34 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Add media
+     * Add treatmentProcedures
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
      * @return InstitutionMedicalCenter
      */
-    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    public function addTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->media[] = $media;
+        $this->treatmentProcedures[] = $treatmentProcedures;
         return $this;
     }
 
     /**
-     * Remove media
+     * Remove treatmentProcedures
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
      */
-    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    public function removeTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->media->removeElement($media);
+        $this->treatmentProcedures->removeElement($treatmentProcedures);
     }
 
     /**
-     * Get media
+     * Get treatmentProcedures
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMedia()
+    public function getTreatmentProcedures()
     {
-        return $this->media;
-    }
-    
-    public function __toString()
-    {
-        return $this->medicalCenter->getName();
+        return $this->treatmentProcedures;
     }
 }

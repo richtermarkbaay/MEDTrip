@@ -4,6 +4,13 @@
 
 
 {% block content %}
+
+<style>
+    .institutionTreatmentProcedures {
+        width:378px;height:180px
+    }
+</style>
+
 <!-- start content -->
 <div id="content">
     <!--  start page-heading -->
@@ -38,61 +45,14 @@
               %}
 
                 <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
-
-                    <div>
-                        <label class="required">Specialization</label>
-                        
-                        <select name="institutionMedicalCenter" id="ins2titutionMedicalCenter">
-                            <option>Pulmonology</option>
-                        </select>
-                    </div>
-                    {#
-                    <div>
-                        <label class="required">Sub Specialization</label>
-                        
-                        <select multiple="multiple" name="institutionTreatment" id="institutionTreatment">
-                            <option>Geriatric</option>
-                            <option>Pediatric</option>
-                        </select>
-                    </div>
                     
-                    <div>
-                        <label class="required">Treatment</label>
-                        
-                        <select multiple="multiple" name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
-                        <option>Nebulization</option>
-                        <option>Nebulization</option>
-                        </select>
-                    </div>
-                    #}
+                    {{ form_row(form.medicalCenter) }}
                     
-                    <div>
-                        <label class="required">Treatments</label>
-                        
-                        <select  name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
-                        <option>Geriatric - Nebulization</option>
-                        <option selected>Pediatric - Nebulization</option>
-                        </select>
-                        
-                        <a href="#">[+]</a><a href="#">[-]</a>
-                    </div>
+                    {{ form_row(form.treatmentProcedures) }}
                     
-                    <div>
-                        <label class="required"></label>
-                        <select  name="institutionTreatmentProcedure" id="institutionTreatmentProcedure">
-                        <option>Geriatric - Nebulization</option>
-                        <option>Pediatric - Nebulization</option>
-                        </select>
-                        
-                        <a href="#">[+]</a><a href="#">[-]</a>
-                    </div>
+                    {{ form_row(form.description) }}
                     
-                    
-                    <div>
-                        <label class="required">Details</label>
-                        
-                        <textarea rows="" cols="">Lorem ipsum dolor</textarea>
-                    </div>
+                    {{ form_rest(form) }}
 
                     <input type="submit" name="submit" value="Save and Add Another" class="green-button" />
 
@@ -119,11 +79,10 @@
         $(function(){
             InstitutionMedicalCenterGroup.initSpecializationsForm({
                 'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenterGroup_loadAvailableSpecializations", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
-                'institutionMedicalCenterField': $('#institutionMedicalCenter'),
-                'institutionTreatmentField': $('#institutionTreatment'),
-                'institutionTreatmentProcedureField': $('#institutionTreatmentProcedure')
+                'loadInstitutionTreatmentProceduresUri' : '{{ path("institution_medicalCenterGroup_loadAvailableTreatments", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
+                'institutionMedicalCenterField': $('#institutionMedicalCenter_medicalCenter'),
+                'institutionTreatmentProcedureField': $('#institutionMedicalCenter_treatmentProcedures')
             });
-
             
         });
     </script>
