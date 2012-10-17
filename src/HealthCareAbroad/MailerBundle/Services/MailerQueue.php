@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MailerQueue
 {
+    const MAIL_MAX_ATTEMPT = 5;
+    
     /**
      * @var ContainerInterface
      */
@@ -86,6 +88,48 @@ class MailerQueue
             ->getQuery()
             ->getResult();
         
+        return $result;
+    }
+
+    
+    /**
+     * 
+     * @param array $ids
+     * @return void|multitype:
+     */
+    public function incrementFailedAttemptsByIds($ids = array())
+    {
+        if(!count($ids)) return;
+
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $result = $qb->select('a')
+            ->update('MailerBundle:MailQueue', 'a')
+            ->where($qb->expr()->in('a.id', $ids))
+            ->set('a.failedAttempts', 'a.failedAttempts + 1')
+            ->set('a.status', MailStatuses::PENDING)
+            ->getQuery()
+            ->getResult();
+    
+        return $result;
+    }
+
+
+    /**
+     * 
+     * @param array $ids
+     * @return void|multitype:
+     */
+    public function deleteMailsByIds(array $ids = array())
+    {
+        if(!count($ids)) return;
+        
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $result = $qb->select('a')
+            ->delete('MailerBundle:MailQueue', 'a')
+            ->where($qb->expr()->in('a.id', $ids))
+            ->getQuery()
+            ->getResult();
+    
         return $result;
     }
 }

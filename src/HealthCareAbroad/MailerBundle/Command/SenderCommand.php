@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\MailerBundle\Command;
 
+use HealthCareAbroad\HelperBundle\Entity\CommandScriptLog;
+
+use HealthCareAbroad\MailerBundle\Services\MailerQueue;
+
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Console\Input\InputOption;
@@ -19,26 +23,69 @@ class SenderCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-
         $this->setName('mailer:sender')->setDescription('Test mail sender');
-
-        //->get('services.mailer.queue')->getMailsReadyForSending()
-        
-
-//             ->addArgument('name', InputArgument::OPTIONAL, 'Who do you want to greet?')
-//             ->addOption('yell', null, InputOption::VALUE_NONE, 'If set, the task will yell in uppercase letters');
     }
-    
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $mails = $this->getContainer()->get('services.mailer.queue')->getMailsReadyForSending();
-        $mailer = $this->getContainer()->get('mailer');
-        foreach($mails as $each) {
-            $data = \unserialize($each->getMessageData());
-            $x = $mailer->send($data);
-            $output->writeln('result: ' . $x);
+        $em = $this->getContainer()->get('doctrine')->getEntityManager();
+        $commandScript = $em->getRepository('HelperBundle:CommandScriptLog')->findOneByScriptName($this->getName());
+
+        if(!$commandScript) {
+            $commandScript = new CommandScriptLog();
+            $commandScript->setScriptName($this->getName())->setDescription($this->getDescription());
         }
 
+        $commandScript->setLastDateStart(new \DateTime())->setStatus(CommandScriptLog::STATUS_START)->setAttempts($commandScript->getAttempts() + 1);
+        $em->persist($commandScript);
+        $em->flush();
+
+
+        $mailerQueueService = $this->getContainer()->get('services.mailer.queue');
+        $mails = $mailerQueueService->getMailsReadyForSending();
+        $mailer = $this->getContainer()->get('mailer');
+
+        $sentMails = $failedMails = $deleteMails = array();
+        
+        foreach($mails as $each) {
+
+            $data = \unserialize($each->getMessageData());
+            $result = true;//$mailer->send($data);
+
+            if(!$result) {
+
+                if($each->getFailedAttempts() >= MailerQueue::MAIL_MAX_ATTEMPT) {
+                    $deleteMails[] = $each->getId(); 
+                } else {
+                    $failedMails[] = $each->getId(); 
+                }
+
+            } else {
+                $sentMails[] = $each->getId();
+            }
+
+            $output->writeln('mail sent status with id (' . $each->getId() . '): '. $result);
+        }
+
+
+        // Increment failed mails attempts by 1
+        $mailerQueueService->incrementFailedAttemptsByIds($failedMails);
+
+
+        // Delete both sent mails and those which reached the max attempts
+        //$mailerQueueService->deleteMailsByIds(array_merge($deleteMails, $sentMails));        
+
+
+        // Update commandScriptLog
+//         $commandScript->setLastDateCompleted(new \DateTime())->setStatus(CommandScriptLog::STATUS_COMPLETED);
+//         $em->persist($commandScript);
+//         $em->flush();
+
+        // Print end of script
         $output->writeln('end');
+
+        sleep(1);
+
+        $this->execute($input, $output);
     }
 }
