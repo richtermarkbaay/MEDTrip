@@ -24,7 +24,7 @@ class ScriptCheckerCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        $commandScripts = $em->getRepository('HelperBundle:CommandScriptLog')->findByStatus(CommandScriptLog::STATUS_START);
+        $commandScripts = $em->getRepository('HelperBundle:CommandScriptLog')->findByStatus(CommandScriptLog::STATUS_ACTIVE);
 
         foreach($commandScripts as $script) {
             
