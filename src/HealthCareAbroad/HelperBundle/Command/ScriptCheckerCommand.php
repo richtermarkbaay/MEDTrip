@@ -33,11 +33,10 @@ class ScriptCheckerCommand extends ContainerAwareCommand
                 // send email
 
             } else {
-                //$this->checkScriptIfStillRunning($script->getScriptName());
 
                if(!$this->checkScriptIfStillRunning($script->getScriptName())) {
 
-                    print("rerun " . $script->getScriptName());
+                    $output->writeln("rerun " . $script->getScriptName());
 
                     $result = $this->runScript($script->getScriptName());
                     $output->writeln($result);
@@ -48,7 +47,7 @@ class ScriptCheckerCommand extends ContainerAwareCommand
         }
 
         // Print end of script
-        $output->writeln('endme');
+        $output->writeln('end of ' . $this->getName() . ' script');
     }
 
     /**
