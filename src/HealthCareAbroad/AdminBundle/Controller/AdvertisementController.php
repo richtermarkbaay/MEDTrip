@@ -134,9 +134,10 @@ class AdvertisementController extends Controller
             
             if ($form->isValid()) {
                 
-                $adsArray = $request->files->get('advertisement');
-                $media = $adsArray['media'];
-                
+                if($request->files->get('advertisement')) {
+                    $adsArray = $request->files->get('advertisement');
+                    $media = $adsArray['media'];
+                }
                 try {
                     
                     $advertisement = $this->factory->save($form->getData());
