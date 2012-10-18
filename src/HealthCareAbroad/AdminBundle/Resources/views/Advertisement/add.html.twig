@@ -38,7 +38,7 @@
                     %}
                     
     				<!-- start form -->
-    				<form action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+    				<form action="{{ formAction }}" enctype="multipart/form-data" method="post" {{ form_enctype(form) }} class="basic-form">
     
     					{{ form_rest(form) }}
     					

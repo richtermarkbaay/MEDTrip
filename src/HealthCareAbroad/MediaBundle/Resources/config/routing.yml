@@ -23,7 +23,13 @@ media_upload_medicalCenter:
     requirements:
         _method: POST
         imcId: \d+
-
+        
+media_ajaxLoad_advertisement:
+    pattern: /media/load-advertisement-media/{aId}
+    defaults: { _controller: MediaBundle:Default:ajaxLoadAdvertisementMedia }
+    requirements:
+        aId: \d+
+        
 media_ajaxLoad_medicalCenter:
     pattern: /media/load-medical-center-media/{imcId}
     defaults: { _controller: MediaBundle:Default:ajaxLoadMedicalCenterMedia }
