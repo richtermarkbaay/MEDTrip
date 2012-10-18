@@ -16,7 +16,7 @@
 	      </a>
 	      <a href="index.html" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
 	      <div class="btn-group pull-right">
-	        <a href="#" class="btn">
+	        <a href="{{ path('main_homepage') }}" class="btn">
 	          <i class="icon-map-marker"></i>Health Care Abroad Site
 	        </a>
 	       
@@ -48,7 +48,7 @@
 								<fieldset>
 										<legend>Existing Users Login</legend>
 											
-										<label for="username">email</label>
+										<label for="username">Email</label>
 									<div class="div_text">
 										<div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
 									 		{{ form_widget(form.email, { 'attr': {'class': 'username span9'} }) }}
