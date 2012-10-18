@@ -982,7 +982,7 @@ font-weight:normal;
     height:39px;
 }
 #institutionMedicalCenterGroup_name{width:65.95744680199999%;*width:65.90425531263828%;}
-#institutionMedicalCenterGroup_description_tbl {width:900px !important;}
+#institutionMedicalCenterGroup_description_tbl, #institutionMedicalCenter_treatmentProcedures,#institutionMedicalCenter_description_tbl{width:900px !important;}
 
 form.basic-form > div > ul {
     color: #D00000;
