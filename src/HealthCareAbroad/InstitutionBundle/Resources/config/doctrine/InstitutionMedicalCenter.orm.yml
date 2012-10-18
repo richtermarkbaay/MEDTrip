@@ -34,10 +34,6 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             nullable: false
             gedmo:
                 - versioned
-    oneToMany:
-        institutionTreatments:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
-            mappedBy: institutionMedicalCenter
     manyToOne:
         medicalCenter:
             targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
@@ -52,19 +48,19 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                 name: institution_medical_center_group_id
                 referencedColumnName: id
     manyToMany:
-        media:
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+        treatmentProcedures:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure
             cascade: {  }
             mappedBy: null
             joinTable:
-                name: institution_medical_center_media
+                name: institution_medical_center_treatment_procedures
                 joinColumns:
                     -
                         name: institution_medical_center_id
                         referencedColumnName: id
                 inverseJoinColumns:
                     -
-                        name: media_id
+                        name: treatment_procedure_id
                         referencedColumnName: id
             orderBy: null                
     lifecycleCallbacks: {  }

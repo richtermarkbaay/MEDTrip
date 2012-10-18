@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
 use Doctrine\ORM\QueryBuilder;
 
 use Doctrine\ORM\Query\Expr\Join;
@@ -77,6 +79,27 @@ class TreatmentProcedureRepository extends EntityRepository
 	        ->setParameter('active', TreatmentProcedure::STATUS_ACTIVE)
 	        ->setParameter('treatmentId', $institutionTreatment->getTreatment()->getId())
 	        ->setParameter('institutionTreatmentId', $institutionTreatment->getId());
+	    return $qb;
+	}
+	
+	/**
+	 * Get QueryBuilder for getting active TreatmentProcedures by MedicalCenter
+	 * 
+	 * @param MedicalCenter $medicalCenter
+	 * @return QueryBuilder
+	 */
+	public function getQueryBuilderForActiveTreatmentProceduresByMedicalCenter(MedicalCenter $medicalCenter)
+	{
+	    $qb = $this->getEntityManager()->createQueryBuilder()
+	        ->select('a')
+	        ->from('MedicalProcedureBundle:TreatmentProcedure', 'a')
+	        ->innerJoin('a.treatment', 'b')
+	        ->where('b.medicalCenter = :medicalCenterId')
+	        ->andWhere('a.status = :activeStatus')
+	        ->orderBy('a.treatment, a.name')
+	        ->setParameter('medicalCenterId', $medicalCenter->getId())
+	        ->setParameter('activeStatus', TreatmentProcedure::STATUS_ACTIVE);
+	    
 	    return $qb;
 	}
 	

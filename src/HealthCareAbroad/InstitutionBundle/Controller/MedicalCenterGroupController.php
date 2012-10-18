@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterGroupService;
@@ -109,7 +113,24 @@ class MedicalCenterGroupController extends InstitutionAwareController
             return $this->_redirectIndexWithFlashMessage('Invalid draft medical center group', 'error');
         }
         
-        return $this->render('InstitutionBundle:MedicalCenterGroup:addSpecializations.html.twig', array('institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup));
+        $institutionMedicalCenter = new InstitutionMedicalCenter();
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter);
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            
+            var_dump($request->request->all()); exit;
+            
+            if ($form->isValid()) {
+                echo "adi ak"; exit;
+            }
+            
+        }
+        
+        return $this->render('InstitutionBundle:MedicalCenterGroup:addSpecializations.html.twig', array(
+            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
+            'form' => $form->createView()
+        ));
     }
     
     public function editAction(Request $request)
@@ -141,14 +162,38 @@ class MedicalCenterGroupController extends InstitutionAwareController
     }
     
     /**
-     * Ajax handler for loading dropdown data 
+     * Ajax handler for loading data 
      * Expected GET parameters
      *     - imcgId instituitonMedicalCenterGroupid
      *     - medicalCenterId medicalCenterId
      */
-    public function loadAvailableInstitutionTreatments()
+    public function loadAvailableTreatmentsAction(Request $request)
     {
+        $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->find($request->get('medicalCenterId', 0));
+        if (!$medicalCenter) {
+            throw $this->createNotFoundException("Invalid medical center");
+        }
         
+        // get all active TreatmentProcedures under MedicalCenter
+        $treatmentProcedures = $this->get('services.treatment_procedure')->getActiveTreatmentProceduresByMedicalCenter($medicalCenter);
+        $html = '';
+        
+        if (count($treatmentProcedures)) {
+            $currentTreatment = $treatmentProcedures[0]->getTreatment();
+            $html .= "<optgroup label='{$currentTreatment->getName()}'>";
+            foreach ($treatmentProcedures as $each) {
+            
+                if ($each->getTreatment()->getId() != $currentTreatment->getId()) {
+                    $currentTreatment = $each->getTreatment();
+                    $html .= "</optgroup><optgroup label='{$currentTreatment->getName()}'>";
+                }
+                $html .= "<option value='{$each->getId()}' style='margin-left:10px;'>{$each->getName()}</option>";
+            }
+            $html .= "</optgroup>";
+        }
+        
+        
+        return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
     }
     
     /**
