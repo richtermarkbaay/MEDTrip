@@ -29,6 +29,8 @@ abstract class InstitutionAwareController extends Controller
     public function setInstitution(Institution $institution)
     {
         $this->institution = $institution;
+        $this->get('twig')->addGlobal('institution', $this->institution);
+        $this->get('twig')->addGlobal('userName', $this->get('security.context')->getToken()->getUser());
     }
     
     public function throwInvalidInstitutionException()
