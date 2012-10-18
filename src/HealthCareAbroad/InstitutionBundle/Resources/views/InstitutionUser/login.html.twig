@@ -1,79 +1,94 @@
-{% extends '::base.admin.html.twig' %}
+{% extends '::base.institution.html.twig' %}
 
 {% block title %}
 {{ parent() }} &raquo; Institution Login
 {% endblock %}
 
 {% block body %}
-<body id="login-bg">
- 
-    <!-- Start: login-holder -->
-    <div id="login-holder">
-    
-        <!-- start logo -->
-        <div  id="logo-login" style="font-size: 14px;color:#ccc;height:15px">
-            {{ site_name }} Institution Panel
-            <a href="index.html">
-                <img style="display:none;" src="{{ asset('images/admin/shared/logo.jpeg')}}" width="156" height="40" alt="" /></a>
-        </div>
-        <!-- end logo -->
-        
-        <div class="clear"></div>
-        
-        <!--  start loginbox ................................................................................. -->
-        <div id="loginbox">
-        
-            <!--  start login-inner -->
-            <div id="login-inner">
-                <form novalidate="novalidate" action="{{ path('institution_login') }}" method="POST" >
-                    {{ form_errors(form)  }}
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        
-                        {% if app.session.hasFlash('notice') %}
-                        <tr>
-                            <td colspan="2">
-                                <div class=login_notice style="color: #CE2700; margin: -20px 0px;">
-                                    {{ app.session.flash('notice') }}
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
-                        
-                        <tr>
-                            <th>Email</th>
-                            <td> 
-                                {{ form_widget(form.email, { 'attr': {'class': 'login-inp'} }) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Password</th>
-                            <td>
-                                {{ form_widget(form.password, { 'attr': {'class': 'login-inp'} }) }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td valign="top"><input type="checkbox" name="_remember_me" checked class="checkbox-size" id="login-check" /><label for="login-check">Remember me</label></td>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <td><input type="submit" name="submit" class="submit-login"  /></td>
-                        </tr>
-                        
-                        
-                    </table>
-                    
-                    {{ form_rest(form) }}
-                </form>
-            </div>
-            <!--  end login-inner -->
-            
-            <div class="clear"></div>
-            <a href="" class="forgot-pwd">Forgot Password?</a>
-        </div>
-     <!--  end loginbox -->
-    
-    </div>
-    <!-- End: login-holder -->
+<body >
+	 <div class="navbar navbar-fixed-top">
+	  <div class="navbar-inner">
+	    <div class="container-fluid">
+	      <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </a>
+	      <a href="index.html" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
+	      <div class="btn-group pull-right">
+	        <a href="#" class="btn">
+	          <i class="icon-map-marker"></i>Health Care Abroad Site
+	        </a>
+	       
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- Main Content Area | Side Nav | Content -->    
+	<div class="container-fluid">
+
+		 <div class="row-fluid">
+		    <div class="span4">&nbsp;</div>
+		    <div class="span4">
+			      <div class="page-header">
+				        <h1>Health Care Abroad Login</h1>
+			      </div>
+			      <div class="box" style="margin-bottom:500px;">
+				        
+			          <div class="login-content">
+			          	<form novalidate="novalidate" action="{{ path('institution_login') }}" method="POST" >
+				             	{{ form_errors(form)  }}
+			                   {% if app.session.hasFlash('notice') %}
+		                     
+									<div class=login_notice style="color: #CE2700; margin: -20px 0px;">
+										{{ app.session.flash('notice') }}
+									</div>
+		                         
+		                        {% endif %}
+								<fieldset>
+										<legend>Existing Users Login</legend>
+											
+										<label for="username">email</label>
+									<div class="div_text">
+										<div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
+									 		{{ form_widget(form.email, { 'attr': {'class': 'username span9'} }) }}
+											
+										</div>
+									</div>
+										<label for="password">Password</label>
+									<div class="div_text">
+										<div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span>
+											{{ form_widget(form.password, { 'attr': {'class': 'password span9'} }) }}	
+										</div>
+									</div>
+									
+									<div class="button_div"><span class="span6" style="float:right; padding-left:20px">
+										<input type="checkbox" name="_remember_me" checked class="checkbox-size" id="login-check" />&nbsp;<small>Remember me</small>
+										<input type="submit" name="submit" class="btn btn-primary"  />
+										</span>
+									</div>
+									 <div class="clear">&nbsp;</div>
+									 <div class="clear">&nbsp;</div>
+									<div class="clear"></div>
+										<div>Forgot password?&nbsp;<a href="#">Click here to reset</a></div>
+										<div>New User?&nbsp;<a href="register.html">Click here to register</a></div>	
+									<div class="clear"></div>
+								</fieldset>
+							  {{ form_rest(form) }}
+						</form>
+			          </div>
+			      </div>
+				      <!--/span--> 
+			    <div class="span4">&nbsp;</div>
+		  </div>
+		  <!--/span--> 
+		</div><!--/row--> 
+		  
+		  <br/>
+		<hr>
+	 <footer>
+		    <p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+	</footer>
+	</div>
 </body>
 {% endblock %}
