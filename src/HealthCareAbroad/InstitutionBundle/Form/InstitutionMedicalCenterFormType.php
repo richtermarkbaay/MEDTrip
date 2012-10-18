@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use Doctrine\ORM\EntityRepository;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -27,14 +29,17 @@ class InstitutionMedicalCenterFormType extends AbstractType
                 }
             ));
         }
-        $builder->add('treatmentProcedures', 'choice', array(
+        
+        $builder->add('treatmentProcedures', 'entity', array(
             'label' => 'Treatments',
-            'virtual' => true,
-            'attr' => array('class' => 'institutionTreatmentProcedures','multiple' => 'multiple')
+            'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
+            'multiple' => true,
+            'attr' => array('class' => 'institutionTreatmentProcedures')
         ));
         
         $builder->add('description', 'textarea', array(
             'label' => 'Details',
+            'constraints' => array(new NotBlank()),
             'attr' => array('class'=>'tinymce')
         ));
     }

@@ -6,7 +6,8 @@
 
 <style>
     .institutionTreatmentProcedures {
-        width:378px;height:180px
+        width:378px;
+        height:180px !important
     }
 </style>
 
@@ -38,10 +39,12 @@
 							<div class="tab-content">
 								<h4>General Information of the Institution</h4>
 				                           <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
-                    
+                                        
+                                        {{ form_errors(form) }}
+                                        
 					                    {{ form_row(form.medicalCenter) }}
 					                    
-					                    {{ form_row(form.treatmentProcedures) }}
+					                    {{ form_row(form.treatmentProcedures ,{'name': 'wata[]'}) }}
 					                    
 					                    {{ form_row(form.description) }}
 					                    

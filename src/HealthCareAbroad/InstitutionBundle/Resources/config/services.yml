@@ -10,7 +10,7 @@ services:
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
 
-    services.institutionMedicalCenter:
+    services.institution_medical_center:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         arguments: [@doctrine]
         

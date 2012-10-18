@@ -40,6 +40,13 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment')->getByInstitutionMedicalCenter($institutionMedicalCenter);
     }
+    
+    public function save(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionMedicalCenter);
+        $em->flush();
+    }
 
     /**
      * Remove draft institution specialization and associated procedure types

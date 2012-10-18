@@ -71,7 +71,7 @@ class MedicalCenterGroupController extends InstitutionAwareController
     }
     
     /**
-     * Add details of a InstitutionMedicalCenterGroup
+     * This is the first step when creating a new InstitutionMedicalCenterGroup. Add details of a InstitutionMedicalCenterGroup
      * 
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
@@ -82,9 +82,11 @@ class MedicalCenterGroupController extends InstitutionAwareController
             $this->institutionMedicalCenterGroup = new InstitutionMedicalCenterGroup();
             $this->institutionMedicalCenterGroup->setInstitution($this->institution);
         }
-        else 
+        else {
+            // there is an imcgId in the Request, check if this is a draft
             if ($this->institutionMedicalCenterGroup && !$this->service->isDraft($this->institutionMedicalCenterGroup)) {
                 return $this->_redirectIndexWithFlashMessage('Invalid draft medical center group', 'error');
+            }
         }
         
         $form = $this->createForm(new InstitutionMedicalCenterGroupFormType(),$this->institutionMedicalCenterGroup);
@@ -106,23 +108,37 @@ class MedicalCenterGroupController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenterGroup:addDetails.html.twig', array('form' => $form->createView(), 'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup));
     }
     
+    /**
+     * This is the second step when creating a center. This will add InstitutionMedicalCenter to the passed InstitutionMedicalCenterGroup.
+     * Expected GET parameters:
+     *     - imcgId institutionMedicalCenterGroupId
+     * 
+     * @author Allejo Chris G. Velarde
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function addSpecializationsAction(Request $request)
     {
+        // should only be accessed by Draft InstitutionMedicalCenterGroup
         if (!$this->service->isDraft($this->institutionMedicalCenterGroup)) {
             
             return $this->_redirectIndexWithFlashMessage('Invalid draft medical center group', 'error');
         }
         
         $institutionMedicalCenter = new InstitutionMedicalCenter();
+        $institutionMedicalCenter->setInstitutionMedicalCenterGroup($this->institutionMedicalCenterGroup);
         $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter);
         
         if ($request->isMethod('POST')) {
             $form->bind($request);
             
-            var_dump($request->request->all()); exit;
-            
             if ($form->isValid()) {
-                echo "adi ak"; exit;
+                $institutionMedicalCenter = $form->getData();
+                $institutionMedicalCenter->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
+                $this->get('services.institution_medical_center')->save($institutionMedicalCenter);
+                
+                // redirect to third step
+                return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addDoctors',array('imcgId' => $this->institutionMedicalCenterGroup->getId())));
             }
             
         }
