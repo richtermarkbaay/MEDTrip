@@ -10,9 +10,14 @@ services:
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
 
-    services.institutionMedicalCenter:
+    services.institution_medical_center:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         arguments: [@doctrine]
+        
+    services.institution_medical_center_group:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterGroupService
+        calls:
+            - [setDoctrine, [@doctrine]]
         
     services.institution_list_transformer:
         class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer

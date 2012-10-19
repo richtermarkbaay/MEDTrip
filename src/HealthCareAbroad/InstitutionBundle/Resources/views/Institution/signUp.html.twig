@@ -1,62 +1,47 @@
 {% extends 'InstitutionBundle::signUpheader.html.twig' %}
 
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-       
-        <h1>Medical Institution Sign up </h1>
-    </div>
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-            <!--  start table-content  -->
-            <div id="table-content">
 
-                {% include '::notice.admin.html.twig' %}
-                
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                     <!-- start id-form -->
                     
                         {{ form_errors(userForm) }}
                         
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.description) }}
-                        {{ form_row( form.country ) }}
-                        {{ form_row( form.city ) }}
-                        {{ form_row( form.address1 ) }}
-                        {{ form_row( form.address2 ) }}
-                        
-                        <div style="font-weight:bold;">
-                            Admin Account:
-                        </div>
-                        
-                        {{ form_row(userForm.firstName) }}
-                        {{ form_row(userForm.middleName) }}
-                        {{ form_row(userForm.lastName) }}
+                        {{ form_row(form.name, { 'attr': {'class': 'username span9'} }) }} 
                         {{ form_row(userForm.email) }}
                         {{ form_row(userForm.password ) }}
                         {{ form_row(userForm.confirm_password ) }}
+
+                        <label for="password">Types of Institution</label>
+		  				<div id="tabs">
+		  				    <div id="nav">
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div1" />Hospital or Clinic with Branch</label>
+		  				       <div id="div1" class="tab">
+		  				      		      
+		  				    </div>
+		  				    
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div2" />Hospital or Clinic with NO Branch</label>
+		  				      <div id="div2" class="tab">
+		  				    </div>
+		  				    
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div3" />Agent</label>
+		  				       <div id="div3" class="tab">
+		  				      <ul>
+		  				      <li>Medical Tourism Specific</li>
+		  				      <li>General Travel Agent</li>
+		  				      </ul>
+		  				      </p>
+		  				    </div>
+	  				    </div>
+	
+		  				  </div>
                         
-                        <input type="submit" value="Submit" class="green-button"/>
-                        <input type="reset" class="form-reset" value="Reset"/>
-                        
-                        {{ form_rest(form) }}
-                        {{ form_rest(userForm) }}
-                        
-                    
+           	 	 <label><input type="checkbox" name="Terms" value="Terms and Conditions" />I read and agree the <a href="#">Terms and Conditions</a>.</label>
+		  		<div class="button_div"><input type="submit" name="Submit" value="SIGN-UP" class="span12 btn-large btn-primary" /></div>
+                       
                     <!-- end id-form  -->
                 </form>
-            </div>
-            <!--  end table-content  -->
-        {% endblock %}
-        
-    {% endembed %}
-    
-</div>
-<!--  end content -->
+     
+
 <div class="clear">&nbsp;</div>
 {% endblock %}

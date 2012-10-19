@@ -1,0 +1,146 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+
+{% block content %}
+
+<style>
+    .institutionTreatmentProcedures {
+        width:378px;
+        height:180px !important
+    }
+    div.doctor_list_item {
+        border-bottom: 1px dotted;
+    }
+</style>
+
+<!-- start content -->
+<div class="container">
+	
+			<h2 style="padding:7px 20px 5px 15px">
+	            {% set hasDraft = hasDraft is defined and hasDraft %}
+	            {% if hasDraft %}
+	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	            {% else %}
+	                Add Medical Center
+	            {% endif %}
+			</h2>
+            <div class="row-fluid">
+			    <div class="span12" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
+			            <div class="tabbable">
+			                {% include '::notice.admin.html.twig' %}
+					
+						    {% include '::stepHolderClient.base.admin.html.twig' with {
+				                    steps: [
+				                        {title: '- Center Details'},
+				                        {title: '- Specialization, Sub-specialization and Treatments'},
+				                        {title: '- Assigned Doctors', 'selected': true},
+				                        {title: '- Preview', 'selected': false},
+				                 ]}
+				              %}
+			
+							<div class="tab-content">
+								<h4>General Information of the Institution</h4>
+								
+								<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+								
+								    <label for="username">Add from doctors database</label>
+                                    <div class="div_text">
+                                        <div class="input-prepend">
+                                            <input id="search_doctor" class="span8" type="text" value="" name="searchDoctor">
+                                        </div>
+                                    </div>
+				
+				                </form>
+				                
+				                <div id="ajax_loader" style="display: none;">Please wait...</div>
+				                
+				                <div id="added_doctors_container">
+				                    {% for currentDoctor in currentDoctors %}
+				                        {% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenterGroup.id, 'doctor': currentDoctor } %}
+				                    {% endfor %}
+				                </div>
+								
+							</div><!-- /.tab-content -->
+						</div>
+		    	</div><!--/span-->
+            </div><!--/row-->
+		
+		<div class="clear"></div>
+ 
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
+<script type="text/javascript">
+    (function($){
+
+        function onClickRemoveDoctor(el) {
+            _el = $(el);
+            $('div#ajax_loader').show();
+            $.ajax({
+                url: _el.attr('href'),
+                type: 'post',
+                dataType: 'json',
+                success: function(json){
+                    _el.parents('div.doctor_list_item').remove();
+                    $('div#ajax_loader').hide();   
+                }
+            });
+            return false;
+        }
+        
+        $(function(){
+            $('a.remove_doctor_link').click(function(event){
+                return onClickRemoveDoctor(event.target);
+            });
+            
+            $('input#search_doctor').autocomplete({
+                source: function(request, response) {
+                    $('div#ajax_loader').show();
+                    $.ajax({
+                        url: '{{ path("institution_medicalCenterGroup_searchAvailableDoctor", {"imcgId": institutionMedicalCenterGroup.id }) }}',
+                        data: {'searchKey': request.term},
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(data) {
+                            $('div#ajax_loader').hide();
+                            response( $.map( data, function( item ) {
+                                return {
+                                    label: item.name,
+                                    value: item.name,
+                                    html: item.html,
+                                    id: item.id
+                                }
+                            }));
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    $('div#ajax_loader').show();
+                    $.ajax({
+                        url: '{{ path("institution_medicalCenterGroup_addExistingDoctor", {"imcgId": institutionMedicalCenterGroup.id } ) }}',
+                        data: {'doctorId':ui.item.id},
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(json){
+                            _div = $(ui.item.html);
+                            _div.find('a.remove_doctor_link').bind('click', function(event){
+                                return onClickRemoveDoctor(event.target);
+                            });
+                            _div.appendTo($('#added_doctors_container'));
+                            $('input#search_doctor').val('');
+                            $('div#ajax_loader').hide();
+                        }
+                    });
+                    
+                    return false;
+                }
+            });
+        });
+    })(jQuery);
+</script>
+{% endblock %}

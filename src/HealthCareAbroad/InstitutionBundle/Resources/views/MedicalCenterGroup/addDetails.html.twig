@@ -1,0 +1,60 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div class="container">
+	
+			<h2 style="padding:7px 20px 5px 15px">
+	            {% set hasDraft = hasDraft is defined and hasDraft %}
+	            {% if hasDraft %}
+	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	            {% else %}
+	                Add Medical Center
+	            {% endif %}
+			</h2>
+			 <div class="row-fluid">
+			    <div class="span12" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
+			            <div class="tabbable">
+			            {% include '::notice.admin.html.twig' %}
+					
+							    {% include '::stepHolder.base.admin.html.twig' with {
+					                    steps: [
+					                        {title: '- Center Details', 'selected': true},
+					                        {title: '- Specialization, Sub-specialization and Treatments'},
+					                        {title: '- Assigned Doctors'},
+					                        {title: '- Preview', 'selected': false},
+					                 ]}
+					              %}
+			
+							<div class="tab-content">
+								<h4>Medical Center Information</h4>
+				                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addDetails') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+				
+				                    {{ form_errors(form) }}            
+				                    {{ form_row(form.name) }}
+				                    {{ form_row(form.description) }}
+				                    {{ form_rest(form) }}
+									<br>
+					                    <input type="reset" value="Reset" class="btn btn-inverse"/>
+					                    {% if hasDraft %}
+					                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenterGroup.id }) }}" class="button-type">Delete draft</a>
+					                    {% endif %}
+					
+					                    <input type="submit" name="submit" value="Next" class="btn btn-primary" />
+									
+				                </form>
+								
+							</div><!-- /.tab-content -->
+						</div>
+			    	</div><!--/span-->
+			  </div><!--/row-->
+		
+		<div class="clear"></div>
+
+	
+	
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

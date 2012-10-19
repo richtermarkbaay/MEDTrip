@@ -1,3 +1,8 @@
+# Routes for Institution MedicalCenterGroupController #
+InstitutionBundle_medicalCenterGroup:
+    resource: "@InstitutionBundle/Resources/config/routing_medicalCenterGroup.yml"
+    prefix:   /institution
+
 # Routes for Institution MedicalCenterController #
 InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"

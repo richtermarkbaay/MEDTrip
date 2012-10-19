@@ -1,6 +1,12 @@
 <?php
 namespace HealthCareAbroad\MedicalProcedureBundle\Services;
 
+use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
+
+use Doctrine\Bundle\DoctrineBundle\Registry;
+
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
@@ -12,12 +18,27 @@ use Doctrine\ORM\EntityManager;
 
 class TreatmentProcedureService
 {
-	private $container;
 	private $entityManager;
-
-	public function setContainer(ContainerInterface $container = null) {
-		$this->container = $container;
-		$this->entityManager = $this->container->get('doctrine')->getEntityManager();
+	
+	/**
+	 * @var Registry
+	 */
+	private $doctrine;
+	
+	/**
+	 * @var MemcacheService
+	 */
+	private $memcache;
+	
+	public function setDoctrine(Registry $doctrine)
+	{
+	    $this->doctrine = $doctrine;
+	    $this->entityManager = $this->doctrine->getEntityManager();
+	}
+	
+	public function setMemcache(MemcacheService $memcache)
+	{
+	    $this->memcache = $memcache;
 	}
 
 	public function getTreatmentProcedure($id)
@@ -55,5 +76,22 @@ class TreatmentProcedureService
 		$entity->setStatus(0);
 		$this->entityManager->persist($entity);
 		$this->entityManager->flush($entity);
+	}
+	
+	public function getActiveTreatmentProceduresByMedicalCenter(MedicalCenter $medicalCenter)
+	{
+	    $key = 'MedicalProcedureBundle:TreatmentProcedureService:getActiveTreatmentProceduresByMedicalCenter_'.$medicalCenter->getId();
+	    $result = $this->memcache->get($key);
+	    if (!$result) {
+	        $result = $this->doctrine->getRepository('MedicalProcedureBundle:TreatmentProcedure')
+	            ->getQueryBuilderForActiveTreatmentProceduresByMedicalCenter($medicalCenter)
+	            ->getQuery()
+	            ->getResult();
+	        
+	        // store to memcache
+	        $this->memcache->set($key, $result);
+	    }
+	    
+	    return $result;
 	}
 }

@@ -1,0 +1,68 @@
+HealthCareAbroad\DoctorBundle\Entity\Doctor:
+    type: entity
+    table: doctors
+    repositoryClass: HealthCareAbroad\DoctorBundle\Repository\DoctorRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        firstName:
+            type: string
+            length: 250
+            fixed: true
+            nullable: false
+            column: first_name
+        middleName:
+            type: string
+            length: 250
+            fixed: true
+            nullable: false
+            column: middle_name
+        lastName:
+            type: string
+            length: 250
+            fixed: true
+            nullable: false
+            column: last_name
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: boolean
+            nullable: false
+    manyToMany:
+        medicalCenters:
+            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: doctor_to_medical_centers
+                joinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: medical_center_id
+                        referencedColumnName: id
+            orderBy: null
+        institutionMedicalCenterGroups:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: institution_medical_center_group_doctors
+                joinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: institution_medical_center_group_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {}

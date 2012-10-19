@@ -9,7 +9,7 @@ namespace HealthCareAbroad\FrontendBundle\Controller;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
@@ -60,7 +60,7 @@ class InstitutionController extends Controller
                 throw $this->createNotFoundException('Invalid Medical Center');
             }
 
-            $criteria = array('status' => InstitutionMedicalCenterStatus::APPROVED, 'medicalCenter' => $medicalCenter);
+            $criteria = array('status' => InstitutionMedicalCenterGroupStatus::APPROVED, 'medicalCenter' => $medicalCenter);
             $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
 
 
