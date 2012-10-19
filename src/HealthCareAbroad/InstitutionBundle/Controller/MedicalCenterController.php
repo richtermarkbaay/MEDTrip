@@ -6,7 +6,7 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentFormType;
@@ -79,7 +79,7 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:add.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
-            'hasDraft' => InstitutionMedicalCenterStatus::DRAFT == $institutionMedicalCenter->getStatus()
+            'hasDraft' => InstitutionMedicalCenterGroupStatus::DRAFT == $institutionMedicalCenter->getStatus()
         ));
     }
 
@@ -185,7 +185,7 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         $form->bind($request);
 
-        $hasDraft = InstitutionMedicalCenterStatus::DRAFT == $institutionMedicalCenter->getStatus();
+        $hasDraft = InstitutionMedicalCenterGroupStatus::DRAFT == $institutionMedicalCenter->getStatus();
 
         if (!$form->isValid()) {
 
@@ -196,7 +196,7 @@ class MedicalCenterController extends InstitutionAwareController
             ));
         }
 
-        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
+        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterGroupStatus::DRAFT);
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($institutionMedicalCenter);
@@ -244,7 +244,7 @@ class MedicalCenterController extends InstitutionAwareController
             ));
         }
         $previousStatus = $institutionMedicalCenter->getStatus();
-        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::PENDING);
+        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterGroupStatus::PENDING);
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($institutionMedicalCenter);

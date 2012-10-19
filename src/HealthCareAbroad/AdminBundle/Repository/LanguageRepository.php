@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Repository;
 
+use Proxies\__CG__\HealthCareAbroad\AdminBundle\Entity\Language;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -17,7 +19,8 @@ class LanguageRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('b')
 		->select('b')
 		->add('from', 'AdminBundle:Language b')
-		->add('where', 'b.status = 1')
+		->add('where', 'b.status = :status')
+		->setParameter('status', Language::STATUS_ACTIVE)
 		->addOrderBy('b.name', 'ASC');
 	
 		if (false === is_null($limit))
@@ -34,8 +37,6 @@ class LanguageRepository extends EntityRepository
 						"JOIN languages AS b ON a.language_id = b.id " .
 						"JOIN  institutions AS c ON a.institution_id = c.id " .
 						"WHERE a.institution_id = $institutionId ";
-	
-
 		
 		$result = $conn->executeQuery($qry)->fetchAll();
 

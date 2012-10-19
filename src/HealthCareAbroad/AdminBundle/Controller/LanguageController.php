@@ -22,7 +22,7 @@ class LanguageController extends Controller
     {
     	$languageRepository = $this->getDoctrine()->getRepository('AdminBundle:Language');
     	
-    	$language = $languageRepository->getLatestlanguage();
+    	$language = $languageRepository->getActiveLanguages();
     	
     	return $this->render('AdminBundle:Language:index.html.twig', array(
                 'Language' => $language
@@ -35,7 +35,7 @@ class LanguageController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New LanguageFormType(), new Language());
+        $form = $this->createForm(new LanguageFormType(), new Language());
 
         return $this->render('AdminBundle:Language:form.html.twig', array(
                 'form' => $form->createView(),
@@ -52,7 +52,7 @@ class LanguageController extends Controller
     {
     	$language = $this->getDoctrine()->getEntityManager()->getRepository('AdminBundle:Language')->find($id);
     
-    	$form = $this->createForm(New LanguageFormType(), $language);
+    	$form = $this->createForm(new LanguageFormType(), $language);
     
     	return $this->render('AdminBundle:Language:form.html.twig', array(
     					'id' => $id,
@@ -73,7 +73,7 @@ class LanguageController extends Controller
     	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
     	$language = $id ? $em->getRepository('AdminBundle:Language')->find($id) : new Language();
-    	$form = $this->createForm(New LanguageFormType(), $language);
+    	$form = $this->createForm(new LanguageFormType(), $language);
     	$form->bind($request);
     
     	if ($form->isValid()) {

@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
@@ -55,7 +55,7 @@ class MedicalCenterRepository extends EntityRepository
      *
      * @return Doctrine\ORM\QueryBuilder
      */
-    public function getBuilderForMedicalCenters()
+    public function getQueryBuilderForActiveMedicalCenters()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', MedicalCenter::STATUS_ACTIVE);
@@ -112,7 +112,7 @@ class MedicalCenterRepository extends EntityRepository
 
     /**
      * Get MedicalCenters that are not yet linked to a specific institution excluding
-     * the medical centers with status InstitutionMedicalCenterStatus::DRAFT
+     * the medical centers with status InstitutionMedicalCenterGroupStatus::DRAFT
      *
      * @param Institution $institution
      * @return Doctrine\ORM\QueryBuilder
@@ -121,7 +121,7 @@ class MedicalCenterRepository extends EntityRepository
     {
         $usedMedicalCenterIds = array();
         foreach ($institution->getInstitutionMedicalCenters() as $e) {
-            if ($e->getStatus() == InstitutionMedicalCenterStatus::DRAFT) {
+            if ($e->getStatus() == InstitutionMedicalCenterGroupStatus::DRAFT) {
                 continue;
             }
             $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();

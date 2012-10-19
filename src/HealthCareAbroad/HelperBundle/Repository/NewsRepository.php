@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Repository;
 
+use HealthCareAbroad\HelperBundle\Entity\News;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -41,6 +43,7 @@ class NewsRepository extends EntityRepository
 		return $this->_em->createQueryBuilder()
 		->add('select', 'c')
 		->add('from', 'HelperBundle:News c')
-		->add('where', 'c.status = 1');
+		->add('where', 'c.status = :status')
+		->setParameter('status', News::STATUS_ACTIVE);
 	}
 }

@@ -3,7 +3,7 @@ namespace HealthCareAbroad\AdvertisementBundle\Form;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -30,7 +30,7 @@ class FeaturedListingAdvertisementFormType extends AdvertisementFormType
                     ->select('a')
                     ->where('a.institution = :institutionId AND a.status = :statusActive')
                     ->setParameter('institutionId', $institution->getId())
-                    ->setParameter('statusActive', InstitutionMedicalCenterStatus::APPROVED);
+                    ->setParameter('statusActive', InstitutionMedicalCenterGroupStatus::APPROVED);
             },
             'label' => 'Listing',
             'virtual' => false

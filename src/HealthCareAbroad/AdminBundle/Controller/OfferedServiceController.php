@@ -35,7 +35,7 @@ class OfferedServiceController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New OfferedServiceFormType(), new OfferedService());
+        $form = $this->createForm(new OfferedServiceFormType(), new OfferedService());
 
         return $this->render('AdminBundle:OfferedService:form.html.twig', array(
                 'id' => null,
@@ -52,7 +52,7 @@ class OfferedServiceController extends Controller
     {
     	$offeredService = $this->getDoctrine()->getEntityManager()->getRepository('AdminBundle:OfferedService')->find($id);
     	 
-    	$form = $this->createForm(New OfferedServiceFormType(), $offeredService);
+    	$form = $this->createForm(new OfferedServiceFormType(), $offeredService);
     
     	return $this->render('AdminBundle:OfferedService:form.html.twig', array(
     					'id' => $id,
@@ -72,7 +72,7 @@ class OfferedServiceController extends Controller
     	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
     	$offeredService = $id ? $em->getRepository('AdminBundle:OfferedService')->find($id) : new OfferedService();
-    	$form = $this->createForm(New OfferedServiceFormType(), $offeredService);
+    	$form = $this->createForm(new OfferedServiceFormType(), $offeredService);
     	$form->bind($request);
     
     	if ($form->isValid()) {

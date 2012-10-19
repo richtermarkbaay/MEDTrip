@@ -16,3 +16,14 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             - NotBlank: ~
         institutionLanguagesSpoken:
             - NotBlank: ~
+
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [institution, name]
+            message: Center already exists!
+    properties:
+        name:
+            - NotBlank: {message: 'Center name is required.'}
+        description:
+            - NotBlank: {message: 'Center details is required.'}

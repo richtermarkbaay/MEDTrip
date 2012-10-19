@@ -6,7 +6,7 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
 
@@ -60,7 +60,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->where('b.country = :countryId')
             ->andWhere('a.status = :status')
             ->setParameter('countryId', $country->getId())
-            ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED)
+            ->setParameter('status', InstitutionMedicalCenterGroupStatus::APPROVED)
             ->orderBy('c.name', 'ASC');
 
         return $qb->getQuery()->getResult();
@@ -76,7 +76,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         ->where('b.country = :countryId')
         ->andWhere('a.status = :status')
         ->setParameter('countryId', $country->getId())
-        ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED)
+        ->setParameter('status', InstitutionMedicalCenterGroupStatus::APPROVED)
         ->orderBy('c.name', 'ASC');
 
         return $qb->getQuery()->getResult();
