@@ -30,7 +30,7 @@ class NewsController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New NewsFormType(), new News());
+        $form = $this->createForm(new NewsFormType(), new News());
 
         return $this->render('AdminBundle:News:form.html.twig', array(
                 'id' => null,
@@ -47,7 +47,7 @@ class NewsController extends Controller
     {
         $news = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:News')->find($id);
          
-        $form = $this->createForm(New NewsFormType(), $news);
+        $form = $this->createForm(new NewsFormType(), $news);
     
         return $this->render('AdminBundle:News:form.html.twig', array(
                 'id' => $id,
@@ -71,7 +71,7 @@ class NewsController extends Controller
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();    
         $news = $id ? $em->getRepository('HelperBundle:News')->find($id) : new News();    
-        $form = $this->createForm(New NewsFormType(), $news);
+        $form = $this->createForm(new NewsFormType(), $news);
         $form->bind($request);
     
         if ($form->isValid()) {
