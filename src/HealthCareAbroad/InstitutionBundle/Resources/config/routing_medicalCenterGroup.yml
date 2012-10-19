@@ -55,6 +55,13 @@ institution_medicalCenterGroup_addExistingDoctor:
         _method: GET|POST
         imcgId: \d+
         
+institution_medicalCenterGroup_removeDoctor:
+    pattern: /medical-centers/remove-doctor/{imcgId}/{doctorId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:removeDoctor }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
+        
 institution_medicalCenterGroup_index:
     pattern: /medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenterGroup:index }

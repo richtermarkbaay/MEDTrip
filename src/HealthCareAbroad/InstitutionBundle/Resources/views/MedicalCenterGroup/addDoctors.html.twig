@@ -9,6 +9,9 @@
         width:378px;
         height:180px !important
     }
+    div.doctor_list_item {
+        border-bottom: 1px dotted;
+    }
 </style>
 
 <!-- start content -->
@@ -50,8 +53,12 @@
 				
 				                </form>
 				                
+				                <div id="ajax_loader" style="display: none;">Please wait...</div>
+				                
 				                <div id="added_doctors_container">
-				                    
+				                    {% for currentDoctor in currentDoctors %}
+				                        {% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenterGroup.id, 'doctor': currentDoctor } %}
+				                    {% endfor %}
 				                </div>
 								
 							</div><!-- /.tab-content -->
@@ -70,17 +77,37 @@
 <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
 <script type="text/javascript">
     (function($){
-    
+
+        function onClickRemoveDoctor(el) {
+            _el = $(el);
+            $('div#ajax_loader').show();
+            $.ajax({
+                url: _el.attr('href'),
+                type: 'post',
+                dataType: 'json',
+                success: function(json){
+                    _el.parents('div.doctor_list_item').remove();
+                    $('div#ajax_loader').hide();   
+                }
+            });
+            return false;
+        }
+        
         $(function(){
+            $('a.remove_doctor_link').click(function(event){
+                return onClickRemoveDoctor(event.target);
+            });
             
             $('input#search_doctor').autocomplete({
                 source: function(request, response) {
+                    $('div#ajax_loader').show();
                     $.ajax({
                         url: '{{ path("institution_medicalCenterGroup_searchAvailableDoctor", {"imcgId": institutionMedicalCenterGroup.id }) }}',
                         data: {'searchKey': request.term},
                         type: 'get',
                         dataType: 'json',
                         success: function(data) {
+                            $('div#ajax_loader').hide();
                             response( $.map( data, function( item ) {
                                 return {
                                     label: item.name,
@@ -93,14 +120,20 @@
                     });
                 },
                 select: function(event, ui) {
+                    $('div#ajax_loader').show();
                     $.ajax({
                         url: '{{ path("institution_medicalCenterGroup_addExistingDoctor", {"imcgId": institutionMedicalCenterGroup.id } ) }}',
                         data: {'doctorId':ui.item.id},
                         dataType: 'json',
                         type: 'post',
                         success: function(json){
-                            $('div#added_doctors_container').append(ui.item.html);
+                            _div = $(ui.item.html);
+                            _div.find('a.remove_doctor_link').bind('click', function(event){
+                                return onClickRemoveDoctor(event.target);
+                            });
+                            _div.appendTo($('#added_doctors_container'));
                             $('input#search_doctor').val('');
+                            $('div#ajax_loader').hide();
                         }
                     });
                     

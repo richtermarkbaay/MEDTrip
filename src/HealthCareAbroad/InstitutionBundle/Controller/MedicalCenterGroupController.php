@@ -154,6 +154,7 @@ class MedicalCenterGroupController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:MedicalCenterGroup:addDoctors.html.twig', array(
             'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
+            'currentDoctors' => $this->institutionMedicalCenterGroup->getDoctors()
         ));
     }
     
@@ -220,6 +221,15 @@ class MedicalCenterGroupController extends InstitutionAwareController
         return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
     }
     
+    /**
+     * Ajax handler for searching available doctors for an InstitutionMedicalCenterGroup
+     * Expected GET parameters:
+     *     - imcgId institutionMedicalCenterGroupId
+     *     - searchKey
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function searchAvailableDoctorAction(Request $request)
     {
         $searchKey = \trim($request->get('searchKey',''));
@@ -228,21 +238,8 @@ class MedicalCenterGroupController extends InstitutionAwareController
         
         $output = array();
         foreach ($availableDoctors as $doctor) {
-            $arr = array(
-                            'id' => $doctor->getId(),
-                            'name' => "{$doctor->getFirstName()} {$doctor->getMiddleName()} {$doctor->getLastName()}",
-                            'medicalCenters' => array()
-            );
-            foreach($doctor->getMedicalCenters() as $dmc) {
-                $arr['medicalCenters'][$dmc->getId()] = $dmc->getName();   
-            }
-            
-            $arr['html'] = '<div class="doctor_list_item">'.
-                '<p>'.$arr['name'].'</p>'.
-                '<span>Specializations:</span> '. \implode(', ', $arr['medicalCenters']).
-            '</div>';
-                
-            
+            $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
+            $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig', array('imcgId' => $this->institutionMedicalCenterGroup->getId(),'doctor' => $doctor));
             $output[] = $arr;
         }
         
@@ -250,6 +247,15 @@ class MedicalCenterGroupController extends InstitutionAwareController
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
+    /**
+     * Ajax handler for adding existing doctor to an InstitutionMedicalCenterGroup
+     * Expected parameters:
+     *     - imcgId institutionMedicalCenterGroupId
+     *     - doctorId
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function addExistingDoctorAction(Request $request)
     {
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
@@ -263,6 +269,33 @@ class MedicalCenterGroupController extends InstitutionAwareController
         }
         catch (\Exception $e) {
                 
+        }
+        
+        return new Response(\json_encode(array()),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Ajax handler for removing a Doctor from InstitutionMedicalCenterGroup
+     * Expected parameters:
+     *     - imcgId
+     *     - doctorId
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeDoctorAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+        if (!$doctor) {
+            throw $this->createNotFoundException('Invalid doctor.');
+        }
+
+        try{
+            $this->institutionMedicalCenterGroup->removeDoctor($doctor);
+            $this->service->save($this->institutionMedicalCenterGroup);
+        }
+        catch (\Exception $e) {
+        
         }
         
         return new Response(\json_encode(array()),200, array('content-type' => 'application/json'));
