@@ -95,6 +95,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $count;
     }
 
+    // TODO - Currently DEPRECATED, this can be remove.
     function getProcedureTypeIdsWithProcedure($medicalCenterId)
     {
         $conn = $this->_em->getConnection();
