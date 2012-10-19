@@ -39,11 +39,12 @@ class MedicalCenterRepository extends EntityRepository
         $dql = "SELECT MedicalCenter.id, MedicalCenter.name as value
                 FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter
                 WHERE MedicalCenter.name LIKE :term
-                AND MedicalCenter.status = 1
+                AND MedicalCenter.status = :status
                 ORDER BY MedicalCenter.name ASC";
 
         $query = $this->_em->createQuery($dql);
         $query->setMaxResults($limit);
+        $query->setParameter('status', MedicalCenter::STATUS_ACTIVE);
         $query->setParameter('term', "%$term%");
 
         return $query->getArrayResult();
@@ -57,7 +58,7 @@ class MedicalCenterRepository extends EntityRepository
     public function getBuilderForMedicalCenters()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
+        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', MedicalCenter::STATUS_ACTIVE);
 
         return $qb;
     }
