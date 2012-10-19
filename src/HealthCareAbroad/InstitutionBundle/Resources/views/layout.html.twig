@@ -17,7 +17,7 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	        </a>
-	        <a href="index.html" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
+	        <a href="{{ path('main_homepage') }}" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
 	              
             {% block top_search %}
                 {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
@@ -39,7 +39,7 @@
 		<hr>
 		<footer>
 			<p>&copy; Chromedia Far East Inc. 
-			    <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+			    <a href="{{ path('main_homepage') }}">www.HealthCareAbroad.com</a>. All rights reserved.</p>
 		</footer>
 	</div>
 
