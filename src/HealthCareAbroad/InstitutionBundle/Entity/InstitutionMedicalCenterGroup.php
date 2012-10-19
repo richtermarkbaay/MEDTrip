@@ -41,6 +41,11 @@ class InstitutionMedicalCenterGroup
     private $status;
 
     /**
+     * @var string $slug
+     */
+    private $slug;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionMedicalCenters;
@@ -49,15 +54,16 @@ class InstitutionMedicalCenterGroup
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-    
+
     /**
-     * @var string $slug
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $slug;
+    private $doctors;
 
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -181,6 +187,28 @@ class InstitutionMedicalCenterGroup
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return InstitutionMedicalCenterGroup
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Add institutionMedicalCenters
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
@@ -235,29 +263,34 @@ class InstitutionMedicalCenterGroup
     }
 
     /**
-     * Set slug
+     * Add doctors
      *
-     * @param string $slug
+     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
      * @return InstitutionMedicalCenterGroup
      */
-    public function setSlug($slug)
+    public function addDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
     {
-        $this->slug = $slug;
+        $this->doctors[] = $doctors;
         return $this;
     }
 
     /**
-     * Get slug
+     * Remove doctors
      *
-     * @return string 
+     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
      */
-    public function getSlug()
+    public function removeDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
     {
-        return $this->slug;
+        $this->doctors->removeElement($doctors);
     }
-    
-    public function __toString()
+
+    /**
+     * Get doctors
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getDoctors()
     {
-        return $this->name;
+        return $this->doctors;
     }
 }

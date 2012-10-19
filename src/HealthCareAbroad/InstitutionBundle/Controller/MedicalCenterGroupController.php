@@ -149,6 +149,14 @@ class MedicalCenterGroupController extends InstitutionAwareController
         ));
     }
     
+    public function addDoctorsAction()
+    {
+        
+        return $this->render('InstitutionBundle:MedicalCenterGroup:addDoctors.html.twig', array(
+            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
+        ));
+    }
+    
     public function editAction(Request $request)
     {
     
@@ -210,6 +218,54 @@ class MedicalCenterGroupController extends InstitutionAwareController
         
         
         return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
+    }
+    
+    public function searchAvailableDoctorAction(Request $request)
+    {
+        $searchKey = \trim($request->get('searchKey',''));
+        $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterGroup')
+            ->findAvailableDoctorBySearchKey($this->institutionMedicalCenterGroup, $searchKey);
+        
+        $output = array();
+        foreach ($availableDoctors as $doctor) {
+            $arr = array(
+                            'id' => $doctor->getId(),
+                            'name' => "{$doctor->getFirstName()} {$doctor->getMiddleName()} {$doctor->getLastName()}",
+                            'medicalCenters' => array()
+            );
+            foreach($doctor->getMedicalCenters() as $dmc) {
+                $arr['medicalCenters'][$dmc->getId()] = $dmc->getName();   
+            }
+            
+            $arr['html'] = '<div class="doctor_list_item">'.
+                '<p>'.$arr['name'].'</p>'.
+                '<span>Specializations:</span> '. \implode(', ', $arr['medicalCenters']).
+            '</div>';
+                
+            
+            $output[] = $arr;
+        }
+        
+        //return $this->render('::base.ajaxDebugger.html.twig');
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    public function addExistingDoctorAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+        if (!$doctor) {
+            throw $this->createNotFoundException('Invalid doctor.');
+        }
+        
+        try{
+            $this->institutionMedicalCenterGroup->addDoctor($doctor);
+            $this->service->save($this->institutionMedicalCenterGroup);
+        }
+        catch (\Exception $e) {
+                
+        }
+        
+        return new Response(\json_encode(array()),200, array('content-type' => 'application/json'));
     }
     
     /**

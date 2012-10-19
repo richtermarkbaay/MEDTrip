@@ -1,0 +1,113 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+
+{% block content %}
+
+<style>
+    .institutionTreatmentProcedures {
+        width:378px;
+        height:180px !important
+    }
+</style>
+
+<!-- start content -->
+<div class="container">
+	
+			<h2 style="padding:7px 20px 5px 15px">
+	            {% set hasDraft = hasDraft is defined and hasDraft %}
+	            {% if hasDraft %}
+	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	            {% else %}
+	                Add Medical Center
+	            {% endif %}
+			</h2>
+            <div class="row-fluid">
+			    <div class="span12" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
+			            <div class="tabbable">
+			                {% include '::notice.admin.html.twig' %}
+					
+						    {% include '::stepHolderClient.base.admin.html.twig' with {
+				                    steps: [
+				                        {title: '- Center Details'},
+				                        {title: '- Specialization, Sub-specialization and Treatments'},
+				                        {title: '- Assigned Doctors', 'selected': true},
+				                        {title: '- Preview', 'selected': false},
+				                 ]}
+				              %}
+			
+							<div class="tab-content">
+								<h4>General Information of the Institution</h4>
+								
+								<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+								
+								    <label for="username">Add from doctors database</label>
+                                    <div class="div_text">
+                                        <div class="input-prepend">
+                                            <input id="search_doctor" class="span8" type="text" value="" name="searchDoctor">
+                                        </div>
+                                    </div>
+				
+				                </form>
+				                
+				                <div id="added_doctors_container">
+				                    
+				                </div>
+								
+							</div><!-- /.tab-content -->
+						</div>
+		    	</div><!--/span-->
+            </div><!--/row-->
+		
+		<div class="clear"></div>
+ 
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
+<script type="text/javascript">
+    (function($){
+    
+        $(function(){
+            
+            $('input#search_doctor').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: '{{ path("institution_medicalCenterGroup_searchAvailableDoctor", {"imcgId": institutionMedicalCenterGroup.id }) }}',
+                        data: {'searchKey': request.term},
+                        type: 'get',
+                        dataType: 'json',
+                        success: function(data) {
+                            response( $.map( data, function( item ) {
+                                return {
+                                    label: item.name,
+                                    value: item.name,
+                                    html: item.html,
+                                    id: item.id
+                                }
+                            }));
+                        }
+                    });
+                },
+                select: function(event, ui) {
+                    $.ajax({
+                        url: '{{ path("institution_medicalCenterGroup_addExistingDoctor", {"imcgId": institutionMedicalCenterGroup.id } ) }}',
+                        data: {'doctorId':ui.item.id},
+                        dataType: 'json',
+                        type: 'post',
+                        success: function(json){
+                            $('div#added_doctors_container').append(ui.item.html);
+                            $('input#search_doctor').val('');
+                        }
+                    });
+                    
+                    return false;
+                }
+            });
+        });
+    })(jQuery);
+</script>
+{% endblock %}

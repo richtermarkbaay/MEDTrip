@@ -57,4 +57,19 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
             joinColumn:
                 name: institution_id
                 referencedColumnName: id
-            
+    manyToMany:
+        doctors:
+            targetEntity: HealthCareAbroad\DoctorBundle\Entity\Doctor
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: institution_medical_center_group_doctors
+                joinColumns:
+                    -
+                        name: institution_medical_center_group_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+            orderBy: null

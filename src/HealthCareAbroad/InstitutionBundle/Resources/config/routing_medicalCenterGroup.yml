@@ -41,6 +41,20 @@ institution_medicalCenterGroup_loadAvailableTreatments:
         _method: GET
         imcgId: \d+
         
+institution_medicalCenterGroup_searchAvailableDoctor:
+    pattern: /medical-centers/search-available-doctor/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:searchAvailableDoctor }
+    requirements:
+        _method: GET
+        imcgId: \d+
+        
+institution_medicalCenterGroup_addExistingDoctor:
+    pattern: /medical-centers/add-existing-doctor/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:addExistingDoctor }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
+        
 institution_medicalCenterGroup_index:
     pattern: /medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenterGroup:index }
