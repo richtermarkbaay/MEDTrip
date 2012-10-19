@@ -43,7 +43,7 @@ font-size: 12px;
     display:block; */
     height:16px;
     width:180px;
-    background-color:skyblue;
+    background-color:#6DA827;
 }
 
 institutionSearch {
@@ -67,7 +67,9 @@ institutionSearch {
     width: 250px; 
     height:14px;
 }
-
+#institutionSearch  .a{
+    background-color:#6DA827;
+}
 #top-search	{
 	display: inline;
 	float: right;

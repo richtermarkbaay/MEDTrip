@@ -18,15 +18,23 @@ use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
+
 class DefaultController extends Controller
 {
+
     public function indexAction()
     {
-       $form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
-    	    	
-        return $this->render('::splash.frontend.html.twig', array(
-        		'form' => $form->createView(),
-        ));
+    	//$request = $this->container->get('request');
+    	
+    	// this is the matched route
+    	//$pathUrl = $request->getPathInfo();
+    	
+    	$form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
+  
+    		return $this->render('::splash.frontend.html.twig', array(
+    						'form' => $form->createView(),
+    		));
     }
     
     /*
@@ -35,6 +43,7 @@ class DefaultController extends Controller
      */
     public function newAction()
     {
+    	//get IP Address
     	$ipAddress = $this->getRequest()->getClientIp();
     	
     	$request = $this->getRequest();
@@ -56,13 +65,14 @@ class DefaultController extends Controller
 			    		$this->get('session')->setFlash('success', "Successfully Subscribe to HealthCareAbroad");
     			}
     			catch (\Exception $e) {
-    				$request->getSession()->setFlash("error", "Failed to save advertisement due to unexpected error.");
+    				
+    				$request->getSession()->setFlash("error", "Failed. Please try again.");
     				$redirectUrl = $this->generateUrl("main_homepage");
     			}
     		}
     	}
-    	return $this->render('::splash.frontend.html.twig', array(
-    					 
+    	
+    	return $this->render('::splash.frontend.html.twig', array(    					 
     					'form' => $form->createView(),
     	));
    

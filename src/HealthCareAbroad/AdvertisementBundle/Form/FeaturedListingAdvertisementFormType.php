@@ -14,13 +14,14 @@ use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementFormType;
-
+use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementMediaFormType;
 class FeaturedListingAdvertisementFormType extends AdvertisementFormType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->setFormData($options);
         $institution = $this->advertisement->getInstitution();
+        
         $builder->add('object', new InstitutionMedicalCenterListType(), array(
             'class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter',
             'property' => 'medicalCenter',
@@ -34,7 +35,8 @@ class FeaturedListingAdvertisementFormType extends AdvertisementFormType
             'label' => 'Listing',
             'virtual' => false
         ));
-        
+        $builder->add('media', 'file', array('property_path' => false));
         $this->buildCommon($builder);
+        
     }
 }
