@@ -98,9 +98,8 @@
 <div class="clear">&nbsp;</div>
 {% endblock %}
 
-	{% block javascripts %}
-    <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-	<script src="{{ asset('bundles/helper/js/Autocomplete.js') }}"></script>
+	{% block inlineJavascriptCode %}
+	    <script src="{{ asset('bundles/helper/js/Autocomplete.js') }}"></script>
 		<script type="text/javascript">
 
 		$(function() {
@@ -144,4 +143,3 @@
     	}
 		</script>	
 	{% endblock %}
-
