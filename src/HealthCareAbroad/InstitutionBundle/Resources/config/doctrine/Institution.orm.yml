@@ -23,12 +23,30 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 100
             fixed: false
             nullable: false
+        contactEmail:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: contact_email
+        contactNumber:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: contact_number
         address1:
             type: text
             nullable: false
         address2:
             type: text
             nullable: false
+        zipCode:
+            type: integer
+            length: 10
+            unsigned: false
+            nullable: false
+            column: zip_code
         dateModified:
             type: datetime
             nullable: false

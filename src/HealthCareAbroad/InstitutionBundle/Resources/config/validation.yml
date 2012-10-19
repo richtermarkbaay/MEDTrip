@@ -1,0 +1,18 @@
+HealthCareAbroad\InstitutionBundle\Entity\Institution:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: Institution name already exists!
+    properties:
+        name:
+            - NotBlank: ~
+        description:
+            - NotBlank: ~
+        country:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        address1:
+            - NotBlank: ~
+        institutionLanguagesSpoken:
+            - NotBlank: ~

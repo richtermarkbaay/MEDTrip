@@ -27,8 +27,8 @@ class InstitutionType extends AbstractType
     	$builder->addEventSubscriber($subscriber);
     	
     	$builder
-    		->add('name', 'text', array('constraints' => new NotBlank()))
-    		->add('description', 'textarea', array('constraints' => new NotBlank()))
+    		->add('name', 'text')
+    		->add('description', 'textarea', array('attr' => array('maxLength' => 500)))
 //     		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
 //     		->add('middleName', 'text', array('label' => 'Middle name'))
 //     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()))
@@ -46,8 +46,8 @@ class InstitutionType extends AbstractType
 //                 ))
     		->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')))
     		->add('city', new CityListType(1))
-    		->add('address1','text', array('label' => 'Address Line 1', 'constraints' => new NotBlank()))
-    		->add('address2','text', array('label' => 'Address Line 2', 'constraints' => new NotBlank()))
+    		->add('address1','text', array('label' => 'Address Line 1'))
+    		->add('address2','text', array('label' => 'Address Line 2'))
     		;
     }
     

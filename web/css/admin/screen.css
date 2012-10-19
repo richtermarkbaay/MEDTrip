@@ -677,7 +677,7 @@ form.basic-form > div > ul {
 	list-style: none outside none;
 }
 
-form.basic-form label {
+form.basic-form > div > label {
 	width: 120px; 
 	color: #888888;
 	font-weight: bold;

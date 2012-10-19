@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Institution
 {
     const USER_TYPE = "SUPER_ADMIN";
+
     /**
      * @var integer $id
      */
@@ -31,6 +32,16 @@ class Institution
     private $logo;
 
     /**
+     * @var string $contactEmail
+     */
+    private $contactEmail;
+
+    /**
+     * @var string $contactNumber
+     */
+    private $contactNumber;
+
+    /**
      * @var text $address1
      */
     private $address1;
@@ -39,6 +50,11 @@ class Institution
      * @var text $address2
      */
     private $address2;
+
+    /**
+     * @var string $zipCode
+     */
+    private $zipCode;
 
     /**
      * @var datetime $dateModified
@@ -109,83 +125,6 @@ class Institution
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
-    //---- status operations
-    public function setAsActive()
-    {
-        $this->status = InstitutionStatus::getBitValueForActiveStatus();
-    }
-    
-    public function setAsInactive()
-    {
-        $this->status = InstitutionStatus::getBitValueForInactiveStatus();
-    }
-    
-    public function setAsUnapproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-    
-    public function setAsApproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForApprovedStatus();
-    }
-    
-    public function setAsSuspended()
-    {
-        $this->status = InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-    
-    /**
-     * Check if this is institution is active
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return InstitutionStatus::ACTIVE == ($this->status & InstitutionStatus::ACTIVE);
-    }
-    
-    /**
-     * Check if the institution is inactive
-     *
-     * @return boolean
-     */
-    public function isInactive()
-    {
-        return $this->status == InstitutionStatus::getBitValueForInactiveStatus();
-    }
-    
-    /**
-     * Check if the institution is unapproved
-     *
-     * @return boolean
-     */
-    public function isUnapproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-    
-    /**
-     * Check if the institution is approved
-     *
-     * @return boolean
-     */
-    public function isApproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForApprovedStatus();
-    }
-    
-    /**
-     * Check if the institution is suspended
-     *
-     * @return boolean
-     */
-    public function isSuspended()
-    {
-        return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-    //---- end status operations
     
     /**
      * Get id
@@ -264,6 +203,50 @@ class Institution
     }
 
     /**
+     * Set contactEmail
+     *
+     * @param string $contactEmail
+     * @return Institution
+     */
+    public function setContactEmail($contactEmail)
+    {
+        $this->contactEmail = $contactEmail;
+        return $this;
+    }
+
+    /**
+     * Get contactEmail
+     *
+     * @return string 
+     */
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
+    }
+
+    /**
+     * Set contactNumber
+     *
+     * @param string $contactNumber
+     * @return Institution
+     */
+    public function setContactNumber($contactNumber)
+    {
+        $this->contactNumber = $contactNumber;
+        return $this;
+    }
+
+    /**
+     * Get contactNumber
+     *
+     * @return string 
+     */
+    public function getContactNumber()
+    {
+        return $this->contactNumber;
+    }
+
+    /**
      * Set address1
      *
      * @param text $address1
@@ -305,6 +288,28 @@ class Institution
     public function getAddress2()
     {
         return $this->address2;
+    }
+
+    /**
+     * Set zipCode
+     *
+     * @param string $zipCode
+     * @return Institution
+     */
+    public function setZipCode($zipCode)
+    {
+        $this->zipCode = $zipCode;
+        return $this;
+    }
+
+    /**
+     * Get zipCode
+     *
+     * @return string 
+     */
+    public function getZipCode()
+    {
+        return $this->zipCode;
     }
 
     /**
@@ -394,6 +399,83 @@ class Institution
     {
         return $this->status;
     }
+
+    //---- status operations
+    public function setAsActive()
+    {
+        $this->status = InstitutionStatus::getBitValueForActiveStatus();
+    }
+
+    public function setAsInactive()
+    {
+        $this->status = InstitutionStatus::getBitValueForInactiveStatus();
+    }
+
+    public function setAsUnapproved()
+    {
+        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();
+    }
+
+    public function setAsApproved()
+    {
+        $this->status = InstitutionStatus::getBitValueForApprovedStatus();
+    }
+
+    public function setAsSuspended()
+    {
+        $this->status = InstitutionStatus::getBitValueForSuspendedStatus();
+    }
+
+    /**
+     * Check if this is institution is active
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return InstitutionStatus::ACTIVE == ($this->status & InstitutionStatus::ACTIVE);
+    }
+
+    /**
+     * Check if the institution is inactive
+     *
+     * @return boolean
+     */
+    public function isInactive()
+    {
+        return $this->status == InstitutionStatus::getBitValueForInactiveStatus();
+    }
+
+    /**
+     * Check if the institution is unapproved
+     *
+     * @return boolean
+     */
+    public function isUnapproved()
+    {
+        return $this->status == InstitutionStatus::getBitValueForUnapprovedStatus();
+    }
+
+    /**
+     * Check if the institution is approved
+     *
+     * @return boolean
+     */
+    public function isApproved()
+    {
+        return $this->status == InstitutionStatus::getBitValueForApprovedStatus();
+    }
+
+    /**
+     * Check if the institution is suspended
+     *
+     * @return boolean
+     */
+    public function isSuspended()
+    {
+        return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
+    }
+    //---- end status operations
 
     /**
      * Add institutionMedicalCenters
