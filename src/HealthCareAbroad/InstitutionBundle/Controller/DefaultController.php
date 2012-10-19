@@ -28,7 +28,6 @@ class DefaultController extends InstitutionAwareController
     public function indexAction()
     {
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        var_dump($institutionAlerts); exit;
         $draftAlerts = isset($institutionAlerts[AlertTypes::DRAFT_LISTING]) ? $institutionAlerts[AlertTypes::DRAFT_LISTING] : array();
         $expiredListingAlerts = isset($institutionAlerts[AlertTypes::EXPIRED_LISTING]) ? $institutionAlerts[AlertTypes::EXPIRED_LISTING] : array();
         $approvedListingAlerts = isset($institutionAlerts[AlertTypes::APPROVED_LISTING]) ? $institutionAlerts[AlertTypes::APPROVED_LISTING] : array();
