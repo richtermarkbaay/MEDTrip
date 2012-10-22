@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Repository;
 
-use Proxies\__CG__\HealthCareAbroad\AdminBundle\Entity\Language;
+use HealthCareAbroad\AdminBundle\Entity\Language;
 
 use Doctrine\ORM\EntityRepository;
 
