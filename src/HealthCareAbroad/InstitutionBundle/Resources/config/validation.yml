@@ -17,6 +17,36 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         institutionLanguagesSpoken:
             - NotBlank: ~
 
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
+    properties:
+        name:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+            
+HealthCareAbroad\DoctorBundle\Entity\Doctor:
+    properties:
+        firstName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+            
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
+    properties:
+        firstName:
+            - NotBlank: ~
+        middleName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+        message:
+            - NotBlank: ~
+
+          
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:

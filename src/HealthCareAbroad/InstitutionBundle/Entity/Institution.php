@@ -9,8 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
+    const STATUS_ACTIVE = 1;
     const USER_TYPE = "SUPER_ADMIN";
-
+    
     /**
      * @var integer $id
      */
