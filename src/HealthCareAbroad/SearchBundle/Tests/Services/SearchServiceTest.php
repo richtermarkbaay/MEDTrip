@@ -216,12 +216,12 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertEmpty($actual, "Searched for \"$term\"");
     }
 
-
     public function testGetTreatmentsByName()
     {
-        $name = "Type1";
+        //TODO: move some of the assertions to the searchTreatmentsByName tests
+        $treatmentName = "Type1";
 
-        $actual = $this->service->getTreatmentsByName($name);
+        $actual = $this->service->getTreatmentsByName($treatmentName);
         $this->assertTrue(is_array($actual));
         $this->assertCount(1, $actual);
         $this->assertArrayHasKey('label', $actual[0]);
@@ -229,7 +229,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertArrayHasKey('value', $actual[0]);
         $this->assertEquals('1-0', $actual[0]['value']);
 
-        $actual = $this->service->getTreatmentsByName($name, null);
+        $actual = $this->service->getTreatmentsByName($treatmentName, null);
         $this->assertTrue(is_array($actual));
         $this->assertCount(1, $actual);
         $this->assertArrayHasKey('label', $actual[0]);
@@ -237,7 +237,7 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertArrayHasKey('value', $actual[0]);
         $this->assertEquals('1-0', $actual[0]['value']);
 
-        $actual = $this->service->getTreatmentsByName($name, 0);
+        $actual = $this->service->getTreatmentsByName($treatmentName, 0);
         $this->assertTrue(is_array($actual));
         $this->assertCount(1, $actual);
         $this->assertArrayHasKey('label', $actual[0]);
@@ -245,17 +245,57 @@ class SearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertArrayHasKey('value', $actual[0]);
         $this->assertEquals('1-0', $actual[0]['value']);
 
-        $name = 'non-existent-treatment';
+        $treatmentName = 'non-existent-treatment';
 
-        $actual = $this->service->getTreatmentsByName($name);
+        $actual = $this->service->getTreatmentsByName($treatmentName);
         $this->assertTrue(is_array($actual));
         $this->assertEmpty($actual);
 
-        $actual = $this->service->getTreatmentsByName($name, null);
+        $actual = $this->service->getTreatmentsByName($treatmentName, null);
         $this->assertTrue(is_array($actual));
         $this->assertEmpty($actual);
 
-        $actual = $this->service->getTreatmentsByName($name, 0);
+        $actual = $this->service->getTreatmentsByName($treatmentName, 0);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+
+        $treatmentProcedureName = "Test Medical Procedure";
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-1', $actual[0]['value']);
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, null);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-1', $actual[0]['value']);
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, 0);
+        $this->assertTrue(is_array($actual));
+        $this->assertCount(1, $actual);
+        $this->assertArrayHasKey('label', $actual[0]);
+        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
+        $this->assertArrayHasKey('value', $actual[0]);
+        $this->assertEquals('1-1', $actual[0]['value']);
+
+        $treatmentProcedureName = 'non-existent-treatment-procedure';
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, null);
+        $this->assertTrue(is_array($actual));
+        $this->assertEmpty($actual);
+
+        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, 0);
         $this->assertTrue(is_array($actual));
         $this->assertEmpty($actual);
     }

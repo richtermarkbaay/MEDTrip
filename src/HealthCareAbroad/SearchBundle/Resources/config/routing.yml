@@ -28,30 +28,9 @@ search_frontend_results_cities:
     pattern: /search/destinations/{country}/{city}
     defaults: { _controller: SearchBundle:Frontend:searchResultsCities }
 
-search_frontend_results_procedureTypes:
-    pattern: /search/treatment/{medicalCenter}/{procedureType}
+search_frontend_results_treatments:
+    pattern: /search/treatment/{medicalCenter}/{treatment}
     defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
-
-# The following routes was moved to the FrontendBundle routing.yml
-# This is kept here for reference. Please don't remove.
-#search_frontend_results_country_procedureTypes:
-#    pattern: /{country}/{medicalCenter}/{procedureType}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsProcedureTypes }
-#    requirements:
-#        country: ".+"
-#        medicalCenter: ".+"
-#        procedureType: ".+"
-#        _method:  GET
-
-#search_frontend_results_city_procedureTypes:
-#    pattern: /{country}/{city}/{medicalCenter}/{procedureType}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsProcedureTypes }
-#    requirements:
-#        country: ".+"
-#        city: ".+"
-#        medicalCenter: ".+"
-#        procedureType: ".+"
-#        _method:  GET
 
 search_frontend_results_medicalCenters:
     pattern: /search/treatment/{medicalCenter}
