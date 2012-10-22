@@ -26,7 +26,7 @@ abstract class UserService
      *
      * @var \Doctrine\Bundle\DoctrineBundle\Registry
      */
-    protected $doctrine;
+    public $doctrine;
 
     /**
      *
@@ -85,12 +85,10 @@ abstract class UserService
         $this->doctrine = $doctrine;
     }
 
-    public function setSecurityContext(SecurityContext $context)
-    {
-        $this->securityContext = $context;
-    }
-
-
+//     public function setSecurityContext(SecurityContext $context)
+//     {
+//         $this->securityContext = $context;
+//     }
 
     /**
      *
@@ -172,7 +170,7 @@ abstract class UserService
      * @param array $accountData
      * @return SiteUser
      */
-    protected function hydrateAccountData(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountData)
+    public function hydrateAccountData(\HealthCareAbroad\UserBundle\Entity\SiteUser $user, $accountData)
     {
         foreach ($accountData as $key => $v) {
             if ($key != 'id') {

@@ -4,8 +4,11 @@ parameters:
     services.admin_user_class: HealthCareAbroad\UserBundle\Services\AdminUserService
     services.twig_user_class: HealthCareAbroad\UserBundle\Services\TwigUserService
 
-services:
+    services.user_provider_class: HealthCareAbroad\UserBundle\Services\ChromediaAccountsUserProvider
+    services.admin_user_provider_class: HealthCareAbroad\UserBundle\Services\AdminUserProvider
+    services.institution_user_provider_class: HealthCareAbroad\UserBundle\Services\InstitutionUserProvider
 
+services:
     services.user:
         class: %services.user_class%
         abstract: true
@@ -14,10 +17,8 @@ services:
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             - [setDoctrine, [@doctrine]]
-            - [setChromediaRequest, [@services.chromedia_request]]
-            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             - [setSession, [@session]]
-            - [setSecurityContext, [@security.context]]
+            #- [setSecurityContext, [@security.context]]
 
     services.institution_user:
         class: %services.institution_user_class%
@@ -26,9 +27,8 @@ services:
     services.admin_user:
         class: %services.admin_user_class%
         parent: services.user
-        calls:
 
-    services.twig.user:
+    services.twig_user:
         class: %services.twig_user_class%
         parent: services.user
 
@@ -36,6 +36,23 @@ services:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
         calls:
-            - [setUserService, [@services.twig.user]]
+            - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
+
+    services.user_provider:
+        class: %services.user_provider_class%
+        abstract: true
+        arguments: [@service_container]
+
+    services.admin_user_provider:
+        class: %services.admin_user_provider_class%
+        parent: services.user_provider
+        calls:
+            - [setUserService, [@services.admin_user]]
+
+    services.institution_user_provider:
+        class: %services.institution_user_provider_class%
+        parent: services.user_provider
+        calls:
+            - [setUserService, [@services.institution_user]]

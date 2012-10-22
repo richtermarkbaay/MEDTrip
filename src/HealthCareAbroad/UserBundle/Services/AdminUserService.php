@@ -31,6 +31,9 @@ class AdminUserService extends UserService
         return $returnVal;
     }
 
+    /**
+     * This is subject for removal.
+     */
     public function login($email, $password)
     {
         $user = $this->findByEmailAndPassword($email, $password);
@@ -49,7 +52,8 @@ class AdminUserService extends UserService
 
             $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', $roles);
             $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
-            $this->securityContext->setToken($securityToken);
+//             $this->securityContext->setToken($securityToken);
+            $this->container->get('security.context')->setToken($securityToken);
             $this->session->set('accountId', $user->getAccountId());
 
             // dispatch event
@@ -60,7 +64,6 @@ class AdminUserService extends UserService
 
         return false;
     }
-
 
     /**
      * Create an AdminUser

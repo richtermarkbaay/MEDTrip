@@ -2,24 +2,17 @@
 namespace HealthCareAbroad\UserBundle\Services;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
-
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
-
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
-
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-
 use ChromediaUtilities\Helpers\Inflector;
-
 use ChromediaUtilities\Helpers\SecurityHelper;
-
 use HealthCareAbroad\UserBundle\Services\UserService;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
+
 class InstitutionUserService extends UserService
 {
     /**
