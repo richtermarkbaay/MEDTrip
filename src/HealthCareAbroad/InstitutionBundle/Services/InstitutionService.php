@@ -53,7 +53,7 @@ class InstitutionService
                   ->add('select', 'p')
                   ->add('from', 'InstitutionBundle:Institution p')
                   ->add('where', 'p.status = :status')
-                  ->setParameter('status', Institution::STATUS_ACTIVE);
+                  ->setParameter('status', InstitutionStatus::ACTIVE);
     }
     
     public function updateInstitution(Institution $institution)
