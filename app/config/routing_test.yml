@@ -50,6 +50,13 @@ admin_news_testSave:
     requirements:
          id: \d+
          _method: GET
+         
+admin_offered_service_testSave:
+    pattern:  /admin/offered_service/test-save
+    defaults: { _controller: AdminBundle:OfferedService:save }
+    requirements:
+         id: \d+
+         _method: GET
 
 admin_institution_medicalCenter_testAdd:
     pattern:  /admin/institution/{institutionId}/medical-center/test-save
