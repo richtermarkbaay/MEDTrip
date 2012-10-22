@@ -1,12 +1,12 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_centers' %}
+{% set selectedSubTab = 'specializations' %}
 
 {% block content %}
 
     <div id="content">
 
-        <div id="page-heading"><h2>List of Center Types</h2></div>
+        <div id="page-heading"><h2>List of Specializations</h2></div>
 
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
@@ -14,11 +14,11 @@
                 {% include '::notice.admin.html.twig' %}
 
                 {% set contents = [{
-                        'title': 'Add center type', 
-                        'description': 'Add new center type',
+                        'title': 'Add specialization', 
+                        'description': 'Add new specialization',
                         'class': 'add-icon',
-                        'href': path('admin_medicalCenter_add'), 
-                        'links': [{'title': 'Add a center type', 'href': path('admin_medicalCenter_add')}]
+                        'href': path('admin_specialization_add'), 
+                        'links': [{'title': 'Add a specialization', 'href': path('admin_specialization_add')}]
                     }]
                 %}
 
@@ -33,7 +33,7 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="medical-center-list" class="generic-table sortable-list" width="100%">
+                    <table id="specialization-list" class="generic-table sortable-list" width="100%">
                     <tr>
                         <th id="column-name" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
@@ -45,15 +45,15 @@
                         <th class="actions" width="210">Action</th>
                     </tr>
 
-                    {% for center in medicalCenters %}
+                    {% for each in specializations %}
                         <tr>
-                            <td>{{ center.name }}</td>
-                            <td>{{ center.description }}</td>
+                            <td>{{ each.name }}</td>
+                            <td>{{ each.description }}</td>
                             <td align="center">
-                                <a href="{{ path('admin_medicalCenter_edit', {id:center.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = center.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_medicalCenter_updateStatus', {id:center.id}) }}" title="{{ center.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                                <a href="{{ path('admin_procedureType_index', {medicalCenter:center.id}) }}" class="icon-type">procedure types</a>
+                                <a href="{{ path('admin_specialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                {% set class = each.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}" class="icon-type">treatments</a>
                             </td>
                         </tr>
                     {% else  %}
@@ -62,7 +62,7 @@
                     </table>
 
                     {% if pager.isPaginable %}
-                       {{ paginate(pager, 'admin_medicalCenter_index', app.request.query.all) }}
+                       {{ paginate(pager, 'admin_specialization_index', app.request.query.all) }}
                     {% endif %}                    
                 </div>
                 

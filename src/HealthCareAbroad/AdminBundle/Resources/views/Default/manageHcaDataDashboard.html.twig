@@ -14,11 +14,11 @@
         {% block wrappedContent %}
 
             {# ----- Medical Terms Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Medical Center Management', 'class': 'list-icon', 'description': 'View all available Medical Centers or add new one.', 'href': path('admin_medicalCenter_index'), 'links': [{title:'View Medical Centers',href: path('admin_medicalCenter_index')}, {title:'Add Medical Center', href: path('admin_medicalCenter_add')}]} %}
-            {% set manageProcedureTypesTasks = {title: 'Procedure Type Management', 'description': 'View all available Treatments or add new one.', 'href': path('admin_procedureType_index'), 'links': [{title:'View Treatments',href: path('admin_procedureType_index')}, {title:'Add Treatment', href: path('admin_procedureType_add')}] } %}
-		    
+            {% set manageSpecializationTask = {"title": 'Specialization Management', 'class': 'list-icon', 'description': 'View all available specializations or add new one.', 'href': path('admin_specialization_index'), 'links': [{title:'View Specializations',href: path('admin_specialization_index')}, {title:'Add Specialization', href: path('admin_specialization_add')}]} %}
+            {% set manageTreatmentTasks = {title: 'Treatment Management', 'description': 'View all available treatments or add new one.', 'href': path('admin_treatment_index'), 'links': [{title:'View Treatments',href: path('admin_treatment_index')}, {title:'Add Treatment', href: path('admin_treatment_add')}] } %}
+
             {% include '::relatedTasks.base.admin.html.twig' with 
-		        {'headerTitle': 'Manage Medical Related Data', 'contents': [manageCentersTask, manageProcedureTypesTasks]} 
+		        {'headerTitle': 'Manage Medical Related Data', 'contents': [manageSpecializationTask, manageTreatmentTasks]} 
 	        %}
 
             {# ----- Location Related tasks ----- #}

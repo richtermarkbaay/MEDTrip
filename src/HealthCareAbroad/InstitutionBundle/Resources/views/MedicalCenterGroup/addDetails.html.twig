@@ -29,7 +29,7 @@ a{% extends 'InstitutionBundle::layout.html.twig' %}
 			
 							<div class="tab-content">
 								<h4>Medical Center Information</h4>
-				                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addDetails') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+				                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addDetails', { 'imcgId': institutionMedicalCenterGroup.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 				
 				                    {{ form_errors(form) }}            
 				                    {{ form_row(form.name) }}

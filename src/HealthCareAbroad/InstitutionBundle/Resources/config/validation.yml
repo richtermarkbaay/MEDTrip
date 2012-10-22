@@ -14,6 +14,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             - NotBlank: ~
         address1:
             - NotBlank: ~
+        contactEmail:
+            - Email: ~
         institutionLanguagesSpoken:
             - NotBlank: ~
 

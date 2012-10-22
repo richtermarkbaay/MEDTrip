@@ -5,15 +5,17 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class MedicalProcedureTypeListFilter extends ListFilter
+use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+
+class TreatmentListFilter extends ListFilter
 {
 
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
         
-        // Add medicalCenter in validCriteria
-        $this->addValidCriteria('medicalCenter');
+        // Add specialization in validCriteria
+        $this->addValidCriteria('specialization');
     }
 
     function setFilterOptions()
@@ -27,15 +29,15 @@ class MedicalProcedureTypeListFilter extends ListFilter
     {        
 
         // Set The Filter Option 
-        $medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(1);
+        $medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(MedicalCenter::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($medicalCenters as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['medicalCenter'] = array(
-            'label' => 'Medical Center',
-            'selected' => $this->queryParams['medicalCenter'],
+        $this->filterOptions['specialization'] = array(
+            'label' => 'Specialization',
+            'selected' => $this->queryParams['specialization'],
             'options' => $options
         );
     }
@@ -49,12 +51,12 @@ class MedicalProcedureTypeListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
          
-        if ($this->queryParams['medicalCenter'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.medicalCenter = :medicalCenter');
-            $this->queryBuilder->setParameter('medicalCenter', $this->criteria['medicalCenter']);
+        if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.medicalCenter = :specialization');
+            $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
         }
 
-        if($this->sortBy == 'medicalCenter') {
+        if($this->sortBy == 'specialization') {
             $this->queryBuilder->leftJoin('a.medicalCenter', 'b');
             $sort = 'b.name ' . $this->sortOrder;
 

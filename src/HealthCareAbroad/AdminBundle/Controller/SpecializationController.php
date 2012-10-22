@@ -9,14 +9,14 @@ use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalCenterType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-class MedicalCenterController extends Controller
+class SpecializationController extends Controller
 {
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
      */
     public function indexAction()
     {
-        return $this->render('AdminBundle:MedicalCenter:index.html.twig', array('medicalCenters' => $this->filteredResult, 'pager' => $this->pager));
+        return $this->render('AdminBundle:Specialization:index.html.twig', array('specializations' => $this->filteredResult, 'pager' => $this->pager));
     }
 
     /**
@@ -26,10 +26,10 @@ class MedicalCenterController extends Controller
     {
         $form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
 
-        return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => null,
             'form' => $form->createView(),  
-            'formAction' => $this->generateUrl('admin_medicalCenter_create')
+            'formAction' => $this->generateUrl('admin_specialization_create')
         ));
     }
 
@@ -38,16 +38,16 @@ class MedicalCenterController extends Controller
      */
     public function editAction($id)
     {
-        $medicalCenter = $this->getDoctrine()->getEntityManager()
+        $specialization = $this->getDoctrine()->getEntityManager()
                 ->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
 
-        $form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+        $form = $this->createForm(new MedicalCenterType(), $specialization);
 
-        return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => $id,
-            'medicalCenter' => $medicalCenter,
+            'specialization' => $specialization,
             'form' => $form->createView(),
-            'formAction' => $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
+            'formAction' => $this->generateUrl('admin_specialization_update', array('id' => $id))
         ));
     }
     
@@ -64,34 +64,34 @@ class MedicalCenterController extends Controller
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();
 
-        $medicalCenter = $id
+        $specialization = $id
                 ? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
                 : new MedicalCenter();
 
-        $form = $this->createForm(new MedicalCenterType(), $medicalCenter);
+        $form = $this->createForm(new MedicalCenterType(), $specialization);
            $form->bind($request);
 
            if ($form->isValid()) {
-               $em->persist($medicalCenter);
-               $em->flush($medicalCenter);
+               $em->persist($specialization);
+               $em->flush($specialization);
 
             // dispatch event               
                $eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_CENTER : AdminBundleEvents::ON_ADD_MEDICAL_CENTER;
-               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $medicalCenter));
+               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $specialization));
                
                $request->getSession()->setFlash('success', 'Medical center saved!');
 
                if($request->get('submit') == 'Save')
-                   return $this->redirect($this->generateUrl('admin_medicalCenter_edit', array('id' => $medicalCenter->getId())));
+                   return $this->redirect($this->generateUrl('admin_specialization_edit', array('id' => $specialization->getId())));
                else 
-                   return $this->redirect($this->generateUrl('admin_medicalCenter_add'));
+                   return $this->redirect($this->generateUrl('admin_specialization_add'));
            }
 
         $formAction = $id 
-            ? $this->generateUrl('admin_medicalCenter_update', array('id' => $id))
-            : $this->generateUrl('admin_medicalCenter_create');
+            ? $this->generateUrl('admin_specialization_update', array('id' => $id))
+            : $this->generateUrl('admin_specialization_create');
         
-        return $this->render('AdminBundle:MedicalCenter:form.html.twig', array(
+        return $this->render('AdminBundle:Specialization:form.html.twig', array(
                 'id' => $id,
                 'form' => $form->createView(),
                 'formAction' => $formAction 
@@ -105,14 +105,14 @@ class MedicalCenterController extends Controller
     {
         $result = false;
         $em = $this->getDoctrine()->getEntityManager();
-        $medicalCenter = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
+        $specialization = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
 
-        if ($medicalCenter) {
-            $medicalCenter->setStatus($medicalCenter->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
-            $em->persist($medicalCenter);
-            $em->flush($medicalCenter);
+        if ($specialization) {
+            $specialization->setStatus($specialization->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
+            $em->persist($specialization);
+            $em->flush($specialization);
             
-            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $medicalCenter));
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $specialization));
             
             $result = true;
         }

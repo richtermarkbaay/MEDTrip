@@ -2,23 +2,23 @@ InstitutionBundleTests:
     resource: "@InstitutionBundle/Resources/config/routing_test.yml"
     prefix:   /
 
-admin_medicalProcedure_testSave:
-    pattern:  /admin/medical-procedure/test-save
+admin_treatmentProcedure_testSave:
+    pattern:  /admin/treatment-procedure/test-save
     defaults: { _controller: AdminBundle:MedicalProcedure:save }
     requirements:
          id: \d+
          _method: GET
-  
-admin_procedureType_testSave:
-    pattern:  /admin/procedure-type/test-save
+
+admin_treatment_testSave:
+    pattern:  /admin/treatment/test-save
     defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          id: \d+
          _method: GET
 
-admin_medicalCenter_testSave:
-    pattern:  /admin/medical-center/test-save
-    defaults: { _controller: AdminBundle:MedicalCenter:save }
+admin_specialization_testSave:
+    pattern:  /admin/specialization/test-save
+    defaults: { _controller: AdminBundle:Specialization:save }
     requirements:
          id: \d+
          _method: GET
