@@ -32,12 +32,12 @@ a:hover{color:#4183c4;text-decoration:underline;}
 [class*="span"]{float:left;}
 .container,.navbar-fixed-top .container,.navbar-fixed-bottom .container{width:990px;}
 .span13{
-	width: 147px;
-	background-color: #e4e4e4;
-	border: 1px solid #ffffff;
-	margin-bottom: 10px;
-	height:147px;
-	padding:20px;
+    width: 147px;
+    background-color: #e4e4e4;
+    border: 1px solid #ffffff;
+    margin-bottom: 10px;
+    height:147px;
+    padding:20px;
 }
 .span12{width:940px;}
 .span11{width:860px;}
@@ -267,8 +267,8 @@ table .span21{float:none;width:1644px;margin-left:0;}
 table .span22{float:none;width:1724px;margin-left:0;}
 table .span23{float:none;width:1804px;margin-left:0;}
 table .span24{float:none;width:1884px;margin-left:0;}
-[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px; background-image:url("../../images/institution/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;}[class^="icon-"]:last-child,[class*=" icon-"]:last-child{*margin-left:0;}
-.icon-white{background-image:url("../../images/institution/glyphicons-halflings.png");}
+[class^="icon-"],[class*=" icon-"]{display:inline-block;width:14px;height:14px;*margin-right:.3em;line-height:14px; background-image:url("../images/glyphicons-halflings.png");background-position:14px 14px;background-repeat:no-repeat;}[class^="icon-"]:last-child,[class*=" icon-"]:last-child{*margin-left:0;}
+.icon-white{background-image:url("../images/glyphicons-halflings.png");}
 .icon-glass{background-position:0 0;}
 .icon-music{background-position:-24px 0;}
 .icon-search{background-position:-48px 0;}
@@ -526,7 +526,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .nav-pills>.active>a,.nav-pills>.active>a:hover{color:#ffffff;background-color:#4183c4;}
 .nav-stacked>li{float:none;}
 .nav-stacked>li>a{margin-right:0;}
-.nav-tabs.nav-stacked{border-bottom:0; float: none !important;}
+.nav-tabs.nav-stacked{border-bottom:0;}
 .nav-tabs.nav-stacked>li>a{border:1px solid #ddd;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;}
 .nav-tabs.nav-stacked>li:first-child>a{-webkit-border-radius:4px 4px 0 0;-moz-border-radius:4px 4px 0 0;border-radius:4px 4px 0 0;}
 .nav-tabs.nav-stacked>li:last-child>a{-webkit-border-radius:0 0 4px 4px;-moz-border-radius:0 0 4px 4px;border-radius:0 0 4px 4px;}
@@ -538,7 +538,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .nav-tabs.nav-stacked2{border-bottom:0;
 }
 .nav-tabs.nav-stacked2>li>a{border-right:1px solid #ddd; border-bottom: 1px solid #ddd; border-top: 1px solid #ddd;
-	-webkit-border-radius:0;-moz-border-radius:0;border-radius:0; width: 163px; height: 183px;
+    -webkit-border-radius:0;-moz-border-radius:0;border-radius:0; width: 163px; height: 183px;
 }
 .nav-tabs.nav-stacked2>li:first-child>a{border-left:1px solid #ddd; margin-left: 1px;
 }
@@ -547,7 +547,7 @@ button.btn.btn-mini,input[type="submit"].btn.btn-mini{*padding-top:1px;*padding-
 .nav-tabs.nav-stacked2 p
 {
 color: #999999;
-	
+    
 
 }
 .nav-pills.nav-stacked>li>a{margin-bottom:3px;}
@@ -871,121 +871,5 @@ font-weight:normal;
 }
 .add-on
 {
-	float: left;
-}
-    
-#step-holder {
-    height:39px;
-    font-family: Tahoma;
-    margin-bottom: 25px;
-    border-bottom: 1px solid #DDDDDD;
-}   
-
-.step-no {
-    float:left;
-    height:29px;
-    width:37px;
-    line-height: 18px;
-    padding:10px 0 0 20px;
-    text-align: center;
-    
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #FFFFFF;
-    border-color: #DDDDDD #DDDDDD transparent;
-    border-image: none;
-    border-style: solid;
-    border-width: 1px;
-    color: #555555;
-    cursor: default;
-    border-right:none !important;
-}
-
-.step-no-off {
-    color: #CBCBCB;
     float: left;
-    height: 29px;
-    line-height: 18px;
-    padding: 10px 0 0 20px;
-    text-align: center;
-    width: 37px;
-}
-
-.step-light-left,
-.step-dark-left {
-    float:left;
-    height:24px;
-    padding: 11px 15px 4px 5px;
-    border-left:none !important;
-
-     -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #FFFFFF;
-    border-color: #DDDDDD #DDDDDD transparent;
-    border-image: none;
-    border-style: solid;
-    border-width: 1px;
-    color: #555555;
-    cursor: default;
-}
-
-.step-light-left {
-  background: none repeat scroll 0 0 transparent;
-    border: medium none;
-    color: #CBCBCB;
-}
-
-#step-holder .step-dark-left:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;    
-}
-
-.step-dark-left a{
-     
-    font-size: 13px;
-    color:#fff;
-    font-weight: bold;
-}
-
-.step-dark-right {
-    float:left;
-    width:12px; 
-    height:39px;
-}
-.step-dark-round {
-    float:left;
-    width:8px;
-    height:39px;
-    background: url(../../images/admin/forms/step_dark_round.gif) no-repeat;
-}
-
-.step-light-left a{
-     
-     
-    font-size: 13px;
- 
-    color:#cbcbcb;
-    font-weight: bold;
-}
-.step-light-right {
-    float:left;
-    width:12px;
-    height:39px;
-}
-.step-light-round {
-    float:left;
-    width:8px;
-    height:39px;
-}
-#institutionMedicalCenterGroup_name{width:65.95744680199999%;*width:65.90425531263828%;}
-#institutionMedicalCenterGroup_description_tbl, #institutionMedicalCenter_treatmentProcedures,#institutionMedicalCenter_description_tbl{width:900px !important;}
-
-form.basic-form > div > ul {
-    color: #D00000;
-    bottom: -17px;
-    list-style: none outside none;
 }

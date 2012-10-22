@@ -1,18 +1,7 @@
-<div id="step-holder">
-    
+
+<ul class="nav nav-tabs">
     {% for step in steps %}
         {% set isSelected = step.selected is defined and step.selected %}
-        <div class="{{ isSelected ? 'step-no' : 'step-no-off' }}">Step {{ loop.index }}</div>
-        <div class="{{ isSelected ? 'step-dark-left': 'step-light-left' }}"> {{ step.title }}</div>
-        
-        {% if loop.index ==  steps | length %}
-            {% if not isSelected %}
-                <div class="step-light-round">&nbsp;</div>
-            {% endif %}
-            
-        {% else %}
-            <div class="{{ isSelected ? 'step-dark-right' : 'step-light-right' }}">&nbsp;</div>
-        {% endif %}    
+	<li class="{{ isSelected ? 'active': '' }}"><a href="javascript:void(0)"><span>Step {{ loop.index }}</span> {{step.title}}</a></li>
     {% endfor %}
-
-</div>
+</ul>
