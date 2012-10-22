@@ -7,69 +7,99 @@ security:
         connection: default
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+        HealthCareAbroad\UserBundle\Entity\AdminUser:
+            algorithm: sha256
+            iterations: 1
+            encode_as_base64: false
+        HealthCareAbroad\UserBundle\Entity\InstitutionUser:
+            algorithm: sha256
+            iterations: 1
+            encode_as_base64: false
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-    
+
     providers:
-        in_memory:
-            memory:
-                users:
-                    developer: { password: 123456, roles: 'ROLE_DEVELOPER' }
-    
+        #in_memory:
+        #    memory:
+        #        users:
+        #            developer: { password: 123456, roles: 'ROLE_DEVELOPER' }
+
+        admin_user_provider:
+            id: services.admin_user_provider
+
+        institution_user_provider:
+            id: services.institution_user_provider
+
     firewalls:
         main:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
-            
+
         utilities_secured_area:
             pattern: ^/secured-utilities
             access_denied_url: /helper/access-denied
             http_basic:
-                realm: "Secured Developers Area" 
-            
+                realm: "Secured Developers Area"
+
         admin_user.login:
             pattern: ^/admin/login$
             security: false
-            
+
         admin_secured_area:
             pattern: ^/admin
             access_denied_url: /admin/access-denied
+            provider: admin_user_provider
             form_login:
                 login_path: /admin/login
+                check_path: /admin/login_check
+                always_use_default_target_path: false
+                default_target_path: /admin
+                remember_me: true
+                failure_path: /admin/login
+
             remember_me:
-               key:  %secret%   
-               lifetime: 1209600
-               path:     /admin
-               domain:   ~
-               remember_me_parameter: _remember_me
-               always_remember_me: true
-            #http_basic:
-            #    realm: "Secured Admin Area"
+                key:  %secret%
+                lifetime: 1209600
+                path: /admin
+                domain:   ~
+                remember_me_parameter: _remember_me
+                always_remember_me: true
+                httponly: false
+            logout:
+                path:   /admin/logout
+                target: /admin/login
 
         institution_login:
             pattern:  ^/institution/login$
             security: false
+
         institution_secured_area:
             pattern:    ^/institution
             access_denied_url: /institution/access-denied
+            provider: institution_user_provider
             form_login:
                 login_path: /institution/login
+                check_path: /institution/login_check
+                always_use_default_target_path: false
+                default_target_path: /institution
+                remember_me: true
+                #failure_path: /institution/login
             remember_me:
-               key:  %secret%   
+               key:  %secret%
                lifetime: 1209600
                path:     /institution
                domain:   ~
                remember_me_parameter: _remember_me
                always_remember_me: true
-            #logout:
-            #    path:   /demo/secured/logout
-            #    target: /demo/
-            #anonymous: ~
-            #http_basic:
-            #    realm: "Secured Demo Area"
+            logout:
+                path:   /institution/logout
+                target: /institution/login
 
     access_control:
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/admin/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: [ ROLE_ADMIN, IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY ]}
+        - { path: ^/institution/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/institution, roles: [ ROLE_ADMIN, IS_AUTHENTICATED_REMEMBERED, IS_AUTHENTICATED_FULLY ]}
         #- { path: ^/_internal/secure, roles: IS_AUTHENTICATED_ANONYMOUSLY, ip: 127.0.0.1 }
