@@ -3,7 +3,7 @@
 AdminBundle_medicalCenter:
     resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /
-    
+
 # Routes for Admin AdvertisementController #
 AdminBundle_advertisement:
     resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
@@ -33,17 +33,17 @@ AdminBundle_country:
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"
     prefix:   /
-    
+
 # Routes for Admin NewsController #
 AdminBundle_news:
     resource: "@AdminBundle/Resources/config/routing_news.yml"
     prefix:   /
-    
+
 # Routes for Admin LanguageController #
 AdminBundle_language:
     resource: "@AdminBundle/Resources/config/routing_language.yml"
     prefix:   /
-    
+
 # Routes for Admin OfferedServiceController #
 AdminBundle_offered_service:
     resource: "@AdminBundle/Resources/config/routing_offered_service.yml"
@@ -53,27 +53,30 @@ AdminBundle_offered_service:
 AdminBundle_settings:
     resource: "@AdminBundle/Resources/config/routing_settings.yml"
     prefix:   /
-    
-# vier edit    
+
+# vier edit
 admin_showEditHistory:
     pattern: /admin/edit-history
     defaults: { _controller: AdminBundle:Default:showEditHistory }
     requirements:
         _method: GET
-        objectId: \d+    
+        objectId: \d+
 
 admin_inquire:
     pattern: /admin/inquiries
     defaults: { _controller: AdminBundle:Inquiry:index }
-    requirements:    
+    requirements:
         _method:  GET
-        
+
 admin_login:
     pattern: /admin/login
     defaults: { _controller: AdminBundle:AdminUser:login }
-    requirements:    
+    requirements:
         _method:  GET|POST
-        
+
+admin_login_check:
+    pattern:   /admin/login_check
+
 admin_edit_account:
     pattern: /admin/edit-account
     defaults: { _controller: AdminBundle:AdminUser:editAccount }
@@ -84,12 +87,12 @@ admin_change_password:
     pattern: /admin/change-password
     defaults: { _controller: AdminBundle:AdminUser:changePassword}
     requirements:
-        _method: GET|POST   
+        _method: GET|POST
 admin_logout:
     pattern:  /admin/logout
-    defaults: { _controller: AdminBundle:AdminUser:logout }
-    requirements:    
-        _method:  GET
+    #defaults: { _controller: AdminBundle:AdminUser:logout }
+    #requirements:
+    #    _method:  GET
 
 admin_tagHomepage:
     pattern:  /admin/tags

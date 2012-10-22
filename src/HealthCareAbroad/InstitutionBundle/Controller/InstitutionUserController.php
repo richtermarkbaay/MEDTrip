@@ -29,20 +29,21 @@ use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InstitutionUserController extends Controller
 {
-	public function loginAction()
+    /*
+    public function loginAction()
     {
-    	$user = new InstitutionUser();
+        $user = new InstitutionUser();
         $form = $this->createForm(new UserLoginType());
-        
+
         if ($this->getRequest()->isMethod('POST')) {
-            
+
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
                 if ($this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
                     // valid login
                     $this->get('session')->setFlash('success', 'Welcome '.$this->get('security.context')->getToken()->getUser().'!');
                     return $this->redirect($this->generateUrl('institution_homepage'));
-	            }
+                }
                 else {
                     // invalid login
                     $this->get('session')->setFlash('notice', 'Either your email or password is wrong.');
@@ -56,8 +57,29 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
             'form' => $form->createView(),
         ));
+    }*/
+
+    public function loginAction()
+    {
+        $request = $this->getRequest();
+        $session = $request->getSession();
+
+        // get the login error if there is one
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } else {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
+        }
+
+        return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
+                        // last username entered by the user
+                        'last_username' => $session->get(SecurityContext::LAST_USERNAME),
+                        'error'         => $error
+        ));
     }
-    
+
+
     public function logoutAction()
     {
         $this->get('security.context')->setToken(null);
@@ -73,85 +95,85 @@ class InstitutionUserController extends Controller
         $session = $this->getRequest()->getSession();
         $institutionUserService = $this->get('services.institution_user');
         $institutionUser = $institutionUserService->findById($session->get('accountId'));
-        
-        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
-    	
-    	if ($this->getRequest()->isMethod('POST')) {
-    		
-    		$form->bindRequest($this->getRequest());
-    		
-    		if ($form->isValid()) {
-    			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
-    			$institutionUserService->update($institutionUser);
-    			
-    			// dispatch event
-    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
 
-    			$this->get('session')->setFlash('success', "Password changed!");
-    		}    			
-    	}
-    	
-    	return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
+        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
+
+        if ($this->getRequest()->isMethod('POST')) {
+
+            $form->bindRequest($this->getRequest());
+
+            if ($form->isValid()) {
+                $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+                $institutionUserService->update($institutionUser);
+
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
+
+                $this->get('session')->setFlash('success', "Password changed!");
+            }
+        }
+
+        return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
-    
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
      */
     public function editAccountAction()
     {
-    	$accountId = $this->getRequest()->get('accountId', null);
+        $accountId = $this->getRequest()->get('accountId', null);
         if (!$accountId){
             // no account id in parameter, editing currently logged in account
             $session = $this->getRequest()->getSession();
             $accountId = $session->get('accountId');
         }
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
-        
+
         if (!$institutionUser) {
             throw $this->createNotFoundException('Cannot update invalid account.');
         }
-    	$form = $this->createForm(new UserAccountDetailType(), $institutionUser);
-    	
-    	if ($this->getRequest()->isMethod('GET')) {
-    	    $this->get('session')->set('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
+        $form = $this->createForm(new UserAccountDetailType(), $institutionUser);
+
+        if ($this->getRequest()->isMethod('GET')) {
+            $this->get('session')->set('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
         }
         elseif ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
             if ($form->isValid()) {
                 $institutionUser = $this->get('services.institution_user')->update($institutionUser);
-                
+
                 // create event on editAccount and dispatch
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
-                
+
                 $this->get('session')->setFlash('success', "Successfully updated account");
                 $refer = $this->get('session')->get('referer');
                 $this->getRequest()->getSession()->remove('referer');
                 return $this->redirect($refer);
             }
         }
-        
+
         return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
             'form' => $form->createView(),
             'institutionUser' => $institutionUser ));
     }
     public function inviteAction()
     {
-    	$institution = $this->get('services.institution')->getCurrentInstitution();
+        $institution = $this->get('services.institution')->getCurrentInstitution();
         $institutionUserInvitation = new InstitutionUserInvitation();
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
-        
+
         if ($this->getRequest()->isMethod('POST')) {
-            
+
             $form->bind($this->getRequest());
             if ($form->isValid()){
-                
+
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
-                
+
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $institutionUserInvitation));
 
-                 
+
                 if ($sendingResult) {
                     $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
                 }
@@ -161,28 +183,28 @@ class InstitutionUserController extends Controller
                 return $this->redirect($this->generateUrl('institution_view_all_staff'));
             }
         }
-        
+
         return $this->render('InstitutionBundle:InstitutionUser:invite.html.twig', array(
             'form' => $form->createView(),
         ));
     }
-    
+
     public function acceptInvitationAction()
     {
         // validate token
         $token = $this->getRequest()->get('token', null);
         $invitation = $this->get('services.token')->getActiveInstitutionUserInvitationByToken($token);
-        
+
         if (!$invitation) {
             throw $this->createNotFoundException('Invalid token');
         }
-        
+
         //TODO: get the matching institution user type
         $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
-        
+
         // create temporary 10 character password
         $temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
-        
+
         // create a institution user
         $institutionUser = new InstitutionUser();
         $institutionUser->setInstitution($invitation->getInstitution());
@@ -194,20 +216,20 @@ class InstitutionUserController extends Controller
         $institutionUser->setLastName($invitation->getLastName());
         $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
         $this->get('services.institution_user')->create($institutionUser);
-        
+
         // dispatch event regarding institution user creation
         $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $this->get('events.factory')
             ->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $institutionUser, array(
                 CreateInstitutionUserEvent::OPTION_TEMPORARY_PASSWORD => $temporaryPassword,
                 CreateInstitutionUserEvent::OPTION_USED_INVITATION => $invitation,
         )));
-        
+
         // login to institution
         $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
-        // redirect to institution homepage        
+        // redirect to institution homepage
         $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');
-        
+
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
     /**
@@ -217,10 +239,10 @@ class InstitutionUserController extends Controller
     {
         $institutionService = $this->get('services.institution');
         $institution = $institutionService->getCurrentInstitution();
-        
+
         $users = $institutionService->getAllStaffOfInstitution($institution);
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
-    
-    
+
+
 }
