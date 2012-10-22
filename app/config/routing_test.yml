@@ -29,6 +29,13 @@ admin_country_testSave:
     requirements:
          id: \d+
          _method: GET
+         
+admin_language_testSave:
+    pattern:  /admin/language/test-save
+    defaults: { _controller: AdminBundle:Language:save }
+    requirements:
+         id: \d+
+         _method: GET
 
 admin_city_testSave:
     pattern:  /admin/city/test-save
