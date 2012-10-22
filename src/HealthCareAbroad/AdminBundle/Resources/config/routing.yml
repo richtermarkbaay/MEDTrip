@@ -1,7 +1,7 @@
 
-# Routes for Admin MedicalCenterController #
+# Routes for Admin SpecializationsController #
 AdminBundle_medicalCenter:
-    resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
+    resource: "@AdminBundle/Resources/config/routing_specialization.yml"
     prefix:   /
     
 # Routes for Admin AdvertisementController #

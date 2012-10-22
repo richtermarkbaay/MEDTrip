@@ -148,7 +148,6 @@ class InstitutionController extends Controller
     public function addMedicalCenterAction()
     {
         $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-        $this->institutionMedicalCenter->setInstitution($this->institution);
 
         $form = $this->createForm(new InstitutionMedicalCenterType(), $this->institutionMedicalCenter);
 

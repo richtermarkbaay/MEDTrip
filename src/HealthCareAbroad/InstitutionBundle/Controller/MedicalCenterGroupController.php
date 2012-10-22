@@ -67,7 +67,9 @@ class MedicalCenterGroupController extends InstitutionAwareController
     
     public function indexAction(Request $request)
     {
-           
+        //$this->institution
+        
+        var_dump(count($this->filteredResult)); exit;
     }
     
     /**

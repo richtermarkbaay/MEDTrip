@@ -14,7 +14,7 @@
         {% block wrappedContent %}
 
             {# ----- Related tasks ----- #}
-            {% set manageHCADataTask = {"title": 'Manage HCA Data', 'class': 'list-icon', 'description': 'Manage global data on medical centers, medical procedures, countries and cities', 'href': path('admin_manageHcaData'), 'links': [{title:'View all centers',href: path('admin_medicalCenter_index')}, {title:'View all treatments', href: path('admin_procedureType_index')}]} %}
+            {% set manageHCADataTask = {"title": 'Manage HCA Data', 'class': 'list-icon', 'description': 'Manage global data on medical centers, medical procedures, countries and cities', 'href': path('admin_manageHcaData'), 'links': [{title:'View all centers',href: path('admin_specialization_index')}, {title:'View all treatments', href: path('admin_procedureType_index')}]} %}
             {% set manageInstitutions = {title: 'Manage Institutions', 'description': 'View all institutions, or add a new one', 'href': path('admin_institution_index'), 'links': [{title:'Click here to view all institutions',href: path('admin_institution_index')}] } %}
 		    
             {% include '::relatedTasks.base.admin.html.twig' with 
