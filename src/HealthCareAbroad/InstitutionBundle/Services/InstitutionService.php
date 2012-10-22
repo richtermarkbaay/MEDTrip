@@ -48,7 +48,12 @@ class InstitutionService
     
     public function getInstitutions()
     {
-        return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'InstitutionBundle:Institution p')->add('where', 'p.status=1');
+        
+        return $this->doctrine->getEntityManager()->createQueryBuilder()
+                  ->add('select', 'p')
+                  ->add('from', 'InstitutionBundle:Institution p')
+                  ->add('where', 'p.status = :status')
+                  ->setParameter('status', Institution::STATUS_ACTIVE);
     }
     
     public function updateInstitution(Institution $institution)

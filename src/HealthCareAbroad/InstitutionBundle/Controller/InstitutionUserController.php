@@ -137,7 +137,6 @@ class InstitutionUserController extends InstitutionAwareController
     }
     public function inviteAction()
     {
-    	$institution = $this->get('services.institution')->getCurrentInstitution();
         $institutionUserInvitation = new InstitutionUserInvitation();
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
         
@@ -146,7 +145,7 @@ class InstitutionUserController extends InstitutionAwareController
             $form->bind($this->getRequest());
             if ($form->isValid()){
                 
-                $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($institution, $institutionUserInvitation);
+                $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($this->institution, $institutionUserInvitation);
                 
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $institutionUserInvitation));
@@ -216,9 +215,8 @@ class InstitutionUserController extends InstitutionAwareController
     public function viewAllAction()
     {
         $institutionService = $this->get('services.institution');
-        $institution = $institutionService->getCurrentInstitution();
         
-        $users = $institutionService->getAllStaffOfInstitution($institution);
+        $users = $institutionService->getAllStaffOfInstitution($this->institution);
         return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
     }
     
