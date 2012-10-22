@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\MedicalProcedureBundle\Repository;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
@@ -39,11 +39,12 @@ class MedicalCenterRepository extends EntityRepository
         $dql = "SELECT MedicalCenter.id, MedicalCenter.name as value
                 FROM MedicalProcedureBundle:MedicalCenter AS MedicalCenter
                 WHERE MedicalCenter.name LIKE :term
-                AND MedicalCenter.status = 1
+                AND MedicalCenter.status = :status
                 ORDER BY MedicalCenter.name ASC";
 
         $query = $this->_em->createQuery($dql);
         $query->setMaxResults($limit);
+        $query->setParameter('status', MedicalCenter::STATUS_ACTIVE);
         $query->setParameter('term', "%$term%");
 
         return $query->getArrayResult();
@@ -54,10 +55,10 @@ class MedicalCenterRepository extends EntityRepository
      *
      * @return Doctrine\ORM\QueryBuilder
      */
-    public function getBuilderForMedicalCenters()
+    public function getQueryBuilderForActiveMedicalCenters()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', 1);
+        $qb->select('a')->from('MedicalProcedureBundle:MedicalCenter', 'a')->add('where', 'a.status = :status')->setParameter('status', MedicalCenter::STATUS_ACTIVE);
 
         return $qb;
     }
@@ -111,7 +112,7 @@ class MedicalCenterRepository extends EntityRepository
 
     /**
      * Get MedicalCenters that are not yet linked to a specific institution excluding
-     * the medical centers with status InstitutionMedicalCenterStatus::DRAFT
+     * the medical centers with status InstitutionMedicalCenterGroupStatus::DRAFT
      *
      * @param Institution $institution
      * @return Doctrine\ORM\QueryBuilder
@@ -120,7 +121,7 @@ class MedicalCenterRepository extends EntityRepository
     {
         $usedMedicalCenterIds = array();
         foreach ($institution->getInstitutionMedicalCenters() as $e) {
-            if ($e->getStatus() == InstitutionMedicalCenterStatus::DRAFT) {
+            if ($e->getStatus() == InstitutionMedicalCenterGroupStatus::DRAFT) {
                 continue;
             }
             $usedMedicalCenterIds[] = $e->getMedicalCenter()->getId();

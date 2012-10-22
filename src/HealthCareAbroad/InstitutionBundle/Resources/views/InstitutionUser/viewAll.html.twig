@@ -1,6 +1,4 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set selectedTab = 'staff'%}
-{% block title %}{{ parent() }} Staff {% endblock %}
 
 {% block content %}
 <!-- start content -->
@@ -57,9 +55,7 @@
                           <!--  end table-content  -->
                           
                     </td>
-                    <td style="vertical-align: top;width:100%; ">
-                        {% include 'InstitutionBundle:InstitutionUser:relatedTasks.html.twig' %}
-                    </td>
+                 
                 </tr>
             </table>
                                

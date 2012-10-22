@@ -1,0 +1,75 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
+    type: entity
+    table: institution_medical_center_groups
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterGroupRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            gedmo:
+                - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        dateUpdated:
+            type: datetime
+            nullable: false
+            column: date_updated
+        status:
+            type: smallint
+            nullabe: false
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
+    oneToMany:
+        institutionMedicalCenters:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            mappedBy: institutionMedicalCenterGroup
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            inversedBy: institutions
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
+    manyToMany:
+        doctors:
+            targetEntity: HealthCareAbroad\DoctorBundle\Entity\Doctor
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: institution_medical_center_group_doctors
+                joinColumns:
+                    -
+                        name: institution_medical_center_group_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+            orderBy: null

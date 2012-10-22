@@ -14,7 +14,7 @@ class MedicalCenterListType extends AbstractType
             'property' => 'name',
             'label' => 'Medical Center',
             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
-			'query_builder' => function(EntityRepository $er) { return $er->getBuilderForMedicalCenters(); }
+			'query_builder' => function(EntityRepository $er) { return $er->getQueryBuilderForActiveMedicalCenters(); }
         ));
     }
 

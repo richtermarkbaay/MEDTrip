@@ -1,0 +1,6 @@
+services:
+    services.doctor.twig.extension:
+        class: HealthCareAbroad\DoctorBundle\Twig\DoctorTwigExtension
+        public: true
+        tags:
+            - { name: twig.extension }

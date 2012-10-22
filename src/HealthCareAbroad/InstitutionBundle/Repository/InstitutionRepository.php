@@ -4,7 +4,7 @@ namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
@@ -50,7 +50,7 @@ class InstitutionRepository extends EntityRepository
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status = :active ";
         $query = $this->_em->createQuery($dql)
             ->setParameter('institutionId', $institution->getId())
-            ->setParameter('active', InstitutionMedicalCenterStatus::APPROVED);
+            ->setParameter('active', InstitutionMedicalCenterGroupStatus::APPROVED);
         
         return $query->getResult();
     }
@@ -68,7 +68,7 @@ class InstitutionRepository extends EntityRepository
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status = :active ";
         $query = $this->_em->createQuery($dql)
         ->setParameter('institutionId', $institution->getId())
-        ->setParameter('active', InstitutionMedicalCenterStatus::DRAFT);
+        ->setParameter('active', InstitutionMedicalCenterGroupStatus::DRAFT);
     
         return $query->getResult();
     }
