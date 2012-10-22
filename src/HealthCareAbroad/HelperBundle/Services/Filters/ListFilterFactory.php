@@ -51,7 +51,7 @@ final class ListFilterFactory
             'admin_country_index' => 'CountryListFilter',
             'admin_institution_index' => 'InstitutionListFilter',
             'admin_specialization_index' => 'MedicalCenterListFilter',
-            'admin_procedureType_index' => 'MedicalProcedureTypeListFilter',
+            'admin_treatment_index' => 'TreatmentListFilter',
             'admin_treatmentProcedure_index' => 'MedicalProcedureListFilter',
             'admin_institution_manageCenterGroups' => 'InstitutionMedicalCenterGroupListFilter',
             'admin_institution_manageCenters' => 'InstitutionMedicalCenterListFilter',

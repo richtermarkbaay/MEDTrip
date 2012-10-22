@@ -353,7 +353,7 @@ class InstitutionController extends Controller
             $event = $this->get('events.factory')->create($actionEvent, $this->institutionTreatment);
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', 'Successfully saved institution procedure type.');
+            $request->getSession()->setFlash('success', 'Successfully saved institution treatement.');
 
             $url = $this->generateUrl('admin_institution_medicalCenter_edit', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId(), 'imptId' => $this->institutionTreatment->getId()));
 
@@ -464,7 +464,7 @@ class InstitutionController extends Controller
             $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionTreatment->getTreatment()->getName()}\" procedure type.");
+            $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionTreatment->getTreatment()->getName()}\" treatment.");
 
             $params = array(
                  'institutionId' => $this->institution->getId(),

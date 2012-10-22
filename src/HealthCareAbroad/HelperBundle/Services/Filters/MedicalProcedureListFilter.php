@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
+
 class MedicalProcedureListFilter extends ListFilter
 {
 
@@ -26,14 +28,14 @@ class MedicalProcedureListFilter extends ListFilter
     function setMedicalProcedureTypeFilterOption()
     {        
         // Set The Filter Option 
-        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(1);
+        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(Treatment::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($procedureTypes as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
         $this->filterOptions['treatment'] = array(
-            'label' => 'Procedure Type',
+            'label' => 'Treatment',
             'selected' => $this->queryParams['treatment'],
             'options' => $options
         );

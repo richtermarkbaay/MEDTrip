@@ -53,7 +53,7 @@
                                 <a href="{{ path('admin_specialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                 {% set class = each.status ? 'icon-2' : 'icon-5' %}
                                 <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                                <a href="{{ path('admin_procedureType_index', {specialization:each.id}) }}" class="icon-type">treatments</a>
+                                <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}" class="icon-type">treatments</a>
                             </td>
                         </tr>
                     {% else  %}

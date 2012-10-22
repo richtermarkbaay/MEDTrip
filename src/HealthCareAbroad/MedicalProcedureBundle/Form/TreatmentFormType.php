@@ -29,11 +29,12 @@ class TreatmentFormType extends AbstractType
 			$treatmentProcedureRepo = $this->doctrine->getRepository('MedicalProcedureBundle:TreatmentProcedure');
  			$hasTreatment = $treatmentProcedureRepo->getCountByTreatmentId($treatment->getId());
 
- 			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment');
- 			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
+//  			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment');
+//  			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
 
-			if($hasInstitutionTreatment || $hasTreatment) {
-		        $builder->add('medicalCenter', 'hidden', array('virtual' => true, 'label' => 'Medical Center', 'read_only' => true));
+ 			//if($hasInstitutionTreatment || $hasTreatment) {
+			if($hasTreatment) {
+		        $builder->add('medicalCenter', 'hidden', array('virtual' => true, 'label' => 'Specialization', 'read_only' => true));
 			}
 			else {
 				$builder->add('medicalCenter', 'medicalCenter_list');
