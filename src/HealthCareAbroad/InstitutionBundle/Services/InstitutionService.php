@@ -45,16 +45,7 @@ class InstitutionService
     {
     	$this->doctrine = $doctrine;
     }
-    /**
-     * Get the current institution set in the session
-     * 
-     */
-    public function getCurrentInstitution()
-    {
-        $institutionId = 1;
-        return $this->doctrine->getRepository('InstitutionBundle:Institution')->find($institutionId);
-    }
-
+    
     public function getInstitutions()
     {
         return $this->doctrine->getEntityManager()->createQueryBuilder()->add('select', 'p')->add('from', 'InstitutionBundle:Institution p')->add('where', 'p.status=1');
