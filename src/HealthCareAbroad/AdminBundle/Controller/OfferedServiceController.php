@@ -69,6 +69,10 @@ class OfferedServiceController extends Controller
     {
     	$request = $this->getRequest();
     
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
+    	}
+    	
     	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
     	$offeredService = $id ? $em->getRepository('AdminBundle:OfferedService')->find($id) : new OfferedService();
