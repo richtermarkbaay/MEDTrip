@@ -1,0 +1,44 @@
+HealthCareAbroad\InstitutionBundle\Entity\MedicalGroupNetwork:
+    type: entity
+    table: institution_groups
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionGroupRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    manyToMany:
+        institutions:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: institution_to_medical_group_networks
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: medical_group_network_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

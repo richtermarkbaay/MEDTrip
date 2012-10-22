@@ -19,12 +19,9 @@
 	
 			<h2 style="padding:7px 20px 5px 15px">
 	            {% set hasDraft = hasDraft is defined and hasDraft %}
-	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenterGroup.name }}
-	            {% else %}
-	                Add Medical Center
-	            {% endif %}
+	            Add Medical Center
 			</h2>
+			
             <div class="row-fluid">
 			    <div class="span12" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
 			            <div class="tabbable">
@@ -40,7 +37,7 @@
 				              %}
 			
 							<div class="tab-content">
-								<h4>General Information of the Institution</h4>
+								<h4>Assign doctors</h4>
 								
 								<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
 								

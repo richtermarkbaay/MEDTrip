@@ -2,20 +2,19 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [name]
+            em: default
             message: Institution name already exists!
     properties:
         name:
-            - NotBlank: ~
+            - NotBlank: {message: 'Institution name is required.', groups: [institutionRegistration, editInstitutionInformation]}
         description:
-            - NotBlank: ~
+            - NotBlank: {message: 'Description is required.', groups: [editInstitutionInformation]}
         country:
-            - NotBlank: ~
+            - NotBlank: {message: 'Country is required.', groups: [editInstitutionInformation]}
         city:
-            - NotBlank: ~
+            - NotBlank: {message: 'City is required.', groups: [editInstitutionInformation]}
         address1:
-            - NotBlank: ~
-        institutionLanguagesSpoken:
-            - NotBlank: ~
+            - NotBlank: {message: 'Description is required.', groups: [editInstitutionInformation] }
 
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
     constraints:
