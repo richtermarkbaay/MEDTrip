@@ -1,3 +1,8 @@
+institution_userType_index:
+    pattern: /staff/designations
+    defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
+    requirements:    
+        _method:  GET
 institution_userType_add:
     pattern: /staff/designations/add
     defaults: { _controller: InstitutionBundle:InstitutionUserType:add }
@@ -24,8 +29,3 @@ institution_userType_edit_save:
         _method:  POST
         id: \d+
 
-institution_userType_index:
-    pattern: /staff/designations
-    defaults: { _controller: InstitutionBundle:InstitutionUserType:index }
-    requirements:    
-        _method:  GET

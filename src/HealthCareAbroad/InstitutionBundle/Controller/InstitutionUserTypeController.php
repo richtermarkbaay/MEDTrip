@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-class InstitutionUserTypeController extends Controller 
+class InstitutionUserTypeController extends InstitutionAwareController 
 {
     /**
      * View all user types
@@ -20,8 +20,7 @@ class InstitutionUserTypeController extends Controller
      */
     public function indexAction()
     {
-    	$institutionId = $this->getRequest()->get('institutionId', null);
-        
+    	$institutionId = $this->institution->getId();
     	if (!$institutionId){
     		// no account id in parameter, editing currently logged in account
     		$session = $this->getRequest()->getSession();
@@ -53,10 +52,11 @@ class InstitutionUserTypeController extends Controller
      */
     public function editAction()
     {
+        
     	$userTypeId = $this->getRequest()->get('id');
     	
     	$userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($userTypeId);
-    	
+    	///var_dump($userType);exit;
     	if (!$userType) {
     		throw $this->createNotFoundException();
     	}
@@ -77,7 +77,7 @@ class InstitutionUserTypeController extends Controller
     	$request = $this->getRequest();
     	
    		//get data of institutionId 
-    	$institutionId = $request->get('institutionId', null);
+    	$institutionId = $this->institution->getId();
     	
     	if (!$institutionId){
     		// no account id in parameter, editing currently logged in account
@@ -126,9 +126,9 @@ class InstitutionUserTypeController extends Controller
     	
     }
     
-    public function viewUserTypesAction()
-    {
-    	return $this->render('InstitutionBundle:InstitutionUserType:viewUserType.html.twig'
-    	);
-    }
+//     public function viewUserTypesAction()
+//     {
+//     	return $this->render('InstitutionBundle:InstitutionUserType:viewUserType.html.twig'
+//     	);
+//     }
 }
