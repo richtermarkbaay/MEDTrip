@@ -51,10 +51,11 @@ class InstitutionController  extends InstitutionAwareController
 			$form->bindRequest($request);
 			
 			if ($form->isValid()) {
+			    
 			    // Set Contact Number before saving 
 			    $form->getData()->setContactNumber($contactNumber);
 			    
-				$institution = $this->get('services.institution')->updateInstitution($form->getData());
+				$institution = $this->get('services.institution.factory')->save($form->getData());
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 
 				//create event on editInstitution and dispatch
