@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
@@ -63,6 +65,13 @@ class InstitutionSignUpFormType extends AbstractType
                 'virtual' => true,
                 'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))
             ));
+        
+//         $builder->add('institution_type', 'choice', array(
+//                         'expanded' => true,
+//                         'multiple' => false,
+//                         'choices' => InstitutionTypes::getList(),
+//                         'virtual' => true
+//                     ));
         
         $builder->add('agree_to_terms', 'checkbox', array(
                 'virtual' => true,
