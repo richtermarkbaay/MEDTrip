@@ -1,8 +1,7 @@
 HealthCareAbroad\InstitutionBundle\Entity\Institution:
     constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [name]
-            em: default
+        - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue:
+            field: name
             message: Institution name already exists!
     properties:
         name:

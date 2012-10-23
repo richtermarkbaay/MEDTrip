@@ -16,6 +16,7 @@ abstract class Institution
 
     /**
      * @var string $name
+     * @ORM\Column(unique=true) 
      */
     private $name;
 

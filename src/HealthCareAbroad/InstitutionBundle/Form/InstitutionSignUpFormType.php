@@ -7,6 +7,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
 
+use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -43,9 +45,8 @@ class InstitutionSignUpFormType extends AbstractType
         if (!$institution instanceof Institution) {
             throw new \Exception('Institution sign up form expects an Institution for data');
         }
-        
-        $builder->add('name', 'text', array(
-            'label' => 'Name of institution'
+        $builder ->add('name', 'text', array(
+        				'label' => 'Name of Institution'
         ));
         
         $builder->add('email', 'email', array(

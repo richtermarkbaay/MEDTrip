@@ -14,11 +14,18 @@ parameters:
 
 services:
     
+    services.helper.institution_name_validator:
+        class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValueValidator
+        arguments: [@doctrine]
+        tags:
+            - {name: validator.constraint_validator, alias: helper.institution_name.validator}
+    
     # factory class for creating named events
     events.factory:
         class: HealthCareAbroad\HelperBundle\Factory\EventFactory
         arguments: [@service_container]
 
+            
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
