@@ -1,0 +1,61 @@
+HealthCareAbroad\InstitutionBundle\Entity\Institution:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: Institution name already exists!
+    properties:
+        name:
+            - NotBlank: ~
+        description:
+            - NotBlank: ~
+        country:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        address1:
+            - NotBlank: ~
+        contactEmail:
+            - Email: ~
+        institutionLanguagesSpoken:
+            - NotBlank: ~
+
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
+    properties:
+        name:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+            
+HealthCareAbroad\DoctorBundle\Entity\Doctor:
+    properties:
+        firstName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+            
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
+    properties:
+        firstName:
+            - NotBlank: ~
+        middleName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+        email:
+            - NotBlank: ~
+            - Email: ~
+        message:
+            - NotBlank: ~
+
+          
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [institution, name]
+            message: Center already exists!
+    properties:
+        name:
+            - NotBlank: {message: 'Center name is required.'}
+        description:
+            - NotBlank: {message: 'Center details is required.'}

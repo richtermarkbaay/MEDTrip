@@ -1,6 +1,6 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_procedureTypes' %}
+{% set selectedSubTab = 'treatments' %}
 
 {% block content %}
 
@@ -15,18 +15,18 @@
                 {% include '::notice.admin.html.twig' %}
                 
                 {% set contents = [{
-                        'title': 'View all procedure types', 
+                        'title': 'View all treatments', 
                         'description': 'View the list of treatments',
                         'href': path('admin_treatmentProcedure_index'), 
-                        'links': [{'title': 'View procedure types', 'href': path('admin_treatmentProcedure_index')}]
+                        'links': [{'title': 'View treatments', 'href': path('admin_treatmentProcedure_index')}]
                     }]
                 %}
     
                 {% if(treatment is defined) %} 
                     {% set contents = [{
-                            'title': 'Add procedure', 
+                            'title': 'Add treatment procedure', 
                             'class': 'add-icon',
-                            'description': 'add new procedure for this procedure type',
+                            'description': 'add new procedure for this treatment',
                             'href': path('admin_treatmentProcedure_add', {treatmentId:treatment.id}), 
                             'links': [{'title': 'add procedure', 'href': path('admin_treatmentProcedure_add', {treatmentId: treatment.id} )}]
                         },
@@ -62,7 +62,7 @@
                     {{ form_rest(form) }}
     
                     <input type="submit" value="Save" class="green-button" name="submit"/>
-                    <input type="submit" value="Save &amp; Add another procedure type" class="green-button" name="submit"/>
+                    <input type="submit" value="Save &amp; Add another treatment" class="green-button" name="submit"/>
                 </form>
                 
     
@@ -79,9 +79,9 @@
                         <th width="70"><a href="">Status</a></th>
                         <th class="actions" width="90"><a href="">Actions</a></th>
                     </tr>
-    
+
                     {% for procedure in procedures %}
-                        <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                        <tr>
                             <td>{{ procedure.name }}</td>
                             <td>{{ procedure.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">

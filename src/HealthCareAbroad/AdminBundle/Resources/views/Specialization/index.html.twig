@@ -1,0 +1,73 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'specializations' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Specializations</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add specialization', 
+                        'description': 'Add new specialization',
+                        'class': 'add-icon',
+                        'href': path('admin_specialization_add'), 
+                        'links': [{'title': 'Add a specialization', 'href': path('admin_specialization_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+
+                <!-- Render Filter Box -->                
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
+                <div style="width: 70%">
+                    <table id="specialization-list" class="generic-table sortable-list" width="100%">
+                    <tr>
+                        <th id="column-name" class="minwidth-1">
+                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
+                        </th>
+                        <th id="column-description" class="minwidth-1">
+                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a>
+                        </th>
+
+                        <th class="actions" width="210">Action</th>
+                    </tr>
+
+                    {% for each in specializations %}
+                        <tr>
+                            <td>{{ each.name }}</td>
+                            <td>{{ each.description }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_specialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                {% set class = each.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}" class="icon-type">treatments</a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    </table>
+
+                    {% if pager.isPaginable %}
+                       {{ paginate(pager, 'admin_specialization_index', app.request.query.all) }}
+                    {% endif %}                    
+                </div>
+                
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

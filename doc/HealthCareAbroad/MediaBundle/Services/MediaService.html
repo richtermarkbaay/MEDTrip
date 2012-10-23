@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="robots" content="index, follow, all" />
+        <title>HealthCareAbroad\MediaBundle\Services\MediaService | HealthCareAbroad API</title>
+                    <link rel="stylesheet" type="text/css" href="../../../stylesheet.css">
+                            </head>
+        <body id="class">
+            <div class="header">
+        <ul>
+            <li><a href="../../../classes.html">Classes</a></li>
+                            <li><a href="../../../namespaces.html">Namespaces</a></li>
+                        <li><a href="../../../interfaces.html">Interfaces</a></li>
+            <li><a href="../../../doc-index.html">Index</a></li>
+            
+        </ul>
+
+        <div id="title">HealthCareAbroad API</div>
+
+            <div class="type">Class</div>
+    <h1><a href="../../../HealthCareAbroad/MediaBundle/Services.html">HealthCareAbroad\MediaBundle\Services</a>\MediaService</h1>
+    </div>
+        <div class="content">
+                <p>class    <strong>MediaService</strong></p>
+
+    
+    
+    
+            <h2>Methods</h2>
+
+            <table>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method___construct">__construct</a>(<a href="../../../HealthCareAbroad/MediaBundle/Gaufrette/FilesystemManager.html"><abbr title="HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager">FilesystemManager</abbr></a> $filesystemManager, <abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_upload">upload</a>(<abbr title="Symfony\Component\HttpFoundation\File\UploadedFile">UploadedFile</abbr> $file, $institutionId, $context = array())
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_retrieveAllMedia">retrieveAllMedia</a>($institutionId)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_retrieveMedia">retrieveMedia</a>($mediaId, $institutionId)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_editMediaCaption">editMediaCaption</a>($mediaId, $institutionId, $caption)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_editMedia">editMedia</a>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, array $fields = array())
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_delete">delete</a>($mediaId, $institutionId)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_deleteMedia">deleteMedia</a>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type">
+                    
+                </td>
+                <td class="last">
+                    <a href="#method_addMedicalCenterMedia">addMedicalCenterMedia</a>($institutionMedicalCenterId, $mediaId)
+                    <p></p>
+                </td>
+                <td></td>
+            </tr>
+            </table>
+
+
+        <h2>Details</h2>
+
+                        <h3 id="method___construct">
+        <div class="location">at line 21</div>
+        <code>            public            
+    <strong>__construct</strong>(<a href="../../../HealthCareAbroad/MediaBundle/Gaufrette/FilesystemManager.html"><abbr title="HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager">FilesystemManager</abbr></a> $filesystemManager, <abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr> $entityManager)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MediaBundle/Gaufrette/FilesystemManager.html"><abbr title="HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager">FilesystemManager</abbr></a></td>
+                <td>$filesystemManager</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><abbr title="Doctrine\ORM\EntityManager">EntityManager</abbr></td>
+                <td>$entityManager</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_upload">
+        <div class="location">at line 27</div>
+        <code>            public            
+    <strong>upload</strong>(<abbr title="Symfony\Component\HttpFoundation\File\UploadedFile">UploadedFile</abbr> $file, $institutionId, $context = array())</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><abbr title="Symfony\Component\HttpFoundation\File\UploadedFile">UploadedFile</abbr></td>
+                <td>$file</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$institutionId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$context</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_retrieveAllMedia">
+        <div class="location">at line 87</div>
+        <code>            public            
+    <strong>retrieveAllMedia</strong>($institutionId)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$institutionId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_retrieveMedia">
+        <div class="location">at line 94</div>
+        <code>            public            
+    <strong>retrieveMedia</strong>($mediaId, $institutionId)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$mediaId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$institutionId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_editMediaCaption">
+        <div class="location">at line 99</div>
+        <code>            public            
+    <strong>editMediaCaption</strong>($mediaId, $institutionId, $caption)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$mediaId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$institutionId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$caption</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_editMedia">
+        <div class="location">at line 106</div>
+        <code>            public            
+    <strong>editMedia</strong>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media, array $fields = array())</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a></td>
+                <td>$media</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$fields</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_delete">
+        <div class="location">at line 119</div>
+        <code>            public            
+    <strong>delete</strong>($mediaId, $institutionId)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$mediaId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$institutionId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_deleteMedia">
+        <div class="location">at line 133</div>
+        <code>            public            
+    <strong>deleteMedia</strong>(<a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a> $media)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td><a href="../../../HealthCareAbroad/MediaBundle/Entity/Media.html"><abbr title="HealthCareAbroad\MediaBundle\Entity\Media">Media</abbr></a></td>
+                <td>$media</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+                <h3 id="method_addMedicalCenterMedia">
+        <div class="location">at line 138</div>
+        <code>            public            
+    <strong>addMedicalCenterMedia</strong>($institutionMedicalCenterId, $mediaId)</code>
+    </h3>
+    <div class="details">
+        <p></p>
+        <p></p>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table>
+                    <tr>
+                <td></td>
+                <td>$institutionMedicalCenterId</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$mediaId</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+    
+            </div>
+            <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/" target="_top">Sami, the API Documentation Generator</a>.
+    </div>
+    </body>
+</html>

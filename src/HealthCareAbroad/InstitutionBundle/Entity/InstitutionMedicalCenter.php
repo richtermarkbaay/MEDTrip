@@ -8,7 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
  * HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
  */
 class InstitutionMedicalCenter
-{    
+{
+    const STATUS_ACTIVE = 1;
+    
+    const STATUS_INACTIVE = 0;
+    
     /**
      * @var bigint $id
      */
@@ -35,29 +39,23 @@ class InstitutionMedicalCenter
     private $status;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionTreatments;
-
-    /**
      * @var HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
      */
     private $medicalCenter;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
      */
-    private $institution;
+    private $institutionMedicalCenterGroup;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $media;
+    private $treatmentProcedures;
 
     public function __construct()
     {
-        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->treatmentProcedures = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -159,38 +157,6 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Add institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments[] = $institutionTreatments;
-        return $this;
-    }
-
-    /**
-     * Remove institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     */
-    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments->removeElement($institutionTreatments);
-    }
-
-    /**
-     * Get institutionTreatments
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionTreatments()
-    {
-        return $this->institutionTreatments;
-    }
-
-    /**
      * Set medicalCenter
      *
      * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenter
@@ -213,61 +179,56 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Set institution
+     * Set institutionMedicalCenterGroup
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroup
      * @return InstitutionMedicalCenter
      */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    public function setInstitutionMedicalCenterGroup(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroup = null)
     {
-        $this->institution = $institution;
+        $this->institutionMedicalCenterGroup = $institutionMedicalCenterGroup;
         return $this;
     }
 
     /**
-     * Get institution
+     * Get institutionMedicalCenterGroup
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup 
      */
-    public function getInstitution()
+    public function getInstitutionMedicalCenterGroup()
     {
-        return $this->institution;
+        return $this->institutionMedicalCenterGroup;
     }
 
     /**
-     * Add media
+     * Add treatmentProcedures
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
      * @return InstitutionMedicalCenter
      */
-    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    public function addTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->media[] = $media;
+        $this->treatmentProcedures[] = $treatmentProcedures;
         return $this;
     }
 
     /**
-     * Remove media
+     * Remove treatmentProcedures
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures
      */
-    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    public function removeTreatmentProcedure(\HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure $treatmentProcedures)
     {
-        $this->media->removeElement($media);
+        $this->treatmentProcedures->removeElement($treatmentProcedures);
     }
 
     /**
-     * Get media
+     * Get treatmentProcedures
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getMedia()
+    public function getTreatmentProcedures()
     {
-        return $this->media;
-    }
-    
-    public function __toString()
-    {
-        return $this->medicalCenter->getName();
+        return $this->treatmentProcedures;
     }
 }

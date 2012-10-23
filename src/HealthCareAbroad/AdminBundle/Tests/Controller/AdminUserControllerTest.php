@@ -118,6 +118,14 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->submit($form, $formValues);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		//---- end test edit logged in account
+		
+		// test edit invalid logged in account id
+		$session = $client->getContainer()->get('session');
+		$session->set('accountId', 999999);
+		$session->save();
+		
+		$crawler = $client->request('GET', $editAccountUrl);
+		$this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
     
     public function testChangePassword()
@@ -139,5 +147,25 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->submit($form, $formValues);
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertEquals('/admin', $client->getResponse()->headers->get('location'));
+        
+        // test change password invalid form
+        $crawler = $client->request('GET', '/admin/change-password');
+        $form = $crawler->selectButton('submit')->form();
+        $formValues = array(
+            'adminUserChangePasswordType[current_password]' => $this->userPassword,
+            'adminUserChangePasswordType[new_password]' => $this->userPassword.'1',
+            'adminUserChangePasswordType[confirm_password]' => $this->userPassword.'23',
+        );
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count(), 'Expecting the validation message "Passwords do not match"');
+        
+        // test edit invalid logged in account id
+        $session = $client->getContainer()->get('session');
+        $session->set('accountId', 999999);
+        $session->save();
+        
+        $crawler = $client->request('GET', '/admin/change-password');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 }

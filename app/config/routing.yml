@@ -1,3 +1,7 @@
+doctor:
+    resource: "@DoctorBundle/Resources/config/routing.yml"
+    prefix:   /
+
 memcache:
     resource: "@MemcacheBundle/Resources/config/routing.yml"
     prefix:   /

@@ -46,7 +46,7 @@ class InstitutionUserService extends UserService
             $this->session->set('institutionId', $user->getInstitution()->getId());
             $this->session->set('institutionName', $user->getInstitution()->getName());
 
-            $this->container->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->container->get('events.factory')->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
+            $this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
 
             return true;
         }

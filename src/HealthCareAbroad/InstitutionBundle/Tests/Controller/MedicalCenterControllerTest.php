@@ -25,7 +25,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('title:contains("Institution Panel Medical Centers")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('title:contains("Institution Panel Specializations")')->count());
 
         // test with invalid institution id
         $this->setInvalidInstitutionInSession($client);
@@ -46,7 +46,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('h1:contains("Add medical center")')->count(), "Expecting header 'Add medical center'");
+        $this->assertGreaterThan(0,$crawler->filter('h1:contains("Add specialization")')->count(), "Expecting header 'Add specialization'");
 
         // test for invalid form submission
         $invalidFormValues = array(
@@ -111,7 +111,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
         // test for valid id
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('title:contains("Edit Medical Center")')->count(), "Expecting title 'Edit Medical Center'");
+        $this->assertGreaterThan(0,$crawler->filter('title:contains("Edit Specialization")')->count(), "Expecting title 'Edit Specialization'");
 
         // test valid form submission
         $validFormValues = array(

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Admin Health Care Abroad - Login Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="HTML5 Admin Health Care Abroad Template">
+<meta name="author" content="healthcare">
+
+ <!-- stylesheet -->
+  <link id="main-theme-script" rel="stylesheet" href="css/hc-layout.css">
+  <link id="theme-specific-script" rel="stylesheet" href="css/style.css">
+
+
+ <!-- Le fav and touch icons -->
+  <link rel="shortcut icon" href="images/ico/favicon.ico">
+
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+</head>
+
+<body><!-- Top navigation bar -->
+<!--<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <a href="index.html" class="brand"><img src="images/HCA-logo-small.png" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
+        <div class="btn-group pull-right" style="width: 360px; margin-top: 7px;">
+            <span style="float: left;">you are logged in as <a href="#">marcjacob@gmail.com</a> &nbsp;|&nbsp; </span><span style="margin-left: 10px;"> <a href="logout.html"><img src="images/logout-icon.png" style="padding-left:10px;"></a>     </span>      
+        </div>
+    </div>
+  </div>
+</div>-->
+
+
+<div class="container">
+
+	
+	<div class="span5" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; border: 3px solid #999999; margin-bottom: 30px; margin-top: 20px; padding: 25px 25px 10px 25px;">
+		<div style="margin: -85px 0 20px 55px;"><img src="images/medical-clip.png" alt="Medical Clip" longdesc="#"></div>
+		<a href="index.html"><img src="images/HCA-logo-small.png" alt="Health Care Abroad Logo" longdesc="#" style="float:left; margin-right: 5px;"><h1 style="color: #002A5C;">HEALTHCARE ABROAD</h1></a>
+		<h3 style="margin-top: 10px;">Registration form</h3>
+		<p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
+		<div class="row-fluid">
+		  								<form action="#" method="POST" class="form">
+		  		<fieldset>
+		  				
+		  				<label for="institution name">Name of the Institution</label>
+		  				<div class="div_text">
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  				</div>
+		  				
+		  			<label for="username">email</label>
+		  			<div class="div_text">
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  			</div>
+		  			
+		  			<label for="password">password</label>
+		  			<div class="div_text">
+		  				<div class="input-prepend"><input name="log" type="password" id="log inputIcon" value="" class="username span12" /></div>
+		  			</div>
+		  			
+		  
+		  		<label for="re type password">re-type password</label>
+		  		<div class="div_text">
+		  		<div class="input-prepend"><input name="log" type="password" id="log inputIcon" value="" class="username span12" /></div>
+		  		</div>
+		  		
+		  
+		  		
+		  		
+		  	
+		  		
+		  					
+		  					<label for="password">Types of Institution</label>
+		  				<div id="tabs">
+		  				    <div id="nav">
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div1" />Hospital or Clinic belonging to a Group / Network</label>
+		  				       <div id="div1" class="tab">
+		  				      		      
+		  				    </div>
+		  				    
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div2" />Hospital or Clinic with NO Branch</label>
+		  				      <div id="div2" class="tab">
+		  				    </div>
+		  				    
+		  				      <label><input type="radio" name="tab" value="pkfrom" class="div3" />Agent</label>
+		  				       <div id="div3" class="tab">
+		  				      <ul>
+		  				      <li>Medical Tourism Specific</li>
+		  				      <li>General Travel Agent</li>
+		  				      </ul>
+		  				      </p>
+		  				    </div>
+		  				    </div>
+		  				
+		  				   
+		  				
+		  				    
+		  				    
+		  				      
+		  				    
+		  				    
+		  				  </div>
+		  				
+		  				  <script type="text/javascript" charset="utf-8">
+		  				    (function(){
+		  				      var tabs =document.getElementById('tabs');
+		  				      var nav = tabs.getElementsByTagName('input');
+		  				
+		  				      /*
+		  				      * Hide all tabs
+		  				      */
+		  				      function hideTabs(){
+		  				        var tab = tabs.getElementsByTagName('div');
+		  				        for(var i=0;i<=nav.length;i++){
+		  				          if(tab[i].className == 'tab'){
+		  				            tab[i].className = tab[i].className + ' hide';
+		  				          }
+		  				        }
+		  				      }
+		  				
+		  				      /*
+		  				      * Show the clicked tab
+		  				      */
+		  				      function showTab(tab){
+		  				        document.getElementById(tab).className = 'tab'
+		  				      }
+		  				
+		  				      hideTabs(); /* hide tabs on load */
+		  				
+		  				      /*
+		  				      * Add click events
+		  				      */
+		  				      for(var i=0;i<nav.length;i++){
+		  				        nav[i].onclick = function(){
+		  				          hideTabs();
+		  				          showTab(this.className);
+		  				        }
+		  				      }
+		  				    })();
+		  				  </script>
+		  					
+		  		
+		  		</fieldset>
+		  		
+		  		<br/>
+		  		
+		  		  <label><input type="checkbox" name="Terms" value="Terms and Conditions" />I read and agree the <a href="#">Terms and Conditions</a>.</label>
+		  		   
+		  		
+		  		<div class="button_div"><input type="submit" name="Submit" value="SIGN-UP" class="span12 btn-large btn-primary" /></div>
+		  		</form>		  
+	</div>
+	
+	
+</div>
+<div class="container">
+<br/>
+<hr>
+<footer>
+	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+</footer>
+</div>
+
+<!--/.fluid-container--> 
+<!-- javascript Templates
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+
+<!-- Le javascript
+    ================================================== --> 
+<!-- Placed at the end of the document so the pages load faster --> 
+<!-- Google API --> 
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+
+<!-- jQuery --> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+
+
+
+<!-- Bootstrap --> 
+<script src="js/bootstrap.min.js"></script> 
+
+</body>
+</html>

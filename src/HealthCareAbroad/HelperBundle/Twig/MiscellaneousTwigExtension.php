@@ -13,7 +13,8 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         return array(
             'getClass' => new \Twig_Function_Method($this, 'getClass'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
-            'unserialize' => new \Twig_Function_Method($this, 'unserialize')
+            'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
+            'json_decode' => new  \Twig_Function_Method($this, 'json_decode')
         );
     }
     
@@ -29,5 +30,10 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function getName()
     {
         return 'miscellaneous';
+    }
+    
+    public function json_decode($jsonData)
+    {
+        return json_decode($jsonData, true);
     }
 }

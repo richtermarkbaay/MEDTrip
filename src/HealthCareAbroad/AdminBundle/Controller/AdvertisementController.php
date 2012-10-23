@@ -8,6 +8,8 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
+
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory;
@@ -20,6 +22,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+use HealthCareAbroad\MediaBundle\Services\MediaService;
 class AdvertisementController extends Controller
 {
     /**
@@ -53,7 +57,17 @@ class AdvertisementController extends Controller
      */
     public function indexAction(Request $request)
     {   
-        return $this->render('AdminBundle:Advertisement:index.html.twig');
+        $advertisementTypeId = $request->get('advertisementTypes', 0);
+
+        if ($advertisementTypeId == ListFilter::FILTER_KEY_ALL) {
+
+        	$advertisementTypeId = 0;
+        }
+    
+        $params = array('advertisementTypeId' => $advertisementTypeId,'advertisements' => $this->filteredResult, 'pager' => $this->pager);
+
+        return $this->render('AdminBundle:Advertisement:index.html.twig', $params);
+        
     }
     
     /**
@@ -120,9 +134,17 @@ class AdvertisementController extends Controller
             
             if ($form->isValid()) {
                 
+                if($request->files->get('advertisement')) {
+                    $adsArray = $request->files->get('advertisement');
+                    $media = $adsArray['media'];
+                }
                 try {
-                    $advertisement = $this->factory->save($form->getData());
                     
+                    $advertisement = $this->factory->save($form->getData());
+                    if ($media) {
+                        $media = $this->get('services.media')->addMedia($media, $institution->getId());
+                        $media = $this->get('services.media')->addAdvertisementMedia($advertisement, $media);
+                    }    
                     // dispatch event
                     $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $advertisement));
                     $redirectUrl = $this->generateUrl('admin_advertisement_addInvoice', array('advertisementId' => $advertisement->getId()));
@@ -166,6 +188,7 @@ class AdvertisementController extends Controller
     /**
      * This will be the last page when creating a new advertisement
      * 
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -188,6 +211,7 @@ class AdvertisementController extends Controller
         $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
         if ($request->isMethod('POST')) {
             $form->bind($request);
+            
             if ($form->isValid()) {
                 try {
                     $advertisement = $this->factory->save($form->getData());

@@ -23,7 +23,11 @@ twig:
     strict_variables: %kernel.debug%
     exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
     globals:
-        site_name: HealthCareAbroad.com
+        site_url: %site_url%
+        site_name: %site_name%
+        cfe_site_url: %cfe_site_url%
+        cfe_site_name: %cfe_site_name%
+        cfe_company_name: %cfe_company_name%
         tinymce:
             textarea_class: %tinymce_textarea_class%
             theme:

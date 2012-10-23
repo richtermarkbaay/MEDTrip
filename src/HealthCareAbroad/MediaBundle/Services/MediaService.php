@@ -26,14 +26,47 @@ class MediaService
         $this->filesystemManager = $filesystemManager;
     }
 
+    public function addMedia(UploadedFile $file, $institutionId)
+    {
+        if (!$file->isValid()) {
+            return $file->getError();
+        }
+        $filesystem = $this->filesystemManager->get($institutionId, 'local');
+        
+        //TODO: rename/sanitize filename
+        $filename = $file->getClientOriginalName();
+        $media = new Media();
+        $media->setName($filename);
+        $media->setContentType($file->getMimeType());
+        //TODO: the ff are temporary
+        $media->setCaption($filename);
+        $media->setContext($institutionId);
+        $media->setUuid(\time());
+        
+        //TODO: ignore the other attributes for now
+        $proceed = true;
+        try {
+            $file->move($this->filesystemManager->getAdsUploadRootDir(), $filename);
+        } catch (FileException $e) {
+            $proceed = false;
+        }
+
+        if ($proceed) {
+            $this->entityManager->persist($media);
+            $this->entityManager->flush();
+        }
+        unset($file);
+
+        return $media;
+    }
+    
     public function upload(UploadedFile $file, $institutionId, $context = array())
     {
         if (!$file->isValid()) {
             return $file->getError();
         }
-
         $filesystem = $this->filesystemManager->get($institutionId, 'local');
-
+        
         //TODO: rename/sanitize filename
         $filename = $file->getClientOriginalName();
 
@@ -73,6 +106,7 @@ class MediaService
                         $mediaEntity = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($context['contextId']);
 
                         break;
+                   
                 }
             }
 
@@ -89,7 +123,7 @@ class MediaService
 
         $errorCode = $file->getError();
         unset($file);
-
+        
         return $errorCode;
     }
 
@@ -160,6 +194,21 @@ class MediaService
             $success = 0;
         }
 
+        return $success;
+    }
+    public function addAdvertisementMedia($advertisement, $media)
+    {
+        $success = 1;
+    
+        try {
+            $advertisement->addMedia($media);
+    
+            $this->entityManager->persist($advertisement);
+            $this->entityManager->flush($advertisement);
+        } catch (Exception $e) {
+            $success = 0;
+        }
+    
         return $success;
     }
 }

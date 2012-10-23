@@ -14,127 +14,148 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 class AlertService
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
-    const ID_SEPARATOR = '.';
-    const ADMIN_RECIPIENT = 'Admin';
+    const NULL_DATE = '1970-01-01 00:00:00';
 
-	protected $doctrine;
-	protected $container;
-	protected $couchDb;
+    const ALL_ALERT_VIEW_URI = '_design/alerts/_view/all';
+    const RECIPIENT_ALERT_VIEW_URI = '_design/alerts/_view/recipient';
+    const REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/reference';
+    const TYPE_AND_REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/typeAndReference';
 
-	function __construct($doctrine, $container) 
-	{
-	    $this->doctrine = $doctrine;
-	    $this->container = $container;
 
-	    $alertCouchDb = $this->container->getParameter('alert_db');
-	    $this->couchDB = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
-	}
+    protected $doctrine;
+    protected $container;
+    protected $couchDb;
 
-	/**
-	 * 
-	 * @return array
-	 */
-	function getAlerts()
-	{
-	    $options['dateAlert'] = array('operator' => '<=', 'value' => date(self::DATE_FORMAT));
-        $alerts = $this->couchDB->getBy($options);
-        $alertData = $this->formatAlertData($alerts);
+    function __construct($doctrine, $container) 
+    {
+        $this->doctrine = $doctrine;
+        $this->container = $container;
 
-        return $alertData;
-	}
-	
-	/**
-	 * 
-	 * @param Institution $institution
-	 * @return array
-	 */
-	function getAlertsByInstitution(Institution $institution)
-	{
-	    $alerts = array();
-	    $options = array(
-            'institutionId' => $institution->getId(),
-            'dateAlert' => array('operator' => '<=', 'value' => date(self::DATE_FORMAT))
+        $alertCouchDb = $this->container->getParameter('alert_db');
+        $this->couchDB = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
+    }
+    
+    /**
+     * 
+     * @param Institution $institution
+     * @return array
+     */
+    function getAlertsByInstitution(Institution $institution)
+    {
+        $params = array(
+            'keys' => array(
+                array($institution->getId(), AlertRecipient::INSTITUTION), 
+                array(null, AlertRecipient::ALL_ACTIVE_INSTITUTION)
+            )
         );
 
-	    $result = $this->couchDB->getBy($options);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+    }
 
-	    return $this->formatAlertData($result);
-	}
-	
-	/**
-	 *
-	 * @return array
-	 */
-	function getAdminAlerts()
-	{
-	    $alerts = array();
-	    $options = array(
-            'recipient' => self::ADMIN_RECIPIENT,
-            'dateAlert' => array('operator' => '<=', 'value' => date(self::DATE_FORMAT))
-	    );
+    /**
+     * 
+     * @param int $accountId
+     * @return \HealthCareAbroad\HelperBundle\Services\Ambigous
+     */
+    function getAdminAlerts($accountId = null)
+    {
+        $params = array(
+            'keys' => array(
+                array(null, AlertRecipient::ALL_ACTIVE_ADMIN), 
+                array((int)$accountId, AlertRecipient::ADMIN)
+            )
+        );
 
-	    $result = $this->couchDB->getBy($options);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+    }
 
-	    return $this->formatAlertData($result);
-	}
 
-	/**
-	 * 
-	 * @param unknown_type $id
-	 * @return Ambigous <NULL, mixed>
-	 */
-	function getAlert($id)
-	{
-	    $alert = json_decode($this->couchDB->get($id), true);
+    /**
+     * 
+     * @param string $uri
+     * @param array $params
+     * @param bool $groupByType
+     * @return Ambigous <\HealthCareAbroad\HelperBundle\Services\Ambigous, unknown, multitype:unknown >
+     */
+    function getAlerts($uri = self::ALL_ALERT_VIEW_URI, $params = array(), $groupByType = false)
+    {
+        $result = $this->couchDB->getView($uri, $params);
 
-	    if(isset($alert['error'])) {
-	        $alert = null;
-	    }
+        return $this->formatAlertData($result, $groupByType);
+    }
 
-	    return $alert;
-	}
+    /**
+     * 
+     * @param unknown_type $id
+     * @return Ambigous <NULL, mixed>
+     */
+    function getAlert($id = null)
+    {
+        if(!$id) {
+            return null;
+        }
 
-	/**
-	 * 
-	 * @param mixed $data
-	 * @return Ambigous <multitype:, unknown>
-	 */
-	function formatAlertData($data)
-	{
-	    $formattedData = array();
+        $alert = json_decode($this->couchDB->get($id), true);
 
-	    if(!is_array($data))
-	        $data = json_decode($data, true);
+        return $alert;
+    }
 
-	    if(isset($data['total_rows']) && $data['total_rows'] > 0) {
-    	    foreach($data['rows'] as $each) {
-    	        $alert = $this->formatAlert($each['value']);
-    	        $formattedData[$alert['type']][] = $alert;
-    	    }
-	    }
+    /**
+     * 
+     * @param mixed $data
+     * @return Ambigous <multitype:, unknown>
+     */
+    private function formatAlertData($data, $groupByType = false)
+    {
+        $formattedData = array();
 
-	    return $formattedData;
-	}
-	
-	function formatAlert($data = array())
-	{
-	    return $data;
-	}
+        if(!is_array($data))
+            $data = json_decode($data, true);
+
+        if(isset($data['total_rows']) && $data['total_rows'] > 0) {
+        
+            if(!$groupByType) {
+                foreach($data['rows'] as $each) {
+                    $alert = $this->formatAlert($each['value']);
+                    $formattedData[] = $alert;
+                }
+            } else {
+                foreach($data['rows'] as $each) {
+                    $alert = $this->formatAlert($each['value']);
+                    $formattedData[$alert['type']][] = $alert;
+                }
+            }
+        }
+
+        return $formattedData;
+    }
+
+    /**
+     * TODO - Format Alert 
+     * @param unknown_type $data
+     * @return unknown
+     */
+    function formatAlert($data = array())
+    {
+        return $data;
+    }
 
     /**
      * 
      * @param array $arrayData
      */
-    function save(array $alertData = array())
+    function save($alertData = array())
     {
         $data = $this->validateData($alertData);
 
-        $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
-        $alert = $this->getAlert($id);
-        $data['_id'] = $id;
-
-        if($alert) {
-            $data['_rev'] = $alert['_rev'];
+        if(!isset($data['_id']) || !$data['_id']) {
+            $id = $this->generateAlertId();
+        } else {
+            $id = $data['_id'];
+            if(!isset($data['_rev'])) {
+                $alert = $this->getAlert($id);
+                $data['_rev'] = $alert['_rev'];                
+            }
         }
 
         return $this->couchDB->put($id, $data);
@@ -153,24 +174,19 @@ class AlertService
         }
     
         foreach($arrayData as $key => $data) {
-    
             $data = $this->validateData($data);
-    
-            $id = $this->generateAlertId($data['referenceData']['id'], $data['class'], $data['type']);
-            $alert = $this->getAlert($id);
-            $arrayData[$key]['_id'] = $id;
-    
-            if($alert) {
-                $arrayData[$key]['_rev'] = $alert['_rev'];
+
+            if(!isset($data['_id'])) {
+                $arrayData[$key]['_id'] = $this->generateAlertId();
             }
         }
-    
+
         $result = $this->couchDB->multipleUpdate($arrayData);
-    
+
         $end = (float)microtime();
         $time = $end - $start;
         //var_dump("processTime: " . $time);
-        
+
         return $result;
     }
 
@@ -187,41 +203,51 @@ class AlertService
 
     /**
      * 
-     * @param int $referenceId
-     * @param string $class
-     * @param string $type
-     * @throws \ErrorException
-     * @return string md5($id)
+     * @return string genrated based on current microtime and encoded to md5()
      */
-    function generateAlertId($referenceId = null, $class = null, $type = null)
+    function generateAlertId()
     {
-        if(!$referenceId || !$class || !$type) {
-            throw new \ErrorException('Unable to generate Alert Id! Invalid parameter(s).');
-        }
+        $time = microtime();
 
-        $id = $referenceId . self::ID_SEPARATOR . $class . self::ID_SEPARATOR  . $type;
-
-        return md5($id);
+        return md5($time);
     }
 
     
     /**
-     * 
+     * TODO - Need to finalize validation Rules!
      * @param array $data
      * @return string
      */
     function validateData($data = array())
     {
-        if(!isset($data['referenceData']) || !isset($data['referenceData']['id']) || !isset($data['class']) || !AlertClasses::isValidClass($data['class'])) {
-            throw new \ErrorException('Invalid Alert Data!');
+        if(!isset($data['type'])) {
+            $data['type'] = AlertTypes::DEFAULT_TYPE;
         }
+
+        if(!isset($data['referenceData']) || !isset($data['referenceData']['id']) || !$data['referenceData']['id']) {
+            throw new \ErrorException('Invalid Alert Data! ' . json_encode($data));
+        }
+
+        if(!AlertTypes::isValid($data['type'])) {
+            $message = 'Invalid alert type ' . $data['type'] . '. Valid values are: [' . implode(', ',array_values(AlertTypes::getAll())) . ']';
+            throw new \ErrorException($message);
+        }
+        
+        if(!isset($data['recipientType']) || !AlertRecipient::isValid($data['recipientType'])) {
+            if(!isset($data['recipientType'])) $data['recipientType'] = null;
+            $message = 'Invalid recipientType ' . $data['recipientType'] . '. Valid values are: [' . implode(', ',array_values(AlertRecipient::getAll())) . ']';
+            throw new \ErrorException($message);
+        }
+
+        if(!isset($data['class']) || !AlertClasses::isValidClass($data['class'])) {
+            if(!isset($data['class'])) $data['class'] = null;
+            $message = 'Invalid class value ' . $data['class'] . '. Valid values are: [' . implode(', ',array_values(AlertClasses::getClasses())) . ']';
+            throw new \ErrorException($message);            
+        }
+
 
         if(!isset($data['message']) || $data['message'] == '')
             $data['message'] = '';
-
-        if(!isset($data['type']) || $data['type'] == '') {
-            $data['type'] = AlertTypes::DEFAULT_TYPE;
-        }
 
         if(!isset($data['dateAlert'])) {
             $data['dateAlert'] = date(self::DATE_FORMAT);

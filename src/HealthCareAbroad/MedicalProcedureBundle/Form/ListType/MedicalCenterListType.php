@@ -12,9 +12,9 @@ class MedicalCenterListType extends AbstractType
     {
         $resolver->setDefaults(array(
             'property' => 'name',
-            'label' => 'Medical Center',
+            'label' => 'Specialization',
             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
-			'query_builder' => function(EntityRepository $er) { return $er->getBuilderForMedicalCenters(); }
+			'query_builder' => function(EntityRepository $er) { return $er->getQueryBuilderForActiveMedicalCenters(); }
         ));
     }
 

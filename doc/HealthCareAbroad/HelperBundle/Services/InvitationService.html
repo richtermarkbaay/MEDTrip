@@ -75,7 +75,7 @@
                     
                 </td>
                 <td class="last">
-                    <a href="#method_createInstitutionInvitation">createInstitutionInvitation</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation, $message, <a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a> $token)
+                    <a href="#method_sendInstitutionInvitation">sendInstitutionInvitation</a>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation)
                     <p></p>
                 </td>
                 <td></td>
@@ -106,7 +106,7 @@
         <h2>Details</h2>
 
                         <h3 id="method___construct">
-        <div class="location">at line 34</div>
+        <div class="location">at line 33</div>
         <code>            public            
     <strong>__construct</strong>(<abbr title="HealthCareAbroad\HelperBundle\Services\Doctrine\Bundle\DoctrineBundle\Registry">Registry</abbr> $doctrine)</code>
     </h3>
@@ -131,7 +131,7 @@
     </div>
 
                 <h3 id="method_setTwig">
-        <div class="location">at line 39</div>
+        <div class="location">at line 38</div>
         <code>            public            
     <strong>setTwig</strong>(<abbr title="HealthCareAbroad\HelperBundle\Services\Twig_Environment">Twig_Environment</abbr> $twig)</code>
     </h3>
@@ -156,7 +156,7 @@
     </div>
 
                 <h3 id="method_setMailer">
-        <div class="location">at line 44</div>
+        <div class="location">at line 43</div>
         <code>            public            
     <strong>setMailer</strong>($mailer)</code>
     </h3>
@@ -181,7 +181,7 @@
     </div>
 
                 <h3 id="method_createInvitationToken">
-        <div class="location">at line 49</div>
+        <div class="location">at line 48</div>
         <code>            public            
     <strong>createInvitationToken</strong>($daysofExpiration)</code>
     </h3>
@@ -205,10 +205,10 @@
                     </div>
     </div>
 
-                <h3 id="method_createInstitutionInvitation">
-        <div class="location">at line 83</div>
+                <h3 id="method_sendInstitutionInvitation">
+        <div class="location">at line 76</div>
         <code>            public            
-    <strong>createInstitutionInvitation</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation, $message, <a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a> $token)</code>
+    <strong>sendInstitutionInvitation</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation">InstitutionInvitation</abbr></a> $invitation)</code>
     </h3>
     <div class="details">
         <p></p>
@@ -222,16 +222,6 @@
                 <td>$invitation</td>
                 <td></td>
             </tr>
-                    <tr>
-                <td></td>
-                <td>$message</td>
-                <td></td>
-            </tr>
-                    <tr>
-                <td><a href="../../../HealthCareAbroad/HelperBundle/Entity/InvitationToken.html"><abbr title="HealthCareAbroad\HelperBundle\Entity\InvitationToken">InvitationToken</abbr></a></td>
-                <td>$token</td>
-                <td></td>
-            </tr>
             </table>
 
             
@@ -241,7 +231,7 @@
     </div>
 
                 <h3 id="method_sendInstitutionUserLoginCredentials">
-        <div class="location">at line 102</div>
+        <div class="location">at line 109</div>
         <code>            public            
     <strong>sendInstitutionUserLoginCredentials</strong>(<a href="../../../HealthCareAbroad/UserBundle/Entity/InstitutionUser.html"><abbr title="HealthCareAbroad\UserBundle\Entity\InstitutionUser">InstitutionUser</abbr></a> $user, $password)</code>
     </h3>
@@ -271,7 +261,7 @@
     </div>
 
                 <h3 id="method_sendInstitutionUserInvitation">
-        <div class="location">at line 131</div>
+        <div class="location">at line 129</div>
         <code>            public            
     <strong>sendInstitutionUserInvitation</strong>(<a href="../../../HealthCareAbroad/InstitutionBundle/Entity/Institution.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\Institution">Institution</abbr></a> $institution, <a href="../../../HealthCareAbroad/InstitutionBundle/Entity/InstitutionUserInvitation.html"><abbr title="HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation">InstitutionUserInvitation</abbr></a> $invitation)</code>
     </h3>

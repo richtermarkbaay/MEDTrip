@@ -27,14 +27,21 @@ class InstitutionDetailType extends AbstractType
     	$builder->addEventSubscriber($subscriber);
     	$countryId = $builder->getData()->getCountry()->getId();
     	
-    	$builder->add('name', 'text', array('constraints' => new NotBlank()));
-    	$builder->add('description', 'textarea', array('constraints' => new NotBlank()));
-    	$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true,));
+    	$builder->add('name', 'text');
+    	$builder->add('description');
+    	$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
-    	$builder->add('address1','text', array('constraints' => new NotBlank()));
-    	$builder->add('address2','text', array('constraints' => new NotBlank()));
+    	$builder->add('zipCode', 'number', array('label' => 'Zip Code'));
+    	
+    	$builder->add('address1', 'text');
+    	$builder->add('address2', 'text');
 
+    	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
+    	$builder->add('contactNumber', 'hidden', array('label' => 'Contact Number'));
+    	
+    	
+    	
     	$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
  		
     }

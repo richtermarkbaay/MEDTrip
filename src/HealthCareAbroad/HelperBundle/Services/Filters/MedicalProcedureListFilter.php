@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
+
 class MedicalProcedureListFilter extends ListFilter
 {
 
@@ -12,8 +14,8 @@ class MedicalProcedureListFilter extends ListFilter
     {
         parent::__construct($doctrine);
 
-        // Add medicalProcedureType in validCriteria
-        $this->addValidCriteria('medicalProcedureType');
+        // Add treatment in validCriteria
+        $this->addValidCriteria('treatment');
     }
 
     function setFilterOptions()
@@ -26,15 +28,15 @@ class MedicalProcedureListFilter extends ListFilter
     function setMedicalProcedureTypeFilterOption()
     {        
         // Set The Filter Option 
-        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(1);
+        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(Treatment::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($procedureTypes as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['medicalProcedureType'] = array(
-            'label' => 'Procedure Type',
-            'selected' => $this->queryParams['medicalProcedureType'],
+        $this->filterOptions['treatment'] = array(
+            'label' => 'Treatment',
+            'selected' => $this->queryParams['treatment'],
             'options' => $options
         );
     }
@@ -48,13 +50,13 @@ class MedicalProcedureListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
         
-        if ($this->queryParams['medicalProcedureType'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.medicalProcedureType = :medicalProcedureType');
-            $this->queryBuilder->setParameter('medicalProcedureType', $this->criteria['medicalProcedureType']);
+        if ($this->queryParams['treatment'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.treatment = :treatment');
+            $this->queryBuilder->setParameter('treatment', $this->criteria['treatment']);
         }
 
-        if($this->sortBy == 'medicalProcedureType') {
-            $this->queryBuilder->leftJoin('a.medicalProcedureType', 'b');
+        if($this->sortBy == 'treatment') {
+            $this->queryBuilder->leftJoin('a.treatment', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';

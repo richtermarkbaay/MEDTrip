@@ -6,7 +6,7 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentFormType;
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 /**
- * Controller for Institution Medical Center
+ * Controller for Institution Specialization
  *
  *
  * TODO: these business rules should be moved to a service class
@@ -32,8 +32,8 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class MedicalCenterController extends InstitutionAwareController
 {
     /**
-     * Displays a list of of ACTIVE/APPROVED institution medical centers by default.
-     * Can also display a list of DRAFT, PENDING, and EXPIRED medical centers.
+     * Displays a list of of ACTIVE/APPROVED institution specializations by default.
+     * Can also display a list of DRAFT, PENDING, and EXPIRED specializations.
      *
      * Uses the ListFilterBeforeController to get the filtered list and the pager.
      *
@@ -52,7 +52,7 @@ class MedicalCenterController extends InstitutionAwareController
 
     /**
      * This is the FIRST STEP when adding/updating a draft center.
-     * Displays form for adding or editing draft institution medical centers.
+     * Displays form for adding or editing draft institution specializations.
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      *
@@ -70,7 +70,7 @@ class MedicalCenterController extends InstitutionAwareController
         else {
             $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$institutionMedicalCenter) {
-                throw $this->createNotFoundException("Invalid institution medical center.");
+                throw $this->createNotFoundException("Invalid institution specialization.");
             }
         }
 
@@ -79,13 +79,13 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:add.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
-            'hasDraft' => InstitutionMedicalCenterStatus::DRAFT == $institutionMedicalCenter->getStatus()
+            'hasDraft' => InstitutionMedicalCenterGroupStatus::DRAFT == $institutionMedicalCenter->getStatus()
         ));
     }
 
     /**
      * This is the SECOND STEP when adding/updating a draft center.
-     * Displays page for adding or updating media for draft medical centers.
+     * Displays page for adding or updating media for draft specializations.
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      *
@@ -109,7 +109,7 @@ class MedicalCenterController extends InstitutionAwareController
 
     /**
      * This is the THIRD STEP when adding/updating a draft center.
-     * Displays page for adding or updating procedure types for draft medical centers.
+     * Displays page for adding or updating procedure types for draft specializations.
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      *
@@ -119,7 +119,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function addProcedureTypesAction(Request $request)
     {
         if (!$request->get('imcId', 0)) {
-            throw $this->createNotFoundException("Invalid institution medical center id.");
+            throw $this->createNotFoundException("Invalid institution specialization id.");
         }
 
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
@@ -146,7 +146,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function previewAction(Request $request)
     {
         if (!$request->get('imcId', 0)) {
-            throw $this->createNotFoundException("Invalid institution medical center id.");
+            throw $this->createNotFoundException("Invalid institution specialization id.");
         }
 
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
@@ -157,8 +157,8 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Saves a draft institution medical center. This is called after the
-     * submitting the form in the FIRST STEP of adding/updating medical centers.
+     * Saves a draft institution specialization. This is called after the
+     * submitting the form in the FIRST STEP of adding/updating specializations.
      *
      * Dispatches an event upon successful save.
      *
@@ -174,7 +174,7 @@ class MedicalCenterController extends InstitutionAwareController
         if ($imcId) {
             $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$institutionMedicalCenter) {
-                throw $this->createNotFoundException("Invalid institution medical center.");
+                throw $this->createNotFoundException("Invalid institution specialization.");
             }
         }
         else {
@@ -185,7 +185,7 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
         $form->bind($request);
 
-        $hasDraft = InstitutionMedicalCenterStatus::DRAFT == $institutionMedicalCenter->getStatus();
+        $hasDraft = InstitutionMedicalCenterGroupStatus::DRAFT == $institutionMedicalCenter->getStatus();
 
         if (!$form->isValid()) {
 
@@ -196,7 +196,7 @@ class MedicalCenterController extends InstitutionAwareController
             ));
         }
 
-        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
+        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterGroupStatus::DRAFT);
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($institutionMedicalCenter);
@@ -207,14 +207,14 @@ class MedicalCenterController extends InstitutionAwareController
             $institutionMedicalCenter
         );
 
-        $request->getSession()->setFlash('success', "Successfully ".($hasDraft?'updated ':'added ')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
+        $request->getSession()->setFlash('success', "Successfully ".($hasDraft?'updated ':'added ')." {$institutionMedicalCenter->getMedicalCenter()->getName()} specialization.");
 
         return $this->redirect($this->generateUrl('institution_medicalCenter_addGallery', array('imcId' => $institutionMedicalCenter->getId())));
     }
 
     /**
      *
-     * Adds a procedure type to a draft institution medical center. This is called
+     * Adds a procedure type to a draft institution specialization. This is called
      * after the submitting the form in the THIRD STEP of adding/updating medical
      * centers.
      *
@@ -226,7 +226,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function saveProcedureTypeAction(Request $request)
     {
         if (!$request->get('imcId', 0)) {
-            throw $this->createNotFoundException("Invalid institution medical center id.");
+            throw $this->createNotFoundException("Invalid institution specialization id.");
         }
 
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
@@ -244,7 +244,7 @@ class MedicalCenterController extends InstitutionAwareController
             ));
         }
         $previousStatus = $institutionMedicalCenter->getStatus();
-        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::PENDING);
+        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterGroupStatus::PENDING);
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->persist($institutionMedicalCenter);
@@ -266,7 +266,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Deletes draft institution medical center. Related institution medical
+     * Deletes draft institution specialization. Related institution medical
      * procedure types are also deleted. Any associations to media files are
      * removed but the media itself is retained in the institution's media
      * library/gallery.
@@ -283,7 +283,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function deleteDraftAction(Request $request)
     {
         if (!$request->get('imcId', 0)) {
-            throw $this->createNotFoundException("Invalid institution medical center id.");
+            throw $this->createNotFoundException("Invalid institution specialization id.");
         }
 
         $this->get('services.institutionMedicalCenter')->deleteDraftInstitutionMedicalCenter($this->institution, $request->get('imcId'));
@@ -297,7 +297,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Displays form for editing an institution medical center
+     * Displays form for editing an institution specialization
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
      */
@@ -306,7 +306,7 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId', 0));
 
         if (!$institutionMedicalCenter) {
-            throw $this->createNotFoundException("Invalid institution medical center.");
+            throw $this->createNotFoundException("Invalid institution specialization.");
         }
         $form = $this->createForm(new InstitutionMedicalCenterType(), $institutionMedicalCenter);
 
@@ -317,7 +317,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Saves an institution medical center
+     * Saves an institution specialization
      *
      * Dispatches an event upon successful save.
      *
@@ -333,7 +333,7 @@ class MedicalCenterController extends InstitutionAwareController
         if ($imcId= $request->get('imcId', 0)) {
             $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
             if (!$institutionMedicalCenter) {
-                throw $this->createNotFoundException("Invalid institution medical center.");
+                throw $this->createNotFoundException("Invalid institution specialization.");
             }
         }
         else {
@@ -355,7 +355,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $institutionMedicalCenter
             );
 
-            $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} medical center.");
+            $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionMedicalCenter->getMedicalCenter()->getName()} specialization.");
 
             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $institutionMedicalCenter->getId())));
         }

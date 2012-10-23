@@ -14,6 +14,9 @@ services:
         abstract: true
         arguments: [@service_container]
         calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setEventFactory, [@events.factory]]
+            - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
             - [setDoctrine, [@doctrine]]

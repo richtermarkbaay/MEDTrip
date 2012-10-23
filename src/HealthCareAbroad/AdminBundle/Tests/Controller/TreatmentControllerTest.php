@@ -77,7 +77,7 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
     	// check of redirect url /admin/medical-procedure-types
-    	$this->assertEquals('/admin/procedure-type/edit/4', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/procedure-type/edit/5', $client->getResponse()->headers->get('location'));
 
     	// redirect request
 		$crawler = $client->followRedirect(true);

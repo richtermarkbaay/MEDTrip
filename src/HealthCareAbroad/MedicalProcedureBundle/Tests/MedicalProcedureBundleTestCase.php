@@ -21,6 +21,7 @@ abstract class MedicalProcedureBundleTestCase extends \PHPUnit_Framework_TestCas
     {
         \HCA_DatabaseManager::getInstance()
             ->restoreDatabaseState()
+            ->restoreAlertCouchDbState()
             ->restoreGlobalAccountsDatabaseState();
     }
     

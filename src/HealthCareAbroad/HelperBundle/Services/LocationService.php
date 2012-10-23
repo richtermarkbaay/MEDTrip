@@ -37,6 +37,7 @@ class LocationService
 
 	public function getListActiveCitiesByCountryId($countryId)
 	{
+	    $cities = array();
 		$result = $this->getActiveCitiesByCountryId($countryId);
 		foreach($result as $each)
 			$cities[] = array('id' => $each->getId(), 'name' => $each->getName());

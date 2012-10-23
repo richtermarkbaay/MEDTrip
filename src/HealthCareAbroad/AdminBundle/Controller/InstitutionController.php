@@ -11,7 +11,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentProcedureFormType;
@@ -132,8 +132,8 @@ class InstitutionController extends Controller
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionName' => $this->institution->getName(),
-            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
+            'centerStatusList' => InstitutionMedicalCenterGroupStatus::getStatusList(),
+            'updateCenterStatusOptions' => InstitutionMedicalCenterGroupStatus::getUpdateStatusOptions(), 
             'institutionMedicalCenters' => $this->filteredResult,
             'pager' => $this->pager
         );
@@ -148,7 +148,6 @@ class InstitutionController extends Controller
     public function addMedicalCenterAction()
     {
         $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-        $this->institutionMedicalCenter->setInstitution($this->institution);
 
         $form = $this->createForm(new InstitutionMedicalCenterType(), $this->institutionMedicalCenter);
 
@@ -178,8 +177,8 @@ class InstitutionController extends Controller
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
+            'centerStatusList' => InstitutionMedicalCenterGroupStatus::getStatusList(),
+            'updateCenterStatusOptions' => InstitutionMedicalCenterGroupStatus::getUpdateStatusOptions(),
             'formAction' => $formAction,
             'form' => $form->createView()
         );
@@ -209,7 +208,7 @@ class InstitutionController extends Controller
 
         if($form->isValid()) {
             if(!$request->get('imcId'))
-                $this->institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
+                $this->institutionMedicalCenter->setStatus(InstitutionMedicalCenterGroupStatus::INACTIVE);
 
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($this->institutionMedicalCenter);
@@ -263,7 +262,7 @@ class InstitutionController extends Controller
 
         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
         
-        if(!InstitutionMedicalCenterStatus::isValid($status)) {
+        if(!InstitutionMedicalCenterGroupStatus::isValid($status)) {
             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
 
             return $this->redirect($redirectUrl);
@@ -354,7 +353,7 @@ class InstitutionController extends Controller
             $event = $this->get('events.factory')->create($actionEvent, $this->institutionTreatment);
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', 'Successfully saved institution procedure type.');
+            $request->getSession()->setFlash('success', 'Successfully saved institution treatement.');
 
             $url = $this->generateUrl('admin_institution_medicalCenter_edit', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId(), 'imptId' => $this->institutionTreatment->getId()));
 
@@ -465,7 +464,7 @@ class InstitutionController extends Controller
             $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionTreatment->getTreatment()->getName()}\" procedure type.");
+            $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionTreatment->getTreatment()->getName()}\" treatment.");
 
             $params = array(
                  'institutionId' => $this->institution->getId(),

@@ -764,16 +764,16 @@ CREATE TABLE IF NOT EXISTS `log_classes` (
 -- Table structure for table `mail_queue`
 --
 
-DROP TABLE IF EXISTS `mail_queue`;
+
 CREATE TABLE IF NOT EXISTS `mail_queue` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `message_data` text NOT NULL COMMENT 'serialized message data',
+  `message_data` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'serialized message data',
   `send_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'when this message should be sent',
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `failed_attempts` int(10) unsigned DEFAULT '0' COMMENT 'number of failed attempts for this message',
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -849,7 +849,7 @@ INSERT INTO `treatment_procedures` (`id`, `treatment_id`, `name`, `slug`, `statu
 (1, 1, 'testProcedure1', 'testprocedure1', 1),
 (2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
 (3, 2, 'testProcedure2', 'testprocedure2', 1),
-(4, 1, 'Test Medical Procedure', 'test-medical-procedure', 1);
+(4, 1, 'Test Treatment Procedure', 'test-medical-procedure', 1);
 -- --------------------------------------------------------
 
 --

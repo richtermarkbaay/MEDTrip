@@ -16,13 +16,12 @@ class LanguageController extends Controller
 {
     /**
      * View All languages
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_LANGUAGE')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_LANGUAGE')")
      */
     public function indexAction()
     {
-    	$languageRepository = $this->getDoctrine()->getRepository('AdminBundle:Language');
     	
-    	$language = $languageRepository->getLatestlanguage();
+    	$language = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
     	
     	return $this->render('AdminBundle:Language:index.html.twig', array(
                 'Language' => $language
@@ -35,7 +34,7 @@ class LanguageController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New LanguageFormType(), new Language());
+        $form = $this->createForm(new LanguageFormType(), new Language());
 
         return $this->render('AdminBundle:Language:form.html.twig', array(
                 'form' => $form->createView(),
@@ -52,7 +51,7 @@ class LanguageController extends Controller
     {
     	$language = $this->getDoctrine()->getEntityManager()->getRepository('AdminBundle:Language')->find($id);
     
-    	$form = $this->createForm(New LanguageFormType(), $language);
+    	$form = $this->createForm(new LanguageFormType(), $language);
     
     	return $this->render('AdminBundle:Language:form.html.twig', array(
     					'id' => $id,
@@ -63,18 +62,22 @@ class LanguageController extends Controller
     }
     
     /**
-     * Save added language
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_LANGUAGE')")
      */
     public function saveAction()
     {
     	$request = $this->getRequest();
-    
+        if('POST' != $request->getMethod()) {
+            return new Response("Save requires POST method!", 405);
+        }
+        
     	$id = $request->get('id', null);
     	$em = $this->getDoctrine()->getEntityManager();
+    	
     	$language = $id ? $em->getRepository('AdminBundle:Language')->find($id) : new Language();
-    	$form = $this->createForm(New LanguageFormType(), $language);
-    	$form->bind($request);
+    	
+    	$form = $this->createForm(new LanguageFormType(), $language);
+    		$form->bind($request);
     
     	if ($form->isValid()) {
     
@@ -111,8 +114,9 @@ class LanguageController extends Controller
     	$language = $em->getRepository('AdminBundle:Language')->find($id);
     
     	if ($language) {
-    		$language->setStatus($language->getStatus() ? 0 : 1);
-    
+    		
+    		$language->setStatus($language->getStatus() ? $language::STATUS_INACTIVE : $language::STATUS_ACTIVE);
+    	
     		$em->persist($language);
     		$em->flush($language);
     

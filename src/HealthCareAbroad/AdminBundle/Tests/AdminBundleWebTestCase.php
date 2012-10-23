@@ -36,6 +36,7 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	{
 		\HCA_DatabaseManager::getInstance()
 		->restoreDatabaseState()
+		->restoreAlertCouchDbState()
 		->restoreGlobalAccountsDatabaseState()
 		;
 	}

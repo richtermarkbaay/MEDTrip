@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\AlertService;
+
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -27,10 +29,12 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-
+        $accountId = $this->getRequest()->getSession()->get('accountId');
         $alertService = $this->container->get('services.alert');
-        $alerts = $alertService->getAdminAlerts();
+        $alerts = $alertService->getAdminAlerts($accountId);
         $pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
+        $expiredListingAlerts = isset($alerts[AlertTypes::EXPIRED_LISTING]) ? $alerts[AlertTypes::EXPIRED_LISTING] : array();
+
 
 //         $mailer = $this->get('mailer');
 //         $message = \Swift_Message::newInstance()
@@ -41,7 +45,8 @@ class DefaultController extends Controller
 //         $sendResult = $mailer->send($message);
 //         exit;
         $params = array(
-            'pendingListingAlerts' => $pendingListingAlerts
+            'pendingListingAlerts' => $pendingListingAlerts,
+            'expiredListingAlerts' => $expiredListingAlerts,
         );
 
         return $this->render('AdminBundle:Default:index.html.twig', $params);
@@ -57,9 +62,9 @@ class DefaultController extends Controller
 
     public function removeAlertAction($id, $rev)
     {
-        $result = json_encode($this->get('services.alert')->delete($id, $rev));
+        $result = $this->get('services.alert')->delete($id, $rev);
 
-        $response = new Response($result);
+        $response = new Response(json_encode($result));
         $response->headers->set('Content-Type', 'application/json');
         
         return $response;

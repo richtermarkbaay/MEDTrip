@@ -8,7 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
 
+use HealthCareAbroad\FrontendBundle\Entity\NewsletterSubscriber;
+
 use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
+
+use HealthCareAbroad\FrontendBundle\Form\NewsletterSubscriberFormType;
 
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
 
@@ -18,12 +22,62 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-
 class DefaultController extends Controller
 {
+
     public function indexAction()
     {
-        return $this->render('FrontendBundle:Default:index.html.twig', array());
+    	//$request = $this->container->get('request');
+    	
+    	// this is the matched route
+    	//$pathUrl = $request->getPathInfo();
+    	
+    	$form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
+  
+    		return $this->render('::splash.frontend.html.twig', array(
+    						'form' => $form->createView(),
+    		));
+    }
+    
+    /*
+     * Newsletter subscribe
+     * @author Chaztine Blance
+     */
+    public function newAction()
+    {
+    	//get IP Address
+    	$ipAddress = $this->getRequest()->getClientIp();
+    	
+    	$request = $this->getRequest();
+    	$em = $this->getDoctrine()->getEntityManager();
+    	
+    	$newsletterSubscriber = new NewsletterSubscriber();
+    	$form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+
+    	if ($request->isMethod('POST')) {
+    		$form->bind($request);
+    	
+    		if ($form->isValid()) {
+    	
+    			try {
+    				  	$newsletterSubscriber->setIpAddress($ipAddress);
+			    		$em->persist($newsletterSubscriber);
+			    		$em->flush($newsletterSubscriber);
+				    	
+			    		$this->get('session')->setFlash('success', "Successfully Subscribe to HealthCareAbroad");
+    			}
+    			catch (\Exception $e) {
+    				
+    				$request->getSession()->setFlash("error", "Failed. Please try again.");
+    				$redirectUrl = $this->generateUrl("main_homepage");
+    			}
+    		}
+    	}
+    	
+    	return $this->render('::splash.frontend.html.twig', array(    					 
+    					'form' => $form->createView(),
+    	));
+   
     }
 
     /**************************************************************************

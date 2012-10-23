@@ -1,0 +1,34 @@
+HealthCareAbroad\HelperBundle\Entity\CommandScriptLog:
+    type: entity
+    table: command_script_logs
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\CommandScriptLogRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        scriptName:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            column: script_name
+        description:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+        lastRunDate:
+            type: datetime
+            nullable: false
+            column: last_run_date
+        attempts:
+            type: smallint
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

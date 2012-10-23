@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 class InstitutionMedicalCenterListFilter extends ListFilter
 {
@@ -14,9 +14,9 @@ class InstitutionMedicalCenterListFilter extends ListFilter
         $statusFilterOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
 
         if (isset($this->queryParams['isInstitutionContext']) && $this->queryParams['isInstitutionContext']) {
-            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusListForInstitutionContext();
+            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusListForInstitutionContext();
         } else {
-            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusList();
+            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusList();
         }
 
         $this->setStatusFilterOption($statusFilterOptions);
@@ -24,9 +24,8 @@ class InstitutionMedicalCenterListFilter extends ListFilter
 
     public function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
+        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenterGroup', 'a');
         $this->queryBuilder->where('a.institution = :institutionId');
-        $this->queryBuilder->leftJoin('a.medicalCenter', 'b');
         $this->queryBuilder->setParameter('institutionId', $this->queryParams['institutionId']);
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
@@ -34,12 +33,12 @@ class InstitutionMedicalCenterListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        if(!$this->sortBy || $this->sortBy == 'medicalCenter') {
-            $sort = 'b.name ' . $this->sortOrder;
-        } else {
-            $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;            
-        }
+//         if(!$this->sortBy || $this->sortBy == 'medicalCenter') {
+//             $sort = 'b.name ' . $this->sortOrder;
+//         } else {
+//             $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;            
+//         }
 
-        $this->queryBuilder->add('orderBy', $sort);
+//         $this->queryBuilder->add('orderBy', $sort);
     }
 }

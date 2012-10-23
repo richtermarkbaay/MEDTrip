@@ -28,31 +28,62 @@
                         {{ form_row(form.country) }}
                         
                         {{ form_row(form.city)}}
-                        
+                        {{ form_row( form.zipCode ) }}
+                                                
                         {{ form_row( form.address1 ) }}
                         {{ form_row( form.address2 ) }}
+                        
+                        {{ form_row( form.contactEmail ) }}
+
+                        
                         <div>
-                        <label>Languages Spoken</label>
-                        <input type="text" value="" id="languageButton">             			
+                            {% set arrContactNumber = json_decode(institution.contactNumber) %}
+
+                            {% if not arrContactNumber|length %}
+                                {% set arrContactNumber = [{"number" : "", "type": ""}] %}
+                            {% endif %}
+                        
+                            {{ form_label(form.contactNumber) }}
+
+                            <div style="margin-bottom: 5px;display:inline-block;" id="contactNumberContainer">
+                                {% for i, contact in arrContactNumber %}
+                                    <div id="contact-{{ i }}">
+                                        <input type="text" name="contactNumber[{{ i }}][number]" value="{{ contact.number}}">
+                                        <a href="javascript:addAnotherContact()" class="add-another-number"> add another</a> 
+                                        <span class="bar"> | </span> 
+                                        <a href="javascript:removeContact({{ i }})" class="remove-contact">remove</a>
+                                        <div style="margin-top: 3px;font-size: 11px;padding-left:5px;">
+                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="phone" id="phone{{ i }}" {{ ('phone' == contact.type) or ('' == contact.type) ? 'checked' : '' }}><label for="phone{{ i }}">Phone</label> &nbsp;
+                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="mobile" id="mobile{{ i }}" {{ 'mobile' == contact.type ? 'checked' : '' }}><label for="mobile{{ i }}">Mobile</label> &nbsp;
+                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="fax"  id="fax{{ i }}" {{ 'fax' == contact.type ? 'checked' : '' }}><label for="fax{{ i }}">Fax</label>
+                                        </div>
+                                    </div> 
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label>Languages Spoken</label>
+                            <input type="text" value="" id="languageButton">             			
              			</div>
-             			<div>
              			
+             			<div>             			
              				<div id="tags">
              				{% if institutionLanguage %}
-	             			{% for language in institutionLanguage %}
-	                			<a href="#" id="language{{ language.id }}" class="click" > {{ language.name }}</a>
-                			{% endfor %}
-	                		{% else %}
-	                			
+    	             			{% for language in institutionLanguage %}
+    	                			<a href="#" id="language{{ language.id }}" class="click" > {{ language.name }}</a>
+                    			{% endfor %}
 	                		{% endif %}
                 			</div>
                 		</div>
+
              			{{ form_row( form.institutionLanguagesSpoken ) }}
-						<input type="reset" value="Reset" class="form-reset"  />
-						<input type="submit" name="submit" value="Submit" class="green-button" />                        
+
                         {{ form_rest(form) }}
-                		
-                    
+
+						<input type="reset" value="Reset" class="form-reset"  />
+						<input type="submit" name="submit" value="Submit" class="green-button" />
+
                     <!-- end id-form  -->
                 </form>
             </div>
@@ -67,8 +98,8 @@
 <div class="clear">&nbsp;</div>
 {% endblock %}
 
-	{% block javascripts %}
-	<script src="{{ asset('bundles/helper/js/Autocomplete.js') }}"></script>
+	{% block inlineJavascriptCode %}
+	    <script src="{{ asset('bundles/helper/js/Autocomplete.js') }}"></script>
 		<script type="text/javascript">
 
 		$(function() {
@@ -77,15 +108,38 @@
 			var inputAutoLanguage = "#languageButton";
 			var selectedTags = [];
 	
-	        	var params = {
-	                	availableTags: availableLang,
-	                	selectedTags : selectedTags,
-	                	inputHiddenField :inputHiddenField,
-	                	inputAutoLanguage :inputAutoLanguage
-	        		};
-	        	LanguageAuto.init(params);
+        	var params = {
+                	availableTags: availableLang,
+                	selectedTags : selectedTags,
+                	inputHiddenField :inputHiddenField,
+                	inputAutoLanguage :inputAutoLanguage
+        		};
+        	LanguageAuto.init(params);
+
+        	$('#contactNumberContainer > :first-child').find('.bar, .remove-contact:first').hide();
 		});
-		
+
+    	function addAnotherContact()
+    	{
+    	    var $lastElemContact = $('#contactNumberContainer > :last-child');
+    	    var i = parseInt($lastElemContact.attr('id').split('-').pop()) + 1;
+    	    var $newContact = $lastElemContact.clone().attr('id', 'contact-'+ i);
+
+    	    var radioBtnName = 'contactNumber[' + i + '][type]';
+
+            $newContact.find('input:text').attr('name', 'contactNumber[' + i + '][number]').val('');
+            $newContact.find('.bar, .remove-contact').show();
+            $newContact.find('.remove-contact').attr('href', 'javascript:removeContact('+ i +')');
+            $newContact.find('input:radio[value=phone]').attr('id', 'phone' + i).attr('name', radioBtnName).next().attr('for', 'phone'+i);
+            $newContact.find('input:radio[value=mobile]').attr('id', 'mobile' + i).attr('name', radioBtnName).next().attr('for', 'mobile'+i);
+            $newContact.find('input:radio[value=fax]').attr('id', 'fax' + i).attr('name', radioBtnName).next().attr('for', 'fax'+i);
+
+    	    $('#contactNumberContainer').append($newContact);
+    	}
+
+    	function removeContact(i)
+    	{
+    		$('#contact-' + i).remove();
+    	}
 		</script>	
 	{% endblock %}
-

@@ -1,5 +1,5 @@
 
-#### -- all routes will now be from the medical center context
+#### -- all routes will now be from the specialization context
 ##
 
 #institution_treatment_index:
@@ -33,7 +33,7 @@
 #        _method: POST
 ####
 
-## --- routes from medical center
+## --- routes from specialization
 institution_medicalCenter_addProcedureType:
     pattern: /medical-centers/edit/{imcId}/medical-procedure-types/add
     defaults: { _controller: InstitutionBundle:Treatment:add }

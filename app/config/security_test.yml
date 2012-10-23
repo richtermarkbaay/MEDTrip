@@ -18,7 +18,7 @@ security:
                 users:
                     admin_authorized: { password: 123456, roles: ['SUPER_ADMIN', 'ROLE_ADMIN'] }
                     admin_not_authorized: { password: 123456, roles: 'ROLE_ADMIN' }
-                    institution_authorized: { password: 123456, roles: 'SUPER_ADMIN' }
+                    institution_authorized: { password: 123456, roles: ['SUPER_ADMIN', 'INSTITUTION_USER'] }
                     institution_not_authorized: {password: 123456, roles: 'INSTITUTION_USER' }
     
     firewalls:

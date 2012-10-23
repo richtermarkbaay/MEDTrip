@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -40,9 +40,16 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment')->getByInstitutionMedicalCenter($institutionMedicalCenter);
     }
+    
+    public function save(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionMedicalCenter);
+        $em->flush();
+    }
 
     /**
-     * Remove draft institution medical center and associated procedure types
+     * Remove draft institution specialization and associated procedure types
      *
      * @param Institution $institution
      * @param int $institutionMedicalCenterId
@@ -56,11 +63,11 @@ class InstitutionMedicalCenterService
         //TODO: check that the institution owns the center.
         $center = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
 
-        if (InstitutionMedicalCenterStatus::DRAFT != $center->getStatus()) {
+        if (InstitutionMedicalCenterGroupStatus::DRAFT != $center->getStatus()) {
             throw new Exception('Delete operation not allowed.');
         }
 
-        //NOTE: Supposedly a DRAFT institution medical center will have no procedure types
+        //NOTE: Supposedly a DRAFT institution specialization will have no procedure types
         // so the loop below will never run. But this specification can change.
         //TODO: Use DQL DELETE statement to delete multiple entities of a type with a single command and without hydrating these entities
         foreach($center->getInstitutionTreatments() as $entity) {

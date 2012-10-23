@@ -64,6 +64,7 @@ class AppKernel extends Kernel
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new HealthCareAbroad\AdvertisementBundle\AdvertisementBundle(),
             new HealthCareAbroad\MemcacheBundle\MemcacheBundle(),
+            new HealthCareAbroad\DoctorBundle\DoctorBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
