@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
@@ -77,21 +79,50 @@ class InstitutionSignUpController  extends Controller
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createByType($institutionType);
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
-	    $s = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalGroupNetworkMember')->findBy(array('name' => 'ako ini'));
-	    //$s = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy(array('name' => 'ako ini'));
-	    //var_dump($s); exit;
 	    
 	    if ($request->isMethod('POST')) {
 	        $form->bind($request);
 	            
 	        if ($form->isValid()) {
 	            
+	            $institution = $form->getData();
+	            
+	            // initialize required database fields
+	            $institution->setAddress1('');
+	            $institution->setAddress2('');
+	            $institution->setContactEmail('');
+	            $institution->setContactNumber('');
+	            $institution->setDescription('');
+	            $institution->setLogo('');
+	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	            $institution->setZipCode('');
+	            $factory->save($institution);
+	            
+	            // create Institution user
+	            $institutionUser = new InstitutionUser();
+	            $institutionUser->setEmail($form->get('email')->getData());
+	            $institutionUser->setFirstName($institution->getName());
+	            $institutionUser->setLastName('Admin');
+	            $institutionUser->setPassword($form->get('password')->getData());
+	            $institutionUser->setInstitution($institution);
+	            $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
+	             
+	            // dispatch event
+	            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
+                ));
+	            
+	            // auto login
+	            $this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData());
+	            
+	            return $this->redirect($this->generateUrl('institution_homepage'));
 	        }
 	    }
 	    
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
-            'institutionTypes' => InstitutionTypes::getList()
+            'institutionTypes' => InstitutionTypes::getList(),
+            'selectedInstitutionType' => $institutionType,
         ));
 	}
 	

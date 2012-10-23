@@ -19,7 +19,7 @@
                             
                             {% for key, type in institutionTypes %}
                                 <label>
-                                    <input type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
+                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
                                 </label>
                                 <div id="div1" class="tab"></div>    
                             {% endfor %}
