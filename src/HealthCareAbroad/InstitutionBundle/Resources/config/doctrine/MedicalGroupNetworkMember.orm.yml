@@ -1,0 +1,5 @@
+HealthCareAbroad\InstitutionBundle\Entity\MedicalGroupNetworkMember:
+    type: entity
+    table: null
+    lifecycleCallbacks: {}
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionRepository

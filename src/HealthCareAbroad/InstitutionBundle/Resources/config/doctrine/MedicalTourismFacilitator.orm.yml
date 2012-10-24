@@ -1,0 +1,4 @@
+HealthCareAbroad\InstitutionBundle\Entity\MedicalTourismFacilitator:
+    type: entity
+    table: null
+    lifecycleCallbacks: {}

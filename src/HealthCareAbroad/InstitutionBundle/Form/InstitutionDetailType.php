@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
 
 use Symfony\Component\Form\AbstractType;
@@ -20,12 +22,19 @@ use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
 
 class InstitutionDetailType extends AbstractType
 {
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'validation_groups' => array('editInstitutionInformation', 'Default')
+        ));
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {	
     	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
     	$builder->addEventSubscriber($subscriber);
-    	$countryId = $builder->getData()->getCountry()->getId();
+    	 
+    	$countryId = ($country =$builder->getData()->getCountry()) ? $country->getId() : 0;
     	
     	$builder->add('name', 'text');
     	$builder->add('description');

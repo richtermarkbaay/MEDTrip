@@ -1,4 +1,4 @@
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionGroup:
+HealthCareAbroad\InstitutionBundle\Entity\MedicalGroupNetwork:
     type: entity
     table: institution_groups
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionGroupRepository
@@ -25,4 +25,20 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionGroup:
         status:
             type: smallint
             nullable: false
+    manyToMany:
+        institutions:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name: institution_to_medical_group_networks
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: medical_group_network_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

@@ -5,7 +5,11 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use HealthCareAbroad\UserBundle\Form\InstitutionUserFormType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
@@ -15,7 +19,6 @@ use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -62,59 +65,62 @@ class InstitutionSignUpController  extends Controller
 	}
 	
 	/**
-	 * register/create institutions
+	 * Sign up page handler
+	 * 
+	 * @param Request $request
 	 */
 	public function signUpAction(Request $request)
 	{
-		$form = $this->createForm(new InstitutionType(), new Institution());
-		$userForm = $this->createForm(new InstitutionUserFormType(), new InstitutionUser());
-		
-		if ($request->isMethod('POST')) {
-            
-            $form->bind($request);
-            $userForm->bind($request);
-            
-            if ($form->isValid() && $userForm->isValid()) {
-            	
-                $institution = $this->get('services.institution')->create($form->getData());
-                
-                
-            	if(!$institution instanceof Institution) {
-           	    	
-           	    	//TODO:: send notification to hca admin
-           	    	$this->get('session')->setFlash('notice', "Unable to create account.");
-           	    	
-           	    	return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
-           	    			'form' => $form->createView()
-           	    	));
-           	    }
-           	    
-           	    // set values for institutionUser
-           	    $user = $userForm->getData();
-           	    $user->setPassword($userForm->get('password')->getData());
-           	    $user->setInstitution($institution);
-           	    $user->setStatus(SiteUser::STATUS_ACTIVE);
-           	    
-           	    // dispatch create institution event
-           	    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION, 
-                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $user)
+	    $institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
+	    $factory = $this->get('services.institution.factory');
+	    $institution = $factory->createByType($institutionType);
+	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
+	    
+	    if ($request->isMethod('POST')) {
+	        $form->bind($request);
+	            
+	        if ($form->isValid()) {
+	            
+	            $institution = $form->getData();
+	            
+	            // initialize required database fields
+	            $institution->setAddress1('');
+	            $institution->setAddress2('');
+	            $institution->setContactEmail('');
+	            $institution->setContactNumber('');
+	            $institution->setDescription('');
+	            $institution->setLogo('');
+	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	            $institution->setZipCode('');
+	            $factory->save($institution);
+	            
+	            // create Institution user
+	            $institutionUser = new InstitutionUser();
+	            $institutionUser->setEmail($form->get('email')->getData());
+	            $institutionUser->setFirstName($institution->getName());
+	            $institutionUser->setLastName('Admin');
+	            $institutionUser->setPassword($form->get('password')->getData());
+	            $institutionUser->setInstitution($institution);
+	            $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
+	             
+	            // dispatch event
+	            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
                 ));
-           	    
-           	    $this->get('session')->setFlash('success', "Successfully created account to HealthCareaAbroad");
-           	    
-           	    //login to institution
-           	    $this->get('services.institution_user')->login($user->getEmail(), $userForm->get('password')->getData());
-           	    
-           	    return $this->redirect($this->generateUrl('institution_edit_information'));
-            }
-		}
-		
-		return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
-			'form' => $form->createView(),
-            'userForm' => $userForm->createView()
-		));
+	            
+	            // auto login
+	            $this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData());
+	            
+	            return $this->redirect($this->generateUrl('institution_homepage'));
+	        }
+	    }
+	    
+	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
+            'form' => $form->createView(),
+            'institutionTypes' => InstitutionTypes::getList(),
+            'selectedInstitutionType' => $institutionType,
+        ));
 	}
-	
 	
 }
 ?>
