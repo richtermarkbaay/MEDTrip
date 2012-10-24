@@ -5,26 +5,20 @@ use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
 class FeaturedListingAdvertisement extends Advertisement
 {
+    
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
      */
     private $object;
-    
-    protected $typeLabel = 'Featured Listing';
-    
-    public function __construct()
-    {
-        $this->type = AdvertisementTypes::FEATURED_LISTING;
-    }
 
 
     /**
      * Set object
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $object
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $object
      * @return FeaturedListingAdvertisement
      */
-    public function setObject(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $object = null)
+    public function setObject(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $object = null)
     {
         $this->object = $object;
         return $this;
@@ -33,7 +27,7 @@ class FeaturedListingAdvertisement extends Advertisement
     /**
      * Get object
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup 
      */
     public function getObject()
     {
