@@ -1,78 +1,78 @@
 ## imcId variable is institution_medical_center.id
 institution_medicalCenter_index:
-    pattern: /medical-centers
+    pattern: /specializations
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
     requirements:
         _method:  GET
 
 institution_medicalCenter_deleteDraft:
-    pattern: /medical-centers/deleteDraft/{imcId}
+    pattern: /specializations/deleteDraft/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:deleteDraft }
     requirements:
         _method:  GET
         imcId: \d+
 
 institution_medicalCenter_add:
-    pattern: /medical-centers/add
+    pattern: /specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:add }
     requirements:
         _method: GET
 
 institution_medicalCenter_add_save:
-    pattern: /medical-centers/add
+    pattern: /specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:saveDraft }
     requirements:
         _method:  POST
 
 institution_medicalCenter_editDraft:
-    pattern: /medical-centers/add/{imcId}
+    pattern: /specializations/add/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:add }
     requirements:
         _method: GET
         imcId: \d+
 
 institution_medicalCenter_addGallery:
-    pattern: /medical-centers/add/gallery/{imcId}
+    pattern: /specializations/add/gallery/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:addGallery }
     requirements:
         _method: GET
         imcId: \d+
 
 institution_medicalCenter_addProcedureTypes:
-    pattern: /medical-centers/add/procedure-types/{imcId}
+    pattern: /specializations/add/procedure-types/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:addProcedureTypes }
     requirements:
         _method: GET
         imcId: \d+
 
 institution_medicalCenter_preview:
-    pattern: /medical-centers/add/preview/{imcId}
+    pattern: /specializations/add/preview/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:preview }
     requirements:
         _method: GET
         imcId: \d+
 
 institution_medicalCenter_saveProcedureType:
-    pattern: /medical-centers/add/procedure-types/{imcId}
+    pattern: /specializations/add/procedure-types/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:saveProcedureType }
     requirements:
         _method: POST
         imcId: \d+
 
 institution_medicalCenter_edit:
-    pattern: /medical-centers/edit/{imcId}
+    pattern: /specializations/edit/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
     requirements:
         _method: GET
 
 institution_medicalCenter_edit_save:
-    pattern: /medical-centers/edit/{imcId}
+    pattern: /specializations/edit/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:save }
     requirements:
         _method: POST
 
 institution_loadTreatments:
-    pattern:  /medical-centers/load-procedure-types
+    pattern:  /specializations/load-procedure-types
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadProcedureTypes, medical_center_id: ~ }
     requirements:
         medical_center_id: \d+

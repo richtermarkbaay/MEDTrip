@@ -2,39 +2,60 @@ parameters:
     services.user_class: HealthCareAbroad\UserBundle\Services\UserService
     services.institution_user_class: HealthCareAbroad\UserBundle\Services\InstitutionUserService
     services.admin_user_class: HealthCareAbroad\UserBundle\Services\AdminUserService
+    services.twig_user_class: HealthCareAbroad\UserBundle\Services\TwigUserService
+
+    services.user_provider_class: HealthCareAbroad\UserBundle\Services\ChromediaAccountsUserProvider
+    services.admin_user_provider_class: HealthCareAbroad\UserBundle\Services\AdminUserProvider
+    services.institution_user_provider_class: HealthCareAbroad\UserBundle\Services\InstitutionUserProvider
 
 services:
     services.user:
         class: %services.user_class%
-        calls: 
+        abstract: true
+        arguments: [@service_container]
+        calls:
+            - [setEventDispatcher, [@event_dispatcher]]
+            - [setEventFactory, [@events.factory]]
+            - [setDoctrine, [@doctrine]]
             - [setChromediaRequest, [@services.chromedia_request]]
             - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            
+            - [setDoctrine, [@doctrine]]
+            - [setSession, [@session]]
+            #- [setSecurityContext, [@security.context]]
+
     services.institution_user:
         class: %services.institution_user_class%
-        calls:
-            - [setEventDispatcher, [@event_dispatcher]]
-            - [setEventFactory, [@events.factory]]
-            - [setDoctrine, [@doctrine]]
-            - [setChromediaRequest, [@services.chromedia_request]]
-            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            - [setSession, [@session]]
-            - [setSecurityContext, [@security.context]]
+        parent: services.user
+
     services.admin_user:
         class: %services.admin_user_class%
-        calls:
-            - [setEventDispatcher, [@event_dispatcher]]
-            - [setEventFactory, [@events.factory]]
-            - [setDoctrine, [@doctrine]]
-            - [setChromediaRequest, [@services.chromedia_request]]
-            - [setChromediaAccountsUri, [%chromedia_accounts_uri%]]
-            - [setSession, [@session]]
-            - [setSecurityContext, [@security.context]]
-            
+        parent: services.user
+
+    services.twig_user:
+        class: %services.twig_user_class%
+        parent: services.user
+
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
         calls:
-            - [setUserService, [@services.user]]
+            - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
+
+    services.user_provider:
+        class: %services.user_provider_class%
+        abstract: true
+        arguments: [@service_container]
+
+    services.admin_user_provider:
+        class: %services.admin_user_provider_class%
+        parent: services.user_provider
+        calls:
+            - [setUserService, [@services.admin_user]]
+
+    services.institution_user_provider:
+        class: %services.institution_user_provider_class%
+        parent: services.user_provider
+        calls:
+            - [setUserService, [@services.institution_user]]

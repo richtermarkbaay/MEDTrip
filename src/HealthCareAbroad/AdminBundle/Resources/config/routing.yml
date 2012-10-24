@@ -1,9 +1,8 @@
-
-# Routes for Admin MedicalCenterController #
+# Routes for Admin SpecializationsController #
 AdminBundle_medicalCenter:
-    resource: "@AdminBundle/Resources/config/routing_medicalCenter.yml"
+    resource: "@AdminBundle/Resources/config/routing_specialization.yml"
     prefix:   /
-    
+
 # Routes for Admin AdvertisementController #
 AdminBundle_advertisement:
     resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
@@ -11,12 +10,17 @@ AdminBundle_advertisement:
 
 # Routes for Admin TreatmentController #
 AdminBundle_treatment:
-    resource: "@AdminBundle/Resources/config/routing_procedureType.yml"
+    resource: "@AdminBundle/Resources/config/routing_treatment.yml"
     prefix:   /
 
 # Routes for Admin MedicalProcedureController #
 AdminBundle_treatmentProcedure:
     resource: "@AdminBundle/Resources/config/routing_treatmentProcedure.yml"
+    prefix:   /
+
+# Routes for Admin AdvertisementController #
+AdminBundle_advertisement:
+    resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
     prefix:   /
 
 # Routes for Admin InstitutionController #
@@ -33,17 +37,17 @@ AdminBundle_country:
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"
     prefix:   /
-    
+
 # Routes for Admin NewsController #
 AdminBundle_news:
     resource: "@AdminBundle/Resources/config/routing_news.yml"
     prefix:   /
-    
+
 # Routes for Admin LanguageController #
 AdminBundle_language:
     resource: "@AdminBundle/Resources/config/routing_language.yml"
     prefix:   /
-    
+
 # Routes for Admin OfferedServiceController #
 AdminBundle_offered_service:
     resource: "@AdminBundle/Resources/config/routing_offered_service.yml"
@@ -53,27 +57,30 @@ AdminBundle_offered_service:
 AdminBundle_settings:
     resource: "@AdminBundle/Resources/config/routing_settings.yml"
     prefix:   /
-    
-# vier edit    
+
+# vier edit
 admin_showEditHistory:
     pattern: /admin/edit-history
     defaults: { _controller: AdminBundle:Default:showEditHistory }
     requirements:
         _method: GET
-        objectId: \d+    
+        objectId: \d+
 
 admin_inquire:
     pattern: /admin/inquiries
     defaults: { _controller: AdminBundle:Inquiry:index }
-    requirements:    
+    requirements:
         _method:  GET
-        
+
 admin_login:
     pattern: /admin/login
     defaults: { _controller: AdminBundle:AdminUser:login }
-    requirements:    
+    requirements:
         _method:  GET|POST
-        
+
+admin_login_check:
+    pattern:   /admin/login-check
+
 admin_edit_account:
     pattern: /admin/edit-account
     defaults: { _controller: AdminBundle:AdminUser:editAccount }
@@ -84,12 +91,12 @@ admin_change_password:
     pattern: /admin/change-password
     defaults: { _controller: AdminBundle:AdminUser:changePassword}
     requirements:
-        _method: GET|POST   
+        _method: GET|POST
 admin_logout:
     pattern:  /admin/logout
-    defaults: { _controller: AdminBundle:AdminUser:logout }
-    requirements:    
-        _method:  GET
+    #defaults: { _controller: AdminBundle:AdminUser:logout }
+    #requirements:
+    #    _method:  GET
 
 admin_tagHomepage:
     pattern:  /admin/tags

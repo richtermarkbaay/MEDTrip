@@ -20,13 +20,17 @@ framework:
 # Twig Configuration
 twig:
     debug:            %kernel.debug%
-    strict_variables: %kernel.debug%                
+    strict_variables: %kernel.debug%
     exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
     globals:
-        site_name: HealthCareAbroad.com
+        site_url: %site_url%
+        site_name: %site_name%
+        cfe_site_url: %cfe_site_url%
+        cfe_site_name: %cfe_site_name%
+        cfe_company_name: %cfe_company_name%
         tinymce:
             textarea_class: %tinymce_textarea_class%
-            theme: 
+            theme:
                 simple: %tinymce_simple_theme%
                 advanced: %tinymce_advanced_theme%
                 medium: %tinymce_medium_theme%
@@ -59,7 +63,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         auto_mapping: true
-        
+
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -74,8 +78,14 @@ stfalcon_tinymce:
     include_jquery: false
     tinymce_jquery: true
     textarea_class: %tinymce_textarea_class%
-    theme: 
+    theme:
         simple: %tinymce_simple_theme%
         advanced: %tinymce_advanced_theme%
         medium: %tinymce_medium_theme%
         bbcode: %tinymce_bbcode_theme%
+
+jms_debugging:
+    # You can set this to true if you want to automatically retrieve help
+    # messages for public exceptions. If you leave this set to false, you have
+    # to click the "search" button manually each time.
+    auto_help: false

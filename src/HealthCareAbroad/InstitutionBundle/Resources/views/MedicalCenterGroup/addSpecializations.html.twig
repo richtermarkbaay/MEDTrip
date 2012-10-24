@@ -1,0 +1,82 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+
+{% block content %}
+
+<style>
+    .institutionTreatmentProcedures {
+        width:378px;
+        height:180px !important
+    }
+</style>
+
+<!-- start content -->
+<div class="container">
+	
+			<h2 style="padding:7px 20px 5px 15px">
+	            {% set hasDraft = hasDraft is defined and hasDraft %}
+	            {% if hasDraft %}
+	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	            {% else %}
+	                Add Medical Center
+	            {% endif %}
+			</h2>
+			 <div class="row-fluid">
+			    <div class="span12">
+			            <div class="tabbable">
+			            {% include '::notice.admin.html.twig' %}
+					
+							    {% include '::stepHolderClient.base.admin.html.twig' with {
+					                    steps: [
+					                        {title: '- Center Details'},
+					                        {title: '- Specialization, Sub-specialization and Treatments', 'selected': true},
+					                        {title: '- Assigned Doctors'},
+					                        {title: '- Preview', 'selected': false},
+					                 ]}
+					              %}
+			
+							<div class="tab-content">
+								<h4>General Information of the Institution</h4>
+				                           <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+                                        
+                                        {{ form_errors(form) }}
+                                        
+					                    {{ form_row(form.medicalCenter) }}
+					                    
+					                    {{ form_row(form.treatmentProcedures ,{'name': 'wata[]'}) }}
+					                    
+					                    {{ form_row(form.description) }}
+					                    
+					                    {{ form_rest(form) }}
+				
+				                    <input type="submit" name="submit" value="Save and Add Another" class="btn btn-primary" />
+				
+				                </form>
+								
+							</div><!-- /.tab-content -->
+						</div>
+			    	</div><!--/span-->
+			  </div><!--/row-->
+		
+		<div class="clear"></div>
+ 
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+            InstitutionMedicalCenterGroup.initSpecializationsForm({
+                'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenterGroup_loadAvailableSpecializations", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
+                'loadInstitutionTreatmentProceduresUri' : '{{ path("institution_medicalCenterGroup_loadAvailableTreatments", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
+                'institutionMedicalCenterField': $('#institutionMedicalCenter_medicalCenter'),
+                'institutionTreatmentProcedureField': $('#institutionMedicalCenter_treatmentProcedures')
+            });
+            
+        });
+    </script>
+{% endblock %}

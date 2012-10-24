@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+
 use Doctrine\ORM\QueryBuilder;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -87,6 +89,13 @@ class MediaService
         if ($proceed) {
 
             $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
+
+            if (is_null($gallery)) {
+                $gallery = new Gallery();
+                $gallery->setInstitution($this->entityManager->getRepository('InstitutionBundle:Institution')->find($institutionId));
+
+            }
+
             $gallery->addMedia($media);
 
             $mediaEntity = null;

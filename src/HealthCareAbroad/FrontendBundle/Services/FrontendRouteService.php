@@ -139,7 +139,12 @@ class FrontendRouteService
         return $route;
     }
 
-    private function extrapolateControllerFromVariables($variables)
+    /**
+     * @todo: move to an external class
+     * @param array $variables
+     * @return string
+     */
+    private function extrapolateControllerFromVariables(array $variables)
     {
         $controller = '';
 
@@ -150,7 +155,7 @@ class FrontendRouteService
                 break;
 
             case 3:
-                if (isset($variables['procedureTypeId'])) {
+                if (isset($variables['treatmentId'])) {
                     $controller = 'FrontendBundle:Default:listTreatmentsForCenter';
                 } else if (isset($variables['cityId'])) {
                     $controller = 'FrontendBundle:Default:listCentersForCity';
@@ -159,7 +164,7 @@ class FrontendRouteService
                 break;
 
             case 4:
-                if (isset($variables['procedureTypeId'])) {
+                if (isset($variables['treatmentId'])) {
                     $controller = 'FrontendBundle:Default:viewTreatment';
                 } else if (isset($variables['institutionId'])) {
                     $controller = 'FrontendBundle:Default:clinicProfile';
@@ -180,7 +185,7 @@ class FrontendRouteService
     }
 
     /**
-     * @todo refactor
+     * @todo: move to an external class; refactor
      * @param string $uri
      * @return NULL|array
      */
@@ -192,7 +197,7 @@ class FrontendRouteService
         $city = null;
         $center = null;
         $clinic = null;
-        $procedureType = null;
+        $treatment = null;
 
         // Possible routes:
         //
@@ -235,12 +240,12 @@ class FrontendRouteService
                 $variables = array('countryId' => $country->getId(), 'centerId' => $center->getId());
 
             } else if ($tokenCount == 3) {
-                if ($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[2]))) {
+                if ($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[2]))) {
                     // MATCHED /country/center/treatment
                     $variables = array(
                                     'countryId' => $country->getId(),
                                     'centerId' => $center->getId(),
-                                    'procedureTypeId' => $procedureType->getId()
+                                    'treatmentId' => $treatment->getId()
                     );
                 } else {
                     return null;
@@ -267,13 +272,13 @@ class FrontendRouteService
                 // fourth token can either be a treatment or clinic
                 //TODO: This assumes that there will be no name collisions between
                 // a treatment and a clinic.
-                if ($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[3]))) {
+                if ($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[3]))) {
                     //MATCHED /country/city/center/treatment
                     $variables = array(
                                     'countryId' => $country->getId(),
                                     'cityId' => $city->getId(),
                                     'centerId' => $center->getId(),
-                                    'procedureTypeId' => $procedureType->getId()
+                                    'treatmentId' => $treatment->getId()
                     );
                 } else if ($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3]))) {
                     //MATCHED /country/city/center/clinic
@@ -293,7 +298,7 @@ class FrontendRouteService
                 if (is_null($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3])))) {
                     return null;
                 }
-                if (is_null($procedureType = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[4])))) {
+                if (is_null($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[4])))) {
                     return null;
                 }
                 // MATCHED /country/city/center/clinic/treatment
@@ -302,7 +307,7 @@ class FrontendRouteService
                                 'cityId' => $city->getId(),
                                 'centerId' => $center->getId(),
                                 'institutionId' => $clinic->getId(),
-                                'procedureTypeId' => $procedureType->getId()
+                                'treatmentId' => $treatment->getId()
                 );
 
             } else {

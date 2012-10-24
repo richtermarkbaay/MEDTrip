@@ -42,14 +42,14 @@
                 <!--[if lte IE 6]><table><tr><td><![endif]-->
                 <div class="select_sub {{ selectedTab == 'manageHcaData' ? 'show' : '' }}">
                 	<ul class="sub">
-                		<li class="{{ selectedSubTab == 'manage_centers' ? 'sub_show' : '' }}" >
-                		    <a href="{{ path('admin_medicalCenter_index') }}">Manage Center Types</a>
+                		<li class="{{ selectedSubTab == 'specializations' ? 'sub_show' : '' }}" >
+                		    <a href="{{ path('admin_specialization_index') }}">Specializations</a>
             		    </li>
-                		<li class="{{ selectedSubTab == 'manage_procedureTypes' ? 'sub_show' : '' }}">
-                		    <a href="{{ path('admin_procedureType_index') }}">Manage Procedure Types</a>
+                		<li class="{{ selectedSubTab == 'treatments' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_treatment_index') }}">Treatments</a>
             		    </li>
-                		<li class="{{ selectedSubTab == 'manage_procedures' ? 'sub_show' : '' }}">
-                		    <a href="{{ path('admin_treatmentProcedure_index') }}">Manage Procedures</a>
+                		<li class="{{ selectedSubTab == 'treatmentProcedures' ? 'sub_show' : '' }}">
+                		    <a href="{{ path('admin_treatmentProcedure_index') }}">Treatment Procedures</a>
             		    </li>
                 		<li class="{{ selectedSubTab == 'manage_countries' ? 'sub_show' : '' }}">
                 		    <a href="{{ path('admin_country_index') }}">Manage Countries</a>

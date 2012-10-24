@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-class InstitutionUserTypeController extends Controller 
+class InstitutionUserTypeController extends InstitutionAwareController 
 {
     /**
      * View all user types
@@ -20,19 +20,13 @@ class InstitutionUserTypeController extends Controller
      */
     public function indexAction()
     {
-    	$institutionId = $this->getRequest()->get('institutionId', null);
-        
-    	if (!$institutionId){
-    		// no account id in parameter, editing currently logged in account
-    		$session = $this->getRequest()->getSession();
-    		$institutionId = $session->get('institutionId');
-    	}
-    	$userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($institutionId);
+    	$userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($this->institution->getId());
     	
         return $this->render('InstitutionBundle:InstitutionUserType:index.html.twig', array(
             'userTypes' => $userTypes
         ));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
      *
@@ -47,20 +41,17 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
      *
      */
     public function editAction()
     {
-    	$userTypeId = $this->getRequest()->get('id');
-    	
-    	$userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($userTypeId);
-    	
+    	$userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($this->getRequest()->get('id'));
     	if (!$userType) {
     		throw $this->createNotFoundException();
     	}
-    	
     	$form = $this->createForm(new InstitutionUserTypeFormType(), $userType);
     	
     	return $this->render('InstitutionBundle:InstitutionUserType:add.html.twig', array(
@@ -68,6 +59,7 @@ class InstitutionUserTypeController extends Controller
     			'userType' => $userType,
     	));
     }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_STAFF')")
      *
@@ -75,18 +67,10 @@ class InstitutionUserTypeController extends Controller
     public function saveAction()
     {
     	$request = $this->getRequest();
+    	$institutionId = $this->institution->getId();
     	
-   		//get data of institutionId 
-    	$institutionId = $request->get('institutionId', null);
-    	
-    	if (!$institutionId){
-    		// no account id in parameter, editing currently logged in account
-    		$session = $request->getSession();
-    		$institutionId = $session->get('institutionId');
-    	}
-		$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-        
     	$id = $request->get('id', 0);
+    	echo $id."test";
         $userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($id);
         
         if ($id && !$userType) {
@@ -98,7 +82,7 @@ class InstitutionUserTypeController extends Controller
         }
         
         //assign institution to userType
-        $userType->setInstitution($institution);
+        $userType->setInstitution($this->institution);
 
         $form = $this->createForm(new InstitutionUserTypeFormType(), $userType);
         $form->bind($request);
@@ -125,10 +109,5 @@ class InstitutionUserTypeController extends Controller
     	
     	
     }
-    
-    public function viewUserTypesAction()
-    {
-    	return $this->render('InstitutionBundle:InstitutionUserType:viewUserType.html.twig'
-    	);
-    }
+
 }

@@ -19,11 +19,11 @@
         "sensio/generator-bundle": "v2.1.0",
         "jms/security-extra-bundle": "1.1.*",
         "jms/di-extra-bundle": "1.0.*",
+        "jms/debugging-bundle": "dev-master",
         "guzzle/guzzle": "*",
         "knplabs/gaufrette": "dev-master",
         "imagine/Imagine": "dev-master",
         "chromedia/utilities": "dev-master",
-        "nikic/php-parser": "dev-master",
         "sami/sami": "dev-master",
         "stfalcon/tinymce-bundle" : "dev-master"
     },

@@ -32,7 +32,7 @@
                  ]}
                 %}
 
-                <form  novalidate="novalidate" action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                <form novalidate="novalidate" action="{{ path('institution_doctor_fill_data') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.firstName) }}
                     <div><div id="institutionSearch" ></div></div>
@@ -96,7 +96,7 @@
             }
         }
         
-        document.onkeydown = function(event)
+        document.onkeyup = function(event)
         {
             if(event.keyCode == 46 || event.keyCode == 8 ) {
                 if( $("#boxSearch").is(":visible") )
@@ -128,7 +128,7 @@
         }
         var searchDoctorsNameUrl = "{{ path('institution_doctor_search') }}";
         $("#institutionDoctorSearch_firstName")
-            .bind("keydown", function(event) {
+            .bind("keyup", function(event) {
                 if(event.keyCode === $.ui.keyCode.TAB && $(this).data("autocomplete").menu.active) {
                     event.preventDefault();
                 }

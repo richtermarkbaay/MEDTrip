@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+
 
 /**
  * HealthCareAbroad\AdminBundle\Entity\Language
