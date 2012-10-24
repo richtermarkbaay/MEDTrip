@@ -677,7 +677,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
 
 INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
 (1, 1, 'Content Staff', 1),
-(2, 1, 'SUPER_ADMIN', 3);
+(2, 1, 'SUPER_ADMIN', 3),
+(3, 1, 'Content Staff-2', 2);
 
 -- --------------------------------------------------------
 

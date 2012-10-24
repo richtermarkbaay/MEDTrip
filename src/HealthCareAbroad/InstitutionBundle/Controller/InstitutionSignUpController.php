@@ -52,13 +52,7 @@ class InstitutionSignUpController  extends Controller
 				$sendingResult = $this->get('services.invitation')->sendInstitutionInvitation($invitation);
 				
 				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_INVITATION, $invitation));
-				
-				if ($sendingResult) {
-					$this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
-				}
-				else {
-					$this->get('session')->setFlash('error', "Failed to send invitation to ".$invitation->getEmail());
-				}	
+				$this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
 			}
 		}
 		

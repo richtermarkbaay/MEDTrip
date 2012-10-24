@@ -153,7 +153,6 @@ class MedicalCenterGroupController extends InstitutionAwareController
     
     public function addDoctorsAction()
     {
-        
         return $this->render('InstitutionBundle:MedicalCenterGroup:addDoctors.html.twig', array(
             'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
             'currentDoctors' => $this->institutionMedicalCenterGroup->getDoctors()

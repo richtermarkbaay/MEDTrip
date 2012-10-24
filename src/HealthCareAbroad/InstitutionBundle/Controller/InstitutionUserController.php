@@ -216,7 +216,7 @@ class InstitutionUserController extends InstitutionAwareController
         )));
 
         // login to institution
-        $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
+        //$this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
         // redirect to institution homepage
         $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');
