@@ -71,9 +71,13 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+            
         }
 
+        if (in_array($this->getEnvironment(), array('dev'))) {
+            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+        }
+        
         return $bundles;
     }
 

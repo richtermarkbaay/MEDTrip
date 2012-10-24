@@ -4,10 +4,8 @@ namespace HealthCareAbroad\InstitutionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * HealthCareAbroad\InstitutionBundle\Entity\InstitutionGroup
- */
-class InstitutionGroup
+
+class MedicalGroupNetwork
 {
     /**
      * @var integer $id
@@ -34,7 +32,16 @@ class InstitutionGroup
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutions;
 
+    public function __construct()
+    {
+        $this->institutions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -49,7 +56,7 @@ class InstitutionGroup
      * Set name
      *
      * @param string $name
-     * @return InstitutionGroup
+     * @return MedicalGroupNetwork
      */
     public function setName($name)
     {
@@ -71,7 +78,7 @@ class InstitutionGroup
      * Set description
      *
      * @param text $description
-     * @return InstitutionGroup
+     * @return MedicalGroupNetwork
      */
     public function setDescription($description)
     {
@@ -93,7 +100,7 @@ class InstitutionGroup
      * Set dateCreated
      *
      * @param datetime $dateCreated
-     * @return InstitutionGroup
+     * @return MedicalGroupNetwork
      */
     public function setDateCreated($dateCreated)
     {
@@ -115,7 +122,7 @@ class InstitutionGroup
      * Set status
      *
      * @param smallint $status
-     * @return InstitutionGroup
+     * @return MedicalGroupNetwork
      */
     public function setStatus($status)
     {
@@ -131,5 +138,37 @@ class InstitutionGroup
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add institutions
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institutions
+     * @return MedicalGroupNetwork
+     */
+    public function addInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institutions)
+    {
+        $this->institutions[] = $institutions;
+        return $this;
+    }
+
+    /**
+     * Remove institutions
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institutions
+     */
+    public function removeInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institutions)
+    {
+        $this->institutions->removeElement($institutions);
+    }
+
+    /**
+     * Get institutions
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutions()
+    {
+        return $this->institutions;
     }
 }

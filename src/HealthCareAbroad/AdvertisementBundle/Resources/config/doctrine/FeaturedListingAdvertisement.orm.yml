@@ -3,7 +3,7 @@ HealthCareAbroad\AdvertisementBundle\Entity\FeaturedListingAdvertisement:
     table: null
     manyToOne:
         object:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
             joinColumn:
                 name: object_id
                 referencedColumnName: id

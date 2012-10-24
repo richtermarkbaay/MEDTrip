@@ -37,10 +37,7 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         //---- end correct login flow
         
         //---- logout flow validation
-        // request to /institution
-        $crawler = $client->request('GET', '/institution');
-        $logoutLink = $crawler->selectLink('logout')->eq(0)->link();
-        $crawler = $client->click($logoutLink); // click logout link
+        $crawler = $client->request('GET', '/institution/logout');
         
         // assert that it was redirected to /institution/login after clicking the logout link
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -105,14 +102,13 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', '/institution/invite-staff');
         
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Invite staff")')->count(), 'No "Invite staff string found"'); // look for the Current Password text
         
         $formValues = array(
             'institutionUserInvitation[firstName]' => 'AAA',
             'institutionUserInvitation[middleName]' => 'BBB',
             'institutionUserInvitation[lastName]' => 'CCC',
             'institutionUserInvitation[firstName]' => 'AAA',
-            'institutionUserInvitation[email]' => 'aaa@chromedia.com',
+            'institutionUserInvitation[email]' => 'aaatest@chromedia.com',
             'institutionUserInvitation[message]' => 'this is the message',
         );
         $form = $crawler->selectButton('submit')->form();

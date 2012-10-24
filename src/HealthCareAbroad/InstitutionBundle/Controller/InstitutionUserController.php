@@ -166,19 +166,11 @@ class InstitutionUserController extends InstitutionAwareController
 
             $form->bind($this->getRequest());
             if ($form->isValid()){
-
                 $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($this->institution, $institutionUserInvitation);
-
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $institutionUserInvitation));
+                $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
 
-
-                if ($sendingResult) {
-                    $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
-                }
-                else {
-                    $this->get('session')->setFlash('error', "Failed to send invitation to {$institutionUserInvitation->getEmail()}");
-                }
                 return $this->redirect($this->generateUrl('institution_view_all_staff'));
             }
         }

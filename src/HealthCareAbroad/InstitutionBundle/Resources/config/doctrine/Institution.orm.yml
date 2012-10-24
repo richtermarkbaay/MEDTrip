@@ -68,12 +68,18 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         status:
             type: smallint
             nullable: false
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: institution_type
+        type: integer
+        length: 1
+    discriminatorMap:
+        1: MedicalGroupNetworkMember
+        2: MedicalTourismFacilitator
+        3: IndependentHospital
     oneToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            mappedBy: institution
-        institutionTreatments:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment
             mappedBy: institution
         institutionUsers:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser
@@ -110,23 +116,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                        name: language_id
                        referencedColumnName: id
-                            
-        contactDetail:
-            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
-            cascade: {  }
-            mappedBy: null
-            inversedBy: institution
-            joinTable:
-                name: institution_contact_details
-                joinColumns:
-                    -
-                        name: institution_id
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    -
-                        name: contact_detail_id
-                        referencedColumnName: id
-            orderBy: null
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
