@@ -1,12 +1,12 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Services\UserService;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 
 abstract class ChromediaAccountsUserProvider implements UserProviderInterface
 {
