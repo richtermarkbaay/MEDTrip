@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-class InstitutionUserController extends InstitutionAwareController
+class InstitutionUserController extends Controller
 {
     /*
     public function loginAction()
