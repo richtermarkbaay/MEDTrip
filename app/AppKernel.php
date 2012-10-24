@@ -5,34 +5,34 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class AppKernel extends Kernel
 {
     // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
-    protected function initializeContainer()
-    {
-        static $first = true;
+//     protected function initializeContainer()
+//     {
+//         static $first = true;
 
-        if ('test' !== $this->getEnvironment()) {
-            parent::initializeContainer();
-            return;
-        }
+//         if ('test' !== $this->getEnvironment()) {
+//             parent::initializeContainer();
+//             return;
+//         }
 
-        $debug = $this->debug;
+//         $debug = $this->debug;
 
-        if (!$first) {
-            // disable debug mode on all but the first initialization
-            $this->debug = false;
-        }
+//         if (!$first) {
+//             // disable debug mode on all but the first initialization
+//             $this->debug = false;
+//         }
 
-        // will not work with --process-isolation
-        $first = false;
+//         // will not work with --process-isolation
+//         $first = false;
 
-        try {
-            parent::initializeContainer();
-        } catch (\Exception $e) {
-            $this->debug = $debug;
-            throw $e;
-        }
+//         try {
+//             parent::initializeContainer();
+//         } catch (\Exception $e) {
+//             $this->debug = $debug;
+//             throw $e;
+//         }
 
-        $this->debug = $debug;
-    }
+//         $this->debug = $debug;
+//     }
 
     public function registerBundles()
     {
@@ -71,9 +71,13 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+            
         }
 
+        if (in_array($this->getEnvironment(), array('dev'))) {
+            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+        }
+        
         return $bundles;
     }
 
