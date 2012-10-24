@@ -54,11 +54,12 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
      * class it throws UnsupportedUserException and ContextListener continues
      * to the next user provider, but if it does and can't actually find the
      * user it throws UsernameNotFoundException which interrupts the iteration
-     * and returns null essentially forcing the user to log out.
+     * and returns null essentially forcing the user to log out;
      *
-     * When ContextListener refreshes a user after login it checks ALL user providers,
-     * not just the ones specific to the firewall, so it tries to load an admin
-     * user from the members user provider, fails, and logs out the admin.
+     * or in other words, when ContextListener refreshes a user after login it
+     * checks ALL user providers, not just the ones specific to the firewall,
+     * so it tries to load an admin user from the members user provider, fails,
+     * and logs out the admin.
      *
      * This is the simplest and certainly not the most robust solution that I
      * can find without intruding too much into symfony internals.
