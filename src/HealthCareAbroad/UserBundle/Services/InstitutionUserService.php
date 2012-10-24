@@ -53,6 +53,14 @@ class InstitutionUserService extends UserService
         return false;
     }
 
+    public function setSessionVariables($user) {
+        $this->session->set('accountId', $user->getAccountId());
+        $this->session->set('institutionId', $user->getInstitution()->getId());
+        $this->session->set('institutionName', $user->getInstitution()->getName());
+
+        $this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
+    }
+
     /**
      * Create a institution user
      *

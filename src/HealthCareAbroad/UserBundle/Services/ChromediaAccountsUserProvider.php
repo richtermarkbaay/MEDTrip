@@ -82,6 +82,8 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
+        //TODO: use some strategy to avoid calling the chromedia account service
+        // for every request
         return $this->loadUserByUsername($user->getUsername());
     }
 

@@ -29,7 +29,7 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
             }
             $user->setRoles($roles);
 
-            //$user->setRoles(array('ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'));
+            $this->userService->setSessionVariables($user);
 
             return $user;
         }
