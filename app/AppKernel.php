@@ -71,9 +71,23 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
         }
 
         return $bundles;
+    }
+
+    /**
+     * Overridden to provide extended debugging capabilities for JMSDebuggingBundle
+     * @see \Symfony\Component\HttpKernel\Kernel::getContainerBaseClass()
+     */
+    protected function getContainerBaseClass()
+    {
+        if (in_array($this->getEnvironment(), array('dev'))) {
+            return '\JMS\DebuggingBundle\DependencyInjection\TraceableContainer';
+        }
+
+        return parent::getContainerBaseClass();
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)

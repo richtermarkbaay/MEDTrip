@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Cookie;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
@@ -83,18 +85,33 @@ class DefaultController extends Controller
 
      If a name change or a different controller is required modify
      FrontendBundle\Services\FrontendRouteService::extrapolateControllerFromVariables($variables)
+     Take note, however, that if this is in production you will have to manually
+     change the controller field in the frontend_routes table in the database for
+     all entries that have that specific controller.
      **************************************************************************/
     public function commonLandingAction()
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        echo "adi na ha landing action"; exit;
-        //return $this->render('FrontendBundle:Default:index.html.twig', array());
-    }
-
-    public function listCentersForCountryAction()
-    {
+        echo 'Route parameters:<br/>';
         var_dump($this->getRequest()->attributes->get('_route_params'));
         exit;
+    }
+
+    public function listCentersForCountryAction(Request $request)
+    {
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $country = $em->getRepository('Helper:Country')->find($parameters['countryId']);
+        $medicalCenter = $em->getRepository('MedicalProcedure:MedicalCenter')->find($parameters['centerId']);
+
+        $response = new Response();
+        $response->headers->setCookie(
+            new Cookie('/'.'', $user, 0, '/', null, false, false)
+        );
+
+        $institutionMedicalCenters = $em->getRepository('Institution:InstitutionMedicalCenter')
+            ->getCentersWithLocation($medicalCenter, $country);
     }
 
     public function listCentersForCityAction()
@@ -104,6 +121,12 @@ class DefaultController extends Controller
     }
 
     public function listTreatmentsForCenterAction()
+    {
+        var_dump($this->getRequest()->attributes->get('_route_params'));
+        exit;
+    }
+
+    public function viewTreatmentAction()
     {
         var_dump($this->getRequest()->attributes->get('_route_params'));
         exit;

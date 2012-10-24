@@ -3,12 +3,11 @@ namespace HealthCareAbroad\SearchBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
-use HealthCareAbroad\HelperBundle\Repository\CountryRepository;
-use HealthCareAbroad\HelperBundle\Repository\CityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use HealthCareAbroad\HelperBundle\Repository\CountryRepository;
+use HealthCareAbroad\HelperBundle\Repository\CityRepository;
 
 /**
  * TODO: Refactor whole class
@@ -43,8 +42,8 @@ class FrontendController extends Controller
                 break;
 
             case 'treatmentsPage':
-                $options['procedureTypeId'] = $request->get('procedureTypeId');
-                $options['procedureTypeName'] = $request->get('procedureTypeName');
+                $options['treatmentId'] = $request->get('treatmentId');
+                $options['treatmentName'] = $request->get('treatmentName');
 
                 if ($request->get('procedureId')) {
                     $options['procedureId'] = $request->get('procedureId');
@@ -69,13 +68,13 @@ class FrontendController extends Controller
      *	2. search specific city ->
      *	/search/destinations/thailand/bangkok
      *
-     *	3. search specific procedure/procedure type ->
+     *	3. search specific treatment-procedure/treatment ->
      *	/search/treatment/cosmetic-plastic-surgery/abdominoplasty
      *
-     *	4. combination of city and procedure/procedure type ->
+     *	4. combination of city and treatment-procedure/treatment ->
      *	/thailand/bangkok/cosmetic-plastic-surgery/abdominoplasty
      *
-     *	5. combination of country and procedure type ->
+     *	5. combination of country and treatment ->
      *	/thailand/cosmetic-plastic-surgery/abdominoplasty
      *
      * All searches are initiated from the homepage's main search widget.
@@ -96,9 +95,9 @@ class FrontendController extends Controller
             $city = $entityManager->getRepository('HelperBundle:City')->find($searchTerms['cityId']);
         }
 
-        if ($searchTerms['procedureTypeId']) {
-            $procedureType = $entityManager->getRepository('MedicalProcedureBundle:Treatment')->find($searchTerms['procedureTypeId']);
-            $medicalCenter = $procedureType->getMedicalCenter();
+        if ($searchTerms['treatmentId']) {
+            $treatment = $entityManager->getRepository('MedicalProcedureBundle:Treatment')->find($searchTerms['treatmentId']);
+            $medicalCenter = $treatment->getMedicalCenter();
         }
 
         $session = $request->getSession();
@@ -125,15 +124,15 @@ class FrontendController extends Controller
 
                 break;
 
-            case '_procedureType':
+            case '_treatment':
                 $parameters = array(
                     'medicalCenter' => $medicalCenter->getSlug(),
-                    'procedureType' => $procedureType->getSlug(),
+                    'treatment' => $treatment->getSlug(),
                     'procedureId' => $searchTerms['procedureId']
                 );
-                $route = 'search_frontend_results_procedureTypes';
+                $route = 'search_frontend_results_treatments';
 
-                $value = array('medicalCenterId' => $medicalCenter->getId(), 'procedureTypeId' => $procedureType->getId());
+                $value = array('medicalCenterId' => $medicalCenter->getId(), 'treatmentId' => $treatment->getId());
                 if (isset($searchTerms['procedureId'])) {
                     $value['procedureId'] = $searchTerms['procedureId'];
                 }
@@ -142,27 +141,19 @@ class FrontendController extends Controller
 
                 break;
 
-            case '_country_procedureType':
-
-                // TODO: remove
-                $parameters = array(
-                    'medicalCenter' => $medicalCenter->getSlug(),
-                    'procedureType' => $procedureType->getSlug(),
-                    'procedureId' => $searchTerms['procedureId'],
-                    'country' => $country->getSlug()
-                );
+            case '_country_treatment':
 
                 $variables = array(
                     'countryId'	=> $country->getId(),
                     'medicalCenterId' => $medicalCenter->getId(),
-                    'procedureTypeId' => $procedureType->getId(),
+                    'treatmentId' => $treatment->getId(),
                 );
 
-                $url = '/'.$country->getSlug().'/'.$medicalCenter->getSlug().'/'.$procedureType->getSlug();
+                $url = '/'.$country->getSlug().'/'.$medicalCenter->getSlug().'/'.$treatment->getSlug();
 
                 //TODO: this can produce a url with two differing content: one
                 //with data specific to procedure and the other the more general
-                //procedure type.
+                //treatment.
                 if ($searchTerms['procedureId']) {
                     $variables['procedureId'] = $searchTerms['procedureId'];
                     $url .= '?procedureId='.$searchTerms['procedureId'];
@@ -178,24 +169,15 @@ class FrontendController extends Controller
 
             case '_city_procedureType':
 
-                // TODO: remove
-                $parameters = array(
-                    'medicalCenter' => $medicalCenter->getSlug(),
-                    'procedureType' => $procedureType->getSlug(),
-                    'procedureId' => $searchTerms['procedureId'],
-                    'country' => $country->getSlug(),
-                    'city' => $city->getSlug()
-                );
-
                 $variables = array(
                     'countryId'	=> $country->getId(),
                     'medicalCenterId' => $medicalCenter->getId(),
-                    'procedureTypeId' => $procedureType->getId(),
+                    'treatmentId' => $treatment->getId(),
                     'countryId' => $country->getId(),
                     'cityId' => $city->getId()
                 );
 
-                $url = '/'.$country->getSlug().'/'.$city->getSlug().'/'.$medicalCenter->getSlug().'/'.$procedureType->getSlug();
+                $url = '/'.$country->getSlug().'/'.$city->getSlug().'/'.$medicalCenter->getSlug().'/'.$treatment->getSlug();
 
                 if ($searchTerms['procedureId']) {
                     $variables['procedureId'] = $searchTerms['procedureId'];
@@ -288,13 +270,13 @@ class FrontendController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $procedureId = null;
-        $procedureTypeId = null;
+        $treatmentId = null;
 
         // Lookup session for ids
         if ($request->getSession()->has('search_terms')) {
             $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
 
-            $procedureTypeId = isset($searchTerms['procedureTypeId']) ? $searchTerms['procedureTypeId'] : 0;
+            $treatmentId = isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : 0;
             $procedureId = isset($searchTerms['procedureId']) ? $searchTerms['procedureId'] : 0;
         }
 
@@ -304,29 +286,29 @@ class FrontendController extends Controller
         }
 
         $procedure = null;
-        $procedureType = null;
+        $treatment = null;
 
         if ($procedureId) {
             $procedure = $em->getRepository('MedicalProcedureBundle:TreatmentProcedure')->find($procedureId);
-            $procedureType = $procedure->getTreatmentProcedureType();
-        } else if ($procedureTypeId) {
-            $procedureType = $em->getRepository('MedicalProcedureBundle:Treatment')->find($procedureTypeId);
+            $treatment = $procedure->getTreatment();
+        } else if ($treatmentId) {
+            $treatment = $em->getRepository('MedicalProcedureBundle:Treatment')->find($treatmentId);
         } else {
-            $procedureType = $em->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $request->get('procedureType')));
+            $treatment = $em->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $request->get('treatment')));
         }
 
-        $centers = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($procedureType, $procedure);
+        $centers = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment, $procedure);
         //$countries = $em->getRepository('InstitutionBundle:InstitutionTreatmentProcedureType')->getCountriesWithProcedureType($procedureType);
-        $countries = $this->get('services.search')->getCountriesWithProcedureType($procedureType);
+        //$countries = $this->get('services.search')->getCountriesWithProcedureType($procedureType);
 
         $countries = $this->appendCountryUrls(
-            $this->get('services.search')->getCountriesWithProcedureType($procedureType), $procedureType
+            $this->get('services.search')->getCountriesWithTreatment($treatment), $treatment
         );
 
         return $this->render('SearchBundle:Frontend:medicalCentersTreatment.html.twig', array(
             'centers' => $centers,
             'countries' => $countries,
-            'procedureType' => $procedureType,
+            'treatment' => $treatment,
             'procedure' => $procedure
         ));
     }
@@ -380,15 +362,15 @@ class FrontendController extends Controller
         return $tokens;
     }
 
-    private function appendCountryUrls($countries, $procedureType)
+    private function appendCountryUrls($countries, $treatment)
     {
-        $center = $procedureType->getMedicalCenter();
+        $center = $treatment->getMedicalCenter();
 
         $modifiedCountries = array();
         foreach ($countries as $country) {
             $modifiedCountry['id'] = $country['id'];
             $modifiedCountry['name'] = $country['name'];
-            $modifiedCountry['url'] = '/'.$country['name'].'/'.$center->getSlug().'/'.$procedureType->getSlug();
+            $modifiedCountry['url'] = '/'.$country['name'].'/'.$center->getSlug().'/'.$treatment->getSlug();
 
             $modifiedCountries[] = $modifiedCountry;
         }
@@ -404,7 +386,7 @@ class FrontendController extends Controller
      */
     private function parseSearchTerms($treatment, $destination)
     {
-        $procedureTypeId = 0;
+        $treatmentId = 0;
         $procedureId = 0;
         $countryId = 0;
         $cityId = 0;
@@ -413,13 +395,13 @@ class FrontendController extends Controller
                         'context' => '',
                         'cityId' => 0,
                         'countryId' => 0,
-                        'procedureTypeId' => 0,
+                        'treatmentId' => 0,
                         'procedureId' => 0
         );
 
         if (!empty($treatment)) {
-            list($procedureTypeId, $procedureId) = explode('-', $treatment);
-            $searchTerms['procedureTypeId'] = $procedureTypeId;
+            list($treatmentId, $procedureId) = explode('-', $treatment);
+            $searchTerms['treatmentId'] = $treatmentId;
             $searchTerms['procedureId'] = $procedureId;
         }
 
@@ -436,8 +418,8 @@ class FrontendController extends Controller
         } else {
             $context = '_country';
         }
-        if ($procedureTypeId) {
-            $context = '_procedureType';
+        if ($treatmentId) {
+            $context = '_treatment';
         }
 
         $searchTerms['context'] = $context;

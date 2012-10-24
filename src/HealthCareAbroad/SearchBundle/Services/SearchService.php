@@ -102,7 +102,7 @@ class SearchService
             LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
             LEFT JOIN institutions AS c ON b.institution_id = c.id
             LEFT JOIN countries AS country ON c.country_id = country.id
-            LEFT JOIN treatments AS d ON a.treatments_id = d.id
+            LEFT JOIN treatments AS d ON a.treatment_id = d.id
             WHERE d.id = :treatmentId
         ";
 
@@ -165,7 +165,7 @@ class SearchService
 
         $sql ="
             SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
-            FROM institution_medical_procedures AS a
+            FROM institution_treatment_procedures AS a
             LEFT JOIN treatment_procedures AS b ON a.treatment_procedure_id = b.id
             LEFT JOIN treatments AS c ON b.treatment_id = c.id
             LEFT JOIN institution_treatments AS d ON a.institution_treatment_id = d.id

@@ -1,4 +1,15 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+
+{#% block searchBox %#}
+    {#% render "SearchBundle:Frontend:showWidget" with {
+        'context': 'destinationsPage',
+        'countryId': city.country.id,
+        'countryName': city.country.name,
+        'cityId': city.id,
+        'cityName' : city.name}
+    %#}
+{#% endblock %#}
+
 {% block content %}
     {% block wrappedContent %}
 
@@ -18,12 +29,12 @@
 
                 <!-- Search Results -->
                 <div>
-                    You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{procedureType.name}}{% endif %}
+                    You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{treatment.name}}{% endif %}
                     <ul>
                     {% for center in centers %}
                         <li>
                             <!-- Hardcode for now -->
-                            <a href="/{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ procedureType.name }}" >
+                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ treatment.slug }}" >
                                 {{ center.medicalCenter.name }}
                             </a>
                         </li>
