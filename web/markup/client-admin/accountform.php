@@ -8,8 +8,9 @@
 <meta name="author" content="healthcare">
 
  <!-- stylesheet -->
-  <link id="main-theme-script" rel="stylesheet" href="css/hc-layout.css">
-  <link id="theme-specific-script" rel="stylesheet" href="css/style.css">
+ <link rel="stylesheet" href="css/bootstrap.min.css">
+ <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+ <link rel="stylesheet" href="css/hca-style.css">
 
 
  <!-- Le fav and touch icons -->
@@ -23,59 +24,50 @@
 
 </head>
 
-<body><!-- Top navigation bar -->
-<!--<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <a href="index.html" class="brand"><img src="images/HCA-logo-small.png" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
-        <div class="btn-group pull-right" style="width: 360px; margin-top: 7px;">
-            <span style="float: left;">you are logged in as <a href="#">marcjacob@gmail.com</a> &nbsp;|&nbsp; </span><span style="margin-left: 10px;"> <a href="logout.html"><img src="images/logout-icon.png" style="padding-left:10px;"></a>     </span>      
-        </div>
-    </div>
-  </div>
-</div>-->
+<body>
 
 
 <div class="container">
+	<div class="accountbox">
 	
-	<div class="span11" style="float:none; margin:20px auto 0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; border: 3px solid #999999; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
-	<div style="margin: -85px 0 20px 0px; text-align: center;"><img src="images/medical-clip.png" alt="Medical Clip" longdesc="#"></div>
-		<a href="index.html"><img src="images/HCA-logo-small.png" alt="Health Care Abroad Logo" longdesc="#" style="float:left; margin-right: 5px;"><h1 style="color: #002A5C;">HEALTHCARE ABROAD</h1></a>
+	<div class="row-fluid">
+	<div class="medicalbox-big"><img src="images/medical-clip.png" alt="Medical Clip" longdesc="#"></div>
+		<form action="#" method="POST" class="form">
+		
+		<div class="accountbox2"><a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
 		<h2 style="margin-top: 15px; ;">Institution Profile Form</h2>
 		<p>In order to appear on our comprehensive MEDICAL DIRECTORY LISTING, please tell us more about your Institution (questions in grey are optional).</p>
-		<div class="row-fluid">
-		
-		<H1 style="color:#005fa7;">INSTITUTION NAME HERE</H1>
+		<h5>INSTITUTION NAME HERE</h5>
 		<h3>institution type here</h3>
+		</div>
 		
-		  								<form action="#" method="POST" class="form">
+		
+		
+		
+		
+		  								
 		  		<fieldset>
-		  			<div class="span6" style="padding: 15px;">
+		  			<div class="span6">
 		  				
-		  				<h3>This how your patients can connect to you.</h3>
+		  				<h4>This how your patients can connect to you.</h4>
 		  				
 		  				<label for="institution name" style="color: #aeadad;">Institution website</label>
-		  				<div class="div_text">
-		  					<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  				</div>
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  				<ul class="alert-error">
+		  					<li>Please enter a valid website url</li>
+		  				</ul>
 		  				
 		  				<label for="institution name"  style="color: #aeadad;">Institution email address</label>
-		  				<div class="div_text">
-		  					<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  				</div>
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
 		  				
-					<label for="institution name">Institution Phone Numbers</label>
-					<div class="div_text">
+		  				
+					<label for="institution name">Institution Phone Number</label>
+				
 						<div class="input-prepend">
 							<div id="phones">
-										<input type="text" size="3" maxlength="3" name="area" style="margin-right:10px; width:30px ;">
-										<input type="text" size="3" maxlength="3" name="local1" style="margin-right:10px; width:30px ">
-										<input type="text" size="4" maxlength="4" name="local2" style="margin-right:10px ">
+										<input type="text" size="3" maxlength="3" name="area" class="span2">
+										<input type="text" size="3" maxlength="3" name="local1" class="span2">
+										<input type="text" size="4" maxlength="4" name="local2" class="span7">
 							</div>
 									<script type="text/javascript">
 											var p;
@@ -107,63 +99,21 @@
 											}
 											</script>
 									</div>
-					</div>
+				
 					
-					<div class="button_div" style="margin-top:15px ;"><input type="submit" name="Submit" value="add another Phone Number" class="btn-medium btn-success"/></div>
-					
-					<label for="institution name" style="color: #aeadad;">Institution Mobile Number</label>
-					<div class="div_text">
-						<div class="input-prepend">
-						
-							<div id="phones">
-										<input type="text" size="3" maxlength="3" name="area" style="margin-right:10px; width:30px ;">
-										<input type="text" size="3" maxlength="3" name="local1" style="margin-right:10px; width:30px ">
-										<input type="text" size="4" maxlength="4" name="local2" style="margin-right:10px ">
-							</div>
-									<script type="text/javascript">
-											var p;
-											
-											function next(i) {
-												return function() {
-													//strip non-digits
-													p[i].value=p[i].value.replace(/[^0-9]/g, "");
-													
-													//go forward one box when full, except when on the end box
-													if(p[i].value.length==p[i].size && i<p.length) p[i+1].focus();
-												}
-											}
 									
-											function back(i) {
-												return function(e) {
-													//go backward one when empty, except when on the first box
-													if(e.keyCode==8 && p[i].value.length==0 && i>0) p[i-1].focus();
-												}
-											}
-									
-											window.onload=function() {
-												p=document.getElementById("phones").getElementsByTagName("input");
-									
-												for(var i=0; i<p.length; i++) {
-													p[i].onkeyup=next(i);
-													p[i].onkeydown=back(i);
-												}
-											}
-											</script>
-							
-						</div>
-					</div>
-					
+										
 					
 					
 					<label for="institution name" style="color: #aeadad;">Institution Fax Number</label>
-					<div class="div_text">
+					
 						<div class="input-prepend">
 						
 							<div id="phones">
-										<input type="text" size="3" maxlength="3" name="area" style="margin-right:10px; width:30px ;">
-										<input type="text" size="3" maxlength="3" name="local1" style="margin-right:10px; width:30px ">
-										<input type="text" size="4" maxlength="4" name="local2" style="margin-right:10px ">
-							</div>
+										<input type="text" size="3" maxlength="3" name="area" class="span2">
+										<input type="text" size="3" maxlength="3" name="local1" class="span2">
+										<input type="text" size="4" maxlength="4" name="local2" class="span7">
+							
 									<script type="text/javascript">
 											var p;
 											
@@ -199,53 +149,53 @@
 					
 					
 					<label for="institution name" style="color: #aeadad;">Facebook Page</label>
-					<div class="div_text">
+				
 						<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-					</div>
+					
 		  			
 		  			
 		  			<label for="institution name" style="color: #aeadad;">Twitter Account</label>
-		  			<div class="div_text">
+		  			
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  			
 		  			
 		  			</div>
 		  				
 		  				
-		  				<div class="span6" style="padding: 15px;">
-		  				<h3>This how your patients can locate you.</h3>
-		  				<img src="images/map.png" alt="Medical Clip" longdesc="#" style="margin-bottom:10px ;">
+		  				<div class="span6">
+		  				<h4>This how your patients can locate you.</h4>
+		  				<div class="map"><img src="images/map.png" alt="Medical Clip" longdesc="#"></div>
 		  			<label for="username">Unit Number and Building</label>
-		  			<div class="div_text">
+		  			
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  		
 		  			
 		  			<label for="username">Street</label>
-		  			<div class="div_text">
+		  			
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  			
 		  			
 		  			<label for="username">City</label>
-		  			<div class="div_text">
+		  			
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  		
 		  			
 		  			<label for="username">State / Province</label>
-		  			<div class="div_text">
+		  			
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  		
 		  			
 		  			<label for="username">Zip / Mail Code </label>
-		  			<div class="div_text">
+		  		
 		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
-		  			</div>
+		  		
 		  			
 		  			<label for="username">Country</label>
-		  			<div class="div_text">
+		  		
 		  				<div class="input-prepend">
 		  					
 		  					<select name="country">
-		  					<option value="">Country...</option>
+		  					<option value="">Select a Country</option>
 		  					<option value="Afganistan">Afghanistan</option>
 		  					<option value="Albania">Albania</option>
 		  					<option value="Algeria">Algeria</option>
@@ -494,7 +444,7 @@
 		  					<option value="Zimbabwe">Zimbabwe</option>
 		  					</select>
 		  				</div>
-		  			</div>
+		  		
 		  			
 		  			
 		  			
@@ -512,38 +462,11 @@
 		  		
 		  				  		   
 		  		
-		  		<div class="button_div" style="float:right; margin-right:17px ;"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary" style="padding: 10px 22px; font-size:18pt ;" /></div>
+		  		<div class="span11"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary"/></div>
 		  		</form>		  
 	</div>
 	
 	
 </div>
-<div class="container">
-<br/>
-<hr>
-<footer>
-	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
-</footer>
-</div>
-
-<!--/.fluid-container--> 
-<!-- javascript Templates
-    ================================================== --> 
-<!-- Placed at the end of the document so the pages load faster --> 
-
-<!-- Le javascript
-    ================================================== --> 
-<!-- Placed at the end of the document so the pages load faster --> 
-<!-- Google API --> 
-<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
-
-<!-- jQuery --> 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
-
-
-
-<!-- Bootstrap --> 
-<script src="js/bootstrap.min.js"></script> 
-
-</body>
-</html>
+	</div>
+<?php include("inc.footer.php"); ?>
