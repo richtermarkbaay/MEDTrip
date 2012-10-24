@@ -27,3 +27,4 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
             - NotBlank: {message: 'Center name is required.'}
         description:
             - NotBlank: {message: 'Center details is required.'}
+            

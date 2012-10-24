@@ -11,6 +11,7 @@ parameters:
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
     services.language_list: HealthCareAbroad\HelperBundle\Form\ListType\LanguageListType
     services.advertisement_list: HealthCareAbroad\HelperBundle\Form\ListType\AdvertisementListType
+    services.user_class: HealthCareAbroad\UserBundle\Services\UserService
 
 services:
     
@@ -19,6 +20,13 @@ services:
         arguments: [@doctrine]
         tags:
             - {name: validator.constraint_validator, alias: helper.institution_name.validator}
+            
+    services.helper.account_email_validator:
+        class: HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmailValidator
+        calls:
+            - [setUserService, [@services.user]]
+        tags:
+            - {name: validator.constraint_validator, alias: helper.account_email.validator}
     
     # factory class for creating named events
     events.factory:
@@ -74,6 +82,14 @@ services:
     services.alert:
         class: %services.alert_class%
         arguments: [@doctrine, @service_container]
+        
+    services.user.twig.extension:
+        class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
+        public: false
+        calls:
+            - [setUserService, [@services.user]]
+        tags:
+            - { name: twig.extension }
 
     form.country_list:
         class: "%services.country_list%"

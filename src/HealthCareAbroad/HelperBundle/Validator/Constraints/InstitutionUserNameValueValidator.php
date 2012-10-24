@@ -22,7 +22,7 @@ class InstitutionUserNameValueValidator extends ConstraintValidator
     	$this->doctrine = $doctrine;
     }
     
-	public function isValid($entity, Constraint $constraint) {
+	public function validate($entity, Constraint $constraint) {
 		
 		$value = $entity->getName();
 

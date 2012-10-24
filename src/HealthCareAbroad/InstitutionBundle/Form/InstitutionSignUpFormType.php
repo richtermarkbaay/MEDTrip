@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmail;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -12,6 +14,8 @@ use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -47,13 +51,14 @@ class InstitutionSignUpFormType extends AbstractType
         }
         $builder ->add('name', 'text', array(
         				'label' => 'Name of Institution'
+        			
         ));
         
         $builder->add('email', 'email', array(
                 'label' => 'Your email',
-                'virtual' => true,
-                'constraints' => array(
-                        new NotBlank(array('message'=>'Valid email is required.')))
+        		'virtual' => true,
+        		'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exist!')) , new NotBlank())
+        	
             ));
         $builder->add('password', 'password', array(
                 'label' => 'Password',
