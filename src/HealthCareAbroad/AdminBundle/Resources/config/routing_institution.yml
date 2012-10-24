@@ -16,7 +16,7 @@ admin_institution_view:
     requirements:
          institutionId: \d+
          _method: GET
-        
+
 # Manage Centers #
 admin_institution_manageCenters:
     pattern:  /admin/institution/{institutionId}/manage-centers
@@ -25,8 +25,8 @@ admin_institution_manageCenters:
          institutionId: \d+
 
 admin_institution_medicalCenter_add:
-    pattern:  /admin/institution/{institutionId}/medical-center/add
-    defaults: { _controller: AdminBundle:Institution:addMedicalCenter }
+    pattern:  /admin/institution/{institutionId}/medical-center/add/details
+    defaults: { _controller: AdminBundle:Institution:addMedicalCenterDetails }
     requirements:
         institutionId: \d+
         _method: GET

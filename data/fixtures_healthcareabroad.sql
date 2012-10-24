@@ -355,10 +355,13 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `logo` varchar(100) NOT NULL,
+  `contact_email` varchar(100) NOT NULL,
+  `contact_number` text NOT NULL,
   `address1` text NOT NULL,
   `address2` text NOT NULL,
   `city_id` int(10) unsigned NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
+  `zip_code` int(11) NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) NOT NULL,
@@ -467,73 +470,94 @@ CREATE TABLE IF NOT EXISTS `institution_media` (
 DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
   `medical_center_id` int(10) unsigned NOT NULL,
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(6) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_id` (`institution_id`,`medical_center_id`),
+  UNIQUE KEY `institution_medical_center_group_id` (`institution_medical_center_group_id`,`medical_center_id`),
   KEY `medical_center_id` (`medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
 
 --
 -- Dumping data for table `institution_medical_centers`
 --
 
-INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+INSERT INTO `institution_medical_centers` (`id`, `institution_medical_center_group_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
 (1, 1, 1, 'dsafdsafdsaf', '2012-08-30 04:18:36', '2012-08-30 04:18:36', 1);
+
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `institution_treatment_procedures`
+-- Table structure for table `institution_medical_center_groups`
 --
 
-DROP TABLE IF EXISTS `institution_treatment_procedures`;
-CREATE TABLE IF NOT EXISTS `institution_treatment_procedures` (
+DROP TABLE IF EXISTS `institution_medical_center_groups`;
+CREATE TABLE IF NOT EXISTS `institution_medical_center_groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_treatment_id` bigint(20) unsigned NOT NULL,
-  `treatment_procedure_id` int(10) unsigned NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` smallint(1) unsigned NOT NULL,
+  `institution_id` int(10) unsigned NOT NULL,
+  `name` varchar(250) NOT NULL,
+  `description` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `slug` varchar(250) NOT NULL,
+  `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_treatment_id` (`institution_treatment_id`,`treatment_procedure_id`),
+  UNIQUE KEY `institution_id` (`institution_id`,`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `institution_medical_center_groups`
+--
+
+INSERT INTO `institution_medical_center_groups` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
+(1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2),
+(2, 1, 'sdfsadf', '<p>sdfsdf</p>', '2012-10-22 02:54:05', '2012-10-22 02:54:05', 'sdfsadf', 4),
+(3, 2, '32434234', '2sdfsdfsdfasdf', '2012-10-22 03:09:13', '2012-10-21 16:00:00', '2sdfsdfsdfasdf', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_medical_center_group_doctors`
+--
+
+DROP TABLE IF EXISTS `institution_medical_center_group_doctors`;
+CREATE TABLE IF NOT EXISTS `institution_medical_center_group_doctors` (
+  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
+  `doctor_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`institution_medical_center_group_id`,`doctor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='doctors to instiution medical center group association table';
+
+
+--
+-- Dumping data for table `institution_medical_center_group_doctors`
+--
+
+INSERT INTO `institution_medical_center_group_doctors` (`institution_medical_center_group_id`, `doctor_id`) VALUES
+(1, 1);
+
+
+-- --------------------------------------------------------
+
+-- Table structure for table `institution_medical_center_treatment_procedures`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_medical_center_treatment_procedures` (
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `treatment_procedure_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_medical_center_id`,`treatment_procedure_id`),
   KEY `treatment_procedure_id` (`treatment_procedure_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
--- --------------------------------------------------------
-
 --
--- Table structure for table `institution_treatments`
+-- Dumping data for table `institution_medical_center_treatment_procedures`
 --
 
-DROP TABLE IF EXISTS `institution_treatments`;
-CREATE TABLE IF NOT EXISTS `institution_treatments` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
-  `treatment_id` int(11) unsigned NOT NULL,
-  `description` text NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` smallint(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`treatment_id`),
-  KEY `treatment_id` (`treatment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
---
--- Dumping data for table `institution_treatments`
---
-
-INSERT INTO `institution_treatments` (`id`, `institution_medical_center_id`, `treatment_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
-(1, 1, 1, '<p>asfdDASdas sdfsdf sdfsdf</p>', '2012-08-31 07:33:48', '2012-08-31 07:33:48', 1);
+INSERT INTO `institution_medical_center_treatment_procedures` (`institution_medical_center_id`, `treatment_procedure_id`) VALUES
+(1, 1);
 
 
 -- --------------------------------------------------------

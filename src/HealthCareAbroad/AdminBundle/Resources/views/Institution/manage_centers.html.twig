@@ -39,14 +39,22 @@
                     <table width="100%" class="generic-table sortable-list" id="medical-centers-list">
                         <tr>
                             <th id="column-medicalCenter" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'medicalCenter' ? 'sort-' ~ sortOrder : default }}">Medical Centers</a></th>
+                            <th id="column-specializations" width="300">Specialization</th>
                             <th id="column-description" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
                             <th width="100">Status</th>
                             <th width="80" class="actions">Actions</th>
                         </tr>
 
-                        {% for center in institutionMedicalCenters %}
+                        {% for center in institutionMedicalCenterGroups %}
                             <tr id="medical-center-{{center.id}}">
-                                <td class="name">{{ center.medicalCenter | title }}</td>
+                                <td class="name">{{ center.name | title }}</td>
+                                <td class="specializations">
+                                    <ul>
+                                        {% for each in center.institutionMedicalCenters %}
+                                            <li style="margin-left: 20px">{{ each.medicalCenter.name | title }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
                                 <td class="raw-content">{{ center.description|raw }}</td>
                                 <td class="status">{{ centerStatusList[center.status] }}</td>
                                 <td class="options-width">

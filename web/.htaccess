@@ -17,6 +17,7 @@
     RewriteEngine On
 
     # Explicitly disable rewriting for front controllers
+    RewriteRule ^blog/ - [L]
     RewriteRule ^app_dev.php - [L]
     RewriteRule ^app.php - [L]
 
