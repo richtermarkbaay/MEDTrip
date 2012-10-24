@@ -1,14 +1,17 @@
 parameters:
-    services.institution_class: HealthCareAbroad\InstitutionBundle\Services\InstitutionService
     services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
     services.doctor_list: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorListType
 
 services:
     services.institution:
-        class: %services.institution_class%
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionService
         arguments: [@doctrine]
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
+            
+    services.institution.factory:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
+        arguments: [@doctrine]
 
     services.institution_medical_center:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService

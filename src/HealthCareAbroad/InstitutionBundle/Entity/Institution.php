@@ -7,11 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\InstitutionBundle\Entity\Institution
  */
-class Institution
+abstract class Institution
 {
-    const STATUS_ACTIVE = 1;
-    const USER_TYPE = "SUPER_ADMIN";
-    
     /**
      * @var integer $id
      */
@@ -19,6 +16,7 @@ class Institution
 
     /**
      * @var string $name
+     * @ORM\Column(unique=true) 
      */
     private $name;
 
@@ -53,7 +51,7 @@ class Institution
     private $address2;
 
     /**
-     * @var string $zipCode
+     * @var integer $zipCode
      */
     private $zipCode;
 
@@ -85,11 +83,6 @@ class Institution
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionTreatments;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
     private $institutionUsers;
 
     /**
@@ -112,19 +105,12 @@ class Institution
      */
     private $institutionLanguagesSpoken;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $contactDetail;
-
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -294,7 +280,7 @@ class Institution
     /**
      * Set zipCode
      *
-     * @param string $zipCode
+     * @param integer $zipCode
      * @return Institution
      */
     public function setZipCode($zipCode)
@@ -306,7 +292,7 @@ class Institution
     /**
      * Get zipCode
      *
-     * @return string 
+     * @return integer 
      */
     public function getZipCode()
     {
@@ -401,83 +387,6 @@ class Institution
         return $this->status;
     }
 
-    //---- status operations
-    public function setAsActive()
-    {
-        $this->status = InstitutionStatus::getBitValueForActiveStatus();
-    }
-
-    public function setAsInactive()
-    {
-        $this->status = InstitutionStatus::getBitValueForInactiveStatus();
-    }
-
-    public function setAsUnapproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-
-    public function setAsApproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForApprovedStatus();
-    }
-
-    public function setAsSuspended()
-    {
-        $this->status = InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-
-    /**
-     * Check if this is institution is active
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return InstitutionStatus::ACTIVE == ($this->status & InstitutionStatus::ACTIVE);
-    }
-
-    /**
-     * Check if the institution is inactive
-     *
-     * @return boolean
-     */
-    public function isInactive()
-    {
-        return $this->status == InstitutionStatus::getBitValueForInactiveStatus();
-    }
-
-    /**
-     * Check if the institution is unapproved
-     *
-     * @return boolean
-     */
-    public function isUnapproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-
-    /**
-     * Check if the institution is approved
-     *
-     * @return boolean
-     */
-    public function isApproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForApprovedStatus();
-    }
-
-    /**
-     * Check if the institution is suspended
-     *
-     * @return boolean
-     */
-    public function isSuspended()
-    {
-        return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-    //---- end status operations
-
     /**
      * Add institutionMedicalCenters
      *
@@ -508,38 +417,6 @@ class Institution
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
-    }
-
-    /**
-     * Add institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     * @return Institution
-     */
-    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments[] = $institutionTreatments;
-        return $this;
-    }
-
-    /**
-     * Remove institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     */
-    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments->removeElement($institutionTreatments);
-    }
-
-    /**
-     * Get institutionTreatments
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionTreatments()
-    {
-        return $this->institutionTreatments;
     }
 
     /**
@@ -680,37 +557,5 @@ class Institution
     public function getInstitutionLanguagesSpoken()
     {
         return $this->institutionLanguagesSpoken;
-    }
-
-    /**
-     * Add contactDetail
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
-     * @return Institution
-     */
-    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
-    {
-        $this->contactDetail[] = $contactDetail;
-        return $this;
-    }
-
-    /**
-     * Remove contactDetail
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
-     */
-    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
-    {
-        $this->contactDetail->removeElement($contactDetail);
-    }
-
-    /**
-     * Get contactDetail
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getContactDetail()
-    {
-        return $this->contactDetail;
     }
 }
