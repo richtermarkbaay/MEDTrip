@@ -71,6 +71,8 @@ abstract class UserService
 
     abstract function getAccountData(SiteUser $siteUser);
 
+    abstract function setSessionVariables(SiteUser $user);
+
     public function __construct(ContainerInterface $container=null)
     {
         $this->container = $container;

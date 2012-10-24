@@ -29,6 +29,8 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
             }
             $user->setRoles($roles);
 
+            //TODO: not sure if this is the place to set the session; this
+            // shouldn't be part of the user provider's responsibilities
             $this->userService->setSessionVariables($user);
 
             return $user;

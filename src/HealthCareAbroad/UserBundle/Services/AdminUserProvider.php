@@ -28,7 +28,9 @@ class AdminUserProvider extends ChromediaAccountsUserProvider
             }
             $user->setRoles($roles);
 
-            //$user->setRoles(array('ROLE_ADMIN', 'IS_AUTHENTICATED_REMEMBERED'));
+            //TODO: not sure if this is the place to set the session; this
+            // shouldn't be part of the user provider's responsibilities
+            $this->userService->setSessionVariables($user);
 
             return $user;
         }

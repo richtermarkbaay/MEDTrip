@@ -17,4 +17,5 @@ class TwigUserService extends UserService
     public function update(SiteUser $siteUser) {}
     public function create(SiteUser $siteUser) {}
     public function getAccountData(SiteUser $siteUser) {}
+    public function setSessionVariables(SiteUser $user) {}
 }

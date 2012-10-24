@@ -66,6 +66,16 @@ class AdminUserService extends UserService
     }
 
     /**
+     * @param SiteUser $user
+     */
+    public function setSessionVariables(SiteUser $user) {
+        $this->session->set('accountId', $user->getAccountId());
+
+        // dispatch event
+        $this->eventDispatcher->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->eventFactory->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
+    }
+
+    /**
      * Create an AdminUser
      *
      * @param AdminUser $user

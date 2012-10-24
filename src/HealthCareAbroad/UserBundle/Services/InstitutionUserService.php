@@ -53,7 +53,7 @@ class InstitutionUserService extends UserService
         return false;
     }
 
-    public function setSessionVariables($user) {
+    public function setSessionVariables(SiteUser $user) {
         $this->session->set('accountId', $user->getAccountId());
         $this->session->set('institutionId', $user->getInstitution()->getId());
         $this->session->set('institutionName', $user->getInstitution()->getName());
