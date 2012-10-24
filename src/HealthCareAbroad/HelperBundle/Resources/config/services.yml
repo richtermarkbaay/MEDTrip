@@ -11,29 +11,30 @@ parameters:
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
     services.language_list: HealthCareAbroad\HelperBundle\Form\ListType\LanguageListType
     services.advertisement_list: HealthCareAbroad\HelperBundle\Form\ListType\AdvertisementListType
-    services.user_class: HealthCareAbroad\UserBundle\Services\UserService
+    #services.user_class: HealthCareAbroad\UserBundle\Services\UserService
 
 services:
-    
+
     services.helper.institution_name_validator:
         class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValueValidator
         arguments: [@doctrine]
         tags:
             - {name: validator.constraint_validator, alias: helper.institution_name.validator}
-            
+
     services.helper.account_email_validator:
         class: HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmailValidator
         calls:
-            - [setUserService, [@services.user]]
+            #- [setUserService, [@services.user]]
+            - [setUserService, [@services.institution_user]]
         tags:
             - {name: validator.constraint_validator, alias: helper.account_email.validator}
-    
+
     # factory class for creating named events
     events.factory:
         class: HealthCareAbroad\HelperBundle\Factory\EventFactory
         arguments: [@service_container]
 
-            
+
     services.chromedia_request:
         class: %services.chromedia_request_class%
         calls:
@@ -46,7 +47,7 @@ services:
         calls:
             - [setTwig, [@twig]]
             - [setMailer, [@mailer]]
-            
+
     services.token:
         class: %services.token_class%
         arguments: [@doctrine]
@@ -60,17 +61,17 @@ services:
     #    class: %services.inquiry_class%
     #    calls:
     #        - [setDoctrine, [@doctrine]]
-            
+
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]
-        
+
     services.miscellaneous.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
         public: false
         tags:
             - { name: twig.extension }
-            
+
     services.inline_javascript.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension
         public: false
@@ -82,12 +83,12 @@ services:
     services.alert:
         class: %services.alert_class%
         arguments: [@doctrine, @service_container]
-        
+
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
         calls:
-            - [setUserService, [@services.user]]
+            - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
 
@@ -115,21 +116,21 @@ services:
             - [setDoctrine, [@doctrine]]
         tags:
             - { name: form.type, alias: language_autocomplete }
-            
+
     form.news_list:
         class: "%services.news_list%"
         calls:
             - [setContainer, [@service_container]]
         tags:
             - { name: form.type, alias: news_list }
-            
+
     form.advertisement_list:
         class: "%services.advertisement_list%"
         calls:
            - [setContainer, [@service_container]]
         tags:
            - { name: form.type, alias: advertisement_list }
-            
+
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
         calls:
@@ -138,7 +139,7 @@ services:
             - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-            
+
     listener.helper.institutionBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\InstitutionBreadcrumbBeforeControllerListener
         calls:
@@ -157,7 +158,7 @@ services:
             - [setRouter, [@router]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-    
+
     listener.helper.preExecute:
         class: HealthCareAbroad\HelperBundle\Listener\PreExecuteController
         tags:
