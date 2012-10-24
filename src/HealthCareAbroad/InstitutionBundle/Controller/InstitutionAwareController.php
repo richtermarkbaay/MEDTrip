@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,7 +32,8 @@ abstract class InstitutionAwareController extends Controller
     {
         $this->institution = $institution;
         $this->get('twig')->addGlobal('institution', $this->institution);
-        $this->get('twig')->addGlobal('userName', $this->get('security.context')->getToken()->getUser());
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
+        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
     }
     
     public function throwInvalidInstitutionException()
