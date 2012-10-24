@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
-use HealthCareAbroad\UserBundle\Entity\nstitutionUserRole;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
 use Symfony\Component\Security\Core\SecurityContext;
 use HealthCareAbroad\UserBundle\Services\ChromediaAccountsUserProvider;
 
@@ -18,7 +18,7 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
             // populate account data to SiteUser
             $user = $this->userService->hydrateAccountData($user, $accountData);
 
-            $roles = array('ROLE_ADMIN');
+            $roles = array('INSTITUTION_USER');
 
             //TODO: why are we looping here?
             foreach ($user->getInstitutionUserType()->getInstitutionUserRole() as $userRole) {
@@ -43,7 +43,7 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
      */
     public function supportsClass($class)
     {
-        return $class === 'HealthCareAbroad\UserBundle\Services\InstitutionUser';
+        return $class === 'HealthCareAbroad\UserBundle\Entity\InstitutionUser';
     }
 
 }

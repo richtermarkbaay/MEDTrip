@@ -79,7 +79,7 @@ admin_login:
         _method:  GET|POST
 
 admin_login_check:
-    pattern:   /admin/login_check
+    pattern:   /admin/login-check
 
 admin_edit_account:
     pattern: /admin/edit-account

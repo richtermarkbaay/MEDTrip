@@ -42,7 +42,7 @@ class AdminUserProvider extends ChromediaAccountsUserProvider
      */
     public function supportsClass($class)
     {
-        return $class === 'HealthCareAbroad\UserBundle\Services\AdminUser';
+        return $class === 'HealthCareAbroad\UserBundle\Entity\AdminUser';
     }
 
 }
