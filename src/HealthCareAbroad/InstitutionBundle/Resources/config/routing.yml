@@ -1,16 +1,16 @@
-# Routes for Institution MedicalCenterGroupController #
-InstitutionBundle_medicalCenterGroup:
-    resource: "@InstitutionBundle/Resources/config/routing_medicalCenterGroup.yml"
-    prefix:   /institution
-
 # Routes for Institution MedicalCenterController #
 InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /institution
+
+# Routes for Institution SpecializationController #
+InstitutionBundle_specialization:
+    resource: "@InstitutionBundle/Resources/config/routing_specialization.yml"
+    prefix:   /institution
     
-# Routes for Institution TreatmentController #
-InstitutionBundle_treatment:
-    resource: "@InstitutionBundle/Resources/config/routing_treatment.yml"
+# Routes for Institution SubSpecializationController #
+InstitutionBundle_subSpecialization:
+    resource: "@InstitutionBundle/Resources/config/routing_subSpecialization.yml"
     prefix:   /institution
     
 # Routes for InstitutionUserController #
