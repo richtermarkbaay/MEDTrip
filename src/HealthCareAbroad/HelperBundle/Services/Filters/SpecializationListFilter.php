@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class MedicalCenterListFilter extends ListFilter
+class SpecializationListFilter extends ListFilter
 {
 
     function setFilterOptions()
@@ -15,7 +15,7 @@ class MedicalCenterListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('c')->from('MedicalProcedureBundle:MedicalCenter', 'c');
+        $this->queryBuilder->select('c')->from('TreatmentBundle:Specialization', 'c');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('c.status = :status');
