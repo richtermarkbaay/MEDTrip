@@ -59,7 +59,7 @@ abstract class UserService
 
     protected $container;
 
-    abstract function login($email, $password);
+    //abstract function login($email, $password);
 
     abstract function findByEmailAndPassword($email, $password);
 
@@ -72,6 +72,14 @@ abstract class UserService
     abstract function getAccountData(SiteUser $siteUser);
 
     abstract function setSessionVariables(SiteUser $user);
+    
+    /**
+     * Get user roles of a SiteUser. Used for setting roles for security token.
+     * 
+     * @param SiteUser $user
+     * @return array
+     */
+    abstract public function getUserRolesForSecurityToken(SiteUser $user); 
 
     public function __construct(ContainerInterface $container=null)
     {

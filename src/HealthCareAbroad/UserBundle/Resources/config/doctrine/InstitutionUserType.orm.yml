@@ -19,7 +19,7 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUserType:
             type: smallint
             nullable: false
     manyToMany:
-        institutionUserRole:
+        institutionUserRoles:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUserRole
             cascade: {  }
             mappedBy: null
