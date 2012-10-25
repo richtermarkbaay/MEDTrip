@@ -16,19 +16,12 @@
         <![endif]-->
         <title>{% block title %}HealthCareAbroad{% endblock %}</title>
 
-        {% javascripts
-        
-            'js/main/jquery.js'
-			'js/main/jquery.tools.min.js'
-			'js/main/jquery.cycle.all.min.js'
-			'js/main/jquery.jplayer.min.js'
-			'js/main/jquery.tweet.js'
-			'js/main/jquery.prettyPhoto.js'
-			'js/main/jquery.tipsy.js'
-			'js/main/jquery.li-scroller.1.0.js'
-			'js/main/jquery.fitvids.js'
-			'js/main/custom.js'
-        %}
+        {% javascripts 
+            'js/jquery/jquery-1.8.2.js'
+			'js/jquery/jquery-ui-1.9.0.custom.js'
+			'bundles/helper/js/Common.js'
+			output='js/compiled-splash.js'
+        %
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
