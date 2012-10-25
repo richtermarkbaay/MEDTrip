@@ -5,14 +5,14 @@ use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-use HealthCareAbroad\MedicalProcedureBundle\Form\MedicalCenterType;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+use HealthCareAbroad\TreatmentBundle\Form\SpecializationType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class SpecializationController extends Controller
 {
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_SPECIALIZATIONS')")
      */
     public function indexAction()
     {
@@ -20,11 +20,11 @@ class SpecializationController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
      */
     public function addAction()
     {
-        $form = $this->createForm(new MedicalCenterType(), new MedicalCenter());
+        $form = $this->createForm(new SpecializationType(), new Specialization());
 
         return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => null,
@@ -34,14 +34,14 @@ class SpecializationController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
      */
     public function editAction($id)
     {
         $specialization = $this->getDoctrine()->getEntityManager()
-                ->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
+                ->getRepository('TreatmentBundle:Specialization')->find($id);
 
-        $form = $this->createForm(new MedicalCenterType(), $specialization);
+        $form = $this->createForm(new SpecializationType(), $specialization);
 
         return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => $id,
@@ -52,7 +52,7 @@ class SpecializationController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
      */
     public function saveAction()
     {
@@ -65,10 +65,10 @@ class SpecializationController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $specialization = $id
-                ? $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id) 
-                : new MedicalCenter();
+                ? $em->getRepository('TreatmentBundle:Specialization')->find($id) 
+                : new Specialization();
 
-        $form = $this->createForm(new MedicalCenterType(), $specialization);
+        $form = $this->createForm(new SpecializationType(), $specialization);
            $form->bind($request);
 
            if ($form->isValid()) {
@@ -76,7 +76,7 @@ class SpecializationController extends Controller
                $em->flush($specialization);
 
             // dispatch event               
-               $eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_CENTER : AdminBundleEvents::ON_ADD_MEDICAL_CENTER;
+               $eventName = $id ? AdminBundleEvents::ON_EDIT_SPECIALIZATION : AdminBundleEvents::ON_ADD_SPECIALIZATION;
                $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $specialization));
                
                $request->getSession()->setFlash('success', 'Medical center saved!');
@@ -99,20 +99,20 @@ class SpecializationController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_MEDICAL_CENTER')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_SPECIALIZATION')")
      */
     public function updateStatusAction($id)
     {
         $result = false;
         $em = $this->getDoctrine()->getEntityManager();
-        $specialization = $em->getRepository('MedicalProcedureBundle:MedicalCenter')->find($id);
+        $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($id);
 
         if ($specialization) {
-            $specialization->setStatus($specialization->getStatus() ? MedicalCenter::STATUS_INACTIVE : MedicalCenter::STATUS_ACTIVE);
+            $specialization->setStatus($specialization->getStatus() ? Specialization::STATUS_INACTIVE : Specialization::STATUS_ACTIVE);
             $em->persist($specialization);
             $em->flush($specialization);
             
-            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_MEDICAL_CENTER, $specialization));
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_SPECIALIZATION, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_SPECIALIZATION, $specialization));
             
             $result = true;
         }

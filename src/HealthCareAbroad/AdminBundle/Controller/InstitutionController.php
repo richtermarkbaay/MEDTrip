@@ -3,21 +3,21 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
-use HealthCareAbroad\InstitutionBundle\Form\institutionMedicalCenterGroupFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\SubSpecializationBundle\Entity\Specialization;
+use HealthCareAbroad\SubSpecializationBundle\Entity\SubSpecializationProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-use HealthCareAbroad\InstitutionBundle\Entity\institutionMedicalCenterGroup;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmentProcedure;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
-use HealthCareAbroad\InstitutionBundle\Entity\institutionMedicalCenterGroupStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\institutionMedicalCenter;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSubSpecializationProcedure;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSubSpecialization;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-use HealthCareAbroad\InstitutionBundle\Form\institutionMedicalCenterGroupType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentProcedureFormType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionTreatmentFormType;
+use HealthCareAbroad\InstitutionBundle\Form\institutionMedicalCenterType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationProcedureFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationFormType;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
@@ -30,9 +30,8 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class InstitutionController extends Controller
 {    
     protected $institution;
-    protected $institutionMedicalCenterGroup;
-    protected $institutionTreatment;
-    protected $institutionMedicalProcedure;
+    protected $institutionMedicalCenter;
+    protected $institutionSpecialization;
 
     function preExecute() 
     {
@@ -46,34 +45,25 @@ class InstitutionController extends Controller
             }
         }
 
-        // Check institutionMedicalCenterGroup        
+        // Check institutionMedicalCenter        
         if ($request->get('imcId')) {
-            $this->institutionMedicalCenterGroup = $this->getDoctrine()->getRepository('InstitutionBundle:institutionMedicalCenterGroup')->find($request->get('imcId'));
+            $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:institutionMedicalCenter')->find($request->get('imcId'));
 
-            if(!$this->institutionMedicalCenterGroup) {
-                throw $this->createNotFoundException('Invalid institutionMedicalCenterGroup.');
+            if(!$this->institutionMedicalCenter) {
+                throw $this->createNotFoundException('Invalid institutionMedicalCenter.');
             }
         }
 
-        // Check InstitutionTreatment
-        if ($request->get('imptId')) {
-            $this->institutionTreatment = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatment')->find($request->get('imptId'));
+        // Check InstitutionSpecialization
+        if ($request->get('isId')) {
+            $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
 
-            if(!$this->institutionTreatment) {
-                throw $this->createNotFoundException('Invalid InstitutionTreatment.');
+            if(!$this->institutionSpecialization) {
+                throw $this->createNotFoundException('Invalid InstitutionSpecialization.');
             }
         }
-        
-        // Check InstitutionTreatmentProcedure
-        if ($request->get('impId')) {
-            $this->institutionMedicalProcedure = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionTreatmentProcedure')->find($request->get('impId'));
-        
-            if(!$this->institutionMedicalProcedure) {
-                throw $this->createNotFoundException('Invalid InstitutionTreatment.');
-            }
-        }
-        
-        $this->service = $this->get('services.institution_medical_center_group');
+
+        $this->service = $this->get('services.institution_medical_center');
     }
 
     /**
@@ -128,439 +118,473 @@ class InstitutionController extends Controller
         return $this->redirect($this->generateUrl('admin_institution_index'));
     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function manageCentersAction()
-    {
-        //var_dump($this->filteredResult[0]->getinstitutionMedicalCenterGroups());
-        
-        $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionName' => $this->institution->getName(),
-            'centerStatusList' => institutionMedicalCenterGroupStatus::getStatusList(),
-            'updateCenterStatusOptions' => institutionMedicalCenterGroupStatus::getUpdateStatusOptions(), 
-            'institutionMedicalCenterGroups' => $this->filteredResult,
-            'pager' => $this->pager
-        );
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function manageCentersAction()
+//     {
+//         $params = array(
+//             'institutionId' => $this->institution->getId(),
+//             'institutionName' => $this->institution->getName(),
+//             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+//             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
+//             'institutionMedicalCenters' => $this->filteredResult,
+//             'pager' => $this->pager
+//         );
 
-        return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
-    }
+//         return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
+//     }
 
-    /**
-     * This is the first step when creating a new institutionMedicalCenterGroup. Add details of a institutionMedicalCenterGroup
-     * 
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addMedicalCenterDetailsAction(Request $request)
-    {
-        if (is_null($this->institutionMedicalCenterGroup)) {
-            $this->institutionMedicalCenterGroup = new institutionMedicalCenterGroup();
-            $this->institutionMedicalCenterGroup->setInstitution($this->institution);
-        }
-        else {
-            // there is an imcgId in the Request, check if this is a draft
-            if ($this->institutionMedicalCenterGroup && !$this->service->isDraft($this->institutionMedicalCenterGroup)) {
-                return $this->_redirectIndexWithFlashMessage('Invalid draft medical center group', 'error');
-            }
-        }
-        
-        $form = $this->createForm(new institutionMedicalCenterGroupFormType(),$this->institutionMedicalCenterGroup);
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
+//     /**
+//      * This is the first step when creating a new institutionMedicalCenter. Add details of a institutionMedicalCenter
+//      * 
+//      * @param Request $request
+//      * @return \Symfony\Component\HttpFoundation\Response
+//      */
+//     public function addMedicalCenterAction(Request $request)
+//     {
+//         if (is_null($this->institutionMedicalCenter)) {
+//             $this->institutionMedicalCenter = new institutionMedicalCenter();
+//             $this->institutionMedicalCenter->setInstitution($this->institution);
+//         }
+//         else {
+//             // there is an imcgId in the Request, check if this is a draft
+//             if ($this->institutionMedicalCenter && !$this->service->isDraft($this->institutionMedicalCenter)) {
+//                 return $this->_redirectIndexWithFlashMessage('Invalid draft medical center', 'error');
+//             }
+//         }
+
+//         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
+//         if ($request->isMethod('POST')) {
+//             $form->bind($request);
             
-            if ($form->isValid()) {
+//             if ($form->isValid()) {
                 
-                $this->institutionMedicalCenterGroup = $this->get('services.institutionMedicalCenterGroup')
-                    ->saveAsDraft($form->getData());
+//                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+//                     ->saveAsDraft($form->getData());
                 
-                // TODO: fire event
+//                 // TODO: fire event
                 
-                // redirect to step 2;
-                return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addSpecializations',array('imcgId' => $this->institutionMedicalCenterGroup->getId())));
-            }
-        }
+//                 // redirect to step 2;
+//                 return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array('imcgId' => $this->institutionMedicalCenter->getId())));
+//             }
+//         }
         
-        $params = array(
-            'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup
-        );
+//         $params = array(
+//             'form' => $form->createView(),
+//             'institutionId' => $this->institution->getId(),
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter
+//         );
         
-        return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
-    }
+//         return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+//     }
 
-    /**
-     *
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function editMedicalCenterAction()
-    {
-        $form = $this->createForm(new institutionMedicalCenterGroupType(), $this->institutionMedicalCenterGroup);
+//     /**
+//      * This is the second step when creating a new institutionMedicalCenter. Add specializations for specific medicalCenter 
+//      *
+//      * @param Request $request
+//      * @return \Symfony\Component\HttpFoundation\Response
+//      */
+//     public function addSpecializationAction(Request $request)
+//     {
+//         if (is_null($this->institutionSpecialization)) {
+//             $this->institutionSpecialization = new InstitutionSpecialization();
+//         }
 
-        $formActionParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenterGroup->getId());
-        $formAction = $this->generateUrl('admin_institution_medicalCenter_update', $formActionParams);
-
-        $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'centerStatusList' => institutionMedicalCenterGroupStatus::getStatusList(),
-            'updateCenterStatusOptions' => institutionMedicalCenterGroupStatus::getUpdateStatusOptions(),
-            'formAction' => $formAction,
-            'form' => $form->createView()
-        );
-
-        return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
-    }
+//         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionSpecialization);
+//         if ($request->isMethod('POST')) {
+//             $form->bind($request);
     
-    /**
-     *
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function saveMedicalCenterAction()
-    {
-        $request = $this->getRequest();
+//             if ($form->isValid()) {
+    
+//                 // TODO: Save specialization
+    
+//                 // TODO: fire event
 
-        if(!$request->isMethod('POST')) {
-            return new Response("Save requires POST method!", 405);
-        }
+//                 // redirect to step 2;
+//                 //return $this->redirect($this->generateUrl());
+//             }
+//         }
+    
+//         $params = array(
+//             'form' => $form->createView(),
+//             'institutionId' => $this->institution->getId(),
+//             'institutionSpecialization' => $this->institutionSpecialization
+//         );
+    
+//         return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+//     }
+    
+//     /**
+//      *
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function editSpecializationAction()
+//     {
+//         $form = $this->createForm(new institutionMedicalCenterType(), $this->institutionMedicalCenter);
 
-        if(!$this->institutionMedicalCenterGroup) {
-            $this->institutionMedicalCenterGroup = new institutionMedicalCenterGroup;
-            $this->institutionMedicalCenterGroup->setInstitution($this->institution);
-        }
+//         $formActionParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId());
+//         $formAction = $this->generateUrl('admin_institution_medicalCenter_update', $formActionParams);
 
-        $form = $this->createForm(new institutionMedicalCenterGroupType(), $this->institutionMedicalCenterGroup);
-        $form->bind($request);
+//         $params = array(
+//             'institutionId' => $this->institution->getId(),
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+//             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
+//             'formAction' => $formAction,
+//             'form' => $form->createView()
+//         );
 
-        if($form->isValid()) {
-            if(!$request->get('imcId'))
-                $this->institutionMedicalCenterGroup->setStatus(institutionMedicalCenterGroupStatus::INACTIVE);
+//         return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+//     }
+    
+//     /**
+//      *
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function saveSpecializationAction()
+//     {
+//         $request = $this->getRequest();
 
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($this->institutionMedicalCenterGroup);
-            $em->flush($this->institutionMedicalCenterGroup);
+//         if(!$request->isMethod('POST')) {
+//             return new Response("Save requires POST method!", 405);
+//         }
 
-            // dispatch ADD or EDIT institutionMedicalCenterGroup event
-            $actionEvent = $request->get('imcId') ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER;
-            $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenterGroup, array('institutionId' => $this->institution->getId()));
-            $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//         if(!$this->institutionMedicalCenter) {
+//             $this->institutionMedicalCenter = new institutionMedicalCenter;
+//             $this->institutionMedicalCenter->setInstitution($this->institution);
+//         }
 
-            $request->getSession()->setFlash('success', 'Medical center has been saved!');
+//         $form = $this->createForm(new institutionMedicalCenterType(), $this->institutionMedicalCenter);
+//         $form->bind($request);
 
-            if($request->get('submit') == 'Save') {
-                $routeParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenterGroup->getId());
+//         if($form->isValid()) {
+//             if(!$request->get('imcId'))
+//                 $this->institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::INACTIVE);
 
-                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_edit', $routeParams));
-            } else {            
-                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId())));
-            }
+//             $em = $this->getDoctrine()->getEntityManager();
+//             $em->persist($this->institutionMedicalCenter);
+//             $em->flush($this->institutionMedicalCenter);
 
-        } else {
+//             // dispatch ADD or EDIT institutionMedicalCenter event
+//             $actionEvent = $request->get('imcId') ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER : InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER;
+//             $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId()));
+//             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
-            if($this->institutionMedicalCenterGroup->getId()) {
-                $formActionParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenterGroup->getId());
-                $formAction = $this->generateUrl('admin_institution_medicalCenter_update', $formActionParams);
-            } else {
-                $formActionParams = array('institutionId' => $this->institution->getId());
-                $formAction = $this->generateUrl('admin_institution_medicalCenter_create', $formActionParams);
-            }
+//             $request->getSession()->setFlash('success', 'Medical center has been saved!');
 
-            $params = array(
-                'form' => $form->createView(),
-                'institutionId' => $this->institution->getId(),
-                'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-                'formAction' => $formAction
-            );
+//             if($request->get('submit') == 'Save') {
+//                 $routeParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId());
 
-            return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
-        }
-    }
+//                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_edit', $routeParams));
+//             } else {            
+//                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId())));
+//             }
+
+//         } else {
+
+//             if($this->institutionMedicalCenter->getId()) {
+//                 $formActionParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId());
+//                 $formAction = $this->generateUrl('admin_institution_medicalCenter_update', $formActionParams);
+//             } else {
+//                 $formActionParams = array('institutionId' => $this->institution->getId());
+//                 $formAction = $this->generateUrl('admin_institution_medicalCenter_create', $formActionParams);
+//             }
+
+//             $params = array(
+//                 'form' => $form->createView(),
+//                 'institutionId' => $this->institution->getId(),
+//                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                 'formAction' => $formAction
+//             );
+
+//             return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+//         }
+//     }
 
 
-    /**
-     * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */ 
-    public function updateMedicalCenterStatusAction()
-    {
-        $request = $this->getRequest();
-        $status = $request->get('status');
+//     /**
+//      * 
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */ 
+//     public function updateSpecializationStatusAction()
+//     {
+//         $request = $this->getRequest();
+//         $status = $request->get('status');
 
-        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
+//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
         
-        if(!institutionMedicalCenterGroupStatus::isValid($status)) {
-            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
+//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
+//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
 
-            return $this->redirect($redirectUrl);
-        }
+//             return $this->redirect($redirectUrl);
+//         }
         
-        $this->institutionMedicalCenterGroup->setStatus($status);
+//         $this->institutionMedicalCenter->setStatus($status);
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalCenterGroup);
-        $em->flush($this->institutionMedicalCenterGroup);
+//         $em = $this->getDoctrine()->getEntityManager();
+//         $em->persist($this->institutionMedicalCenter);
+//         $em->flush($this->institutionMedicalCenter);
 
-        // dispatch EDIT institutionMedicalCenterGroup event
-        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenterGroup, array('institutionId' => $request->get('institutionId')));
-        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//         // dispatch EDIT institutionMedicalCenter event
+//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
+//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
+//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
-        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenterGroup->getName().'" status has been updated!');
+//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
 
-        return $this->redirect($redirectUrl);
-    }
+//         return $this->redirect($redirectUrl);
+//     }
 
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function addProcedureTypeAction()
-    {    
-        $institutionTreatment = new InstitutionTreatment();
-        $institutionTreatment->setinstitutionMedicalCenterGroup($this->institutionMedicalCenterGroup);
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function addProcedureTypeAction()
+//     {    
+//         $institutionSubSpecialization = new InstitutionSubSpecialization();
+//         $institutionSubSpecialization->setinstitutionMedicalCenter($this->institutionMedicalCenter);
 
-        $form = $this->createForm(new InstitutionTreatmentFormType(), $institutionTreatment);
+//         $form = $this->createForm(new InstitutionSubSpecializationFormType(), $institutionSubSpecialization);
 
-        return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
-            'institution' => $this->institution,
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'institutionTreatment' => $this->institutionTreatment,
-            'form' => $form->createView(),
-            'newProcedureType' => true
-        ));
-    }
+//         return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
+//             'institution' => $this->institution,
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'institutionSubSpecialization' => $this->institutionSubSpecialization,
+//             'form' => $form->createView(),
+//             'newProcedureType' => true
+//         ));
+//     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function editProcedureTypeAction()
-    {
-        $form = $this->createForm(new InstitutionTreatmentFormType(), $this->institutionTreatment);
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function editProcedureTypeAction()
+//     {
+//         $form = $this->createForm(new InstitutionSubSpecializationFormType(), $this->institutionSubSpecialization);
 
-        return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
-            'institution' => $this->institution,
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'institutionTreatment' => $this->institutionTreatment,
-            'form' => $form->createView(),
-            'newProcedureType' => false
-        ));
-    }
+//         return $this->render("AdminBundle:Institution:modalForm.treatment.html.twig", array(
+//             'institution' => $this->institution,
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'institutionSubSpecialization' => $this->institutionSubSpecialization,
+//             'form' => $form->createView(),
+//             'newProcedureType' => false
+//         ));
+//     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */    
-    public function saveProcedureTypeAction()
-    {
-        $request = $this->getRequest();
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */    
+//     public function saveProcedureTypeAction()
+//     {
+//         $request = $this->getRequest();
 
-        if (!$request->isMethod('POST')) {
-            return new Response('Unsupported method', 405);
-        }
+//         if (!$request->isMethod('POST')) {
+//             return new Response('Unsupported method', 405);
+//         }
 
-        if(!$this->institutionTreatment) {
-            $this->institutionTreatment = new InstitutionTreatment();
-            $this->institutionTreatment->setinstitutionMedicalCenterGroup($this->institutionMedicalCenterGroup);            
-        }
+//         if(!$this->institutionSubSpecialization) {
+//             $this->institutionSubSpecialization = new InstitutionSubSpecialization();
+//             $this->institutionSubSpecialization->setinstitutionMedicalCenter($this->institutionMedicalCenter);            
+//         }
 
-        $form = $this->createForm(new InstitutionTreatmentFormType(), $this->institutionTreatment);
-        $form->bindRequest($request);
+//         $form = $this->createForm(new InstitutionSubSpecializationFormType(), $this->institutionSubSpecialization);
+//         $form->bindRequest($request);
 
-        if ($form->isValid()){
-            $this->institutionTreatment->setStatus(InstitutionTreatment::STATUS_ACTIVE);
+//         if ($form->isValid()){
+//             $this->institutionSubSpecialization->setStatus(InstitutionSubSpecialization::STATUS_ACTIVE);
 
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($this->institutionTreatment);
-            $em->flush($this->institutionTreatment);
+//             $em = $this->getDoctrine()->getEntityManager();
+//             $em->persist($this->institutionSubSpecialization);
+//             $em->flush($this->institutionSubSpecialization);
 
-            // dispatch EDIT institutionTreatment event
-            $actionEvent = $request->get('imptId') 
-                ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT 
-                : InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT;
-            $event = $this->get('events.factory')->create($actionEvent, $this->institutionTreatment);
-            $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//             // dispatch EDIT institutionSubSpecialization event
+//             $actionEvent = $request->get('issId') 
+//                 ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT 
+//                 : InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT;
+//             $event = $this->get('events.factory')->create($actionEvent, $this->institutionSubSpecialization);
+//             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', 'Successfully saved institution treatement.');
+//             $request->getSession()->setFlash('success', 'Successfully saved institution treatement.');
 
-            $url = $this->generateUrl('admin_institution_medicalCenter_edit', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenterGroup->getId(), 'imptId' => $this->institutionTreatment->getId()));
+//             $url = $this->generateUrl('admin_institution_medicalCenter_edit', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId(), 'issId' => $this->institutionSubSpecialization->getId()));
 
-            $response = new Response(json_encode(array('redirect_url' => $url)));
-            $response->headers->set('Content-Type', 'application/json');
+//             $response = new Response(json_encode(array('redirect_url' => $url)));
+//             $response->headers->set('Content-Type', 'application/json');
             
-            return $response;
-        }
+//             return $response;
+//         }
 
-        return $this->render('AdminBundle:Institution:modalForm.treatment.html.twig', array(
-            'institution' => $this->institution,
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'institutionTreatment' => $this->institutionTreatment,
-            'form' => $form->createView(),
-            'newProcedureType' => !$request->get('imptId'),
-        ));
-    }
+//         return $this->render('AdminBundle:Institution:modalForm.treatment.html.twig', array(
+//             'institution' => $this->institution,
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'institutionSubSpecialization' => $this->institutionSubSpecialization,
+//             'form' => $form->createView(),
+//             'newProcedureType' => !$request->get('issId'),
+//         ));
+//     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function addProcedureAction()
-    {
-        $request = $this->getRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function addProcedureAction()
+//     {
+//         $request = $this->getRequest();
+//         $em = $this->getDoctrine()->getEntityManager();
 
-        $institutionMedicalProcedure = new InstitutionTreatmentProcedure();
-        $institutionMedicalProcedure->setInstitutionTreatment($this->institutionTreatment);
-        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $institutionMedicalProcedure);
+//         $institutionTreatment = new InstitutionSubSpecializationProcedure();
+//         $institutionTreatment->setInstitutionSubSpecialization($this->institutionSubSpecialization);
+//         $form = $this->createForm(new InstitutionSubSpecializationProcedureFormType(), $institutionTreatment);
 
-        $formActionParams = array(
-            'institutionId' => $this->institution->getId(),
-            'imcId' => $this->institutionMedicalCenterGroup->getId(),
-            'imptId' => $this->institutionTreatment->getId(),
-        );
+//         $formActionParams = array(
+//             'institutionId' => $this->institution->getId(),
+//             'imcId' => $this->institutionMedicalCenter->getId(),
+//             'issId' => $this->institutionSubSpecialization->getId(),
+//         );
 
-        $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
+//         $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
         
-        $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'institutionTreatment' => $this->institutionTreatment,
-            'formAction' => $formAction,
-            'isNew' => true,
-            'form' => $form->createView()
-        );
+//         $params = array(
+//             'institutionId' => $this->institution->getId(),
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'institutionSubSpecialization' => $this->institutionSubSpecialization,
+//             'formAction' => $formAction,
+//             'isNew' => true,
+//             'form' => $form->createView()
+//         );
 
-        return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
-    }
+//         return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
+//     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function editProcedureAction()
-    {
-        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $this->institutionMedicalProcedure);
-        $formActionParams = array(
-            'institutionId' => $this->institution->getId(),
-            'imcId' => $this->institutionMedicalCenterGroup->getId(),
-            'imptId' => $this->institutionTreatment->getId(),
-            'impId' => $this->institutionMedicalProcedure->getId()
-        );
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function editProcedureAction()
+//     {
+//         $form = $this->createForm(new InstitutionSubSpecializationProcedureFormType(), $this->institutionTreatment);
+//         $formActionParams = array(
+//             'institutionId' => $this->institution->getId(),
+//             'imcId' => $this->institutionMedicalCenter->getId(),
+//             'issId' => $this->institutionSubSpecialization->getId(),
+//             'itId' => $this->institutionTreatment->getId()
+//         );
 
-        $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
+//         $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
 
-        $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
-            'institutionTreatment' => $this->institutionTreatment,
-            'treatmentProcedureName' => $this->institutionMedicalProcedure->getTreatmentProcedure()->getName(),
-            'formAction' => $formAction,
-            'isNew' => false,
-            'form' => $form->createView()
-        );
+//         $params = array(
+//             'institutionId' => $this->institution->getId(),
+//             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//             'institutionSubSpecialization' => $this->institutionSubSpecialization,
+//             'treatmentProcedureName' => $this->institutionTreatment->getSubSpecializationProcedure()->getName(),
+//             'formAction' => $formAction,
+//             'isNew' => false,
+//             'form' => $form->createView()
+//         );
 
-        return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
-    }
+//         return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
+//     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function saveProcedureAction()
-    {
-        $request = $this->getRequest();
+//     /**
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+//      */
+//     public function saveProcedureAction()
+//     {
+//         $request = $this->getRequest();
 
-        if (!$request->isMethod('POST')) {
-            return new Response('Unsupported method', 405);
-        }
+//         if (!$request->isMethod('POST')) {
+//             return new Response('Unsupported method', 405);
+//         }
 
-        if (!$this->institutionMedicalProcedure) {
-            $this->institutionMedicalProcedure = new InstitutionTreatmentProcedure();
-            $this->institutionMedicalProcedure->setInstitutionTreatment($this->institutionTreatment);
-        }
+//         if (!$this->institutionTreatment) {
+//             $this->institutionTreatment = new InstitutionSubSpecializationProcedure();
+//             $this->institutionTreatment->setInstitutionSubSpecialization($this->institutionSubSpecialization);
+//         }
 
-        $form = $this->createForm(new InstitutionTreatmentProcedureFormType(), $this->institutionMedicalProcedure);
-        $form->bindRequest($request);
+//         $form = $this->createForm(new InstitutionSubSpecializationProcedureFormType(), $this->institutionTreatment);
+//         $form->bindRequest($request);
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($this->institutionMedicalProcedure);
-            $em->flush($this->institutionMedicalProcedure);
+//         if ($form->isValid()) {
+//             $em = $this->getDoctrine()->getEntityManager();
+//             $em->persist($this->institutionTreatment);
+//             $em->flush($this->institutionTreatment);
             
-            // dispatch ADD or EDIT institutionMedicalProcedure event
-            $actionEvent = $request->get('impId') 
-                ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE 
-                : InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT_PROCEDURE;
-            $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
-            $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//             // dispatch ADD or EDIT institutionTreatment event
+//             $actionEvent = $request->get('itId') 
+//                 ? InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE 
+//                 : InstitutionBundleEvents::ON_ADD_INSTITUTION_TREATMENT_PROCEDURE;
+//             $event = $this->get('events.factory')->create($actionEvent, $this->institutionTreatment);
+//             $this->get('event_dispatcher')->dispatch($actionEvent, $event);
             
-            $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionTreatment->getTreatment()->getName()}\" treatment.");
+//             $request->getSession()->setFlash('success', "Successfully added a medical procedure to \"{$this->institutionSubSpecialization->getSubSpecialization()->getName()}\" treatment.");
 
-            $params = array(
-                 'institutionId' => $this->institution->getId(),
-                 'imcId' => $this->institutionMedicalCenterGroup->getId(),
-                 'imptId' => $this->institutionTreatment->getId()
-            );
+//             $params = array(
+//                  'institutionId' => $this->institution->getId(),
+//                  'imcId' => $this->institutionMedicalCenter->getId(),
+//                  'issId' => $this->institutionSubSpecialization->getId()
+//             );
 
-            $url = $this->generateUrl('admin_institution_medicalCenter_edit', $params);
+//             $url = $this->generateUrl('admin_institution_medicalCenter_edit', $params);
 
-            $response = new Response(json_encode(array('redirect_url' => $url)));
-            $response->headers->set('Content-Type', 'application/json');
+//             $response = new Response(json_encode(array('redirect_url' => $url)));
+//             $response->headers->set('Content-Type', 'application/json');
 
-            return $response;
+//             return $response;
 
-        } else {
+//         } else {
 
-            $formActionParams = array(
-                'institutionId' => $this->institution->getId(),
-                'imcId' => $this->institutionMedicalCenterGroup->getId(),
-                'imptId' => $this->institutionTreatment->getId(),
-            );
+//             $formActionParams = array(
+//                 'institutionId' => $this->institution->getId(),
+//                 'imcId' => $this->institutionMedicalCenter->getId(),
+//                 'issId' => $this->institutionSubSpecialization->getId(),
+//             );
 
-            if(!$request->get('impId')) {
-                $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
-                $params['isNew'] = true;
+//             if(!$request->get('itId')) {
+//                 $formAction = $this->generateUrl('admin_institution_treatmentProcedure_create', $formActionParams);
+//                 $params['isNew'] = true;
 
-            } else {
-                $formActionParams['impId'] = $this->institutionMedicalProcedure->getId();
-                $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
+//             } else {
+//                 $formActionParams['itId'] = $this->institutionTreatment->getId();
+//                 $formAction = $this->generateUrl('admin_institution_treatmentProcedure_update', $formActionParams);
 
-                $params['isNew'] = true;
-                $params['treatmentProcedureName'] = $this->institutionMedicalProcedure->getTreatmentProcedure()->getName();
-            }
+//                 $params['isNew'] = true;
+//                 $params['treatmentProcedureName'] = $this->institutionTreatment->getSubSpecializationProcedure()->getName();
+//             }
 
-            $params['institutionId'] = $this->institution->getId();
-            $params['institutionMedicalCenterGroup'] = $this->institutionMedicalCenterGroup;
-            $params['institutionTreatment'] = $this->institutionTreatment;
-            $params['formAction'] = $formAction;
-            $params['form'] = $form->createView();
+//             $params['institutionId'] = $this->institution->getId();
+//             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
+//             $params['institutionSubSpecialization'] = $this->institutionSubSpecialization;
+//             $params['formAction'] = $formAction;
+//             $params['form'] = $form->createView();
             
-            return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
-        }
-    }
+//             return $this->render('AdminBundle:Institution:modalForm.procedure.html.twig', $params);
+//         }
+//     }
 
-    /**
-     * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     */
-    public function updateProcedureStatusAction()
-    {
-        $status = $this->institutionMedicalProcedure->getStatus() == InstitutionTreatmentProcedure::STATUS_ACTIVE
-            ? InstitutionTreatmentProcedure::STATUS_INACTIVE
-            : InstitutionTreatmentProcedure::STATUS_ACTIVE;
+//     /**
+//      * 
+//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+//      */
+//     public function updateProcedureStatusAction()
+//     {
+//         $status = $this->institutionTreatment->getStatus() == InstitutionSubSpecializationProcedure::STATUS_ACTIVE
+//             ? InstitutionSubSpecializationProcedure::STATUS_INACTIVE
+//             : InstitutionSubSpecializationProcedure::STATUS_ACTIVE;
 
-        $this->institutionMedicalProcedure->setStatus($status);
+//         $this->institutionTreatment->setStatus($status);
         
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalProcedure);
-        $em->flush($this->institutionMedicalProcedure);
+//         $em = $this->getDoctrine()->getEntityManager();
+//         $em->persist($this->institutionTreatment);
+//         $em->flush($this->institutionTreatment);
         
-        // dispatch ADD or EDIT institutionMedicalProcedure event
-        $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalProcedure);
-        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//         // dispatch ADD or EDIT institutionTreatment event
+//         $actionEvent = InstitutionBundleEvents::ON_EDIT_INSTITUTION_TREATMENT_PROCEDURE;
+//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionTreatment);
+//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
 
-        $response = new Response(json_encode(true));
-        $response->headers->set('Content-Type', 'application/json');
+//         $response = new Response(json_encode(true));
+//         $response->headers->set('Content-Type', 'application/json');
 
-        return $response;
-    }
+//         return $response;
+//     }
 }

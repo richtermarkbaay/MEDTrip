@@ -195,7 +195,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadAvailableTreatmentsAction(Request $request)
     {
-        $specialization = $this->getDoctrine()->getRepository('MedicalProcedureBundle:Specialization')->find($request->get('specializationId', 0));
+        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($request->get('specializationId', 0));
         if (!$specialization) {
             throw $this->createNotFoundException("Invalid specialization");
         }
