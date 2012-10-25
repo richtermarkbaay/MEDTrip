@@ -9,10 +9,10 @@ namespace HealthCareAbroad\HelperBundle\Listener\Alerts;
 final class AlertClasses 
 {
     const INSTITUTION = 1;
-    const INSTITUTION_MEDICAL_PROCEDURE = 2;
-    const INSTITUTION_MEDICAL_PROCEDURE_TYPE = 3;
-    const INSTITUTION_MEDICAL_CENTER = 4;
-    const INSTITUTION_MEDICAL_CENTER_GROUP = 5;
+    const INSTITUTION_TREATMENT = 2;
+    const INSTITUTION_SUB_SPECIALIZATION = 3;
+    const INSTITUTION_SPECIALIZATION = 4;
+    const INSTITUTION_MEDICAL_CENTER = 5;
 
 
     const INSTITUTION_BUNDLE_NS = "HealthCareAbroad\\InstitutionBundle\\Entity\\";
@@ -37,10 +37,10 @@ final class AlertClasses
     {
         return array(
             self::INSTITUTION =>  self::INSTITUTION_BUNDLE_NS . 'Institution',
-            self::INSTITUTION_MEDICAL_PROCEDURE => self::INSTITUTION_BUNDLE_NS . 'InstitutionMedicalProcedure',
-            self::INSTITUTION_MEDICAL_PROCEDURE_TYPE => self::INSTITUTION_BUNDLE_NS . 'InstitutionMedicalProcedureType',
-            self::INSTITUTION_MEDICAL_CENTER => self::INSTITUTION_BUNDLE_NS . 'InstitutionMedicalCenter',
-            self::INSTITUTION_MEDICAL_CENTER_GROUP => self::INSTITUTION_BUNDLE_NS . 'InstitutionMedicalCenterGroup'
+            self::INSTITUTION_TREATMENT => self::INSTITUTION_BUNDLE_NS . 'InstitutionTreatment',
+            self::INSTITUTION_SUB_SPECIALIZATION => self::INSTITUTION_BUNDLE_NS . 'InstitutionSubSpecialization',
+            self::INSTITUTION_SPECIALIZATION => self::INSTITUTION_BUNDLE_NS . 'InstitutionSpecialization',
+            self::INSTITUTION_MEDICAL_CENTER => self::INSTITUTION_BUNDLE_NS . 'InstitutionMedicalCenter'
         );
     }
     

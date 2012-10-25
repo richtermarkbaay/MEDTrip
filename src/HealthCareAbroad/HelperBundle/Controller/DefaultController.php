@@ -39,6 +39,7 @@ class DefaultController extends Controller
     	return $response;
     }
     
+    // TODO: DEPRECATED ??
     public function autoCompleteSearchAction()
     {
     	$data = array();
@@ -47,8 +48,8 @@ class DefaultController extends Controller
 		$term = $request->get('term', null);
 
 		switch($section) {
-			case 'medical-center' :
-				$data = $this->getDoctrine()->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->autoCompleteSearch($term);
+			case 'specialization' :
+				$data = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->autoCompleteSearch($term);
 				break;
 			case 'procedure-type' :
 				$data = array(); // TODO - Get Array Result
