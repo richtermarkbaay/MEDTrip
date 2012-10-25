@@ -1,10 +1,6 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;

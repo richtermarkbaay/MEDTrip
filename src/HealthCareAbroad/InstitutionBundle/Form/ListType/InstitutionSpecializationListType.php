@@ -14,33 +14,32 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class InstitutionMedicalCenterListType extends AbstractType 
-{	
- 	private $serviceContainer;
- 	
- 	private $institution;
+class InstitutionSpecializationListType extends AbstractType
+{
+     private $serviceContainer;
 
-	public function __construct(Institution $institution=null) {
-		$this->institution = $institution;
-	}
-	
+     private $institution;
+
+    public function __construct(Institution $institution=null) {
+        $this->institution = $institution;
+    }
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $institution = $this->institution;
         $resolver->setDefaults(array(
-        	'virtual' => true,
+            'virtual' => true,
             'empty_value' => '<-- select center -->',
-        	'property' => 'name',
-			'class' => 'HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter',
+            'property' => 'name',
+            'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
             'query_builder' => function(EntityRepository $er) use ($institution) {
-                // $er is a HealthCareAbroad\TreatmentBundle\Repository\MedicalCenterRepository 
-                return $er->getBuilderForMedicalCentersOfInstitution($institution);
-        	}
+                return $er->getBuilderForSpecializationsOfInstitution($institution);
+            }
         ));
     }
-    
 
-   
+
+
     public function getParent()
     {
         return 'entity';
@@ -48,6 +47,6 @@ class InstitutionMedicalCenterListType extends AbstractType
 
     public function getName()
     {
-        return 'institutionMedicalCenter_list';
+        return 'institutionSpecialization_list';
     }
 }
