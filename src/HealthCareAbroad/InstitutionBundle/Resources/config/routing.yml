@@ -8,11 +8,6 @@ InstitutionBundle_specialization:
     resource: "@InstitutionBundle/Resources/config/routing_specialization.yml"
     prefix:   /institution
     
-# Routes for Institution SubSpecializationController #
-InstitutionBundle_subSpecialization:
-    resource: "@InstitutionBundle/Resources/config/routing_subSpecialization.yml"
-    prefix:   /institution
-    
 # Routes for InstitutionUserController #
 InstitutionBundle_user:
     resource: "@InstitutionBundle/Resources/config/routing_user.yml"
@@ -26,11 +21,6 @@ InstitutionBundle_userType:
 # Routes for InstitutionUserRoleController #
 InstitutionBundle_userRole:
     resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
-    prefix:   /institution
-
-# Routes for DoctorController #
-InstitutionBundle_doctor:
-    resource: "@InstitutionBundle/Resources/config/routing_doctor.yml"
     prefix:   /institution
     
 institution_gallery:

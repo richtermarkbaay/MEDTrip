@@ -58,7 +58,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\MediaBundle\MediaBundle(),
             new HealthCareAbroad\MailerBundle\MailerBundle(),
             new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
-            new HealthCareAbroad\TreatmentBundle\MedicalProcedureBundle(),
+            new HealthCareAbroad\TreatmentBundle\TreatmentBundle(),
             new HealthCareAbroad\SearchBundle\SearchBundle(),
             new HealthCareAbroad\LogBundle\LogBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
