@@ -12,9 +12,9 @@ final class InstitutionTypes
     static public function getList()
     {
         return array(
-            self::MEDICAL_GROUP_NETWORK_MEMBER => 'Hospital or clinic belonging to a Group / Network',
-            self::MEDICAL_TOURISM_FACILITATOR => 'Medical tourism facilitator / Agent',
-            self::INDEPENDENT_HOSPITAL => 'Independent hospital or clinic'
+            self::MEDICAL_GROUP_NETWORK_MEMBER => 'Hospital or Clinic belonging to a Larger Group / Network',
+            self::INDEPENDENT_HOSPITAL => 'Independent hospital or clinic',
+            self::MEDICAL_TOURISM_FACILITATOR => 'Medical Tourism Facilitator / Agent',
         );
     }
     

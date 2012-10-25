@@ -57,7 +57,9 @@ class InstitutionSignUpFormType extends AbstractType
         $builder->add('email', 'email', array(
                 'label' => 'Your email',
         		'virtual' => true,
-        		'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exist!')) , new NotBlank())
+        		'constraints' => array(
+	                new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')) , 
+	                new NotBlank(array('message' => 'Please provide a valid email.')))
         	
             ));
         $builder->add('password', 'password', array(

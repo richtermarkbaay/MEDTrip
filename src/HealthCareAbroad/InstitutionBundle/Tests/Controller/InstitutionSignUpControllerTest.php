@@ -13,6 +13,13 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 {
+    private $signupFormValues = array(
+        'institutionSignUp[name]' => 'this a test instiutiton adfasdfsaf',
+        'institutionSignUp[email]' => 'test-email-watata-signup@chromedia.com',
+        'institutionSignUp[password]' => '123456',
+        'institutionSignUp[confirm_password]' => '123456',
+        'institutionSignUp[agree_to_terms]' => '1',
+    );
 	
 	public function testInviteInstitution()
 	{
@@ -46,72 +53,59 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
 	
 	}
+
+    public function testSignUpWithInvalidFields()
+    {
+        $invalidValues = array(
+            'institutionSignUp[name]' => '',
+            'institutionSignUp[email]' => '',
+            'institutionSignUp[password]' => '',
+            'institutionSignUp[confirm_password]' => '',
+        );
+        
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/sign-up');
+        $form = $crawler->selectButton('Submit')->form();
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("You must agree to the terms and conditions")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Institution name is required")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required")')->count());
+        
+        // test not matching passwords
+        $invalidValues['institutionSignUp[password]'] = '654321';
+        $invalidValues['institutionSignUp[confirm_password]'] = '123456';
+        $form = $crawler->selectButton('Submit')->form();
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+        
+        // test existing email
+        $invalidValues['institutionSignUp[email]'] = 'test.institutionuser@chromedia.com';
+        $form = $crawler->selectButton('Submit')->form();
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists")')->count());
+    }
 	
 	public function testSignUp()
 	{
 		$client = static::createClient();
 		$crawler = $client->request('GET', '/sign-up');
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name")')->count()); // look for the Name text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count()); // look for the Description text
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password")')->count()); // look for the Country text
-
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-		$formValues = array(
-				'institution[name]' => 'alnie jacobe',
-				'institutionUserForm[email]' => 'testsignup@yahoo.cp',
-				//'institution[country]' => '1',
-				//'institution[city]' => '1',
-				//'institution[address1]' => 'ohuket city',
-				//'institution[address2]' => 'ohuket city',
-				//'institutionUserForm[firstName]' => 'test name',
-                //				'institutionUserForm[middleName]' => 'middle',
-                //				'institutionUserForm[lastName]' => 'last',
-                //				'institutionUserForm[email]' => 'test-sign-up-institutiont@chromedia.com',
-                'institutionUserForm[password]' => $this->userPassword,
-                'institutionUserForm[confirm_password]' => $this->userPassword,
-                		);
-        $client = static::createClient();
-        //$crawler = $client->request('GET', '/sign-up');
-        //$form = $crawler->selectButton('submit')->form();
-        //$crawler = $client->submit($form, $formValues);
-        //$this->assertEquals(302, $client->getResponse()->getStatusCode());
-// 		//test for existing email provided
-// 		$invalidFormValues = $formValues;
-// 		$invalidFormValues['institutionUserForm[email]'] = 'test.institutionuser@chromedia.com';
-// 		$form = $crawler->selectButton('submit')->form();
-// 		$crawler = $client->submit($form, $invalidFormValues);
-// 		$this->assertEquals(500, $client->getResponse()->getStatusCode());
-// 		$duplicateNotCreated = \trim($crawler->filter('div.text_exception > h1')->text()) != "SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry";
-// 		$this->assertTrue($duplicateNotCreated, 'institution_medical_procedure_types Duplicate Entry.');
-
-// 		// test for required fields
-// 		$invalidFormValues = array(
-//                             'institution[name]' => '',
-//                             'institution[description]' => '',
-//                             'institution[country]' => '1',
-//                             'institution[city]' => '1',
-//                             'institution[address1]' => '',
-//                             'institution[address2]' => '',
-//                             'institutionUserForm[firstName]' => '',
-//                             'institutionUserForm[middleName]' => '',
-//                             'institutionUserForm[lastName]' => '',
-//                             'institutionUserForm[email]' => '',
-//                             'institutionUserForm[password]' => '',
-//                             'institutionUserForm[confirm_password]' => '',
-//                 		);
-// 		$client = static::createClient();
-// 		$crawler = $client->request('GET', '/sign-up');
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $invalidFormValues);
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-
-
-//         $client = static::createClient();
-//         $crawler = $client->request('GET', '/sign-up');
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $formValues);
-//         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-
-
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name of the Institution")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("email")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("password")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("re-type password")')->count());
+		$form = $crawler->selectButton('Submit')->form();
+		$crawler = $client->submit($form, $this->signupFormValues);
+		
+		// test that it will redirect to institution homepage
+		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+		$this->assertEquals('/institution', $this->getLocationResponseHeader($client));
+		$client->followRedirect();
+		
+		// test that institution homepage has ok status
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 	}
 }
