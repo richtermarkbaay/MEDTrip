@@ -67,9 +67,9 @@ parameters:
     #
     # subspecialization related events
     #
-    event.subspecialization.add: HealthCareAbroad\AdminBundle\Event\SubspecializationEvent
-    event.subspecialization.edit: HealthCareAbroad\AdminBundle\Event\SubspecializationEvent
-    event.subspecialization.delete: HealthCareAbroad\AdminBundle\Event\SubspecializationEvent
+    event.subspecialization.add: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
+    event.subspecialization.edit: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
+    event.subspecialization.delete: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
 
     #
     # news related events
