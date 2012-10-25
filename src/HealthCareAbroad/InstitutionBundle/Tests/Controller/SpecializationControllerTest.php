@@ -10,11 +10,11 @@ use \HCA_DatabaseManager;
 
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
-class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
+class specializationControllerTest extends InstitutionBundleWebTestCase
 {
     public function testIndex()
     {
-        $uri = '/institution/medical-centers';
+        $uri = '/institution/specializations';
 
         // test for no login user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
@@ -35,7 +35,7 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 
     public function testAdd()
     {
-        $uri = '/institution/medical-centers/add';
+        $uri = '/institution/specialization/add';
 
         // test for no login user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
@@ -50,9 +50,10 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 
         // test for invalid form submission
         $invalidFormValues = array(
-            'institutionMedicalCenter[medicalCenter]' => '',
-            'institutionMedicalCenter[description]' => '',
-            //'institutionMedicalCenter[status]' => 1
+            'institutionSpecialization[medicalCenter]' => 1,
+            'institutionSpecialization[specialization]' => '',
+            'institutionSpecialization[description]' => '',
+            //'institutionSpecialization[status]' => 1
         );
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $invalidFormValues);
@@ -61,9 +62,10 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 
         // test valid form submission
         $validFormValues = array(
-            'institutionMedicalCenter[medicalCenter]' => 3,
-            'institutionMedicalCenter[description]' => 'testsetsdfdsfdsfafsafsadf',
-            //'institutionMedicalCenter[status]' => 1
+            'institutionSpecialization[medicalCenter]' => 1,
+            'institutionSpecialization[specialization]' => 3,
+            'institutionSpecialization[description]' => 'testsetsdfdsfdsfafsafsadf',
+            //'institutionSpecialization[status]' => 1
         );
         $crawler = $client->submit($form, $validFormValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'Expecting redirect header after submitting data');
@@ -77,24 +79,24 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
 
         // --- test not allowed methods
-        //$client->request('GET', '/institution/medical-centers/save');
+        //$client->request('GET', '/institution/specialization/save');
         //$this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
 
-        //$client->request('PUT', '/institution/medical-centers/save');
+        //$client->request('PUT', '/institution/specialization/save');
         //$this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
 
-        //$client->request('DELETE', '/institution/medical-centers/save');
+        //$client->request('DELETE', '/institution/specialization/save');
         //$this->assertEquals(405, $client->getResponse()->getStatusCode(), "POST is the only allowed method");
 
         // -- test posting with invalid imcId
-        $client->request('POST', '/institution/medical-centers/edit/99999999');
+        $client->request('POST', '/institution/specialization/edit/99999999');
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), "Expecting 404 if passed invalid imcId");
     }
 
 
     public function testEdit()
     {
-        $uri = '/institution/medical-centers/edit/1';
+        $uri = '/institution/specialization/edit/1';
 
         // test for no login user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
@@ -115,8 +117,9 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 
         // test valid form submission
         $validFormValues = array(
-            'institutionMedicalCenter[description]' => 'testsetsdfdsfdsfafsafsadf',
-            //'institutionMedicalCenter[status]' => 1
+            'institutionSpecialization[medicalCenter]' => 1,
+            'institutionSpecialization[description]' => 'testsetsdfdsfdsfafsafsadf',
+            //'institutionSpecialization[status]' => 1
         );
 
         $form = $crawler->selectButton('submit')->form();
