@@ -1,6 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Entity;
-final class InstitutionMedicalCenterGroupStatus {
+
+final class InstitutionMedicalCenterStatus {
 
     const INACTIVE = 1;
 

@@ -31,9 +31,9 @@ class InstitutionMedicalCenterListType extends AbstractType
         	'virtual' => true,
             'empty_value' => '<-- select center -->',
         	'property' => 'name',
-			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
+			'class' => 'HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter',
             'query_builder' => function(EntityRepository $er) use ($institution) {
-                // $er is a HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalCenterRepository 
+                // $er is a HealthCareAbroad\TreatmentBundle\Repository\MedicalCenterRepository 
                 return $er->getBuilderForMedicalCentersOfInstitution($institution);
         	}
         ));

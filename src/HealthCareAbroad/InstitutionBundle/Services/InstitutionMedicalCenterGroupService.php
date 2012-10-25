@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
 

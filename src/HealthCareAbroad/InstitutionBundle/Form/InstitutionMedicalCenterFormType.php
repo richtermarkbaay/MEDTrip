@@ -32,7 +32,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         
         $builder->add('treatmentProcedures', 'entity', array(
             'label' => 'Treatments',
-            'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
+            'class' => 'HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure',
             'multiple' => true,
             'attr' => array('class' => 'institutionTreatmentProcedures')
         ));
