@@ -1,8 +1,6 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
-
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
 class CityControllerTest extends AdminBundleWebTestCase

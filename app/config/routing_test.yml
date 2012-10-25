@@ -4,7 +4,7 @@ InstitutionBundleTests:
 
 admin_treatmentProcedure_testSave:
     pattern:  /admin/treatment-procedure/test-save
-    defaults: { _controller: AdminBundle:MedicalProcedure:save }
+    defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          id: \d+
          _method: GET
