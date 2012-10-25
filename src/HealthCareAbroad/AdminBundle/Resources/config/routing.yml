@@ -1,5 +1,5 @@
-# Routes for Admin SpecializationsController #
-AdminBundle_medicalCenter:
+# Routes for Admin SpecializationController #
+AdminBundle_specialization:
     resource: "@AdminBundle/Resources/config/routing_specialization.yml"
     prefix:   /
 
@@ -8,14 +8,14 @@ AdminBundle_advertisement:
     resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
     prefix:   /
 
+# Routes for Admin SubSpecializationController #
+AdminBundle_subspecialization:
+    resource: "@AdminBundle/Resources/config/routing_subspecialization.yml"
+    prefix:   /
+
 # Routes for Admin TreatmentController #
 AdminBundle_treatment:
     resource: "@AdminBundle/Resources/config/routing_treatment.yml"
-    prefix:   /
-
-# Routes for Admin MedicalProcedureController #
-AdminBundle_treatmentProcedure:
-    resource: "@AdminBundle/Resources/config/routing_treatmentProcedure.yml"
     prefix:   /
 
 # Routes for Admin AdvertisementController #
