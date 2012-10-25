@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
-class InstitutionMedicalCenterListType extends AbstractType 
+class InstitutionSpecializationListType extends AbstractType 
 {	
  	private $serviceContainer;
  	
@@ -31,10 +31,9 @@ class InstitutionMedicalCenterListType extends AbstractType
         	'virtual' => true,
             'empty_value' => '<-- select center -->',
         	'property' => 'name',
-			'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter',
-            'query_builder' => function(EntityRepository $er) use ($institution) {
-                // $er is a HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalCenterRepository 
-                return $er->getBuilderForMedicalCentersOfInstitution($institution);
+			'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
+            'query_builder' => function(EntityRepository $er) use ($institution) { 
+                return $er->getBuilderForSpecializationsOfInstitution($institution);
         	}
         ));
     }
@@ -48,6 +47,6 @@ class InstitutionMedicalCenterListType extends AbstractType
 
     public function getName()
     {
-        return 'institutionMedicalCenter_list';
+        return 'institutionSpecialization_list';
     }
 }
