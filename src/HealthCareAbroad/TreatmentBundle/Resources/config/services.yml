@@ -1,0 +1,21 @@
+parameters:
+    services.medical_procedure_type_list: HealthCareAbroad\TreatmentBundle\Form\ListType\TreatmentListType
+
+services:
+    services.treatment_bundle:
+        class: HealthCareAbroad\TreatmentBundle\Services\TreatmentBundleService
+        calls:
+            - [setMemcache, [@services.memcache]]
+            - [setDoctrine, [@doctrine]]
+    form.medical_procedure_type_list:
+        class: "%services.medical_procedure_type_list%"
+        tags:
+            - { name: form.type, alias: medicalproceduretype_list }
+    form.medicalCenter_list:
+        class: HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType
+        tags:
+            - { name: form.type, alias: medicalCenter_list }
+    form.medical_center.type.status_selector:
+        class: HealthCareAbroad\TreatmentBundle\Form\SpecializationStatusSelectorType
+        tags:
+            - { name: form.type, alias: medicalCenterStatusSelector }
