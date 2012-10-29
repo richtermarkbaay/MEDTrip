@@ -9,8 +9,8 @@ AdminBundle_advertisement:
     prefix:   /
 
 # Routes for Admin SubSpecializationController #
-AdminBundle_subspecialization:
-    resource: "@AdminBundle/Resources/config/routing_subspecialization.yml"
+AdminBundle_subSpecialization:
+    resource: "@AdminBundle/Resources/config/routing_subSpecialization.yml"
     prefix:   /
 
 # Routes for Admin TreatmentController #
