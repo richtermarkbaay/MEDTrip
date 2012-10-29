@@ -14,16 +14,23 @@
             <p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
             <div class="row-fluid">
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" class="form">
-                    
-                    {{ form_errors(form) }}
+    
                     
                     <fieldset>
                         <label for="institution name"><b>Name of the Institution</b></label>
                         <div>
                             <div class="input-prepend">
-                                {{ form_widget(form.name, { 'attr': {'class': 'username span12'} }) }}
+                                {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
                             </div>
-                            {{ form_errors(form.name) }}
+                    
+                          	{% if form_errors(form.name) %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                         {{ form_errors(form.name) }}
+		                                </li>
+					  				</ul>
+  							{% endif %}
+                            
                         </div>
                     </fieldset>
                     
@@ -35,21 +42,44 @@
                         </label>
                         
                         <div class="input-prepend">
-                            {{ form_widget(form.email, { 'attr': {'class': 'username span12'} }) }}
+                            {{ form_widget(form.email, { 'attr': {'class': 'span12'} }) }}
                         </div>
-                        {{ form_errors(form.email) }}
+                        
+	                        {% if form_errors(form.email) %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                         {{ form_errors(form.email) }}
+		                                </li>
+					  				</ul>
+	  						{% endif %}
                         
                         <label for="password">password</label>
+                        
                         <div class="input-prepend">
-                            {{ form_widget(form.password, { 'attr': {'class': 'username span12'} }) }}
+                            {{ form_widget(form.password, { 'attr': {'class': 'span12'} }) }}
                         </div>
-                        {{ form_errors(form.password) }}
+                        
+	                        {% if form_errors(form.password) %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                         {{ form_errors(form.password) }}
+		                                </li>
+					  				</ul>
+	  						{% endif %}
                         
                         <label for="confirm_password">re-type password</label>
+                        
                         <div class="input-prepend">
-                            {{ form_widget(form.confirm_password, { 'attr': {'class': 'username span12'} }) }}
+                            {{ form_widget(form.confirm_password, { 'attr': {'class': 'span12'} }) }}
                         </div>
-                        {{ form_errors(form.confirm_password) }}
+                               
+	                        {% if form_errors(form.confirm_password) %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                         {{ form_errors(form.confirm_password) }}
+		                                </li>
+					  				</ul>
+	  						{% endif %}
                         
                         <label for="password">Types of Institution</label>
                         
@@ -69,6 +99,15 @@
                         {{ form_widget(form.agree_to_terms) }}
                         I read and agree the <a href="#">Terms and Conditions</a>.
                     </label>
+                    
+                  		{% if form_errors(form.agree_to_terms) %}
+							<ul class="alert-error">
+                                <li>
+                                    {{ form_errors(form.agree_to_terms) }}
+                                </li>
+							</ul>
+						{% endif %}
+                    
                     <input type="submit" name="Submit" value="SIGN-UP" class="span12 btn-large btn-primary" />
                     {{ form_rest(form) }}
                 </form>
