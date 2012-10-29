@@ -13,51 +13,51 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SubSpecializationFormType extends AbstractType
 {
-	protected $doctrine;
-	
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$subSpecialization = $options['data'];
+    protected $doctrine;
 
-		$status = array(
-			SubSpecialization::STATUS_ACTIVE => 'active',
-			SubSpecialization::STATUS_INACTIVE => 'inactive'
-		);
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $subSpecialization = $options['data'];
 
-		if ($subSpecialization->getId()) {
-			$treatmentRepo = $this->doctrine->getRepository('TreatmentBundle:Treatment');
- 			$hasTreatment = $treatmentRepo->getCountByTreatmentId($treatmentRepo->getId());
+        $status = array(
+            SubSpecialization::STATUS_ACTIVE => 'active',
+            SubSpecialization::STATUS_INACTIVE => 'inactive'
+        );
 
- 			//if($hasInstitutionTreatment || $hasTreatment) {
-			if($hasTreatment) {
-		        $builder->add('specialization', 'hidden', array('virtual' => true, 'label' => 'Specialization', 'read_only' => true));
-			}
-			else {
-				$builder->add('specialization', 'specialization_list');
-			}
-		}
-		else {
-				$builder->add('specialization', 'specialization_list');
-		}
+        if ($subSpecialization->getId()) {
+            $treatmentRepo = $this->doctrine->getRepository('TreatmentBundle:Treatment');
+             $hasTreatment = $treatmentRepo->getCountBySubSpecializationId($subSpecialization->getId());
 
-		$builder->add('name');
-		$builder->add('description', 'textarea');
-		$builder->add('status', 'choice', array('choices' => $status));
-	}
+             //if($hasInstitutionTreatment || $hasTreatment) {
+            if($hasTreatment) {
+                $builder->add('specialization', 'hidden', array('virtual' => true, 'label' => 'Specialization', 'read_only' => true));
+            }
+            else {
+                $builder->add('specialization', 'specialization_list');
+            }
+        }
+        else {
+                $builder->add('specialization', 'specialization_list');
+        }
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-	    $resolver->setDefaults(array(
-			'data_class' => 'HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization',
-		));
-	}
+        $builder->add('name');
+        $builder->add('description', 'textarea');
+        $builder->add('status', 'choice', array('choices' => $status));
+    }
 
-	public function getName()
-	{
-		return 'treatment';
-	}
-	
-	function setDoctrine($doctrine) {
-		$this->doctrine = $doctrine;
-	}
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization',
+        ));
+    }
+
+    public function getName()
+    {
+        return 'subspecialization';
+    }
+
+    function setDoctrine($doctrine) {
+        $this->doctrine = $doctrine;
+    }
 }

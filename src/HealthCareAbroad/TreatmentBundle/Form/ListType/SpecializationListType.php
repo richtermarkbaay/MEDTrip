@@ -14,7 +14,7 @@ class SpecializationListType extends AbstractType
             'property' => 'name',
             'label' => 'Specialization',
             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
-			'query_builder' => function(EntityRepository $er) { return $er->getQueryBuilderForActiveSpecializations(); }
+            'query_builder' => function(EntityRepository $er) { return $er->getQueryBuilderForActiveSpecializations(); }
         ));
     }
 
@@ -22,9 +22,9 @@ class SpecializationListType extends AbstractType
     {
         return 'entity';
     }
-    
+
     public function getName()
     {
-        return 'medicalCenter_list';
+        return 'specialization_list';
     }
 }

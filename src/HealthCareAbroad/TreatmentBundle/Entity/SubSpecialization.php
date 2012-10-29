@@ -233,25 +233,25 @@ class SubSpecialization
     }
 
     /**
-     * Set medicalCenter
+     * Set specialization
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $medicalCenter
-     * @return Treatment
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
+     * @return SubSpecialization
      */
-    public function setSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $medicalCenter = null)
+    public function setSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization = null)
     {
-        $this->medicalCenter = $medicalCenter;
+        $this->specialization = $specialization;
         return $this;
     }
 
     /**
-     * Get medicalCenter
+     * Get specialization
      *
      * @return HealthCareAbroad\TreatmentBundle\Entity\Specialization
      */
     public function getSpecialization()
     {
-        return $this->medicalCenter;
+        return $this->specialization;
     }
 
     public function __toString()
