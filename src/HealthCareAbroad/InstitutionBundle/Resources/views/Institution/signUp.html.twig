@@ -24,11 +24,18 @@
                             </div>
                     
                           	{% if form_errors(form.name) %}
-	  								<ul class="alert-error">
-		                                <li>
-		                                         {{ form_errors(form.name) }}
+  								<ul class="alert-error">
+	                                <li>
+	                                         {{ form_errors(form.name) }}
+	                                </li>
+				  				</ul>
+					  		{% elseif form_errors(form) %}
+						  		<ul class="alert-error">
+						  		 		 <li>
+			                                         {{ form_errors(form) }}
 		                                </li>
-					  				</ul>
+						  		
+						  		</ul>
   							{% endif %}
                             
                         </div>

@@ -83,7 +83,6 @@ class InstitutionSignUpFormType extends AbstractType
         
         $builder->add('agree_to_terms', 'checkbox', array(
                 'virtual' => true,
-                'error_bubbling' => true,
                 'constraints' => array(new NotBlank(array('message' => 'You must agree to the terms and conditions')))
             ));
     }
