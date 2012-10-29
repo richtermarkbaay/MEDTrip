@@ -140,7 +140,7 @@ class MedicalCenterGroupController extends InstitutionAwareController
                 $this->get('services.institution_medical_center')->save($institutionMedicalCenter);
                 
                 // redirect to third step
-                return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addDoctors',array('imcgId' => $this->institutionMedicalCenterGroup->getId())));
+                return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addTreatments',array('imcgId' => $this->institutionMedicalCenterGroup->getId())));
             }
             
         }
@@ -149,6 +149,49 @@ class MedicalCenterGroupController extends InstitutionAwareController
             'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup,
             'form' => $form->createView()
         ));
+    }
+    
+    
+    /**
+     * This is the second step when creating a center. This will add InstitutionMedicalCenter to the passed InstitutionMedicalCenterGroup.
+     * Expected GET parameters:
+     *     - imcgId institutionMedicalCenterGroupId
+     *
+     * @author Chaztine Blance
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function addTreatmentsAction(Request $request)
+    {
+    	// should only be accessed by Draft InstitutionMedicalCenterGroup
+    	if (!$this->service->isDraft($this->institutionMedicalCenterGroup)) {
+    
+    		return $this->_redirectIndexWithFlashMessage('Invalid draft medical center group', 'error');
+    	}
+    
+    	$institutionMedicalCenter = new InstitutionMedicalCenter();
+    	$institutionMedicalCenter->setInstitutionMedicalCenterGroup($this->institutionMedicalCenterGroup);
+// 		echo "<pre>";
+// 		   print_r($institutionMedicalCenter);
+// 		echo "</pre>";
+    
+    	if ($request->isMethod('POST')) {
+    		$form->bind($request);
+    
+    		if ($form->isValid()) {
+    			$institutionMedicalCenter = $form->getData();
+    			$institutionMedicalCenter->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
+    			$this->get('services.institution_medical_center')->save($institutionMedicalCenter);
+    
+    			// redirect to third step
+    			return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addDoctors',array('imcgId' => $this->institutionMedicalCenterGroup->getId())));
+    		}
+    
+    	}
+    
+    	return $this->render('InstitutionBundle:MedicalCenterGroup:addTreatments.html.twig', array(
+    					'institutionMedicalCenterGroup' => $this->institutionMedicalCenterGroup
+    	));
     }
     
     public function addDoctorsAction()

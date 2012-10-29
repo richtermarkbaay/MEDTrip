@@ -6,40 +6,15 @@
 
 {% block body %}
 <body >
-
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a href="{{ path('main_homepage') }}" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
-                <div class="btn-group pull-right">
-                    <a href="{{ path('main_homepage') }}" class="btn">
-                        <i class="icon-map-marker"></i>Health Care Abroad Site
-                    </a>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Content Area | Side Nav | Content -->
-    <div class="container-fluid">
-
-        <div class="row-fluid">
-            <div class="span4">&nbsp;</div>
-            <div class="span4">
-                <div class="page-header">
-                    <h1>Health Care Abroad Login</h1>
-                </div>
-
-                <div class="box" style="margin-bottom:500px;">
-
-                    <div class="login-content">
-                        <form novalidate="novalidate" action="{{ path('institution_login_check') }}" method="POST" >
+	<div class="container">
+		<div class="span4 signupbox">
+		
+			<div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#"></div>
+			<a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
+			<h3>Existing Users</h3>
+			
+			<div class="row-fluid">
+				  	 <form novalidate="novalidate" action="{{ path('institution_login_check') }}" method="POST" >
                             {#{ form_errors(form) }#}
                             {#% if app.session.hasFlash('notice') %#}
                             {% if error %}
@@ -49,12 +24,12 @@
                                 </div>
                             {% endif %}
                             <fieldset>
-                                <legend>Existing Users Login</legend>
+                 
 
                                 <label for="username">Email</label>
                                 <div class="div_text">
                                     <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
-                                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="password span9" />
+                                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="password span11" />
                                         {#{ form_widget(form.email, { 'attr': {'class': 'username span9'} }) }#}
                                     </div>
                                 </div>
@@ -62,17 +37,14 @@
                                 <label for="password">Password</label>
                                 <div class="div_text">
                                     <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span>
-                                        <input type="password" id="password" name="_password" class="password span9" />
+                                        <input type="password" id="password" name="_password" class="password span11" />
                                         {#{ form_widget(form.password, { 'attr': {'class': 'password span9'} }) }#}
                                     </div>
                                 </div>
-
-                                <div class="button_div">
-                                    <span class="span6" style="float:right; padding-left:20px">
-                                        <input type="checkbox" name="_institution_remember_me" checked class="checkbox-size" id="login-check" />&nbsp;<small>Remember me</small>
-                                        <input type="submit" name="submit" class="btn btn-primary" />
-                                    </span>
-                                </div>
+								<div class="span11"><input name="_institution_remember_me" checked type="checkbox" class="checkbox-size" id="login-check"value="forever" />&nbsp;<small>Remember me</small>
+  									<input type="submit" name="Submit" value="Login" class="btn btn-primary" />
+  								</div>
+            
                                 <div class="clear">&nbsp;</div>
                                 <div class="clear">&nbsp;</div>
                                 <div class="clear"></div>
@@ -81,21 +53,12 @@
                                 <div class="clear"></div>
                             </fieldset>
                             {#{ form_rest(form) }#}
-                        </form>
-                     </div>
-                 </div>
-                 <!--/span-->
-                 <div class="span4">&nbsp;</div>
-             </div>
-             <!--/span-->
-         </div><!--/row-->
+                        </form> 
+			</div>
 
-         <br/>
-         <hr>
-         <footer>
-             <p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
-         </footer>
-     </div>
+	</div>
+
+	</div>
 </body>
 {% endblock %}
 

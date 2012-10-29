@@ -1,6 +1,7 @@
 
-<div class="btn-group pull-right" style="width: 360px; margin-top: 7px;">
-    <span style="float: left;">you are logged in as <a href="{{ path('institution_edit_information') }}">{{ userName }}</a> &nbsp;|&nbsp; </span>
-    <span style="margin-left: 10px;"> <a href="{{ path('institution_edit_information') }}"><img src="{{ asset('images/institution/Setting-icon.png') }}"></a>
-    <a href="{{ path('institution_logout') }}"><img src="{{ asset('images/institution/logout-icon.png') }}" style="padding-left:10px;"></a>     </span>      
-</div>
+	<div class="btn-group pull-right">
+       		     
+		<span class="userbox">you are logged in as<i class="icon-user"><a href="#"></i>{{ userName }}</a></span>
+		<a href="accountsettings.html"><img src="{{ asset('images/institution/Setting-icon.png') }}"></a>
+		<a href="logout.html"><img src="{{ asset('images/institution/logout-icon.png') }}"></a>
+	</div>

@@ -30,15 +30,15 @@ class InstitutionMedicalCenterFormType extends AbstractType
             ));
         }
         
-        $builder->add('treatmentProcedures', 'entity', array(
-            'label' => 'Treatments',
-            'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
-            'multiple' => true,
-            'attr' => array('class' => 'institutionTreatmentProcedures')
-        ));
+//         $builder->add('treatmentProcedures', 'entity', array(
+//             'label' => 'Treatments',
+//             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
+//             'multiple' => true,
+//             'attr' => array('class' => 'institutionTreatmentProcedures')
+//         ));
         
         $builder->add('description', 'textarea', array(
-            'label' => 'Details',
+            'label' => 'Specialization Details',
             'constraints' => array(new NotBlank()),
             'attr' => array('class'=>'tinymce')
         ));

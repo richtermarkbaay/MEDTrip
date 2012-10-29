@@ -11,8 +11,8 @@ class InstitutionMedicalCenterGroupFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name','text', array('label' => 'Name'))
-        ->add('description', 'textarea', array('label' => 'Details','attr' => array('class' => 'tinymce')));
+        $builder->add('name','text', array('label' => 'Medical Center Name'))
+        ->add('description', 'textarea', array('label' => 'Medical Center Short Description','attr' => array('class' => 'tinymce')));
         
     }
     

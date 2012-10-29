@@ -45,3 +45,8 @@ services:
             - [setDoctrine, [@doctrine]]
         tags:
             - { name: form.type, alias: doctor_list }
+            
+    form.treatment_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
+        tags:
+            - { name: form.type, alias: treatment_list }

@@ -16,7 +16,7 @@ parameters:
 services:
 
     services.helper.institution_name_validator:
-        class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValueValidator
+        class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueNameValidator
         arguments: [@doctrine]
         tags:
             - {name: validator.constraint_validator, alias: helper.institution_name.validator}

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
 
-use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue;
+use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 

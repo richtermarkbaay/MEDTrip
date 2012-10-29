@@ -4,16 +4,14 @@
 
 {% block content %}
 
-<style>
-    .institutionTreatmentProcedures {
-        width:378px;
-        height:180px !important
-    }
-</style>
-
 <!-- start content -->
 <div class="container">
-	
+	<div class="maincontent">
+		<!--sidebar start-->
+			<div class="span3">
+			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
+			</div>
+		<div class="span9">
 			<h2 style="padding:7px 20px 5px 15px">
 	            {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
@@ -22,45 +20,71 @@
 	                Add Medical Center
 	            {% endif %}
 			</h2>
-			 <div class="row-fluid">
-			    <div class="span12">
-			            <div class="tabbable">
-			            {% include '::notice.admin.html.twig' %}
+			 <div class="addcenterbox">
+				 <div class="row-fluid">
+				    <div class="span12">
+				            <div class="tabbable">
+				            {% include '::notice.admin.html.twig' %}
+						
+								    {% include '::stepHolderClient.base.admin.html.twig' with {
+						                    steps: [
+						                        {title: '- Center Details'},
+						                        {title: '- Specialization', 'selected': true},
+					                           {title: '- Select Treatments'},
+						                        {title: '- Assigned Doctors'},
+						                        {title: '- Preview', 'selected': false},
+						                 ]}
+						              %}
+				
+								<div class="tab-content">
+					                           <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+	                                        		<h3>Specialization and its Description</h3>
+													<p>please add all specialization under the center name</p>
+	                                        {{ form_errors(form) }}
+	                                        
+						                    {{ form_row(form.medicalCenter) }}
+						            
+						                    {{ form_row(form.description) }}
+						                    
+						                    {{ form_rest(form) }}
 					
-							    {% include '::stepHolderClient.base.admin.html.twig' with {
-					                    steps: [
-					                        {title: '- Center Details'},
-					                        {title: '- Specialization, Sub-specialization and Treatments', 'selected': true},
-					                        {title: '- Assigned Doctors'},
-					                        {title: '- Preview', 'selected': false},
-					                 ]}
-					              %}
-			
-							<div class="tab-content">
-								<h4>General Information of the Institution</h4>
-				                           <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
-                                        
-                                        {{ form_errors(form) }}
-                                        
-					                    {{ form_row(form.medicalCenter) }}
 					                    
-					                    {{ form_row(form.treatmentProcedures ,{'name': 'wata[]'}) }}
-					                    
-					                    {{ form_row(form.description) }}
-					                    
-					                    {{ form_rest(form) }}
-				
-				                    <input type="submit" name="submit" value="Save and Add Another" class="btn btn-primary" />
-				
-				                </form>
-								
-							</div><!-- /.tab-content -->
-						</div>
-			    	</div><!--/span-->
-			  </div><!--/row-->
+											<input type="submit" name="Submit" value="Add Specialization" class="btn btn-success" />
+												
+												<div class="clear">&nbsp;</div>											
+												<hr>
 		
+															<h4>specialization 1</h4>
+															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
+															labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
+															nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+															esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
+															culpa qui officia deserunt mollit anim id est laborum.</p>
+							
+												
+												<div class="span7">
+												
+													<span class="span4"><input type="submit" name="Submit" value="Edit Specialization" class="btn btn-info" /></span>
+													<span class="span6"><input type="submit" name="Submit" value="Add Another Specialization" class="btn btn-success" /></span>
+												
+												</div>
+												
+												<div class="clear">&nbsp;</div>											
+												<hr>
+										
+					                  	<input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" />
+					
+					
+					                </form>
+									
+								</div><!-- /.tab-content -->
+							</div>
+				    	</div><!--/span-->
+				  </div><!--/row-->
+			  </div>
+		</div>
 		<div class="clear"></div>
- 
+ </div>
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>

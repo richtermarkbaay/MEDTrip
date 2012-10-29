@@ -1,70 +1,74 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% block title %}{{ parent() }} Add Center {% endblock %}
 
-
 {% block content %}
-
-<style>
-    .institutionTreatmentProcedures {
-        width:378px;
-        height:180px !important
-    }
-    div.doctor_list_item {
-        border-bottom: 1px dotted;
-    }
-</style>
-
 <!-- start content -->
 <div class="container">
+	<div class="maincontent">
+		<!--sidebar start-->
+			<div class="span3">
+			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
+			</div>
 	
-			<h2 style="padding:7px 20px 5px 15px">
-	            {% set hasDraft = hasDraft is defined and hasDraft %}
-	            Add Medical Center
+			<div class="span9">
+			<h2>
+		      {% set hasDraft = hasDraft is defined and hasDraft %}
+	            Add Medical Center		
 			</h2>
-			
-            <div class="row-fluid">
-			    <div class="span12" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; padding: 25px 25px 10px 25px;">
-			            <div class="tabbable">
-			                {% include '::notice.admin.html.twig' %}
-					
-						    {% include '::stepHolderClient.base.admin.html.twig' with {
-				                    steps: [
-				                        {title: '- Center Details'},
-				                        {title: '- Specialization, Sub-specialization and Treatments'},
-				                        {title: '- Assigned Doctors', 'selected': true},
-				                        {title: '- Preview', 'selected': false},
-				                 ]}
-				              %}
-			
-							<div class="tab-content">
-								<h4>Assign doctors</h4>
+			 <div class="addcenterbox">
+			 	<div class="row-fluid">
+				    <div class="span12">
+				            <div class="tabbable">
+								<!-- /.menu - tab start -->
+								        {% include '::notice.admin.html.twig' %}
+						
+								    {% include '::stepHolder.base.admin.html.twig' with {
+						                    steps: [
+						                        {title: '- Center Details'},
+						                        {title: '- Specialization'},
+						                        {title: '- Select Treatments'},
+						                        {title: '- Assigned Doctors', 'selected': true},
+						                        {title: '- Preview', 'selected': false},
+						                 ]}
+						              %}							
+								<!-- /.menu - tab end -->
+								<!-- /.tab-content start -->
+								<div class="tab-content">
+									<div id="tabs1-pane1" class="tab-pane active">
+													
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+											<h3>Medical Specialist Assigned in this Medical Center</h3>	
+																
+											<label for="username"></label>
+											<div >										
+												<div class="input-prepend">
+													<input id="search_doctor" class="input-xxlarge" type="text" value="" name="searchDoctor">
+												</div>
+											</div>
+											    
+											<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>											
+										</form>
+										
+										<div id="ajax_loader" style="display: none;">Please wait...</div>
+							                 <h4>List of All Doctors</h4>
+							                 <ul class="nav nav-tabs nav-stacked doctor_list_item">
+							                    {% for currentDoctor in currentDoctors %}
+							                        <li>{% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenterGroup.id, 'doctor': currentDoctor } %}</li>
+							                    {% endfor %}
+							                 </ul>
+						                
+									</div>
 								
-								<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
-								
-								    <label for="username">Add from doctors database</label>
-                                    <div class="div_text">
-                                        <div class="input-prepend">
-                                            <input id="search_doctor" class="span8" type="text" value="" name="searchDoctor">
-                                        </div>
-                                    </div>
-				
-				                </form>
-				                
-				                <div id="ajax_loader" style="display: none;">Please wait...</div>
-				                
-				                <div id="added_doctors_container">
-				                    {% for currentDoctor in currentDoctors %}
-				                        {% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenterGroup.id, 'doctor': currentDoctor } %}
-				                    {% endfor %}
-				                </div>
-								
-							</div><!-- /.tab-content -->
-						</div>
-		    	</div><!--/span-->
-            </div><!--/row-->
+								</div><!-- /.tab-content end -->
+							</div>
+				    </div><!--/span 12 end-->
+				 </div><!--/row-fluid end-->
+			 </div>
+		</div>
+			<!--main tab start-->
 		
-		<div class="clear"></div>
- 
+			<div class="clear"></div>
+	</div>
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
@@ -83,7 +87,7 @@
                 type: 'post',
                 dataType: 'json',
                 success: function(json){
-                    _el.parents('div.doctor_list_item').remove();
+                    _el.parents('ul.doctor_list_item').remove();
                     $('div#ajax_loader').hide();   
                 }
             });
@@ -128,7 +132,7 @@
                             _div.find('a.remove_doctor_link').bind('click', function(event){
                                 return onClickRemoveDoctor(event.target);
                             });
-                            _div.appendTo($('#added_doctors_container'));
+                            _div.appendTo($('ul.doctor_list_item'));
                             $('input#search_doctor').val('');
                             $('div#ajax_loader').hide();
                         }

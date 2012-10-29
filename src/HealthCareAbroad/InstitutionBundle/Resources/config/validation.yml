@@ -1,6 +1,6 @@
 HealthCareAbroad\InstitutionBundle\Entity\Institution:
     constraints:
-        - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue:
+        - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName:
             field: name
             message: Institution name already exists!
     properties:

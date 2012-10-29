@@ -11,6 +11,13 @@ institution_medicalCenterGroup_addSpecializations:
     requirements:
         _method: GET|POST
         imcgId: \d+
+        
+institution_medicalCenterGroup_addTreatments:
+    pattern: /medical-centers/add/treatments/{imcgId}
+    defaults: { _controller: InstitutionBundle:MedicalCenterGroup:addTreatments }
+    requirements:
+        _method: GET|POST
+        imcgId: \d+
 
 institution_medicalCenterGroup_addDoctors:
     pattern: /medical-centers/add/doctors/{imcgId}
