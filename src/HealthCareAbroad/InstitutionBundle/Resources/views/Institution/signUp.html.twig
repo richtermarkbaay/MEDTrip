@@ -14,6 +14,9 @@
             <p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
             <div class="row-fluid">
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" class="form">
+                    
+                    {{ form_errors(form) }}
+                    
                     <fieldset>
                         <label for="institution name"><b>Name of the Institution</b></label>
                         <div>
@@ -67,6 +70,7 @@
                         I read and agree the <a href="#">Terms and Conditions</a>.
                     </label>
                     <input type="submit" name="Submit" value="SIGN-UP" class="span12 btn-large btn-primary" />
+                    {{ form_rest(form) }}
                 </form>
             </div>
         </div>

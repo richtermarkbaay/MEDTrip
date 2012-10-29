@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @Annotation
  */
-class InstitutionUserNameValue extends Constraint
+class InstitutionUniqueName extends Constraint
 {
  	public $message = 'Institution name already exists.';
  	

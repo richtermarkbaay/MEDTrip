@@ -26,12 +26,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `accounts`
 --
 
+
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(250) NOT NULL,
   `last_name` varchar(250) NOT NULL,
-  `middle_name` varchar(250) NOT NULL,
+  `middle_name` varchar(250) DEFAULT NULL,
   `email` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
   `date_created` timestamp NULL DEFAULT NULL,

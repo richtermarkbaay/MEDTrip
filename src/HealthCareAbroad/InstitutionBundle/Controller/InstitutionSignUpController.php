@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
@@ -78,7 +80,7 @@ class InstitutionSignUpController  extends Controller
 	    
 	    if ($request->isMethod('POST')) {
 	        $form->bind($request);
-	            
+	        
 	        if ($form->isValid()) {
 	            
 	            $institution = $form->getData();
@@ -109,7 +111,12 @@ class InstitutionSignUpController  extends Controller
                 ));
 	            
 	            // auto login
-	            $this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData());
+	            $institutionUserService = $this->get('services.institution_user');
+	            $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
+	            $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
+                $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
+                $this->get('security.context')->setToken($securityToken);
+                $institutionUserService->setSessionVariables($institutionUser);
 	            
 	            return $this->redirect($this->generateUrl('institution_homepage'));
 	        }

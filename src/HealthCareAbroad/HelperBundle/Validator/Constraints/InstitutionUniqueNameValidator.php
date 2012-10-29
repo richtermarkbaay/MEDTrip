@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 
-class InstitutionUserNameValueValidator extends ConstraintValidator
+class InstitutionUniqueNameValidator extends ConstraintValidator
 {
 	/**
 	 * @var Registry

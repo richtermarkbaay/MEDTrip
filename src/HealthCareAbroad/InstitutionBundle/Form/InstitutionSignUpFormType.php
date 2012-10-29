@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
 
-use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUserNameValue;
+use HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
@@ -57,7 +57,9 @@ class InstitutionSignUpFormType extends AbstractType
         $builder->add('email', 'email', array(
                 'label' => 'Your email',
         		'virtual' => true,
-        		'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exist!')) , new NotBlank())
+        		'constraints' => array(
+	                new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')) , 
+	                new NotBlank(array('message' => 'Please provide a valid email.')))
         	
             ));
         $builder->add('password', 'password', array(

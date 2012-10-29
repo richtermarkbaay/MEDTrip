@@ -9,29 +9,26 @@
         <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
     {% endblock %}
     <!-- Start: page-top-outer -->
-    <div class="navbar navbar-fixed-top">
+	
+	<div class="navbar navbar-fixed-top">
 	  <div class="navbar-inner">
 	    <div class="container">
-	        <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	        </a>
-	        <a href="{{ path('main_homepage') }}" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
-	              
-            {% block top_search %}
+			<a href="index.php" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
+				   {% block top_search %}
                 {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
-            {% endblock %}
-	        
+            {% endblock %}	 
 	    </div>
 	  </div>
 	</div>
-    <!-- End: page-top -->
-	 {% include 'InstitutionBundle:Main:profileContainer.html.twig' %}
 
+    <!-- End: page-top -->
+    <div class="row-fluid">
+	    <div class="institutionbox">
+			{% include 'InstitutionBundle:Main:profileContainer.html.twig' %}
+		</div>
 
     {% block content %}{% endblock %}
-
+	</div>
     <!--  end content-outer........................................................END -->
 	 
 	 <div class="container">
