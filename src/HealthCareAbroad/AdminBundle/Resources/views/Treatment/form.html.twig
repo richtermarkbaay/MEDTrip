@@ -5,7 +5,7 @@
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h2>{{ form.vars.value.id ? 'Edit' : 'Add' }} Treatment Procedure</h2></div>
+		<div id="page-heading"><h2>{{ form.vars.value.id ? 'Edit' : 'Add' }} Treatment</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 
@@ -14,8 +14,8 @@
 			{% include '::notice.admin.html.twig' %}
 
             {% set contents = [{
-					'title': 'View all procedures', 
-					'description': 'View the list of medical procedures',
+					'title': 'View all treatments', 
+					'description': 'View the list of treatment',
 					'href': path('admin_treatment_index'), 
 					'links': [{'title': 'View procedures', 'href': path('admin_treatment_index')}]
 				}, 

@@ -41,16 +41,16 @@
                         <th id="column-treatment" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'subSpecialization' ? 'sort-' ~ sortOrder : '' }}">Sub-specialization</a>
                         </th>
-
+                        <th>Status</th>
                         <th class="actions">Actions</th>
                     </tr>
 
                     {% for each in treatments %}
                         <tr>
                             <td>{{ each.name }}</td>
-                            <td class="procedure-type">{{ each.name }}</td>
+                            <td class="procedure-type">{{ each.subSpecialization }}</td>
+                            <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
-
                             <a href="{{ path('admin_treatment_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                 {% set class = each.status ? 'icon-2' : 'icon-5' %}
                                 <a href="{{ path('admin_treatment_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
