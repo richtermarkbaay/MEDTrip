@@ -16,11 +16,12 @@ use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
 class InstitutionUserService extends UserService
 {
     /**
+     * Deprecated please do not use. We will remove this one
      *
      * @param string $email
      * @param password $password
      */
-    public function login($email, $password)
+    /**public function login($email, $password)
     {
         $user = $this->findByEmailAndPassword($email, $password);
 
@@ -51,6 +52,21 @@ class InstitutionUserService extends UserService
             return true;
         }
         return false;
+    }**/
+    
+    /**
+     * @inheritDoc
+     */
+    public function getUserRolesForSecurityToken(SiteUser $user)
+    {
+        $roles = array('INSTITUTION_USER');
+        foreach ($user->getInstitutionUserType()->getInstitutionUserRoles() as $userRole){
+            if ($userRole->getStatus() & InstitutionUserRole::STATUS_ACTIVE) {
+                $roles[] = $userRole->getName();
+            }
+        }
+        
+        return $roles;
     }
 
     public function setSessionVariables(SiteUser $user) {
@@ -58,7 +74,7 @@ class InstitutionUserService extends UserService
         $this->session->set('institutionId', $user->getInstitution()->getId());
         $this->session->set('institutionName', $user->getInstitution()->getName());
 
-        $this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
+        //$this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
     }
 
     /**

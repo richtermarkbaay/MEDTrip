@@ -32,11 +32,11 @@ class InstitutionUserType
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionUserRole;
+    private $institutionUserRoles;
 
     public function __construct()
     {
-        $this->institutionUserRole = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -116,34 +116,34 @@ class InstitutionUserType
     }
 
     /**
-     * Add institutionUserRole
+     * Add institutionUserRoles
      *
-     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles
      * @return InstitutionUserType
      */
-    public function addInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function addInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles)
     {
-        $this->institutionUserRole[] = $institutionUserRole;
+        $this->institutionUserRoles[] = $institutionUserRoles;
         return $this;
     }
 
     /**
-     * Remove institutionUserRole
+     * Remove institutionUserRoles
      *
-     * @param <variableType$institutionUserRole
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles
      */
-    public function removeInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function removeInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles)
     {
-        $this->institutionUserRole->removeElement($institutionUserRole);
+        $this->institutionUserRoles->removeElement($institutionUserRoles);
     }
 
     /**
-     * Get institutionUserRole
+     * Get institutionUserRoles
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getInstitutionUserRole()
+    public function getInstitutionUserRoles()
     {
-        return $this->institutionUserRole;
+        return $this->institutionUserRoles;
     }
 }
