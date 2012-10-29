@@ -14,48 +14,49 @@
 			<h3>Existing Users</h3>
 			
 			<div class="row-fluid">
-				  	 <form novalidate="novalidate" action="{{ path('institution_login_check') }}" method="POST" >
+				<form novalidate="novalidate" action="{{ path('institution_login_check') }}" method="POST" >
                             {#{ form_errors(form) }#}
                             {#% if app.session.hasFlash('notice') %#}
-                            {% if error %}
-                                <div class=login_notice style="color: #CE2700; margin: -20px 0px;">
-                                    {# app.session.flash('notice') #}
-                                    {{ error.message }}
-                                </div>
-                            {% endif %}
-                            <fieldset>
-                 
-
+                        
+                   <fieldset>
                                 <label for="username">Email</label>
-                                <div class="div_text">
-                                    <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
-                                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="password span11" />
-                                        {#{ form_widget(form.email, { 'attr': {'class': 'username span9'} }) }#}
-                                    </div>
-                                </div>
-
-                                <label for="password">Password</label>
-                                <div class="div_text">
-                                    <div class="input-prepend"><span class="add-on"><i class="icon-lock"></i></span>
-                                        <input type="password" id="password" name="_password" class="password span11" />
-                                        {#{ form_widget(form.password, { 'attr': {'class': 'password span9'} }) }#}
-                                    </div>
-                                </div>
-								<div class="span11"><input name="_institution_remember_me" checked type="checkbox" class="checkbox-size" id="login-check"value="forever" />&nbsp;<small>Remember me</small>
-  									<input type="submit" name="Submit" value="Login" class="btn btn-primary" />
+                                
+                                <div class="input-prepend">
+  									<span class="add-on"><i class="icon-envelope"></i></span>
+  									<input name="_username" type="text" id="username" value="{{ last_username }}"  class="username span11" />
   								</div>
+  								
+  								{% if error %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                    {# app.session.flash('notice') #}
+		                                    {{ error.message }}
+		                                </li>
+					  				</ul>
+  							 	 {% endif %}
+  							 	 
+                                <label for="password">Password</label>
+                                
+                                <div class="input-prepend">
+  									<span class="add-on"><i class="icon-lock"></i></span>
+  									<input name="_password" type="password" id="password" class="password span11" />
+  								</div>
+                        
+  								<div class="span11"><input name="_institution_remember_me"  checked type="checkbox" type="checkbox" id="login-check" value="forever" />&nbsp;<small>Remember me</small>
+			  						<input type="submit" name="Submit" value="Login" class="btn btn-primary" />
+			  					</div>
             
                                 <div class="clear">&nbsp;</div>
                                 <div class="clear">&nbsp;</div>
                                 <div class="clear"></div>
+                                
                                 <div>Forgot password?&nbsp;<a href="#">Click here to reset</a></div>
                                 <div>New User?&nbsp;<a href="{{ path('institution_signUp') }}">Click here to register</a></div>
                                 <div class="clear"></div>
-                            </fieldset>
+                 </fieldset>
                             {#{ form_rest(form) }#}
-                        </form> 
-			</div>
-
+			</form> 
+		</div>
 	</div>
 
 	</div>
