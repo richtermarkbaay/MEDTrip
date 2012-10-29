@@ -40,7 +40,7 @@
 
                 {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
-                <form action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+                <form novalidate action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.name) }}
                     {{ form_row(form.description) }}
