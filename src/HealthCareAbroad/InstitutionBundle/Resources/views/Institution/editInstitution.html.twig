@@ -1,99 +1,101 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'staff'%}
-
-
 {% block content %}
 <!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-        <h1>Edit {{ institution.getName() }} Details</h1>
-    </div>
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-            <!--  start table-content  -->
-            <div id="table-content">
+<div class="container">
+	<div class="maincontent">
+		<!--sidebar start-->
+			<div class="span3">
+			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
+			</div>
+	
+			<div class="span9">
+			<h2>
+			    Edit {{ institution.getName() }} Details
+			</h2>
+			 <div class="addcenterbox">
+			 	<div class="row-fluid">
+				    <div class="span12">
+				           
+							{% include '::notice.admin.html.twig' %}
             
-                {% include '::notice.admin.html.twig' %}
-            
-                <form novalidate="novalidate" action="{{ path('institution_edit_information')}}" method="POST" {{ form_enctype(form) }} class="basic-form">
-                    <!-- start id-form -->
-                    
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.description) }}
-                        {{ form_row(form.institutionOfferedServices) }}
-                        {{ form_row(form.country) }}
-                        
-                        {{ form_row(form.city)}}
-                        {{ form_row( form.zipCode ) }}
-                                                
-                        {{ form_row( form.address1 ) }}
-                        {{ form_row( form.address2 ) }}
-                        
-                        {{ form_row( form.contactEmail ) }}
-
-                        
-                        <div>
-                            {% set arrContactNumber = json_decode(institution.contactNumber) %}
-
-                            {% if not arrContactNumber|length %}
-                                {% set arrContactNumber = [{"number" : "", "type": ""}] %}
-                            {% endif %}
-                        
-                            {{ form_label(form.contactNumber) }}
-
-                            <div style="margin-bottom: 5px;display:inline-block;" id="contactNumberContainer">
-                                {% for i, contact in arrContactNumber %}
-                                    <div id="contact-{{ i }}">
-                                        <input type="text" name="contactNumber[{{ i }}][number]" value="{{ contact.number}}">
-                                        <a href="javascript:addAnotherContact()" class="add-another-number"> add another</a> 
-                                        <span class="bar"> | </span> 
-                                        <a href="javascript:removeContact({{ i }})" class="remove-contact">remove</a>
-                                        <div style="margin-top: 3px;font-size: 11px;padding-left:5px;">
-                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="phone" id="phone{{ i }}" {{ ('phone' == contact.type) or ('' == contact.type) ? 'checked' : '' }}><label for="phone{{ i }}">Phone</label> &nbsp;
-                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="mobile" id="mobile{{ i }}" {{ 'mobile' == contact.type ? 'checked' : '' }}><label for="mobile{{ i }}">Mobile</label> &nbsp;
-                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="fax"  id="fax{{ i }}" {{ 'fax' == contact.type ? 'checked' : '' }}><label for="fax{{ i }}">Fax</label>
-                                        </div>
-                                    </div> 
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <label>Languages Spoken</label>
-                            <input type="text" value="" id="languageButton">             			
-             			</div>
-             			
-             			<div>             			
-             				<div id="tags">
-             				{% if institutionLanguage %}
-    	             			{% for language in institutionLanguage %}
-    	                			<a href="#" id="language{{ language.id }}" class="click" > {{ language.name }}</a>
-                    			{% endfor %}
-	                		{% endif %}
-                			</div>
-                		</div>
-
-             			{{ form_row( form.institutionLanguagesSpoken ) }}
-
-                        {{ form_rest(form) }}
-
-						<input type="reset" value="Reset" class="form-reset"  />
-						<input type="submit" name="submit" value="Submit" class="green-button" />
-
-                    <!-- end id-form  -->
-                </form>
-            </div>
-            <!--  end table-content  -->
-        {% endblock %}
-        
-    {% endembed %}
-
+		                <form novalidate="novalidate" action="{{ path('institution_edit_information')}}" method="POST" {{ form_enctype(form) }} class="basic-form">
+		                    <!-- start id-form -->
+		                    
+		                        {{ form_row(form.name) }}
+		                        {{ form_row(form.description) }}
+		                        {{ form_row(form.institutionOfferedServices) }}
+		                        {{ form_row(form.country) }}
+		                        
+		                        {{ form_row(form.city)}}
+		                        {{ form_row( form.zipCode ) }}
+		                                                
+		                        {{ form_row( form.address1 ) }}
+		                        {{ form_row( form.address2 ) }}
+		                        
+		                        {{ form_row( form.contactEmail ) }}
+		
+		                        
+		                        <div>
+		                            {% set arrContactNumber = json_decode(institution.contactNumber) %}
+		
+		                            {% if not arrContactNumber|length %}
+		                                {% set arrContactNumber = [{"number" : "", "type": ""}] %}
+		                            {% endif %}
+		                        
+		                            {{ form_label(form.contactNumber) }}
+		
+		                            <div style="margin-bottom: 5px;display:inline-block;" id="contactNumberContainer">
+		                                {% for i, contact in arrContactNumber %}
+		                                    <div id="contact-{{ i }}">
+		                                        <input type="text" name="contactNumber[{{ i }}][number]" value="{{ contact.number}}">
+		                                        <a href="javascript:addAnotherContact()" class="add-another-number"> add another</a> 
+		                                        <span class="bar"> | </span> 
+		                                        <a href="javascript:removeContact({{ i }})" class="remove-contact">remove</a>
+		                                        <div style="margin-top: 3px;font-size: 11px;padding-left:5px;">
+		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="phone" id="phone{{ i }}" {{ ('phone' == contact.type) or ('' == contact.type) ? 'checked' : '' }}><label for="phone{{ i }}">Phone</label> &nbsp;
+		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="mobile" id="mobile{{ i }}" {{ 'mobile' == contact.type ? 'checked' : '' }}><label for="mobile{{ i }}">Mobile</label> &nbsp;
+		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="fax"  id="fax{{ i }}" {{ 'fax' == contact.type ? 'checked' : '' }}><label for="fax{{ i }}">Fax</label>
+		                                        </div>
+		                                    </div> 
+		                                {% endfor %}
+		                            </div>
+		                        </div>
+		                        
+		                        <div>
+		                            <label>Languages Spoken</label>
+		                            <input type="text" value="" id="languageButton">             			
+		             			</div>
+		             			
+		             			<div>             			
+		             				<div id="tags">
+		             				{% if institutionLanguage %}
+		    	             			{% for language in institutionLanguage %}
+		    	                			<a href="#" id="language{{ language.id }}" class="click" > {{ language.name }}</a>
+		                    			{% endfor %}
+			                		{% endif %}
+		                			</div>
+		                		</div>
+		
+		             			{{ form_row( form.institutionLanguagesSpoken ) }}
+		
+		                        {{ form_rest(form) }}
+		
+								<input type="reset" value="Reset" class="form-reset"  />
+								<input type="submit" name="submit" value="Submit" class="green-button" />
+		
+		                    <!-- end id-form  -->
+		                </form>
+						
+				    </div><!--/span 12 end-->
+				 </div><!--/row-fluid end-->
+			 </div>
+		</div>
+			<!--main tab start-->
+		
+			<div class="clear"></div>
+	</div>
 </div>
-
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 {% endblock %}

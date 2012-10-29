@@ -15,7 +15,6 @@
             <div class="row-fluid">
                 <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" class="form">
     
-                    
                     <fieldset>
                         <label for="institution name"><b>Name of the Institution</b></label>
                         <div>
@@ -26,16 +25,9 @@
                           	{% if form_errors(form.name) %}
   								<ul class="alert-error">
 	                                <li>
-	                                         {{ form_errors(form.name) }}
+                                     	{{ form_errors(form.name) }}
 	                                </li>
 				  				</ul>
-					  		{% elseif form_errors(form) %}
-						  		<ul class="alert-error">
-						  		 		 <li>
-			                                         {{ form_errors(form) }}
-		                                </li>
-						  		
-						  		</ul>
   							{% endif %}
                             
                         </div>
@@ -53,11 +45,11 @@
                         </div>
                         
 	                        {% if form_errors(form.email) %}
-	  								<ul class="alert-error">
-		                                <li>
-		                                         {{ form_errors(form.email) }}
-		                                </li>
-					  				</ul>
+  								<ul class="alert-error">
+	                                <li>
+                                         {{ form_errors(form.email) }}
+	                                </li>
+				  				</ul>
 	  						{% endif %}
                         
                         <label for="password">password</label>
@@ -67,11 +59,11 @@
                         </div>
                         
 	                        {% if form_errors(form.password) %}
-	  								<ul class="alert-error">
-		                                <li>
-		                                         {{ form_errors(form.password) }}
-		                                </li>
-					  				</ul>
+  								<ul class="alert-error">
+	                                <li>
+                                         {{ form_errors(form.password) }}
+	                                </li>
+				  				</ul>
 	  						{% endif %}
                         
                         <label for="confirm_password">re-type password</label>
@@ -81,11 +73,11 @@
                         </div>
                                
 	                        {% if form_errors(form.confirm_password) %}
-	  								<ul class="alert-error">
-		                                <li>
-		                                         {{ form_errors(form.confirm_password) }}
-		                                </li>
-					  				</ul>
+  								<ul class="alert-error">
+	                                <li>
+	                                         {{ form_errors(form.confirm_password) }}
+	                                </li>
+				  				</ul>
 	  						{% endif %}
                         
                         <label for="password">Types of Institution</label>
