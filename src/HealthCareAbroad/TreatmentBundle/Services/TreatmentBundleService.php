@@ -34,6 +34,7 @@ class TreatmentBundleService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+        $this->entityManager = $doctrine->getEntityManager();
     }
 
     /**

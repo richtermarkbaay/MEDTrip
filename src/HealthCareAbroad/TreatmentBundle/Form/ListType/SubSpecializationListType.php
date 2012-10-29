@@ -27,6 +27,6 @@ class SubSpecializationListType extends AbstractType
 
     public function getName()
     {
-        return 'subspecialization_list';
+        return 'subSpecialization_list';
     }
 }

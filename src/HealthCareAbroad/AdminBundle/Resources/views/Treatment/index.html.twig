@@ -6,7 +6,7 @@
     <div id="content">
 
         {{ app.session.flash('notice') }}
-        <div id="page-heading"><h2>List of Treatment Procedures</h2></div>
+        <div id="page-heading"><h2>List of Treatments</h2></div>
 
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
@@ -45,7 +45,7 @@
                         <th class="actions">Actions</th>
                     </tr>
 
-                    {% for procedure in procedures %}
+                    {% for procedure in treatments %}
                         <tr>
                             <td>{{ procedure.name }}</td>
                             <td class="procedure-type">{{ procedure.Treatment.name }}</td>

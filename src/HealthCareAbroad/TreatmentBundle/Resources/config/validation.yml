@@ -34,5 +34,3 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             - NotBlank: ~
         subSpecialization:
             - NotBlank: ~
-        description:
-            - NotBlank: ~

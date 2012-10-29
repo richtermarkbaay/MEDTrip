@@ -24,18 +24,18 @@ class TreatmentFormType extends AbstractType
 		);
 		
 		if ($treatment->getId()) {
-			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment');
+			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:Institution');
 			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
 
 		    if ($hasInstitutionTreatment) {
 		        $builder->add('subSpecialization', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
 		    }
 		    else {
-		        $builder->add('subSpecialization', 'subspecialization_list');
+		        $builder->add('subSpecialization', 'subSpecialization_list');
 		    }
 		}
 		else {
-		    $builder->add('subSpecialization', 'subspecialization_list');
+		    $builder->add('subSpecialization', 'subSpecialization_list');
 		}
 
 		$builder->add('name');

@@ -19,12 +19,12 @@ class TreatmentController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $treatmentId = $request->get('treatment', 0);
-        if ($treatmentId == ListFilter::FILTER_KEY_ALL) {
-            $treatmentId = 0;
+        $subSpecializationId = $request->get('subSpecialization', 0);
+        if ($subSpecializationId == ListFilter::FILTER_KEY_ALL) {
+            $subSpecializationId = 0;
         }
 
-        $params = array('treatmentId' => $treatmentId,'treatments' => $this->filteredResult, 'pager' => $this->pager);
+        $params = array('subSpecializationId' => $subSpecializationId,'treatments' => $this->filteredResult, 'pager' => $this->pager);
 
         return $this->render('AdminBundle:Treatment:index.html.twig', $params);
     }
@@ -39,23 +39,23 @@ class TreatmentController extends Controller
         $params = $formActionParams = array();
         $treatment = new Treatment();
 
-        if($treatmentId = $this->getRequest()->get('treatmentId', 0)) {
-            $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($treatmentId);
+        if($subSpecializationId = $this->getRequest()->get('subSpecializationId', 0)) {
+            $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($subSpecializationId);
 
-            if(!$treatment) {
-                throw $this->createNotFoundException("Invalid Treatment.");
+            if(!$subSpecialization) {
+                throw $this->createNotFoundException("Invalid SubSpecialization.");
             }
 
-            $treatment->setTreatment($treatment);
+            $treatment->setSubSpecialization($subSpecialization);
 
             $params['isAddFromSpecificType'] = true;
-            $formActionParams['treatmentId'] = $treatmentId;
+            $formActionParams['subSpecializationId'] = $subSpecializationId;
         }
 
         $treatmentForm = new TreatmentFormType();
         $treatmentForm->setDoctrine($this->getDoctrine());
 
-        $form = $this->createForm($treatmentForm, $treatment);        
+        $form = $this->createForm($treatmentForm, $treatment);
 
         $params['form'] = $form->createView();
         $params['formAction'] = $this->generateUrl('admin_treatment_create', $formActionParams);

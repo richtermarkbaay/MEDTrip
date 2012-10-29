@@ -5,9 +5,9 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
-class MedicalProcedureListFilter extends ListFilter
+class TreatmentListFilter extends ListFilter
 {
 
     function __construct($doctrine)
@@ -28,7 +28,7 @@ class MedicalProcedureListFilter extends ListFilter
     function setMedicalProcedureTypeFilterOption()
     {        
         // Set The Filter Option 
-        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:Treatment')->findByStatus(Treatment::STATUS_ACTIVE);
+        $procedureTypes = $this->doctrine->getEntityManager()->getRepository('TreatmentBundle:Treatment')->findByStatus(Treatment::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($procedureTypes as $each) {
             $options[$each->getId()] = $each->getName();
@@ -43,7 +43,7 @@ class MedicalProcedureListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:TreatmentProcedure', 'a');
+        $this->queryBuilder->select('a')->from('TreatmentBundle:Treatment', 'a');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.status = :status');
