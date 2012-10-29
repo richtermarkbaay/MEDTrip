@@ -39,9 +39,9 @@ final class AdminBundleEvents
     const ON_EDIT_TREATMENT = 'event.treatment.edit';
     const ON_DELETE_TREATMENT = 'event.treatment.delete';
 
-    const ON_ADD_SUBSPECIALIZATION = 'event.subspecialization.add';
-    const ON_EDIT_SUBSPECIALIZATION = 'event.subspecialization.edit';
-    const ON_DELETE_SUBSPECIALIZATION = 'event.subspecialization.delete';
+    const ON_ADD_SUB_SPECIALIZATION = 'event.subspecialization.add';
+    const ON_EDIT_SUB_SPECIALIZATION = 'event.subspecialization.edit';
+    const ON_DELETE_SUB_SPECIALIZATION = 'event.subspecialization.delete';
 
     const ON_ADD_NEWS = 'event.news.add';
     const ON_EDIT_NEWS = 'event.news.edit';

@@ -28,7 +28,7 @@ class SpecializationController extends Controller
 
         return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => null,
-            'form' => $form->createView(),  
+            'form' => $form->createView(),
             'formAction' => $this->generateUrl('admin_specialization_create')
         ));
     }
@@ -50,13 +50,13 @@ class SpecializationController extends Controller
             'formAction' => $this->generateUrl('admin_specialization_update', array('id' => $id))
         ));
     }
-    
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
      */
     public function saveAction()
     {
-        $request = $this->getRequest();    
+        $request = $this->getRequest();
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
@@ -65,7 +65,7 @@ class SpecializationController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $specialization = $id
-                ? $em->getRepository('TreatmentBundle:Specialization')->find($id) 
+                ? $em->getRepository('TreatmentBundle:Specialization')->find($id)
                 : new Specialization();
 
         $form = $this->createForm(new SpecializationType(), $specialization);
@@ -75,29 +75,29 @@ class SpecializationController extends Controller
                $em->persist($specialization);
                $em->flush($specialization);
 
-            // dispatch event               
+            // dispatch event
                $eventName = $id ? AdminBundleEvents::ON_EDIT_SPECIALIZATION : AdminBundleEvents::ON_ADD_SPECIALIZATION;
                $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $specialization));
-               
-               $request->getSession()->setFlash('success', 'Medical center saved!');
+
+               $request->getSession()->setFlash('success', 'Specialization saved!');
 
                if($request->get('submit') == 'Save')
                    return $this->redirect($this->generateUrl('admin_specialization_edit', array('id' => $specialization->getId())));
-               else 
+               else
                    return $this->redirect($this->generateUrl('admin_specialization_add'));
            }
 
-        $formAction = $id 
+        $formAction = $id
             ? $this->generateUrl('admin_specialization_update', array('id' => $id))
             : $this->generateUrl('admin_specialization_create');
-        
+
         return $this->render('AdminBundle:Specialization:form.html.twig', array(
                 'id' => $id,
                 'form' => $form->createView(),
-                'formAction' => $formAction 
-        ));                
+                'formAction' => $formAction
+        ));
     }
-    
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_SPECIALIZATION')")
      */
@@ -111,9 +111,9 @@ class SpecializationController extends Controller
             $specialization->setStatus($specialization->getStatus() ? Specialization::STATUS_INACTIVE : Specialization::STATUS_ACTIVE);
             $em->persist($specialization);
             $em->flush($specialization);
-            
+
             $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_SPECIALIZATION, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_SPECIALIZATION, $specialization));
-            
+
             $result = true;
         }
 
@@ -122,5 +122,5 @@ class SpecializationController extends Controller
 
         return $response;
     }
-    
+
 }

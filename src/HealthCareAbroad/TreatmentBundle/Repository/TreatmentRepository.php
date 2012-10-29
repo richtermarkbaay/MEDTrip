@@ -32,14 +32,14 @@ class TreatmentRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getCountByTreatmentId($treatmentId) {
+    public function getCountBySubSpecializationId($subSpecializationId) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('count(a)')
             ->from('TreatmentBundle:Treatment', 'a')
             ->where('a.status = :active')
-            ->andWhere('a.treatment = :treatmentId')
+            ->andWhere('a.subSpecialization = :subSpecializationId')
             ->setParameter('active', Treatment::STATUS_ACTIVE)
-            ->setParameter('treatmentId', $treatmentId);
+            ->setParameter('subSpecializationId', $subSpecializationId);
 
         $count = (int)$qb->getQuery()->getSingleScalarResult();
 

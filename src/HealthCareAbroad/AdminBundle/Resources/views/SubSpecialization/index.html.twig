@@ -16,9 +16,9 @@
                         'title': 'Add sub-specialization',
                         'description': 'Add new sub-specialization',
                         'class': 'add-icon',
-                        'href': path('admin_subspecialization_add', {'specializationId': specializationId ? specializationId : null }),
+                        'href': path('admin_subSpecialization_add', {'specializationId': specializationId ? specializationId : null }),
                         'links': [
-                            {'title': 'Add Sub-specialization', 'href': path('admin_subspecialization_add', {'specializationId': specializationId ? specializationId : null } )}
+                            {'title': 'Add sub-specialization', 'href': path('admin_subSpecialization_add', {'specializationId': specializationId ? specializationId : null } )}
                         ]
                     }]
                 %}
@@ -56,9 +56,9 @@
                                 <a href="#" class="medical-center">{{ each.specialization.name }}</a>
                             </td>
                             <td align="center">
-                                <a href="{{ path('admin_subspecialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                <a href="{{ path('admin_subSpecialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                 {% set class = each.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_subspecialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
                                     <a href="{{ path('admin_treatment_index', {treatment:each.id}) }}" class="icon-type">treatments</a>
                             </td>
                         </tr>
@@ -68,7 +68,7 @@
                     </table>
 
                     {% if pager.isPaginable %}
-                       {{ paginate(pager, 'admin_subspecialization_index', app.request.query.all) }}
+                       {{ paginate(pager, 'admin_subSpecialization_index', app.request.query.all) }}
                     {% endif %}
                 </div>
 
