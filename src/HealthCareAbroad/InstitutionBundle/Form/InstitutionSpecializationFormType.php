@@ -30,12 +30,12 @@ class InstitutionSpecializationFormType extends AbstractType
             ));
         }
         
-        $builder->add('treatment', 'entity', array(
-            'label' => 'Treatments',
-            'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Treatment',
-            'multiple' => true,
-            'attr' => array('class' => 'institutionTreatments')
-        ));
+//         $builder->add('treatment', 'entity', array(
+//             'label' => 'Treatments',
+//             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Treatment',
+//             'multiple' => true,
+//             'attr' => array('class' => 'institutionTreatments')
+//         ));
 
         $builder->add('description', 'textarea', array(
             'label' => 'Details',
