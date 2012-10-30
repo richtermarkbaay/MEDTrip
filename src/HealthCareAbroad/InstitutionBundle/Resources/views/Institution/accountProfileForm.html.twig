@@ -1,6 +1,6 @@
 {% extends '::base.gmap.html.twig' %}
 {% block body %}
-<body onload="initialize()">
+<body >
 
 <div class="container">
 	<div class="accountbox">
@@ -74,9 +74,9 @@
 				
 							<input name="Zip" type="text"  id="ctl00_PlaceHolderMain_txtZip" maxlength="5" style="width:50px" class="LegislatorSearch" />
 				
-		  					<input type="submit" name="ctl00$PlaceHolderMain$btnLegislatorNum" value="Find My District" onclick="codeAddress()">
+		  					<input type="button" name="ctl00$PlaceHolderMain$btnLegislatorNum" value="Find My District" onclick="codeAddress()">
 		  					
-		  				<div class="map" >
+		  				<div class="map" onload="initialize()" >
 		  					<div id="map_canvas" style="width:384px; height:375px"></div>
 		  				</div>
 		  				    
