@@ -13,6 +13,7 @@ class Country
 	const STATUS_ACTIVE = 1;
 	const STATUS_INACTIVE = 0;
 	
+    
     /**
      * @var integer $id
      */
@@ -24,7 +25,22 @@ class Country
     private $name;
 
     /**
-     * @var boolean $status
+     * @var string $abbr
+     */
+    private $abbr;
+
+    /**
+     * @var string $code
+     */
+    private $code;
+
+    /**
+     * @var string $slug
+     */
+    private $slug;
+
+    /**
+     * @var smallint $status
      */
     private $status;
 
@@ -62,31 +78,48 @@ class Country
     }
 
     /**
-     * Set status
+     * Set abbr
      *
-     * @param boolean $status
+     * @param string $abbr
      * @return Country
      */
-    public function setStatus($status)
+    public function setAbbr($abbr)
     {
-        $this->status = $status;
+        $this->abbr = $abbr;
         return $this;
     }
 
     /**
-     * Get status
+     * Get abbr
      *
-     * @return boolean 
+     * @return string 
      */
-    public function getStatus()
+    public function getAbbr()
     {
-        return $this->status;
+        return $this->abbr;
     }
-    /**
-     * @var string $slug
-     */
-    private $slug;
 
+    /**
+     * Set code
+     *
+     * @param string $code
+     * @return Country
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
 
     /**
      * Set slug
@@ -108,5 +141,27 @@ class Country
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * Set status
+     *
+     * @param smallint $status
+     * @return Country
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return smallint 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
