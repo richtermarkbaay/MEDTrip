@@ -45,6 +45,12 @@ institution_signUp:
     requirements:
         _method: GET|POST
         
+institution_accountProfile:
+    pattern:  /account
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
+    requirements:
+        _method: GET|POST
+        
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
