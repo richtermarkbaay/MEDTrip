@@ -1,0 +1,105 @@
+{% extends '::base.gmap.html.twig' %}
+{% block body %}
+<body onload="initialize()">
+
+<div class="container">
+	<div class="accountbox">
+	
+	<div class="row-fluid">
+	<div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#"></div>
+		<form action="#" method="POST" class="form">
+		
+		<div class="accountbox2"><a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
+		<h2 style="margin-top: 15px; ;">Institution Profile Form</h2>
+		<p>In order to appear on our comprehensive MEDICAL DIRECTORY LISTING, please tell us more about your Institution (questions in grey are optional).</p>
+		<h5>INSTITUTION NAME HERE</h5>
+		<h3>institution type here</h3>
+		</div>
+						
+		  		<fieldset>
+		  			<div class="span6">
+		  				
+		  				<h4>This how your patients can connect to you.</h4>
+		  				
+		  				<label for="institution name" style="color: #aeadad;">Institution website</label>
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  				<ul class="alert-error">
+		  					<li>Please enter a valid website url</li>
+		  				</ul>
+		  				
+		  				<label for="institution name"  style="color: #aeadad;">Institution email address</label>
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  				
+					<label for="institution name">Institution Phone Number</label>
+				
+						<div class="input-prepend">
+							<div id="phones">
+										<input type="text" size="3" maxlength="3" name="area" class="span2">
+										<input type="text" size="3" maxlength="3" name="local1" class="span2">
+										<input type="text" size="4" maxlength="4" name="local2" class="span7">
+							</div>
+								
+							</div>
+				
+					<label for="institution name" style="color: #aeadad;">Institution Fax Number</label>
+					
+						<div class="input-prepend">
+						
+							<div id="phones">
+										<input type="text" size="3" maxlength="3" name="area" class="span2">
+										<input type="text" size="3" maxlength="3" name="local1" class="span2">
+										<input type="text" size="4" maxlength="4" name="local2" class="span7">
+	
+						</div>
+					</div>
+					<label for="institution name" style="color: #aeadad;">Facebook Page</label>
+				
+						<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+			
+		  			<label for="institution name" style="color: #aeadad;">Twitter Account</label>
+		  			
+		  				<div class="input-prepend"><input name="log" type="text" id="log inputIcon" value="" class="username span12" /></div>
+		  			
+		  			</div>
+		  				
+		  				<div class="span6">
+		  				<h4>This how your patients can locate you.</h4>
+			  				<label id="ctl00_PlaceHolderMain_lblAddress">Address</label>
+							<input name="Address" type="text" id="ctl00_PlaceHolderMain_txtStreet" class="LegislatorSearch"/>
+							
+							<label id="ctl00_PlaceHolderMain_lblCity">City</label>						
+							<input name="City" type="text" id="ctl00_PlaceHolderMain_txtCity" class="LegislatorSearch" />
+							
+							<label id="ctl00_PlaceHolderMain_lblZip">Zip</label>
+				
+							<input name="Zip" type="text"  id="ctl00_PlaceHolderMain_txtZip" maxlength="5" style="width:50px" class="LegislatorSearch" />
+				
+		  					<input type="submit" name="ctl00$PlaceHolderMain$btnLegislatorNum" value="Find My District" onclick="codeAddress()">
+		  					
+		  				<div class="map" >
+		  					<div id="map_canvas" style="width:384px; height:375px"></div>
+		  				</div>
+		  				    
+		  				</div>
+		  		
+		  		</fieldset>
+
+		  		<div class="span11"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary"/></div>
+		  		</form>		  
+	</div>
+
+</div>
+	</div>
+	<div class="container">
+<br/>
+<hr>
+<footer>
+	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+</footer>
+</div>
+</div>
+
+</body>
+	{% endblock %}
+
+	

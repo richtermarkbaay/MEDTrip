@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>{% block title %}HealthCareAbroad Institution{% endblock %}</title>
+       
+		 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	    <script>
+	      var geocoder;
+	      var map;
+	      function initialize() {
+	        geocoder = new google.maps.Geocoder();
+	        var latlng = new google.maps.LatLng(-34.397, 150.644);
+	        var mapOptions = {
+	          zoom: 8,
+	          center: latlng,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP
+	        }
+	        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+	      }
+	
+	      function codeAddress() {
+
+    	  var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
+
+	        //var address = document.getElementById('address').value;
+	        geocoder.geocode( { 'address': address}, function(results, status) {
+	          if (status == google.maps.GeocoderStatus.OK) {
+	            map.setCenter(results[0].geometry.location);
+	            var marker = new google.maps.Marker({
+	                map: map,
+	                position: results[0].geometry.location
+	            });
+	          } else {
+	            alert('Geocode was not successful for the following reason: ' + status);
+	          }
+	        });
+	      }
+	    </script>
+
+            {% stylesheets 
+
+				'css/institution/bootstrap.min.css'
+				'css/institution/bootstrap-responsive.min.css'
+				'css/institution/style.css' 	
+				output='css/compiled-institution.css'
+				
+            %}
+                <link href="{{ asset_url }}" rel="stylesheet"/>
+            {% endstylesheets %}
+
+    </head>
+    {% block body %}{% endblock %}
+
+</html>

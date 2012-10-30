@@ -22,9 +22,9 @@ class InstitutionUniqueNameValidator extends ConstraintValidator
     	$this->doctrine = $doctrine;
     }
     
-	public function validate($entity, Constraint $constraint) {
+	public function validate($value, Constraint $constraint) {
 		
-		$value = $entity->getName();
+		//$value = $entity->getName();
 
 		$institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('name' => $value));
 		

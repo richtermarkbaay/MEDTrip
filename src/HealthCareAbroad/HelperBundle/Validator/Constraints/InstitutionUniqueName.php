@@ -18,10 +18,10 @@ class InstitutionUniqueName extends Constraint
  	
     public $field ;
 
-    public function getRequiredOptions()
-    {
-        return array('field');
-    }
+//     public function getRequiredOptions()
+//     {
+//         return array('field');
+//     }
     
     public function validatedBy()
     {
@@ -33,12 +33,12 @@ class InstitutionUniqueName extends Constraint
      */
     public function getTargets()
     {
-        return self::CLASS_CONSTRAINT;
+        return self::PROPERTY_CONSTRAINT;
     }
 
-    public function getDefaultOption()
-    {
-        return 'field';
-    }
+//     public function getDefaultOption()
+//     {
+//         return 'field';
+//     }
 
 }
