@@ -34,7 +34,7 @@ class TreatmentListFilter extends ListFilter
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['treatment'] = array(
+        $this->filterOptions['subSpecialization'] = array(
             'label' => 'Sub-specialization',
             'selected' => $this->queryParams['subSpecialization'],
             'options' => $options
