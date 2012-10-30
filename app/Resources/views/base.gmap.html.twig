@@ -33,13 +33,26 @@
 	            map.setCenter(results[0].geometry.location);
 	            var marker = new google.maps.Marker({
 	                map: map,
-	                position: results[0].geometry.location
+	                position: results[0].geometry.location,
+	                draggable:true,
+	                animation: google.maps.Animation.DROP
+	        
 	            });
+	            google.maps.event.addListener(marker, 'click', toggleBounce);
 	          } else {
 	            alert('Geocode was not successful for the following reason: ' + status);
 	          } 
 	        });
 	      }
+
+	      function toggleBounce() {
+
+	          if (marker.getAnimation() != null) {
+	            marker.setAnimation(null);
+	          } else {
+	            marker.setAnimation(google.maps.Animation.BOUNCE);
+	          }
+	        }
 	    </script>
 
             {% stylesheets 
