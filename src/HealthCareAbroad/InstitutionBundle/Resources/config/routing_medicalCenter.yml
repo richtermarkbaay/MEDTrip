@@ -1,10 +1,18 @@
+institution_medicalCenter_add:
+    pattern: /medical-center/add/details/{imcId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+
+
 institution_medicalCenter_addDetails:
     pattern: /medical-center/add/details/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
 institution_medicalCenter_addSpecializations:
     pattern: /medical-center/{imcId}/specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addSpecializations }
@@ -25,43 +33,43 @@ institution_medicalCenter_edit:
     requirements:
         _method: GET|POST
         imcId: \d+
-        
-        
+
+
 institution_medicalCenter_loadAvailableSpecializations:
     pattern: /medical-center/load-available-specializations/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableSpecializations }
     requirements:
         _method: GET
         imcId: \d+
-        
+
 institution_medicalCenter_loadAvailableTreatments:
     pattern: /medical-center/load-available-treatments/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableTreatments }
     requirements:
         _method: GET
         imcId: \d+
-        
+
 institution_medicalCenter_searchAvailableDoctor:
     pattern: /medical-center/search-available-doctor/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:searchAvailableDoctor }
     requirements:
         _method: GET
         imcId: \d+
-        
+
 institution_medicalCenter_addExistingDoctor:
     pattern: /medical-center/add-existing-doctor/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:addExistingDoctor }
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
 institution_medicalCenter_removeDoctor:
     pattern: /medical-center/remove-doctor/{imcId}/{doctorId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:removeDoctor }
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
 institution_medicalCenter_index:
     pattern: /medical-centers
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }

@@ -216,7 +216,7 @@ class InstitutionMedicalCenter
      */
     public function addInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecialization)
     {
-        $this->institutionSpecialization[] = $institutionSpecialization;
+        $this->institutionSpecializations[] = $institutionSpecialization;
         return $this;
     }
 

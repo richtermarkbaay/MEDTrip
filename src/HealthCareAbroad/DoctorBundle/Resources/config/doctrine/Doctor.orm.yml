@@ -35,34 +35,34 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             type: boolean
             nullable: false
     manyToMany:
-        medicalCenters:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
+        specializations:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
             cascade: {}
             mappedBy: null
             joinTable:
-                name: doctor_to_medical_centers
+                name: doctor_specializations
                 joinColumns:
                     -
                         name: doctor_id
                         referencedColumnName: id
                 inverseJoinColumns:
                     -
-                        name: medical_center_id
+                        name: specialization_id
                         referencedColumnName: id
             orderBy: null
-        institutionMedicalCenterGroups:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
+        institutionMedicalCenters:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             cascade: {}
             mappedBy: null
             joinTable:
-                name: institution_medical_center_group_doctors
+                name: institution_medical_center_doctors
                 joinColumns:
                     -
                         name: doctor_id
                         referencedColumnName: id
                 inverseJoinColumns:
                     -
-                        name: institution_medical_center_group_id
+                        name: institution_medical_center_id
                         referencedColumnName: id
             orderBy: null
     lifecycleCallbacks: {}
