@@ -4,48 +4,76 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>{% block title %}HealthCareAbroad Institution{% endblock %}</title>
        
-		 <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	    <script>
-	      var geocoder;
-	      var map;
-	      function initialize() {
-	        geocoder = new google.maps.Geocoder();
-	        var latlng = new google.maps.LatLng(-34.397, 150.644);
-	        var mapOptions = {
-	          zoom: 8,
-	          center: latlng,
-	          mapTypeId: google.maps.MapTypeId.ROADMAP
-	        }
-	        map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		<script type="text/javascript">
+		  var tableId = 4442675; // imported from 3835940
+		  var geocoder = null;
+		  var map = null;
+		  var layer = null;
+		  var marker = null;
+		  var address = '100 1 st s, minneapolis, mn';
+		  //var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
 
-	      }
-	
-	      function codeAddress() {
-    	 	var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
-
-	       // var address = document.getElementById("ctl00_PlaceHolderMain_txtCity").value;
-
-	        geocoder.geocode( { 'address': address}, function(results, status) {
-	            
-			       
-	          if (status == google.maps.GeocoderStatus.OK) {
-
-	            map.setCenter(results[0].geometry.location);
-	            var marker = new google.maps.Marker({
-	                map: map,
-	                position: results[0].geometry.location,
-	                draggable:true,
+		 function codeAddress() {
+		    var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
+		    geocoder.geocode( { 'address': address}, geocoderCallback ); 
+		  }
+		
+		
+		  function initialize() {
+		    var myOptions = {
+		      zoom: 13,
+		      mapTypeId: google.maps.MapTypeId.ROADMAP
+		    }
+		    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		    geocoder = new google.maps.Geocoder();
+		    geocoder.geocode( { 'address': address}, geocoderCallback);
+		  }
+		
+		function geocoderCallback (results, status) {
+		      if (status == google.maps.GeocoderStatus.OK) {
+		        map.setCenter(results[0].geometry.location);
+		        var lat = results[0].geometry.location.lat();
+		        var lng = results[0].geometry.location.lng();
+		
+		        if (marker) marker.setMap(null);
+		
+		        marker = new google.maps.Marker({
+		            map: map, 
+		            position: results[0].geometry.location,
+		            draggable:true,
+	                zoom: 9,
 	                animation: google.maps.Animation.DROP
-	        
-	            });
-	            google.maps.event.addListener(marker, 'click', toggleBounce);
-	          } else {
-	            alert('Geocode was not successful for the following reason: ' + status);
-	          } 
-	        });
-	      }
-
-	      function toggleBounce() {
+		        });
+		        if (!layer) 
+		        {
+		            layer = new google.maps.FusionTablesLayer({
+		              query: {
+		                select: 'geometry',
+		                from: tableId,
+		                where: 'ST_INTERSECTS(geometry, CIRCLE(LATLNG(' + lat + ', ' + lng + '),1))',
+		                limit: 1
+		              }
+		            });
+		            layer.setMap(map);
+		        } 
+		        else 
+		        { 
+		           layer.setOptions({
+		              query: {
+		                select: 'geometry',
+		                from: tableId,
+		                where: 'ST_INTERSECTS(geometry, CIRCLE(LATLNG(' + lat + ', ' + lng + '),1))',
+		                limit: 1
+		              }
+		            });
+		        }
+		        google.maps.event.addListener(marker, 'click', toggleBounce);
+		      } else {
+		        alert("Geocode was not successful for the following reason: " + status);
+		      }
+		};
+		  function toggleBounce() {
 
 	          if (marker.getAnimation() != null) {
 	            marker.setAnimation(null);
@@ -53,8 +81,7 @@
 	            marker.setAnimation(google.maps.Animation.BOUNCE);
 	          }
 	        }
-	    </script>
-
+		</script>
             {% stylesheets 
 
 				'css/institution/bootstrap.min.css'
