@@ -66,17 +66,18 @@ class ScriptLoadCityCommand extends ContainerAwareCommand
 
             $country_abbr = substr($line[1], 0, -1);
             $city_name = substr($line[3], 0, -1);
+            
             if(!$city_name || !$country_abbr) {
                 continue;
             }
                 
             if(isset($countries[$country_abbr])) {
-
-                $subQuery .= "(". $countries[$country_abbr] .", '". addslashes($city_name) ."', 1),";
+                $slug = str_replace(" ", "-",strtolower($city_name));
+                $subQuery .= "(". $countries[$country_abbr] .", '". addslashes($city_name) ."', '". addslashes($slug) ."', 1),";
                 
-                if(($ctr == 40000)|| ($count-1) == $i) {
+                if(($ctr == 20000)|| ($count-1) == $i) {
                    $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE status=1";
-                   $sqlQuery = "INSERT INTO cities (country_id, name , status) VALUES $subQuery";
+                   $sqlQuery = "INSERT INTO cities (country_id, name, slug, status) VALUES $subQuery";
                     $output->writeln($sqlQuery); 
                     $output->writeln("\n");
                     $conn = $em->getConnection();
