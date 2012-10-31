@@ -36,7 +36,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addSpecializations', {'imcgId': institutionMedicalCenter.id } ) }}" method="POST" class="basic-form">
 											<h3>Medical Specialist Assigned in this Medical Center</h3>	
 																
 											<label for="username"></label>
@@ -53,7 +53,7 @@
 							                 <h4>List of All Doctors</h4>
 							                 <ul class="nav nav-tabs nav-stacked doctor_list_item">
 							                    {% for currentDoctor in currentDoctors %}
-							                        <li>{% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenterGroup.id, 'doctor': currentDoctor } %}</li>
+							                        <li>{% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenter.id, 'doctor': currentDoctor } %}</li>
 							                    {% endfor %}
 							                 </ul>
 						                
@@ -103,7 +103,7 @@
                 source: function(request, response) {
                     $('div#ajax_loader').show();
                     $.ajax({
-                        url: '{{ path("institution_medicalCenterGroup_searchAvailableDoctor", {"imcgId": institutionMedicalCenterGroup.id }) }}',
+                        url: '{{ path("institution_medicalCenter_searchAvailableDoctor", {"imcgId": institutionMedicalCenter.id }) }}',
                         data: {'searchKey': request.term},
                         type: 'get',
                         dataType: 'json',
@@ -123,7 +123,7 @@
                 select: function(event, ui) {
                     $('div#ajax_loader').show();
                     $.ajax({
-                        url: '{{ path("institution_medicalCenterGroup_addExistingDoctor", {"imcgId": institutionMedicalCenterGroup.id } ) }}',
+                        url: '{{ path("institution_medicalCenter_addExistingDoctor", {"imcgId": institutionMedicalCenter.id } ) }}',
                         data: {'doctorId':ui.item.id},
                         dataType: 'json',
                         type: 'post',

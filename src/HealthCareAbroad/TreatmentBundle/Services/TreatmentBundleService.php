@@ -58,6 +58,22 @@ class TreatmentBundleService
 
         return $result;
     }
+    
+    public function getSpecializationTreatments($specialization)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
+            ->select('a')
+            ->from('TreatmentBundle:Treatment', 'a')
+            ->leftJoin('a.subSpecialization', 'b')
+            ->leftJoin('b.specialization', 'c')
+            ->where('c = :specialization')
+            ->andWhere('a.status = :status')
+            ->orderBy('b.name, a.name', 'ASC')
+            ->setParameter('specialization', $specialization)
+            ->setParameter('status', Treatment::STATUS_ACTIVE);
+
+        return $qb->getQuery()->getResult();
+    }
 
     public function getSubSpecialization($id)
     {

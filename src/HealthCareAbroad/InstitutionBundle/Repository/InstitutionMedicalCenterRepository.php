@@ -27,141 +27,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
-    public function getMedicalCentersByTreatment(Treatment $procedureType, MedicalProcedure $procedure = null)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('a')
-            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-            ->leftJoin('a.medicalCenter', 'b')
-            ->leftJoin('b.treatments', 'c');
 
-        if ($procedure) {
-            $qb->leftJoin('c.treatmentProcedures', 'd')
-                ->where('d = :procedure')
-                ->setParameter('procedure', $procedure);
-        }
-        else {
-            $qb->where('c = :procedureType')
-                ->setParameter('procedureType', $procedureType);
-        }
-
-        $qb->orderBy('b.name', 'ASC');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function getMedicalCentersByCountry(Country $country)
-    {
-        $qb = $this->_em->createQueryBuilder()
-            ->select('a')
-            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-            ->leftJoin('a.institution', 'b')
-            ->leftJoin('a.medicalCenter', 'c')
-            ->where('b.country = :countryId')
-            ->andWhere('a.status = :status')
-            ->setParameter('countryId', $country->getId())
-            ->setParameter('status', InstitutionMedicalCenterGroupStatus::APPROVED)
-            ->orderBy('c.name', 'ASC');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function getMedicalCentersByCity(City $country)
-    {
-        $qb = $this->_em->createQueryBuilder()
-        ->select('a')
-        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-        ->leftJoin('a.institution', 'b')
-        ->leftJoin('a.medicalCenter', 'c')
-        ->where('b.country = :countryId')
-        ->andWhere('a.status = :status')
-        ->setParameter('countryId', $country->getId())
-        ->setParameter('status', InstitutionMedicalCenterGroupStatus::APPROVED)
-        ->orderBy('c.name', 'ASC');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function getCountByMedicalCenterId($medicalCenterId) {
-        $qb = $this->_em->createQueryBuilder();
-
-        $qb->select('count(a)')
-        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-        ->andWhere('a.medicalCenter = :medicalCenterId')
-        ->setParameter('medicalCenterId', $medicalCenterId);
-
-        $count = (int)$qb->getQuery()->getSingleScalarResult();
-
-        return $count;
-    }
-
-    // TODO - Currently DEPRECATED, this can be remove.
-    function getProcedureTypeIdsWithProcedure($medicalCenterId)
-    {
-        $conn = $this->_em->getConnection();
-        $qry = "SELECT a.medical_procedure_type_id, b.id FROM institution_medical_procedure_types AS a " .
-                "JOIN medical_procedures AS b ON a.medical_procedure_type_id = b.medical_procedure_type_id " .
-                "JOIN institution_treatment_procedures AS c ON b.id = c.medical_procedure_id ".
-                "WHERE institution_medical_center_id = $medicalCenterId AND b.status = 1 AND c.status = 1 " .
-                "GROUP BY a.medical_procedure_type_id";
-
-        $result = $conn->executeQuery($qry)->fetchAll();
-
-        $ids = array();
-        foreach($result as $each) {
-            $ids[] = (int)$each['medical_procedure_type_id'];
-        }
-
-        return $ids;
-    }
-
-    public function getMedicalCentersList($institutionId)
-    {
-        $qb = $this->_em->createQueryBuilder()
-        ->select('b.id, b.name')
-        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-        ->leftJoin('a.medicalCenter', 'b')
-        ->add('where','a.institution = :institution')
-        ->setParameter('institution', $institutionId)
-        ->orderBy('b.name', 'ASC');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * Get the available MedicalProcedure type of a MedicalCenter that has not been used in the Institution
+    /** TODO - Verify Method! - Moved from medicalCenterGroupRepo
+     * Find Doctors that has specializations matching $institutionMedicalCenterGroup by search keyword $searchKey
      *
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionMedicalCenterGroup $institutionMedicalCenterGroup
+     * @param string $searchKey
      */
-    public function getAvailableTreatments(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function findAvailableDoctorBySearchKey(InstitutionMedicalCenterGroup $institutionMedicalCenterGroup, $searchKey='')
     {
-        //$dql = "SELECT p FROM InstitutionBundle:InstitutionMedicalCenter"
-        $sql = "SELECT a.* FROM medical_procedure_types a, institution_medical_centers b ".
-               "WHERE b.medical_center_id = :medical_center_id ".
-               "AND b.institution_id = :institution_id ".
-               "AND a.medical_center_id = b.medical_center_id ".
-            "AND a.status = :active_medical_procedure_type ".
-            "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
-
-        $rsm = new ResultSetMapping();
-        $rsm->addEntityResult("TreatmentBundle:Treatment", "a")
-            ->addFieldResult("a", "id", "id")
-            ->addFieldResult("a", "medicalCenter", "medical_center_id")
-            ->addFieldResult("a", "name", "name")
-            ->addFieldResult("a", "description", "description")
-            ->addFieldResult("a", "dateModified", "date_modified")
-            ->addFieldResult("a", "dateCreated", "date_created")
-            ->addFieldResult("a", "slug", "slug")
-            ->addFieldResult("a", "status", "status");
-
-
-        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
-            ->setParameter('medical_center_id', $institutionMedicalCenter->getMedicalCenter()->getId())
-            ->setParameter('institution_id', $institutionMedicalCenter->getInstitution()->getId())
-            ->setParameter('active_medical_procedure_type', Treatment::STATUS_ACTIVE);
-
-        return $query->getResult();
+        /**
+         SELECT d.*
+         FROM `doctors` d
+         INNER JOIN `doctor_to_medical_centers` dmc ON d.id = dmc.doctor_id
+         INNER JOIN `institution_medical_centers` imc ON dmc.medical_center_id = imc.medical_center_id AND imc.institution_medical_center_group_id = 1
+         WHERE
+         d.status = 1
+          
+         SELECT d0_.id AS id0, d0_.first_name AS first_name1, d0_.middle_name AS middle_name2, d0_.last_name AS last_name3, d0_.date_created AS date_created4, d0_.status AS status5
+         FROM doctors d0_
+         INNER JOIN doctor_to_medical_centers d2_ ON d0_.id = d2_.doctor_id
+         INNER JOIN medical_centers m1_ ON m1_.id = d2_.medical_center_id
+         INNER JOIN institution_medical_centers i3_ ON m1_.id = i3_.medical_center_id AND (i3_.institution_medical_center_group_id = 1)
+         LEFT JOIN institution_medical_center_group_doctors i5_ ON d0_.id = i5_.doctor_id
+         LEFT JOIN institution_medical_center_groups i4_ ON i4_.id = i5_.institution_medical_center_group_id AND (i4_.id = 1)
+         WHERE d0_.status = 1 AND i4_.id IS NULL
+         */
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('d, dmc')
+        ->from('DoctorBundle:Doctor', 'd')
+        ->innerJoin('d.medicalCenters', 'dmc')
+        ->innerJoin('dmc.institutionMedicalCenters', 'imc', Join::WITH, 'imc.institutionMedicalCenterGroup = :imcgId')
+        ->leftJoin('d.institutionMedicalCenterGroups', 'imcg', Join::WITH, 'imcg.id = :imcgId')
+        ->where('d.status = :activeStatus')
+        ->andWhere('imcg.id IS NULL')
+        ->andWhere('d.firstName LIKE :searchKey OR d.middleName LIKE :searchKey OR d.lastName LIKE :searchKey')
+        ->setParameter('imcgId', $institutionMedicalCenterGroup->getId())
+        ->setParameter('activeStatus', 1)
+        ->setParameter('searchKey', '%'.$searchKey.'%');
+    
+        return $qb->getQuery()->getResult();
     }
+
+
 
     private function _getCommonRSM()
     {

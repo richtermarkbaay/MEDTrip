@@ -1,0 +1,61 @@
+{% set imcId = imcId is defined and imcId ? imcId : 0 %}
+
+{% set treatmentTask = {
+    title: 'Add Treatment', 
+    class: 'add-procedure-type add-icon',
+    isVisible: hideTreatmentTask is defined and hideTreatmentTask ? false: true,
+    description: imcId is defined and imcId ? 'Create a new treatment for this specialization': 'Add a new treatment', 
+    href: path('institution_medicalCenter_procedureTypes', {'imcId': imcId }), 
+    links: [
+        {class: 'add-procedure-type', title: 'Add treatment', 'href': path('institution_medicalCenter_addProcedureType', {'imcId': imcId})}
+    ]} 
+%}
+
+{% set addMedicalCenterTask = {
+    title: "Add Another Specialization", 
+    class: 'add-medical-center add-icon',
+    isVisible: hideAddMedicalCenter is defined and hideAddMedicalCenter ? false : true, 
+    description: "Add a new specialization that is available in your institution", 
+    href: path('institution_medicalCenter_add'),
+    links: [{title:'Click here to add a specialization',href: path('institution_medicalCenter_add')}]}
+%}
+
+{% if (institutionMedicalCenter is defined)%}
+    {% set viewHistoryTask = {
+        title: 'View History', 
+        class: 'list-icon',
+        isVisible: hideViewHistory is defined and hideViewHistory ? false : true,
+        description: 'Show all the changes made to this center type content', 
+        href: path('institution_showEditHistory', {'objectId': institutionMedicalCenter.id, 'objectClass': base64_encode(getClass(institutionMedicalCenter)) }), 
+        links: [
+            {class: 'view-edit-history-link', title: 'View history', href: path('institution_showEditHistory', {'objectId': institutionMedicalCenter.id, 'objectClass': base64_encode(getClass(institutionMedicalCenter)) }) }
+        ]} 
+    %}
+{% endif %}
+
+{% set manageMedicalCentersTask = {
+    title: "Manage Specializations", 
+    isVisible: hideManageMedicalCenters is defined and hideManageMedicalCenters ? false : true, 
+    description: "Go back to manage specializations page to view all your available centers.", 
+    href: path('institution_medicalCenter_index'),
+    links: [{title:'Click here to go to manage specializations',href: path('institution_medicalCenter_index')}]}
+%}
+
+{% set dashboardTask = {
+    title: 'Jump to dashboard', 
+    class: 'list-icon', 
+    description: 'Go back to your dashboard', 
+    href: path('institution_homepage'), 
+    links: [{'href': path('institution_homepage')}]} 
+%}
+
+{% if (institutionMedicalCenter is defined) %}
+    {% include '::relatedTasks.base.admin.html.twig' with 
+        {'contents': [addMedicalCenterTask, treatmentTask, manageMedicalCentersTask, viewHistoryTask, dashboardTask]} 
+    %}
+{% else %}
+    {% include '::relatedTasks.base.admin.html.twig' with 
+        {'contents': [addMedicalCenterTask, treatmentTask, manageMedicalCentersTask, dashboardTask]} 
+    %}
+{% endif %}
+                        
