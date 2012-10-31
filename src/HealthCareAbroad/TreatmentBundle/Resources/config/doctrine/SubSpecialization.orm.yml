@@ -1,0 +1,65 @@
+HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
+    type: entity
+    table: sub_specializations
+    repositoryClass: HealthCareAbroad\TreatmentBundle\Repository\SubSpecializationRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            gedmo:
+                - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    manyToOne:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                specialization_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    oneToMany:
+        treatments:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
+            mappedBy: subSpecialization
+    lifecycleCallbacks: {  }

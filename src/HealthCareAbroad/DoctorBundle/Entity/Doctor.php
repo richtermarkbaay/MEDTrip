@@ -35,23 +35,23 @@ class Doctor
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $medicalCenters;
+    private $specializations;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionMedicalCenterGroups;
+    private $institutionMedicalCenters;
 
     public function __construct()
     {
-        $this->medicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionMedicalCenterGroups = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->specializations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -73,7 +73,7 @@ class Doctor
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -95,7 +95,7 @@ class Doctor
     /**
      * Get middleName
      *
-     * @return string 
+     * @return string
      */
     public function getMiddleName()
     {
@@ -117,7 +117,7 @@ class Doctor
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -139,7 +139,7 @@ class Doctor
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -161,7 +161,7 @@ class Doctor
     /**
      * Get status
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getStatus()
     {
@@ -169,66 +169,66 @@ class Doctor
     }
 
     /**
-     * Add medicalCenters
+     * Add specialization
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenters
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
      * @return Doctor
      */
-    public function addMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenters)
+    public function addSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization)
     {
-        $this->medicalCenters[] = $medicalCenters;
+        $this->specializations[] = $specialization;
         return $this;
     }
 
     /**
-     * Remove medicalCenters
+     * Remove specialization
      *
-     * @param HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenters
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
      */
-    public function removeMedicalCenter(\HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter $medicalCenters)
+    public function removeSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization)
     {
-        $this->medicalCenters->removeElement($medicalCenters);
+        $this->specializations->removeElement($specialization);
     }
 
     /**
-     * Get medicalCenters
+     * Get specializations
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
-    public function getMedicalCenters()
+    public function getSpecializations()
     {
-        return $this->medicalCenters;
+        return $this->specializations;
     }
 
     /**
-     * Add institutionMedicalCenterGroups
+     * Add institutionMedicalCenter
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroups
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
      * @return Doctor
      */
-    public function addInstitutionMedicalCenterGroup(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroups)
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $this->institutionMedicalCenterGroups[] = $institutionMedicalCenterGroups;
+        $this->institutionMedicalCenters[] = $institutionMedicalCenter;
         return $this;
     }
 
     /**
-     * Remove institutionMedicalCenterGroups
+     * Remove institutionMedicalCenter
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroups
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
      */
-    public function removeInstitutionMedicalCenterGroup(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $institutionMedicalCenterGroups)
+    public function removeInstitutionMedicalCenterGroup(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $this->institutionMedicalCenterGroups->removeElement($institutionMedicalCenterGroups);
+        $this->institutionMedicalCenters->removeElement($institutionMedicalCenter);
     }
 
     /**
-     * Get institutionMedicalCenterGroups
+     * Get institutionMedicalCenters
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
-    public function getInstitutionMedicalCenterGroups()
+    public function getInstitutionMedicalCenters()
     {
-        return $this->institutionMedicalCenterGroups;
+        return $this->institutionMedicalCenters;
     }
 }

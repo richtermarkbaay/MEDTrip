@@ -81,4 +81,12 @@ class InstitutionRepository extends EntityRepository
         
         return $qb;
     }
+    
+    public function getCountByTreatmentId($treatmentId) {    
+
+        $qry = "SELECT count(*) as count FROM institution_treatments WHERE treatment_id = $treatmentId";
+        $count = $this->_em->getConnection()->executeQuery($qry)->fetchColumn(0);
+
+        return $count;
+    }
 }

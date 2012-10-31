@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
 
@@ -10,8 +10,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatu
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -144,7 +144,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             "AND a.id NOT IN (SELECT i.medical_procedure_type_id FROM institution_medical_procedure_types i WHERE i.institution_medical_center_id = b.id)";
 
         $rsm = new ResultSetMapping();
-        $rsm->addEntityResult("MedicalProcedureBundle:Treatment", "a")
+        $rsm->addEntityResult("TreatmentBundle:Treatment", "a")
             ->addFieldResult("a", "id", "id")
             ->addFieldResult("a", "medicalCenter", "medical_center_id")
             ->addFieldResult("a", "name", "name")

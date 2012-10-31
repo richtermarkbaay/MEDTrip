@@ -25,7 +25,7 @@ class InstitutionTreatmentListType extends AbstractType
     	$institution = $this->institution;
         $resolver->setDefaults(array(
             	'label' => 'Treatments',
-        		'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
+        		'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Treatment',
                 'query_builder' => function(EntityRepository $er) use ($institution) {
                 // $er is a HealthCareAbroad\MedicalProcedureBundle\Repository\MedicalCenterRepository 
                 return $er->getQueryBuilderForActiveTreatmentProceduresByMedicalCenter();

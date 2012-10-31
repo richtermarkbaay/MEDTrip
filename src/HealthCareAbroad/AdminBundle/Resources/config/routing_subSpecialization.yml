@@ -1,0 +1,35 @@
+admin_subSpecialization_index:
+    pattern:  /admin/sub-specializations
+    defaults: { _controller: AdminBundle:SubSpecialization:index }
+
+admin_subSpecialization_add:
+    pattern:  /admin/sub-specialization/add
+    defaults: { _controller: AdminBundle:SubSpecialization:add }
+    requirements:
+         _method: GET
+
+admin_subSpecialization_create:
+    pattern:  /admin/sub-specialization/add
+    defaults: { _controller: AdminBundle:SubSpecialization:save }
+    requirements:
+         _method: POST
+
+admin_subSpecialization_edit:
+    pattern:  /admin/sub-specialization/edit/{id}
+    defaults: { _controller: AdminBundle:SubSpecialization:edit }
+    requirements:
+         id: \d+
+         _method: GET
+
+admin_subSpecialization_update:
+    pattern:  /admin/sub-specialization/edit/{id}
+    defaults: { _controller: AdminBundle:SubSpecialization:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_subSpecialization_updateStatus:
+    pattern:  /admin/sub-specialization/update-status/{id}
+    defaults: { _controller: AdminBundle:SubSpecialization:updateStatus }
+    requirements:
+         id: \d+

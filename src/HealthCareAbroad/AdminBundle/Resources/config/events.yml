@@ -1,7 +1,7 @@
 #
 # List down the events that will be dispatched in this bundle.
 # Parameter will be in the following format:
-#    $event_name: $target_entity_qualified_name    
+#    $event_name: $target_entity_qualified_name
 #
 # Event name convention is:
 #        event.{subject_entity}.{event_action}
@@ -19,7 +19,7 @@ parameters:
     event.admin_user.edit: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
     event.admin_user.login: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
     event.admin_user.change_password: HealthCareAbroad\AdminBundle\Event\AdminUserEvent
-    
+
     #
     # admin user type related events
     #
@@ -28,56 +28,56 @@ parameters:
     event.admin_user_type.delete: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
     event.admin_user_type.add_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
     event.admin_user_type.delete_role: HealthCareAbroad\AdminBundle\Event\AdminUserTypeEvent
-    
+
     #
     # advertisement related events
     #
     event.advertisement.add: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
     event.advertisement.edit: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
     event.advertisement.delete: HealthCareAbroad\AdminBundle\Event\AdvertisementEvent
-    
+
     #
     # city related events
     #
     event.city.add: HealthCareAbroad\AdminBundle\Event\CityEvent
     event.city.edit: HealthCareAbroad\AdminBundle\Event\CityEvent
     event.city.delete: HealthCareAbroad\AdminBundle\Event\CityEvent
-    
+
     #
     # country related events
     #
     event.country.add: HealthCareAbroad\AdminBundle\Event\CountryEvent
     event.country.edit: HealthCareAbroad\AdminBundle\Event\CountryEvent
     event.country.delete: HealthCareAbroad\AdminBundle\Event\CountryEvent
-    
+
     #
-    # medical center related events
+    # specialization related events
     #
-    event.medical_center.add: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
-    event.medical_center.edit: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
-    event.medical_center.delete: HealthCareAbroad\AdminBundle\Event\MedicalCenterEvent
-    
-    #
-    # medical procedure related events
-    #
-    event.medical_procedure.add: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
-    event.medical_procedure.edit: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
-    event.medical_procedure.delete: HealthCareAbroad\AdminBundle\Event\TreatmentProcedureEvent
-    
+    event.specialization.add: HealthCareAbroad\AdminBundle\Event\SpecializationEvent
+    event.specialization.edit: HealthCareAbroad\AdminBundle\Event\SpecializationEvent
+    event.specialization.delete: HealthCareAbroad\AdminBundle\Event\SpecializationEvent
+
     #
     # treatment related events
     #
-    event.medical_procedure_type.add: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
-    event.medical_procedure_type.edit: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
-    event.medical_procedure_type.delete: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
-    
+    event.treatment.add: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
+    event.treatment.edit: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
+    event.treatment.delete: HealthCareAbroad\AdminBundle\Event\TreatmentEvent
+
+    #
+    # subspecialization related events
+    #
+    event.subspecialization.add: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
+    event.subspecialization.edit: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
+    event.subspecialization.delete: HealthCareAbroad\AdminBundle\Event\SubSpecializationEvent
+
     #
     # news related events
     #
     event.news.add: HealthCareAbroad\AdminBundle\Event\NewsEvent
     event.news.edit: HealthCareAbroad\AdminBundle\Event\NewsEvent
     event.news.delete: HealthCareAbroad\AdminBundle\Event\NewsEvent
-    
+
     #
     # offered service related events
     #
@@ -91,4 +91,3 @@ parameters:
     event.language.add: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     event.language.edit: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     event.language.delete: HealthCareAbroad\AdminBundle\Event\LanguageEvent
-    

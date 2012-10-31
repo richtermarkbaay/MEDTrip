@@ -62,7 +62,7 @@ class ScriptLoadCountryCommand extends ContainerAwareCommand
             
             if (\in_array($name, $finishedNames)) {
                 continue;
-            }
+            }    
             //persist data to db
             $country = new Country();
             $country->setAbbr($abbr);

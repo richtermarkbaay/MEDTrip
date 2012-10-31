@@ -469,36 +469,7 @@ CREATE TABLE IF NOT EXISTS `institution_media` (
 -- Table structure for table `institution_medical_centers`
 --
 
-DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
-  `medical_center_id` int(10) unsigned NOT NULL,
-  `description` text NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` smallint(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_medical_center_group_id` (`institution_medical_center_group_id`,`medical_center_id`),
-  KEY `medical_center_id` (`medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `institution_medical_centers`
---
-
-INSERT INTO `institution_medical_centers` (`id`, `institution_medical_center_group_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
-(1, 1, 1, 'dsafdsafdsaf', '2012-08-30 04:18:36', '2012-08-30 04:18:36', 1);
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `institution_medical_center_groups`
---
-
-DROP TABLE IF EXISTS `institution_medical_center_groups`;
-CREATE TABLE IF NOT EXISTS `institution_medical_center_groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -508,17 +479,20 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_groups` (
   `slug` varchar(250) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_id` (`institution_id`,`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+  UNIQUE KEY `institution_id_2` (`institution_id`,`name`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
--- Dumping data for table `institution_medical_center_groups`
+-- Dumping data for table `institution_medical_centers`
 --
 
-INSERT INTO `institution_medical_center_groups` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
 (1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2),
 (2, 1, 'sdfsadf', '<p>sdfsdf</p>', '2012-10-22 02:54:05', '2012-10-22 02:54:05', 'sdfsadf', 4),
-(3, 2, '32434234', '2sdfsdfsdfasdf', '2012-10-22 03:09:13', '2012-10-21 16:00:00', '2sdfsdfsdfasdf', 1);
+(3, 2, '32434234', '2sdfsdfsdfasdf', '2012-10-22 03:09:13', '2012-10-21 16:00:00', '2sdfsdfsdfasdf', 1),
+(4, 1, 'sdfsdfsdf', '<p>sdfsdf</p>', '2012-10-22 07:28:35', '2012-10-22 07:28:35', 'sdfsdfsdf', 4);
+
 
 -- --------------------------------------------------------
 
@@ -526,19 +500,23 @@ INSERT INTO `institution_medical_center_groups` (`id`, `institution_id`, `name`,
 -- Table structure for table `institution_medical_center_group_doctors`
 --
 
-DROP TABLE IF EXISTS `institution_medical_center_group_doctors`;
-CREATE TABLE IF NOT EXISTS `institution_medical_center_group_doctors` (
-  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
+
+CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
   `doctor_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`institution_medical_center_group_id`,`doctor_id`)
+  PRIMARY KEY (`institution_medical_center_id`,`doctor_id`),
+  KEY `doctor_id` (`doctor_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='doctors to instiution medical center group association table';
+
+-- --------------------------------------------------------
 
 
 --
 -- Dumping data for table `institution_medical_center_group_doctors`
 --
 
-INSERT INTO `institution_medical_center_group_doctors` (`institution_medical_center_group_id`, `doctor_id`) VALUES
+INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
 (1, 1);
 
 
@@ -827,8 +805,7 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Table structure for table `medical_centers`
 --
 
-DROP TABLE IF EXISTS `medical_centers`;
-CREATE TABLE IF NOT EXISTS `medical_centers` (
+CREATE TABLE IF NOT EXISTS `specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
@@ -837,18 +814,19 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=110 ;
 
 --
 -- Dumping data for table `medical_centers`
 --
 
-INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', 'sample-center', 1),
-(2, 'centerAddedFromAdminTest1', 'the quick brown fox is very slow.', '2012-08-08 08:42:47', '', 1),
-(3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:50', '', 1),
-(4, 'centerAddedFromAdminTest3', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1),
-(5, 'centerAddedFromAdminTest5', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1);
+INSERT INTO `specializations` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
+(1, 'Philippine Center', 'The very first one! updated sdfsdfsdf testest. updatedrweetr', '2012-07-30 00:34:30', 'philippine-center', 1),
+(2, 'California Center', 'sd fsadf sadf updated sdfsdfdsf', '2012-07-30 06:54:56', 'california-center', 1),
+(3, 'inactive center', 'sdf sdf sdf', '2012-07-30 06:54:56', '', 0),
+(4, 'sige daw kon sluggable', 'asdfas', '2012-07-30 08:19:23', 'sige-daw-kon-sluggable', 1),
+(5, '5th Medical Center updated', 'The very first one!', '2012-07-31 02:35:37', '5th-medical-center-updated', 1);
+
 
 -- --------------------------------------------------------
 
@@ -856,27 +834,31 @@ INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slu
 -- Table structure for table `treatment_procedures`
 --
 
-DROP TABLE IF EXISTS `treatment_procedures`;
-CREATE TABLE IF NOT EXISTS `treatment_procedures` (
+CREATE TABLE IF NOT EXISTS `sub_specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `treatment_id` int(10) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `treatment_id_2` (`treatment_id`,`name`),
-  KEY `treatment_id` (`treatment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments' AUTO_INCREMENT=5 ;
+
 
 --
 -- Dumping data for table `treatment_procedures`
 --
 
-INSERT INTO `treatment_procedures` (`id`, `treatment_id`, `name`, `slug`, `status`) VALUES
-(1, 1, 'testProcedure1', 'testprocedure1', 1),
-(2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
-(3, 2, 'testProcedure2', 'testprocedure2', 1),
-(4, 1, 'Test Treatment Procedure', 'test-medical-procedure', 1);
+
+INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 107, 'Sub-spec for treatment refactoring test', 'test edited', '2012-10-29 05:18:55', '2012-10-29 05:13:14', 'sub-spec-for-treatment-refactoring-test', 1),
+(2, 2, 'sd fsdf sdf', 'sd fsdf asdf', '2012-10-29 08:04:14', '2012-10-29 08:04:14', 'sd-fsdf-sdf', 1),
+(3, 5, 'sd fsdf sdf', 's dfsd fsdf', '2012-10-29 08:04:24', '2012-10-29 08:04:24', 'sd-fsdf-sdf-1', 1),
+(4, 8, 'churvs', 'sd fsd fsdf sdfsdfdsf', '2012-10-29 08:11:22', '2012-10-29 08:04:36', 'churvs', 1);
 -- --------------------------------------------------------
 
 --

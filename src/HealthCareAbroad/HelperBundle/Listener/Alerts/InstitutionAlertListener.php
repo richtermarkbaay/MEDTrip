@@ -13,7 +13,7 @@ use HealthCareAbroad\LogBundle\Exception\ListenerException;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 use HealthCareAbroad\HelperBundle\Services\AlertService;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,14 +21,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class InstitutionAlertListener extends BaseAlertListener
 {
     protected $medicalCenterClassName;
-    protected $medicalCenterGroupClassName;
+    protected $specializationClassName;
+
 
     public function __construct(ContainerInterface $container)
     {        
         parent::__construct($container);
 
-        $this->medicalCenterClassName = AlertClasses::getClassName(AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP);
-        $this->medicalCenterGroupClassName = AlertClasses::getClassName(AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP);
+        $this->medicalCenterClassName = AlertClasses::getClassName(AlertClasses::INSTITUTION_MEDICAL_CENTER);
+        $this->specializationClassName = AlertClasses::getClassName(AlertClasses::INSTITUTION_SPECIALIZATION);
     }
 
     /**
@@ -45,7 +46,7 @@ class InstitutionAlertListener extends BaseAlertListener
     
     public function onEditMedicalCenterAction(BaseEvent $event)
     {
-        if($event->getOption('previousStatus') == InstitutionMedicalCenterGroupStatus::DRAFT) {
+        if($event->getOption('previousStatus') == InstitutionMedicalCenterStatus::DRAFT) {
             $alertData = array();
             $object = $event->getData();
 
@@ -54,7 +55,7 @@ class InstitutionAlertListener extends BaseAlertListener
                 array_push($alertData, $draftAlert);                    
             }
 
-            if($object->getStatus() == InstitutionMedicalCenterGroupStatus::PENDING) {
+            if($object->getStatus() == InstitutionMedicalCenterStatus::PENDING) {
                 $pendingAlert = $this->createPendingListingAlert($object, $event->getOptions());
                 array_push($alertData, $pendingAlert);
             }
@@ -72,12 +73,12 @@ class InstitutionAlertListener extends BaseAlertListener
         $alertData = array();
         $object = $event->getData();
 
-        if(get_class($object) != $this->medicalCenterGroupClassName) {
-            throw new ListenerException('Invalid class given ' . get_class($object) . '. Required class is '. $this->medicalCenterGroupClassName);
+        if(get_class($object) != $this->medicalCenterClassName) {
+            throw new ListenerException('Invalid class given ' . get_class($object) . '. Required class is '. $this->medicalCenterClassName);
         }
 
         switch($object->getStatus()) {
-            case InstitutionMedicalCenterGroupStatus::PENDING :
+            case InstitutionMedicalCenterStatus::PENDING :
 
                 // ADD Pending Listing Alert
                 $pendingAlert = $this->createPendingListingAlert($object, $event->getOptions());
@@ -90,7 +91,7 @@ class InstitutionAlertListener extends BaseAlertListener
 
                 break;
 
-            case InstitutionMedicalCenterGroupStatus::APPROVED :
+            case InstitutionMedicalCenterStatus::APPROVED :
                 $x = $event->getOptions();
 
                 // Add Approved Listing Alert
@@ -121,7 +122,7 @@ class InstitutionAlertListener extends BaseAlertListener
     public function onDeleteMedicalCenterAction(BaseEvent $event)
     {
         $object = $event->getData();
-        $param = array('key' => array((int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP));
+        $param = array('key' => array((int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
 
         $alerts = $this->alertService->getAlerts(AlertService::REFERENCE_ALERT_VIEW_URI, $param);
 
@@ -147,7 +148,7 @@ class InstitutionAlertListener extends BaseAlertListener
             'recipient' => (int)$options->get('institutionId'),
             'recipientType' => AlertRecipient::INSTITUTION,
             'referenceData' => $referenceData,
-            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP,
+            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::APPROVED_LISTING,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'isDeletable' => false
@@ -172,7 +173,7 @@ class InstitutionAlertListener extends BaseAlertListener
             'recipient' => null,
             'recipientType' => AlertRecipient::ALL_ACTIVE_ADMIN,
             'referenceData' => $referenceData,
-            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP,
+            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::EXPIRED_LISTING,
             'dateAlert' => $dateAlert,
             'isDeletable' => true
@@ -196,7 +197,7 @@ class InstitutionAlertListener extends BaseAlertListener
         $pendingAlert = array(
             'recipientType' => AlertRecipient::ALL_ACTIVE_ADMIN,
             'referenceData' => $referenceData,
-            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP,
+            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::PENDING_LISTING,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'isDeletable' => false
@@ -211,7 +212,7 @@ class InstitutionAlertListener extends BaseAlertListener
             'recipient' => $options->get('institutionId'),
             'recipientType' => AlertRecipient::INSTITUTION,
             'referenceData' => array('id' => $object->getId(), 'name' => $object->getName()),
-            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP,
+            'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::DRAFT_LISTING,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'isDeletable' => false
@@ -222,7 +223,7 @@ class InstitutionAlertListener extends BaseAlertListener
 
     private function createRemoveDraftAlert($object)
     {
-        $param = array('key' => array(AlertTypes::DRAFT_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP));
+        $param = array('key' => array(AlertTypes::DRAFT_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
         $result = $this->alertService->getAlerts(AlertService::TYPE_AND_REFERENCE_ALERT_VIEW_URI, $param);
 
 
@@ -238,7 +239,7 @@ class InstitutionAlertListener extends BaseAlertListener
 
     private function createRemovePendingAlert($object, $options)
     {
-        $param = array('key' => array(AlertTypes::PENDING_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER_GROUP));
+        $param = array('key' => array(AlertTypes::PENDING_LISTING, (int)$object->getId(), AlertClasses::INSTITUTION_MEDICAL_CENTER));
         $result = $this->alertService->getAlerts(AlertService::TYPE_AND_REFERENCE_ALERT_VIEW_URI, $param);
 
         if(count($result)) {
