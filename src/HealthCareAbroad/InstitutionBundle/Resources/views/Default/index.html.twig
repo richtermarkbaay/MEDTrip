@@ -1,68 +1,68 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'dashboard'%}
 {% block content %}
-	 {% include 'InstitutionBundle:Main:stepsContainer.html.twig' %}
+     {% include 'InstitutionBundle:Main:stepsContainer.html.twig' %}
 <div class="container">
-	<div class="maincontent">
-		
-		<div class="span3">
-			<div class="sidebar-nav">
-			
-				<ul class="nav nav-tabs nav-stacked">
-			    	
-			    	{% if hasAlerts %}
-	                       <li class="nav-header" style="padding: 8px 0;">Latest System Messages</li> 
-	                    {% endif %}
-	
-	                    <!-- specializations with DRAFT status -->
-	                    {% if expiredListingAlerts|length %}
-	                    <li>
-	                        <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
-	                        Expired Listings.
-	
-	                        {% for center in expiredListingAlerts %}
-	                    
-	                                <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
-	                                <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
-	                        {% endfor %}
-	                      
-	                    </li>
-	                    {% endif %}
-	
-	                    {% if draftAlerts|length %}
-	                    <li>
-	                        <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
-	                        The following specializations have incomplete information.
-	
-	                        {% for center in draftAlerts %}
-	
-	                                <a href="{{ path('institution_medicalCenter_add', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
-	                      
-	                        {% endfor %}
-	                     
-	                    </li>
-	                    {% endif %}
-	
-	                    {% if approvedListingAlerts|length %}
-	                    <li>
-	                        <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
-	                        Approved Listings.
-	
-	                        {% for center in approvedListingAlerts %}
-	                          
-	                                <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
-	                                <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
-	                         
-	                        {% endfor %}
-	                  
-	                    </li>
-	                    {% endif %}
-			    </ul> 
-	
-		 	</div>
-		 </div>
-			 {% include 'InstitutionBundle:Main:content.html.twig' %}
-	</div>
+    <div class="maincontent">
+
+        <div class="span3">
+            <div class="sidebar-nav">
+
+                <ul class="nav nav-tabs nav-stacked">
+
+                    {% if hasAlerts %}
+                           <li class="nav-header" style="padding: 8px 0;">Latest System Messages</li>
+                        {% endif %}
+
+                        <!-- specializations with DRAFT status -->
+                        {% if expiredListingAlerts|length %}
+                        <li>
+                            <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
+                            Expired Listings.
+
+                            {% for center in expiredListingAlerts %}
+
+                                    <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                                    <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
+                            {% endfor %}
+
+                        </li>
+                        {% endif %}
+
+                        {% if draftAlerts|length %}
+                        <li>
+                            <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
+                            The following specializations have incomplete information.
+
+                            {% for center in draftAlerts %}
+
+                                    <a href="{{ path('institution_medicalCenter_add', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
+
+                            {% endfor %}
+
+                        </li>
+                        {% endif %}
+
+                        {% if approvedListingAlerts|length %}
+                        <li>
+                            <img src="{{ asset('/images/admin/forms/icon_list_arrow.gif') }}" alt=""/>
+                            Approved Listings.
+
+                            {% for center in approvedListingAlerts %}
+
+                                    <a href="{{ path('admin_removeAlert', {id: center._id, rev: center._rev}) }}" class="remove-alert" style="float:right">remove</a>
+                                    <a href="{{ path('institution_medicalCenter_edit', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
+
+                            {% endfor %}
+
+                        </li>
+                        {% endif %}
+                </ul>
+
+             </div>
+         </div>
+             {% include 'InstitutionBundle:Main:content.html.twig' %}
+    </div>
 </div>
 
 {% endblock %}

@@ -1,0 +1,66 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
+    type: entity
+    table: institution_specializations
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionSpecializationRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        dateModified:
+            type: datetime
+            nullable: false
+            column: date_modified
+            gedmo:
+                - versioned
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+            gedmo:
+                - versioned
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    manyToOne:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            inversedBy: specializations
+            joinColumn:
+                name: specialization_id
+                referencedColumnName: id
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: institutionMedicalCenters
+            joinColumn:
+                name: institution_medical_center_id
+                referencedColumnName: id
+    manyToMany:
+        treatments:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
+            cascade: {  }
+            mappedBy: null
+            joinTable:
+                name: institution_treatments
+                joinColumns:
+                    -
+                        name: institution_specialization_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: treatment_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

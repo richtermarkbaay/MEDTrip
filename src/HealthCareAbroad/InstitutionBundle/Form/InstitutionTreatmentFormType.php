@@ -17,7 +17,7 @@ class InstitutionTreatmentFormType extends AbstractType
 	{
 		$treatmentProcedure = $options['data'];
 
-		    $builder->add('treatmentProcedures', 'medicalproceduretype_list', array('expanded' => true,'multiple' => true));
+		    $builder->add('treatment', 'subSpecialization_list', array('expanded' => true,'multiple' => true));
 		
 
 // 		$builder->add('name');
@@ -33,7 +33,7 @@ class InstitutionTreatmentFormType extends AbstractType
 
 	public function getName()
 	{
-		return 'treatmentProcedures';
+		return 'treatments';
 	}
 	
 	function setDoctrine($doctrine) {

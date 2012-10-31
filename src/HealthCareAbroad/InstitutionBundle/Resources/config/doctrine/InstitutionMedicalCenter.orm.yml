@@ -9,58 +9,67 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         id:
             id: true
             type: bigint
+            unsigned: false
             nullable: false
             generator:
                 strategy: IDENTITY
-        description:
-            type: text
+        name:
+            type: string
+            length: 100
+            fixed: false
             nullable: false
             gedmo:
                 - versioned
-        dateModified:
-            type: datetime
+        description:
+            type: text
             nullable: false
-            column: date_modified
             gedmo:
                 - versioned
         dateCreated:
             type: datetime
             nullable: false
             column: date_created
-            gedmo:
-                - versioned
+        dateUpdated:
+            type: datetime
+            nullable: false
+            column: date_updated
         status:
             type: smallint
+            nullabe: false
+        slug:
+            type: string
+            length: 100
+            fixed: true
             nullable: false
             gedmo:
-                - versioned
+              slug:
+                separator: -
+                fields:
+                  - name
+    oneToMany:
+        institutionSpecializations:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
+            mappedBy: institutionMedicalCenter
     manyToOne:
-        medicalCenter:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter
-            inversedBy: medicalCenters
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            inversedBy: institutions
             joinColumn:
-                name: medical_center_id
-                referencedColumnName: id
-        institutionMedicalCenterGroup:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
-            inversedBy: institutionMedicalCenters
-            joinColumn:
-                name: institution_medical_center_group_id
+                name: institution_id
                 referencedColumnName: id
     manyToMany:
-        treatmentProcedures:
-            targetEntity: HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure
-            cascade: {  }
+        doctors:
+            targetEntity: HealthCareAbroad\DoctorBundle\Entity\Doctor
+            cascade: {}
             mappedBy: null
             joinTable:
-                name: institution_medical_center_treatment_procedures
+                name: institution_medical_center_doctors
                 joinColumns:
                     -
                         name: institution_medical_center_id
                         referencedColumnName: id
                 inverseJoinColumns:
                     -
-                        name: treatment_procedure_id
+                        name: doctor_id
                         referencedColumnName: id
-            orderBy: null                
-    lifecycleCallbacks: {  }
+            orderBy: null

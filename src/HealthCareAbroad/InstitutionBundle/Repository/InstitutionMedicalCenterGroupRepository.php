@@ -3,7 +3,7 @@ namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use Doctrine\ORM\Query\Expr\Join;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
 
 use Doctrine\ORM\QueryBuilder;
 
