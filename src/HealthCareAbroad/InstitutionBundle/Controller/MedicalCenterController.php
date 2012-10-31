@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
@@ -40,7 +44,8 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
-        
+
+                
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->repository->find($imcId);
             
@@ -59,6 +64,8 @@ class MedicalCenterController extends InstitutionAwareController
                 return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
             }
         }
+        
+
     }
     
     public function indexAction(Request $request)
@@ -123,20 +130,21 @@ class MedicalCenterController extends InstitutionAwareController
             return $this->_redirectIndexWithFlashMessage('Invalid draft medical center', 'error');
         }
         
-        $institutionMedicalCenter = new InstitutionMedicalCenter();
-        $institutionMedicalCenter->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter);
+        $institutionSpecialization = new InstitutionSpecialization();
+        $institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization);
         
         if ($request->isMethod('POST')) {
             $form->bind($request);
             
             if ($form->isValid()) {
-                $institutionMedicalCenter = $form->getData();
-                $institutionMedicalCenter->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
-                $this->get('services.institution_medical_center')->save($institutionMedicalCenter);
-                
+                $institutionSpecialization = $form->getData();
+                $institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+                $this->get('services.institution_specialization')->save($institutionSpecialization);
+
                 // redirect to third step
-                return $this->redirect($this->generateUrl('institution_medicalCenterGroup_addDoctors',array('imcId' => $this->institutionMedicalCenter->getId())));
+                $params = array('isId' => $institutionSpecialization->getId());
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addTreatments',$params));
             }
             
         }
@@ -145,6 +153,21 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'form' => $form->createView()
         ));
+    }
+    
+    public function addTreatmentsAction()
+    {
+
+        $institutionSpecialization = $this->institutionMedicalCenter->getInstitutionSpecializations();
+        
+        if(!$institutionSpecialization) {
+            throw $this->createNotFoundException('Invalid Specialization.');
+        }
+
+       //$treatments = $this->get('services.treatment_bundle')->getSpecializationTreatments($institutionSpecialization->getSpecialization());
+
+        $params = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
+        return $this->render('InstitutionBundle:MedicalCenter:addTreatments.html.twig', $params);
     }
     
     public function addDoctorsAction()
@@ -309,6 +332,6 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $this->getRequest()->getSession($type, $flashMessage);
         
-        return $this->redirect($this->generateUrl('institution_medicalCenterGroup_index'));
+        return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
     }
 }

@@ -21,34 +21,6 @@ class InstitutionMedicalCenterFormType extends AbstractType
             'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter'
         ));
 
-        $institutionMedicalCenter = $options['data'];
-
-        if (!$institutionMedicalCenter instanceof InstitutionMedicalCenter) {
-            throw new \Exception('Expected InstitutionMedicalCenter as data.');
-        }
-
-        if (!$institutionMedicalCenter->getId()) {
-            $builder->add('medicalCenter', 'medicalCenter_list', array(
-                'label' => 'Specialization',
-                'query_builder' => function(EntityRepository $er){
-                    return $er->getQueryBuilderForActiveMedicalCenters();
-                }
-            ));
-        }
-
-//         $builder->add('treatmentProcedures', 'entity', array(
-//             'label' => 'Treatments',
-//             'class' => 'HealthCareAbroad\MedicalProcedureBundle\Entity\TreatmentProcedure',
-//             'multiple' => true,
-//             'attr' => array('class' => 'institutionTreatmentProcedures')
-//         ));
-
-        $builder->add('description', 'textarea', array(
-            'label' => 'Specialization Details',
-            'constraints' => array(new NotBlank()),
-            'attr' => array('class'=>'tinymce')
-        ));
-
     }
 
     public function getName()
