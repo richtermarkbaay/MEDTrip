@@ -1,0 +1,53 @@
+HealthCareAbroad\TreatmentBundle\Entity\Specialization:
+    type: entity
+    table: specializations
+    repositoryClass: HealthCareAbroad\TreatmentBundle\Repository\SpecializationRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            gedmo:
+                - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
+
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    oneToMany:
+        subSpecializations:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+            mappedBy: specialization
+
+    lifecycleCallbacks: {  }
