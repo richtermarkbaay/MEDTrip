@@ -35,6 +35,12 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             fixed: false
             nullable: false
             column: contact_number
+        websites:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: websites
         address1:
             type: text
             nullable: false
@@ -47,6 +53,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             unsigned: false
             nullable: false
             column: zip_code
+        state:
+            type: string
+            length: 50
+            column: state
         dateModified:
             type: datetime
             nullable: false

@@ -34,13 +34,7 @@ institution_signUp:
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
     requirements:
         _method: GET|POST
-        
-institution_accountProfile:
-    pattern:  /account
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
-    requirements:
-        _method: GET|POST
-
+       
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
@@ -95,3 +89,17 @@ institution_exception_report_create:
     defaults: { _controller: InstitutionBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
+        
+institution_accountProfile:
+    pattern:  /account/{institutionId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:account, institutionId: ~ }
+    requirements:
+        _method:  GET|POST
+        institutionId:  \d+
+        
+institution_createProfile:
+    pattern:  /create/{institutionId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:create, institutionId: ~ }
+    requirements:
+        _method:  GET|POST
+        institutionId:  \d+

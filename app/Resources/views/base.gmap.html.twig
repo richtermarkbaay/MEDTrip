@@ -3,22 +3,33 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>{% block title %}HealthCareAbroad Institution{% endblock %}</title>
-       
+               {% javascripts 
+			'js/jquery/jquery-1.8.2.js'
+			'js/jquery/jquery-ui-1.9.0.custom.min.js'
+			'bundles/helper/js/Common.js'
+        %}
+        
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+		
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+		
 		<script type="text/javascript">
 		  var tableId = 4442675; // imported from 3835940
 		  var geocoder = null;
 		  var map = null;
 		  var layer = null;
 		  var marker = null;
-		  var address = '100 1 st s, minneapolis, mn';
+		  var address = 'Manila, Philippines';
 		  //var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
 
 		 function codeAddress() {
-		    var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
+			 var selectedCity = document.getElementById('institutionProfile_city');
+			 var selectedCountry = document.getElementById('institutionProfile_country');
+
+		    var address = document.getElementById("institutionProfile_address1").value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "" + document.getElementById("institutionProfile_zipCode").value + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
 		    geocoder.geocode( { 'address': address}, geocoderCallback ); 
 		  }
-		
 		
 		  function initialize() {
 		    var myOptions = {
@@ -34,17 +45,22 @@
 		      if (status == google.maps.GeocoderStatus.OK) {
 		        map.setCenter(results[0].geometry.location);
 		        var lat = results[0].geometry.location.lat();
-		        var lng = results[0].geometry.location.lng();
-		
+		        var lng = results[0].geometry.location.lng();		        
+		        var point2 = lat + ", " + lng; 
+		        
+		        document.getElementById("institutionProfile_coordinates").value = point2; 
+		        
 		        if (marker) marker.setMap(null);
 		
 		        marker = new google.maps.Marker({
 		            map: map, 
 		            position: results[0].geometry.location,
 		            draggable:true,
-	                zoom: 9,
+	                zoom: 13,
 	                animation: google.maps.Animation.DROP
+	                   
 		        });
+		        
 		        if (!layer) 
 		        {
 		            layer = new google.maps.FusionTablesLayer({
@@ -73,6 +89,7 @@
 		        alert("Geocode was not successful for the following reason: " + status);
 		      }
 		};
+		
 		  function toggleBounce() {
 
 	          if (marker.getAnimation() != null) {
