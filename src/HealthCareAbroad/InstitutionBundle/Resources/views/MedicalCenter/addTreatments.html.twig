@@ -14,7 +14,7 @@
 			<h2>
 			    {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	                Edit draft: {{ institutionMedicalCenter.name }}
 	            {% else %}
 	                Add Medical Center
 	            {% endif %}			
@@ -40,7 +40,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addTreatments', { 'imcgId': institutionMedicalCenterGroup.id }) }}" method="POST" class="basic-form">
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addTreatments', { 'imcId': institutionMedicalCenter.id }) }}" method="POST" class="basic-form">
 											<div>											
 												<hr>
 												<div class="treatmentbox">

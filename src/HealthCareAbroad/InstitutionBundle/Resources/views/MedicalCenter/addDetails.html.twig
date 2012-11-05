@@ -14,7 +14,7 @@
 			<h2>
 			    {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	                Edit draft: {{ institutionMedicalCenter.name }}
 	            {% else %}
 	                Add Medical Center
 	            {% endif %}			
@@ -40,7 +40,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										<form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addDetails', { 'imcgId': institutionMedicalCenterGroup.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addDetails', { 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 											<h3>Medical Center Information</h3>		
 																						
 										        {{ form_errors(form) }}   
@@ -51,7 +51,7 @@
 																							
 												<input type="reset" value="Reset" class="btn btn-large btn-inverse"/>
 								                    {% if hasDraft %}
-								                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenterGroup.id }) }}" class="button-type">Delete draft</a>
+								                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenter.id }) }}" class="button-type">Delete draft</a>
 								                    {% endif %}
 													
 												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
