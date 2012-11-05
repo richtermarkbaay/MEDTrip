@@ -15,7 +15,7 @@
 			<h2 style="padding:7px 20px 5px 15px">
 	            {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	                Edit draft: {{ institutionMedicalCenter.name }}
 	            {% else %}
 	                Add Medical Center
 	            {% endif %}
@@ -37,12 +37,12 @@
 						              %}
 				
 								<div class="tab-content">
-					                           <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addSpecializations', {'imcgId': institutionMedicalCenterGroup.id } ) }}" method="POST" class="basic-form">
+					                           <form novalidate="novalidate" action="{{ path('institution_medicalCenter_addSpecializations', {'imcId': institutionMedicalCenter.id } ) }}" method="POST" class="basic-form">
 	                                        		<h3>Specialization and its Description</h3>
 													<p>please add all specialization under the center name</p>
 	                                        {{ form_errors(form) }}
 	                                        
-						                    {{ form_row(form.medicalCenter) }}
+						                    {{ form_row(form.specialization) }}
 						            
 						                    {{ form_row(form.description) }}
 						                    
@@ -95,10 +95,10 @@
     <script type="text/javascript">
         $(function(){
             InstitutionMedicalCenterGroup.initSpecializationsForm({
-                'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenterGroup_loadAvailableSpecializations", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
-                'loadInstitutionTreatmentProceduresUri' : '{{ path("institution_medicalCenterGroup_loadAvailableTreatments", {"imcgId": institutionMedicalCenterGroup.id} ) }}',
-                'institutionMedicalCenterField': $('#institutionMedicalCenter_medicalCenter'),
-                'institutionTreatmentProcedureField': $('#institutionMedicalCenter_treatmentProcedures')
+                'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenter_loadAvailableSpecializations", {"imcId": institutionMedicalCenter.id} ) }}',
+                'loadInstitutionTreatmentProceduresUri' : '{{ path("institution_medicalCenter_loadAvailableTreatments", {"imcId": institutionMedicalCenter.id} ) }}',
+                'institutionMedicalCenterField': $('#institutionMedicalCenter_specialization'),
+                'institutionTreatmentField': $('#institutionMedicalCenter_treatment')
             });
             
         });

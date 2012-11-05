@@ -1,0 +1,89 @@
+{% extends '::base.gmap.html.twig' %}
+{% block body %}
+<body onload="initialize()">
+    {% block javascripts %}
+        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+    {% endblock %}
+<div class="container">
+	<div class="accountbox">
+	
+	<div class="row-fluid">
+	<div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#"></div>
+		 <form novalidate="novalidate" action="{{ path('institution_createProfile')}}" method="POST" {{ form_enctype(form) }} class="basic-form">
+		
+		<div class="accountbox2"><a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
+		<h2 style="margin-top: 15px; ;">Institution Profile Form</h2>
+		<p>In order to appear on our comprehensive MEDICAL DIRECTORY LISTING, please tell us more about your Institution (questions in grey are optional).</p>
+		<h5>{{ institution.name() }} </h5>
+		<h3>{{ institution.typeLabel() }}</h3>
+		</div>
+						
+		  		<fieldset>
+		  			<div class="span6">
+		  				
+		  				<h4>This how your patients can connect to you.</h4>
+		  				
+		  				 {{ form_row( form.institutionSite ) }}
+		  				 {{ form_row( form.contactEmail ) }}
+		  				 
+					<label for="institution name">Institution Phone Number</label>
+				
+						<div class="input-prepend">
+							<div id="phone">
+								<input type="text" size="3" maxlength="3" name="area" class="span2" id="phoneArea">
+								<input type="text" size="4" maxlength="4" name="local2" class="span7" id="phoneNumber">
+							</div>
+						</div>
+				
+					<label for="institution name" style="color: #aeadad;">Institution Fax Number</label>
+					
+						<div class="input-prepend">
+							<div id="fax">
+								<input type="text" size="3" maxlength="3" name="area" class="span2" id="faxArea">
+								<input type="text" size="4" maxlength="4" name="local2" class="span7" id="faxNumber">
+							</div>
+						</div>
+					
+					 {{ form_row( form.facebook ) }}
+ 				     {{ form_row( form.twitter ) }}
+		  			</div>
+		  				
+	  				<div class="span6">
+		  				<h4>This how your patients can locate you.</h4>
+	
+		  				<div class="map" >
+		  					<div id="map_canvas" style="width:384px; height:375px"></div>
+		  					
+		  				</div>
+		  				
+		  				<input type="button" name="ctl00$PlaceHolderMain$btnLegislatorNum" value="Find My District" onclick="codeAddress()">
+	  		   		    {{ form_row(form.country) }}
+		                {{ form_row( form.city ) }}
+		  		   		{{ form_row( form.address1 ) }}   
+		  		   		{{ form_row( form.state ) }}               
+		  			    {{ form_row( form.zipCode ) }}
+			  			{{ form_row( form.coordinates ) }}
+		  			 
+		  			</div>
+
+		  		</fieldset>
+          			{{ form_rest(form) }}
+		  		<div class="span11"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary"/></div>
+		  		</form>		  
+	</div>
+
+</div>
+	</div>
+	<div class="container">
+<br/>
+<hr>
+<footer>
+	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+</footer>
+</div>
+</div>
+
+</body>
+	{% endblock %}
+
+	

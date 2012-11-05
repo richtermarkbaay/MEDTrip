@@ -7,10 +7,15 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-class InstitutionSpecializataionListFilter extends ListFilter
+class InstitutionSpecializationListFilter extends ListFilter
 {
     function setFilterOptions()
     {
         $this->setStatusFilterOption();
+    }
+    
+    function buildQueryBuilder()
+    {
+        return;
     }
 }

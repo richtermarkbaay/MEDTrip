@@ -2,10 +2,16 @@
  * Health Care Abroud Style
  *
  */
- body
- {
+body
+{
  	color: #002A5C;
- }
+}
+ 
+[class^="icon-"], [class*=" icon-"]
+{
+    background-image: url("/images/glyphicons-halflings.png");
+}
+ 
 .institutionbox
 {
 	margin: 70px 0 0 0;
@@ -308,7 +314,7 @@ margin: 0;
 color: #002A5C;
 font-size: 32px;
 margin-left: 5px;
-background-image:url("../../images/institution/HCA-logo-small.png") ;
+background-image:url("../../images/institution/HCA-logo-small.png");
 background-repeat: no-repeat;
 padding-left: 40px;
 	
@@ -366,7 +372,7 @@ padding: 2px 5px;
 	color: #002A5C;
 	font-size: 28px;
 	margin-left: 5px;
-	background-image:url("../../images/institution/HCA-logo-small.png") ;
+	background-image:url("/images/institution/HCA-logo-small.png") ;
 	background-repeat: no-repeat;
 	padding-left: 40px;
 }

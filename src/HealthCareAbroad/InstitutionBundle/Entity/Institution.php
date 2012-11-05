@@ -34,6 +34,11 @@ abstract class Institution
      * @var string $contactEmail
      */
     private $contactEmail;
+    
+    /**
+     * @var string $websites
+     */
+    private $websites;
 
     /**
      * @var string $contactNumber
@@ -54,7 +59,17 @@ abstract class Institution
      * @var integer $zipCode
      */
     private $zipCode;
+    
+    /**
+     * @var text $state
+     */
+    private $state;
 
+    /**
+     * @var text $coordinates
+     */
+    private $coordinates;
+    
     /**
      * @var datetime $dateModified
      */
@@ -111,6 +126,12 @@ abstract class Institution
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    protected $typeLabel;
+    
+    final public function getTypeLabel()
+    {
+    	return $this->typeLabel;
     }
     
     /**
@@ -232,6 +253,28 @@ abstract class Institution
     {
         return $this->contactNumber;
     }
+    
+    /**
+     * Set websites
+     *
+     * @param string $websites
+     * @return Institution
+     */
+    public function setWebsites($websites)
+    {
+    	$this->websites = $websites;
+    	return $this;
+    }
+    
+    /**
+     * Get websites
+     *
+     * @return string
+     */
+    public function getWebsites()
+    {
+    	return $this->websites;
+    }
 
     /**
      * Set address1
@@ -292,11 +335,55 @@ abstract class Institution
     /**
      * Get zipCode
      *
-     * @return integer 
+     * @return text 
      */
     public function getZipCode()
     {
         return $this->zipCode;
+    }
+    
+    /**
+     * Set state
+     *
+     * @param text $state
+     * @return Institution
+     */
+    public function setState($state)
+    {
+    	$this->state = $state;
+    	return $this;
+    }
+    
+    /**
+     * Get state
+     *
+     * @return text
+     */
+    public function getState()
+    {
+    	return $this->state;
+    }
+    
+    /**
+     * Set coordinates
+     *
+     * @param text $coordinates
+     * @return Institution
+     */
+    public function setCoordinates($coordinates)
+    {
+    	$this->coordinates = $coordinates;
+    	return $this;
+    }
+    
+    /**
+     * Get coordinates
+     *
+     * @return text
+     */
+    public function getCoordinates()
+    {
+    	return $this->coordinates;
     }
 
     /**
