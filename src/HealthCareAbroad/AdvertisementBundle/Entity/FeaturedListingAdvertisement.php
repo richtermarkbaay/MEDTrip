@@ -5,9 +5,8 @@ use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
 class FeaturedListingAdvertisement extends Advertisement
 {
-    
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
      */
     private $object;
 
@@ -15,10 +14,10 @@ class FeaturedListingAdvertisement extends Advertisement
     /**
      * Set object
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $object
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $object
      * @return FeaturedListingAdvertisement
      */
-    public function setObject(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup $object = null)
+    public function setObject(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $object = null)
     {
         $this->object = $object;
         return $this;
@@ -27,7 +26,7 @@ class FeaturedListingAdvertisement extends Advertisement
     /**
      * Get object
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
      */
     public function getObject()
     {
