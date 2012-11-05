@@ -226,7 +226,51 @@ CREATE TABLE IF NOT EXISTS `countries` (
 INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `doctors`
+--
 
+DROP TABLE IF EXISTS `doctors`;
+CREATE TABLE IF NOT EXISTS `doctors` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` char(250) NOT NULL,
+  `middle_name` char(250) NOT NULL,
+  `last_name` char(250) NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `doctors`
+--
+
+INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `date_created`, `status`) VALUES
+(1, 'Alnie', 'Leones', 'Jacobes', '2012-09-27 08:58:06', 1),
+(2, 'chaz', 'veloso', 'blance', '2012-09-28 01:00:53', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `doctor_specializations`
+--
+
+DROP TABLE IF EXISTS `doctor_specializations`;
+CREATE TABLE IF NOT EXISTS `doctor_specializations` (
+  `doctor_id` bigint(20) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`doctor_id`,`specialization_id`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `doctor_specializations`
+--
+
+INSERT INTO `doctor_specializations` (`doctor_id`, `specialization_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `error_logs`
 --
@@ -1135,6 +1179,7 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Constraints for dumped tables
 --
 
+
 --
 -- Constraints for table `gallery`
 --
@@ -1181,6 +1226,13 @@ ALTER TABLE `advertisements`
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
+--
+-- Constraints for table `doctor_specializations`
+--
+ALTER TABLE `doctor_specializations`
+  ADD CONSTRAINT `doctor_specializations_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `doctor_specializations_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
 --
 -- Constraints for table `frontend_route_variables`
 --
