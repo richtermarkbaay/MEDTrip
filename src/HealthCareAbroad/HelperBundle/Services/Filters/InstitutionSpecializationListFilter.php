@@ -18,7 +18,6 @@ class InstitutionSpecializationListFilter extends ListFilter
     {
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionSpecialization', 'a');
         $this->queryBuilder->leftJoin('a.institutionMedicalCenter', 'b');
-        $this->queryBuilder->leftJoin('a.specialization', 'c');
         $this->queryBuilder->where('b.institution = :institutionId');
         $this->queryBuilder->setParameter('institutionId', $this->queryParams['institutionId']);
 
@@ -27,12 +26,14 @@ class InstitutionSpecializationListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-        if(!$this->sortBy || $this->sortBy === 'name') {
+        /*
+        if(!$this->sortBy || $this->sortBy === 'specialization') {
+            $this->queryBuilder->leftJoin('a.specialization', 'c');
             $sort = 'c.name ' . $this->sortOrder;
         } else {
             $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;
         }
 
-        $this->queryBuilder->add('orderBy', $sort);
+        $this->queryBuilder->add('orderBy', $sort);*/
     }
 }
