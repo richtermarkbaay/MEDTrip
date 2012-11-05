@@ -5,6 +5,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class AppKernel extends Kernel
 {
     // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
+    /*
     protected function initializeContainer()
     {
         static $first = true;
@@ -32,7 +33,7 @@ class AppKernel extends Kernel
         }
 
         $this->debug = $debug;
-    }
+    }*/
 
     public function registerBundles()
     {
@@ -86,7 +87,7 @@ class AppKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        if (in_array($this->getEnvironment(), array('dev'))) {
+        if ($this->getEnvironment() === 'dev') {
             return '\JMS\DebuggingBundle\DependencyInjection\TraceableContainer';
         }
 
