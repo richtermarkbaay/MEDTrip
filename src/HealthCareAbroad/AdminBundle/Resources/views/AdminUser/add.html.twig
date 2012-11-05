@@ -6,21 +6,15 @@
 <div id="content">
     <!--  start page-heading -->
     <div id="page-heading">
-        <h1>Edit {{ app.session.get('accountId') == user.getAccountId() ? 'my account' : user.getFullName() }}</h1>
+        <h1>Create new admin user</h1>
     </div>
     <!-- end page-heading -->
     
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-            <!--  start table-content  -->
-            <div id="table-content">
-            
-                {% include '::notice.admin.html.twig' %}
-                {% include 'AdminBundle:AdminUser:form.html.twig' with {'form_url': path('admin_edit_account') } %}
-                
-            </div>
-            <!--  end table-content  -->
+            {% include '::notice.admin.html.twig' %}
+            {% include 'AdminBundle:AdminUser:form.html.twig' with {'form_url': path('admin_user_add') } %}
         {% endblock %}
         
     {% endembed %}
