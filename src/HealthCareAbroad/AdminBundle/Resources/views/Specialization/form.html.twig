@@ -23,11 +23,11 @@
 
                 {% if(specialization is defined) %}
                     {% set contents = [{
-                            'title': 'Add treatment',
+                            'title': 'Add Sub Specialization',
                             'class': 'add-icon',
-                            'description': 'add new treatment for this specialization',
-                            'href': path('admin_treatment_add', {specializationId:specialization.id}),
-                            'links': [{'title': 'Add treatment', 'href': path('admin_treatment_add', {specializationId:specialization.id} )}]
+                            'description': 'add sub-specialization for this specialization',
+                            'href': path('admin_subSpecialization_add', {specializationId:specialization.id}),
+                            'links': [{'title': 'Add sub specialization', 'href': path('admin_subSpecialization_add', {specializationId:specialization.id} )}]
                         }, {
                             title: 'View edit history',
                             href: path('admin_showEditHistory', {'objectId': specialization.id, 'objectClass': base64_encode(getClass(specialization)) }),
