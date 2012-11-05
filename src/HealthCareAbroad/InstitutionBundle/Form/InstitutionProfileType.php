@@ -35,17 +35,13 @@ class InstitutionProfileType extends AbstractType
     	$builder->addEventSubscriber($subscriber);
     	 
     	$countryId = ($country =$builder->getData()->getCountry()) ? $country->getId() : 0;
-    	
-//     	$builder->add('name', 'text');
-//     	$builder->add('description');
-//     	$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
+
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
     	$builder->add('zipCode', 'number', array('label' => 'Zip Code'));
     	$builder->add('state', 'text');
     	$builder->add('address1', 'text', array('label' => 'Address'));  	
   
-//     	$builder->add('address2', 'text');
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
     	$builder->add('coordinates', 'hidden');
     	
@@ -53,8 +49,6 @@ class InstitutionProfileType extends AbstractType
     	$builder->add('facebook', 'text', array('label' => 'Facebook Page', 'virtual' => true ));
     	$builder->add('twitter', 'text', array('label' => 'Twitter Account', 'virtual' => true ));
     	
-//     	$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
- 		
     }
     
     public function getName()

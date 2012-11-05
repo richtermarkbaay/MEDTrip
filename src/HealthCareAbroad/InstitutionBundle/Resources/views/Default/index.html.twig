@@ -36,7 +36,7 @@
 
                             {% for center in draftAlerts %}
 
-                                    <a href="{{ path('institution_medicalCenter_add', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
+                                    <a href="{{ path('institution_medicalCenter_addDetails', {'imcId': center.referenceData.id }) }}" title="View {{ center.referenceData.name | title }}">{{ center.referenceData.name | title }}</a>
 
                             {% endfor %}
 
