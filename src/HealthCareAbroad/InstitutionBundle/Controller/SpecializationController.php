@@ -3,13 +3,11 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -61,7 +59,7 @@ class SpecializationController extends InstitutionAwareController
         if (!$institutionSpecialization) {
             throw $this->createNotFoundException("Invalid institution specialization.");
         }
-        $form = $this->createForm(new InstitutionSpecializationType(), $institutionSpecialization);
+        $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization);
 
         return $this->render('InstitutionBundle:Specialization:edit.html.twig', array(
             'institutionSpecialization' => $institutionSpecialization,
