@@ -358,16 +358,20 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `logo` varchar(100) NOT NULL,
   `contact_email` varchar(100) NOT NULL,
   `contact_number` text NOT NULL,
+  `websites` varchar(100) NOT NULL,
   `address1` text NOT NULL,
   `address2` text NOT NULL,
-  `city_id` int(10) unsigned DEFAULT '0',
-  `country_id` int(10) unsigned DEFAULT '0',
+  `city_id` int(10) unsigned NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
   `zip_code` int(11) NOT NULL,
+  `state` varchar(50) DEFAULT NULL COMMENT 'country state or province',
+  `coordinates` varchar(100) NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
   KEY `city_id` (`city_id`),
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
@@ -497,6 +501,43 @@ INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `desc
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `institution_specializations`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_specializations` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
+  `description` text CHARACTER SET latin1 NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`specialization_id`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+
+
+--
+-- Dumping data for table `institution_specializations`
+--
+
+INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, 'sdf sdaf sadfa sdfasd fsd fsda fasd fsadf', '2012-10-22 01:28:19', '2012-10-22 01:28:19', 1),
+(2, 5, 1, '<p>sdfsdf</p>', '2012-10-22 07:31:53', '2012-10-22 07:31:53', 1),
+(3, 9, 8, '<p>sdf sdfsd fsd fsdf</p>', '2012-10-23 06:15:40', '2012-10-23 06:15:40', 1),
+(5, 1, 8, '<p>cardi</p>\r\n<p>&nbsp;</p>', '2012-10-23 06:31:33', '2012-10-23 06:31:33', 1),
+(6, 9, 6, '<p>SDF SDFSDA FSDA FSDFA</p>', '2012-10-23 06:42:30', '2012-10-23 06:42:30', 1),
+(7, 9, 1, '<p>FBCVCBVBV</p>', '2012-10-23 06:43:27', '2012-10-23 06:43:27', 1),
+(9, 11, 1, '<p>dsfdsfsdfdsfds</p>', '2012-10-24 08:03:26', '2012-10-24 08:03:26', 1),
+(10, 2, 8, '<p>dsfsddsdf</p>', '2012-10-25 09:20:31', '2012-10-25 09:20:31', 1),
+(11, 12, 4, '<p>dsfdD A FSDF</p>', '2012-10-31 00:44:19', '2012-10-31 00:44:19', 1);
+
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `institution_medical_center_group_doctors`
 --
 
@@ -522,21 +563,22 @@ INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id
 
 -- --------------------------------------------------------
 
--- Table structure for table `institution_medical_center_treatment_procedures`
+-- Table structure for table `institution_treatments`
 --
 
-CREATE TABLE IF NOT EXISTS `institution_medical_center_treatment_procedures` (
-  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
-  `treatment_procedure_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`institution_medical_center_id`,`treatment_procedure_id`),
-  KEY `treatment_procedure_id` (`treatment_procedure_id`)
+CREATE TABLE IF NOT EXISTS `institution_treatments` (
+  `institution_specialization_id` bigint(20) unsigned NOT NULL,
+  `treatment_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_specialization_id`,`treatment_id`),
+  KEY `treatment_id` (`treatment_id`),
+  KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `institution_medical_center_treatment_procedures`
 --
 
-INSERT INTO `institution_medical_center_treatment_procedures` (`institution_medical_center_id`, `treatment_procedure_id`) VALUES
+INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES
 (1, 1);
 
 
@@ -805,6 +847,7 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Table structure for table `medical_centers`
 --
 
+DROP TABLE IF EXISTS `specializations`;
 CREATE TABLE IF NOT EXISTS `specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -829,10 +872,6 @@ INSERT INTO `specializations` (`id`, `name`, `description`, `date_created`, `slu
 
 
 -- --------------------------------------------------------
-
---
--- Table structure for table `treatment_procedures`
---
 
 CREATE TABLE IF NOT EXISTS `sub_specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -1197,18 +1236,26 @@ ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_treatment_procedures`
+-- Constraints for table `institution_specializations`
 --
-ALTER TABLE `institution_treatment_procedures`
-  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `institution_specializations`
+  ADD CONSTRAINT `institution_specializations_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_specializations_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_treatments`
 --
 ALTER TABLE `institution_treatments`
-  ADD CONSTRAINT `institution_treatments_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_treatments_ibfk_2` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`institution_specialization_id`) REFERENCES `institution_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_treatment_procedures`
+--
+--ALTER TABLE `institution_treatment_procedures`
+--  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
+--  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `institution_offered_services`
@@ -1250,19 +1297,19 @@ ALTER TABLE `institution_user_type_roles`
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`log_class_id`) REFERENCES `log_classes` (`id`) ON UPDATE CASCADE;
 
-
---
--- Constraints for table `treatment_procedures`
---
-ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
-ALTER TABLE `treatment_procedures`
-  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
-
 --
 -- Constraints for table `treatments`
 --
 ALTER TABLE `treatments`
-  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON UPDATE CASCADE;
+
+--ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
+--ALTER TABLE `treatment_procedures`
+--  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
+
+
+ALTER TABLE `sub_specializations`
+  ADD CONSTRAINT `sub_specializations_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medical_term_suggestion_details`
