@@ -538,7 +538,7 @@ INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `institution_medical_center_group_doctors`
+-- Table structure for table `institution_medical_center_doctors`
 --
 
 
