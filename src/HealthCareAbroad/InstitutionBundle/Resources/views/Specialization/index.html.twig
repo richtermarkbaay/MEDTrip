@@ -27,10 +27,10 @@
 
                     {% include '::notice.admin.html.twig' %}
 
-                    {% include 'InstitutionBundle:MedicalCenter:baseIndexTable.html.twig' with {'institutionMedicalCenters': institutionMedicalCenters} %}
+                    {% include 'InstitutionBundle:Specialization:baseIndexTable.html.twig' with {'institutionSpecializations': institutionSpecializations} %}
 
                     {% if pager.isPaginable %}
-                       {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
+                       {{ paginate(pager, 'institution_specialization_index', app.request.query.all) }}
                     {% endif %}
                 </div>
         {% endblock %}
