@@ -13,7 +13,7 @@ parameters:
 
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
-    
+
     alert_db:
         port: 5984
         host: 192.168.1.249
@@ -23,7 +23,14 @@ parameters:
     application_id:    1
     application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
     chromedia_accounts_uri: http://accounts.test.chromedia.com/app_dev.php
-    
+
+    site_url: http://www.healthcareabroad.com
+    site_name: www.HealthCareAbroad.com
+
+    cfe_site_url: http://www.chromedia.com
+    cfe_site_name: www.Chromedia.com
+    cfe_company_name: Chromedia Far East Inc.
+
     ## TinyMCE theme params
     tinymce_textarea_class: "tinymce"
 
@@ -51,7 +58,7 @@ parameters:
         theme_advanced_toolbar_align: "left"
         theme_advanced_statusbar_location: "bottom"
         theme_advanced_resizing: true
-        
+
     tinymce_medium_theme:
         mode: "textareas"
         theme: "advanced"
@@ -64,7 +71,7 @@ parameters:
         theme_advanced_statusbar_location: ""
         paste_auto_cleanup_on_paste: true
         spellchecker_languages: "+English=en,Dutch=nl"
-        
+
     tinymce_bbcode_theme:
         mode: "none"
         theme: "advanced"
