@@ -15,7 +15,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class TreatmentController extends Controller
 {
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_TREATMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_TREATMENTS')")
      */
     public function indexAction(Request $request)
     {
