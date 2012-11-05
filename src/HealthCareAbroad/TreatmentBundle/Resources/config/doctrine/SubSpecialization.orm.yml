@@ -53,7 +53,7 @@ HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: subSpecializations
             joinColumns:
                 specialization_id:
                     referencedColumnName: id
