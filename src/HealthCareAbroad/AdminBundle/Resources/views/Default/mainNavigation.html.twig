@@ -26,12 +26,13 @@
             <li class="{{ selectedSubTab == 'specializations' ? 'active' : '' }}" >
                 <a href="{{ path('admin_specialization_index') }}">Specializations</a>
             </li>
-            <li class="{{ selectedSubTab == 'sub_specializations' ? 'active' : '' }}">
+            <li class="{{ selectedSubTab == 'subspecializations' ? 'active' : '' }}">
                 <a href="{{ path('admin_subSpecialization_index') }}">Sub-specializations</a>
             </li>
             <li class="{{ selectedSubTab == 'treatments' ? 'active' : '' }}">
                 <a href="{{ path('admin_treatment_index') }}">Treatments</a>
             </li>
+            <li class="divider"></li>
             <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
                 <a href="{{ path('admin_country_index') }}">Manage Countries</a>
             </li>

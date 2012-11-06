@@ -31,12 +31,13 @@
                 {% for institution in institutions %}
                     <tr id="institution-{{institution.id}}">
                         <td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
-                        <td><a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
+                        <td>{{ institution.description }}</td>
                         <td class="status">{{ statusList[institution.status] }}</td>
-                        <td style="text-align:center;vertical-align:middle">
-                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> |  
+                        <td>
+                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> 
+                            &nbsp; 
                             <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
-                                <i class="icon-edit"></i>edit status
+                                <i class="icon-edit"></i> Edit status
                             </a>
                     </tr>
                 {% else  %}
@@ -53,7 +54,7 @@
         {% endembed %}
     </div>
 
-    <div id="update-status-container" title="Edit Institution Status">
+    <div id="update-status-container" title="Edit Institution Status" style="display:none">
         <p>
             <strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
             Select an option below to update its status.

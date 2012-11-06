@@ -1,6 +1,6 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_procedures' %}
+{% set selectedSubTab = 'treatments' %}
 
 {% block content %}
     <div id="content">
@@ -33,7 +33,7 @@
             {% set default = sortBy | length ? '' : 'sort-asc' %}
 
             <div style="width:70%">
-                <table id="medical-procedure-list" class="generic-table sortable-list" width="100%">
+                <table id="medical-procedure-list" class="table table-bordered sortable-list" width="100%">
                     <tr>
                         <th id="column-name" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Treatment</a>
@@ -45,7 +45,7 @@
                             <a href="{{ app.request.uri }}" class="{# sortBy == 'subSpecializations' ? 'sort-' ~ sortOrder : '' #}">Sub-specialization</a>
                         </th>
                         <th>Status</th>
-                        <th class="actions">Actions</th>
+                        <th width="130">Actions</th>
                     </tr>
 
                     {% for each in treatments %}
@@ -63,9 +63,12 @@
                             </td>
                             <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
-                            <a href="{{ path('admin_treatment_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = each.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_treatment_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_treatment_edit', {id:each.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
+                                <br/>
+                                {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
+                                <a href="{{ path('admin_treatment_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ each.status ? 'Delete' : 'Activate' }}</span>
+                                </a>
                             </td>
                         </tr>
                     {% else  %}
