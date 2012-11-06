@@ -22,10 +22,10 @@
             <div>
                 <table class="table table-bordered">
                 <tr>
-                    <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                    <th width="500" id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
-                    <th><a href="#">Status</a></th>
-                    <th class="actions">Actions</th>
+                    <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                    <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                    <th>Status</th>
+                    <th width="200" class="actions">Actions</th>
                 </tr>
 
                 {% for institution in institutions %}
@@ -33,10 +33,10 @@
                         <td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
                         <td><a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.description }}</a></td>
                         <td class="status">{{ statusList[institution.status] }}</td>
-                        <td align="center">
-                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" class="icon-type">centers</a> 
-                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status icon-type">
-                                change status
+                        <td style="text-align:center;vertical-align:middle">
+                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> |  
+                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
+                                <i class="icon-edit"></i>edit status
                             </a>
                     </tr>
                 {% else  %}

@@ -38,6 +38,7 @@
                         <th id="column-name" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Treatment</a>
                         </th>
+                        <th>Details</th>
                         <th id="column-specialization" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{# sortBy == 'specialization' ? 'sort-' ~ sortOrder : '' #}">Specialization</a>
                         </th>
@@ -50,7 +51,8 @@
 
                     {% for each in treatments %}
                         <tr>
-                            <td>{{ each.name }}</td>
+                            <td><a href="{{ path('admin_treatment_edit', {id: each.id} ) }}">{{ each.name }}</a></td>
+                            <td>{{ each.description | raw }}</td>
                             <td>{{ each.specialization.name }}</td>
                             <td class="procedure-type">
                                 <ul style="list-style:none;">
