@@ -38,11 +38,11 @@ class InstitutionUserType
     {
         $this->institutionUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -64,7 +64,7 @@ class InstitutionUserType
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -86,7 +86,7 @@ class InstitutionUserType
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -108,7 +108,7 @@ class InstitutionUserType
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     public function getInstitution()
     {
@@ -140,7 +140,7 @@ class InstitutionUserType
     /**
      * Get institutionUserRoles
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionUserRoles()
     {

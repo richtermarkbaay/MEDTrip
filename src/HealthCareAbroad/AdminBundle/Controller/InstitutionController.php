@@ -10,12 +10,12 @@ use HealthCareAbroad\SubSpecializationBundle\Entity\SubSpecializationProcedure;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-use HealthCareAbroad\InstitutionBundle\Entity\institutionMedicalCenter;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSubSpecializationProcedure;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSubSpecialization;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-use HealthCareAbroad\InstitutionBundle\Form\institutionMedicalCenterType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationProcedureFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationFormType;
 
@@ -47,8 +47,7 @@ class InstitutionController extends Controller
 
         // Check institutionMedicalCenter        
         if ($request->get('imcId')) {
-            $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:institutionMedicalCenter')->find($request->get('imcId'));
-
+            $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
             if(!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institutionMedicalCenter.');
             }
@@ -133,6 +132,39 @@ class InstitutionController extends Controller
         );
 
         return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
+    }
+    
+    /**
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     */
+    public function updateMedicalCenterStatusAction()
+    {
+        $request = $this->getRequest();
+        $status = $request->get('status');
+    
+        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
+    
+        if(!InstitutionMedicalCenterStatus::isValid($status)) {
+            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
+    
+            return $this->redirect($redirectUrl);
+        }
+
+        $this->institutionMedicalCenter->setStatus($status);
+    
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $em->flush($this->institutionMedicalCenter);
+
+        // dispatch EDIT institutionMedicalCenter event
+        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
+        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
+        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+
+        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+
+        return $this->redirect($redirectUrl);
     }
 
 //     /**
@@ -300,40 +332,6 @@ class InstitutionController extends Controller
 
 //             return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
 //         }
-//     }
-
-
-//     /**
-//      * 
-//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-//      */ 
-//     public function updateSpecializationStatusAction()
-//     {
-//         $request = $this->getRequest();
-//         $status = $request->get('status');
-
-//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
-        
-//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
-//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
-
-//             return $this->redirect($redirectUrl);
-//         }
-        
-//         $this->institutionMedicalCenter->setStatus($status);
-
-//         $em = $this->getDoctrine()->getEntityManager();
-//         $em->persist($this->institutionMedicalCenter);
-//         $em->flush($this->institutionMedicalCenter);
-
-//         // dispatch EDIT institutionMedicalCenter event
-//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
-
-//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
-
-//         return $this->redirect($redirectUrl);
 //     }
 
 

@@ -24,10 +24,10 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUserRole:
             type: smallint
             nullable: false
     manyToMany:
-        institutionUserType:
+        institutionUserTypes:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUserType
             cascade: {  }
-            mappedBy: institutionUserRole
+            mappedBy: institutionUserRoles
             inversedBy: null
             joinTable: null
             orderBy: null
