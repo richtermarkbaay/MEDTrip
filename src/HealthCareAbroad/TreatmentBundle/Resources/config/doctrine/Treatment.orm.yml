@@ -36,14 +36,20 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             gedmo:
                 - versioned
 
-    manyToOne:
+    manyToMany:
         subSpecialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
-            cascade: {  }
+            cascade: {}
             mappedBy: null
-            inversedBy: treatments
-            joinColumns:
-                sub_specialization_id:
-                    referencedColumnName: id
-            orphanRemoval: false
+            joinTable:
+                name:  treatment_sub_specializations
+                joinColumns:
+                    -
+                        name: treatment_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: sub_specialization_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }
