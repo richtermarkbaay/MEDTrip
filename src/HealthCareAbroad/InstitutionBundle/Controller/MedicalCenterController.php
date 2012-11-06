@@ -157,13 +157,18 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addTreatmentsAction()
     {
+        var_dump(get_class($this->institutionMedicalCenter));
+        $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
-        $institutionSpecialization = $this->institutionMedicalCenter->getInstitutionSpecializations();
-        
-        if(!$institutionSpecialization) {
-            throw $this->createNotFoundException('Invalid Specialization.');
+        foreach($institutionSpecializations as $each) {
+            var_dump($each); exit;
+//             $treatments = $each->getTreatments();
+//              foreach($treatments as $treatment) {
+//                  echo $treatment->getName() . ', ';                
+//              }
+             echo '<br/>';
         }
-
+//exit;
        //$treatments = $this->get('services.treatment_bundle')->getSpecializationTreatments($institutionSpecialization->getSpecialization());
 
         $params = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
