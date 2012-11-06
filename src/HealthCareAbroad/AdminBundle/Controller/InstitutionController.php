@@ -160,11 +160,14 @@ class InstitutionController extends Controller
     	$id = $request->get('id', null);
 
     	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
+    	
 	    $form = $this->createForm(new InstitutionFormType(), $institution);
 	    	
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
-	    		    							'form' => $form->createView(),
-	    		    							'institution' => $institution
+				'form' => $form->createView(),
+				'institution' => $institution,
+	    		'id' => $id
+    										
 	    ));
     }
     
@@ -173,7 +176,15 @@ class InstitutionController extends Controller
      * Save Institution Details
      */
     public function saveAction(){
+    	
     	$request = $this->getRequest();
+    	
+    	$id = $request->get('id', null);
+    	
+    	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
+    	 
+    	$form = $this->createForm(new InstitutionFormType(), $institution);
+    	
     	//update institution details
     	if ($request->isMethod('POST')) {
     		// Get contactNumbers and convert to json format
@@ -196,8 +207,11 @@ class InstitutionController extends Controller
     			 
     		}
     	}
-    	
-    	return $this->render('AdminBundle:Institution:index.html.twig');
+    	return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
+    					'form' => $form->createView(),
+    					'institution' => $institution,
+    					'id' => $id
+    	));
     }
     
     

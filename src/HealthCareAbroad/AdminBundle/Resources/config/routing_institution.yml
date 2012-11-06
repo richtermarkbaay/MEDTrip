@@ -15,10 +15,11 @@ admin_institution_add_details:
          _method: GET|POST
          
 admin_institution_saveDetails:
-    pattern:  /admin/institution/save/
-    defaults: { _controller: AdminBundle:Institution:save }
+    pattern:  /admin/institution/save/{id}
+    defaults: { _controller: AdminBundle:Institution:save, id: ~ }
     requirements:
          _method: POST
+         idd:  \d+
 
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status
