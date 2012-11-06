@@ -10,7 +10,7 @@ use \HCA_DatabaseManager;
 
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
-class specializationControllerTest extends InstitutionBundleWebTestCase
+class SpecializationControllerTest extends InstitutionBundleWebTestCase
 {
     public function testIndex()
     {
