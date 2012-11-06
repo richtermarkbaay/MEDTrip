@@ -118,22 +118,22 @@ class InstitutionController extends Controller
         return $this->redirect($this->generateUrl('admin_institution_index'));
     }
 
-//     /**
-//      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-//      */
-//     public function manageCentersAction()
-//     {
-//         $params = array(
-//             'institutionId' => $this->institution->getId(),
-//             'institutionName' => $this->institution->getName(),
-//             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-//             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
-//             'institutionMedicalCenters' => $this->filteredResult,
-//             'pager' => $this->pager
-//         );
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     */
+    public function manageCentersAction()
+    {
+        $params = array(
+            'institutionId' => $this->institution->getId(),
+            'institutionName' => $this->institution->getName(),
+            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(), 
+            'institutionMedicalCenters' => $this->filteredResult,
+            'pager' => $this->pager
+        );
 
-//         return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
-//     }
+        return $this->render('AdminBundle:Institution:manage_centers.html.twig', $params);
+    }
 
 //     /**
 //      * This is the first step when creating a new institutionMedicalCenter. Add details of a institutionMedicalCenter

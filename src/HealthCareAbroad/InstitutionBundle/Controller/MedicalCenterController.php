@@ -143,7 +143,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $this->get('services.institution_specialization')->save($institutionSpecialization);
 
                 // redirect to third step
-                $params = array('isId' => $institutionSpecialization->getId());
+                $params = array('imcId' => $institutionSpecialization->getId());
                 return $this->redirect($this->generateUrl('institution_medicalCenter_addTreatments',$params));
             }
             
@@ -157,7 +157,6 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addTreatmentsAction()
     {
-        var_dump(get_class($this->institutionMedicalCenter));
         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         foreach($institutionSpecializations as $each) {
