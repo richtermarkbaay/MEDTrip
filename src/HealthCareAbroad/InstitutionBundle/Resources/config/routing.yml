@@ -99,7 +99,7 @@ institution_accountProfile:
         
 institution_createProfile:
     pattern:  /create/{institutionId}
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:create, institutionId: ~ }
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:save, institutionId: ~ }
     requirements:
         _method:  GET|POST
         institutionId:  \d+

@@ -3,6 +3,10 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
+
+use Symfony\Component\Validator\Constraints\Date;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
 use HealthCareAbroad\SubSpecializationBundle\Entity\Specialization;
@@ -21,6 +25,14 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationFormType
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
+use HealthCareAbroad\HelperBundle\Form\InstitutionFormType;
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -33,6 +45,7 @@ class InstitutionController extends Controller
     protected $institutionMedicalCenter;
     protected $institutionSpecialization;
 
+ 	
     function preExecute() 
     {
         $request = $this->getRequest();
@@ -81,6 +94,113 @@ class InstitutionController extends Controller
 
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
     }
+    
+    public function addAction(Request $request){
+    
+    	$institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
+    
+    	$factory = $this->get('services.institution.factory');
+    	$institution = $factory->createByType($institutionType);
+    	
+    	//$form = $this->createForm(new InstitutionCreateFormType(), $institution);
+    	
+    	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
+		
+	    	if ($request->isMethod('POST')) {
+	    		$form->bind($request);
+	    		 
+	    		if ($form->isValid()) {
+	    	
+	    			$institution = $form->getData();
+	    	
+	    			// initialize required database fields
+	    			$institution->setAddress1('');
+	    			$institution->setAddress2('');
+	    			$institution->setContactEmail('');
+	    			$institution->setContactNumber('');
+	    			$institution->setDescription('');
+	    			$institution->setLogo('');
+	    			$institution->setCoordinates('');
+	    			$institution->setState('');
+	    			$institution->setWebsites('');
+	    			$institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	    			$institution->setZipCode('');
+	    			$factory->save($institution);
+	    			 
+	    			// create Institution user
+	    			$institutionUser = new InstitutionUser();
+	    			$institutionUser->setEmail($form->get('email')->getData());
+	    			$institutionUser->setFirstName($institution->getName());
+	    			$institutionUser->setLastName('Admin');
+	    			$institutionUser->setPassword($form->get('password')->getData());
+	    			$institutionUser->setInstitution($institution);
+	    			$institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
+	    			 
+	    			// dispatch event
+	    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
+	    							$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
+    							));
+	    	
+	    			$institutionId = $institution->getId();	 
+	    	
+	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('id' => $institutionId)));
+
+	    		}
+	    	}
+  	
+    	return $this->render('AdminBundle:Institution:add.html.twig', array(
+    					'form' => $form->createView(),
+    					'institutionTypes' => InstitutionTypes::getList(),
+    					'selectedInstitutionType' => $institutionType,
+    	));
+    	 
+    }
+    
+    public function addDetailsAction(Request $request){
+    	
+    	$id = $request->get('id', null);
+
+    	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
+	    $form = $this->createForm(new InstitutionFormType(), $institution);
+	    	
+	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
+	    		    							'form' => $form->createView(),
+	    		    							'institution' => $institution
+	    ));
+    }
+    
+    
+    /**
+     * Save Institution Details
+     */
+    public function saveAction(){
+    	$request = $this->getRequest();
+    	//update institution details
+    	if ($request->isMethod('POST')) {
+    		// Get contactNumbers and convert to json format
+    		$contactNumber = json_encode($request->get('contactNumber'));
+    		$websites = json_encode($request->get('website'));
+    		 
+    		$form->bindRequest($request);
+    			
+    		if ($form->isValid()) {
+    	
+    			// Set Contact Number before saving
+    			$form->getData()->setContactNumber($contactNumber);
+    			$form->getData()->setWebsites($websites);
+    	
+    			$institution = $this->get('services.institution.factory')->save($form->getData());
+    			$this->get('session')->setFlash('notice', "Successfully updated account");
+    			 
+    			//create event on editInstitution and dispatch
+    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+    			 
+    		}
+    	}
+    	
+    	return $this->render('AdminBundle:Institution:index.html.twig');
+    }
+    
     
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")

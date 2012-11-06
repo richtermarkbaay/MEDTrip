@@ -1,0 +1,82 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_add'%}
+
+{% block content %}
+    <div id="content">
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            
+            {% include '::notice.admin.html.twig' %}
+
+            <form novalidate="novalidate" action="{{ path('admin_institution_saveDetails')}}" method="POST"  class="basic-form">
+		
+		<h2 style="margin-top: 15px; ;">Add Institution Details</h2>
+
+		<h5>{{ institution.name() }} </h5>
+		<h3>{{ institution.typeLabel() }}</h3>
+		</div>
+	  	  				 
+						<label for="institution name">Institution Website</label>
+				
+						<div class="input-prepend">
+							<div id="website">
+								<input type="text" size="3" maxlength="3" class="span2" name="website[1][url]">
+								<input type="hidden" name="website[1][type]" value="website">
+							</div>
+						</div>
+						
+		  				 {{ form_row( form.contactEmail ) }}
+		  				 
+					<label for="institution name">Institution Phone Number</label>
+				
+						<div class="input-prepend">
+							<div id="contact">
+								<input type="text" size="3" maxlength="3" class="span2" name="contactNumber[1][area]">
+								<input type="text" size="4" maxlength="4" class="span7" name="contactNumber[1][number]">
+								<input type="hidden" name="contactNumber[1][type]" value="phone">
+							</div>
+						</div>
+				
+					<label for="institution name" style="color: #aeadad;">Institution Fax Number</label>
+					
+						<div class="input-prepend">
+							<div id="fax">
+								<input type="text" size="3" maxlength="3"  class="span2" name="contactNumbe qr[2][area]">
+								<input type="text" size="4" maxlength="4"  class="span7" name="contactNumber[2][number]">
+								<input type="hidden" name="contactNumber[2][type]" value="fax">
+							</div>
+						</div>
+					
+					<label for="institution name">Institution Facebook</label>
+				
+						<div class="input-prepend">
+							<div id="facebook">
+								<input type="text" size="3" maxlength="3" class="span2" name="website[2][url]">
+								<input type="hidden" name="website[2][type]" value="facebook">
+							</div>
+						</div>
+					<label for="institution name">Twitter</label>
+				
+						<div class="input-prepend">
+							<div id="twitter">
+								<input type="text" size="3" maxlength="3" class="span2" name="website[3][url]">
+								<input type="hidden" name="website[3][type]" value="twitter">
+							</div>
+						</div>
+ 	
+	  		   		    {{ form_row(form.country) }}
+		                {{ form_row( form.city ) }}
+		  		   		{{ form_row( form.address1 ) }}   
+		  		   		{{ form_row( form.state ) }}               
+		  			    {{ form_row( form.zipCode ) }}
+		 
+	
+          			{{ form_rest(form) }}
+		  		<div class="span11"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary"/></div>
+		  		</form>		
+            {% endblock %}
+        {% endembed %}
+    </div>
+    
+{% endblock %}
