@@ -29,11 +29,17 @@
             })
 
 			</script>
-        
-        {% block stylesheets %}
-        	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/admin/screen.css') }}" type="text/css" rel="stylesheet"/>
-        {% endblock %}
+
+            {% stylesheets 
+				'css/jquery-ui/base/jquery.ui.all.css'
+				'css/bootstrap.min.css'
+				'css/bootstrap-responsive.min.css'
+				'css/admin/style.css'
+				output='css/compiled-institution.css'
+
+            %}
+                <link href="{{ asset_url }}" rel="stylesheet"/>
+            {% endstylesheets %}
     </head>
     {% block body %}{% endblock %}
 
