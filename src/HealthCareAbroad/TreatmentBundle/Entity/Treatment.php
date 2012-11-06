@@ -38,6 +38,11 @@ class Treatment
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $subSpecializations;
+    
+    /**
+     * @var text $description
+     */
+    private $description;
 
     public function __construct()
     {
@@ -172,5 +177,27 @@ class Treatment
     public function getSubSpecializations()
     {
         return $this->subSpecializations;
+    }
+
+    /**
+     * Set description
+     *
+     * @param text $description
+     * @return Treatment
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return text 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

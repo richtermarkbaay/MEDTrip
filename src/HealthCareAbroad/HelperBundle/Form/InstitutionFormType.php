@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthCareAbroad\InstitutionBundle\Form;
+namespace HealthCareAbroad\HelperBundle\Form;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -16,12 +16,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
 
-class InstitutionProfileType extends AbstractType
+class InstitutionFormType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'validation_groups' => array('addInstitutionInformation', 'Default')
+            'validation_groups' => array('addInstitutionDetails', 'Default')
         ));
     }
 
@@ -30,7 +30,7 @@ class InstitutionProfileType extends AbstractType
     	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
     	$builder->addEventSubscriber($subscriber);
     	 
-    	$countryId = ($country =$builder->getData()->getCountry()) ? $country->getId() : 0;
+    	$countryId = ($country = $builder->getData()->getCountry()) ? $country->getId() : 0;
 
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
@@ -39,17 +39,12 @@ class InstitutionProfileType extends AbstractType
     	$builder->add('address1', 'text', array('label' => 'Address'));  	
   
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
-    	$builder->add('coordinates', 'hidden');
-    	
-    	$builder->add('institutionSite', 'text', array('label' => 'Institution Website', 'virtual' => true ));
-    	$builder->add('facebook', 'text', array('label' => 'Facebook Page', 'virtual' => true ));
-    	$builder->add('twitter', 'text', array('label' => 'Twitter Account', 'virtual' => true ));
     	
     }
     
     public function getName()
     {
-        return 'institutionProfile';
+        return 'institutionDetails';
     }
     
 }

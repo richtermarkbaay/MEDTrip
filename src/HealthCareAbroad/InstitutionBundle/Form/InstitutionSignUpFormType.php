@@ -39,6 +39,7 @@ class InstitutionSignUpFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+			'include_terms_agreement' => true,
             'validation_groups' => array('institutionRegistration', 'Default')
         ));
     }
@@ -81,10 +82,13 @@ class InstitutionSignUpFormType extends AbstractType
 //                         'virtual' => true
 //                     ));
         
-        $builder->add('agree_to_terms', 'checkbox', array(
-                'virtual' => true,
-                'constraints' => array(new NotBlank(array('message' => 'You must agree to the terms and conditions')))
-            ));
+        if ($options['include_terms_agreement']) {
+        	$builder->add('agree_to_terms', 'checkbox', array(
+        					'virtual' => true,
+        					'constraints' => array(new NotBlank(array('message' => 'You must agree to the terms and conditions')))
+        	));
+        }
+        
     }
     
 }

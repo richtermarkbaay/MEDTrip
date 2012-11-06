@@ -9,12 +9,13 @@
 <ul class="nav">
     <li class="{{ selectedTab == 'dashboard' ? 'active' : '' }}"><a href="{{ path('admin_homepage') }}">Dashboard</a></li>
 
+
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
     <li class="dropdown {{ selectedTab == 'institutions' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Institutions <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_index') }}">View all institutions</a></li>
-            <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="#">Add new</a></li>
+            <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="{{ path('admin_institution_add') }}">Add new</a></li>
         </ul>
     </li>
     {% endif %}
@@ -26,12 +27,13 @@
             <li class="{{ selectedSubTab == 'specializations' ? 'active' : '' }}" >
                 <a href="{{ path('admin_specialization_index') }}">Specializations</a>
             </li>
-            <li class="{{ selectedSubTab == 'sub_specializations' ? 'active' : '' }}">
+            <li class="{{ selectedSubTab == 'subspecializations' ? 'active' : '' }}">
                 <a href="{{ path('admin_subSpecialization_index') }}">Sub-specializations</a>
             </li>
             <li class="{{ selectedSubTab == 'treatments' ? 'active' : '' }}">
                 <a href="{{ path('admin_treatment_index') }}">Treatments</a>
             </li>
+            <li class="divider"></li>
             <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
                 <a href="{{ path('admin_country_index') }}">Manage Countries</a>
             </li>

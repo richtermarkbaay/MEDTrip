@@ -1,0 +1,68 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_doctors' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Doctors</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add doctor',
+                        'description': 'Add new doctor',
+                        'class': 'add-icon',
+                        'href': path('admin_doctor_add'),
+                        'links': [{'title': 'Add a doctor', 'href': path('admin_doctor_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
+                <div style="width: 70%">
+                    <table id="doctor-list" class="generic-table sortable-list" width="100%">
+                    <tr>
+                        <th id="column-name">First Name</th>
+                        <th id="column-name">Middle Name</th>
+                        <th id="column-name">Last Name</th>
+                        <th>Status</th>
+                        <th class="actions" width="200">Action</th>
+                    </tr>
+
+                    {% for doctor in doctors %}
+                        <tr>
+                            <td>{{ doctor.firstName }}</td>
+                            <td>{{ doctor.middleName }}</td>
+                            <td>{{ doctor.lastName }}</td>
+                            <td>{{ doctor.status ? 'Active' : 'Inactive' }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_doctor_edit', {idId:doctor.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                {% set class = doctor.status ? 'icon-2' : 'icon-5' %}
+                                <a href="{{ path('admin_doctor_updateStatus', {idId:doctor.id}) }}" title="{{ doctor.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    </table>
+                    
+                    
+                </div>
+
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

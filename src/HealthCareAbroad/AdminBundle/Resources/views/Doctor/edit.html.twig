@@ -1,0 +1,78 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_doctors' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1> {{ title }} </h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <table style="width:100%;">
+                <tr>
+                    <td style="vertical-align: top; ">
+                        
+                        <!--  start table-content  -->
+                        <div id="table-content">
+                            {% include '::notice.admin.html.twig' %}
+                        
+                            {% if doctor.id %}
+                                {% set contents = [{
+                                        'title': 'Add doctor',
+                                        'description': 'Add new doctor',
+                                        'class': 'add-icon',
+                                        'href': path('admin_doctor_add'),
+                                        'links': [{'title': 'Add a doctor', 'href': path('admin_doctor_add')}]
+                                    }]
+                                %}
+                            {% else %}
+                                {% set contents = [{
+                                        'title': 'View all doctors',
+                                        'description': 'View all doctors',
+                                        'class': 'add-icon',
+                                        'href': path('admin_doctor_index'),
+                                        'links': [{'title': 'List of Doctors', 'href': path('admin_doctor_index')}]
+                                    }]
+                                %}
+                            {% endif %}
+            
+                            {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+                            <form novalidate="novalidate" action="{{ doctor.id ? path('admin_doctor_edit_save', {'idId': doctor.id }) : path('admin_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                                <!-- start id-form -->
+                                <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
+                                    
+                                    {{ form_row(form.firstName) }}
+                                    {{ form_row(form.middleName) }}
+                                    {{ form_row(form.lastName) }}
+                                    
+                                    {{ form_rest(form) }}
+                                    <input type="reset" value="Reset" class="form-reset"/>
+                                    <input type="submit" name="submit" value="Submit" class="green-button" />
+                                </table>
+                                <!-- end id-form  -->
+                            </form>
+                        </div>
+                        <!--  end table-content  -->
+                    </td>
+                    <td style="vertical-align: top; ">
+                        
+                    </td>
+                </tr>
+            </table>
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+
+
