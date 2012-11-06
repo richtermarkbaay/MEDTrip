@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -121,6 +123,27 @@ class SpecializationController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+    
+    public function loadAvailableSubSpecializationsAction(Request $request)
+    {
+        $service = $this->get('services.treatment_bundle');
+        $specialization = $service->getSpecialization($request->get('id', 0));
+        $subSpecializations = $service->getActiveSubSpecializationsBySpecialization($specialization);
+        $output = array(
+            'data' => array(),
+            'html' => ''
+        );
+        
+        foreach ($subSpecializations as $each) {
+            $output['html'] .= "<option value='{$each->getId()}'>{$each->getName()}</option>";
+            $output['data'][] = array(
+                'id' => $each->getId(),
+                'name' => $each->getName()
+            );
+        }
+        
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 
 }

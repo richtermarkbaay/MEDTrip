@@ -27,7 +27,7 @@ class InstitutionUserService extends UserService
 
         if ($user) {
 
-            $userRoles = $user->getInstitutionUserType()->getInstitutionUserRole();//$user->getInstitutionUserType();
+            $userRoles = $user->getInstitutionUserType()->getInstitutionUserRoles();//$user->getInstitutionUserType();
 
             $roles = array();
             foreach ($userRoles as $userRole) {
@@ -53,7 +53,7 @@ class InstitutionUserService extends UserService
         }
         return false;
     }**/
-    
+
     /**
      * @inheritDoc
      */
@@ -65,7 +65,7 @@ class InstitutionUserService extends UserService
                 $roles[] = $userRole->getName();
             }
         }
-        
+
         return $roles;
     }
 

@@ -23,7 +23,7 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUserType:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUserRole
             cascade: {  }
             mappedBy: null
-            inversedBy: institutionUserType
+            inversedBy: institutionUserTypes
             joinTable:
                 name: institution_user_type_roles
                 joinColumns:
