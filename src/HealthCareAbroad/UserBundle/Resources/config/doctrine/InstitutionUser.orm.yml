@@ -22,7 +22,7 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUser:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: institutionUsers
             joinColumns:
                 institution_id:
                     referencedColumnName: id

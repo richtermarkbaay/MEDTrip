@@ -53,13 +53,25 @@ HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: subSpecializations
             joinColumns:
                 specialization_id:
                     referencedColumnName: id
             orphanRemoval: false
-    oneToMany:
+    manyToMany:
         treatments:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
-            mappedBy: subSpecialization
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name:  treatment_sub_specializations
+                joinColumns:
+                    -
+                        name: sub_specialization_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: treatment_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

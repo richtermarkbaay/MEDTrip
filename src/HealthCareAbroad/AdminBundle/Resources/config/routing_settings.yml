@@ -68,13 +68,7 @@ admin_user_add:
     pattern: /admin/settings/users/add
     defaults: { _controller: AdminBundle:AdminUser:add }
     requirements:    
-        _method: GET
-        
-admin_user_add_save:
-    pattern: /admin/settings/users/add
-    defaults: { _controller: AdminBundle:AdminUser:save }
-    requirements:    
-        _method: POST
+        _method: GET|POST
 
 admin_settings:
     pattern: /admin/settings

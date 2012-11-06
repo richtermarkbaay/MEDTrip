@@ -293,4 +293,9 @@ class InstitutionMedicalCenter
     {
         return $this->doctors;
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

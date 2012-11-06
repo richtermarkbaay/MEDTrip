@@ -18,9 +18,10 @@ HealthCareAbroad\FrontendBundle\Entity\FrontendRouteVariable:
         value:
             type: bigint
             unsigned: true
-    oneToOne:
+    manyToOne:
         frontendRoute:
             targetEntity: HealthCareAbroad\FrontendBundle\Entity\FrontendRoute
+            inversedBy: frontendRouteVariables
             joinColumn:
                 name: frontend_route_id
                 referencedColumnName: id

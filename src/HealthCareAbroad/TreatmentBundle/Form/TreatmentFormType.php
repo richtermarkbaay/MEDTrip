@@ -19,8 +19,8 @@ class TreatmentFormType extends AbstractType
 		$treatment = $options['data'];
 
 		$status = array(
-			Treatment::STATUS_ACTIVE => 'active',
-			Treatment::STATUS_INACTIVE => 'inactive'
+			Treatment::STATUS_ACTIVE => 'Active',
+			Treatment::STATUS_INACTIVE => 'Inactive'
 		);
 		
 		if ($treatment->getId()) {
@@ -28,17 +28,24 @@ class TreatmentFormType extends AbstractType
 			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
 
 		    if ($hasInstitutionTreatment) {
-		        $builder->add('subSpecialization', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
+		        $builder->add('specialization', 'hidden', array('virtual' => 'true', 'label' => 'Specialization', 'read_only' => true));
+		        $builder->add('subSpecializations', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
 		    }
 		    else {
-		        $builder->add('subSpecialization', 'subSpecialization_list');
+		        $builder->add('specialization', 'specialization_list');
+		        $builder->add('subSpecializations', 'subSpecialization_list', array('multiple' => true, 'attr' => array('style' => 'height:200px;width:300px;')));
 		    }
 		}
 		else {
-		    $builder->add('subSpecialization', 'subSpecialization_list');
+		    $builder->add('specialization', 'specialization_list');
+		    $builder->add('subSpecializations', 'subSpecialization_list', array('multiple' => true, 'attr' => array('style' => 'height:200px;width:300px;')));
 		}
 
 		$builder->add('name');
+		$builder->add('description', 'textarea', array(
+            'label' => 'Details',
+            'attr' => array('class'=>'tinymce')
+        ));
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 

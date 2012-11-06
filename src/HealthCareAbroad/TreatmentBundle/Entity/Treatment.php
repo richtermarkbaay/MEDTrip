@@ -8,6 +8,7 @@ class Treatment
     const STATUS_ACTIVE = 1;
 
     const STATUS_INACTIVE = 0;
+    
     /**
      * @var integer $id
      */
@@ -29,18 +30,29 @@ class Treatment
     private $status;
 
     /**
-     * @var HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+     * @var HealthCareAbroad\TreatmentBundle\Entity\Specialization
      */
-    private $subSpecialization;
+    private $specialization;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $subSpecializations;
+    
+    /**
+     * @var text $description
+     */
+    private $description;
 
     public function __construct()
     {
+        $this->subSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -62,7 +74,7 @@ class Treatment
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -84,7 +96,7 @@ class Treatment
     /**
      * Get slug
      *
-     * @return string
+     * @return string 
      */
     public function getSlug()
     {
@@ -106,7 +118,7 @@ class Treatment
     /**
      * Get status
      *
-     * @return smallint
+     * @return smallint 
      */
     public function getStatus()
     {
@@ -114,29 +126,78 @@ class Treatment
     }
 
     /**
-     * Set sub-specialization
+     * Set specialization
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization
-     * @return TreatmentProcedure
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
+     * @return Treatment
      */
-    public function setSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization = null)
+    public function setSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization = null)
     {
-        $this->subSpecialization = $subSpecialization;
+        $this->specialization = $specialization;
         return $this;
     }
 
     /**
-     * Get treatment
+     * Get specialization
      *
-     * @return HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+     * @return HealthCareAbroad\TreatmentBundle\Entity\Specialization 
      */
-    public function getSubSpecialization()
+    public function getSpecialization()
     {
-        return $this->subSpecialization;
+        return $this->specialization;
     }
 
-    public function __toString()
+    /**
+     * Add subSpecializations
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations
+     * @return Treatment
+     */
+    public function addSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations)
     {
-        return $this->name;
+        $this->subSpecializations[] = $subSpecializations;
+        return $this;
+    }
+
+    /**
+     * Remove subSpecializations
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations
+     */
+    public function removeSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations)
+    {
+        $this->subSpecializations->removeElement($subSpecializations);
+    }
+
+    /**
+     * Get subSpecializations
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getSubSpecializations()
+    {
+        return $this->subSpecializations;
+    }
+
+    /**
+     * Set description
+     *
+     * @param text $description
+     * @return Treatment
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return text 
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

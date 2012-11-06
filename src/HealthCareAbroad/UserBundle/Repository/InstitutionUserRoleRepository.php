@@ -16,31 +16,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionUserRoleRepository extends EntityRepository
 {
-	/**
-	 * Get permissions that can be assigned to a user type
-	 */
-	public function getAssignablePermissions()
-	{
-		$dql = "SELECT a FROM UserBundle:InstitutionUserRole a WHERE a.status = :active";
-		$query = $this->getEntityManager()->createQuery($dql)
-		->setParameter('active', InstitutionUserRole::STATUS_ACTIVE);
-		return $query->getResult();
-	}
-	
-	public function getAssignablePermissionsByUserType(InstitutionUserType $userType)
-	{
-		$currentUserRoles = $userType->getInstitutionUserRole();
-	
-		$ids = array();
-		foreach ($currentUserRoles as $each) {
-			$ids[] = $each->getId();
-		}
-		$idsNotIn = "'".\implode("', '",$ids)."'";
-	
-		$dql = "SELECT a FROM UserBundle:InstitutionUserRole a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
-		$query = $this->getEntityManager()->createQuery($dql)
-		->setParameter('active', InstitutionUserRole::STATUS_ACTIVE);
-		return $query->getResult();
-	}
-	
+    /**
+     * Get permissions that can be assigned to a user type
+     */
+    public function getAssignablePermissions()
+    {
+        $dql = "SELECT a FROM UserBundle:InstitutionUserRole a WHERE a.status = :active";
+        $query = $this->getEntityManager()->createQuery($dql)
+        ->setParameter('active', InstitutionUserRole::STATUS_ACTIVE);
+        return $query->getResult();
+    }
+
+    public function getAssignablePermissionsByUserType(InstitutionUserType $userType)
+    {
+        $currentUserRoles = $userType->getInstitutionUserRoles();
+
+        $ids = array();
+        foreach ($currentUserRoles as $each) {
+            $ids[] = $each->getId();
+        }
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+
+        $dql = "SELECT a FROM UserBundle:InstitutionUserRole a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
+        $query = $this->getEntityManager()->createQuery($dql)
+        ->setParameter('active', InstitutionUserRole::STATUS_ACTIVE);
+        return $query->getResult();
+    }
+
 }

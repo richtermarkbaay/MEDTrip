@@ -20,6 +20,11 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             nullable: false
             gedmo:
                 - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
         slug:
             type: string
             length: 100
@@ -35,15 +40,24 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             nullable: false
             gedmo:
                 - versioned
-
     manyToOne:
-        subSpecialization:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            inversedBy: treatments
+    manyToMany:
+        subSpecializations:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
-            cascade: {  }
+            cascade: {}
             mappedBy: null
-            inversedBy: null
-            joinColumns:
-                sub_specialization_id:
-                    referencedColumnName: id
-            orphanRemoval: false
+            joinTable:
+                name:  treatment_sub_specializations
+                joinColumns:
+                    -
+                        name: treatment_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: sub_specialization_id
+                        referencedColumnName: id
+            orderBy: null
     lifecycleCallbacks: {  }

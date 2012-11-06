@@ -6,151 +6,79 @@
     {% set selectedSubTab = '' %}
 {% endif %}
 
-<!--  start nav -->
-<div class="nav">
-    <div class="table">
-        <ul class="{{ selectedTab == 'dashboard' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_homepage') }}"><b>Dashboard</b><!--[if IE 7]><!--></a><!--<![endif]-->
+<ul class="nav">
+    <li class="{{ selectedTab == 'dashboard' ? 'active' : '' }}"><a href="{{ path('admin_homepage') }}">Dashboard</a></li>
+
+
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
+    <li class="dropdown {{ selectedTab == 'institutions' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Institutions <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_index') }}">View all institutions</a></li>
+            <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="{{ path('admin_institution_add') }}">Add new</a></li>
+        </ul>
+    </li>
+    {% endif %}
+
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS', 'CAN_MANAGE_MEDICAL_CENTER')") %}
+    <li class="dropdown {{ selectedTab == 'manageHcaData' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Manage HCA Data <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'specializations' ? 'active' : '' }}" >
+                <a href="{{ path('admin_specialization_index') }}">Specializations</a>
+            </li>
+            <li class="{{ selectedSubTab == 'sub_specializations' ? 'active' : '' }}">
+                <a href="{{ path('admin_subSpecialization_index') }}">Sub-specializations</a>
+            </li>
+            <li class="{{ selectedSubTab == 'treatments' ? 'active' : '' }}">
+                <a href="{{ path('admin_treatment_index') }}">Treatments</a>
+            </li>
+            <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
+                <a href="{{ path('admin_country_index') }}">Manage Countries</a>
+            </li>
+            <li class="{{ selectedSubTab == 'manage_cities' ? 'active' : '' }}">
+                <a href="{{ path('admin_city_index') }}">Manage Cities</a>
             </li>
         </ul>
+    </li>
+    {% endif %}
 
-        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
-        <div class="nav-divider">&nbsp;</div>
-        <ul class="{{ selectedTab == 'institutions' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_institution_index') }}"><b>Institutions</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'institutions' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'institutions_index' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_institution_index') }}">View all institutions</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'institutions_add' ? 'sub_show' : '' }}">
-                        	<a href="{{ path('admin_institution_add') }}">Add new institution</a></li>
-                        
-                    </ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_ADVERTISEMENTS', 'CAN_MANAGE_ADVERTISEMENTS')") %}
+    <li class="dropdown {{ selectedTab == 'advertisements' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Advertisements <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'advertisement_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_advertisement_index') }}">View all</a>
             </li>
         </ul>
-        {% endif %}
+    </li>
+    {% endif %}
 
-        {# if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS', 'CAN_MANAGE_MEDICAL_CENTER')") #}
-        <div class="nav-divider">&nbsp;</div>
-        <ul class="{{ selectedTab == 'manageHcaData' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_manageHcaData') }}"><b>Manage HCA Data</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'manageHcaData' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'specializations' ? 'sub_show' : '' }}" >
-                            <a href="{{ path('admin_specialization_index') }}">Specializations</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'sub_specializations' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_subSpecialization_index') }}">Sub-specializations</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'treatments' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_treatment_index') }}">Treatments</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'manage_countries' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_country_index') }}">Manage Countries</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'manage_cities' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_city_index') }}">Manage Cities</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
+    <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Inquiries <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'inquire_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_inquire') }}">View all</a>
             </li>
         </ul>
-        {# endif #}
+    </li>
+    {% endif %}
 
-        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_ADVERTISEMENTS', 'CAN_MANAGE_ADVERTISEMENTS')") %}
-        <div class="nav-divider">&nbsp;</div>
-        <ul class="{{ selectedTab == 'advertisements' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_advertisement_index') }}"><b>Ads</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                {#-----
-                <div class="select_sub {{ selectedTab == 'inquire' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'inquire_index' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_inquire') }}">View all</a>
-                        </li>
-
-                    </ul>
-                </div>
-                ------#}
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
+    <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Settings <b class="caret"></b></a>
+        
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'settings_users' ? 'active' : '' }}">
+                <a href="{{ path('admin_user_index') }}">Users</a>
+            </li>
+            <li class="{{ selectedSubTab == 'settings_user_types' ? 'active' : '' }}">
+                <a href="{{ path('admin_userType_index') }}">User types</a>
+            </li>
+            <li class="{{ selectedSubTab == 'settings_user_permissions' ? 'active' : '' }}">
+                <a href="{{ path('admin_userRole_index') }}">User permissions</a>
             </li>
         </ul>
-        {% endif %}
-
-        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
-        <div class="nav-divider">&nbsp;</div>
-        <ul class="{{ selectedTab == 'inquire' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_inquire') }}"><b>Inquiries</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'inquire' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'inquire_index' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_inquire') }}">View all</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-            </li>
-        </ul>
-        {% endif %}
-
-       <div class="nav-divider">&nbsp;</div>
-        <ul class="{{ selectedTab == 'news' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_news_index') }}"><b>News</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'news' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'manage_news' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_news_add') }}">Add News</a>
-                        </li>
-
-                    </ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-            </li>
-        </ul>
-
-        {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
-        <div class="nav-divider">&nbsp;</div>
-
-        <ul class="{{ selectedTab == 'settings' ? 'current' : 'select' }}">
-            <li>
-                <a href="{{ path('admin_settings') }}"><b>Settings</b><!--[if IE 7]><!--></a><!--<![endif]-->
-                <!--[if lte IE 6]><table><tr><td><![endif]-->
-                <div class="select_sub {{ selectedTab == 'settings' ? 'show' : '' }}">
-                    <ul class="sub">
-                        <li class="{{ selectedSubTab == 'settings_users' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_user_index') }}">Users</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'settings_user_types' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_userType_index') }}">User types</a>
-                        </li>
-                        <li class="{{ selectedSubTab == 'settings_user_permissions' ? 'sub_show' : '' }}">
-                            <a href="{{ path('admin_userRole_index') }}">User permissions</a>
-                        </li>
-                    </ul>
-                </div>
-                <!--[if lte IE 6]></td></tr></table></a><![endif]-->
-            </li>
-        </ul>
-        {% endif %}
-
-        <div class="clear"></div>
-    </div>
-    <div class="clear"></div>
-</div>
-<!--  end nav -->
+    {% endif %}
+</ul>

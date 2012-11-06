@@ -11,7 +11,7 @@ class Specialization
     const STATUS_ACTIVE = 1;
 
     const STATUS_INACTIVE = 0;
-
+    
     /**
      * @var integer $id
      */
@@ -45,17 +45,23 @@ class Specialization
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
+    private $treatments;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
     private $subSpecializations;
 
     public function __construct()
     {
+        $this->treatments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->subSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -77,7 +83,7 @@ class Specialization
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -99,7 +105,7 @@ class Specialization
     /**
      * Get description
      *
-     * @return text
+     * @return text 
      */
     public function getDescription()
     {
@@ -121,7 +127,7 @@ class Specialization
     /**
      * Get dateCreated
      *
-     * @return datetime
+     * @return datetime 
      */
     public function getDateCreated()
     {
@@ -143,7 +149,7 @@ class Specialization
     /**
      * Get slug
      *
-     * @return string
+     * @return string 
      */
     public function getSlug()
     {
@@ -165,11 +171,43 @@ class Specialization
     /**
      * Get status
      *
-     * @return smallint
+     * @return smallint 
      */
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add treatments
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatments
+     * @return Specialization
+     */
+    public function addTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatments)
+    {
+        $this->treatments[] = $treatments;
+        return $this;
+    }
+
+    /**
+     * Remove treatments
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatments
+     */
+    public function removeTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatments)
+    {
+        $this->treatments->removeElement($treatments);
+    }
+
+    /**
+     * Get treatments
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getTreatments()
+    {
+        return $this->treatments;
     }
 
     /**
@@ -197,13 +235,13 @@ class Specialization
     /**
      * Get subSpecializations
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getSubSpecializations()
     {
         return $this->subSpecializations;
     }
-
+    
     public function __toString()
     {
         return $this->name;

@@ -4,8 +4,8 @@
 
 <table width="100%" class="generic-table sortable-list" id="medical-centers-list">
     <tr>
-        <th id="column-medicalCenter" class="minwidth-1">
-            <a href="{{ app.request.uri }}" class="{{ sortBy == 'medicalCenter' ? 'sort-' ~ sortOrder : default }}">Specializations</a>
+        <th id="column-specialization" class="minwidth-1">
+            <a href="{{ app.request.uri }}" class="{{ sortBy == 'specialization' ? 'sort-' ~ sortOrder : default }}">Specializations</a>
         </th>
         <th id="column-description" class="minwidth-1"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
         <th class="actions" width="170">Actions</th>
@@ -13,17 +13,17 @@
 
     {# TODO: Don't hardcode value  #}
     {% if app.request.get('status') and app.request.get('status') == '4' %}
-        {% set routeName = 'institution_medicalCenter_add' %}
+        {% set routeName = 'institution_specialization_add' %}
     {% else %}
-        {% set routeName = 'institution_medicalCenter_edit' %}
+        {% set routeName = 'institution_specialization_edit' %}
     {% endif %}
 
-    {% for center in institutionMedicalCenters %}
+    {% for specialization in institutionSpecializations %}
         <tr>
-            <td><a href="{{ path(routeName, {'imcId': center.id }) }}" title="View {{ center.medicalCenter | title }}">{{ center.medicalCenter | title }}</a></td>
-            <td class="raw-content">{{ center.description|raw }}</td>
+            <td><a href="{{ path(routeName, {'isId': specialization.id }) }}" title="View {{ specialization.institutionMedicalCenter | title }}">{{ specialization.institutionMedicalCenter | title }}</a></td>
+            <td class="raw-content">{{ specialization.description|raw }}</td>
             <td>
-                <a href="{{ path(routeName, {'imcId': center.id })}}" class="icon-type" title="View treatments of {{ center.medicalCenter | title }}">view procedure types</a>
+                <a href="{{ path(routeName, {'isId': specialization.id })}}" class="icon-type" title="View treatments of {{ specialization.institutionMedicalCenter | title }}">view sub-specializations</a>
             </td>
         </tr>
     {% else %}

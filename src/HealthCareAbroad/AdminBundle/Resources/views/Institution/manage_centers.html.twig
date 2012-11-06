@@ -45,13 +45,13 @@
                             <th width="80" class="actions">Actions</th>
                         </tr>
 
-                        {% for center in institutionMedicalCenterGroups %}
+                        {% for center in institutionMedicalCenters %}
                             <tr id="medical-center-{{center.id}}">
                                 <td class="name">{{ center.name | title }}</td>
                                 <td class="specializations">
                                     <ul>
-                                        {% for each in center.institutionMedicalCenters %}
-                                            <li style="margin-left: 20px">{{ each.medicalCenter.name | title }}</li>
+                                        {% for each in center.institutionSpecializations %}
+                                            <li style="margin-left: 20px">{{ each.specialization.name | title }}</li>
                                         {% endfor %}
                                     </ul>
                                 </td>

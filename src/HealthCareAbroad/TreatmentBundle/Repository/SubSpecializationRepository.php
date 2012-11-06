@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\TreatmentBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
@@ -34,16 +38,24 @@ class SubSpecializationRepository extends EntityRepository
 
     /**
      * Get QueryBuilder for getting active treatments that can be used for dropdown field types
-     *
-     * @return Doctrine\ORM\QueryBuilder
+     * 
+     * @param Specialization $specialization optional
      */
-    public function getQueryBuilderForGettingAvailableSubSpecializations()
+    public function getQueryBuilderForGettingAvailableSubSpecializations(Specialization $specialization = null)
     {
-        return $this->getEntityManager()->createQueryBuilder()
+        $qb =  $this->getEntityManager()->createQueryBuilder()
             ->add('select', 't')
             ->add('from', 'TreatmentBundle:SubSpecialization t')
-            ->add('where', 't.status = :active')
-            ->setParameter('active', SubSpecialization::STATUS_ACTIVE);
+            ->add('where', 't.status = :active');
+        
+        if ($specialization && $specialization->getId()) {
+            $qb->andWhere('t.specialization = :specializationId')
+                ->setParameter('specializationId', $specialization->getId());
+        }
+        
+        $qb->setParameter('active', SubSpecialization::STATUS_ACTIVE);
+        
+        return $qb;
     }
 
 

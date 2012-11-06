@@ -36,7 +36,6 @@ HealthCareAbroad\LogBundle\Entity\Log:
     manyToOne:
         logClass:
             targetEntity: HealthCareAbroad\LogBundle\Entity\LogClass
-            inversedBy: logClasess
             joinColumn:
                 name: log_class_id
                 referencedColumnName: id

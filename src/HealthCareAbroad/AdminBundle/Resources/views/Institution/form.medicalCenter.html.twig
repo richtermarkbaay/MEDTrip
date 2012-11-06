@@ -1,179 +1,71 @@
-
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'institutions' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
 
 {% block content %}
+<!-- start content -->
+<div class="container">
+	<div class="maincontent">
 
-	<div id="content">
-
-		<div id="page-heading">
-            <h2>
-	            {% set hasDraft = hasDraft is defined and hasDraft %}
+		<div class="span9">
+			<h2>
+			    {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenterGroup.name }}
+	                Edit draft: {{ institutionMedicalCenter.name }}
 	            {% else %}
 	                Add Medical Center
-	            {% endif %}
-		    </h2>
-		</div>
+	            {% endif %}			
+			</h2>
 
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
-
-				{% include '::notice.admin.html.twig' %}
-
-	            {% set contents = [{
-					'title': 'Back to institution centers', 
-					'description': 'View the list available medical centers',
-					'href': path('admin_institution_manageCenters', {institutionId: institutionId}), 
-					'links': [{'title': 'View medical centers', 'href': path('admin_institution_manageCenters', {institutionId: institutionId}) }]
-                }] %}
-
-	            {% if institutionMedicalCenterGroup.id %}
-		            {% set addProcedureTypeTask = [
-    		            {
-    						'title': 'Add procedure type', 
-    						'description': 'Add new procedure type for this medical center',
-    						'class': 'add-procedure-type',
-    						'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterGroup.id}), 
-    						'links': [{'title': 'Add procedure type', 'class': 'add-procedure-type', 'href': path('admin_institution_procedureType_add', {institutionId: institutionId, imcId: institutionMedicalCenterGroup.id})}]
-    					},
-        	            {
-        					'title': 'Update Center Status', 
-        					'description': 'Update center status.',
-        					'class': 'show-update-center-status',
-        					'href': 'javascript:void(0)',
-        					'links': [{'title': 'Update status', 'href': 'javascript:void(0)', 'class': 'show-update-center-status' }]
-        				}
-					] %}
-					
-					{% set contents = addProcedureTypeTask | merge(contents) %}
-	            {% endif %}
-	
-				{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-				
-				<div id="table-content" style="width:75%">
-				
-					{% if not institutionMedicalCenterGroup.id %}
-			            <div class="tabbable">
-			            {% include '::notice.admin.html.twig' %}
-					
-							    {% include '::stepHolder.base.admin.html.twig' with {
-					                    steps: [
-					                        {title: '- Center Details', 'selected': true},
-					                        {title: '- Specialization, Sub-specialization and Treatments'},
-					                        {title: '- Assigned Doctors'},
-					                        {title: '- Preview', 'selected': false},
-					                 ]}
-					              %}
-			
-							<div class="tab-content">
-								<h4>Medical Center Information</h4>
-				                <form novalidate="novalidate" action="{{ path('institution_medicalCenterGroup_addDetails', { 'imcgId': institutionMedicalCenterGroup.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-				
-				                    {{ form_errors(form) }}            
-				                    {{ form_row(form.name) }}
-				                    {{ form_row(form.description) }}
-				                    {{ form_rest(form) }}
-									<br>
-					                    <input type="reset" value="Reset" class="btn btn-inverse"/>
-					                    {% if hasDraft %}
-					                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenterGroup.id }) }}" class="button-type">Delete draft</a>
-					                    {% endif %}
-					
-					                    <input type="submit" name="submit" value="Next" class="btn btn-primary" />
-									
-				                </form>
+			 <div class="addcenterbox">
+			 	<div class="row-fluid">
+				    <div class="span12">
+				            <div class="tabbable">
+								<!-- /.menu - tab start -->
+								        {% include '::notice.admin.html.twig' %}
+						
+								    {% include '::stepHolder.base.admin.html.twig' with {
+						                    steps: [
+						                        {title: '- Center Details', 'selected': true},
+						                        {title: '- Specialization'},
+						                        {title: '- Select Treatments'},
+						                        {title: '- Assigned Doctors'},
+						                        {title: '- Preview', 'selected': false},
+						                 ]}
+						              %}							
+								<!-- /.menu - tab end -->
+								<!-- /.tab-content start -->
+								<div class="tab-content">
+									<div id="tabs1-pane1" class="tab-pane active">
+													
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addDetails', { 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+											<h3>Medical Center Information</h3>		
+																						
+										        {{ form_errors(form) }}   
+										        
+							                    {{ form_row(form.name, { 'attr': {'class': 'input-xxlarge'} }) }}
+							                    {{ form_row(form.description) }}
+							                    {{ form_rest(form) }}
+																							
+												<input type="reset" value="Reset" class="btn btn-large btn-inverse"/>
+								                    {% if hasDraft %}
+								                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenter.id }) }}" class="button-type">Delete draft</a>
+								                    {% endif %}
+													
+												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
+										</form>
+									</div>
 								
-							</div><!-- /.tab-content -->
-						</div>
-
-					{% else %}
-					    <div class="tab-container" id="tab-container" style="padding: 20px;">
-							<ul>
-								<li><a href="#tab-overview-imc-{{ institutionMedicalCenterGroup.id }}">Overview</a></li>
-								{% for impt in institutionMedicalCenterGroup.institutionTreatments %}
-									<li id="procedure-type-{{impt.id}}"><a href="#tab-impt-{{ impt.id }}">{{ impt.treatment.name }}</a></li>
-								{% endfor %}
-							</ul>
-
-							<div id="tab-overview-imc-{{institutionMedicalCenterGroup.id}}">                        
-								<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">		
-									{{ form_row(form.medicalCenter) }}
-									{{ form_row(form.description) }}
-									{{ form_rest(form) }}
-								    <input type="submit" class="green-button" value="Save" name="submit"/>
-								</form>
+								</div><!-- /.tab-content end -->
 							</div>
-
-							{% for impt in institutionMedicalCenterGroup.institutionTreatments %}
-								<div id="tab-impt-{{ impt.id }}">
-									{% include 'AdminBundle:Institution:treatmentDetail.html.twig' with 
-										{institutionId: institutionId, institutionMedicalCenterGroup: institutionMedicalCenterGroup, institutionTreatment: impt } 
-									%}
-								</div>
-							{% endfor %}
-						</div>
-					{% endif %}
-				</div>
-			{% endblock %}
-
-		{% endembed %}
+					    </div><!--/span 12 end-->
+					 </div><!--/row-fluid end-->
+				 </div>
+			</div>
+			<!--main tab start-->
+		
+			<div class="clear"></div>
 	</div>
-
-    {% if institutionMedicalCenterGroup.id %}
-    <div id="update-status-container" title="Update Center Status">
-        <div style="margin: 0 15px;padding: 15px; border: 1px solid #efefef;border-radius:5px;">
-            <p>
-                This center is currently <strong> {{ centerStatusList[institutionMedicalCenterGroup.status] }} </strong>. 
-                Select an option below to update its status.
-            </p>
-            <br/>
-            <form id="update-status-form" method="POST" action="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId, imcId:institutionMedicalCenterGroup.id}) }}">
-                <select name="status" id="selected-status">
-                    {% for label,value in updateCenterStatusOptions %}
-                        <option value="{{value}}">{{label}}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" class="green-button" value="Confirm"/>
-            </form>
-        </div>
-    </div>
-    {% endif %}
-
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
 {% endblock %}
-
-{% block inlineJavascriptCode %}
-	<script src="{{ asset('bundles/institution/js/institutionMedicalCenterGroup.js') }}"></script>
-	<script type="text/javascript">
-		$(function(){
-		    institutionMedicalCenterGroup.setCommonDialog($('#dialog-container'), {
-			    position: ['center', 100],
-			    autoOpen: false,
-			    width: 750,
-			    modal: true,
-			    resizable: false,
-			    close: function() { $('#dialog-container').empty(); }
-			});
-
-	        $("#tab-container").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
-			$("#tab-container li").removeClass('ui-corner-top').addClass('ui-corner-left');
-
-			{% if app.request.get('imptId') %}
-				$("#tab-container #procedure-type-{{ app.request.get('imptId') }} a").click();
-			{% endif %}			
-
-			$('a.add-procedure-type').click(function(e){
-			    return institutionMedicalCenterGroup.addProcedureType($(this));
-			});
-
-		    // Update Status Script 
-	        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
-	        $("a.show-update-center-status").click(function() {
-	            $("#update-status-container").dialog("open");
-	        });
-		});
-	</script>
-{% endblock %}
-
-

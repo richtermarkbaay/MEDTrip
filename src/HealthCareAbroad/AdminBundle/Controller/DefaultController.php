@@ -30,10 +30,10 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $accountId = $this->getRequest()->getSession()->get('accountId');
-        $alertService = $this->container->get('services.alert');
-        $alerts = $alertService->getAdminAlerts($accountId);
-        $pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
-        $expiredListingAlerts = isset($alerts[AlertTypes::EXPIRED_LISTING]) ? $alerts[AlertTypes::EXPIRED_LISTING] : array();
+//         $alertService = $this->container->get('services.alert');
+//         $alerts = $alertService->getAdminAlerts($accountId);
+//         $pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
+//         $expiredListingAlerts = isset($alerts[AlertTypes::EXPIRED_LISTING]) ? $alerts[AlertTypes::EXPIRED_LISTING] : array();
 
 
 //         $mailer = $this->get('mailer');
@@ -45,8 +45,10 @@ class DefaultController extends Controller
 //         $sendResult = $mailer->send($message);
 //         exit;
         $params = array(
-            'pendingListingAlerts' => $pendingListingAlerts,
-            'expiredListingAlerts' => $expiredListingAlerts,
+//             'pendingListingAlerts' => $pendingListingAlerts,
+//             'expiredListingAlerts' => $expiredListingAlerts,
+                        'pendingListingAlerts' => array(),
+                        'expiredListingAlerts' => array(),
         );
 
         return $this->render('AdminBundle:Default:index.html.twig', $params);
