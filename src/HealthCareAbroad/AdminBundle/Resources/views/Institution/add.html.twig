@@ -7,89 +7,114 @@
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
             
-            {% include '::notice.admin.html.twig' %}
-
-             <form novalidate="novalidate" action="{{ path('admin_institution_add') }}" method="POST" class="form">
-
-                    <h5>Create USER account.</h5>
-                    
-                        <label for="username">email 
-                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
-                        </label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.email) }}
-                        </div>
-                        
-	                        {% if form_errors(form.email) %}
-  								<ul class="alert-error">
-	                                <li>
-                                         {{ form_errors(form.email) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                        
-                        <label for="password">password</label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.password) }}
-                        </div>
-                        
-	                        {% if form_errors(form.password) %}
-  								<ul class="alert-error">
-	                                <li>
-                                         {{ form_errors(form.password) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                        
-                        <label for="confirm_password">re-type password</label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.confirm_password) }}
-                        </div>
-                               
-	                        {% if form_errors(form.confirm_password) %}
-  								<ul class="alert-error">
-	                                <li>
-	                                         {{ form_errors(form.confirm_password) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                            
-                 
-                        <label for="institution name"><b>Name of the Institution</b></label>
-                        <div>
-                            <div class="input-prepend">
-                                {{ form_widget(form.name) }}
-                            </div>
-                    
-                          	{% if form_errors(form.name) %}
-  								<ul class="alert-error">
-	                                <li>
-                                     	{{ form_errors(form.name) }}
-	                                </li>
-				  				</ul>
-  							{% endif %}
-                            
-                        </div>
-                
-                        <label for="password">Types of Institution</label>
-                        
-                        <div id="tabs">
-                            <div id="nav">
-                                {% for key, type in institutionTypes %}
-                                <label>
-                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
-                                </label>    
-                            {% endfor %}
-                            </div>
-                        </div>
-               
-                    
-                    <input type="submit" name="Submit" value="Next" class="span12 btn-large btn-primary" />
-                    {{ form_rest(form) }}
-                </form>
+          <div class="addcenterbox">
+			 	<div class="row-fluid">
+				    <div class="span12">
+				            <div class="tabbable">
+								<!-- /.menu - tab start -->
+								        {% include '::notice.admin.html.twig' %}
+						
+								    {% include '::stepHolder.base.admin.html.twig' with {
+						                    steps: [
+						                        {title: '- Create Account', 'selected': true},
+						                        {title: '- Add Institution Details'},
+						                        
+						                 ]}
+						              %}							
+								<!-- /.menu - tab end -->
+								<!-- /.tab-content start -->
+								<div class="tab-content">
+									<div id="tabs1-pane1" class="tab-pane active">
+													
+										<form novalidate="novalidate" action="{{ path('admin_institution_add') }}" method="POST" class="form">
+					
+					                    <h5>Create USER account.</h5>
+					                    
+					                        <label for="username">email 
+					                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
+					                        </label>
+					                        
+					                        <div class="input-prepend">
+					                            {{ form_widget(form.email) }}
+					                        </div>
+					                        
+						                        {% if form_errors(form.email) %}
+					  								<ul class="alert-error">
+						                                <li>
+					                                         {{ form_errors(form.email) }}
+						                                </li>
+									  				</ul>
+						  						{% endif %}
+					                        
+					                        <label for="password">password</label>
+					                        
+					                        <div class="input-prepend">
+					                            {{ form_widget(form.password) }}
+					                        </div>
+					                        
+						                        {% if form_errors(form.password) %}
+					  								<ul class="alert-error">
+						                                <li>
+					                                         {{ form_errors(form.password) }}
+						                                </li>
+									  				</ul>
+						  						{% endif %}
+					                        
+					                        <label for="confirm_password">re-type password</label>
+					                        
+					                        <div class="input-prepend">
+					                            {{ form_widget(form.confirm_password) }}
+					                        </div>
+					                               
+						                        {% if form_errors(form.confirm_password) %}
+					  								<ul class="alert-error">
+						                                <li>
+						                                         {{ form_errors(form.confirm_password) }}
+						                                </li>
+									  				</ul>
+						  						{% endif %}
+					                            
+					                 
+					                        <label for="institution name"><b>Name of the Institution</b></label>
+					                        <div>
+					                            <div class="input-prepend">
+					                                {{ form_widget(form.name) }}
+					                            </div>
+					                    
+					                          	{% if form_errors(form.name) %}
+					  								<ul class="alert-error">
+						                                <li>
+					                                     	{{ form_errors(form.name) }}
+						                                </li>
+									  				</ul>
+					  							{% endif %}
+					                            
+					                        </div>
+					                
+					                        <label for="password">Types of Institution</label>
+					                        
+					                        <div id="tabs">
+					                            <div id="nav">
+					                                {% for key, type in institutionTypes %}
+					                                <label>
+					                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
+					                                </label>    
+					                            {% endfor %}
+					                            </div>
+					                        </div>
+					               
+					                    
+					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />
+					                    {{ form_rest(form) }}
+					                </form>
+									</div>
+								
+								</div><!-- /.tab-content end -->
+							</div>
+					    </div><!--/span 12 end-->
+					 </div><!--/row-fluid end-->
+				 </div>
+             
             {% endblock %}
         {% endembed %}
     </div>
