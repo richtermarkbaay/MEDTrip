@@ -51,13 +51,13 @@
 
                     {% for each in treatments %}
                         <tr>
-                            <td><a href="{{ path('admin_treatment_edit', {id: each.id} ) }}">{{ each.name | raw}}</a></td>
+                            <td><a href="{{ path('admin_treatment_edit', {id: each.id} ) }}">{{ each.name }}</a></td>
                             <td>{{ each.description | raw }}</td>
-                            <td>{{ each.specialization.name | raw }}</td>
+                            <td>{{ each.specialization.name }}</td>
                             <td class="procedure-type">
                                 <ul style="list-style:none;">
                                     {% for eachSub in each.subSpecializations %}
-                                        <li>{{ eachSub.name | raw}}</li>
+                                        <li>{{ eachSub.name }}</li>
                                     {% else %}
                                         <li>No sub specialization</li>
                                     {% endfor %}
