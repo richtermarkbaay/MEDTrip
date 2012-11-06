@@ -30,8 +30,9 @@
 				
 						<div class="input-prepend">
 							<div id="phone">
-								<input type="text" size="3" maxlength="3" name="area" class="span2" id="phoneArea">
-								<input type="text" size="4" maxlength="4" name="local2" class="span7" id="phoneNumber">
+								<input type="text" size="3" maxlength="3" class="span2" name="contactNumber[1][area]">
+								<input type="text" size="4" maxlength="4" class="span7" name="contactNumber[1][number]">
+								<input type="hidden" name="contactNumber[1][type]" value="phone">
 							</div>
 						</div>
 				
@@ -39,13 +40,15 @@
 					
 						<div class="input-prepend">
 							<div id="fax">
-								<input type="text" size="3" maxlength="3" name="area" class="span2" id="faxArea">
-								<input type="text" size="4" maxlength="4" name="local2" class="span7" id="faxNumber">
+								<input type="text" size="3" maxlength="3"  class="span2" name="contactNumbe qr[2][area]">
+								<input type="text" size="4" maxlength="4"  class="span7" name="contactNumber[2][number]">
+								<input type="hidden" name="contactNumber[2][type]" value="fax">
 							</div>
 						</div>
 					
 					 {{ form_row( form.facebook ) }}
  				     {{ form_row( form.twitter ) }}
+ 				     
 		  			</div>
 		  				
 	  				<div class="span6">
