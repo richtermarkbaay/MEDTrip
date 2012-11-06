@@ -1,6 +1,13 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+
+use Doctrine\ORM\Query;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use Proxies\__CG__\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 use Doctrine\ORM\EntityRepository;
@@ -164,7 +171,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->add('where','a.institution = :institution')
         ->setParameter('institution', $institutionId)
         ->orderBy('b.name', 'ASC');
-    
+
         return $qb->getQuery()->getResult();
     }
     
@@ -201,5 +208,19 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->setParameter('active_medical_procedure_type', Treatment::STATUS_ACTIVE);
     
         return $query->getResult();
+    }
+
+    public function getByInstitutionMedicalCenter($institutionMedicalCenter)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('a', 'b')
+        ->from('InstitutionBundle:InstitutionSpecialization', 'a')
+        ->leftJoin('a.treatments', 'b')
+        ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
+        ->andWhere('a.status = :status')
+        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE)
+        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter);
+        echo $qb->getQuery()->getSQL(); exit;
+        return $qb->getQuery()->getResult(Query::HYDRATE_OBJECT);
     }
 }
