@@ -44,7 +44,7 @@ class InstitutionController  extends InstitutionAwareController
 		
 		//update institution details
 		if ($request->isMethod('POST')) {
-
+	
 		    // Get contactNumbers and convert to json format
 		    $contactNumber = json_encode($request->get('contactNumber')); 
 

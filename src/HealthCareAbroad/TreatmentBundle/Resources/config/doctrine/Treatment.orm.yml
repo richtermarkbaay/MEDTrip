@@ -20,6 +20,11 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             nullable: false
             gedmo:
                 - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
         slug:
             type: string
             length: 100

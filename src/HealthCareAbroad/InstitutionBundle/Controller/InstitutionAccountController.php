@@ -32,7 +32,33 @@ class InstitutionAccountController extends Controller
 	 	));
 	 }
 	 
-	 public function createAction(){
+	 public function saveAction(){
+	 	
+	 	$request = $this->getRequest();
+	 	
+	 	//update institution details
+	 	if ($request->isMethod('POST')) {
+	 		// Get contactNumbers and convert to json format
+	 		$contactNumber = json_encode($request->get('contactNumber'));
+	 	
+	 		$form->bindRequest($request);
+	 			
+	 		if ($form->isValid()) {
+	 			 
+	 			// Set Contact Number before saving
+	 			$form->getData()->setContactNumber($contactNumber);
+	 			 
+	 			$institution = $this->get('services.institution.factory')->save($form->getData());
+	 			$this->get('session')->setFlash('notice', "Successfully updated account");
+	 	
+	 			//create event on editInstitution and dispatch
+	 			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+	 	
+	 		}
+	 	}
+	 	
+	 	
+	 	return $this->render('InstitutionBundle:Institution:editInstitution.html.twig');
 	 	
 	 }
 }

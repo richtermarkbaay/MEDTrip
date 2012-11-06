@@ -2,6 +2,25 @@ admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
 
+admin_institution_add:
+    pattern:  /admin/institution/add
+    defaults: { _controller: AdminBundle:Institution:add }
+    requirements:
+         _method: POST|GET
+         
+admin_institution_add_details:
+    pattern:  /admin/institution/add-details
+    defaults: { _controller: AdminBundle:Institution:addDetails}
+    requirements:
+         _method: GET|POST
+         
+admin_institution_saveDetails:
+    pattern:  /admin/institution/save/{id}
+    defaults: { _controller: AdminBundle:Institution:save, id: ~ }
+    requirements:
+         _method: POST
+         idd:  \d+
+
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status
     defaults: { _controller: AdminBundle:Institution:updateStatus }
