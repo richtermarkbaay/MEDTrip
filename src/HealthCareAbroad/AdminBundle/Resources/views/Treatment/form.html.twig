@@ -38,6 +38,7 @@
 						<span class="fixed-value">{{ form.vars.value.subSpecialization.name }}</span>
 					</div>
 				{% else %}
+				    {{ form_row(form.specialization) }}
 				    {{ form_row(form.subSpecialization) }}
 				{% endif %}
 
@@ -68,6 +69,23 @@
 		        EntityVersionHistory.viewHistory($(this));
 		        return false;
 		    });
+
+		    $("#treatment_specialization").change(function(event){
+			    _id = $(this).val();
+			    _subSpecializationEl = $("#treatment_subSpecialization");
+			    _subSpecializationEl.attr('disabled', true).html('<option value="0">Loading...</option>');
+			    $.ajax({
+				    url: '{{ path("admin_specialization_loadAvailableSubSpecializations") }}',
+				    data: {id: _id},
+				    type: 'get',
+				    dataType: 'json',
+				    success: function(json){
+				        _subSpecializationEl.attr('disabled', false).html(json.html);
+				    }
+			    });
+
+			    return false;
+		    }).change();
 		    
 		});
 	</script>

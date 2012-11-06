@@ -13,7 +13,11 @@ use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
+/**
+ * Service class for Treatment bundle. Accessible by services.treatment_bundle service key
+ * 
+ *
+ */
 class TreatmentBundleService
 {
     /**
@@ -74,6 +78,17 @@ class TreatmentBundleService
 
         return $qb->getQuery()->getResult();
     }
+    
+    /**
+     * Get an Specialization by Id. Apply caching here
+     * 
+     * @param int $id
+     * @return Specialization
+     */
+    public function getSpecialization($id)
+    {
+        return $this->doctrine->getRepository('TreatmentBundle:Specialization')->find($id);
+    }
 
     public function getSubSpecialization($id)
     {
@@ -123,6 +138,27 @@ class TreatmentBundleService
             $this->memcache->set($key, $result);
         }
 
+        return $result;
+    }
+    
+    /**
+     * Get all active SubSpecializations of Specialization
+     * 
+     * @param Specialization $specialization
+     */
+    public function getActiveSubSpecializationsBySpecialization(Specialization $specialization)
+    {
+        $key = 'TreatmentBundle:TreatmentService:getActiveSubSpecializationBySpecialization_'.$specialization->getId();
+        $result = $this->memcache->get($key);
+        if (!$result) {
+            $result = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')
+                ->getQueryBuilderForGettingAvailableSubSpecializations($specialization)
+                ->getQuery()
+                ->getResult();
+            
+            $this->memcache->set($key, $result);
+        }
+        
         return $result;
     }
 }
