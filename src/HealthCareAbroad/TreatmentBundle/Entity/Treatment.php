@@ -8,6 +8,7 @@ class Treatment
     const STATUS_ACTIVE = 1;
 
     const STATUS_INACTIVE = 0;
+    
     /**
      * @var integer $id
      */
@@ -36,11 +37,11 @@ class Treatment
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $subSpecialization;
+    private $subSpecializations;
 
     public function __construct()
     {
-        $this->subSpecialization = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->subSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -142,39 +143,34 @@ class Treatment
     }
 
     /**
-     * Add subSpecialization
+     * Add subSpecializations
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization
+     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations
      * @return Treatment
      */
-    public function addSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization)
+    public function addSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations)
     {
-        $this->subSpecialization[] = $subSpecialization;
+        $this->subSpecializations[] = $subSpecializations;
         return $this;
     }
 
     /**
-     * Remove subSpecialization
+     * Remove subSpecializations
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization
+     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations
      */
-    public function removeSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization)
+    public function removeSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecializations)
     {
-        $this->subSpecialization->removeElement($subSpecialization);
+        $this->subSpecializations->removeElement($subSpecializations);
     }
 
     /**
-     * Get subSpecialization
+     * Get subSpecializations
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getSubSpecialization()
+    public function getSubSpecializations()
     {
-        return $this->subSpecialization;
-    }
-    
-    public function __toString()
-    {
-        return $this->name;
+        return $this->subSpecializations;
     }
 }

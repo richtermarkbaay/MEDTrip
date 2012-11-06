@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 class TreatmentListFilter extends ListFilter
@@ -15,7 +17,7 @@ class TreatmentListFilter extends ListFilter
         parent::__construct($doctrine);
 
         // Add treatment in validCriteria
-        $this->addValidCriteria('subSpecialization');
+        $this->addValidCriteria('specialization');
     }
 
     function setFilterOptions()
@@ -28,15 +30,15 @@ class TreatmentListFilter extends ListFilter
     function setMedicalProcedureTypeFilterOption()
     {        
         // Set The Filter Option 
-        $subSpecializations = $this->doctrine->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->findByStatus(Treatment::STATUS_ACTIVE);
+        $specializations = $this->doctrine->getEntityManager()->getRepository('TreatmentBundle:Specialization')->findByStatus(Specialization::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
-        foreach($subSpecializations as $each) {
+        foreach($specializations as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['subSpecialization'] = array(
-            'label' => 'Sub-specialization',
-            'selected' => $this->queryParams['subSpecialization'],
+        $this->filterOptions['specialization'] = array(
+            'label' => 'Specialization',
+            'selected' => $this->queryParams['specialization'],
             'options' => $options
         );
     }
@@ -50,13 +52,13 @@ class TreatmentListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
         
-        if ($this->queryParams['subSpecialization'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.subSpecialization = :subSpecialization');
-            $this->queryBuilder->setParameter('subSpecialization', $this->criteria['subSpecialization']);
+        if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.specialization = :specialization');
+            $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
         }
 
-        if($this->sortBy == 'subSpecialization') {
-            $this->queryBuilder->leftJoin('a.subSpecialization', 'b');
+        if($this->sortBy == 'specialization') {
+            $this->queryBuilder->leftJoin('a.specialization', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';

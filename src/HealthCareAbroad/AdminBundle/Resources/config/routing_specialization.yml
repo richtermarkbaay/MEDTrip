@@ -35,3 +35,9 @@ admin_specialization_updateStatus:
     defaults: { _controller: AdminBundle:Specialization:updateStatus, id: ~ }
     requirements:
         id: \d+
+        
+admin_specialization_loadAvailableSubSpecializations:
+    pattern:  /admin/specialization/load-available-sub-specializations/{id}
+    defaults: { _controller: AdminBundle:Specialization:loadAvailableSubSpecializations, id: ~ }
+    requirements:
+        id: \d+        

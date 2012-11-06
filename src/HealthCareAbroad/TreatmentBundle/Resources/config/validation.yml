@@ -27,10 +27,10 @@ HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
 HealthCareAbroad\TreatmentBundle\Entity\Treatment:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [name, subSpecialization]
-            message: This sub-specialization and treatment already exist!
+            fields: [name, specialization]
+            message: This treatment already exist for selected specialization!
     properties:
         name:
             - NotBlank: ~
-        subSpecialization:
+        specialization:
             - NotBlank: ~

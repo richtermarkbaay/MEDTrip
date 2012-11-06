@@ -1,12 +1,16 @@
-{% extends 'AdminBundle::layout.html.twig' %}
+{% extends 'InstitutionBundle::layout.html.twig' %}
 {% block title %}{{ parent() }} Add Center {% endblock %}
 
 {% block content %}
 <!-- start content -->
 <div class="container">
 	<div class="maincontent">
-
-		<div class="span9">
+		<!--sidebar start-->
+			<div class="span3">
+			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
+			</div>
+	
+			<div class="span9">
 			<h2>
 			    {% set hasDraft = hasDraft is defined and hasDraft %}
 	            {% if hasDraft %}
@@ -15,7 +19,6 @@
 	                Add Medical Center
 	            {% endif %}			
 			</h2>
-
 			 <div class="addcenterbox">
 			 	<div class="row-fluid">
 				    <div class="span12">

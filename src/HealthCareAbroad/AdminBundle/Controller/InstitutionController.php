@@ -167,49 +167,49 @@ class InstitutionController extends Controller
         return $this->redirect($redirectUrl);
     }
 
-//     /**
-//      * This is the first step when creating a new institutionMedicalCenter. Add details of a institutionMedicalCenter
-//      * 
-//      * @param Request $request
-//      * @return \Symfony\Component\HttpFoundation\Response
-//      */
-//     public function addMedicalCenterAction(Request $request)
-//     {
-//         if (is_null($this->institutionMedicalCenter)) {
-//             $this->institutionMedicalCenter = new institutionMedicalCenter();
-//             $this->institutionMedicalCenter->setInstitution($this->institution);
-//         }
-//         else {
-//             // there is an imcgId in the Request, check if this is a draft
-//             if ($this->institutionMedicalCenter && !$this->service->isDraft($this->institutionMedicalCenter)) {
-//                 return $this->_redirectIndexWithFlashMessage('Invalid draft medical center', 'error');
-//             }
-//         }
+    /**
+     * This is the first step when creating a new institutionMedicalCenter. Add details of a institutionMedicalCenter
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addMedicalCenterDetailsAction(Request $request)
+    {
+        if (is_null($this->institutionMedicalCenter)) {
+            $this->institutionMedicalCenter = new institutionMedicalCenter();
+            $this->institutionMedicalCenter->setInstitution($this->institution);
+        }
+        else {
+            // there is an imcgId in the Request, check if this is a draft
+            if ($this->institutionMedicalCenter && !$this->service->isDraft($this->institutionMedicalCenter)) {
+                return $this->_redirectIndexWithFlashMessage('Invalid draft medical center', 'error');
+            }
+        }
 
-//         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
-//         if ($request->isMethod('POST')) {
-//             $form->bind($request);
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
             
-//             if ($form->isValid()) {
+            if ($form->isValid()) {
                 
-//                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-//                     ->saveAsDraft($form->getData());
+                $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+                    ->saveAsDraft($form->getData());
                 
-//                 // TODO: fire event
+                // TODO: fire event
                 
-//                 // redirect to step 2;
-//                 return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array('imcgId' => $this->institutionMedicalCenter->getId())));
-//             }
-//         }
+                // redirect to step 2;
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array('imcgId' => $this->institutionMedicalCenter->getId())));
+            }
+        }
         
-//         $params = array(
-//             'form' => $form->createView(),
-//             'institutionId' => $this->institution->getId(),
-//             'institutionMedicalCenter' => $this->institutionMedicalCenter
-//         );
+        $params = array(
+            'form' => $form->createView(),
+            'institutionId' => $this->institution->getId(),
+            'institutionMedicalCenter' => $this->institutionMedicalCenter
+        );
         
-//         return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
-//     }
+        return $this->render('AdminBundle:Institution:form.medicalCenter.html.twig', $params);
+    }
 
 //     /**
 //      * This is the second step when creating a new institutionMedicalCenter. Add specializations for specific medicalCenter 
