@@ -37,13 +37,14 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
     manyToOne:
         specialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
-            inversedBy: specializations
+            mappedBy: specialization
+            inversedBy: null
             joinColumn:
                 name: specialization_id
                 referencedColumnName: id
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            inversedBy: institutionMedicalCenters
+            inversedBy: institutionSpecializations
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id

@@ -53,7 +53,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     manyToOne:
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            inversedBy: null
+            inversedBy: institutionMedicalCenters
             joinColumn:
                 name: institution_id
                 referencedColumnName: id
