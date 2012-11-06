@@ -14,10 +14,10 @@
 			{% include '::notice.admin.html.twig' %}
 
             {% set contents = [{
-					'title': 'View all treatments', 
-					'description': 'View the list of treatment',
+					'title': 'Back to all treatments', 
+					'description': 'View the list of treatments',
 					'href': path('admin_treatment_index'), 
-					'links': [{'title': 'View procedures', 'href': path('admin_treatment_index')}]
+					'links': [{'title': 'Back to all treatments', 'href': path('admin_treatment_index')}]
 				}, 
 				{
 				    title: 'View version history',
@@ -32,14 +32,14 @@
 			
 			<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
-				{% if form.children.subSpecialization.vars.read_only %}
+				{% if form.children.subSpecializations.vars.read_only %}
 				    <div>
-						{{ form_label(form.subSpecialization) }}
-						<span class="fixed-value">{{ form.vars.value.subSpecialization.name }}</span>
+						{{ form_label(form.subSpecializations) }}
+						<span class="fixed-value">{{ form.vars.value.subSpecializations.name }}</span>
 					</div>
 				{% else %}
 				    {{ form_row(form.specialization) }}
-				    {{ form_row(form.subSpecialization) }}
+				    {{ form_row(form.subSpecializations) }}
 				{% endif %}
 
 				{{ form_row(form.name) }}
@@ -72,7 +72,7 @@
 
 		    $("#treatment_specialization").change(function(event){
 			    _id = $(this).val();
-			    _subSpecializationEl = $("#treatment_subSpecialization");
+			    _subSpecializationEl = $("#treatment_subSpecializations");
 			    _subSpecializationEl.attr('disabled', true).html('<option value="0">Loading...</option>');
 			    $.ajax({
 				    url: '{{ path("admin_specialization_loadAvailableSubSpecializations") }}',
@@ -80,7 +80,13 @@
 				    type: 'get',
 				    dataType: 'json',
 				    success: function(json){
-				        _subSpecializationEl.attr('disabled', false).html(json.html);
+					    if (json.data.length > 0) {
+					        _subSpecializationEl.attr('disabled', false).html(json.html);
+					    } 
+					    else {
+					        _subSpecializationEl.attr('disabled', true).html('<option value="0">No sub specializations</option>');
+					    }
+				        
 				    }
 			    });
 

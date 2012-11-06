@@ -40,7 +40,7 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
             inversedBy: treatments
     manyToMany:
-        subSpecialization:
+        subSpecializations:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
             cascade: {}
             mappedBy: null

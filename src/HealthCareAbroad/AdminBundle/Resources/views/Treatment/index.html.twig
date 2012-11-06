@@ -38,8 +38,11 @@
                         <th id="column-name" class="minwidth-1">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Treatment</a>
                         </th>
-                        <th id="column-subSpecialization" class="minwidth-1">
-                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'subSpecialization' ? 'sort-' ~ sortOrder : '' }}">Sub-specialization</a>
+                        <th id="column-specialization" class="minwidth-1">
+                            <a href="{{ app.request.uri }}" class="{# sortBy == 'specialization' ? 'sort-' ~ sortOrder : '' #}">Specialization</a>
+                        </th>
+                        <th>
+                            <a href="{{ app.request.uri }}" class="{# sortBy == 'subSpecializations' ? 'sort-' ~ sortOrder : '' #}">Sub-specialization</a>
                         </th>
                         <th>Status</th>
                         <th class="actions">Actions</th>
@@ -48,7 +51,16 @@
                     {% for each in treatments %}
                         <tr>
                             <td>{{ each.name }}</td>
-                            <td class="procedure-type">{{ each.subSpecialization }}</td>
+                            <td>{{ each.specialization.name }}</td>
+                            <td class="procedure-type">
+                                <ul style="list-style:none;">
+                                    {% for eachSub in each.subSpecializations %}
+                                        <li>{{ eachSub.name }}</li>
+                                    {% else %}
+                                        <li>No sub specialization</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
                             <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
                             <a href="{{ path('admin_treatment_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
