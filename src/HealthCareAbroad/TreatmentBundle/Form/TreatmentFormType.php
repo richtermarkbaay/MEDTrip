@@ -19,8 +19,8 @@ class TreatmentFormType extends AbstractType
 		$treatment = $options['data'];
 
 		$status = array(
-			Treatment::STATUS_ACTIVE => 'active',
-			Treatment::STATUS_INACTIVE => 'inactive'
+			Treatment::STATUS_ACTIVE => 'Active',
+			Treatment::STATUS_INACTIVE => 'Inactive'
 		);
 		
 		if ($treatment->getId()) {
@@ -31,10 +31,12 @@ class TreatmentFormType extends AbstractType
 		        $builder->add('subSpecialization', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
 		    }
 		    else {
+		        $builder->add('specialization', 'specialization_list');
 		        $builder->add('subSpecialization', 'subSpecialization_list');
 		    }
 		}
 		else {
+		    $builder->add('specialization', 'specialization_list');
 		    $builder->add('subSpecialization', 'subSpecialization_list');
 		}
 

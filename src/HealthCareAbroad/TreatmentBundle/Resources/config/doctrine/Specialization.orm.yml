@@ -46,6 +46,9 @@ HealthCareAbroad\TreatmentBundle\Entity\Specialization:
             gedmo:
                 - versioned
     oneToMany:
+        treatments:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
+            mappedBy: specialization
         subSpecializations:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
             mappedBy: specialization
