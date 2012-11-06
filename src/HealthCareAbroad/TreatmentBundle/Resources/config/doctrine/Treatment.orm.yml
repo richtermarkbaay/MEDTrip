@@ -35,7 +35,10 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
             nullable: false
             gedmo:
                 - versioned
-
+    manyToOne:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            inversedBy: treatments
     manyToMany:
         subSpecialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization

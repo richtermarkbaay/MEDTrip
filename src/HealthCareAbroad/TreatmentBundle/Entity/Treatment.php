@@ -29,6 +29,11 @@ class Treatment
     private $status;
 
     /**
+     * @var HealthCareAbroad\TreatmentBundle\Entity\Specialization
+     */
+    private $specialization;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $subSpecialization;
@@ -115,6 +120,28 @@ class Treatment
     }
 
     /**
+     * Set specialization
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
+     * @return Treatment
+     */
+    public function setSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization = null)
+    {
+        $this->specialization = $specialization;
+        return $this;
+    }
+
+    /**
+     * Get specialization
+     *
+     * @return HealthCareAbroad\TreatmentBundle\Entity\Specialization 
+     */
+    public function getSpecialization()
+    {
+        return $this->specialization;
+    }
+
+    /**
      * Add subSpecialization
      *
      * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization
@@ -144,5 +171,10 @@ class Treatment
     public function getSubSpecialization()
     {
         return $this->subSpecialization;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }
