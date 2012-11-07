@@ -1,0 +1,20 @@
+{% set addMediaTask = {
+    title: 'Add media',
+    isVisible: true,
+    class: 'add-icon addMediaForm',
+    description: 'Upload your media to the gallery.',
+    href: path('admin_institution_gallery_add', {institutionId: institutionId}),
+    links: [{title: 'Add media to the gallery', href: path('admin_institution_gallery_add', {institutionId: institutionId}), class: 'addMediaForm'}]}
+%}
+
+{% set dashboardTask = {
+    title: 'Jump to dashboard',
+    class: 'list-icon',
+    description: 'Go back to your dashboard',
+    href: path('admin_homepage'),
+    links: [{href: path('admin_homepage')}]}
+%}
+
+{% include '::relatedTasks.base.admin.html.twig' with
+    {'contents': [addMediaTask, dashboardTask]}
+%}

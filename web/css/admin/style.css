@@ -409,7 +409,95 @@ padding: 2px 5px;
 	    margin: -3px 3px 0 0;
 }
 
-/* Filter Result */
+/*=============== Custom CSS for temporary fixed ============= */
+
+/* jQuery UI Dialg Style */
+
+.ui-dialog {
+    border: none;
+    border-radius: 10px;
+}
+
+.ui-dialog-titlebar {
+    border: none;
+    color: #759E1A;
+    padding: 25px 10px 15px 35px;
+    background: none;
+    font-size: 15px;
+}
+
+.ui-dialog-titlebar-close {
+    top: 13px;
+    right: 15px;
+    position: absolute;
+}
+
+.ui-dialog-content {
+    border: none; 
+    padding: 5px 15px 35px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.ui-dialog-content > p {
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.ui-dialog-buttonpane {
+    border: none;
+    padding: 20px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.ui-dialog-buttonset .ui-button {
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+}
+
+.ui-widget-overlay {
+    position: fixed;
+}
+
+div.raw-content {
+    padding: 10px;
+    border: 1px solid #EEEEEE;
+}
+
+.raw-content ul,
+.raw-content ol,
+.raw-content p {
+    margin-bottom: 10px;
+}
+
+.raw-content ul,
+.raw-content ol {
+    margin-left: 30px;
+}
+
+.raw-content *:last-child {
+    margin-bottom: 0;
+}
+
+/* Override jQuery UI style */
+.ui-widget {
+    font-size: inherit;
+    font-family: inherit;
+}
+
+.ui-widget-content a {
+    color: #FFFFFF;
+}
+
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: inherit;
+}
+/* End of Override jQuery UI style */
+
+
+/* Filter Results */
 
 #filter-wrapper {
     width: 70%;
@@ -540,5 +628,21 @@ padding: 2px 5px;
 }
 /* End of Admin Custom Sidebar */
 
+
+/* Sorting Lists */
+.sortable-list th > a[class=sort-asc]:hover,
+.sortable-list th > a.sort-asc,
+.sortable-list th > a.sort-desc {
+    display: block;
+    background: url(/images/admin/table/sort_down.png) no-repeat scroll right 0 transparent;
+}
+
+
+.sortable-list th > a:hover,
+.sortable-list th > a.sort-asc {
+	display: block;
+    background: url(/images/admin/table/sort_up.png) no-repeat scroll right 5px transparent;    
+}
+/* End of Sorting Lists */
 
 
