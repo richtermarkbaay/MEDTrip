@@ -12,7 +12,7 @@
 
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
-
+ 			  {% include '::notice.admin.html.twig' %}
             {# ----- Related tasks ----- #}
             {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in this clinic or medical institution', 'href': path('admin_institution_manageCenters', {institutionId: institution.id}), 'links': [{title:'Click here to view all centers',href: path('admin_institution_manageCenters', {institutionId: institution.id})}, {title:'Click here to add center', href: path('admin_institution_medicalCenter_add', {institutionId: institution.id})}]} %}
 
@@ -41,8 +41,8 @@
                 <br />
             </div>
 
-            <a href="{{ path('admin_institution_gallery', {institutionId: institution.id} ) }}" title="View or manage gallery">Gallery</a>
-
+            <a href="{{ path('admin_institution_gallery', {institutionId: institution.id} ) }}" title="View or manage gallery">Gallery</a> |
+ 			<a href="{{ path('admin_institution_add_details', {id: institution.id} ) }}" title="Edit INstitution">Edit Institution</a>
             {% endblock %}
         {% endembed %}
     </div>

@@ -34,21 +34,26 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="procedure-type-list" class="table table-bordered sortable-list" width="100%">
+                    <table id="procedure-type-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name" width="150">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Sub-specialization</a>
                         </th>
-                        <th id="column-description" class="minwidth-1" width="250">
+                        <th id="column-description">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a>
                         </th>
-                        <th id="column-medicalCenter" class="minwidth-1" width="200">
+                        <th id="column-medicalCenter">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'specialization' ? 'sort-' ~ sortOrder : '' }}">Specialization</a>
                         </th>
-                        <th class="actions" width="120">Actions</th>
+                        <th class="actions" width="130">Actions</th>
                     </tr>
 
                     {% for each in subSpecializations %}
+                        {% if each.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
                         <tr>
                             <td>{{ each.name }}</td>
                             <td>{{ each.description }}</td>
@@ -61,8 +66,8 @@
                                 <a href="{{ path('admin_treatment_index', {treatment:each.id}) }}"><i class="icon-list"></i> View treatments</a>
                                 <br/>
                                 {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
-                                <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status">
-                                    <i class="{{ class }}"></i> {{ each.status ? 'Delete' : 'Activate' }}
+                                <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
                                 </a>
                             </td>
                         </tr>

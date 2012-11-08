@@ -33,24 +33,17 @@ abstract class Advertisement
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-    
-    /**
-     * @var int
-     */
-    protected $type;
-    
-    protected $typeLabel;
-    
-    final public function getType()
-    {
-        return $this->type;
-    }
-    
-    final public function getTypeLabel()
-    {
-    	return $this->typeLabel;
-    }
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $media;
+
+    public function __construct()
+    {
+        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -148,7 +141,6 @@ abstract class Advertisement
     {
         return $this->status;
     }
-   
 
     /**
      * Set institution
@@ -171,16 +163,7 @@ abstract class Advertisement
     {
         return $this->institution;
     }
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $media;
 
-    public function __construct()
-    {
-        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
     /**
      * Add media
      *
