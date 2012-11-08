@@ -33,7 +33,7 @@
             {% set default = sortBy | length ? '' : 'sort-asc' %}
 
             <div style="width:70%">
-                <table id="medical-procedure-list" class="table table-bordered sortable-list" width="100%">
+                <table id="medical-procedure-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Treatment</a>
