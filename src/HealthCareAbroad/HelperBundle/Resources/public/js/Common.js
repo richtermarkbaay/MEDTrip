@@ -198,10 +198,14 @@ $(function(){
 			}
 		}, "json");
 	});	
-	
-	
+
 	$('.dropdown-toggle').click(function(){
 		$('ul.dropdown-menu').hide();
 		$(this).next('ul.dropdown-menu').toggle();
 	});
+	
+	
+	$('#main-content').click(function(){
+		$('#main-nav .dropdown-menu, #right-nav .dropdown-menu').hide();		
+	})
 });
