@@ -26,18 +26,5 @@ HealthCareAbroad\UserBundle\Entity\AdminUserRole:
     manyToMany:
         adminUserTypes:
             targetEntity: HealthCareAbroad\UserBundle\Entity\AdminUserType
-            cascade: {  }
-            mappedBy: null
-            inversedBy: adminUserRoles
-            joinTable:
-                name: admin_user_type_roles
-                joinColumns:
-                    -
-                        name: admin_user_role_id
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    -
-                        name: admin_user_type_id
-                        referencedColumnName: id
-            orderBy: null
+            mappedBy: adminUserRoles
     lifecycleCallbacks: {  }
