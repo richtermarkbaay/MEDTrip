@@ -20,12 +20,12 @@
             {% set default = sortBy | length ? '' : 'sort-asc' %}
             
             <div>
-                <table class="table table-bordered">
+                <table class="table table-bordered sortable-list">
                 <tr>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                     <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
                     <th>Status</th>
-                    <th width="200" class="actions">Actions</th>
+                    <th width="130">Actions</th>
                 </tr>
 
                 {% for institution in institutions %}
@@ -35,11 +35,12 @@
                         <td class="status">{{ statusList[institution.status] }}</td>
                         <td>
                             <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> 
-                            &nbsp; 
+                            <br/>
                             <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status
                             </a>
-                            <a href="{{ path('admin_institution_add_details', {id:institution.id} ) }}" ><i class="icon-pencil"></i> Edit INstitution</a>
+                            <br/>
+                            <a href="{{ path('admin_institution_add_details', {id:institution.id} ) }}" ><i class="icon-pencil"></i> Edit institution</a>
                     </tr>
                 {% else  %}
                     <tr><td class="empty-list" colspan="4">No records yet!</td></tr>

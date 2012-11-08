@@ -14,55 +14,37 @@
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-        
-            <table style="width:100%;">
-                <tr>
-                    <td style="vertical-align: top; ">
-            			<!--  start table-content  -->
-            			<div id="table-content">
-            			
-            			    {% include '::notice.admin.html.twig' %}
-            			
-            			    <table style="width:100%;" class="generic-table" id="table-list">
-                				<tr>
-                				    <th class="table-header-check"></th>
-                					<th class="minwidth-1"> <a href="#">Full name</a></th>
-                					<th class="minwidth-1"> <a href="#">Email</a></th>
-                					<th class="minwidth-1"> <a href="#">User type</a></th>
-                					<th><a href="#">Options</a> </th>
-                				</tr>
-                				
-                				
-                				{% for user in users %}
-                				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                				        <td></td>
-                    					<td>{{ user.fullName | title }}</td>
-                    					<td>{{ user.email }}</td>
-                    					<td>{{ user.adminUserType.name | title }}</td>
-                    					<td class="options-width">
-                    					    
-                    					</td>
-                    				</tr>
-                    				    
-                				{% endfor %}
-                				
-            				</table>
-            				<!--  end table-list................................... --> 
-            			</div>
-            			<!--  end table-content  -->
-        			</td>
-    			<td style="vertical-align: top; width: 20%">
-    			    {% block related_tasks %}
-    			        {% include 'AdminBundle:AdminUser:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
-    			    {% endblock %}
-    			</td>
-			</tr>
-		</table>
-        {% endblock %}
-        
-    {% endembed %}
 
+            {% include '::notice.admin.html.twig' %}
+        
+		    {% block related_tasks %}
+		        {% include 'AdminBundle:AdminUser:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
+		    {% endblock %}
+
+			<div id="table-content" style="width: 70%">
+
+			    {% include '::notice.admin.html.twig' %}
+			
+			    <table class="table table-bordered sortable-list">
+    				<tr>
+    					<th class="minwidth-1"> <a href="#">Full name</a></th>
+    					<th class="minwidth-1"> <a href="#">Email</a></th>
+    					<th class="minwidth-1"> <a href="#">User type</a></th>
+    					<th><a href="#">Options</a> </th>
+    				</tr>
+    				{% for user in users %}
+    				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+        					<td>{{ user.fullName | title }}</td>
+        					<td>{{ user.email }}</td>
+        					<td>{{ user.adminUserType.name | title }}</td>
+        					<td class="options-width">
+        					</td>
+        				</tr>
+    				{% endfor %}
+				</table> 
+			</div>
+        {% endblock %}
+    {% endembed %}
 </div>
 <!--  end content -->
-<div class="clear">&nbsp;</div>
 {% endblock %}
