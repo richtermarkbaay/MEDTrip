@@ -157,7 +157,9 @@ class AdminUserController extends Controller
      */
     public function indexAction()
     {
+        //$users = $this->filteredResult;
         $users = $this->get('services.admin_user')->getActiveUsers();
+ 
         return $this->render('AdminBundle:AdminUser:index.html.twig', array(
             'users' => $users
         ));

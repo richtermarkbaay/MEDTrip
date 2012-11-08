@@ -33,7 +33,7 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="specialization-list" class="table table-bordered sortable-list" width="100%">
+                    <table id="specialization-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
@@ -46,6 +46,11 @@
                     </tr>
 
                     {% for each in specializations %}
+                        {% if each.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
                         <tr>
                             <td>{{ each.name }}</td>
                             <td>{{ each.description }}</td>
@@ -57,8 +62,8 @@
                                 <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}"><i class="icon-list"></i> View Treatments</a>
                                 <br/>
                                 {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
-                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status">
-                                    <i class="{{ class }}"></i> {{ each.status ? 'Delete' : 'Activate' }}
+                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
                                 </a>
                             </td>
                         </tr>

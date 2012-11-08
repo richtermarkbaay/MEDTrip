@@ -32,21 +32,28 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="country-list" class="generic-table sortable-list" width="100%">
+                    <table id="country-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                         <th>Status</th>
-                        <th class="actions" width="200">Action</th>
+                        <th class="actions" width="150">Action</th>
                     </tr>
 
                     {% for country in countries %}
+                        {% if country.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
                         <tr>
                             <td>{{ country.name }}</td>
                             <td>{{ country.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
-                                <a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = country.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ country.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_country_edit', {id:country.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
+                                &nbsp;
+                                <a href="{{ path('admin_country_updateStatus', {id:country.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
+                                </a>
                             </td>
                         </tr>
                     {% else  %}

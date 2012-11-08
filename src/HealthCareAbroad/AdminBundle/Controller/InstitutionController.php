@@ -45,7 +45,6 @@ class InstitutionController extends Controller
     protected $institutionMedicalCenter;
     protected $institutionSpecialization;
 
- 	
     function preExecute() 
     {
         $request = $this->getRequest();
@@ -94,14 +93,16 @@ class InstitutionController extends Controller
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
     }
     
+    /**
+     * Add new User and Institution
+     * @author Chaztine Blance
+     */
     public function addAction(Request $request){
     
     	$institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
     
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createByType($institutionType);
-    	
-    	//$form = $this->createForm(new InstitutionCreateFormType(), $institution);
     	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
 		
@@ -117,7 +118,6 @@ class InstitutionController extends Controller
 	    			$institution->setAddress2('');
 	    			$institution->setContactEmail('');
 	    			$institution->setContactNumber('');
-	    			$institution->setDescription('');
 	    			$institution->setLogo('');
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
@@ -155,6 +155,11 @@ class InstitutionController extends Controller
     	 
     }
     
+    /**
+     * Add Institution Details
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function addDetailsAction(Request $request){
     	
     	$id = $request->get('id', null);
@@ -185,35 +190,25 @@ class InstitutionController extends Controller
     	 
     	$form = $this->createForm(new InstitutionFormType(), $institution);
     	
-    	//update institution details
+    	//add institution details
     	if ($request->isMethod('POST')) {
-    		// Get contactNumbers and convert to json format
-    		$contactNumber = json_encode($request->get('contactNumber'));
-    		$websites = json_encode($request->get('website'));
-    		 
+
     		$form->bindRequest($request);
     			
     		if ($form->isValid()) {
-    	
-    			// Set Contact Number before saving
-    			$form->getData()->setContactNumber($contactNumber);
-    			$form->getData()->setWebsites($websites);
-    	
+
     			$institution = $this->get('services.institution.factory')->save($form->getData());
-    			$this->get('session')->setFlash('notice', "Successfully updated account");
+    			$this->get('session')->setFlash('notice', "Successfully added");
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     			 
     		}
     	}
-    	return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
-    					'form' => $form->createView(),
-    					'institution' => $institution,
-    					'id' => $id
-    	));
+
+    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $id)));
+    	 
     }
-    
     
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")

@@ -25,8 +25,8 @@ class AdminUserRoleController extends Controller
      */
     public function indexAction()
     {
-        $userRoles = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole')->getAssignablePermissions();
-
+        //$userRoles = $this->getDoctrine()->getRepository('UserBundle:AdminUserRole')->getAssignablePermissions();
+        $userRoles = $this->filteredResult;
         return $this->render('AdminBundle:AdminUserRole:index.html.twig', array(
             'userRoles' => $userRoles
         ));
