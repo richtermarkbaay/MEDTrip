@@ -203,7 +203,7 @@ class Specialization
     /**
      * Get treatments
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getTreatments()
     {

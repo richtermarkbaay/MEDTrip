@@ -27,12 +27,17 @@
 
 			    <table class="table table-bordered sortable-list" id="table-list">
 				<tr>
-					<th><a href="#">User type</a></th>
-					<th><a href="#">Permissions</a></th>
-					<th>Actions</th>
+					<th id="column-name"><a href="{{ app.request.uri }}" class="{{ 'sort-' ~ app.request.get('sortOrder', 'asc') }}">User type</a></th>
+					<th>Permissions</th>
+					<th width="150">Actions</th>
 				</tr>
 
 				{% for userType in userTypes %}
+                    {% if userType.status %}
+                        {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                    {% else %}
+                        {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                    {% endif %}
 				    <tr>
     					<td>{{ userType.name | title }}</td>
     					<td>
@@ -46,7 +51,8 @@
         					<a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}">
         					    <i class="icon-edit"></i> Edit
                             </a>
-        					<a href="#" title="Delete"></a>
+                            &nbsp;
+        					<a href="#" title="{{ statusLabel }}"><i class="{{ class }}"></i> <span>{{ statusLabel }}</span></a>
     					</td>
     				</tr>
 				{% endfor %}

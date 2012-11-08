@@ -14,53 +14,38 @@
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
-        
-            <table style="width:100%;">
-                <tr>
-                    <td style="vertical-align: top; ">
-            			<!--  start table-content  -->
-            			<div id="table-content">
-            			
-            			    {% if app.session.hasFlash('notice') %}
-            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-            		        {% endif %}
-            			
-            			    <table style="width:100%;" class="generic-table" id="table-list">
-                				<tr>
-                				    <th class="minwidth-1"> <a href="#">Permission</a></th>
-                				    <th class="minwidth-1"> <a href="#">Linked user types</a></th>
-                				</tr>
-                				
-                				{% for userRole in userRoles %}
-                				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                				        <td>{{ userRole.label | title }}</td>
-                				        <td>
-                				            <ul style="list-style:none; padding: 0 15px;">
-                    					        {% for userType in userRole.adminUserTypes %}
-                    					        <li> <a href="{{ path('admin_userRole_viewByUserType', {'id': userType.id}) }}">{{ userType.name | title }}</a></li>
-                    					        {% endfor %}
-                    					    </ul>
-                				        </td>
-                    				</tr>
-                				{% endfor %}
-                				
-            				</table>
-            				<!--  end table-list................................... --> 
-            			</div>
-            			<!--  end table-content  -->
-        			</td>
-    			<td style="vertical-align: top; width: 20%">
-    			    {% block related_tasks %}
-    			        {% include 'AdminBundle:AdminUserRole:relatedTasks.html.twig' %}
-    			    {% endblock %}
-    			</td>
-			</tr>
-		</table>
-        {% endblock %}
-        
-    {% endembed %}
 
+            {% include '::notice.admin.html.twig' %}
+            
+		    {% block related_tasks %}
+		        {% include 'AdminBundle:AdminUserRole:relatedTasks.html.twig' %}
+		    {% endblock %}
+
+			<div id="table-content" style="width:70%">
+			    <table class="table table-bordered sortable-list">
+    				<tr>
+    				    <th width="200" id="column-label"><a href="{{ app.request.uri }}" class="{{ 'sort-' ~ app.request.get('sortOrder', 'asc') }}">Permission</a></th>
+    				    <th> <a href="#">Linked user types</a></th>
+    				</tr>
+
+    				{% for userRole in userRoles %}
+				    <tr>
+				        <td>{{ userRole.label | title }}</td>
+				        <td>
+				            <ul style="list-style:none; padding: 0 15px;">
+    					        {% for userType in userRole.adminUserTypes %}
+    					        <li> <a href="{{ path('admin_userRole_viewByUserType', {'id': userType.id}) }}">{{ userType.name | title }}</a></li>
+    					        {% endfor %}
+    					    </ul>
+				        </td>
+    				</tr>
+    				{% endfor %}
+				</table>
+				<!--  end table-list................................... --> 
+			</div>
+        {% endblock %}
+    {% endembed %}
 </div>
 <!--  end content -->
-<div class="clear">&nbsp;</div>
+
 {% endblock %}
