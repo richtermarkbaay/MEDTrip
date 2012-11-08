@@ -3,7 +3,7 @@
 namespace HealthCareAbroad\HelperBundle\Form;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
@@ -31,15 +31,15 @@ class InstitutionFormType extends AbstractType
     	$builder->addEventSubscriber($subscriber);
     	 
     	$countryId = ($country = $builder->getData()->getCountry()) ? $country->getId() : 0;
-
+    	$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
     	$builder->add('zipCode', 'number', array('label' => 'Zip Code'));
     	$builder->add('state', 'text');
     	$builder->add('address1', 'text', array('label' => 'Address'));  	
   
-    	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
-    	
+    	$builder->add('contactEmail', 'text', array('constraints' => array( new Email() ),'label' => 'Contact Email'));
+    		
     }
     
     public function getName()

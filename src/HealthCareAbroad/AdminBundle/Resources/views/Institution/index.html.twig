@@ -39,6 +39,7 @@
                             <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status
                             </a>
+                            <a href="{{ path('admin_institution_add_details', {id:institution.id} ) }}" ><i class="icon-pencil"></i> Edit INstitution</a>
                     </tr>
                 {% else  %}
                     <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
