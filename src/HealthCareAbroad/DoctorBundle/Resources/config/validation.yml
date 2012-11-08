@@ -1,0 +1,13 @@
+HealthCareAbroad\DoctorBundle\Entity\Doctor:
+    properties:
+        firstName:
+            - NotBlank: ~
+        middleName:
+            - NotBlank: ~
+        lastName:
+            - NotBlank: ~
+        contactEmail:
+            - NotBlank: ~
+            - Email: ~
+        contactNumber:
+            - NotBlank: ~

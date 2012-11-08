@@ -1,5 +1,5 @@
 admin_doctor_index:
-    pattern: /admin/doctor
+    pattern: /admin/doctors
     defaults: {_controller: AdminBundle:Doctor:index}
     requirements:
         method: GET

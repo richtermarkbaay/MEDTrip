@@ -236,6 +236,8 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `first_name` char(250) NOT NULL,
   `middle_name` char(250) NOT NULL,
   `last_name` char(250) NOT NULL,
+  `contact_email` varchar(100) NOT NULL,
+  `contact_number` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
@@ -245,9 +247,9 @@ CREATE TABLE IF NOT EXISTS `doctors` (
 -- Dumping data for table `doctors`
 --
 
-INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `date_created`, `status`) VALUES
-(1, 'Alnie', 'Leones', 'Jacobes', '2012-09-27 08:58:06', 1),
-(2, 'chaz', 'veloso', 'blance', '2012-09-28 01:00:53', 1);
+INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `contact_email`, `contact_number`, `date_created`, `status`) VALUES
+(1, 'Alnie', 'Leones', 'Jacobes', 'leons@test.com', '123123', '2012-09-27 08:58:06', 1),
+(2, 'chaz', 'veloso', 'blance', 'blance@test.com', '321312', '2012-09-28 01:00:53', 1);
 
 -- --------------------------------------------------------
 

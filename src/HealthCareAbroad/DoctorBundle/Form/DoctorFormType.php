@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\DoctorBundle\Form;
 
+use HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +23,10 @@ class DoctorFormType extends AbstractType
     	$builder
      		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
      		->add('middleName', 'text', array('label' => 'Middle name'))
-     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()));
+     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()))
+    	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true))
+    	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
+    	    ->add('contactNumber', 'hidden', array('label' => 'Contact Number'));
     }
     
     public function getName()

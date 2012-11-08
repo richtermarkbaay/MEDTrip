@@ -23,6 +23,7 @@ class DoctorController extends Controller
     
     public function editAction(Request $request)
     {
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findAll();
         
         if($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
@@ -35,7 +36,6 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
-        
         $form = $this->createForm(new DoctorFormType(), $doctor);
     
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -50,18 +50,19 @@ class DoctorController extends Controller
     */
     public function saveAction(Request $request)
     {
-        
         if ($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
             if (!$doctor) {
                 throw $this->createNotFoundException("Invalid doctor.");
             }
             $msg = "Successfully updated account";
+            $title = 'Edit Doctor Details';
         }
         else {
             $doctor = new Doctor();
             $doctor->setStatus(Doctor::STATUS_ACTIVE);
             $msg = "Successfully added doctor";
+            $title = 'Add Doctor Details';
         }
         
         $form = $this->createForm(new DoctorFormType(), $doctor);
@@ -69,20 +70,28 @@ class DoctorController extends Controller
             $form->bindRequest($this->getRequest());
 
             if($form->isValid()) {
-
+                // Get contactNumbers and convert to json format
+                $contactNumber = json_encode($request->get('contactNumber'));
+                
+                $doctor->setContactNumber($contactNumber);
                 $em = $this->getDoctrine()->getEntityManager();
+//                 var_dump($doctor);exit;
                 $em->persist($doctor);
                 $em->flush();
 
                 if ($doctor) {
                     $this->get('session')->setFlash('success', $msg);
-                    
+                    return $this->redirect($this->generateUrl('admin_doctor_index'));
                 } else {
                     $this->get('session')->setFlash('error', "Unable to update account");
                 }
             }
         }
-        return $this->redirect($this->generateUrl('admin_doctor_index'));
+        return $this->render('AdminBundle:Doctor:edit.html.twig', array(
+                        'doctor' => $doctor,
+                        'form' => $form->createView(),
+                        'title' => $title
+        ));
 
     }
 }
