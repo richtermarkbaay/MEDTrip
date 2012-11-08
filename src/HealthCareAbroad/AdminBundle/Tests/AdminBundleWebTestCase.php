@@ -44,8 +44,10 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	public function setUp()
 	{
 		$this->formValues = array(
-				'userLogin[email]' => $this->userEmail,
-				'userLogin[password]' => $this->userPassword
+// 				'userLogin[email]' => $this->userEmail,
+// 				'userLogin[password]' => $this->userPassword
+		    '_username' => $this->userEmail,
+            '_password' => $this->userPassword
 		);	
 	}
 	
