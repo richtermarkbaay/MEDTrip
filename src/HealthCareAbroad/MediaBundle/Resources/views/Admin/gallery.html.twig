@@ -19,75 +19,75 @@
             {% include 'MediaBundle:Admin:relatedTasksGallery.html.twig' %}
             {# ----- end Related tasks ----- #}
 
-                <!--  start table-content  -->
-                <div id="table-content" style="width:75%;">
-                    {% include '::notice.admin.html.twig' %}
+            <!--  start table-content  -->
+            <div id="table-content" style="width:74%;">
+                {% include '::notice.admin.html.twig' %}
 
-                    <div id="filter-wrapper" style="width: 100%;">
-                        <span class="caption">Search</span>
-                        <div style="float: left">
-                            <input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
-                        </div>
-                        <div>
-                            <label>Media type: </label>
-                            <select class="styledselect_form_1">
-                                <option value="1">All</option>
-                                <option value="2">Images</option>
-                                <option value="3">Videos</option>
-                                <option value="4">Pdfs</option>
-                            </select>
-                        </div>
-                        <a href="#" class="button-type">GO</a>
+                <div id="filter-wrapper" style="width: 100%;">
+                    <span class="caption">Search</span>
+                    <div style="float: left">
+                        <input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
                     </div>
-
-                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
-                        <thead>
-                            <tr>
-                                <td colspan="4">
-                                    <div style="float: right;">
-                                        {% if institutionMedia.isPaginable %}
-                                            {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    <div style="float: right">
-                                        {% if institutionMedia.isPaginable %}
-                                            {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-
-                        {% set mediaCount = 0 %}
-                        {% for media in institutionMedia %}
-
-                            {% if (loop.index - 1) % 4 == 0 %}
-                                {% set mediaCount = 1 %}
-                                <tr>
-                            {% else %}
-                                {% set mediaCount = mediaCount + 1 %}
-                            {% endif %}
-
-                                    <td valign="top">{{ media(media, 'gallery', {'institutionId': institutionId}) | raw }}</td>
-
-                            {% if mediaCount == 4 %}
-                                </tr>
-                            {% endif %}
-
-                        {% else %}
-                            <tr class="">
-                                <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
-                            </tr>
-                        {% endfor %}
-
-                    </table>
+                    <div>
+                        <label>Media type: </label>
+                        <select class="styledselect_form_1">
+                            <option value="1">All</option>
+                            <option value="2">Images</option>
+                            <option value="3">Videos</option>
+                            <option value="4">Pdfs</option>
+                        </select>
+                    </div>
+                    <a href="#" class="button-type">GO</a>
                 </div>
+
+                <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+                    <thead>
+                        <tr>
+                            <td colspan="4">
+                                <div style="float: right; margin-right: 10px">
+                                    {% if institutionMedia.isPaginable %}
+                                        {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">
+                                <div style="float: right; margin-right: 10px">
+                                    {% if institutionMedia.isPaginable %}
+                                        {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    </tfoot>
+
+                    {% set mediaCount = 0 %}
+                    {% for medium in institutionMedia %}
+
+                        {% if (loop.index - 1) % 4 == 0 %}
+                            {% set mediaCount = 1 %}
+                            <tr>
+                        {% else %}
+                            {% set mediaCount = mediaCount + 1 %}
+                        {% endif %}
+
+                                <td valign="top">{{ media(medium, 'gallery', {'institutionId': institutionId}) | raw }}</td>
+
+                        {% if mediaCount == 4 %}
+                            </tr>
+                        {% endif %}
+
+                    {% else %}
+                        <tr class="">
+                            <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
+                        </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
 
         {% endblock %}
 

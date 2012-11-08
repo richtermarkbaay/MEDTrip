@@ -32,51 +32,9 @@ class AdminController extends Controller
         $institutionId = $request->getSession()->get('institutionId');
 
         return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
-                'institutionId' => $institutionId
+                'institutionId' => $institutionId,
+                'multiUpload' => $request->get('multiUpload')
         ));
-    }
-
-    //TODO: refactor
-    public function uploadAction(Request $request)
-    {
-        $response = new Response();
-
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $fileBag = $request->files;
-
-        if ($fileBag->has('file')) {
-            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
-
-            return $response->create('Error code: '.$errorCode);
-
-        } else {
-
-            return $response->create('File not detected', 415);
-        }
-    }
-
-    public function deleteAction(Request $request)
-    {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $success = $this->get('services.media')->delete($request->get('id'), $institutionId);
-
-        return new Response($success);
-    }
-
-    public function editCaptionAction(Request $request)
-    {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $media = $this->get('services.media')->editMediaCaption($request->get('id'), $institutionId, $request->get('caption'));
-
-        $response = 0;
-        if ($media) {
-            $response = $media->getId();
-        }
-
-        return new Response($response);
     }
 
     public function ajaxLoadMedicalCenterMediaAction(Request $request)
