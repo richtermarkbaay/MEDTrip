@@ -1,3 +1,21 @@
+# ADMIN INSTITUTION ROUTES
+admin_institution_gallery:
+    pattern: /admin/institution/{institutionId}/gallery/{page}
+    defaults: { _controller: MediaBundle:Admin:gallery, page: 1 }
+    requirements:
+        _method: GET
+        institutionId: \d+
+        page: \d+
+
+admin_institution_gallery_add:
+    pattern: /admin/institution/{institutionId}/gallery/add
+    defaults: { _controller: MediaBundle:Admin:add }
+    requirements:
+        _method: GET
+        institutionId: \d+
+
+# END ADMIN INSTITUTION ROUTES
+
 institution_gallery:
     pattern: /institution/gallery/{page}
     defaults: { _controller: MediaBundle:Default:gallery, page: 1 }
@@ -23,13 +41,13 @@ media_upload_medicalCenter:
     requirements:
         _method: POST
         imcId: \d+
-        
+
 media_ajaxLoad_advertisement:
     pattern: /media/load-advertisement-media/{aId}
     defaults: { _controller: MediaBundle:Default:ajaxLoadAdvertisementMedia }
     requirements:
         aId: \d+
-        
+
 media_ajaxLoad_medicalCenter:
     pattern: /media/load-medical-center-media/{imcId}
     defaults: { _controller: MediaBundle:Default:ajaxLoadMedicalCenterMedia }

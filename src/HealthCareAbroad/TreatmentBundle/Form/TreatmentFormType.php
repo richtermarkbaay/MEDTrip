@@ -43,8 +43,7 @@ class TreatmentFormType extends AbstractType
 
 		$builder->add('name');
 		$builder->add('description', 'textarea', array(
-            'label' => 'Details',
-            'attr' => array('class'=>'tinymce')
+            'label' => 'Details'
         ));
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
