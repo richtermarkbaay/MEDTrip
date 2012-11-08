@@ -207,9 +207,10 @@ class InstitutionController extends Controller
     			 
     		}
     	}
+
     	return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
     					'form' => $form->createView(),
-    					'institution' => $institution,
+    					'institution' => $form->getData(),
     					'id' => $id
     	));
     }
