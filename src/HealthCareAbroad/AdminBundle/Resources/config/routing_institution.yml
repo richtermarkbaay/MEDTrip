@@ -37,52 +37,7 @@ admin_institution_view:
          institutionId: \d+
          _method: GET
 
-# Manage Centers #
-admin_institution_manageCenters:
-    pattern:  /admin/institution/{institutionId}/manage-centers
-    defaults: { _controller: AdminBundle:Institution:manageCenters }
-    requirements:
-         institutionId: \d+
 
-admin_institution_medicalCenter_add:
-    pattern:  /admin/institution/{institutionId}/medical-center/add/details
-    defaults: { _controller: AdminBundle:Institution:addMedicalCenterDetails }
-    requirements:
-        institutionId: \d+
-        _method: GET
-
-admin_institution_medicalCenter_create:
-    pattern:  /admin/institution/{institutionId}/medical-center/add
-    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
-    requirements:
-        institutionId: \d+
-        _method: POST
-
-admin_institution_medicalCenter_edit:
-    pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
-    defaults: { _controller: AdminBundle:Institution:editMedicalCenter }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: GET
-
-admin_institution_medicalCenter_update:
-    pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
-    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
-
-admin_institution_medicalCenter_updateStatus:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status
-    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        status: \d+
-        _method: POST
-# End of Manage Centers Routes #
 
 
 # Manage Procedure Types Routes #

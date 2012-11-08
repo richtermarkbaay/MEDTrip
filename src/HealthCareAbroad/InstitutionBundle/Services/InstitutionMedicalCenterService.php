@@ -10,6 +10,11 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
+/**
+ * Service class for InstitutionMedicalCenter. Accessible by services.institution_medical_center service id
+ * 
+ * @author Allejo Chris G. Velarde
+ */
 class InstitutionMedicalCenterService
 {
     /**
@@ -20,6 +25,17 @@ class InstitutionMedicalCenterService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    /**
+     * Layer to Doctrine find by id. Apply caching here.
+     * 
+     * @param int $id
+     * @return InstitutionMedicalCenter
+     */
+    public function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
     }
     
     /**

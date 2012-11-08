@@ -150,4 +150,12 @@ abstract class AdminBundleWebTestCase extends WebTestCase
 	    $location = $this->getLocationResponseHeader($client);
 	    return $location == '/admin/login' || $location == 'http://localhost/admin/login';
 	}
+	
+	protected function commonTestForInvalidMethodRequests($client, $uri, $invalidMethods=array())
+	{
+	    foreach ($invalidMethods as $method) {
+	        $client->request($method, $uri);
+	        $this->assertEquals(405, $client->getResponse()->getStatusCode());
+	    }
+	}
 }
