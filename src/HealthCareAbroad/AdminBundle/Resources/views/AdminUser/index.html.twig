@@ -23,14 +23,12 @@
 
 			<div id="table-content" style="width: 70%">
 
-			    {% include '::notice.admin.html.twig' %}
-			
 			    <table class="table table-bordered sortable-list">
     				<tr>
-    					<th class="minwidth-1"> <a href="#">Full name</a></th>
-    					<th class="minwidth-1"> <a href="#">Email</a></th>
-    					<th class="minwidth-1"> <a href="#">User type</a></th>
-    					<th><a href="#">Options</a> </th>
+    					<th>Full Name</th>
+    					<th>Email</th>
+    					<th>User type</th>
+    					<th>Options</th>
     				</tr>
     				{% for user in users %}
     				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">

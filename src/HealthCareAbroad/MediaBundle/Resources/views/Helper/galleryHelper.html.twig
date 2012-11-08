@@ -1,12 +1,14 @@
 <div style="position:relative; margin-bottom: 5px">
     <div style="position:absolute; top: 5px; left: 150px">
-        <a name="link_delete{{ media.id }}" id="link_delete{{ media.id }}" class="icon-2 attached-delete-form" title="Delete" href="#" style="margin-right: 0px;"></a>
+        <a name="link_delete{{ media.id }}" id="link_delete{{ media.id }}" class="icon-2 attached-delete-form" title="Delete" href="#" style="margin-right: 0px;">
+            <i class="icon-remove"></i>
+        </a>
     </div>
-    
+
     <a class="fancybox" rel="gallery" {% if options.fancybox.useIFrame %}data-fancybox-type="iframe"{% endif %} href="{{ src }}" title="{{ media.caption }}">
         <img src="{{ src }}" width="180px" height="160px" alt="Media" />
-    </a>    
-    
+    </a>
+
     <div class="clear"></div>
 </div>
 
