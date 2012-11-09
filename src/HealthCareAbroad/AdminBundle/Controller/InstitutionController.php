@@ -25,7 +25,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationFormType
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
-use HealthCareAbroad\HelperBundle\Form\InstitutionFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileType;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
@@ -82,11 +82,9 @@ class InstitutionController extends Controller
      */
     public function addAction(Request $request){
     
-    	$institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
-    
+    	$institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);   
     	$factory = $this->get('services.institution.factory');
-    	$institution = $factory->createByType($institutionType);
-    	
+    	$institution = $factory->createByType($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
 		
 	    	if ($request->isMethod('POST')) {
@@ -101,6 +99,7 @@ class InstitutionController extends Controller
 	    			$institution->setAddress2('');
 	    			$institution->setContactEmail('');
 	    			$institution->setContactNumber('');
+	    			$institution->setDescription('');
 	    			$institution->setLogo('');
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
@@ -123,9 +122,7 @@ class InstitutionController extends Controller
 	    							$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
     							));
 	    	
-	    			$institutionId = $institution->getId();	 
-	    	
-	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('id' => $institutionId)));
+	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('id' => $institution->getId())));
 
 	    		}
 	    	}
@@ -135,7 +132,6 @@ class InstitutionController extends Controller
     					'institutionTypes' => InstitutionTypes::getList(),
     					'selectedInstitutionType' => $institutionType,
     	));
-    	 
     }
     
     /**
@@ -146,10 +142,9 @@ class InstitutionController extends Controller
     public function addDetailsAction(Request $request){
     	
     	$id = $request->get('id', null);
-
     	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
     	
-	    $form = $this->createForm(new InstitutionFormType(), $institution);
+	    $form = $this->createForm(new InstitutionProfileType(), $institution, array('profile_type' => false));
 	    	
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
@@ -165,13 +160,11 @@ class InstitutionController extends Controller
      */
     public function saveAction(){
     	
-    	$request = $this->getRequest();
-    	
-    	$id = $request->get('id', null);
-    	
+    	$request = $this->getRequest();   	
+    	$id = $request->get('id', null);  	
     	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
     	 
-    	$form = $this->createForm(new InstitutionFormType(), $institution);
+    	$form = $this->createForm(new InstitutionProfileType(), $institution, array('profile_type' => false));
     	
     	//add institution details
     	if ($request->isMethod('POST')) {

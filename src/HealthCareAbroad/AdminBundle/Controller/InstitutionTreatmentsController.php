@@ -6,6 +6,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -169,6 +170,7 @@ class InstitutionTreatmentsController extends Controller
     
         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
     
+
         return $this->redirect($redirectUrl);
     }
 
@@ -209,5 +211,29 @@ class InstitutionTreatmentsController extends Controller
         
         return $this->render('AdminBundle:InstitutionTreatments:form.specialization.html.twig', $params);   
     }
-    
+
+    /**
+     * Add specialization and treatments to an institution medical center
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addInstitutionTreatmentsAction()
+    {
+        $service = $this->get('services.institution_medical_center');
+        // this should only be accessed by draft
+        if (!$service->isDraft($this->institutionMedicalCenter)) {
+            $this->request->getSession()->setFlash('error', 'Invalid medical center draft.');
+            
+            // return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
+        }
+        
+        $institutionSpecialization = new InstitutionSpecialization();
+        
+        $params = array(
+            'institutionMedicalCenter' => $this->institutionMedicalCenter
+        );
+        
+        return $this->render('AdminBundle:InstitutionTreatments:addInstitutionTreatments', $params);
+    }
+
 }

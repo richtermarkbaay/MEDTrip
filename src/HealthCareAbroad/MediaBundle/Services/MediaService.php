@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use Doctrine\ORM\UnitOfWork;
+
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
 
 use Doctrine\ORM\QueryBuilder;
@@ -167,13 +169,16 @@ class MediaService
         $media = $this->retrieveMedia($mediaId, $institutionId);
 
         if ($media) {
-            try {
+
                 $this->entityManager->remove($media);
-                $this->entityManager->flush($media);
-                $success = 1;
-            } catch(\Exception $e) {
-                var_dump($e);
-            }
+
+                try {
+
+                    $this->entityManager->flush();
+                    $success = 1;
+                } catch(\Exception $e) {
+                    var_dump($e);
+                }
         }
 
         return $success;

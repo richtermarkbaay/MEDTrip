@@ -16,7 +16,7 @@ abstract class Institution
 
     /**
      * @var string $name
-     * @ORM\Column(unique=true) 
+     * @ORM\Column(unique=true)
      */
     private $name;
 
@@ -34,7 +34,7 @@ abstract class Institution
      * @var string $contactEmail
      */
     private $contactEmail;
-    
+
     /**
      * @var string $websites
      */
@@ -59,7 +59,7 @@ abstract class Institution
      * @var integer $zipCode
      */
     private $zipCode;
-    
+
     /**
      * @var text $state
      */
@@ -69,7 +69,7 @@ abstract class Institution
      * @var text $coordinates
      */
     private $coordinates;
-    
+
     /**
      * @var datetime $dateModified
      */
@@ -120,6 +120,11 @@ abstract class Institution
      */
     private $institutionLanguagesSpoken;
 
+    /**
+     * @var HealthCareAbroad\MediaBundle\Entity\Gallery
+     */
+    private $gallery;
+
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
@@ -128,16 +133,16 @@ abstract class Institution
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
     }
     protected $typeLabel;
-    
+
     final public function getTypeLabel()
     {
-    	return $this->typeLabel;
+        return $this->typeLabel;
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -159,7 +164,7 @@ abstract class Institution
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -181,7 +186,7 @@ abstract class Institution
     /**
      * Get description
      *
-     * @return text 
+     * @return text
      */
     public function getDescription()
     {
@@ -203,7 +208,7 @@ abstract class Institution
     /**
      * Get logo
      *
-     * @return string 
+     * @return string
      */
     public function getLogo()
     {
@@ -225,7 +230,7 @@ abstract class Institution
     /**
      * Get contactEmail
      *
-     * @return string 
+     * @return string
      */
     public function getContactEmail()
     {
@@ -247,13 +252,13 @@ abstract class Institution
     /**
      * Get contactNumber
      *
-     * @return string 
+     * @return string
      */
     public function getContactNumber()
     {
         return $this->contactNumber;
     }
-    
+
     /**
      * Set websites
      *
@@ -262,10 +267,10 @@ abstract class Institution
      */
     public function setWebsites($websites)
     {
-    	$this->websites = $websites;
-    	return $this;
+        $this->websites = $websites;
+        return $this;
     }
-    
+
     /**
      * Get websites
      *
@@ -273,7 +278,7 @@ abstract class Institution
      */
     public function getWebsites()
     {
-    	return $this->websites;
+        return $this->websites;
     }
 
     /**
@@ -291,7 +296,7 @@ abstract class Institution
     /**
      * Get address1
      *
-     * @return text 
+     * @return text
      */
     public function getAddress1()
     {
@@ -313,7 +318,7 @@ abstract class Institution
     /**
      * Get address2
      *
-     * @return text 
+     * @return text
      */
     public function getAddress2()
     {
@@ -335,13 +340,13 @@ abstract class Institution
     /**
      * Get zipCode
      *
-     * @return text 
+     * @return text
      */
     public function getZipCode()
     {
         return $this->zipCode;
     }
-    
+
     /**
      * Set state
      *
@@ -350,10 +355,10 @@ abstract class Institution
      */
     public function setState($state)
     {
-    	$this->state = $state;
-    	return $this;
+        $this->state = $state;
+        return $this;
     }
-    
+
     /**
      * Get state
      *
@@ -361,9 +366,9 @@ abstract class Institution
      */
     public function getState()
     {
-    	return $this->state;
+        return $this->state;
     }
-    
+
     /**
      * Set coordinates
      *
@@ -372,10 +377,10 @@ abstract class Institution
      */
     public function setCoordinates($coordinates)
     {
-    	$this->coordinates = $coordinates;
-    	return $this;
+        $this->coordinates = $coordinates;
+        return $this;
     }
-    
+
     /**
      * Get coordinates
      *
@@ -383,7 +388,7 @@ abstract class Institution
      */
     public function getCoordinates()
     {
-    	return $this->coordinates;
+        return $this->coordinates;
     }
 
     /**
@@ -401,7 +406,7 @@ abstract class Institution
     /**
      * Get dateModified
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateModified()
     {
@@ -423,7 +428,7 @@ abstract class Institution
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -445,7 +450,7 @@ abstract class Institution
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -467,7 +472,7 @@ abstract class Institution
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -499,7 +504,7 @@ abstract class Institution
     /**
      * Get institutionMedicalCenters
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionMedicalCenters()
     {
@@ -531,7 +536,7 @@ abstract class Institution
     /**
      * Get institutionUsers
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionUsers()
     {
@@ -553,7 +558,7 @@ abstract class Institution
     /**
      * Get country
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
      */
     public function getCountry()
     {
@@ -575,7 +580,7 @@ abstract class Institution
     /**
      * Get city
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\City 
+     * @return HealthCareAbroad\HelperBundle\Entity\City
      */
     public function getCity()
     {
@@ -607,7 +612,7 @@ abstract class Institution
     /**
      * Get institutionOfferedServices
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionOfferedServices()
     {
@@ -639,10 +644,32 @@ abstract class Institution
     /**
      * Get institutionLanguagesSpoken
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionLanguagesSpoken()
     {
         return $this->institutionLanguagesSpoken;
+    }
+
+    /**
+     * Set gallery
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
+     * @return Institution
+     */
+    public function setGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery)
+    {
+        $this->gallery = $gallery;
+        return $this;
+    }
+
+    /**
+     * Get gallery
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Gallery
+     */
+    public function getGallery()
+    {
+        return $this->gallery;
     }
 }

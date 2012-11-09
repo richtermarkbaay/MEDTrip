@@ -38,7 +38,7 @@ class DefaultController extends Controller
         $institutionId = $request->getSession()->get('institutionId');
 
         $success = $this->get('services.media')->delete($request->get('id'), $institutionId);
-echo 'Success:' .$success; exit;
+
         return new Response($success);
     }
 

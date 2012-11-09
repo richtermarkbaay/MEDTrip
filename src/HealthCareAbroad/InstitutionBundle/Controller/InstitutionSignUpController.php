@@ -86,15 +86,18 @@ class InstitutionSignUpController  extends Controller
 	            $institution = $form->getData();
 	            
 	            // initialize required database fields
-	            $institution->setAddress1('');
-	            $institution->setAddress2('');
-	            $institution->setContactEmail('');
-	            $institution->setContactNumber('');
-	            $institution->setDescription('');
-	            $institution->setLogo('');
-	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
-	            $institution->setZipCode('');
-	            $factory->save($institution);
+	          	$institution->setAddress1('');
+    			$institution->setAddress2('');
+    			$institution->setContactEmail('');
+    			$institution->setContactNumber('');
+    			$institution->setDescription('');
+    			$institution->setLogo('');
+    			$institution->setCoordinates('');
+    			$institution->setState('');
+    			$institution->setWebsites('');
+    			$institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+    			$institution->setZipCode('');
+    			$factory->save($institution);
 	            
 	            // create Institution user
 	            $institutionUser = new InstitutionUser();
