@@ -28,15 +28,16 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
+use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
-
+use HealthCareAbroad\HelperBundle\Services\LocationService;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
+use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionController extends Controller
@@ -154,25 +155,26 @@ class InstitutionController extends Controller
 	    ));
     }
     
-    
     /**
      * Save Institution Details
      */
     public function saveAction(){
     	
     	$request = $this->getRequest();   	
-    	$id = $request->get('id', null);  	
-    	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
+ 
+    	if('POST' != $request->getMethod()) {
+    		return new Response("Save requires POST method!", 405);
+    	}
+    	
+    	$institutionDetails = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId', 0));
     	 
-    	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'edit_type' => false));
+    	$form = $this->createForm(new InstitutionDetailType(), $institutionDetails, array('profile_type' => false, 'edit_type' => false));
     	
     	//add institution details
-    	if ($request->isMethod('POST')) {
-
-    		$form->bindRequest($request);
+		$form->bind($request);
     			
     		if ($form->isValid()) {
-
+    	
     			$institution = $this->get('services.institution.factory')->save($form->getData());
     			$this->get('session')->setFlash('notice', "Successfully added");
     			 
@@ -180,9 +182,8 @@ class InstitutionController extends Controller
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     			 
     		}
-    	}
 
-    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $id)));
+    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $request->get('institutionId', 0))));
     	 
     }
     

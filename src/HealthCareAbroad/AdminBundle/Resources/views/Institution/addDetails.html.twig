@@ -26,7 +26,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										 <form novalidate="novalidate" action="{{ path('admin_institution_saveDetails', {id: id }) }}" method="POST"  class="basic-form">
+										 <form novalidate="novalidate" action="{{ path('admin_institution_saveDetails', {institutionId: id }) }}" method="POST"  class="basic-form">
 											
 											<h2 style="margin-top: 15px; ;">{{ institution.description ? 'Edit' : 'Add' }} Institution Details</h2>
 									

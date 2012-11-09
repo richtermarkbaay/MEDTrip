@@ -33,12 +33,12 @@
 					                        <label for="username">Email 
 					                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
 					                        </label>
-					                        
-					                        <div class="input-prepend">
-					                            {{ form_widget(form.email) }}
-					                           <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();">
+					                     <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="margin-right:674px;">
+					                        <div class="input-prepend" >
+						                      	{{ form_widget(form.email) }}
+						                  
 					                        </div>
-					                        
+					                 
 						                        {% if form_errors(form.email) %}
 					  								<ul class="alert-error">
 						                                <li>
@@ -123,17 +123,20 @@
 {% endblock %}
 {% block inlineJavascriptCode %}
 	<script language="javascript" type="text/javascript">
-	$(function(){
-	function randomString() {
-		var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-		var string_length = 8;
-		var institutionSignUp[email] = '';
-		for (var i=0; i<string_length; i++) {
-			var rnum = Math.floor(Math.random() * chars.length);
-			institutionSignUp[email] += chars.substring(rnum,rnum+1);
+
+		function randomString() {
+			var chars = "abcdefghiklmnopqrstuvwxyz";
+			var string_length = 8;
+			//var inputVal = document.getElementById('institutionSignUp_email');
+			var institutionSignUp = '';
+			for (var i=0; i<string_length; i++) {
+				var rnum = Math.floor(Math.random() * chars.length);
+				institutionSignUp += chars.substring(rnum,rnum+1) ;
+			}
+			//document.account.inputVal.value = institutionSignUp[email];
+			
+		 document.getElementById("institutionSignUp_email").value = institutionSignUp + "@chromedia.com" ;
 		}
-		document.account.institutionSignUp[email].value = institutionSignUp[email];
-	}
-	});
+
 	</script>	
 {% endblock %}

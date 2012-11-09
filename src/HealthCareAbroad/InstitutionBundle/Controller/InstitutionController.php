@@ -28,7 +28,7 @@ use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 	
-class InstitutionController  extends InstitutionAwareController
+class InstitutionController extends InstitutionAwareController
 {
 	
 	/**
