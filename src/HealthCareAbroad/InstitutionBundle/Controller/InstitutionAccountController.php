@@ -19,9 +19,11 @@ class InstitutionAccountController extends Controller
 {
 	 public function accountAction(){
 
-	 	$institutionId = $this->getRequest()->get('institutionId', null);
+	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
 	 	
-	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+	 	if (!$institution) {
+	 		throw $this->createNotFoundException();
+	 	}
 	 	//render template
 
 	 	$form = $this->createForm(new InstitutionProfileType(), $institution);
@@ -56,7 +58,6 @@ class InstitutionAccountController extends Controller
 	 	
 	 		}
 	 	}
-	 	
 	 	
 	 	return $this->render('InstitutionBundle:Institution:editInstitution.html.twig');
 	 	
