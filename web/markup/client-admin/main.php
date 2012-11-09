@@ -265,321 +265,38 @@
             <div class="accordion" id="accordion2">
               		<div class="accordion-group">
                			  <div class="accordion-heading">
-                			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#MedicalListing">
-                     			<h4>Recent Medical Center Added</h4> 
-                   				</a>
+                			   
+                     			<h4>Recently Added Medical Center<span class="pull-right"><a href="addmedcenter.php"><button class="btn btn-mini"><i class="icon-edit"></i>Add Another Medical Center</button></a></span></h4> 
+                   			
                  		</div>
                  		
                  		
                  		
-                 		<div id="MedicalListing" class="accordion-body collapse in">
-                   <div class="accordion-inner">
+                 		
+                
+            
                    		
                    		
                    		                           
                			<div class="boxcontent">
-                           <div class="treatmentbox">
+                           <div class="treatmentbox">   
                                                           	<div id="accordion2" class="accordion">
                                                                 		<div class="accordion-group">
-                                                                 			  <div class="accordion-heading">
-                                                                  			   <a href="#collapseOne" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle">
-                                                                       			<h5>Medical Center Name 1 <span> </span></h5>         
-                                                                     				</a>
-                                                                   		</div>
+                                                                 
                                                                         
                                                                    		<div class="accordion-body collapse in" id="collapseOne">
                                                                      <div class="accordion-inner">
                                                                      		
                                                                      		
                                                                      		<div class="boxcontent">
-                                                                            <div class="pull-right" style="margin:-15px  -20px 20px 0;"><button class="btn btn-mini"><i class="icon-edit"></i>edit medical center entry</button></div>
-                                                                             <div class="clearfix"><br/></div>
+                                                                         
+                                                                           <h5>Medical Center Name 1</h5>
                                                                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
                                                                                             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
                                                                                             nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
                                                                                             esse cillum dolore eu fugiat nulla pariatur.</p>
                                                                             
-     <!--modal button to view medical specialist   <a data-toggle="modal" class="btn btn-primary" role="button" href="#MedicalSpecialist">View All Medical Center Specialist</a>-->
-     
-        
-        
-             <!-- Modal 
-                                                                                            <div id="MedicalSpecialist" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                            	<div class="modal-header">
-                                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                                            <h3 id="myModalLabel">Medical Center Specialist</h3>
-                                                                                            </div>
-                                                                                            <div class="modal-body">
-                                                                                            <div>
-                                                                                          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered bootstrap-datatable" id="datatable">
-                          <thead>
-                              <tr>
-                                  <th>Last Name</th>
-                                  <th>First Name</th>
-                                  <th>Specialization</th>
- 
-                                  <th>Actions</th>
-                              </tr>
-                          </thead>   
-                          <tbody>
-                            <tr>
-                                <td>Fred Flinstone</td>
-                                <td class="center">2011/01/01</td>
-                                <td class="center">Member</td>
-
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Spiderman</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Staff</td>
-                    
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Batman</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Admin</td>
-                       
-                              <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Robin</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                   
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Catwomen</td>
-                                <td class="center">2010/01/21</td>
-                                <td class="center">Staff</td>
-                      
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Garfield</td>
-                                <td class="center">2011/08/23</td>
-                                <td class="center">Staff</td>
-                        
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bananaman</td>
-                                <td class="center">2011/06/01</td>
-                                <td class="center">Admin</td>
-                         
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Paul</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                          
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Wilma Flinstone</td>
-                                <td class="center">2011/01/01</td>
-                                <td class="center">Member</td>
-                      <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Hulk</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Staff</td>
-                     
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bob the Builder</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Admin</td>
-                        <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MacAndCheese</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                   
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                        
-                      
-                       
-                        
-                          </tbody>
-                      </table>     
-                                                                                        
-                                                                                            </div>
-                                                                                            
-                                                                                            
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                            
-                                                                                            <button class="btn btn-success">Add Medical Specialist</button>
-                                                                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                                                                            
-                                                                                            </div>
-                                                                                            </div>-->
-        
-             <!-- end modal for medical specialist -->                                                              		
+                                                             		
                                                                      		
                                                                      		</div>
                                                                      
@@ -588,399 +305,13 @@
                                                                             
                                                                                                                                             
                                                                             <div class="detailbox" >
-                 <h3 class="span5" style="margin-left:0;">List of All Specializations</h3>                                                         
+                                                                       
                
-                  <!-- <div class="pull-right">
-                <form class="navbar-form pull-left">
-  <input type="text" class="span2">
-  <button type="submit" class="btn">Search</button>
-</form>
-                </div>-->
-                  <div class="pull-right" style="margin:-15px  -15px 20px 0;"><button class="btn btn-mini"><i class="icon-edit"></i>edit Specialization entry</button></div>   
-                <div class="clearfix"></div>
-               
-                               <br/>                                                <!--specialization deails start -->        <div class="specializationdetails"> <h7>Specialization 1 <span> <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>--></span></h7>
-                                                                  
-                                                                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-                                                                                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                                                                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                                                                                            esse cillum dolore eu fugiat nulla pariatur.</p>
-               
-                          <div class="treatmentlisting">
-                            <h8>Treatment</h8>
-                            <!--<button class="btn btn-small btn-mini">edit Treatment entry</button>-->
-                            <ul>
-                             <li>Sub-specialization - Treatment 1, treatment2</li>  
-                              <li>Sub-specialization - Treatment 1, treatment2</li> 
-                             <li>Sub-specialization - Treatment 1, treatment2</li>                                </ul>      </div>
-                             </div>
-                             <!--specialization deails end -->
-                             
-                             <hr>
-                             
-                                                                 <!--specialization deails start -->        <div class="specializationdetails"> <h7>Specialization 2 <span> <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>--></span></h7>
-                                                                  
-                                                                              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-                                                                                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                                                                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                                                                                            esse cillum dolore eu fugiat nulla pariatur.</p>
-               
-                          <div class="treatmentlisting">
-                            <h8>Treatment</h8>
-                            <!--<button class="btn btn-small btn-mini">edit Treatment entry</button>-->
-                            <ul>
-                             <li>Sub-specialization - Treatment 1, treatment2</li>  
-                              <li>Sub-specialization - Treatment 1, treatment2</li> 
-                             <li>Sub-specialization - Treatment 1, treatment2</li>                                </ul>      </div>
-                             </div>
-                             <!--specialization deails end -->
-                             
-                             
-                             </div></div>
-                                                                                            
-                                                                               
-                                                                                                                        
-                                                                          </div>
-                                                                          
-                                                                          
-                                                                          
-                                                                          
-                                                                     </div>
-                                                                   </div>
-                                                                 		</div>
-                                                                 	</div>				
-                                                          	</div> 
-                           
-                        </div>
-                        
-                        
-                        <div class="boxcontent">
-                           <div class="treatmentbox">
-                                                          	<div id="accordion2" class="accordion">
-                                                                		<div class="accordion-group">
-                                                                 			  <div class="accordion-heading">
-                                                                  			   <a href="#collapseTwo" data-parent="#accordion2" data-toggle="collapse" class="accordion-toggle">
-                                                                       			<h5>Medical Center Name 2 <span></span></h5>         
-                                                                     				</a>
-                                                                   		</div>
-                                                                        
-                                                                   		<div class="accordion-body collapse in" id="collapseTwo">
-                                                                     <div class="accordion-inner">
-                                                                     		
-                                                                     		
-                                                                     		<div class="boxcontent">
-                                                                            <div class="pull-right" style="margin:-15px  -20px 20px 0;"><button class="btn btn-mini"><i class="icon-edit"></i>edit medical center entry</button></div>
-                                                                            <div class="clearfix"><br/></div>
-                                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-                                                                                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                                                                            nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-                                                                                            esse cillum dolore eu fugiat nulla pariatur.</p>
-                                                                            
-     <!--modal button to view medical specialist -->  <a data-toggle="modal" class="btn btn-primary" role="button" href="#MedicalSpecialist">View All Medical Center Specialist</a>
-     
-        
-        
-             <!-- Modal 
-                                                                                            <div id="MedicalSpecialist" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                                            	<div class="modal-header">
-                                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                                            <h3 id="myModalLabel">Medical Center Specialist</h3>
-                                                                                            </div>
-                                                                                            <div class="modal-body">
-                                                                                            <div>
-                                                                                          <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered bootstrap-datatable" id="datatable">
-                          <thead>
-                              <tr>
-                                  <th>Last Name</th>
-                                  <th>First Name</th>
-                                  <th>Specialization</th>
- 
-                                  <th>Actions</th>
-                              </tr>
-                          </thead>   
-                          <tbody>
-                            <tr>
-                                <td>Fred Flinstone</td>
-                                <td class="center">2011/01/01</td>
-                                <td class="center">Member</td>
-
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Spiderman</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Staff</td>
-                    
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Batman</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Admin</td>
-                       
-                              <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Robin</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                   
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Catwomen</td>
-                                <td class="center">2010/01/21</td>
-                                <td class="center">Staff</td>
-                      
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Garfield</td>
-                                <td class="center">2011/08/23</td>
-                                <td class="center">Staff</td>
-                        
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bananaman</td>
-                                <td class="center">2011/06/01</td>
-                                <td class="center">Admin</td>
-                         
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Paul</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                          
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Wilma Flinstone</td>
-                                <td class="center">2011/01/01</td>
-                                <td class="center">Member</td>
-                      <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Hulk</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Staff</td>
-                     
-                                <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Bob the Builder</td>
-                                <td class="center">2011/02/01</td>
-                                <td class="center">Admin</td>
-                        <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>MacAndCheese</td>
-                                <td class="center">2011/03/01</td>
-                                <td class="center">Member</td>
-                   
-                               <td class="center">
-                                    <a class="btn btn-small btn-success" href="#">
-                                        <i class="icon-zoom-in icon-white"></i>  
-                                        View                                            
-                                    </a>
-                                    <a class="btn btn-small btn-info" href="#">
-                                        <i class="icon-edit icon-white"></i>  
-                                        Edit                                            
-                                    </a>
-                                    <a class="btn btn-small btn-danger" href="#">
-                                        <i class="icon-trash icon-white"></i> 
-                                        Delete
-                                    </a>
-                                </td>
-                            </tr>
-                        
-                      
-                       
-                        
-                          </tbody>
-                      </table>     
-                                                                                                <ul>
-                                                                                                    <li>Please enter specialization details.</li>
-                                                                                                </ul
-                                                                                            </div>
-                                                                                            
-                                                                                            
-                                                                                            </div>
-                                                                                            <div class="modal-footer">
-                                                                                            
-                                                                                            <button class="btn btn-primary">Add Medical Specialist</button>
-                                                                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-                                                                                            
-                                                                                            </div>
-                                                                                            </div>
-        
-             <!-- end modal for medical specialist <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>-->                                                              		
-                                                                     		
-                                                                     		</div>
-                                                                     
-                                                                 			<div class="boxcontent" style="padding-top:0;">
-                                                                            <div class="listing">
-                                                                            
-                                                                                                                                            
-                                                                            <div class="detailbox" >
-                 <h3 class="span5" style="margin-left:0;">List of All Specializations</h3> 
-                 
-                  <div class="pull-right" style="margin:-15px  -15px 20px 0;"><button class="btn btn-mini"><i class="icon-edit"></i>edit Specialization entry</button></div>                                                        
-               
-     <!--              <div class="pull-right">
-                <form class="navbar-form pull-left">
-  <input type="text" class="span2">
-  <button type="submit" class="btn">Search</button>
-</form>
-                </div>-->
+  
                 
                 <div class="clearfix"></div>
                
-                               <br/>                                                <!--specialization deails start -->        <div class="specializationdetails"> <h7>Specialization 1 <span> <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>--></span></h7>
+                                                                        <!--specialization deails start -->        <div class="specializationdetails"> <h7>Specialization 1 <span> <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>--></span></h7>
                                                                   
                                                                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
                                                                                             labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
@@ -989,7 +320,7 @@
                
                           <div class="treatmentlisting">
                             <h8>Treatment</h8>
-                            <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>-->
+                            <!--<button class="btn btn-small btn-mini">edit Treatment entry</button>-->
                             <ul>
                              <li>Sub-specialization - Treatment 1, treatment2</li>  
                               <li>Sub-specialization - Treatment 1, treatment2</li> 
@@ -1008,7 +339,7 @@
                
                           <div class="treatmentlisting">
                             <h8>Treatment</h8>
-                            <!--<button class="btn btn-small btn-mini">edit Specialization entry</button>-->
+                            <!--<button class="btn btn-small btn-mini">edit Treatment entry</button>-->
                             <ul>
                              <li>Sub-specialization - Treatment 1, treatment2</li>  
                               <li>Sub-specialization - Treatment 1, treatment2</li> 
@@ -1029,10 +360,13 @@
                                                                      </div>
                                                                    </div>
                                                                  		</div>
-                                                                 	</div>				
-                                                          	</div> 
+                                                              			
+                                                          
                            
                         </div>
+                        
+                        
+                     
                         
                    </div>
                  </div>
@@ -1041,20 +375,20 @@
             
              <div class="accordion" id="accordion2">
                          		<div class="accordion-group">
-                          			  <div class="accordion-heading">
-                           			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#MedicalListing">
-                                			<h4>Recent Medical Specialist Added</h4> 
-                              				</a>
-                            		</div>
+                          		
+                           		
+                                			<h4>Recently Added Medical Specialist<span class="pull-right"><button class="btn btn-mini"><i class="icon-edit"></i>Add Another Medical Specialist</button></span> </h4> 
+                              				
+                            	
                             		<div id="MedicalListing" class="accordion-body collapse in">
                               <div class="accordion-inner">
                               		
                               		
                               		                           
                           			<div class="treatmentbox"><div class="boxcontent">
-                          			  <div class="pull-right" style="margin:-25px  -35px 20px 0;"><button class="btn btn-mini"><i class="icon-edit"></i>edit Specialization entry</button></div>   
+                          			    
                           			  
-                          			   <div class="clearfix"><br/></div>
+                          			 
                           				<div class="specialist">
                                       <div class="span4">
                                       	<div class="span1"><a href="#"><img class="member-box-avatar" src="images/institution/institution-logo.gif"></a></div>

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form\ListType;
 
+use HealthCareAbroad\InstitutionBundle\Repository\InstitutionSpecializationRepository;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Component\Form\FormInterface;
@@ -20,7 +22,7 @@ class InstitutionSpecializationListType extends AbstractType
 
      private $institution;
 
-    public function __construct(Institution $institution=null) {
+    public function __construct($institution=null) {
         $this->institution = $institution;
     }
 
@@ -29,16 +31,27 @@ class InstitutionSpecializationListType extends AbstractType
         $institution = $this->institution;
         $resolver->setDefaults(array(
             'virtual' => true,
-            'empty_value' => '<-- select center -->',
-            'property' => 'name',
+            'empty_value' => '<-- select specialization -->',
             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
             'query_builder' => function(EntityRepository $er) use ($institution) {
-                return $er->getBuilderForSpecializationsOfInstitution($institution);
+                $qb = $er->createQueryBuilder('a');
+
+                $qb1 = $qb->getEntityManager()->createQueryBuilder();
+                $qb1->select('d.id')
+                    ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+                    ->leftJoin('b.institutionMedicalCenter', 'c')
+                    ->leftJoin('b.specialization', 'd')
+                    ->where('c.institution = :institution')
+                    ->groupBy('b.specialization');
+
+                $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
+
+                $qb->setParameter('institution', $institution->getId());
+
+                return $qb;
             }
         ));
     }
-
-
 
     public function getParent()
     {

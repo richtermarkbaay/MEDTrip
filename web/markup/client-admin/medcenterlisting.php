@@ -13,39 +13,177 @@
 			    <div class="span12">
 			   											
                                                                <form>
-                                                                    <h3>Medical Center Name</h3>
+                                                         
                                                                     
-                                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<button class="btn btn-small btn-mini" style="margin-left: 20px;">edit medical center entry</button></p>
+                                                                        
                                                                         
                                                                         
                                                                     <div class="treatmentbox">
-                                                                    	<h5>Add Specialization</h5>
+                                                                    	<h5>Medical Center 1	<span class="pull-right"><a href="addmedcenter.php"><button class="btn btn-mini"><i class="icon-edit"></i>&nbsp;Edit</button></a></span></h5>
+                                                                    	
+                                                            
+                                                                    	
+                                                                    		
                                                                     	<div class="boxcontent">
                                                                     	
-                                                                    	<input name="log" type="text" id="log inputIcon" value="" class="username span7" />
+                                                                    	        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
                                                                     	
                                                                     	<hr>	
                                                                     	
-                                                                    	<h6>List of Specializations</h6>
-                                                                    	<div style="padding: 10px;">
-                                                                    	<b style="font-size:14px ;">Specialization one</b><br/>
-                                                                    	<span class="btn-small"><a href="#"><i class="icon-pencil"></i> Add Description Here</a></span> 
-                                                                    	</div>
+                                                                
+                                                                 
+                                                                    
+                                                                                           
+                                                                                          <div class="treatmentbox">
+                                                                                          	<div class="accordion" id="accordion2">
+                                                                                                		<div class="accordion-group">
+                                                                                                 			  <div class="accordion-heading">
+                                                                                                  			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                                                                                       			<h5>Specialization 1</h5> 
+                                                                                                     				</a>
+                                                                                                   		</div>
+                                                                                                   		<div id="collapseOne" class="accordion-body collapse in">
+                                                                                                     <div class="accordion-inner">
+                                                                                                     		
+                                                                                                     		
+                                                                                            
+                                                                                                     
+                                                                                                 			<div class="boxcontent">
+                                                                                                 			
+                                                                                                 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                                                                                 			
+                                                                                                               <h7>Sub-Specialization 1</h7>
+                                                                                                  
+                                                                                                               <label>Treatment 1</label>
+                                                                                                               <label>Treatment 2</label>
+                                                                                                               <label>Treatment 3</label>   
+                                                                                                              <hr> 
+                                                                                                           <h7>Sub-Specialization 2</h7>
+                                                                                                           
+                                                                                                                        <label>Treatment 1</label>
+                                                                                                                        <label>Treatment 2</label>
+                                                                                                                        <label>Treatment 3</label>   
+                                                                                                                     
+                                                                                                             
+                                                                                                          </div>
+                                                                                                          
+                                                                                                          
+                                                                                                          
+                                                                                                          
+                                                                                                     </div>
+                                                                                                   </div>
+                                                                                                 		</div>
+                                                                                                 	</div>				
+                                                                                          	</div>
+                                                                                          
+                                                                                                  <hr>
+                                                                                                  
+                                                                                                  
+                                                                                                 <div class="treatmentbox">
+                                                                                                 	<div class="accordion" id="accordion2">
+                                                                                                       		<div class="accordion-group">
+                                                                                                        			  <div class="accordion-heading">
+                                                                                                         			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                                                                                              			<h5>Specialization 2</h5> 
+                                                                                                            				</a>
+                                                                                                          		</div>
+                                                                                                          		<div id="collapseOne" class="accordion-body collapse in">
+                                                                                                            <div class="accordion-inner">
+                                                                                                            		
+                                                                                                            		
+                                                                                                   
+                                                                                                            
+                                                                                                        			<div class="boxcontent">
+                                                                                                        			
+                                                                                                        			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                                                                                        			
+                                                                                                                      <h7>Treatment</h7>
+                                                                                                         
+                                                                                                                      <label>Treatment 1</label>
+                                                                                                                      <label>Treatment 2</label>
+                                                                                                                      <label>Treatment 3</label>   
+                                                                                                               
+                                                                                                                 </div>
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                                 
+                                                                                                            </div>
+                                                                                                          </div>
+                                                                                                        		</div>
+                                                                                                        	</div>				
+                                                                                                 	</div>
+                                                                            
+                                                                    
+                                                                    
                                                                     	
                                                                     	</div>
                                                                     </div>
                                                                       
-
+<hr>
+                                                                       <div class="treatmentbox">
+                                                                               	   	<h5>Medical Center 2	<span class="pull-right"><a href="addmedcenter.php"><button class="btn btn-mini"><i class="icon-edit"></i>&nbsp;Edit</button></a></span></h5>
+                                                                               	
                                                                        
+                                                                               	
+                                                                               	<div class="boxcontent">
+                                                                               	
+                                                                               	        	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                                                               	
+                                                                               	<hr>	
+                                                                               	
+                                                                           
+                                                                            
+                                                                               
+                                                                                           
+                                                                                                             
+                                                                                                             
+                                                                                                            <div class="treatmentbox">
+                                                                                                            	<div class="accordion" id="accordion2">
+                                                                                                                  		<div class="accordion-group">
+                                                                                                                   			  <div class="accordion-heading">
+                                                                                                                    			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                                                                                                         			<h5>Specialization 1</h5> 
+                                                                                                                       				</a>
+                                                                                                                     		</div>
+                                                                                                                     		<div id="collapseOne" class="accordion-body collapse in">
+                                                                                                                       <div class="accordion-inner">
+                                                                                                                       		
+                                                                                                                       		
+                                                                                                              
+                                                                                                                       
+                                                                                                                   			<div class="boxcontent">
+                                                                                                                   			
+                                                                                                                   			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                                                                                                                   			
+                                                                                                                                 <h7>Treatment</h7>
+                                                                                                                    
+                                                                                                                                 <label>Treatment 1</label>
+                                                                                                                                 <label>Treatment 2</label>
+                                                                                                                                 <label>Treatment 3</label>   
+                                                                                                                          
+                                                                                                                            </div>
+                                                                                                                            
+                                                                                                                            
+                                                                                                                            
+                                                                                                                            
+                                                                                                                       </div>
+                                                                                                                     </div>
+                                                                                                                   		</div>
+                                                                                                                   	</div>				
+                                                                                                            	</div>
+                                                                                       
+                                                                               
+                                                                               
+                                                                               	
+                                                                               	</div>
+                                                                               </div>
                                                                                                                                              
-                                                                       <div class="clear"><br/></div>
-                                                                       <!--<div><input type="submit" name="Submit" value="SUBMIT" class="btn btn-large btn-primary" />
-                                                                        
-                                                                </div>-->
-                                                                
-                                                              
-                                                            		    
-                                                            			
+                                                                      
+                                                         
+                                                            
+                                                            	                                
+                                                            		
                                                             			
                                                             			    
                                                      </form>  

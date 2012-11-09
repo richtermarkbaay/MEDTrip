@@ -185,13 +185,24 @@ class InstitutionTreatmentsController extends Controller
         if (!$this->institutionMedicalCenter) {
             throw $this->createNotFoundException('Invalid institutionMedicalCenter');
         }
-
-        $form = $this->createForm(new InstitutionSpecializationFormType() ,new InstitutionSpecialization());
+        
+        $institutionSpecializationForm = new InstitutionSpecializationFormType($this->institution);
+        
+        $form = $this->createForm($institutionSpecializationForm, new InstitutionSpecialization());
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-            
-            if ($form->isValid()) {                
-                $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
+
+            if ($form->isValid()) {
+
+                $institutionSpecialization = $form->getData();
+                $institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+                $institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($institutionSpecialization);
+                $em->flush();
+
+                $this->request->getSession()->setFlash('success', "Specialization has been saved!");
 
                 // TODO: fire event
 

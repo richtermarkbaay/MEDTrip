@@ -36,5 +36,13 @@
 		$('.specialization').removeClass('active');
 		$('.add').text(val);
 	})
-</script></body>
+</script>
+
+
+
+
+
+
+
+</body>
 </html>

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionSpecializationListType;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Doctrine\ORM\EntityRepository;
@@ -13,6 +15,11 @@ use Symfony\Component\Form\AbstractType;
 
 class InstitutionSpecializationFormType extends AbstractType
 {
+    function __construct($institution)
+    {
+        $this->institution = $institution;
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $institutionSpecialization = $options['data'];
@@ -20,14 +27,9 @@ class InstitutionSpecializationFormType extends AbstractType
         if (!$institutionSpecialization instanceof InstitutionSpecialization) {
             throw new \Exception('Expected InstitutionSpecialization as data.');
         }
-        
+
         if (!$institutionSpecialization->getId()) {
-            $builder->add('specialization', 'specialization_list', array(
-                'label' => 'Specialization',
-                'query_builder' => function(EntityRepository $er){
-                    return $er->getQueryBuilderForActiveSpecializations();
-                }
-            ));
+            $builder->add('specialization', new InstitutionSpecializationListType($this->institution), array('virtual'=>false));
         }
         
 //         $builder->add('treatment', 'entity', array(

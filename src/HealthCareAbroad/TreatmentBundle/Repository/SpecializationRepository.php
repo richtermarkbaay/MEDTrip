@@ -136,22 +136,4 @@ class SpecializationRepository extends EntityRepository
 
 //         return $qb;
 //     }
-
-//     /**
-//      * Get Specializations that are linked to a specific institution. This is used in the InstitutionSpecializationListType
-//      *
-//      * @param Institution $institution
-//      * @return Doctrine\ORM\QueryBuilder
-//      */
-//     public function getBuilderForSpecializationsOfInstitution(Institution $institution)
-//     {
-//         $qb = $this->getEntityManager()->createQueryBuilder();
-//         $qb->select('a')
-//             ->from('TreatmentBundle:Specialization', 'a')
-//             ->innerJoin('a.institutionSpecializations', 'b')
-//             ->add('where', 'b.institution = :institutionId')
-//             ->setParameter('institutionId', $institution->getId());
-
-//         return $qb;
-//     }
 }
