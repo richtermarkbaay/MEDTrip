@@ -2,7 +2,7 @@
 <br/>
 <hr>
 <footer>
-	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+	<p>&copy; <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
 </footer>
 </div>
 </div>
@@ -18,6 +18,7 @@
 <!-- Google API --> 
 <script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 
+
 <!-- jQuery --> 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
 
@@ -25,6 +26,15 @@
 
 <!-- Bootstrap --> 
 <script src="js/bootstrap.min.js"></script> 
-
-</body>
+<script type="text/javascript">
+	$('.add').click(function(e){
+		$('.specialization').addClass('active');
+	});
+	$('.description').blur(function(e){
+		var val = $(this).val();
+		//alert(val)
+		$('.specialization').removeClass('active');
+		$('.add').text(val);
+	})
+</script></body>
 </html>

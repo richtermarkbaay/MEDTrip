@@ -25,7 +25,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionSubSpecializationFormType
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
@@ -144,7 +144,7 @@ class InstitutionController extends Controller
     	$id = $request->get('id', null);
     	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
     	
-	    $form = $this->createForm(new InstitutionProfileType(), $institution, array('profile_type' => false));
+	    $form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'edit_type' => false));
 	    	
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
@@ -164,7 +164,7 @@ class InstitutionController extends Controller
     	$id = $request->get('id', null);  	
     	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
     	 
-    	$form = $this->createForm(new InstitutionProfileType(), $institution, array('profile_type' => false));
+    	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'edit_type' => false));
     	
     	//add institution details
     	if ($request->isMethod('POST')) {

@@ -6,7 +6,7 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +26,7 @@ class InstitutionAccountController extends Controller
 	 	}
 	 	//render template
 
-	 	$form = $this->createForm(new InstitutionProfileType(), $institution);
+	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('edit_type' => false,'admin_add' => false));		
 
 	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
 	 					'form' => $form->createView(),

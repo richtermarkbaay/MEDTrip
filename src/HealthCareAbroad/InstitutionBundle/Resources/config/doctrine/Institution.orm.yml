@@ -44,9 +44,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         address1:
             type: text
             nullable: false
-        address2:
-            type: text
-            nullable: false
         zipCode:
             type: integer
             length: 10
