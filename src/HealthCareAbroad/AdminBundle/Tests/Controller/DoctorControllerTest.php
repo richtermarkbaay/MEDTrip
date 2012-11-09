@@ -52,11 +52,15 @@ class DoctorControllerTest extends AdminBundleWebTestCase
                         'doctor[firstName]' => 'testFirstName',
                         'doctor[middleName]' => 'testMiddleName',
                         'doctor[lastName]' => 'testLastName',
-                        'doctor[specializations]' => '1',
+                        'doctor[specializations]' => array(1),
                         'doctor[contactEmail]' => 'testaccount@yahoo.com',
                         'doctor[contactNumber]' => '[{"number":"2123123123123","type":"mobile"}]'
                         );
-        
+        $crawler = $client->request('GET', $uri);
+        $referer = $client->getRequest()->headers->get('referer');
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
         
         //test invalid account 
         $uri = '/admin/doctor/save/3124124';
