@@ -24,10 +24,10 @@
 		  //var address = document.getElementById("ctl00_PlaceHolderMain_txtStreet").value + ", " + document.getElementById("ctl00_PlaceHolderMain_txtCity").value + " " + document.getElementById("ctl00_PlaceHolderMain_txtZip").value;
 
 		 function codeAddress() {
-			 var selectedCity = document.getElementById('institutionProfile_city');
-			 var selectedCountry = document.getElementById('institutionProfile_country');
+			 var selectedCity = document.getElementById('institutionDetail_city');
+			 var selectedCountry = document.getElementById('institutionDetail_country');
 
-		    var address = document.getElementById("institutionProfile_address1").value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "" + document.getElementById("institutionProfile_zipCode").value + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
+		    var address = document.getElementById("institutionDetail_address1").value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "" + document.getElementById("institutionDetail_zipCode").value + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
 		    geocoder.geocode( { 'address': address}, geocoderCallback ); 
 		  }
 		
@@ -48,7 +48,7 @@
 		        var lng = results[0].geometry.location.lng();		        
 		        var point2 = lat + ", " + lng; 
 		        
-		        document.getElementById("institutionProfile_coordinates").value = point2; 
+		        document.getElementById("institutionDetail_coordinates").value = point2; 
 		        
 		        if (marker) marker.setMap(null);
 		

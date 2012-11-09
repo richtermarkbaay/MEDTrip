@@ -27,6 +27,7 @@ class InstitutionDetailType extends AbstractType
         $resolver->setDefaults(array(
         	'profile_type' => true,
         	'edit_type' => true,
+        	'admin_add' => true,
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
@@ -63,7 +64,7 @@ class InstitutionDetailType extends AbstractType
     		$builder->add('twitter', 'text', array('label' => 'Twitter Account', 'virtual' => true ));
     		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
     		$builder->add('contactNumber', 'hidden');
-    	}else{
+    	}if ($options['admin_add']) {
     	
     		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
     	}
