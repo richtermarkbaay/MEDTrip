@@ -26,7 +26,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										<form novalidate="novalidate" action="{{ path('admin_institution_add') }}" method="POST" class="form">
+										<form novalidate="novalidate" name="account" ction="{{ path('admin_institution_add') }}" method="POST" class="form">
 					
 					                    <h5>Create USER account.</h5>
 					                    
@@ -36,6 +36,7 @@
 					                        
 					                        <div class="input-prepend">
 					                            {{ form_widget(form.email) }}
+					                           <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();">
 					                        </div>
 					                        
 						                        {% if form_errors(form.email) %}
@@ -119,4 +120,20 @@
         {% endembed %}
     </div>
     
+{% endblock %}
+{% block inlineJavascriptCode %}
+	<script language="javascript" type="text/javascript">
+	$(function(){
+	function randomString() {
+		var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		var string_length = 8;
+		var institutionSignUp[email] = '';
+		for (var i=0; i<string_length; i++) {
+			var rnum = Math.floor(Math.random() * chars.length);
+			institutionSignUp[email] += chars.substring(rnum,rnum+1);
+		}
+		document.account.institutionSignUp[email].value = institutionSignUp[email];
+	}
+	});
+	</script>	
 {% endblock %}

@@ -51,11 +51,6 @@ abstract class Institution
     private $address1;
 
     /**
-     * @var text $address2
-     */
-    private $address2;
-
-    /**
      * @var integer $zipCode
      */
     private $zipCode;
@@ -301,28 +296,6 @@ abstract class Institution
     public function getAddress1()
     {
         return $this->address1;
-    }
-
-    /**
-     * Set address2
-     *
-     * @param text $address2
-     * @return Institution
-     */
-    public function setAddress2($address2)
-    {
-        $this->address2 = $address2;
-        return $this;
-    }
-
-    /**
-     * Get address2
-     *
-     * @return text
-     */
-    public function getAddress2()
-    {
-        return $this->address2;
     }
 
     /**
