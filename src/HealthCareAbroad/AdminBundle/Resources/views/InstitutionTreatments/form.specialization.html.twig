@@ -6,8 +6,6 @@
 <div class="container">
 	<div class="maincontent">
 
-		<h2>Add Specialization</h2>
-
         {% include '::notice.admin.html.twig' %}
 
 	    {# include '::stepHolder.base.admin.html.twig' with {
@@ -18,7 +16,18 @@
                     {title: '- Assigned Doctors'},
                     {title: '- Preview', 'selected': false},
              ]}
-        #}							
+        #}
+        
+        
+        <h3>
+            {{ institutionMedicalCenter.name }} <a href="#" style="position:relative;top:8px"><i class="icon-pencil"></i></a>
+        </h3>
+        <div style="display: inline-block; max-width: 400px; position: relative;">
+            <a href="#" style="float: right; position: absolute; right: -20px;"><i class="icon-pencil"></i></a>
+            {{ institutionMedicalCenter.description | raw }}
+        </div>
+        
+        
         <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addSpecialization', { 'institutionId':institutionId, 'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }}>   
             {{ form_row(form.specialization, { 'attr': {'class': 'input-xxlarge'} }) }}
             {{ form_row(form.description) }}
