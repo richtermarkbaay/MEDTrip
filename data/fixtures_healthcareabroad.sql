@@ -164,6 +164,13 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='advertisement table';
 
+--
+-- Dumping data for table `advertisements`
+--
+
+INSERT INTO `advertisements` (`id`, `institution_id`, `object_id`, `advertisement_type`, `title`, `description`, `date_created`, `status`) VALUES
+(1, 1, 0, 1, 'Lorem ipsum', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.', '2012-10-05 08:17:44', 1),
+(2, 1, 108, 3, 'Claritas est', 'Claritas est etiam processus dynamicus, qui sequitur mutationem consuetudium lectorum. Mirum est notare quam littera gothica, quam nunc putamus parum claram, anteposuerit litterarum formas humanitatis per seacula quarta decima et quinta decima. Eodem modo typi, qui nunc nobis videntur parum clari, fiant sollemnes in futurum.', '2012-10-05 08:28:14', 1);
 
 -- --------------------------------------------------------
 
@@ -212,7 +219,9 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) NOT NULL,
+  `name` varchar(10) NOT NULL,
+  `abbr` varchar(10) NOT NULL,
+  `code` char(11) NOT NULL,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
@@ -223,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
+INSERT INTO `countries` (`id`, `name`, `abbr` , `code`, `slug`, `status`) VALUES(1, 'Philippines', 'PH', 63 ,'test', 1);
 
 -- --------------------------------------------------------
 --
