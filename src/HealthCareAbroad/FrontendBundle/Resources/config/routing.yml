@@ -2,6 +2,10 @@ main_homepage:
     pattern:  /
     #defaults: { _controller: FrontendBundle:Default:index }
     defaults: { _controller: FrontendBundle:Default:index}
+    
+main_homepage_index_html:
+    pattern:  /index.html
+    defaults: { _controller: FrontendBundle:Default:index}
 
 newsletter_new:
     pattern:  /newsletter
