@@ -1,21 +1,29 @@
 admin_institution_manageCenters:
-    pattern:  /admin/institution/{institutionId}/medical-centers/view-all
+    pattern:  /admin/institution/{institutionId}/medical-centers
     defaults: { _controller: AdminBundle:InstitutionTreatments:viewAllMedicalCenters }
     requirements:
          institutionId: \d+
          _method: GET
 
-admin_institution_medicalCenter_addDetails:
-    pattern:  /admin/institution/{institutionId}/medical-centers/add/details/{imcId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:addMedicalCenterDetails, imcId: ~ }
+admin_institution_medicalCenter_add:
+    pattern:  /admin/institution/{institutionId}/medical-center/add
+    defaults: { _controller: AdminBundle:InstitutionTreatments:addMedicalCenter, imcId: ~ }
     requirements:
         institutionId: \d+
         imcId: \d+
         _method: GET|POST
 
-admin_institution_medicalCenter_addInstitutionTreatments:
-    pattern:  /admin/institution/{institutionId}/medical-centers/add/treatments/{imcId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:addInstitutionTreatments }
+admin_institution_medicalCenter_edit:
+    pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+
+admin_institution_medicalCenter_addSpecialization:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specialization/add
+    defaults: { _controller: AdminBundle:InstitutionTreatments:addSpecialization }
     requirements:
         institutionId: \d+
         imcId: \d+
@@ -39,7 +47,7 @@ admin_institution_medicalCenter_update:
 
 admin_institution_medicalCenter_updateStatus:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status
-    defaults: { _controller: AdminBundle:Institution:updateMedicalCenterStatus }
+    defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenterStatus }
     requirements:
         institutionId: \d+
         imcId: \d+

@@ -1,0 +1,36 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div class="container">
+	<div class="maincontent">
+
+		<h2>Add Medical Center</h2>
+		
+        {% include '::notice.admin.html.twig' %}
+
+	    {# include '::stepHolder.base.admin.html.twig' with {
+                steps: [
+                    {title: '- Center Details', 'selected': true},
+                    {title: '- Specialization'},
+                    {title: '- Select Treatments'},
+                    {title: '- Assigned Doctors'},
+                    {title: '- Preview', 'selected': false},
+             ]}
+          #}							
+
+        <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_add', { 'institutionId':institutionId, 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
+            {{ form_errors(form) }}   
+
+            {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
+            {{ form_row(form.description) }}
+            {{ form_rest(form) }}
+        
+            <br>
+        	<input type="submit" name="submit" value="Submit" class="btn btn-large btn-primary" />										
+        </form>
+</div>
+<!--  end content -->
+
+{% endblock %}
