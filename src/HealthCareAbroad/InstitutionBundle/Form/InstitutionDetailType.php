@@ -42,10 +42,10 @@ class InstitutionDetailType extends AbstractType
 
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
-      	$builder->add('zipCode', 'number', array('label' => 'Zip Code'));
+      	$builder->add('zipCode', 'integer', array('label' => 'Zip Code'));
     	$builder->add('state', 'text');
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
-    	$builder->add('address1', 'text');
+    	$builder->add('address1', 'text', array('label' => 'Address'));
 
     	if ($options['profile_type']) {
     		
@@ -68,9 +68,7 @@ class InstitutionDetailType extends AbstractType
     	
     		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
     	}
-    		
 
- 		
     }
     
     public function getName()
