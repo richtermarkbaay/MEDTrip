@@ -26,11 +26,96 @@
                                                                     	
                                                                     	<hr>	
                                                                     	
-                                                                    	<h6>List of Specializations</h6>
-                                                                    	<div style="padding: 10px;">
-                                                                    	<b style="font-size:14px ;">Specialization one</b><br/>
-                                                                    	<span class="btn-small"><a href="#"><i class="icon-pencil"></i> Add Description Here</a></span> 
-                                                                    	</div>
+                                                                
+                                                                 
+                                                                    
+                                                                                           
+                                                                                          <div class="treatmentbox">
+                                                                                          	<div class="accordion" id="accordion2">
+                                                                                                		<div class="accordion-group">
+                                                                                                 			  <div class="accordion-heading">
+                                                                                                  			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                                                                                       			<h5>Specialization 1</h5> 
+                                                                                                     				</a>
+                                                                                                   		</div>
+                                                                                                   		<div id="collapseOne" class="accordion-body collapse in">
+                                                                                                     <div class="accordion-inner">
+                                                                                                     		
+                                                                                                     		
+                                                                                               <!--      		<div class="boxcontent">
+                                                                                                     			<h5>Treatments (will only show once there has already been checked treatment)</h5>
+                                                                                                     				<ul>
+                                                                                                     					<li>List of All check Treatment here.</li>
+                                                                                                     					<li>Sub-specialization - Treatment</li>
+                                                                                                     				</ul>
+                                                                                                     		</div>-->
+                                                                                                     
+                                                                                                 			<div class="boxcontent">
+                                                                                                               <h5>Sub-Specialization</h5>
+                                                                                                  
+                                                                                                               <label><input type="checkbox" />Treatment 1</label>
+                                                                                                               <label><input type="checkbox" />Treatment 2</label>
+                                                                                                               <label><input type="checkbox" />Treatment 3</label>   
+                                                                                                              <hr> 
+                                                                                                             <h5>Sub-Specialization</h5>
+                                                                                                               
+                                                                                                             <label><input type="checkbox" />Treatment 1</label>
+                                                                                                             <label><input type="checkbox" />Treatment 2</label>
+                                                                                                              <label><input type="checkbox" />Treatment 3</label>  
+                                                                                                              <hr>              
+                                                                                                             <h5>Sub-Specialization</h5>
+                                                                                                                            
+                                                                                                             <label><input type="checkbox" />Treatment 1</label>
+                                                                                                             <label><input type="checkbox" />Treatment 2</label>
+                                                                                                             <label><input type="checkbox" />Treatment 3</label>  
+                                                                                                              <hr>                           
+                                                                                                             <h5>Sub-Specialization</h5>
+                                                                                                                                         
+                                                                                                             <label><input type="checkbox" />Treatment 1</label>
+                                                                                                             <label><input type="checkbox" />Treatment 2</label>
+                                                                                                             <label><input type="checkbox" />Treatment 3</label>  
+                                                                                                             
+                                                                                                          </div>
+                                                                                                          
+                                                                                                          
+                                                                                                          
+                                                                                                          
+                                                                                                     </div>
+                                                                                                   </div>
+                                                                                                 		</div>
+                                                                                                 	</div>				
+                                                                                          	</div>
+                                                                                          
+                                                                                                  <hr>
+                                                                                                  
+                                                                                                  
+                                                                                                  <div class="treatmentbox">
+                                                                                                      	<div class="accordion" id="accordion2">
+                                                                                                        		<div class="accordion-group">
+                                                                                                         			  <div class="accordion-heading">
+                                                                                                          			   <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                                                                                               			<h5>Specialization 2</h5> 
+                                                                                                             				</a>
+                                                                                                           		</div>
+                                                                                                           		<div id="collapseTwo" class="accordion-body collapse">
+                                                                                                             <div class="accordion-inner">
+                                                                                                         			<div class="boxcontent">
+                                                                                                              
+                                                                                                          
+                                                                                                                       <label><input type="checkbox" />Treatment 1</label>
+                                                                                                                       <label><input type="checkbox" />Treatment 2</label>
+                                                                                                                       <label><input type="checkbox" />Treatment 3</label>   
+                                                                                                                  </div>
+                                                                                                             </div>
+                                                                                                           </div>
+                                                                                                         		</div>
+                                                                                                         	</div>				
+                                                                                                  	</div> 
+                                                                                           <br/>
+                                                                                                        
+                                                                    	<input type="submit" name="Submit" value="Next" class="btn btn-large btn-primary" />
+                                                                    
+                                                                    
                                                                     	
                                                                     	</div>
                                                                     </div>
