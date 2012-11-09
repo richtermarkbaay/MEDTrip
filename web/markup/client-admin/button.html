@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Text area redirect</title>
+<script type="text/javascript">
+// From: http://www.codingforums.com/showthread.php?t=195565
+
+function ConvertToLinks() {
+  str = document.getElementById("S1").value;
+  str = str.replace(/\r\n|\n/g,'<br>');
+  document.getElementById('txtLinks').innerHTML = str;
+  document.getElementById('txtLinks').style.display="block";
+  document.getElementById('txtarea').style.display="none";
+  document.getElementById('editButton').style.display="block";
+}
+
+function EditTextArea() {
+  document.getElementById('txtLinks').style.display="none";
+  document.getElementById('txtarea').style.display="block";
+  document.getElementById('editButton').style.display="none";
+}
+
+</script>
+</head>
+
+<body>
+<div id = "txtarea" style="display:block">
+<textarea rows="8" id="S1" name="S1" cols="60">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ipsum leo, scelerisque at dapibus ac, consectetur vel ipsum.
+<a href="http://www.yahoo.com">Yahoo</a><br>
+<a href="http://www.google.com">Google</a><br>
+<a href="http://www.javascriptkit.com">JavaScript Kit</a>
+</textarea>
+<br><br>
+<input type = "button" value = "Convert To Links"  style="display:block" onclick = "ConvertToLinks()">
+</div>
+
+<div id="txtLinks" style="width:500px;min-height:100px;border:1px solid blue" style="display:none">
+</div>
+<div id = "editButton"  style="display:none">
+<br>
+<input type = "button" value = "Edit Textarea" onclick="EditTextArea()"></div>
+</body>
+</html>
+
+
