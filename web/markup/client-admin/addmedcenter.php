@@ -33,7 +33,7 @@
                                                                        
                                                                        <span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>  
                                                                        
-                                                                       <div class="clear"><BR/></div>
+                                                                       <div class="clear"><br/></div>
                                                                        <div><input type="submit" name="Submit" value="SUBMIT" class="btn btn-large btn-primary" />
                                                                         
                                                                 </div>

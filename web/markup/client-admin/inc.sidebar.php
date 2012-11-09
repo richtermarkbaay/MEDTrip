@@ -42,5 +42,7 @@
 		</div>
 		
 		
+		<div class="span4"><div class="span3"><a href="#"><img class="member-box-avatar" src="images/institution/sampleads.jpg"></a></div></div>
+		
 	
 </div>
