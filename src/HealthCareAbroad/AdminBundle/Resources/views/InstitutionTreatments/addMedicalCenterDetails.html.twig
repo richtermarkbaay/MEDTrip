@@ -37,7 +37,7 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 													
-										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addDetails', { 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+										<form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addDetails', { 'institutionId':institutionId, 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
 											<h3>Medical Center Information</h3>		
 																						
 										        {{ form_errors(form) }}   
@@ -51,7 +51,7 @@
 								                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenter.id }) }}" class="button-type">Delete draft</a>
 								                    {% endif %}
 													
-												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
+												<div><input type="submit" name="submit" value="next" class="btn btn-large btn-primary" /></div>										
 										</form>
 									</div>
 								

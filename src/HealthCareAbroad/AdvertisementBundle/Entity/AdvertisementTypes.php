@@ -18,6 +18,14 @@ final class AdvertisementTypes
         );
     }
     
+    static function getTypeLabel($class)
+    {
+        $classes = array_flip(self::getDiscriminatorMapping());
+        $types = self::getList();
+
+        return $types[$classes[$class]]; 
+    }
+    
     /**
      * Get the class mapping for Advertisement type
      * 
@@ -34,3 +42,4 @@ final class AdvertisementTypes
         );
     }
 }
+

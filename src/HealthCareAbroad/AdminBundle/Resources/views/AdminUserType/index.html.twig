@@ -17,54 +17,49 @@
         
         {% block wrappedContent %}
         
-            <table style="width:100%;">
-                <tr>
-                    <td style="vertical-align: top; ">
-            			<!--  start table-content  -->
-            			<div id="table-content">
-            			
-            			    {% if app.session.hasFlash('notice') %}
-            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-            		        {% endif %}
-            			
-            			    <table style="width:100%;" class="generic-table" id="table-list">
-                				<tr>
-                				    <th class="table-header-check"></th>
-                					<th class="minwidth-1"> <a href="#">User type</a></th>
-                					<th class="minwidth-1"> <a href="#">Permissions</a></th>
-                					<th><a href="#">Options</a> </th>
-                				</tr>
-                				
-                				{% for userType in userTypes %}
-                				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-                				        <td></td>
-                    					<td>{{ userType.name | title }}</td>
-                    					<td>
-                    					    <ul style="list-style:decimal; padding: 0 15px;">
-                    					        {% for role in userType.adminUserRoles %}
-                    					        <li> {{ role.label | title }}</li>
-                    					        {% endfor %}
-                    					    </ul>
-                					    </td>
-                    					<td class="options-width">
-                        					<a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}" class="icon-1 info-tooltip"></a>
-                        					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
-                    					</td>
-                    				</tr>    
-                				{% endfor %}
-                				
-            				</table>
-            				<!--  end table-list................................... --> 
-            			</div>
-            			<!--  end table-content  -->
-        			</td>
-    			<td style="vertical-align: top; width: 20%">
-    			    {% block related_tasks %}
-    			        {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
-    			    {% endblock %}
-    			</td>
-			</tr>
-		</table>
+		    {% include '::notice.admin.html.twig' %}
+
+		    {% block related_tasks %}
+		        {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
+		    {% endblock %}
+
+			<div id="table-content" style="width:70%">
+
+			    <table class="table table-bordered sortable-list" id="table-list">
+				<tr>
+					<th id="column-name"><a href="{{ app.request.uri }}" class="{{ 'sort-' ~ app.request.get('sortOrder', 'asc') }}">User type</a></th>
+					<th>Permissions</th>
+					<th width="150">Actions</th>
+				</tr>
+
+				{% for userType in userTypes %}
+                    {% if userType.status %}
+                        {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                    {% else %}
+                        {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                    {% endif %}
+				    <tr>
+    					<td>{{ userType.name | title }}</td>
+    					<td>
+    					    <ul style="list-style:decimal; padding: 0 15px;">
+    					        {% for role in userType.adminUserRoles %}
+    					        <li> {{ role.label | title }}</li>
+    					        {% endfor %}
+    					    </ul>
+					    </td>
+    					<td>
+        					<a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}">
+        					    <i class="icon-edit"></i> Edit
+                            </a>
+                            &nbsp;
+        					<a href="#" title="{{ statusLabel }}"><i class="{{ class }}"></i> <span>{{ statusLabel }}</span></a>
+    					</td>
+    				</tr>
+				{% endfor %}
+				</table>
+				<!--  end table-list................................... --> 
+			</div>
+
         {% endblock %}
         
     {% endembed %}

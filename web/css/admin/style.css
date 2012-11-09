@@ -532,9 +532,7 @@ div.raw-content {
     border-top-left-radius: 5px;
 }
 
-#filter-wrapper a.button-type {
-    float: right;
-    padding: 8px 10px;
+#filter-wrapper .btn {
     margin-right: 10px;
 }
 #filter-wrapper label {
@@ -545,6 +543,7 @@ div.raw-content {
 #filter-wrapper select {
     padding: 5px;
     width: auto;
+    margin: 0;
     min-width: 100px;
 }
 

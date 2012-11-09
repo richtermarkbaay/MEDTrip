@@ -143,7 +143,7 @@ $(function(){
 			if(result) {
 				var spanElem = elem.find('span');
 				if(spanElem.html() == 'Activate') {
-					elem.attr('title', 'Delete');
+					elem.attr('title', 'Deactivate');
 					elem.find('i').addClass('icon-remove').removeClass('icon-ok');
 				} else {
 					elem.attr('title', 'Activate');
@@ -198,10 +198,14 @@ $(function(){
 			}
 		}, "json");
 	});	
-	
-	
+
 	$('.dropdown-toggle').click(function(){
 		$('ul.dropdown-menu').hide();
 		$(this).next('ul.dropdown-menu').toggle();
 	});
+	
+	
+	$('#main-content').click(function(){
+		$('#main-nav .dropdown-menu, #right-nav .dropdown-menu').hide();		
+	})
 });

@@ -110,7 +110,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                         name: offered_service_id
                         referencedColumnName: id
-                                          
+
         institutionLanguagesSpoken:
             targetEntity: HealthCareAbroad\AdminBundle\Entity\Language
             cascade: { }
@@ -145,4 +145,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 city_id:
                     referencedColumnName: id
             orphanRemoval: false
+
+    oneToOne:
+        gallery:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
+            mappedBy: institution
+
     lifecycleCallbacks: {  }

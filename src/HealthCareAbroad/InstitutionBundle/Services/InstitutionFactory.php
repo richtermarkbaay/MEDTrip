@@ -16,7 +16,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
- * Factory class for Institution
+ * Factory class for Institution. Accessible by services.institution.factory service key
  * 
  */
 class InstitutionFactory

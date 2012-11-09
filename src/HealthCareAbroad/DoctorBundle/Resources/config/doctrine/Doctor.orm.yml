@@ -27,6 +27,17 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             fixed: true
             nullable: false
             column: last_name
+        contactEmail:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: contact_email
+        contactNumber:
+            type: string
+            fixed: false
+            nullable: false
+            column: contact_number
         dateCreated:
             type: datetime
             nullable: false

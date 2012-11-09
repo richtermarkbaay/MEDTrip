@@ -236,6 +236,8 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `first_name` char(250) NOT NULL,
   `middle_name` char(250) NOT NULL,
   `last_name` char(250) NOT NULL,
+  `contact_email` varchar(100) NOT NULL,
+  `contact_number` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
@@ -245,9 +247,9 @@ CREATE TABLE IF NOT EXISTS `doctors` (
 -- Dumping data for table `doctors`
 --
 
-INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `date_created`, `status`) VALUES
-(1, 'Alnie', 'Leones', 'Jacobes', '2012-09-27 08:58:06', 1),
-(2, 'chaz', 'veloso', 'blance', '2012-09-28 01:00:53', 1);
+INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `contact_email`, `contact_number`, `date_created`, `status`) VALUES
+(1, 'Alnie', 'Leones', 'Jacobes', 'leons@test.com', '123123', '2012-09-27 08:58:06', 1),
+(2, 'chaz', 'veloso', 'blance', 'blance@test.com', '321312', '2012-09-28 01:00:53', 1);
 
 -- --------------------------------------------------------
 
@@ -536,10 +538,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 --
 
 INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2),
-(2, 1, 'sdfsadf', '<p>sdfsdf</p>', '2012-10-22 02:54:05', '2012-10-22 02:54:05', 'sdfsadf', 4),
-(3, 2, '32434234', '2sdfsdfsdfasdf', '2012-10-22 03:09:13', '2012-10-21 16:00:00', '2sdfsdfsdfasdf', 1),
-(4, 1, 'sdfsdfsdf', '<p>sdfsdf</p>', '2012-10-22 07:28:35', '2012-10-22 07:28:35', 'sdfsdfsdf', 4);
+(1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2);
 
 
 -- --------------------------------------------------------
@@ -567,15 +566,7 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
 --
 
 INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
-(1, 1, 1, 'sdf sdaf sadfa sdfasd fsd fsda fasd fsadf', '2012-10-22 01:28:19', '2012-10-22 01:28:19', 1),
-(2, 5, 1, '<p>sdfsdf</p>', '2012-10-22 07:31:53', '2012-10-22 07:31:53', 1),
-(3, 9, 8, '<p>sdf sdfsd fsd fsdf</p>', '2012-10-23 06:15:40', '2012-10-23 06:15:40', 1),
-(5, 1, 8, '<p>cardi</p>\r\n<p>&nbsp;</p>', '2012-10-23 06:31:33', '2012-10-23 06:31:33', 1),
-(6, 9, 6, '<p>SDF SDFSDA FSDA FSDFA</p>', '2012-10-23 06:42:30', '2012-10-23 06:42:30', 1),
-(7, 9, 1, '<p>FBCVCBVBV</p>', '2012-10-23 06:43:27', '2012-10-23 06:43:27', 1),
-(9, 11, 1, '<p>dsfdsfsdfdsfds</p>', '2012-10-24 08:03:26', '2012-10-24 08:03:26', 1),
-(10, 2, 8, '<p>dsfsddsdf</p>', '2012-10-25 09:20:31', '2012-10-25 09:20:31', 1),
-(11, 12, 4, '<p>dsfdD A FSDF</p>', '2012-10-31 00:44:19', '2012-10-31 00:44:19', 1);
+(1, 1, 1, 'sdf sdaf sadfa sdfasd fsd fsda fasd fsadf', '2012-10-22 01:28:19', '2012-10-22 01:28:19', 1);
 
 
 
@@ -1210,8 +1201,8 @@ ALTER TABLE `admin_users`
 -- Constraints for table `admin_user_type_roles`
 --
 ALTER TABLE `admin_user_type_roles`
-  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --

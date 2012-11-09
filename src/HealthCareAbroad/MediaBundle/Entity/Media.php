@@ -65,19 +65,18 @@ class Media
     private $dateModified;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \HealthCareAbroad\MediaBundle\Entity\Gallery
      */
     private $gallery;
 
     public function __construct()
     {
-        $this->gallery = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -99,7 +98,7 @@ class Media
     /**
      * Get uuid
      *
-     * @return string 
+     * @return string
      */
     public function getUuid()
     {
@@ -121,7 +120,7 @@ class Media
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -143,7 +142,7 @@ class Media
     /**
      * Get caption
      *
-     * @return string 
+     * @return string
      */
     public function getCaption()
     {
@@ -165,7 +164,7 @@ class Media
     /**
      * Get context
      *
-     * @return string 
+     * @return string
      */
     public function getContext()
     {
@@ -187,7 +186,7 @@ class Media
     /**
      * Get contentType
      *
-     * @return string 
+     * @return string
      */
     public function getContentType()
     {
@@ -209,7 +208,7 @@ class Media
     /**
      * Get metadata
      *
-     * @return text 
+     * @return text
      */
     public function getMetadata()
     {
@@ -231,7 +230,7 @@ class Media
     /**
      * Get width
      *
-     * @return integer 
+     * @return integer
      */
     public function getWidth()
     {
@@ -253,7 +252,7 @@ class Media
     /**
      * Get height
      *
-     * @return integer 
+     * @return integer
      */
     public function getHeight()
     {
@@ -275,7 +274,7 @@ class Media
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -297,7 +296,7 @@ class Media
     /**
      * Get dateModified
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateModified()
     {
@@ -305,31 +304,20 @@ class Media
     }
 
     /**
-     * Add gallery
+     * Set gallery
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
-     * @return Media
+     * @return \HealthCareAbroad\MediaBundle\Entity\Media
      */
-    public function addGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery)
+    public function setGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery)
     {
-        $this->gallery[] = $gallery;
+        $this->gallery = $gallery;
         return $this;
-    }
-
-    /**
-     * Remove gallery
-     *
-     * @param HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
-     */
-    public function removeGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery)
-    {
-        $this->gallery->removeElement($gallery);
     }
 
     /**
      * Get gallery
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return \HealthCareAbroad\MediaBundle\Entity\Gallery
      */
     public function getGallery()
     {

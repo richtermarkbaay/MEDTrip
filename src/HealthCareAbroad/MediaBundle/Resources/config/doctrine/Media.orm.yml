@@ -1,7 +1,7 @@
 HealthCareAbroad\MediaBundle\Entity\Media:
     type: entity
     table: media
-    repositoryClass: HealthCareAbroad\MediaBundle\Repository\MediaRepository    
+    repositoryClass: HealthCareAbroad\MediaBundle\Repository\MediaRepository
     fields:
         id:
             id: true
@@ -57,9 +57,5 @@ HealthCareAbroad\MediaBundle\Entity\Media:
     manyToMany:
         gallery:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
-            cascade: {  }
             mappedBy: media
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }

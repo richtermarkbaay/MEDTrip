@@ -5,70 +5,43 @@
 {% endblock %}
 
 {% block body %}
-<body id="login-bg">
+<body>
+    <div class="container">
+        <div class="signupbox span3">
+            <form action="{{ path('admin_login_check') }}" method="POST" class="">
 
-    <!-- Start: login-holder -->
-    <div id="login-holder">
+                {% if error %}
+                    <div class="alert alert-error">
+                        {{ error.message }}
+                    </div>
+                {% endif %}
 
-        <!-- start logo -->
-        <div  id="logo-login" style="font-size: 14px;color:#ccc;height:15px">
-            {{ site_name }} Admin Panel
-            <a href="index.html">
-                <img style="display:none;" src="{{ asset('images/admin/shared/logo.jpeg')}}" width="156" height="40" alt="" /></a>
+                <div class="control-group">
+                    <label for="inputEmail" class="control-label">Email</label>
+                    <div class="controls">
+                        <input type="text" id="inputEmail" name="_username" value="{{ last_username }}" class="input-large">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label for="inputPassword" class="control-label">Password</label>
+                    <div class="controls">
+                        <input type="password" id="inputPassword" name="_password" class="input-large">
+                    </div>
+                </div>
+                
+
+                <div class="controls">
+                    <input type="submit" class="btn btn-primary" name="submit" value="Login"/>
+                </div>
+                <div class="controls">
+                    <a href="">Forgot Password?</a>
+                </div>
+                
+            </form>
+    
+
         </div>
-        <!-- end logo -->
-
-        <div class="clear"></div>
-
-        <!--  start loginbox ................................................................................. -->
-        <div id="loginbox">
-
-            <!--  start login-inner -->
-            <div id="login-inner">
-                <form action="{{ path('admin_login_check') }}" method="POST" >
-                    <table border="0" cellpadding="0" cellspacing="0">
-                        {% if error %}
-                        <tr>
-                            <td colspan="2">
-                                <div class=login_notice style="color: #CE2700; margin: -20px 0px;">
-                                    {{ error.message }}
-                                </div>
-                            </td>
-                        </tr>
-                        {% endif %}
-
-                        <tr>
-                            <th>Email</th>
-                            <td>
-                                <input type="text" id="username" name="_username" value="{{ last_username }}" class="login-inp" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Password</th>
-                            <td>
-                                <input type="password" id="password" name="_password" class="login-inp" />
-                            </td>
-                        </tr>
-                        {# --- no remember me in admin ---
-                        <tr>
-                            <th></th>
-                            <td valign="top"><input type="checkbox" name="_remember_me" checked class="checkbox-size" id="login-check" /><label for="login-check">Remember me</label></td>
-                        </tr>
-                        #}
-                        <tr>
-                            <th></th>
-                            <td><input type="submit" class="submit-login" name="submit"/></td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-            <!--  end login-inner -->
-
-            <div class="clear"></div>
-            <a href="" class="forgot-pwd">Forgot Password?</a>
-        </div>
-     <!--  end loginbox -->
-
     </div>
     <!-- End: login-holder -->
 </body>

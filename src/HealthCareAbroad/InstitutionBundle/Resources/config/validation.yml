@@ -46,7 +46,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
             - NotBlank: ~
 
           
-HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroup:
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [institution, name]

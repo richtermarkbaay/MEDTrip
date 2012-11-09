@@ -13,17 +13,17 @@
 
             {% include '::notice.admin.html.twig' %}
 
-            <table id="inquiries-list" class="generic-table" cellspacing="0" width="70%">
+            <table id="inquiries-list" class="table table-bordered sortable-list">
             <tr>
-                <th><a href="">Inquirer</a></th>
-                <th><a href="">Inquiry Subject</a></th>
-                <th><a href="">Message</a></th>
-                <th><a href="">Email</a></th>
-                <th><a href="">Date Created</a></th>
+                <th><a href="#">Inquirer</a></th>
+                <th><a href="#">Inquiry Subject</a></th>
+                <th><a href="#">Message</a></th>
+                <th><a href="#">Email</a></th>
+                <th><a href="#">Date Created</a></th>
             </tr>
-                
+
             {% for inquiry in inquiries %}
-                <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
+                <tr>
                     <td>{{ inquiry.firstName }} {{ inquiry.lastName }}</td>
                     <td>{{ inquiry.inquirySubject.name }}</td>
                     <td>{{ inquiry.message }}</td>

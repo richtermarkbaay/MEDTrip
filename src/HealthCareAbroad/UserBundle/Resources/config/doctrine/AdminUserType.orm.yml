@@ -22,8 +22,8 @@ HealthCareAbroad\UserBundle\Entity\AdminUserType:
         adminUserRoles:
             targetEntity: HealthCareAbroad\UserBundle\Entity\AdminUserRole
             cascade: {  }
-            mappedBy: adminUserTypes
-            inversedBy: null
+            mappedBy: null
+            inversedBy: adminUserTypes
             joinTable:
                 name: admin_user_type_roles
                 joinColumns:

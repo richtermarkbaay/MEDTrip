@@ -27,6 +27,11 @@ AdminBundle_advertisement:
 AdminBundle_institutuion:
     resource: "@AdminBundle/Resources/config/routing_institution.yml"
     prefix:   /
+    
+# Routes for Admin InstitutionTreatmentsController #
+AdminBundle_institutuionTreatments:
+    resource: "@AdminBundle/Resources/config/routing_institution_treatments.yml"
+    prefix:   /
 
 # Routes for Admin CountryController #
 AdminBundle_country:

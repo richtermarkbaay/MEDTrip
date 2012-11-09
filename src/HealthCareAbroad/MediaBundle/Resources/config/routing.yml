@@ -8,13 +8,34 @@ admin_institution_gallery:
         page: \d+
 
 admin_institution_gallery_add:
-    pattern: /admin/institution/{institutionId}/gallery/add
-    defaults: { _controller: MediaBundle:Admin:add }
+    pattern: /admin/institution/{institutionId}/gallery/add/{multiUpload}
+    defaults: { _controller: MediaBundle:Admin:add, multiUpload: 1 }
     requirements:
         _method: GET
         institutionId: \d+
 
 # END ADMIN INSTITUTION ROUTES
+
+
+# DEFAULT ROUTES
+media_upload:
+    pattern: /media/upload
+    defaults: { _controller: MediaBundle:Default:upload }
+    requirements:
+        _method: POST
+
+media_delete:
+    pattern: /media/delete/{id}
+    defaults: { _controller: MediaBundle:Default:delete, id: ~ }
+    requirements:
+        _method: POST
+        id: \d+
+
+media_edit_caption:
+    pattern: /media/edit-caption
+    defaults: { _controller: MediaBundle:Default:editCaption }
+
+# END DEFAULT ROUTES
 
 institution_gallery:
     pattern: /institution/gallery/{page}
@@ -28,12 +49,6 @@ institution_gallery_add:
     defaults: { _controller: MediaBundle:Default:add }
     requirements:
         _method: GET
-
-media_upload:
-    pattern: /media/upload
-    defaults: { _controller: MediaBundle:Default:upload }
-    requirements:
-        _method: POST
 
 media_upload_medicalCenter:
     pattern: /media/upload/medical-center/{imcId}
@@ -60,14 +75,3 @@ media_ajaxAttach_medicalCenter:
     requirements:
         imcId: \d+
         mediaId: \d+
-
-media_delete:
-    pattern: /media/delete/{id}
-    defaults: { _controller: MediaBundle:Default:delete, id: ~ }
-    requirements:
-        _method: POST
-        id: \d+
-
-media_edit_caption:
-    pattern: /media/edit-caption
-    defaults: { _controller: MediaBundle:Default:editCaption }
