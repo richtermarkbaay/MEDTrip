@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Form\AdminUserFormType;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Security\Core\SecurityContext;
 
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
@@ -85,7 +89,7 @@ class AdminUserController extends Controller
         if (!$adminUser) {
             throw $this->createNotFoundException('Cannot update invalid account.');
         }
-        $form = $this->createForm(new UserAccountDetailType(), $adminUser);
+        $form = $this->createForm(new AdminUserFormType(), $adminUser);
 
         if ($this->getRequest()->isMethod('POST')) {
             $form->bindRequest($this->getRequest());
@@ -145,6 +149,7 @@ class AdminUserController extends Controller
                 'form' => $form->createView(),
                 ));
     }
+    
     /**
      * View all admin users
      *
@@ -152,9 +157,36 @@ class AdminUserController extends Controller
      */
     public function indexAction()
     {
+        //$users = $this->filteredResult;
         $users = $this->get('services.admin_user')->getActiveUsers();
+ 
         return $this->render('AdminBundle:AdminUser:index.html.twig', array(
             'users' => $users
+        ));
+    }
+    
+    /**
+     * Create a new admin user
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
+     */
+    public function addAction(Request $request)
+    {
+        $adminUser = new AdminUser();
+        $form = $this->createForm(new AdminUserFormType(), $adminUser);
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $this->get('services.admin_user')->create($form->getData());
+                $this->get('session')->setFlash('success', "User successfully created.");
+                
+                return $this->redirect($this->generateUrl('admin_user_index'));
+            }
+        }
+        
+        return $this->render('AdminBundle:AdminUser:add.html.twig', array(
+            'form' => $form->createView()
         ));
     }
 }

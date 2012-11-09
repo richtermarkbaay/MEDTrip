@@ -1,0 +1,38 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Add Media to {{ app.session.get('institutionName') }}'s Gallery</h1>
+    </div>
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+            {# ----- Related tasks ----- #}
+            {% include 'MediaBundle:Admin:relatedTasksAddMedia.html.twig' %}
+            {# ----- end Related tasks ----- #}
+
+                <!--  start table-content  -->
+                <div id="table-content" style="width:75%;">
+
+                    <div id="dialog-form" title="Add media">
+                        {% if multiUpload %}
+                            {% include 'MediaBundle:Partials:multiUploadForm.html.twig' %}
+                        {% else %}
+                            {% include 'MediaBundle:Partials:singleUploadForm.html.twig' %}
+                        {% endif %}
+                    </div>
+                </div>
+        {% endblock %}
+
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

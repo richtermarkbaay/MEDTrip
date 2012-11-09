@@ -63,8 +63,16 @@ class AdvertisementController extends Controller
 
         	$advertisementTypeId = 0;
         }
-    
-        $params = array('advertisementTypeId' => $advertisementTypeId,'advertisements' => $this->filteredResult, 'pager' => $this->pager);
+
+        $adTypes = AdvertisementTypes::getList();
+        $discriminatorMapping = array_flip(AdvertisementTypes::getDiscriminatorMapping());
+        
+        $params = array(
+            'advertisementTypeId' => $advertisementTypeId,
+            'advertisements' => $this->filteredResult,
+            'adTypes' => $adTypes,
+            'discriminatorMapping' => $discriminatorMapping,
+            'pager' => $this->pager);
 
         return $this->render('AdminBundle:Advertisement:index.html.twig', $params);
         

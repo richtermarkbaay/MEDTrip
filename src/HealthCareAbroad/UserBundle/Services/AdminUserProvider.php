@@ -19,14 +19,9 @@ class AdminUserProvider extends ChromediaAccountsUserProvider
         if ($user) {
             // populate account data to SiteUser
             $user = $this->userService->hydrateAccountData($user, $accountData);
-            $roles = array('ROLE_ADMIN');
-            foreach ($user->getAdminUserType()->getAdminUserRoles() as $userRole) {
-                // compare bitwise status for active
-                if ($userRole->getStatus() & AdminUserRole::STATUS_ACTIVE) {
-                    $roles[] = $userRole->getName();
-                }
-            }
-            $user->setRoles($roles);
+            
+            // set user roles
+            $user->setRoles($this->userService->getUserRolesForSecurityToken($user));
 
             //TODO: not sure if this is the place to set the session; this
             // shouldn't be part of the user provider's responsibilities

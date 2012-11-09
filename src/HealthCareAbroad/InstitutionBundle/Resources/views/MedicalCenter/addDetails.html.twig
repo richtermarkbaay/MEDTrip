@@ -1,0 +1,74 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div class="container">
+	<div class="maincontent">
+		<!--sidebar start-->
+			<div class="span3">
+			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
+			</div>
+	
+			<div class="span9">
+			<h2>
+			    {% set hasDraft = hasDraft is defined and hasDraft %}
+	            {% if hasDraft %}
+	                Edit draft: {{ institutionMedicalCenter.name }}
+	            {% else %}
+	                Add Medical Center
+	            {% endif %}			
+			</h2>
+			 <div class="addcenterbox">
+			 	<div class="row-fluid">
+				    <div class="span12">
+				            <div class="tabbable">
+								<!-- /.menu - tab start -->
+								        {% include '::notice.admin.html.twig' %}
+						
+								    {% include '::stepHolder.base.admin.html.twig' with {
+						                    steps: [
+						                        {title: '- Center Details', 'selected': true},
+						                        {title: '- Specialization'},
+						                        {title: '- Select Treatments'},
+						                        {title: '- Assigned Doctors'},
+						                        {title: '- Preview', 'selected': false},
+						                 ]}
+						              %}							
+								<!-- /.menu - tab end -->
+								<!-- /.tab-content start -->
+								<div class="tab-content">
+									<div id="tabs1-pane1" class="tab-pane active">
+													
+										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addDetails', { 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+											<h3>Medical Center Information</h3>		
+																						
+										        {{ form_errors(form) }}   
+										        
+							                    {{ form_row(form.name, { 'attr': {'class': 'input-xxlarge'} }) }}
+							                    {{ form_row(form.description) }}
+							                    {{ form_rest(form) }}
+																							
+												<input type="reset" value="Reset" class="btn btn-large btn-inverse"/>
+								                    {% if hasDraft %}
+								                        <a href="{{ path('institution_medicalCenter_deleteDraft', { 'imcgId': institutionMedicalCenter.id }) }}" class="button-type">Delete draft</a>
+								                    {% endif %}
+													
+												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
+										</form>
+									</div>
+								
+								</div><!-- /.tab-content end -->
+							</div>
+					    </div><!--/span 12 end-->
+					 </div><!--/row-fluid end-->
+				 </div>
+			</div>
+			<!--main tab start-->
+		
+			<div class="clear"></div>
+	</div>
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}

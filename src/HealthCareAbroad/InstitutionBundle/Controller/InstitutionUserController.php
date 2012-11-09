@@ -27,7 +27,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-class InstitutionUserController extends InstitutionAwareController
+class InstitutionUserController extends Controller
 {
     /*
     public function loginAction()
@@ -216,7 +216,7 @@ class InstitutionUserController extends InstitutionAwareController
         )));
 
         // login to institution
-        $this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
+        //$this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
         // redirect to institution homepage
         $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');

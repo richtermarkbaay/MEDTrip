@@ -1,50 +1,40 @@
-# Routes for Institution MedicalCenterGroupController #
-InstitutionBundle_medicalCenterGroup:
-    resource: "@InstitutionBundle/Resources/config/routing_medicalCenterGroup.yml"
-    prefix:   /institution
-
 # Routes for Institution MedicalCenterController #
 InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /institution
-    
-# Routes for Institution TreatmentController #
-InstitutionBundle_treatment:
-    resource: "@InstitutionBundle/Resources/config/routing_treatment.yml"
+
+# Routes for Institution SpecializationController #
+InstitutionBundle_specialization:
+    resource: "@InstitutionBundle/Resources/config/routing_specialization.yml"
     prefix:   /institution
-    
+
 # Routes for InstitutionUserController #
 InstitutionBundle_user:
     resource: "@InstitutionBundle/Resources/config/routing_user.yml"
     prefix:   /institution
-    
+
 # Routes for InstitutionUserController #
 InstitutionBundle_userType:
     resource: "@InstitutionBundle/Resources/config/routing_userType.yml"
     prefix:   /institution
-    
+
 # Routes for InstitutionUserRoleController #
 InstitutionBundle_userRole:
     resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
     prefix:   /institution
 
-# Routes for DoctorController #
-InstitutionBundle_doctor:
-    resource: "@InstitutionBundle/Resources/config/routing_doctor.yml"
-    prefix:   /institution
-    
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }
     requirements:
         _method: GET
-        
+
 institution_signUp:
     pattern:  /sign-up
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
     requirements:
         _method: GET|POST
-        
+       
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
@@ -55,7 +45,7 @@ institution_showEditHistory:
     requirements:
         _method: GET
         objectId: \d+
-    
+
 institution_edit_information:
     pattern:  /institution/edit-information/{institutionId}
     defaults:  { _controller: InstitutionBundle:Institution:editInstitution, institutionId: ~ }
@@ -66,8 +56,8 @@ institution_edit_information:
 institution_error403:
     pattern: /institution/access-denied
     defaults: { _controller: InstitutionBundle:Default:error403 }
-        
-        
+
+
 institution_homepage:
     pattern:  /institution
     defaults: { _controller: InstitutionBundle:Default:index }
@@ -75,7 +65,7 @@ institution_homepage:
 institution_accept_user_invitation:
     pattern:  /accounts/accept-invitation/{token}
     defaults: { _controller: InstitutionBundle:InstitutionUser:acceptInvitation }
-    requirements:    
+    requirements:
        _method:  GET
 #
 #InstitutionBundle_create_token:
@@ -97,5 +87,19 @@ InstitutionBundle_confirmed_token:
 institution_exception_report_create:
     pattern: /institution/error
     defaults: { _controller: InstitutionBundle:Default:errorReport }
-    requirements:    
+    requirements:
         _method:  GET|POST
+        
+institution_accountProfile:
+    pattern:  /account/{institutionId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:account, institutionId: ~ }
+    requirements:
+        _method:  GET|POST
+        institutionId:  \d+
+        
+institution_createProfile:
+    pattern:  /create/{institutionId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:save, institutionId: ~ }
+    requirements:
+        _method:  GET|POST
+        institutionId:  \d+

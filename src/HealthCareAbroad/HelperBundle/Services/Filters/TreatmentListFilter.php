@@ -5,7 +5,9 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 class TreatmentListFilter extends ListFilter
 {
@@ -13,25 +15,24 @@ class TreatmentListFilter extends ListFilter
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
-        
-        // Add specialization in validCriteria
+
+        // Add treatment in validCriteria
         $this->addValidCriteria('specialization');
     }
 
     function setFilterOptions()
     {
-        $this->setMedicalCenterFilterOption();    
+        $this->setMedicalProcedureTypeFilterOption();
 
         $this->setStatusFilterOption();
     }
 
-    function setMedicalCenterFilterOption()
+    function setMedicalProcedureTypeFilterOption()
     {        
-
         // Set The Filter Option 
-        $medicalCenters = $this->doctrine->getEntityManager()->getRepository('MedicalProcedureBundle:MedicalCenter')->findByStatus(MedicalCenter::STATUS_ACTIVE);
+        $specializations = $this->doctrine->getEntityManager()->getRepository('TreatmentBundle:Specialization')->findByStatus(Specialization::STATUS_ACTIVE);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
-        foreach($medicalCenters as $each) {
+        foreach($specializations as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
@@ -44,25 +45,24 @@ class TreatmentListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('MedicalProcedureBundle:Treatment', 'a');
-    
+        $this->queryBuilder->select('a')->from('TreatmentBundle:Treatment', 'a');
+
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
-         
+        
         if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.medicalCenter = :specialization');
+            $this->queryBuilder->andWhere('a.specialization = :specialization');
             $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
         }
 
         if($this->sortBy == 'specialization') {
-            $this->queryBuilder->leftJoin('a.medicalCenter', 'b');
+            $this->queryBuilder->leftJoin('a.specialization', 'b');
             $sort = 'b.name ' . $this->sortOrder;
-
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';
-            $sort = "a.$sortBy " . $this->sortOrder;
+            $sort = "a.$sortBy " . $this->sortOrder;          
         }
 
         $this->queryBuilder->add('orderBy', $sort);

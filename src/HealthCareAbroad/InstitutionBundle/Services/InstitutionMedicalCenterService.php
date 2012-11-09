@@ -1,17 +1,19 @@
 <?php
+
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
- * Service class for InstitutionMedicalCenter
+ * Service class for InstitutionMedicalCenter. Accessible by services.institution_medical_center service id
+ * 
  * @author Allejo Chris G. Velarde
- *
  */
 class InstitutionMedicalCenterService
 {
@@ -19,64 +21,58 @@ class InstitutionMedicalCenterService
      * @var Registry
      */
     private $doctrine;
-
-    /**
-     * @var InstitutionMedicalCenterRepository
-     */
-    private $repository;
-
-    public function __construct(Registry $doctrine)
+    
+    public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->repository = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-    }
-
-    /**
-     * Get InstitutionTreatments of an InstitutionMedicalCenter
-     *
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
-     */
-    public function getInstitutionTreatmentsOfCenter(InstitutionMedicalCenter $institutionMedicalCenter)
-    {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment')->getByInstitutionMedicalCenter($institutionMedicalCenter);
     }
     
+    /**
+     * Layer to Doctrine find by id. Apply caching here.
+     * 
+     * @param int $id
+     * @return InstitutionMedicalCenter
+     */
+    public function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
+    }
+    
+    /**
+     * Save InstitutionMedicalCenter to database
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return InstitutionMedicalCenter
+     */
     public function save(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionMedicalCenter);
         $em->flush();
+        
+        return $institutionMedicalCenter;
     }
-
+    
     /**
-     * Remove draft institution specialization and associated procedure types
-     *
-     * @param Institution $institution
-     * @param int $institutionMedicalCenterId
-     * @throws Exception
-     * @return InstitutionMedicalCenter $institutionMedicalCenter
+     * Save an InstitutionMedicalCenter as DRAFT
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
      */
-    public function deleteDraftInstitutionMedicalCenter(Institution $institution, $institutionMedicalCenterId)
+    public function saveAsDraft(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $em = $this->doctrine->getEntityManager();
-
-        //TODO: check that the institution owns the center.
-        $center = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($institutionMedicalCenterId);
-
-        if (InstitutionMedicalCenterGroupStatus::DRAFT != $center->getStatus()) {
-            throw new Exception('Delete operation not allowed.');
-        }
-
-        //NOTE: Supposedly a DRAFT institution specialization will have no procedure types
-        // so the loop below will never run. But this specification can change.
-        //TODO: Use DQL DELETE statement to delete multiple entities of a type with a single command and without hydrating these entities
-        foreach($center->getInstitutionTreatments() as $entity) {
-            $em->remove($entity);
-        }
-
-        $em->remove($center);
-        $em->flush();
-
-        return $center;
+        $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
+        
+        return $this->save($institutionMedicalCenter);
+    }
+    
+    /**
+     * Check if InstitutionMedicalCenter is of DRAFT status
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return boolean
+     */
+    public function isDraft(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
     }
 }

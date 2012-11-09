@@ -1,0 +1,21 @@
+parameters:
+    services.subSpecialization_list: HealthCareAbroad\TreatmentBundle\Form\ListType\SubSpecializationListType
+
+services:
+    services.treatment_bundle:
+        class: HealthCareAbroad\TreatmentBundle\Services\TreatmentBundleService
+        calls:
+            - [setMemcache, [@services.memcache]]
+            - [setDoctrine, [@doctrine]]
+    form.subSpecialization_list:
+        class: "%services.subSpecialization_list%"
+        tags:
+            - { name: form.type, alias: subSpecialization_list }
+    form.specialization_list:
+        class: HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType
+        tags:
+            - { name: form.type, alias: specialization_list }
+    form.specialization_statusSelector:
+        class: HealthCareAbroad\TreatmentBundle\Form\SpecializationStatusSelectorType
+        tags:
+            - { name: form.type, alias: specializationStatusSelector }

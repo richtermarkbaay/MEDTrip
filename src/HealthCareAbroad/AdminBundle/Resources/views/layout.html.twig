@@ -4,67 +4,48 @@
 
 {% block body %}
 
-<body> 
-    <!-- Start: page-top-outer -->
-    <div id="page-top-outer">    
-    
-        <!-- Start: page-top -->
-        <div id="page-top">
-        
-        	<!-- start logo -->
-        	<div id="logo">
-        	    <a href=""><img src="{{ asset('/images/admin/shared/logo.jpeg') }}" width="156" height="40" alt="" /></a>
-        	</div>
-        	<!-- end logo -->
-        	
-        	{% block top_search %}
-        		<div id="top-search">
-					{% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %}
-				</div>	        	    
-        	{% endblock %}
-         	<div class="clear"></div>
-        
-        </div>
-        <!-- End: page-top -->
-    
-    </div>
-    <!-- End: page-top-outer -->
-	
-    <div class="clear">&nbsp;</div>
- 
-    <!--  start nav-outer-repeat................................................................................................. START -->
-    <div class="nav-outer-repeat"> 
-        <!--  start nav-outer -->
-        <div class="nav-outer"> 
-    
-    		{% block right_navigation %}
-    		    {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
-    		{% endblock %}
-    		
-    		{% block main_navigation %}
-    		    {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
-    		{% endblock %}
-        </div>
-        <div class="clear"></div>
-        <!--  end nav-outer -->
-        
-    </div>
-    <!--  end nav-outer-repeat................................................... END -->
+<body>
 
-    <!-- start content-outer ........................................................................................................................START -->
-    <div id="content-outer">
+    {% block javascripts %}
+        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+    {% endblock %}
+
+    <!-- Top Navigation -->
+    <div class="navbar navbar-fixed-top">
+          <div class="navbar-inner">
+            <div class="container">
+              <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </a>
+              <a href="{{ path('admin_homepage') }}" class="brand" style="padding-top:0;padding-bottom:0;"><img longdesc="#" alt="Health Care Abroad Logo" src="/images/institution/HCA-logo-small.png"></a>
+              <div class="nav-collapse collapse">
+                  {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
+    
+                <!-- Search Section -->
+                {#% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %#}
+    
+                
+                {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
+                
+              </div><!--/.nav-collapse -->
+            </div>
+          </div>
+    </div>
+    <!-- End of Top Navigation -->
+
+    <div class="container" style="margin-top: 50px" id="main-content">
         {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
+
         {% block content %}{% endblock %}
     </div>
-    <!--  end content-outer........................................................END -->
 
-    <div class="clear">&nbsp;</div>
- 	<div id="dialog-container"></div>
-   
     {% include '::footer.admin.html.twig' %}
- 
-     {% block inlineJavascriptCode %}
-     {% endblock %}
+
+    <div id="dialog-container"></div>
+
+    {% block inlineJavascriptCode %}{% endblock %}
 </body>
 
 {% endblock %}

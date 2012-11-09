@@ -226,7 +226,53 @@ CREATE TABLE IF NOT EXISTS `countries` (
 INSERT INTO `countries` (`id`, `name`, `slug`, `status`) VALUES(1, 'Philippines', 'test', 1);
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `doctors`
+--
 
+DROP TABLE IF EXISTS `doctors`;
+CREATE TABLE IF NOT EXISTS `doctors` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` char(250) NOT NULL,
+  `middle_name` char(250) NOT NULL,
+  `last_name` char(250) NOT NULL,
+  `contact_email` varchar(100) NOT NULL,
+  `contact_number` text NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `doctors`
+--
+
+INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `contact_email`, `contact_number`, `date_created`, `status`) VALUES
+(1, 'Alnie', 'Leones', 'Jacobes', 'leons@test.com', '123123', '2012-09-27 08:58:06', 1),
+(2, 'chaz', 'veloso', 'blance', 'blance@test.com', '321312', '2012-09-28 01:00:53', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `doctor_specializations`
+--
+
+DROP TABLE IF EXISTS `doctor_specializations`;
+CREATE TABLE IF NOT EXISTS `doctor_specializations` (
+  `doctor_id` bigint(20) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`doctor_id`,`specialization_id`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `doctor_specializations`
+--
+
+INSERT INTO `doctor_specializations` (`doctor_id`, `specialization_id`) VALUES
+(1, 1);
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `error_logs`
 --
@@ -352,21 +398,26 @@ INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(2, 'fees'
 DROP TABLE IF EXISTS `institutions`;
 CREATE TABLE IF NOT EXISTS `institutions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_type` tinyint(1) NOT NULL,
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `logo` varchar(100) NOT NULL,
   `contact_email` varchar(100) NOT NULL,
   `contact_number` text NOT NULL,
+  `websites` varchar(100) NOT NULL,
   `address1` text NOT NULL,
   `address2` text NOT NULL,
-  `city_id` int(10) unsigned NOT NULL,
-  `country_id` int(10) unsigned NOT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  `country_id` int(10) unsigned DEFAULT NULL,
   `zip_code` int(11) NOT NULL,
+  `state` varchar(50) DEFAULT NULL COMMENT 'country state or province',
+  `coordinates` varchar(100) NOT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
   KEY `city_id` (`city_id`),
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
@@ -374,9 +425,10 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 --
 -- Dumping data for table `institutions`
 --
-INSERT INTO `institutions` (`id`, `name`, `description`, `logo`, `address1`, `address2`, `city_id`, `country_id`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 'Test Institution Medical Clinic', 'Lorem ipsum dolor set amet', '', '111', '2222', 1, 1, '2012-07-30 06:20:54', '2012-07-30 06:20:54', 'test-institution-medical-clinic', 9),
-(2, 'Kamuning', 'whitening in kamuning', 'logo.jpg', 'Quebec canada 22', 'Quebec canada 2', 1, 1, '2012-08-13 05:53:31', '2012-08-13 00:28:22', 'test', 1);
+
+INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo`, `contact_email`, `contact_number`, `address1`, `address2`, `city_id`, `country_id`, `zip_code`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 3, 'Dubai Hospital', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', 'logo.jpg', '', '', 'eng,', '..', 2, 1, 0, '2012-10-22 03:24:41', '2012-09-03 16:00:00', 'belo-churvaness-ness', 9),
+(2, 3, 'Test Institution', 'dsadsfdasf', '', '', '', 'afadsfsd', 'dsafasdf', 10, 1, 0, '2012-10-22 03:24:49', '2012-09-13 08:15:55', 'test-institution', 17);
 
 -- --------------------------------------------------------
 
@@ -467,36 +519,7 @@ CREATE TABLE IF NOT EXISTS `institution_media` (
 -- Table structure for table `institution_medical_centers`
 --
 
-DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
-  `medical_center_id` int(10) unsigned NOT NULL,
-  `description` text NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `status` smallint(6) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_medical_center_group_id` (`institution_medical_center_group_id`,`medical_center_id`),
-  KEY `medical_center_id` (`medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `institution_medical_centers`
---
-
-INSERT INTO `institution_medical_centers` (`id`, `institution_medical_center_group_id`, `medical_center_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
-(1, 1, 1, 'dsafdsafdsaf', '2012-08-30 04:18:36', '2012-08-30 04:18:36', 1);
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `institution_medical_center_groups`
---
-
-DROP TABLE IF EXISTS `institution_medical_center_groups`;
-CREATE TABLE IF NOT EXISTS `institution_medical_center_groups` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -506,57 +529,91 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_groups` (
   `slug` varchar(250) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `institution_id` (`institution_id`,`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+  UNIQUE KEY `institution_id_2` (`institution_id`,`name`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
--- Dumping data for table `institution_medical_center_groups`
+-- Dumping data for table `institution_medical_centers`
 --
 
-INSERT INTO `institution_medical_center_groups` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2),
-(2, 1, 'sdfsadf', '<p>sdfsdf</p>', '2012-10-22 02:54:05', '2012-10-22 02:54:05', 'sdfsadf', 4),
-(3, 2, '32434234', '2sdfsdfsdfasdf', '2012-10-22 03:09:13', '2012-10-21 16:00:00', '2sdfsdfsdfasdf', 1);
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
+(1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2);
+
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `institution_medical_center_group_doctors`
+-- Table structure for table `institution_specializations`
 --
 
-DROP TABLE IF EXISTS `institution_medical_center_group_doctors`;
-CREATE TABLE IF NOT EXISTS `institution_medical_center_group_doctors` (
-  `institution_medical_center_group_id` bigint(20) unsigned NOT NULL,
+CREATE TABLE IF NOT EXISTS `institution_specializations` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
+  `description` text CHARACTER SET latin1 NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `status` smallint(6) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`specialization_id`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+
+
+--
+-- Dumping data for table `institution_specializations`
+--
+
+INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, 'sdf sdaf sadfa sdfasd fsd fsda fasd fsadf', '2012-10-22 01:28:19', '2012-10-22 01:28:19', 1);
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_medical_center_doctors`
+--
+
+
+CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
   `doctor_id` bigint(20) unsigned NOT NULL,
-  PRIMARY KEY (`institution_medical_center_group_id`,`doctor_id`)
+  PRIMARY KEY (`institution_medical_center_id`,`doctor_id`),
+  KEY `doctor_id` (`doctor_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='doctors to instiution medical center group association table';
+
+-- --------------------------------------------------------
 
 
 --
 -- Dumping data for table `institution_medical_center_group_doctors`
 --
 
-INSERT INTO `institution_medical_center_group_doctors` (`institution_medical_center_group_id`, `doctor_id`) VALUES
+INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
 (1, 1);
 
 
 -- --------------------------------------------------------
 
--- Table structure for table `institution_medical_center_treatment_procedures`
+-- Table structure for table `institution_treatments`
 --
 
-CREATE TABLE IF NOT EXISTS `institution_medical_center_treatment_procedures` (
-  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
-  `treatment_procedure_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`institution_medical_center_id`,`treatment_procedure_id`),
-  KEY `treatment_procedure_id` (`treatment_procedure_id`)
+CREATE TABLE IF NOT EXISTS `institution_treatments` (
+  `institution_specialization_id` bigint(20) unsigned NOT NULL,
+  `treatment_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`institution_specialization_id`,`treatment_id`),
+  KEY `treatment_id` (`treatment_id`),
+  KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `institution_medical_center_treatment_procedures`
 --
 
-INSERT INTO `institution_medical_center_treatment_procedures` (`institution_medical_center_id`, `treatment_procedure_id`) VALUES
+INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES
 (1, 1);
 
 
@@ -677,7 +734,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
 
 INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
 (1, 1, 'Content Staff', 1),
-(2, 1, 'SUPER_ADMIN', 3);
+(2, 1, 'SUPER_ADMIN', 3),
+(3, 1, 'Content Staff-2', 2);
 
 -- --------------------------------------------------------
 
@@ -824,8 +882,8 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Table structure for table `medical_centers`
 --
 
-DROP TABLE IF EXISTS `medical_centers`;
-CREATE TABLE IF NOT EXISTS `medical_centers` (
+DROP TABLE IF EXISTS `specializations`;
+CREATE TABLE IF NOT EXISTS `specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `description` text NOT NULL,
@@ -834,46 +892,47 @@ CREATE TABLE IF NOT EXISTS `medical_centers` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=110 ;
 
 --
 -- Dumping data for table `medical_centers`
 --
 
-INSERT INTO `medical_centers` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'AddedFromTest Center', 'the quick brown fox jump over the lazy dog. hahaha asdflk jsdlfj ksald;kfj asldkfjsa;l kads fjdl;fj lkdsf', '2012-08-07 07:32:23', 'sample-center', 1),
-(2, 'centerAddedFromAdminTest1', 'the quick brown fox is very slow.', '2012-08-08 08:42:47', '', 1),
-(3, 'centerAddedFromAdminTest2', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:50', '', 1),
-(4, 'centerAddedFromAdminTest3', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1),
-(5, 'centerAddedFromAdminTest5', 'the quick brown fox is slower than the turtle neck.', '2012-08-08 08:42:55', '', 1);
+INSERT INTO `specializations` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
+(1, 'Philippine Center', 'The very first one! updated sdfsdfsdf testest. updatedrweetr', '2012-07-30 00:34:30', 'philippine-center', 1),
+(2, 'California Center', 'sd fsadf sadf updated sdfsdfdsf', '2012-07-30 06:54:56', 'california-center', 1),
+(3, 'inactive center', 'sdf sdf sdf', '2012-07-30 06:54:56', '', 0),
+(4, 'sige daw kon sluggable', 'asdfas', '2012-07-30 08:19:23', 'sige-daw-kon-sluggable', 1),
+(5, '5th Medical Center updated', 'The very first one!', '2012-07-31 02:35:37', '5th-medical-center-updated', 1);
+
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `treatment_procedures`
---
-
-DROP TABLE IF EXISTS `treatment_procedures`;
-CREATE TABLE IF NOT EXISTS `treatment_procedures` (
+CREATE TABLE IF NOT EXISTS `sub_specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `treatment_id` int(10) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `treatment_id_2` (`treatment_id`,`name`),
-  KEY `treatment_id` (`treatment_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments' AUTO_INCREMENT=5 ;
+
 
 --
 -- Dumping data for table `treatment_procedures`
 --
 
-INSERT INTO `treatment_procedures` (`id`, `treatment_id`, `name`, `slug`, `status`) VALUES
-(1, 1, 'testProcedure1', 'testprocedure1', 1),
-(2, 1, 'testInactiveProcedure1', 'testinactiveprocedure1', 0),
-(3, 2, 'testProcedure2', 'testprocedure2', 1),
-(4, 1, 'Test Treatment Procedure', 'test-medical-procedure', 1);
+
+INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 107, 'Sub-spec for treatment refactoring test', 'test edited', '2012-10-29 05:18:55', '2012-10-29 05:13:14', 'sub-spec-for-treatment-refactoring-test', 1),
+(2, 2, 'sd fsdf sdf', 'sd fsdf asdf', '2012-10-29 08:04:14', '2012-10-29 08:04:14', 'sd-fsdf-sdf', 1),
+(3, 5, 'sd fsdf sdf', 's dfsd fsdf', '2012-10-29 08:04:24', '2012-10-29 08:04:24', 'sd-fsdf-sdf-1', 1),
+(4, 8, 'churvs', 'sd fsd fsdf sdfsdfdsf', '2012-10-29 08:11:22', '2012-10-29 08:04:36', 'churvs', 1);
 -- --------------------------------------------------------
 
 --
@@ -1111,6 +1170,7 @@ CREATE TABLE IF NOT EXISTS `media` (
 -- Constraints for dumped tables
 --
 
+
 --
 -- Constraints for table `gallery`
 --
@@ -1141,8 +1201,8 @@ ALTER TABLE `admin_users`
 -- Constraints for table `admin_user_type_roles`
 --
 ALTER TABLE `admin_user_type_roles`
-  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_2` FOREIGN KEY (`admin_user_role_id`) REFERENCES `admin_user_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `admin_user_type_roles_ibfk_1` FOREIGN KEY (`admin_user_type_id`) REFERENCES `admin_user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 
 --
@@ -1157,6 +1217,13 @@ ALTER TABLE `advertisements`
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
+--
+-- Constraints for table `doctor_specializations`
+--
+ALTER TABLE `doctor_specializations`
+  ADD CONSTRAINT `doctor_specializations_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `doctor_specializations_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
 --
 -- Constraints for table `frontend_route_variables`
 --
@@ -1212,18 +1279,26 @@ ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_treatment_procedures`
+-- Constraints for table `institution_specializations`
 --
-ALTER TABLE `institution_treatment_procedures`
-  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `institution_specializations`
+  ADD CONSTRAINT `institution_specializations_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_specializations_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_treatments`
 --
 ALTER TABLE `institution_treatments`
-  ADD CONSTRAINT `institution_treatments_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_treatments_ibfk_2` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`institution_specialization_id`) REFERENCES `institution_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_treatment_procedures`
+--
+--ALTER TABLE `institution_treatment_procedures`
+--  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
+--  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `institution_offered_services`
@@ -1265,19 +1340,19 @@ ALTER TABLE `institution_user_type_roles`
 ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`log_class_id`) REFERENCES `log_classes` (`id`) ON UPDATE CASCADE;
 
-
---
--- Constraints for table `treatment_procedures`
---
-ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
-ALTER TABLE `treatment_procedures`
-  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
-
 --
 -- Constraints for table `treatments`
 --
 ALTER TABLE `treatments`
-  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON UPDATE CASCADE;
+
+--ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
+--ALTER TABLE `treatment_procedures`
+--  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
+
+
+ALTER TABLE `sub_specializations`
+  ADD CONSTRAINT `sub_specializations_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medical_term_suggestion_details`

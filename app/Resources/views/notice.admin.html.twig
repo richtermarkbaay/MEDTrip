@@ -1,22 +1,17 @@
-{% for class, message in app.session.flashes %}
-	{% if class == 'warning' %}
-	    {% set msg_color = 'yellow' %}
-	{% elseif class == 'error' %}
-	    {% set msg_color = 'red' %}
-	{% elseif class == 'success' %}
-	    {% set msg_color = 'green' %}
-	{% elseif class == 'notice' %}
-	    {% set msg_color = 'blue' %}
+{% for alert, message in app.session.flashes %}
+	{% if alert == 'warning' %}
+	    {% set class = '' %}
+	{% elseif alert == 'error' %}
+	    {% set class = 'alert-error' %}
+	{% elseif alert == 'success' %}
+	    {% set class = 'alert-success' %}
+	{% elseif (alert == 'notice') or alert == 'info' %}
+	    {% set class = 'alert-info' %}
 	{% else %}
-	    {% set msg_color = 'blue' %}
+	    {% set class = '' %}
 	{% endif %}
-
-	<div class="notice-holder" id="message-{{ msg_color }}">
-	    <table border="0" width="100%" cellpadding="0" cellspacing="0">
-	    <tr>
-	    	<td class="{{ msg_color }}-left"> {{ message }} </td>
-	    	<td class="{{ msg_color }}-right"><a onclick="$(this).parents('div.notice-holder').remove();" class="close-{{ msg_color }}"><img src="{{ asset('/images/admin/table/icon_close_'~ msg_color ~'.gif') }}"   alt="" /></a></td>
-	    </tr>
-	    </table>
-	</div>
+    <div class="alert {{ class }}">
+        <!-- button type="button" class="close" data-dismiss="alert">x</button>  -->
+        <strong>{{ alert | title }}!</strong> {{ message }}
+    </div>
 {% endfor %}

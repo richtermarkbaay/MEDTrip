@@ -1,0 +1,128 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h3>{{ institutionName }} Medical Centers</h3></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+            
+                {% include '::relatedTasks.base.admin.html.twig' with 
+                    {'contents': [
+                        {
+                            'title': 'Add medical center', 
+                            'description': 'Add new medical center to this institution',
+                            'class': 'add-icon add-medical-center',
+                            'href': path('admin_institution_medicalCenter_add', {institutionId:institutionId}), 
+                            'links': [{
+                                'title': 'click here to add',
+                                'class': 'add-medical-center',
+                                'href': path('admin_institution_medicalCenter_add', {institutionId:institutionId})
+                            }]
+                        }
+                    ]} 
+                %}
+
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}    
+
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+            
+                <div style="width: 70%">
+                    <table class="table table-bordered sortable-list" id="medical-centers-list">
+                        <tr>
+                            <th id="column-medicalCenter" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'medicalCenter' ? 'sort-' ~ sortOrder : default }}">Medical Centers</a></th>
+                            <th id="column-specializations" width="300">Specialization</th>
+                            <th id="column-description" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                            <th width="100">Status</th>
+                            <th width="180">Actions</th>
+                        </tr>
+
+                        {% for center in institutionMedicalCenters %}
+                            <tr id="medical-center-{{center.id}}">
+                                <td class="name">{{ center.name | title }}</td>
+                                <td class="specializations">
+                                    <ul>
+                                        {% for each in center.institutionSpecializations %}
+                                            <li style="margin-left: 20px">{{ each.specialization.name | title }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                                <td class="raw-content">{{ center.description|raw }}</td>
+                                <td class="status">{{ centerStatusList[center.status] }}</td>
+                                <td class="options-width">
+                                    <a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="edit-medical-center">
+                                        <i class="icon-edit"></i> Edit
+                                    </a>
+                                    <br/>
+                                    <a id="status-{{ center.id }}" href="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId,imcId:center.id}) }}" class="show-update-status">
+                                        <i class="icon-edit"></i> Edit status
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="empty-list"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    {% if pager.isPaginable %}
+                        {{ paginate(pager, 'admin_institution_manageCenters', app.request.query.all | merge(app.request.get('_route_params')) ) }}
+                    {% endif %}                
+                </div>
+
+
+            {% endblock %}
+        {% endembed %}
+    </div>
+    
+    <div id="update-status-container" title="Edit Institution Center Status">
+        <p>
+            <strong id="current-institution-center"></strong> is currently <strong id="current-status"></strong>. 
+            Select an option below to update its status.
+        </p>
+        <form id="update-status-form" method="POST">
+            <select name="status" id="selected-status">
+                {% for label,value in updateCenterStatusOptions %}
+                    <option value="{{value}}">{{label}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="green-button" value="Confirm"/>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function(){
+
+        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
+
+        $("a.show-update-status").click(function() {
+
+            var url = $(this).attr('href');
+            var institutionMedicalCenterId = $(this).attr('id').split('-').pop();
+            var currentStatus = $('#medical-center-'+institutionMedicalCenterId+' > td.status').html();
+            var institutionMedicalCenterName = $('#medical-center-'+institutionMedicalCenterId+' > td.name').html();
+
+            $('#current-status').html(currentStatus);
+            $('#current-institution-center').html(institutionMedicalCenterName);
+            $('#update-status-form').attr('action', url);
+
+            $("#update-status-container").dialog("open");
+
+            return false;
+        });
+    });
+</script>
+{% endblock %}

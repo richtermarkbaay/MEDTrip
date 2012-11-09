@@ -1,0 +1,82 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Specializations {% endblock %}
+{% set selectedTab = 'medical_centers'%}
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>{{ app.session.get('institutionName') }} Specializations</h1>
+    </div>
+
+    <!-- end page-heading -->
+
+    {% embed '::contentWrapper.admin.html.twig' %}
+
+        {% block wrappedContent %}
+                {# ----- Related tasks ----- #}
+                {% include 'InstitutionBundle:MedicalCenter:relatedTasks.html.twig' with {hideManageMedicalCenters: true, hideTreatmentTask: true} %}
+                {# ----- end Related tasks ----- #}
+
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+
+                <!--  start table-content  -->
+                <div id="table-content" style="width:70%">
+
+                    {% include '::notice.admin.html.twig' %}
+
+                    {% include 'InstitutionBundle:Specialization:baseIndexTable.html.twig' with {'institutionSpecializations': institutionSpecializations} %}
+
+                    {% if pager.isPaginable %}
+                       {{ paginate(pager, 'institution_specialization_index', app.request.query.all) }}
+                    {% endif %}
+                </div>
+        {% endblock %}
+
+    {% endembed %}
+
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+
+            $("#dialog-container").dialog({
+                autoOpen: false,
+                height: 580,
+                width: 700,
+                modal: true,
+                resizable: false,
+                //buttons: {"Save": function() {var bValid = true;}, Cancel: function() {$( this ).dialog( "close" );} },
+                close: function() {}
+            });
+
+            $("a.add-medical-center").click(function() {
+                var elem = $(this);
+                var addProcedureUrl = elem.attr('href');
+                elem.attr('href', 'javascript:void(0)');
+
+                $("#dialog-container").empty();
+                $("#dialog-container").dialog({
+                    open: function() {
+                        $.ajax(addProcedureUrl)
+                            .done(function (data) {
+                                elem.attr('href', addProcedureUrl);
+                                $('#dialog-container').html(data);
+                            });
+                    },
+                });
+                $("#dialog-container").dialog("open");
+            });
+        });
+    </script>
+{% endblock %}
+
+

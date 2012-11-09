@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Listener;
 
+use HealthCareAbroad\UserBundle\Entity\InstitutionUserTypeStatuses;
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
@@ -61,8 +63,8 @@ class InstitutionListener
     	//persist data to create institutionUserTypes
     	$institutionUserType = new InstitutionUserType();
     	$institutionUserType->setInstitution($institution);
-    	$institutionUserType->setName(Institution::USER_TYPE);
-    	$institutionUserType->setStatus(3);
+    	$institutionUserType->setName('ADMIN');
+    	$institutionUserType->setStatus(InstitutionUserTypeStatuses::getBitValueForBuiltInUserType());
     	
     	// add role to this first user type as super admin for this institution
     	$adminInstitutionRole = $this->em->getRepository('UserBundle:InstitutionUserRole')->findOneBy(array('name' => InstitutionUserRole::SUPER_ADMIN));

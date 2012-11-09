@@ -17,17 +17,9 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
         if ($user) {
             // populate account data to SiteUser
             $user = $this->userService->hydrateAccountData($user, $accountData);
-
-            $roles = array('INSTITUTION_USER');
-
-            //TODO: why are we looping here?
-            foreach ($user->getInstitutionUserType()->getInstitutionUserRole() as $userRole) {
-                // compare bitwise status for active
-                if ($userRole->getStatus() & InstitutionUserRole::STATUS_ACTIVE) {
-                    $roles[] = $userRole->getName();
-                }
-            }
-            $user->setRoles($roles);
+            
+            // set user roles
+            $user->setRoles($this->userService->getUserRolesForSecurityToken($user));
 
             //TODO: not sure if this is the place to set the session; this
             // shouldn't be part of the user provider's responsibilities

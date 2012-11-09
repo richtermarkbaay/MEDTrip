@@ -1,6 +1,5 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'staff'%}
-{% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
 <!-- start content -->
@@ -18,29 +17,8 @@
             <div id="table-content">
             
                 {% include '::notice.admin.html.twig' %}
-            
-                <form novalidate="novalidate" action="{{ path('admin_edit_account') }}" method="POST" {{ form_enctype(form) }} class="user">
-                    <!-- start id-form -->
-                    <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-                        
-                        {{ form_row(form.firstName) }}
-                        {{ form_row(form.middleName) }}
-                        {{ form_row(form.lastName) }}
-                        
-                        <tr>
-                            <th>&nbsp;</th>
-                            <td valign="top">
-                                <input type="submit" name="submit" value="" class="form-submit" />
-                                <input type="reset" value="" class="form-reset"  />
-                            </td>
-                            <td></td>
-                        </tr>
-                        
-                        {{ form_rest(form) }}
-                        
-                    </table>
-                    <!-- end id-form  -->
-                </form>
+                {% include 'AdminBundle:AdminUser:form.html.twig' with {'form_url': path('admin_edit_account') } %}
+                
             </div>
             <!--  end table-content  -->
         {% endblock %}

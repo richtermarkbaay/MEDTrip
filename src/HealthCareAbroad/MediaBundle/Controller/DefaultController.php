@@ -13,29 +13,6 @@ use Gaufrette\File;
 
 class DefaultController extends Controller
 {
-    public function galleryAction(Request $request)
-    {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($institutionId)->toArray());
-        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 10));
-
-        return $this->render('MediaBundle:Institution:gallery.html.twig', array(
-                'institutionId' => $institutionId,
-                //'institutionMedia' => $this->get('services.media')->retrieveAllMedia($institutionId)
-                'institutionMedia' => $pager
-        ));
-    }
-
-    public function addAction(Request $request)
-    {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        return $this->render('MediaBundle:Institution:addMedia.html.twig', array(
-                'institutionId' => $institutionId
-        ));
-    }
-
     //TODO: refactor
     public function uploadAction(Request $request)
     {

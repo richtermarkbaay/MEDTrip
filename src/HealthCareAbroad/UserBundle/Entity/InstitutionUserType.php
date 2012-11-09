@@ -9,20 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionUserType
 {
-	/**
-	 * User types that are built-in to the system and therefore not editable
-	 */
-	const STATUS_BUILT_IN = 1;
-	
-	/**
-	 * User types that are active
-	 */
-	const STATUS_ACTIVE = 2;
-	
-	/**
-	 * User types that are inactive
-	 */
-	const STATUS_INACTIVE = 4;
     /**
      * @var integer $id
      */
@@ -46,17 +32,17 @@ class InstitutionUserType
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionUserRole;
+    private $institutionUserRoles;
 
     public function __construct()
     {
-        $this->institutionUserRole = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -78,7 +64,7 @@ class InstitutionUserType
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -100,7 +86,7 @@ class InstitutionUserType
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -122,7 +108,7 @@ class InstitutionUserType
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     public function getInstitution()
     {
@@ -130,34 +116,34 @@ class InstitutionUserType
     }
 
     /**
-     * Add institutionUserRole
+     * Add institutionUserRoles
      *
-     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles
      * @return InstitutionUserType
      */
-    public function addInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function addInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles)
     {
-        $this->institutionUserRole[] = $institutionUserRole;
+        $this->institutionUserRoles[] = $institutionUserRoles;
         return $this;
     }
 
     /**
-     * Remove institutionUserRole
+     * Remove institutionUserRoles
      *
-     * @param <variableType$institutionUserRole
+     * @param HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles
      */
-    public function removeInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRole)
+    public function removeInstitutionUserRole(\HealthCareAbroad\UserBundle\Entity\InstitutionUserRole $institutionUserRoles)
     {
-        $this->institutionUserRole->removeElement($institutionUserRole);
+        $this->institutionUserRoles->removeElement($institutionUserRoles);
     }
 
     /**
-     * Get institutionUserRole
+     * Get institutionUserRoles
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
-    public function getInstitutionUserRole()
+    public function getInstitutionUserRoles()
     {
-        return $this->institutionUserRole;
+        return $this->institutionUserRoles;
     }
 }

@@ -1,0 +1,20 @@
+{% set backToGalleryTask = {
+    title: 'Back to the Gallery',
+    isVisible: true,
+    class: 'add-icon',
+    description: 'Go back to gallery.',
+    href: path('admin_institution_gallery', {institutionId: institutionId}),
+    links: [{title: 'Back to the gallery', href: path('admin_institution_gallery', {institutionId: institutionId})}]}
+%}
+
+{% set dashboardTask = {
+    title: 'Jump to dashboard',
+    class: 'list-icon',
+    description: 'Go back to your dashboard',
+    href: path('admin_homepage'),
+    links: [{href: path('admin_homepage')}]}
+%}
+
+{% include '::relatedTasks.base.admin.html.twig' with
+    {'contents': [backToGalleryTask, dashboardTask]}
+%}

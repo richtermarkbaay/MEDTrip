@@ -1,0 +1,25 @@
+admin_login:
+    pattern: /admin/login
+    defaults: { _controller: AdminBundle:AdminUser:login }
+    requirements:
+        _method:  GET|POST
+
+admin_login_check:
+    pattern:   /admin/login-check
+
+admin_edit_account:
+    pattern: /admin/edit-account
+    defaults: { _controller: AdminBundle:AdminUser:editAccount }
+    requirements:
+        _method:  GET|POST
+
+admin_change_password:
+    pattern: /admin/change-password
+    defaults: { _controller: AdminBundle:AdminUser:changePassword}
+    requirements:
+        _method: GET|POST
+admin_logout:
+    pattern:  /admin/logout
+    #defaults: { _controller: AdminBundle:AdminUser:logout }
+    #requirements:
+    #    _method:  GET

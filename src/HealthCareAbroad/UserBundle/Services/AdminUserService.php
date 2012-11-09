@@ -34,7 +34,7 @@ class AdminUserService extends UserService
     /**
      * This is subject for removal.
      */
-    public function login($email, $password)
+    /*public function login($email, $password)
     {
         $user = $this->findByEmailAndPassword($email, $password);
         if ($user) {
@@ -63,6 +63,22 @@ class AdminUserService extends UserService
         }
 
         return false;
+    }*/
+    
+    /**
+     * @inheritDoc
+     */
+    public function getUserRolesForSecurityToken(SiteUser $user)
+    {
+        $roles = array('ROLE_ADMIN');
+        foreach ($user->getAdminUserType()->getAdminUserRoles() as $userRole) {
+            // compare bitwise status for active
+            if ($userRole->getStatus() & AdminUserRole::STATUS_ACTIVE) {
+                $roles[] = $userRole->getName();
+            }
+        }
+        
+        return $roles;
     }
 
     /**

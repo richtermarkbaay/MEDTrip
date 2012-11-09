@@ -7,11 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\InstitutionBundle\Entity\Institution
  */
-class Institution
+abstract class Institution
 {
-    const STATUS_ACTIVE = 1;
-    const USER_TYPE = "SUPER_ADMIN";
-    
     /**
      * @var integer $id
      */
@@ -19,6 +16,7 @@ class Institution
 
     /**
      * @var string $name
+     * @ORM\Column(unique=true)
      */
     private $name;
 
@@ -38,6 +36,11 @@ class Institution
     private $contactEmail;
 
     /**
+     * @var string $websites
+     */
+    private $websites;
+
+    /**
      * @var string $contactNumber
      */
     private $contactNumber;
@@ -48,14 +51,19 @@ class Institution
     private $address1;
 
     /**
-     * @var text $address2
-     */
-    private $address2;
-
-    /**
-     * @var string $zipCode
+     * @var integer $zipCode
      */
     private $zipCode;
+
+    /**
+     * @var text $state
+     */
+    private $state;
+
+    /**
+     * @var text $coordinates
+     */
+    private $coordinates;
 
     /**
      * @var datetime $dateModified
@@ -85,11 +93,6 @@ class Institution
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionTreatments;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
     private $institutionUsers;
 
     /**
@@ -113,24 +116,28 @@ class Institution
     private $institutionLanguagesSpoken;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var HealthCareAbroad\MediaBundle\Entity\Gallery
      */
-    private $contactDetail;
+    private $gallery;
 
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionTreatments = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->contactDetail = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+    protected $typeLabel;
+
+    final public function getTypeLabel()
+    {
+        return $this->typeLabel;
+    }
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -152,7 +159,7 @@ class Institution
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -174,7 +181,7 @@ class Institution
     /**
      * Get description
      *
-     * @return text 
+     * @return text
      */
     public function getDescription()
     {
@@ -196,7 +203,7 @@ class Institution
     /**
      * Get logo
      *
-     * @return string 
+     * @return string
      */
     public function getLogo()
     {
@@ -218,7 +225,7 @@ class Institution
     /**
      * Get contactEmail
      *
-     * @return string 
+     * @return string
      */
     public function getContactEmail()
     {
@@ -240,11 +247,33 @@ class Institution
     /**
      * Get contactNumber
      *
-     * @return string 
+     * @return string
      */
     public function getContactNumber()
     {
         return $this->contactNumber;
+    }
+
+    /**
+     * Set websites
+     *
+     * @param string $websites
+     * @return Institution
+     */
+    public function setWebsites($websites)
+    {
+        $this->websites = $websites;
+        return $this;
+    }
+
+    /**
+     * Get websites
+     *
+     * @return string
+     */
+    public function getWebsites()
+    {
+        return $this->websites;
     }
 
     /**
@@ -262,7 +291,7 @@ class Institution
     /**
      * Get address1
      *
-     * @return text 
+     * @return text
      */
     public function getAddress1()
     {
@@ -270,31 +299,9 @@ class Institution
     }
 
     /**
-     * Set address2
-     *
-     * @param text $address2
-     * @return Institution
-     */
-    public function setAddress2($address2)
-    {
-        $this->address2 = $address2;
-        return $this;
-    }
-
-    /**
-     * Get address2
-     *
-     * @return text 
-     */
-    public function getAddress2()
-    {
-        return $this->address2;
-    }
-
-    /**
      * Set zipCode
      *
-     * @param string $zipCode
+     * @param integer $zipCode
      * @return Institution
      */
     public function setZipCode($zipCode)
@@ -306,11 +313,55 @@ class Institution
     /**
      * Get zipCode
      *
-     * @return string 
+     * @return text
      */
     public function getZipCode()
     {
         return $this->zipCode;
+    }
+
+    /**
+     * Set state
+     *
+     * @param text $state
+     * @return Institution
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return text
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set coordinates
+     *
+     * @param text $coordinates
+     * @return Institution
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+        return $this;
+    }
+
+    /**
+     * Get coordinates
+     *
+     * @return text
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
     }
 
     /**
@@ -328,7 +379,7 @@ class Institution
     /**
      * Get dateModified
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateModified()
     {
@@ -350,7 +401,7 @@ class Institution
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -372,7 +423,7 @@ class Institution
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -394,89 +445,12 @@ class Institution
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
         return $this->status;
     }
-
-    //---- status operations
-    public function setAsActive()
-    {
-        $this->status = InstitutionStatus::getBitValueForActiveStatus();
-    }
-
-    public function setAsInactive()
-    {
-        $this->status = InstitutionStatus::getBitValueForInactiveStatus();
-    }
-
-    public function setAsUnapproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-
-    public function setAsApproved()
-    {
-        $this->status = InstitutionStatus::getBitValueForApprovedStatus();
-    }
-
-    public function setAsSuspended()
-    {
-        $this->status = InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-
-    /**
-     * Check if this is institution is active
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return InstitutionStatus::ACTIVE == ($this->status & InstitutionStatus::ACTIVE);
-    }
-
-    /**
-     * Check if the institution is inactive
-     *
-     * @return boolean
-     */
-    public function isInactive()
-    {
-        return $this->status == InstitutionStatus::getBitValueForInactiveStatus();
-    }
-
-    /**
-     * Check if the institution is unapproved
-     *
-     * @return boolean
-     */
-    public function isUnapproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForUnapprovedStatus();
-    }
-
-    /**
-     * Check if the institution is approved
-     *
-     * @return boolean
-     */
-    public function isApproved()
-    {
-        return $this->status == InstitutionStatus::getBitValueForApprovedStatus();
-    }
-
-    /**
-     * Check if the institution is suspended
-     *
-     * @return boolean
-     */
-    public function isSuspended()
-    {
-        return $this->status == InstitutionStatus::getBitValueForSuspendedStatus();
-    }
-    //---- end status operations
 
     /**
      * Add institutionMedicalCenters
@@ -503,43 +477,11 @@ class Institution
     /**
      * Get institutionMedicalCenters
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
-    }
-
-    /**
-     * Add institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     * @return Institution
-     */
-    public function addInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments[] = $institutionTreatments;
-        return $this;
-    }
-
-    /**
-     * Remove institutionTreatments
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments
-     */
-    public function removeInstitutionTreatment(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatment $institutionTreatments)
-    {
-        $this->institutionTreatments->removeElement($institutionTreatments);
-    }
-
-    /**
-     * Get institutionTreatments
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionTreatments()
-    {
-        return $this->institutionTreatments;
     }
 
     /**
@@ -567,7 +509,7 @@ class Institution
     /**
      * Get institutionUsers
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionUsers()
     {
@@ -589,7 +531,7 @@ class Institution
     /**
      * Get country
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
      */
     public function getCountry()
     {
@@ -611,7 +553,7 @@ class Institution
     /**
      * Get city
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\City 
+     * @return HealthCareAbroad\HelperBundle\Entity\City
      */
     public function getCity()
     {
@@ -643,7 +585,7 @@ class Institution
     /**
      * Get institutionOfferedServices
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionOfferedServices()
     {
@@ -675,7 +617,7 @@ class Institution
     /**
      * Get institutionLanguagesSpoken
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionLanguagesSpoken()
     {
@@ -683,34 +625,24 @@ class Institution
     }
 
     /**
-     * Add contactDetail
+     * Set gallery
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
+     * @param HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
      * @return Institution
      */
-    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
+    public function setGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery)
     {
-        $this->contactDetail[] = $contactDetail;
+        $this->gallery = $gallery;
         return $this;
     }
 
     /**
-     * Remove contactDetail
+     * Get gallery
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
+     * @return HealthCareAbroad\MediaBundle\Entity\Gallery
      */
-    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail)
+    public function getGallery()
     {
-        $this->contactDetail->removeElement($contactDetail);
-    }
-
-    /**
-     * Get contactDetail
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getContactDetail()
-    {
-        return $this->contactDetail;
+        return $this->gallery;
     }
 }

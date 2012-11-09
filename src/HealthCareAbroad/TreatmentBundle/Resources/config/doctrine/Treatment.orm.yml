@@ -1,0 +1,63 @@
+HealthCareAbroad\TreatmentBundle\Entity\Treatment:
+    type: entity
+    table: treatments
+    repositoryClass: HealthCareAbroad\TreatmentBundle\Repository\TreatmentRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+            gedmo:
+                - versioned
+        description:
+            type: text
+            nullable: false
+            gedmo:
+                - versioned
+        slug:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            gedmo:
+              slug:
+                separator: -
+                fields:
+                  - name
+        status:
+            type: smallint
+            nullable: false
+            gedmo:
+                - versioned
+    manyToOne:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            inversedBy: treatments
+    manyToMany:
+        subSpecializations:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name:  treatment_sub_specializations
+                joinColumns:
+                    -
+                        name: treatment_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: sub_specialization_id
+                        referencedColumnName: id
+            orderBy: null
+    lifecycleCallbacks: {  }

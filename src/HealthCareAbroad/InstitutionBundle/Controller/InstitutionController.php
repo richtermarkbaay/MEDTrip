@@ -39,22 +39,23 @@ class InstitutionController  extends InstitutionAwareController
 		$request = $this->getRequest();
 		
 		//render template      
-		$form = $this->createForm(new InstitutionDetailType(), $this->institution);		
+		$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false));		
 		$languages = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
 		
 		//update institution details
 		if ($request->isMethod('POST')) {
-
+	
 		    // Get contactNumbers and convert to json format
 		    $contactNumber = json_encode($request->get('contactNumber')); 
 
 			$form->bindRequest($request);
 			
 			if ($form->isValid()) {
+			    
 			    // Set Contact Number before saving 
 			    $form->getData()->setContactNumber($contactNumber);
 			    
-				$institution = $this->get('services.institution')->updateInstitution($form->getData());
+				$institution = $this->get('services.institution.factory')->save($form->getData());
 				$this->get('session')->setFlash('notice', "Successfully updated account");
 
 				//create event on editInstitution and dispatch

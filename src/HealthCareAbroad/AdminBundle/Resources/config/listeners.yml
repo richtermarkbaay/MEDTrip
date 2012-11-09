@@ -1,7 +1,7 @@
 #
-# List down listeners for events dispatched in AdminBundle. Naming convention for listener is 
+# List down listeners for events dispatched in AdminBundle. Naming convention for listener is
 #    listener.{listener_class_bundle}.{subject}.{event_action}
-#    
+#
 # Sample:
 #    listener.mailer.admin_user.change_password
 #
@@ -12,30 +12,30 @@ services:
     #
     # listeners for admin user related events
     #
-    listener.log.admin_user.add: 
+    listener.log.admin_user.add:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user.add, method: onCommonLogAction }
-    
-    listener.log.admin_user.edit: 
+
+    listener.log.admin_user.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user.edit, method: onCommonLogAction }
-            
-    listener.log.admin_user.login: 
+
+    listener.log.admin_user.login:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user.login, method: onCommonLogAction }
-            
+
     listener.log.admin_user.change_password:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user.change_password, method: onCommonLogAction }
-            
+
     #
     # listeners for admin user type related events
     #
@@ -44,31 +44,31 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user_type.add, method: onCommonLogAction }
-            
+
     listener.log.admin_user_type.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user_type.edit, method: onCommonLogAction }
-            
+
     listener.log.admin_user_type.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user_type.delete, method: onCommonLogAction }
-            
+
     listener.log.admin_user_type.add_role:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user_type.add_role, method: onCommonLogAction }
-            
+
     listener.log.admin_user_type.delete_role:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user_type.delete_role, method: onCommonLogAction }
-            
+
     #
     # listeners for advertisement related events
     #
@@ -87,7 +87,7 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.advertisement.delete, method: onCommonLogAction }
-            
+
     #
     # listeners for city related events
     #
@@ -96,19 +96,19 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.city.add, method: onCommonLogAction }
-            
+
     listener.log.city.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.city.edit, method: onCommonLogAction }
-                    
+
     listener.log.city.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.city.delete, method: onCommonLogAction }
-            
+
     #
     # listeners for country related events
     #
@@ -117,83 +117,83 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.country.add, method: onCommonLogAction }
-            
+
     listener.log.country.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.country.edit, method: onCommonLogAction }
-                    
+
     listener.log.country.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.country.delete, method: onCommonLogAction }
-            
-            
+
+
     #
-    # listeners  for medical center related events
+    # listeners  for specialization related events
     #
-    listener.log.medical_center.add:
+    listener.log.specialization.add:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_center.add, method: onCommonLogAction }
-            
-    listener.log.medical_center.edit:
+            - { name: kernel.event_listener, event: event.specialization.add, method: onCommonLogAction }
+
+    listener.log.specialization.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_center.edit, method: onCommonLogAction }
-                    
-    listener.log.medical_center.delete:
+            - { name: kernel.event_listener, event: event.specialization.edit, method: onCommonLogAction }
+
+    listener.log.specialization.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_center.delete, method: onCommonLogAction }
-            
-    #
-    # listeners  for medical procedure related events
-    #
-    listener.log.medical_procedure.add:
-        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.medical_procedure.add, method: onCommonLogAction }
-            
-    listener.log.medical_procedure.edit:
-        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.medical_procedure.edit, method: onCommonLogAction }
-                    
-    listener.log.medical_procedure.delete:
-        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.medical_procedure.delete, method: onCommonLogAction }
-            
+            - { name: kernel.event_listener, event: event.specialization.delete, method: onCommonLogAction }
+
     #
     # listeners  for treatment related events
     #
-    listener.log.medical_procedure_type.add:
+    listener.log.treatment.add:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_procedure_type.add, method: onCommonLogAction }
-            
-    listener.log.medical_procedure_type.edit:
+            - { name: kernel.event_listener, event: event.treatment.add, method: onCommonLogAction }
+
+    listener.log.treatment.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_procedure_type.edit, method: onCommonLogAction }
-                    
-    listener.log.medical_procedure_type.delete:
+            - { name: kernel.event_listener, event: event.treatment.edit, method: onCommonLogAction }
+
+    listener.log.treatment.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.medical_procedure_type.delete, method: onCommonLogAction }
-            
+            - { name: kernel.event_listener, event: event.treatment.delete, method: onCommonLogAction }
+
+    #
+    # listeners  for subspecialization related events
+    #
+    listener.log.subspecialization.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.subspecialization.add, method: onCommonLogAction }
+
+    listener.log.subspecialization.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.subspecialization.edit, method: onCommonLogAction }
+
+    listener.log.subspecialization.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.subspecialization.delete, method: onCommonLogAction }
+
     #
     # listeners  for news related events
     #
@@ -202,18 +202,17 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.news.add, method: onCommonLogAction }
-            
+
     listener.log.news.edit:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.news.edit, method: onCommonLogAction }
-                    
+
     listener.log.news.delete:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.news.delete, method: onCommonLogAction }
-    
-    
-    
+
+

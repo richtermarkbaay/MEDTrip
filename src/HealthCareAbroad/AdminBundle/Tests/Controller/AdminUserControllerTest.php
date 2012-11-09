@@ -22,13 +22,13 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         // test submit with correct credentials
-        $formValues = array('userLogin[email]' => $this->userEmail, 'userLogin[password]' => $this->userPassword);
         $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $formValues);
+        $crawler = $client->submit($form, array('_username' => 'admin_authorized', '_password' => '123456'));
+        
         
         // assert that it was redirected to /admin
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/admin', $client->getResponse()->headers->get('location'));
+        $this->assertEquals('http://localhost/admin', $client->getResponse()->headers->get('location'));
         //---- end correct login flow
         
         //---- logout flow validation
@@ -39,7 +39,7 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         
         // assert that it was redirected to /admin/login after clicking the logout link
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertEquals('/admin/login', $client->getResponse()->headers->get('location'));
+        $this->assertTrue($this->isRedirectedToLoginPage($client));
         //---- end logout flow
         
         //---- login with invalid credentials
@@ -47,12 +47,12 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/login');
         
         // test submit with invalid credentials
-        $formValues = array('userLogin[email]' => $this->userEmail, 'userLogin[password]' => $this->userPassword.'123123213212');
+        $formValues = array('_username' => 'admin_authorized', '_password' => '123123213212'.time());
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $formValues);
-        
+        $crawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('html:contains("Either your email or password is wrong.")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Bad credentials")')->count());
         //---- end login with invalid credentials
         
         //---- login with missing required fields
@@ -62,9 +62,9 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
         $formValues = array();
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, array());
-        
+        $crawler = $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('html:contains("Email and password are required.")')->count()); // look for the text "Email and password are required."
+        $this->assertGreaterThan(0,$crawler->filter('html:contains("Bad credentials")')->count()); // look for the text "Bad credentials"
         //---- end login with missing required fields -->
     }
     
@@ -99,14 +99,14 @@ class AdminUserControllerTest extends AdminBundleWebTestCase
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
 		$formValues = array(
-				'userAccountDetail[firstName]' => 'edit first',
-				'userAccountDetail[middleName]' => 'edit middle',
-				'userAccountDetail[lastName]' => 'edit last',
+				'adminUserForm[firstName]' => 'edit first',
+				'adminUserForm[middleName]' => 'edit middle',
+				'adminUserForm[lastName]' => 'edit last',
 		);
 		
 		//test for firstName = null
 		$invalidFormValues = $formValues;
-		$invalidFormValues['userAccountDetail[firstName]'] = null;
+		$invalidFormValues['adminUserForm[firstName]'] = null;
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');

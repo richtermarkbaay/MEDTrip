@@ -10,22 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 class InstitutionUserRole
 {
     const SUPER_ADMIN = 'SUPER_ADMIN';
-    
-	/**
-	 * Roles that are built-in to the system and can only be assigned to user types by directly editing in db
-	 */
-	const STATUS_BUILT_IN_ROLE = 1;
-	
-	/**
-	 * Active roles that can be assigned to a user type
-	 */
-	const STATUS_ACTIVE = 2;
-	
-	/**
-	 * Inactive user roles and cannot be assigned to a user type
-	 */
-	const STATUS_INACTIVE = 4;
-	
+
+    /**
+     * Roles that are built-in to the system and can only be assigned to user types by directly editing in db
+     */
+    const STATUS_BUILT_IN_ROLE = 1;
+
+    /**
+     * Active roles that can be assigned to a user type
+     */
+    const STATUS_ACTIVE = 2;
+
+    /**
+     * Inactive user roles and cannot be assigned to a user type
+     */
+    const STATUS_INACTIVE = 4;
+
     /**
      * @var integer $id
      */
@@ -49,17 +49,17 @@ class InstitutionUserRole
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionUserType;
+    private $institutionUserTypes;
 
     public function __construct()
     {
-        $this->institutionUserType = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionUserTypes = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -81,7 +81,7 @@ class InstitutionUserRole
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -103,7 +103,7 @@ class InstitutionUserRole
     /**
      * Get description
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -125,7 +125,7 @@ class InstitutionUserRole
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -157,10 +157,10 @@ class InstitutionUserRole
     /**
      * Get institutionUserType
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
-    public function getInstitutionUserType()
+    public function getInstitutionUserTypes()
     {
-        return $this->institutionUserType;
+        return $this->institutionUserTypes;
     }
 }

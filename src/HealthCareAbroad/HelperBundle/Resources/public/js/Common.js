@@ -141,10 +141,15 @@ $(function(){
 
 		$.post(url, function(result){
 			if(result) {
-				elem.hasClass('icon-2') 
-					? elem.removeClass('icon-2').addClass('icon-5').attr('title', 'Activate')
-					: elem.removeClass('icon-5').addClass('icon-2').attr('title', 'Delete');
-
+				var spanElem = elem.find('span');
+				if(spanElem.html() == 'Activate') {
+					elem.attr('title', 'Deactivate');
+					elem.find('i').addClass('icon-remove').removeClass('icon-ok');
+				} else {
+					elem.attr('title', 'Activate');
+					elem.find('i').addClass('icon-ok').removeClass('icon-remove');
+				}
+				elem.find('span').html(elem.attr('title'));
 			} else {
 				alert('Unable to activate or deactivate.');
 			}
@@ -193,4 +198,14 @@ $(function(){
 			}
 		}, "json");
 	});	
+
+	$('.dropdown-toggle').click(function(){
+		$('ul.dropdown-menu').hide();
+		$(this).next('ul.dropdown-menu').toggle();
+	});
+	
+	
+	$('#main-content').click(function(){
+		$('#main-nav .dropdown-menu, #right-nav .dropdown-menu').hide();		
+	})
 });

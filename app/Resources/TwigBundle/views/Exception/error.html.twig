@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
+        {#
 		{% block javascripts %}
         <script src="{{ asset(jquery_file) }}"></script>
          <script src="{{ asset(jquery_ui_file) }}"></script>
@@ -11,6 +11,7 @@
         	<link href="{{ asset('css/jquery-ui/base/jquery.ui.all.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/admin/screen.css') }}" type="text/css" rel="stylesheet"/>
         {% endblock %}
+        #}
         </head>
 <body id="errorBody">
 	{% block content %}

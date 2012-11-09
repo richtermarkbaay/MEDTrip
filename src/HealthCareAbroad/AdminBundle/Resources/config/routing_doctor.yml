@@ -1,0 +1,41 @@
+admin_doctor_index:
+    pattern: /admin/doctors
+    defaults: {_controller: AdminBundle:Doctor:index}
+    requirements:
+        method: GET
+        
+admin_doctor_edit:
+    pattern: /admin/doctor/edit/{idId}
+    defaults: {_controller: AdminBundle:Doctor:edit}
+    requirements:
+        method: GET
+
+admin_doctor_edit_save:
+    pattern: /admin/doctor/save/{idId}
+    defaults: {_controller: AdminBundle:Doctor:save}
+    requirements:
+        method: GET
+        
+admin_doctor_add:
+    pattern: /admin/doctor/add
+    defaults: {_controller: AdminBundle:Doctor:edit}
+    requirements:
+        method: GET
+
+admin_doctor_add_save:
+    pattern: /admin/doctor/save
+    defaults: {_controller: AdminBundle:Doctor:save}
+    requirements:
+        method: GET
+        
+admin_doctor_updateStatus:
+    pattern: /admin/doctor/update-status
+    defaults: {_controller: AdminBundle:Doctor:index}
+    requirements:
+        method: GET
+        
+admin_doctor_save:
+    pattern: /admin/doctor/save/{idId}
+    defaults: {_controller: AdminBundle:Doctor:save}
+    requirements:
+        method: GET

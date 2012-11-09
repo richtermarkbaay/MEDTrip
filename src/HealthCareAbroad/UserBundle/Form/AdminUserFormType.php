@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\UserBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmail;
+
+use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
+
 use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\Form\AbstractType;
@@ -24,9 +28,18 @@ class AdminUserFormType extends AbstractType
         $builder->add('middleName','text', array('constraints' => new NotBlank()));
         $builder->add('lastName','text', array('constraints' => new NotBlank()));
         $builder->add('email','email', array('constraints' => array(
-                new NotBlank(), new Email())
+                new NotBlank(), new Email(), new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')))
             ));
-    
+        $builder->add( 'password', 'password', array(
+            'label' => 'Password',
+            'virtual' => true,
+            'constraints' => array(new NotBlank())
+        ));
+        $builder->add('confirm_password', 'password', array(
+            'label' => 'Confirm Password',
+            'virtual' => true,
+            'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))
+        ));
     }
     
     public function getName()

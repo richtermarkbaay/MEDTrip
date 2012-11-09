@@ -21,7 +21,6 @@ class InstitutionUserTypeController extends InstitutionAwareController
     public function indexAction()
     {
     	$userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($this->institution->getId());
-    	
         return $this->render('InstitutionBundle:InstitutionUserType:index.html.twig', array(
             'userTypes' => $userTypes
         ));

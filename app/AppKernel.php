@@ -58,7 +58,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\MediaBundle\MediaBundle(),
             new HealthCareAbroad\MailerBundle\MailerBundle(),
             new HealthCareAbroad\InstitutionBundle\InstitutionBundle(),
-            new HealthCareAbroad\MedicalProcedureBundle\MedicalProcedureBundle(),
+            new HealthCareAbroad\TreatmentBundle\TreatmentBundle(),
             new HealthCareAbroad\SearchBundle\SearchBundle(),
             new HealthCareAbroad\LogBundle\LogBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
@@ -71,7 +71,10 @@ class AppKernel extends Kernel
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-            $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+
+            if ($this->getEnvironment() === 'dev') {
+                $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+            }
         }
 
         return $bundles;
@@ -83,7 +86,7 @@ class AppKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        if (in_array($this->getEnvironment(), array('dev'))) {
+        if ($this->getEnvironment() === 'dev') {
             return '\JMS\DebuggingBundle\DependencyInjection\TraceableContainer';
         }
 

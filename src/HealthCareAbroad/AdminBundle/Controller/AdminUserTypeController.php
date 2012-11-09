@@ -25,7 +25,8 @@ class AdminUserTypeController extends Controller
      */
     public function indexAction()
     {
-        $userTypes = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->getAllEditable();
+        //$userTypes = $this->getDoctrine()->getRepository('UserBundle:AdminUserType')->getAllEditable();
+        $userTypes = $this->filteredResult;
         return $this->render('AdminBundle:AdminUserType:index.html.twig', array(
             'userTypes' => $userTypes
         ));

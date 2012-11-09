@@ -1,0 +1,65 @@
+## isId variable is institution_specialization.id
+institution_specialization_index:
+    pattern: /specializations
+    defaults: { _controller: InstitutionBundle:Specialization:index }
+    requirements:
+        _method:  GET
+
+institution_specialization_deleteDraft:
+    pattern: /specialization/deleteDraft/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:deleteDraft }
+    requirements:
+        _method:  GET
+        isId: \d+
+
+institution_specialization_add:
+    pattern: /specialization/add
+    defaults: { _controller: InstitutionBundle:Specialization:add }
+    requirements:
+        _method: GET
+
+institution_specialization_add_save:
+    pattern: /specialization/add
+    defaults: { _controller: InstitutionBundle:Specialization:saveDraft }
+    requirements:
+        _method:  POST
+
+institution_specialization_editDraft:
+    pattern: /specialization/add/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:add }
+    requirements:
+        _method: GET
+        isId: \d+
+
+institution_specialization_addGallery:
+    pattern: /specialization/add/gallery/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:addGallery }
+    requirements:
+        _method: GET
+        isId: \d+
+
+institution_specialization_addProcedureTypes:
+    pattern: /specialization/add/procedure-types/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:addProcedureTypes }
+    requirements:
+        _method: GET
+        isId: \d+
+
+institution_specialization_preview:
+    pattern: /specialization/add/preview/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:preview }
+    requirements:
+        _method: GET
+        isId: \d+
+
+institution_specialization_edit:
+    pattern: /specialization/edit/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:edit }
+    requirements:
+        _method: GET
+
+institution_specialization_edit_save:
+    pattern: /specialization/edit/{isId}
+    defaults: { _controller: InstitutionBundle:Specialization:save }
+    requirements:
+        _method: POST

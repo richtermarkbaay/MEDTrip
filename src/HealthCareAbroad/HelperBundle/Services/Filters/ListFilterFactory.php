@@ -50,15 +50,18 @@ final class ListFilterFactory
             'admin_city_index' => 'CityListFilter',
             'admin_country_index' => 'CountryListFilter',
             'admin_institution_index' => 'InstitutionListFilter',
-            'admin_specialization_index' => 'MedicalCenterListFilter',
+            'admin_specialization_index' => 'SpecializationListFilter',
+            'admin_subSpecialization_index' => 'SubSpecializationListFilter',
             'admin_treatment_index' => 'TreatmentListFilter',
-            'admin_treatmentProcedure_index' => 'MedicalProcedureListFilter',
-            'admin_institution_manageCenterGroups' => 'InstitutionMedicalCenterGroupListFilter',
             'admin_institution_manageCenters' => 'InstitutionMedicalCenterListFilter',
+            'admin_institution_manageSpecializations' => 'InstitutionSpecializationListFilter',
 //            'admin_institution_manageProcedureTypes' => 'InstitutionTreatmentProcedureTypeListFilter',
+            'institution_specialization_index' => 'InstitutionSpecializationListFilter',
             'institution_medicalCenter_index' => 'InstitutionMedicalCenterListFilter',
-            'institution_medicalCenterGroup_index' => 'InstitutionMedicalCenterGroupListFilter',
-        	'admin_advertisement_index' => 'AdvertisementListFilter'
+            'admin_advertisement_index' => 'AdvertisementListFilter',
+            'admin_user_index' => 'AdminUserListFilter',
+            'admin_userType_index' => 'AdminUserTypeListFilter',
+            'admin_userRole_index' => 'AdminUserRoleListFilter'
         );
     }
 

@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 class InstitutionMedicalCenterListFilter extends ListFilter
 {
@@ -14,9 +14,9 @@ class InstitutionMedicalCenterListFilter extends ListFilter
         $statusFilterOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
 
         if (isset($this->queryParams['isInstitutionContext']) && $this->queryParams['isInstitutionContext']) {
-            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusListForInstitutionContext();
+            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusListForInstitutionContext();
         } else {
-            $statusFilterOptions += InstitutionMedicalCenterGroupStatus::getStatusList();
+            $statusFilterOptions += InstitutionMedicalCenterStatus::getStatusList();
         }
 
         $this->setStatusFilterOption($statusFilterOptions);
@@ -24,7 +24,7 @@ class InstitutionMedicalCenterListFilter extends ListFilter
 
     public function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenterGroup', 'a');
+        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
         $this->queryBuilder->where('a.institution = :institutionId');
         $this->queryBuilder->setParameter('institutionId', $this->queryParams['institutionId']);
 
@@ -33,12 +33,12 @@ class InstitutionMedicalCenterListFilter extends ListFilter
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
-//         if(!$this->sortBy || $this->sortBy == 'medicalCenter') {
-//             $sort = 'b.name ' . $this->sortOrder;
-//         } else {
-//             $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;            
-//         }
+        if(!$this->sortBy) {
+            $sort = 'a.name ' . $this->sortOrder;
+        } else {
+            $sort = 'a.' . $this->sortBy. ' ' . $this->sortOrder;            
+        }
 
-//         $this->queryBuilder->add('orderBy', $sort);
+        $this->queryBuilder->add('orderBy', $sort);
     }
 }

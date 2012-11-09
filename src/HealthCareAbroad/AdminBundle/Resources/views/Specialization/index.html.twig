@@ -14,10 +14,10 @@
                 {% include '::notice.admin.html.twig' %}
 
                 {% set contents = [{
-                        'title': 'Add specialization', 
+                        'title': 'Add specialization',
                         'description': 'Add new specialization',
                         'class': 'add-icon',
-                        'href': path('admin_specialization_add'), 
+                        'href': path('admin_specialization_add'),
                         'links': [{'title': 'Add a specialization', 'href': path('admin_specialization_add')}]
                     }]
                 %}
@@ -25,7 +25,7 @@
                 {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
 
-                <!-- Render Filter Box -->                
+                <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
                 {% set sortBy = app.request.get('sortBy') %}
@@ -33,12 +33,12 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="specialization-list" class="generic-table sortable-list" width="100%">
+                    <table id="specialization-list" class="table table-bordered sortable-list">
                     <tr>
-                        <th id="column-name" class="minwidth-1">
+                        <th id="column-name">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
                         </th>
-                        <th id="column-description" class="minwidth-1">
+                        <th id="column-description">
                             <a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a>
                         </th>
 
@@ -46,14 +46,25 @@
                     </tr>
 
                     {% for each in specializations %}
+                        {% if each.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
                         <tr>
                             <td>{{ each.name }}</td>
                             <td>{{ each.description }}</td>
-                            <td align="center">
-                                <a href="{{ path('admin_specialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = each.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                                <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}" class="icon-type">treatments</a>
+                            <td>
+                                <a href="{{ path('admin_specialization_edit', {id:each.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
+                                <br/>
+                                <a href="{{ path('admin_subSpecialization_index', {specialization:each.id}) }}"><i class="icon-list"></i> View Sub-specializations</a>
+                                <br/>
+                                <a href="{{ path('admin_treatment_index', {specialization:each.id}) }}"><i class="icon-list"></i> View Treatments</a>
+                                <br/>
+                                {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
+                                <a href="{{ path('admin_specialization_updateStatus', {id:each.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
+                                </a>
                             </td>
                         </tr>
                     {% else  %}
@@ -63,9 +74,9 @@
 
                     {% if pager.isPaginable %}
                        {{ paginate(pager, 'admin_specialization_index', app.request.query.all) }}
-                    {% endif %}                    
+                    {% endif %}
                 </div>
-                
+
             {% endblock %}
         {% endembed %}
     </div>

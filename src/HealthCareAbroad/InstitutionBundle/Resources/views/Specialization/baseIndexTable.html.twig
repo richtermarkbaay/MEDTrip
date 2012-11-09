@@ -1,0 +1,34 @@
+{% set sortBy = app.request.get('sortBy') %}
+{% set sortOrder = app.request.get('sortOrder') %}
+{% set default = sortBy | length ? '' : 'sort-asc' %}
+
+<table width="100%" class="generic-table sortable-list" id="medical-centers-list">
+    <tr>
+        <th id="column-specialization" class="minwidth-1">
+            <a href="{{ app.request.uri }}" class="{{ sortBy == 'specialization' ? 'sort-' ~ sortOrder : default }}">Specializations</a>
+        </th>
+        <th id="column-description" class="minwidth-1"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+        <th class="actions" width="170">Actions</th>
+    </tr>
+
+    {# TODO: Don't hardcode value  #}
+    {% if app.request.get('status') and app.request.get('status') == '4' %}
+        {% set routeName = 'institution_specialization_add' %}
+    {% else %}
+        {% set routeName = 'institution_specialization_edit' %}
+    {% endif %}
+
+    {% for specialization in institutionSpecializations %}
+        <tr>
+            <td><a href="{{ path(routeName, {'isId': specialization.id }) }}" title="View {{ specialization.institutionMedicalCenter | title }}">{{ specialization.institutionMedicalCenter | title }}</a></td>
+            <td class="raw-content">{{ specialization.description|raw }}</td>
+            <td>
+                <a href="{{ path(routeName, {'isId': specialization.id })}}" class="icon-type" title="View treatments of {{ specialization.institutionMedicalCenter | title }}">view sub-specializations</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="3" class="empty-list"> empty result. </td>
+        </tr>
+    {% endfor %}
+</table>

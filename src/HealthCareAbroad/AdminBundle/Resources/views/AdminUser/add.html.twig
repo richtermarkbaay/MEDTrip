@@ -1,0 +1,25 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'staff'%}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+        <h1>Create new admin user</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            {% include '::notice.admin.html.twig' %}
+            {% include 'AdminBundle:AdminUser:form.html.twig' with {'form_url': path('admin_user_add') } %}
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
