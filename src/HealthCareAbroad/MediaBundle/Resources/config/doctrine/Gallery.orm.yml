@@ -22,16 +22,11 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
             joinTable:
                 name: gallery_media
                 joinColumns:
-                    -
-                        name: gallery_id
+                    gallery_id:
                         referencedColumnName: id
                 inverseJoinColumns:
-                    -
-                        name: media_id
+                    media_id:
                         referencedColumnName: id
-                        #onDelete: cascade
-
-            orderBy: null
     oneToOne:
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution

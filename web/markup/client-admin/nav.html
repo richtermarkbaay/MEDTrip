@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<style>
+body
+{
+background-color:green;
+}
+
+.menu li{
+width:100%
+}
+
+#navMain {
+
+}
+#navMain ul {
+    padding:0;
+    margin:0;
+    z-index: 2;
+}
+#navMain ul li {
+    margin-right: 5px;
+    text-align:center;
+}
+#navMain li a {
+    display: block;
+    text-decoration:none;
+    color: white;
+    padding-left: 10px;
+    padding-right:10px;
+}
+#navMain li a:hover{
+    background-color: black;
+}
+
+#navMain ul li:last-child {
+    margin-right: 0px;
+}
+
+#navMain li {
+    position: relative;
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding:0;
+    font-size: 17px;
+    font-weight: bold;
+    color:#fff;
+}
+
+#navMain ul ul {
+    position: absolute;
+    top: 20px;
+    visibility: hidden;
+    background-image: url(img/alphaBg.png);
+
+}
+#navMain ul li ul li {
+    font-size: 12px;
+    margin-right: 0px;
+    text-align: left;
+
+}
+#navMain ul li ul li:first-child {
+    padding-top:5px;
+}
+#navMain ul li:hover ul{
+    visibility:visible;
+}
+</style>
+</head>
+<body>
+<div id="navMain">
+            <ul>
+                <li><a href="#nogo">Forside</a>
+                    <ul class="menu">
+                        <li><a href="#nogo">1111111111111</a></li>
+                        <li><a href="#nogo">Link 1-2</a></li>
+                        <li><a href="#nogo">Link 1-3</a></li>
+                        <li><a href="#nogo">Link 1-3</a></li>
+                        <li><a href="#nogo">Link 1-3</a></li>
+                        <li><a href="#nogo">Link 1-3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#nogo">Om Os</a>
+                    <ul  class="menu">
+                        <li><a href="#nogo">Link 2-1</a></li>
+                        <li><a href="#nogo">Link 2-2</a></li>
+                        <li><a href="#nogo">Link 2-3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#nogo">Link 3</a>
+                    <ul  class="menu">
+                        <li><a href="#nogo">Link 3-1</a></li>
+                        <li><a href="#nogo">Link 3-2</a></li>
+                        <li><a href="#nogo">Link 3-3</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+</body>
+</html>
