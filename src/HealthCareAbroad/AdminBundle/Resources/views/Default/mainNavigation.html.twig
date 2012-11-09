@@ -40,6 +40,9 @@
             <li class="{{ selectedSubTab == 'manage_cities' ? 'active' : '' }}">
                 <a href="{{ path('admin_city_index') }}">Manage Cities</a>
             </li>
+            <li class="{{ selectedSubTab == 'manage_doctors' ? 'active' : '' }}">
+                <a href="{{ path('admin_doctor_index') }}">Manage Doctors</a>
+            </li>
         </ul>
     </li>
     {% endif %}
