@@ -46,4 +46,10 @@ class InstitutionService
         }
         return $returnValue;
     }
+    
+    public function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->find($id);
+    }
+    
 }

@@ -94,7 +94,7 @@ class AdvertisementController extends Controller
         if ($request->isMethod('POST')) {
             
             $form->bind($request);
-                
+                //var_dump($form->getData());exit;
             // set session data for this draft advertisement
             $data = array(
                 AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE => $form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData(),
@@ -134,25 +134,28 @@ class AdvertisementController extends Controller
         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($draftData[AdvertisementFormType::FIELD_INSTITUTION]);
         $advertisement = $this->get('services.advertisement.factory')->createInstanceByType($draftData[AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE]);
         $advertisement->setInstitution($institution);
-        
         $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($advertisement), $advertisement);
         
         if ($request->isMethod('POST')) {
             $form->bind($request);
             
             if ($form->isValid()) {
-                
+                $media = array();
                 if($request->files->get('advertisement')) {
+                    
                     $adsArray = $request->files->get('advertisement');
                     $media = $adsArray['media'];
+                    
+                    if ($media) {
+                        $media = $this->get('services.media')->addMedia($media, $institution->getId());
+                        $media = $this->get('services.media')->addAdvertisementMedia($advertisement, $media);
+                        echo $media;
+                    }
                 }
                 try {
                     
                     $advertisement = $this->factory->save($form->getData());
-                    if ($media) {
-                        $media = $this->get('services.media')->addMedia($media, $institution->getId());
-                        $media = $this->get('services.media')->addAdvertisementMedia($advertisement, $media);
-                    }    
+                       
                     // dispatch event
                     $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $advertisement));
                     $redirectUrl = $this->generateUrl('admin_advertisement_addInvoice', array('advertisementId' => $advertisement->getId()));
@@ -170,6 +173,7 @@ class AdvertisementController extends Controller
                 return $this->redirect($redirectUrl);
             }
         }
+        
         
         return $this->render('AdminBundle:Advertisement:add.html.twig', array(
             'form' => $form->createView(),
@@ -217,6 +221,7 @@ class AdvertisementController extends Controller
     public function editAction(Request $request)
     {
         $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
+        
         if ($request->isMethod('POST')) {
             $form->bind($request);
             
