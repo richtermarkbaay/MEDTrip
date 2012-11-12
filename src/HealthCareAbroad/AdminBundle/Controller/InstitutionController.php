@@ -141,16 +141,13 @@ class InstitutionController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addDetailsAction(Request $request){
-    	
-    	$id = $request->get('id', null);
-    	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
-    	
-	    $form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'edit_type' => false));
+
+	    $form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'edit_type' => false));
 	    	
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
-				'institution' => $institution,
-	    		'id' => $id
+				'institution' => $this->institution,
+	    		'id' => $this->institution->getId()
     										
 	    ));
     }
@@ -162,16 +159,12 @@ class InstitutionController extends Controller
     	
     	$request = $this->getRequest();   	
  
-    	if('POST' != $request->getMethod()) {
-    		return new Response("Save requires POST method!", 405);
-    	}
-    	
-    	$institutionDetails = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId', 0));
-    	 
-    	$form = $this->createForm(new InstitutionDetailType(), $institutionDetails, array('profile_type' => false, 'edit_type' => false));
+    	$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'edit_type' => false));
     	
     	//add institution details
-		$form->bind($request);
+		if ($request->isMethod('POST')) {
+			
+			$form->bind($request);
     			
     		if ($form->isValid()) {
     	
@@ -182,8 +175,9 @@ class InstitutionController extends Controller
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     			 
     		}
+		}
 
-    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $request->get('institutionId', 0))));
+    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
     	 
     }
     

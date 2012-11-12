@@ -42,7 +42,7 @@
             </div>
 
             <a href="{{ path('admin_institution_gallery', {institutionId: institution.id} ) }}" title="View or manage gallery">Gallery</a> |
-             <a href="{{ path('admin_institution_add_details', {id: institution.id} ) }}" title="Edit INstitution">Edit Institution</a>
+             <a href="{{ path('admin_institution_add_details', {institutionId: institution.id} ) }}" title="Edit INstitution">Edit Institution</a>
             {% endblock %}
         {% endembed %}
     </div>
