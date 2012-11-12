@@ -3,7 +3,7 @@
 <project name="healthcareabroad" default="build">
     <!-- <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/> -->
     <target name="build"
-        depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpunit,phpcb" />
+        depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcb" />
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb" />
 
@@ -68,23 +68,21 @@
         </exec>
     </target>
 
-    <target name="phpmd"
-        description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
+    <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpmd">
             <arg path="${basedir}/src" />
             <arg value="text" />
-            <arg value="${basedir}/build/phpmd.xml" />
+            <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
         </exec>
     </target>
 
-    <target name="phpmd-ci"
-        description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
+    <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="phpmd">
             <arg path="${basedir}/src" />
             <arg value="xml" />
-            <arg value="${basedir}/build/phpmd.xml" />
+            <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
             <arg value="--reportfile" />
-            <arg value="${basedir}/build/logs/pmd.xml" />
+            <arg value="${basedir}/app/build/logs/pmd.xml" />
         </exec>
     </target>
 
