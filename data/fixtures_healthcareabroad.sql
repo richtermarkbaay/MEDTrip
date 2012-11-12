@@ -175,6 +175,25 @@ INSERT INTO `advertisements` (`id`, `institution_id`, `object_id`, `advertisemen
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `advertisement_media`
+--
+DROP TABLE IF EXISTS `advertisement_media`;
+CREATE TABLE IF NOT EXISTS `advertisement_media` (
+  `advertisement_id` bigint(20) unsigned NOT NULL,
+  `media_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`advertisement_id`,`media_id`),
+  KEY `media_id` (`media_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `advertisement_media`
+--
+
+INSERT INTO `advertisement_media` (`advertisement_id`, `media_id`) VALUES
+(6, 47);
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `cities`
 --
 
@@ -1219,6 +1238,13 @@ ALTER TABLE `admin_user_type_roles`
 --
 ALTER TABLE `advertisements`
   ADD CONSTRAINT `advertisements_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `advertisement_media`
+--
+ALTER TABLE `advertisement_media`
+  ADD CONSTRAINT `advertisement_media_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`),
+  ADD CONSTRAINT `advertisement_media_ibfk_1` FOREIGN KEY (`advertisement_id`) REFERENCES `advertisements` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `cities`
