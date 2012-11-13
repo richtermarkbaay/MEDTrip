@@ -29,7 +29,7 @@
         <delete dir="${basedir}/build/pdepend" />
     </target>
 
-    <target name="prepare" depends="clean" description="Prepare for build">
+    <target name="prepare" depends="clean,parameters" description="Prepare for build">
         <mkdir dir="${basedir}/build/api" />
         <mkdir dir="${basedir}/build/code-browser" />
         <mkdir dir="${basedir}/build/coverage" />
@@ -90,7 +90,7 @@
     <target name="phpcs"
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
-            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
@@ -100,7 +100,7 @@
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-            <arg value="--standard=${basedir}/build/phpcs.xml" />
+            <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
@@ -114,13 +114,16 @@
     </target>
 
     <target name="phpdox" description="Generate API documentation using phpDox">
-        <exec executable="phpdox" />
+        <exec executable="phpdox">
+            <arg value="-f" />
+            <arg path="${basedir}/app/Resources/jenkins/phpdox.xml" />
+        </exec>
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit" failonerror="true">
-            <arg value="-c app/" />
-            <arg path="${basedir}" />
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.xml.dist" />
         </exec>
     </target>
 
@@ -133,5 +136,57 @@
             <arg value="--output" />
             <arg path="${basedir}/build/code-browser" />
         </exec>
+    </target>
+
+    <target name="composer-install" description="Install composer.phar">
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="curl -s http://getcomposer.org/installer | php"/>
+        </exec>
+    </target>
+
+    <target name="composer-update" description="Update composer.phar">
+        <exec executable="composer.phar">
+            <arg value="self-update"/>
+        </exec>
+    </target>
+
+    <target name="vendors-install" description="Install vendors">
+        <exec executable="composer.phar" failonerror="true">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="vendors-update" description="update vendors">
+        <exec executable="composer.phar" failonerror="true">
+            <arg value="update" />
+        </exec>
+    </target>
+
+    <target name="parameters" description="Copy parameters">
+        <copy file="${basedir}/app/config/parameters.yml.dist"
+            tofile="${basedir}/app/config/parameters.yml">
+
+            <filterchain>
+               <replacetokens>
+                    <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
+                    <token key="DATABASE_NAME" value="healthcareabroad"/>
+                    <token key="DATABASE_USER" value="root"/>
+                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                </replacetokens>
+            </filterchain>
+        </copy>
+
+        <copy file="${basedir}/app/config/parameters_test.yml.dist"
+                tofile="${basedir}/app/config/parameters_test.yml" >
+            <filterchain>
+               <replacetokens>
+                    <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
+                    <token key="DATABASE_NAME" value="fixtures_healthcareabroad"/>
+                    <token key="DATABASE_USER" value="root"/>
+                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                </replacetokens>
+            </filterchain>
+        </copy>
     </target>
 </project>

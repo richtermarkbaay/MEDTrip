@@ -1,0 +1,89 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host:     @DATABASE_HOST@
+    database_port:     ~
+    database_name:     @DATABASE_NAME@
+    database_user:     @DATABASE_USER@
+    database_password: @DATABASE_PASSWORD@
+
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: ~
+    mailer_password: ~
+
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    alert_db:
+        port: 5984
+        host: 192.168.1.249
+        database: fixtures_alerts
+
+
+    application_id:    1
+    application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
+    chromedia_accounts_uri: http://accounts.test.chromedia.com/app_dev.php
+
+    site_url: http://www.healthcareabroad.com
+    site_name: www.HealthCareAbroad.com
+
+    cfe_site_url: http://www.chromedia.com
+    cfe_site_name: www.Chromedia.com
+    cfe_company_name: Chromedia Far East Inc.
+
+    ## TinyMCE theme params
+    tinymce_textarea_class: "tinymce"
+
+    tinymce_simple_theme:
+        mode: "textareas"
+        theme: "advanced"
+        #theme_advanced_buttons1: "mylistbox,mysplitbutton,bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink"
+        theme_advanced_buttons1: "mylistbox,mysplitbutton,bold,italic,underline,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,bullist,numlist"
+        theme_advanced_buttons2: ""
+        theme_advanced_buttons3: ""
+        theme_advanced_toolbar_location: "top"
+        theme_advanced_toolbar_align: "left"
+        theme_advanced_statusbar_location : false
+        plugins: "fullscreen"
+        theme_advanced_buttons1_add: "fullscreen"
+
+    tinymce_advanced_theme:
+        theme: "advanced"
+        plugins: "pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template"
+        theme_advanced_buttons1: "save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect"
+        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,anchor,image,cleanup,help,code,|,insertdate,inserttime,preview,|,forecolor,backcolor"
+        theme_advanced_buttons3: "tablecontrols,|,hr,removeformat,visualaid,|,sub,sup,|,charmap,emotions,iespell,media,advhr,|,print,|,ltr,rtl,|,fullscreen"
+        theme_advanced_buttons4: "insertlayer,moveforward,movebackward,absolute,|,styleprops,|,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,pagebreak"
+        theme_advanced_toolbar_location: "top"
+        theme_advanced_toolbar_align: "left"
+        theme_advanced_statusbar_location: "bottom"
+        theme_advanced_resizing: true
+
+    tinymce_medium_theme:
+        mode: "textareas"
+        theme: "advanced"
+        plugins: "table,advhr,advlink,paste,xhtmlxtras,spellchecker"
+        theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,forecolor,backcolor,|,hr,removeformat,|,sub,sup,|,spellchecker"
+        theme_advanced_buttons2: "cut,copy,paste,pastetext,pasteword,|,bullist,numlist,|,undo,redo,|,link,unlink,anchor,cleanup,code,|,tablecontrols"
+        theme_advanced_buttons3: ""
+        theme_advanced_toolbar_location: "top"
+        theme_advanced_toolbar_align: "left"
+        theme_advanced_statusbar_location: ""
+        paste_auto_cleanup_on_paste: true
+        spellchecker_languages: "+English=en,Dutch=nl"
+
+    tinymce_bbcode_theme:
+        mode: "none"
+        theme: "advanced"
+        plugins: "bbcode"
+        theme_advanced_buttons1: "bold,italic,underline,undo,redo,link,unlink,image,forecolor,styleselect,removeformat,cleanup,code"
+        theme_advanced_buttons2: ""
+        theme_advanced_buttons3: ""
+        theme_advanced_toolbar_location: "bottom"
+        theme_advanced_toolbar_align: "center"
+        theme_advanced_styles: "Code=codeStyle;Quote=quoteStyle"
+        entity_encoding: "raw"
+        add_unload_trigger: false
+        remove_linebreaks: false
+        inline_styles: false
+        convert_fonts_to_spans: false
