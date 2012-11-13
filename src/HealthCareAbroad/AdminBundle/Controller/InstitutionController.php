@@ -97,7 +97,6 @@ class InstitutionController extends Controller
 	    	
 	    			// initialize required database fields
 	    			$institution->setAddress1('');
-	    			$institution->setAddress2('');
 	    			$institution->setContactEmail('');
 	    			$institution->setContactNumber('');
 	    			$institution->setDescription('');
@@ -123,7 +122,7 @@ class InstitutionController extends Controller
 	    							$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
     							));
 	    	
-	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('id' => $institution->getId())));
+	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('institutionId' => $institution->getId())));
 
 	    		}
 	    	}
@@ -142,43 +141,31 @@ class InstitutionController extends Controller
      */
     public function addDetailsAction(Request $request){
 
-	    $form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'edit_type' => false));
+	    $form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false));
 	    	
+	    if ($request->isMethod('POST')) {
+	    		
+	    	$form->bindRequest($request);
+	    
+	    	if ($form->isValid()) {
+
+	    		$institution = $this->get('services.institution.factory')->save($form->getData());
+	    		$this->get('session')->setFlash('notice', "Successfully updated account");
+	    
+	    		//create event on editInstitution and dispatch
+	    		$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+	    
+	    		return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
+	    
+	    	}
+	    }
+	    
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
 				'institution' => $this->institution,
 	    		'id' => $this->institution->getId()
     										
 	    ));
-    }
-    
-    /**
-     * Save Institution Details
-     */
-    public function saveAction(){
-    	
-    	$request = $this->getRequest();   	
- 
-    	$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'edit_type' => false));
-    	
-    	//add institution details
-		if ($request->isMethod('POST')) {
-			
-			$form->bind($request);
-    			
-    		if ($form->isValid()) {
-    	
-    			$institution = $this->get('services.institution.factory')->save($form->getData());
-    			$this->get('session')->setFlash('notice', "Successfully added");
-    			 
-    			//create event on editInstitution and dispatch
-    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-    			 
-    		}
-		}
-
-    	return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
-    	 
     }
     
     /**

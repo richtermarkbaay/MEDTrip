@@ -25,9 +25,8 @@ class InstitutionDetailType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
+
         	'profile_type' => true,
-        	'edit_type' => true,
-        	'admin_add' => true,
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
@@ -39,35 +38,22 @@ class InstitutionDetailType extends AbstractType
     	 
     	$countryId = ($country =$builder->getData()->getCountry()) ? $country->getId() : 0;
 
-
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
       	$builder->add('zipCode', 'integer', array('label' => 'Zip Code'));
     	$builder->add('state', 'text');
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
     	$builder->add('address1', 'text', array('label' => 'Address'));
-
-    	if ($options['profile_type']) {
+    	$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+    	
+		if ($options['profile_type']) {
     		
-    		$builder->add('coordinates', 'hidden');
-    		$builder->add('institutionSite', 'text', array('label' => 'Institution Website', 'virtual' => true ));
-    		$builder->add('facebook', 'text', array('label' => 'Facebook Page', 'virtual' => true ));
-    		$builder->add('twitter', 'text', array('label' => 'Twitter Account', 'virtual' => true ));
-    	
-    	}if ($options['edit_type']) {
-    		$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
-    		$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
-    		$builder->add('name', 'text');
-    		$builder->add('coordinates', 'hidden');
-    		$builder->add('institutionSite', 'text', array('label' => 'Institution Website', 'virtual' => true ));
-    		$builder->add('facebook', 'text', array('label' => 'Facebook Page', 'virtual' => true ));
-    		$builder->add('twitter', 'text', array('label' => 'Twitter Account', 'virtual' => true ));
-    		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
-    		$builder->add('contactNumber', 'hidden');
-    	}if ($options['admin_add']) {
-    	
-    		$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
-    	}
+			$builder->add('name', 'text');
+			$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
+			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
+			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+			$builder->add('contactNumber', 'hidden');
+		}
 
     }
     
@@ -75,5 +61,6 @@ class InstitutionDetailType extends AbstractType
     {
         return 'institutionDetail';
     }
+    
     
 }
