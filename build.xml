@@ -29,7 +29,7 @@
         <delete dir="${basedir}/build/pdepend" />
     </target>
 
-    <target name="prepare" depends="clean,parameters" description="Prepare for build">
+    <target name="prepare" depends="clean,symfony-clear-cache" description="Prepare for build">
         <mkdir dir="${basedir}/build/api" />
         <mkdir dir="${basedir}/build/code-browser" />
         <mkdir dir="${basedir}/build/coverage" />
@@ -163,7 +163,18 @@
         </exec>
     </target>
 
+    <target name="symfony-clear-cache" depends="parameters" description="Clear">
+        <exec executable="app/console" failonerror="true">
+            <arg value="cache:clear" />
+            <arg value="--env=test" />
+        </exec>
+    </target>
+
     <target name="parameters" description="Copy parameters">
+
+        <delete file="${basedir}/app/config/parameters.yml"/>
+        <delete file="${basedir}/app/config/parameters_test.yml"/>
+
         <copy file="${basedir}/app/config/parameters.yml.dist"
             tofile="${basedir}/app/config/parameters.yml">
 
