@@ -2,8 +2,7 @@
 
 <project name="healthcareabroad" default="build">
     <!-- <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/> -->
-    <target name="build"
-        depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcb" />
+    <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcb" />
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb" />
 
@@ -82,7 +81,7 @@
             <arg value="xml" />
             <arg value="${basedir}/app/Resources/jenkins/phpmd.xml" />
             <arg value="--reportfile" />
-            <arg value="${basedir}/app/build/logs/pmd.xml" />
+            <arg value="${basedir}/build/logs/pmd.xml" />
         </exec>
     </target>
 
