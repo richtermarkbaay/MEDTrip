@@ -171,6 +171,7 @@
     </target>
 
     <target name="parameters" description="Copy parameters">
+        <property file="build.properties" prefix="bp"/>
 
         <delete file="${basedir}/app/config/parameters.yml"/>
         <delete file="${basedir}/app/config/parameters_test.yml"/>
@@ -180,10 +181,13 @@
 
             <filterchain>
                <replacetokens>
-                    <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
-                    <token key="DATABASE_NAME" value="healthcareabroad"/>
-                    <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
+                    <token key="DATABASE_HOST" value="bp.DATABASE_HOST"/>
+                    <token key="DATABASE_NAME" value="bp.DATABASE_NAME"/>
+                    <token key="DATABASE_USER" value="bp.DATABASE_USER"/>
+                    <token key="DATABASE_PASSWORD" value="bp.DATABASE_PASSWORD" />
+                    <token key="COUCHDB_HOST" value="bp.COUCHDB_HOST"/>
+                    <token key="COUCHDB_PORT" value="bp.COUCHDB_PORT"/>
+                    <token key="COUCHDB_NAME" value="bp.COUCHDB_NAME"/>
                 </replacetokens>
             </filterchain>
         </copy>
@@ -192,10 +196,13 @@
                 tofile="${basedir}/app/config/parameters_test.yml" >
             <filterchain>
                <replacetokens>
-                    <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
-                    <token key="DATABASE_NAME" value="fixtures_healthcareabroad"/>
-                    <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
+                    <token key="DATABASE_HOST" value="bp.TEST_DATABASE_HOST"/>
+                    <token key="DATABASE_NAME" value="bp.TEST_DATABASE_NAME"/>
+                    <token key="DATABASE_USER" value="bp.TEST_DATABASE_USER"/>
+                    <token key="DATABASE_PASSWORD" value="bp.TEST_DATABASE_PASSWORD" />
+                    <token key="COUCHDB_HOST" value="bp.TEST_COUCHDB_HOST"/>
+                    <token key="COUCHDB_PORT" value="bp.TEST_COUCHDB_PORT"/>
+                    <token key="COUCHDB_NAME" value="bp.TEST_COUCHDB_NAME"/>
                 </replacetokens>
             </filterchain>
         </copy>
