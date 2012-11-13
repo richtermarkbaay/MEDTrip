@@ -3,6 +3,10 @@
 namespace HealthCareAbroad\HelperBundle\Controller;
 
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -26,6 +30,28 @@ class DefaultController extends Controller
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
+    }
+    
+    public function getSpecializationAccordionEntryAction($specializationId)
+    {
+        $criteria = array('status' => Specialization::STATUS_ACTIVE, 'id' => $specializationId);
+
+        $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
+
+        if(!$params['specialization']) {
+            $result = array('error' => 'Invalid Specialization');
+    		$response = new Response(json_encode($result));
+    		$response->headers->set('Content-Type', 'application/json');
+
+    		return $response;
+        }
+
+        $groupBySubSpecialization = true;
+        $params['subSpecializations'] = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getBySpecializationId($specializationId, $groupBySubSpecialization);
+        $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
+        $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
+
+        return $this->render('HelperBundle:Default:specializationAccordionEntry.html.twig', $params);
     }
 
 

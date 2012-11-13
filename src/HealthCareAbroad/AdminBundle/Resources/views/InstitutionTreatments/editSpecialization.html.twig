@@ -1,0 +1,53 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div class="container">
+
+    {% include '::notice.admin.html.twig' %}    
+
+    <div class="title">
+        <h4>{{institutionSpecialization.specialization.name}}</h4>
+
+        <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_editSpecialization', { 'institutionId':institutionId, 'isId': institutionSpecialization.Id }) }}" method="POST" {{ form_enctype(form) }}>
+
+            <div class="treatmentbox">
+            	<div class="boxcontent">
+                    {{ form_row(form.description) }}
+                    {{ form_rest(form) }}
+
+            		<div>
+            		    {% render 'HelperBundle:Default:getSpecializationAccordionEntry' 
+                            with { specializationId: institutionSpecialization.specialization.id, selectedTreatments: institutionTreatmentIds, showCloseBtn : false}
+                        %}
+            		</div>
+                    <hr>
+                </div>
+            </div>
+
+        	<div class="pull-right">
+        	    <input type="submit" class="btn btn-large btn-success" value="Save" name="Submit">
+            </div>		
+
+        </form>  
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    function loadSpecializationEntry(elem)
+    {
+        var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + elem.val().toString();
+
+        $.get(url, function(specializationEntry){
+            $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion();
+
+            $('#institutionSpecialization_specialization').find('option[value='+elem.val()+']').hide();
+        });
+    }
+</script>
+{% endblock %}

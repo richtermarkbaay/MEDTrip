@@ -202,6 +202,10 @@ class InstitutionTreatmentsController extends Controller
                 $em->persist($institutionSpecialization);
                 $em->flush();
 
+                if($institutionSpecialization->getId() && count($treatmentIds = $this->request->get('treatments'))) {
+                    $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->updateTreatments($institutionSpecialization->getId(), $treatmentIds);
+                }
+
                 $this->request->getSession()->setFlash('success', "Specialization has been saved!");
 
                 // TODO: fire event
@@ -221,6 +225,61 @@ class InstitutionTreatmentsController extends Controller
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:form.specialization.html.twig', $params);   
+    }
+    
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editSpecializationAction()
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($this->request->get('isId'));
+        $institutionTreatments = $institutionSpecialization->getTreatments();
+        $institutionTreatmentIds = array();
+        foreach($institutionTreatments as $treatment) {
+            $institutionTreatmentIds[] = $treatment->getId();
+        }
+
+        $institutionSpecializationForm = new InstitutionSpecializationFormType($this->institution);
+        $form = $this->createForm($institutionSpecializationForm, $institutionSpecialization);
+
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+    
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($form->getData());
+                $em->flush();
+
+                if($institutionSpecialization->getId()) {
+                    $treatmentIds = $this->request->get('treatments', array());
+                    $deleteTreatmentsIds = array_diff($institutionTreatmentIds, $treatmentIds);
+
+                    $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+                    $instSpecializationRepo->updateTreatments($institutionSpecialization->getId(), $treatmentIds, $deleteTreatmentsIds);
+                }
+
+                $this->request->getSession()->setFlash('success', "Specialization has been saved!");
+
+                // TODO: fire event
+
+                // redirect to step 2;
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_editSpecialization',array(
+                    'institutionId' => $this->institution->getId(),
+                    'isId' => $institutionSpecialization->getId()
+                )));
+            }
+        }
+
+        $params = array(
+            'form' => $form->createView(),
+            'institutionSpecialization' => $institutionSpecialization,
+            'institutionId' => $this->institution->getId(),
+            'institutionTreatmentIds' => $institutionTreatmentIds
+        );
+
+        return $this->render('AdminBundle:InstitutionTreatments:editSpecialization.html.twig', $params);
     }
 
     /**

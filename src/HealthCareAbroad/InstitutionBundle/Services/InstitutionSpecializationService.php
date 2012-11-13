@@ -31,16 +31,6 @@ class InstitutionSpecializationService
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization');
     }
 
-    /**
-     * Get InstitutionTreatments of an InstitutionSpecialization
-     *
-     * @param InstitutionSpecialization $institutionSpecialization
-     */
-    public function getInstitutionTreatmentsOfSpecialization(InstitutionSpecialization $institutionSpecialization)
-    {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionTreatment')->getByInstitutionSpecialization($institutionSpecialization);
-    }
-    
     public function save(InstitutionSpecialization $institutionSpecialization)
     {
         $em = $this->doctrine->getEntityManager();
