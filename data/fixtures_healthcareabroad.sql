@@ -918,11 +918,7 @@ CREATE TABLE IF NOT EXISTS `specializations` (
 --
 
 INSERT INTO `specializations` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'Philippine Center', 'The very first one! updated sdfsdfsdf testest. updatedrweetr', '2012-07-30 00:34:30', 'philippine-center', 1),
-(2, 'California Center', 'sd fsadf sadf updated sdfsdfdsf', '2012-07-30 06:54:56', 'california-center', 1),
-(3, 'inactive center', 'sdf sdf sdf', '2012-07-30 06:54:56', '', 0),
-(4, 'sige daw kon sluggable', 'asdfas', '2012-07-30 08:19:23', 'sige-daw-kon-sluggable', 1),
-(5, '5th Medical Center updated', 'The very first one!', '2012-07-31 02:35:37', '5th-medical-center-updated', 1);
+(1, 'Specialization 1', 'this is from test', '2012-07-30 00:34:30', 'specialization-1', 1);
 
 
 -- --------------------------------------------------------
@@ -946,6 +942,14 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments';
 
+--
+-- Dumping data for table `sub_specializations`
+--
+
+INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 1, 'Sub with treatments', 'test', '2012-09-25 16:23:12', '2012-07-29 23:40:08', 'procedure-type-for-philippine-center', 1),
+(2, 1, 'Sub with no treatments', 'test', '2012-09-25 16:23:12', '2012-07-29 23:40:08', 'procedure-type-for-philippine-center', 1);
+
 
 -- --------------------------------------------------------
 
@@ -964,6 +968,37 @@ CREATE TABLE IF NOT EXISTS `treatments` (
   PRIMARY KEY (`id`),
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `treatments`
+--
+
+INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slug`, `status`) VALUES
+(1, 1, 'Treatment with sub specialization', '', 'treatment-1', 1),
+(2, 1, 'Treatment with no sub specialization', '', 'treatment-2', 1);
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `treatment_sub_specializations`
+--
+
+DROP TABLE IF EXISTS `treatment_sub_specializations`;
+CREATE TABLE IF NOT EXISTS `treatment_sub_specializations` (
+  `treatment_id` int(10) unsigned NOT NULL,
+  `sub_specialization_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`treatment_id`,`sub_specialization_id`),
+  KEY `sub_specialization_id` (`sub_specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='association table for treatment and sub_specializations';
+
+--
+-- Dumping data for table `treatment_sub_specializations`
+--
+
+INSERT INTO `treatment_sub_specializations` (`treatment_id`, `sub_specialization_id`) VALUES
+(1, 2);
+
 
 
 -- --------------------------------------------------------
@@ -1326,17 +1361,23 @@ ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`log_class_id`) REFERENCES `log_classes` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `treatments`
---
-ALTER TABLE `treatments`
-  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
-
-
---
 -- Constraints for table `sub_specializations`
 --
 ALTER TABLE `sub_specializations`
   ADD CONSTRAINT `sub_specializations_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `treatments`
+--
+ALTER TABLE `treatments`
+  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
+  
+--
+-- Constraints for table `treatment_sub_specializations`
+--
+ALTER TABLE `treatment_sub_specializations`
+  ADD CONSTRAINT `treatment_sub_specializations_ibfk_2` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `treatment_sub_specializations_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medical_term_suggestion_details`
