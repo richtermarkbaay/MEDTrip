@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpdox xmlns="http://phpdox.de/config">
-    <project name="Symfony2 App" source="./src" workdir="app/build/phpdox">
+    <project name="HealthCareAbroad" source="./src" workdir="build/phpdox">
         <collector publiconly="false">
             <include mask="*.php" />
             <exclude mask="*Autoload.php" />
         </collector>
 
-        <generator output="app/build">
+        <generator output="build">
             <build engine="html" enabled="true" output="api"/>
         </generator>
     </project>

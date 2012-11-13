@@ -1,12 +1,10 @@
 parameters:
     database_driver:   pdo_mysql
-    #database_host:     localhost
-    database_host:     healthcare-dev
+    database_host:     @DATABASE_HOST@
     database_port:     ~
-    database_name:     healthcareabroad
-    database_user:     root
-    #database_password:
-    database_password: hcadbadmin
+    database_name:     @DATABASE_NAME@
+    database_user:     @DATABASE_USER@
+    database_password: @DATABASE_PASSWORD@
 
     alert_db:
         port: 5984
