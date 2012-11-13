@@ -1,7 +1,12 @@
 HealthCareAbroad\InstitutionBundle\Entity\Institution:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This specialization already exists!
+            groups: [editInstitutionInformation]
     properties:
         name:
-            - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration, editInstitutionInformation]}
+            - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
             - NotBlank: {message: 'Institution name is required.', groups: [institutionRegistration, editInstitutionInformation]}
         description:
             - NotBlank: {message: 'Description is required.', groups: [editInstitutionInformation]}
