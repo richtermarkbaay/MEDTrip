@@ -40,46 +40,46 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 
-//     public function testUpdateStatus()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $status = InstitutionStatus::ACTIVE;
-//         $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $status));
+    public function testUpdateStatus()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $status = InstitutionStatus::ACTIVE;
+        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $status));
 
-//         $response = $client->getResponse();
+        $response = $client->getResponse();
 
-//         // check of redirect url /admin/institutions
-//         $this->assertEquals('/admin/institutions', $client->getResponse()->headers->get('location'));
-//         $this->assertEquals(302, $response->getStatusCode());
+        // check of redirect url /admin/institutions
+        $this->assertEquals('/admin/institutions', $client->getResponse()->headers->get('location'));
+        $this->assertEquals(302, $response->getStatusCode());
 
-//         $crawler = $client->followRedirect(true);
+        $crawler = $client->followRedirect(true);
 
-//         $isValidStatus = $crawler->filter('#message-red')->count() == 0;
-//         $this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
+        $isValidStatus = $crawler->filter('#message-red')->count() == 0;
+        $this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
 
-// //         $isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
-// //         $this->assertTrue($isStatusUpdated, 'Unable to update status.');
-//     }
+//         $isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
+//         $this->assertTrue($isStatusUpdated, 'Unable to update status.');
+    }
     
-//     public function testUpdateInvalidStatus()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $invalidStatus = 35;
-//         $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $invalidStatus));
+    public function testUpdateInvalidStatus()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $invalidStatus = 35;
+        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $invalidStatus));
 
-//         $response = $client->getResponse();
+        $response = $client->getResponse();
         
-//         $this->assertEquals('/admin/institutions', $response->headers->get('location'));
-//         $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('/admin/institutions', $response->headers->get('location'));
+        $this->assertEquals(302, $response->getStatusCode());
 
-//         $crawler = $client->followRedirect(true);
+        $crawler = $client->followRedirect(true);
 
-//         $response = $client->getResponse();
-//         $this->assertEquals(200, $response->getStatusCode());
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
 
-// //         $isNotValidStatus = $crawler->filter('#message-red')->count() > 0;
-// //         $this->assertTrue($isNotValidStatus, 'Invalid status value should not be saved!');
-//     }
+//         $isNotValidStatus = $crawler->filter('#message-red')->count() > 0;
+//         $this->assertTrue($isNotValidStatus, 'Invalid status value should not be saved!');
+    }
     
     private $signupFormValues = array(
     					'institutionSignUp[name]' => 'Institution Test',
