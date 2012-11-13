@@ -20,3 +20,4 @@ MAMP.webarchive
 bin/
 cache/
 .metadata/
+app/config/parameters_test.yml

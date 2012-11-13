@@ -4,7 +4,7 @@
     <!--
     <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
     -->
-    <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpcb" />
+    <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb" />
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb" />
 
@@ -29,7 +29,7 @@
         <delete dir="${basedir}/build/pdepend" />
     </target>
 
-    <target name="prepare" depends="clean,parameters" description="Prepare for build">
+    <target name="prepare" depends="clean,symfony-clear-cache" description="Prepare for build">
         <mkdir dir="${basedir}/build/api" />
         <mkdir dir="${basedir}/build/code-browser" />
         <mkdir dir="${basedir}/build/coverage" />
@@ -163,7 +163,18 @@
         </exec>
     </target>
 
+    <target name="symfony-clear-cache" depends="parameters" description="Clear">
+        <exec executable="app/console" failonerror="true">
+            <arg value="cache:clear" />
+            <arg value="--env=test" />
+        </exec>
+    </target>
+
     <target name="parameters" description="Copy parameters">
+
+        <delete file="${basedir}/app/config/parameters.yml"/>
+        <delete file="${basedir}/app/config/parameters_test.yml"/>
+
         <copy file="${basedir}/app/config/parameters.yml.dist"
             tofile="${basedir}/app/config/parameters.yml">
 
@@ -172,7 +183,7 @@
                     <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
                     <token key="DATABASE_NAME" value="healthcareabroad"/>
                     <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
                 </replacetokens>
             </filterchain>
         </copy>
@@ -184,7 +195,7 @@
                     <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
                     <token key="DATABASE_NAME" value="fixtures_healthcareabroad"/>
                     <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
                 </replacetokens>
             </filterchain>
         </copy>
