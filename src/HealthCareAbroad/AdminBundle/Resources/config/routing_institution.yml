@@ -12,17 +12,10 @@ admin_institution_add_details:
     pattern:  /admin/institution/add-details
     defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
-         id:  \d+
-         _method: GET|POST        
-         
-admin_institution_saveDetails:
-    pattern:  /admin/institution/save/{institutionId}
-    defaults: { _controller: AdminBundle:Institution:save }
-    requirements:
-         _method: GET|POST
          institutionId: \d+
+         _method: GET|POST   
+            
          
-
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status
     defaults: { _controller: AdminBundle:Institution:updateStatus }
@@ -37,9 +30,6 @@ admin_institution_view:
     requirements:
          institutionId: \d+
          _method: GET
-
-
-
 
 # Manage Procedure Types Routes #
 admin_institution_procedureType_add:

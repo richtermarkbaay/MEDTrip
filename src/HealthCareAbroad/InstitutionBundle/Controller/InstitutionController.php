@@ -39,7 +39,7 @@ class InstitutionController extends InstitutionAwareController
 		$request = $this->getRequest();
 		
 		//render template      
-		$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false));		
+		$form = $this->createForm(new InstitutionDetailType(), $this->institution);		
 		$languages = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
 		
 		//update institution details

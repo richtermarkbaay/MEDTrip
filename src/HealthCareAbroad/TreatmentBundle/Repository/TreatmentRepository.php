@@ -38,12 +38,20 @@ class TreatmentRepository extends EntityRepository
 
     public function getCountBySubSpecializationId($subSpecializationId) {
         $qb = $this->getEntityManager()->createQueryBuilder();
+//         $qb->select('count(a)')
+//             ->from('TreatmentBundle:Treatment', 'a')
+//             ->where('a.status = :active')
+//             ->andWhere('a.subSpecialization = :subSpecializationId')
+//             ->setParameter('active', Treatment::STATUS_ACTIVE)
+//             ->setParameter('subSpecializationId', $subSpecializationId);
+
         $qb->select('count(a)')
             ->from('TreatmentBundle:Treatment', 'a')
+            ->innerJoin('a.subSpecializations', 'b', Join::WITH, 'b.id = :subSpecializationId')
             ->where('a.status = :active')
-            ->andWhere('a.subSpecialization = :subSpecializationId')
-            ->setParameter('active', Treatment::STATUS_ACTIVE)
-            ->setParameter('subSpecializationId', $subSpecializationId);
+            ->setParameter('subSpecializationId', $subSpecializationId)
+            ->setParameter('active', Treatment::STATUS_ACTIVE);
+            
 
         $count = (int)$qb->getQuery()->getSingleScalarResult();
 

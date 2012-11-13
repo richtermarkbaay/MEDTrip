@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
+
 use Doctrine\ORM\UnitOfWork;
 
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
@@ -207,7 +209,7 @@ class MediaService
 
         return $success;
     }
-    public function addAdvertisementMedia($advertisement, $media)
+    public function addAdvertisementMedia(Advertisement $advertisement, $media)
     {
         $success = 1;
 

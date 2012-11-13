@@ -19,20 +19,20 @@ admin_institution_gallery_add:
 
 # DEFAULT ROUTES
 media_upload:
-    pattern: /media/upload
+    pattern: /admin/media/upload
     defaults: { _controller: MediaBundle:Default:upload }
     requirements:
         _method: POST
 
 media_delete:
-    pattern: /media/delete/{id}
+    pattern: /admin/media/delete/{id}
     defaults: { _controller: MediaBundle:Default:delete, id: ~ }
     requirements:
         _method: POST
         id: \d+
 
 media_edit_caption:
-    pattern: /media/edit-caption
+    pattern: /admin/media/edit-caption
     defaults: { _controller: MediaBundle:Default:editCaption }
 
 # END DEFAULT ROUTES
