@@ -238,9 +238,9 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
-  `abbr` varchar(10) NOT NULL,
-  `code` char(11) NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `abbr` varchar(10) DEFAULT NULL,
+  `code` char(11) DEFAULT NULL,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
