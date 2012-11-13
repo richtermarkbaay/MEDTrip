@@ -183,7 +183,7 @@
                     <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
                     <token key="DATABASE_NAME" value="healthcareabroad"/>
                     <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
                 </replacetokens>
             </filterchain>
         </copy>
@@ -195,7 +195,7 @@
                     <token key="DATABASE_HOST" value="staging-hca-db.cn3rrwophu7o.us-east-1.rds.amazonaws.com"/>
                     <token key="DATABASE_NAME" value="fixtures_healthcareabroad"/>
                     <token key="DATABASE_USER" value="root"/>
-                    <token key="DATABASE_PASSWORD" value="hcadbadmin" />
+                    <token key="DATABASE_PASSWORD" value="cfe_#602_:D" />
                 </replacetokens>
             </filterchain>
         </copy>

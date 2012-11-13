@@ -30,7 +30,7 @@ class InstitutionDetailType extends AbstractType
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
-
+    
     public function buildForm(FormBuilderInterface $builder, array $options)
     {	
     	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
@@ -44,8 +44,7 @@ class InstitutionDetailType extends AbstractType
     	$builder->add('state', 'text');
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
     	$builder->add('address1', 'text', array('label' => 'Address'));
-    	$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
-    	
+
 		if ($options['profile_type']) {
     		
 			$builder->add('name', 'text');
@@ -54,7 +53,6 @@ class InstitutionDetailType extends AbstractType
 			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
 			$builder->add('contactNumber', 'hidden');
 		}
-
     }
     
     public function getName()
