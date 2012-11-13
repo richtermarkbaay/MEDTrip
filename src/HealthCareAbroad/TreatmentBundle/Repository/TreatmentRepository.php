@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\TreatmentBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
@@ -99,4 +103,41 @@ class TreatmentRepository extends EntityRepository
 //             ->setParameter('institutionTreatmentId', $institutionTreatment->getId());
 //         return $qb;
 //     }
+
+
+    public function getBySpecializationId($specializationId, $groupBySubSpecialization = false)
+    {
+        $conn = $this->_em->getConnection();
+
+        $sql = "SELECT a.*, d.id as subSpecializationId, d.name as subSpecializationName, d.description as subSpecializationDesc FROM treatments AS a " .
+               "LEFT JOIN specializations AS b ON a.specialization_id = b.id " . 
+               "LEFT JOIN treatment_sub_specializations AS c ON a.id = c.treatment_id " .
+               "LEFT JOIN sub_specializations AS d ON c.sub_specialization_id = d.id ". 
+               "WHERE a.specialization_id = :specializationId AND a.status = :treatmentStatus";
+
+        $params = array(
+            'specializationId' => $specializationId,
+            'treatmentStatus' => Treatment::STATUS_ACTIVE
+        );
+
+        $result = $conn->executeQuery($sql, $params)->fetchAll(Query::HYDRATE_ARRAY);
+
+        if(!$groupBySubSpecialization) {
+            $treatments = $result;
+        } else {
+            $treatments = array();
+            foreach($result as $each)
+            {
+                if(!$each['subSpecializationId']) {
+                    $treatments['Other Treatments'][] = $each;
+                } else {
+                    $treatments[$each['subSpecializationName']][] = $each;
+                }
+            }
+        }
+
+        return $treatments;
+
+    }
+    
 }

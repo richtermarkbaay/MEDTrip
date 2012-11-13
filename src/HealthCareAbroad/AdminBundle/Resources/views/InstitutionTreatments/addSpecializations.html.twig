@@ -1,0 +1,62 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% block title %}{{ parent() }} Add Center {% endblock %}
+
+{% block content %}
+<!-- start content -->
+<div class="container">
+
+    {% include '::notice.admin.html.twig' %}    
+
+    <div class="title">
+        <h4>Medical Center Name</h4>
+        <div class="addcenterbox">
+            <div class="row-fluid">
+                <div class="span12">
+                
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+
+                    <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addSpecialization', { 'institutionId':institutionId, 'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }}>
+
+                        <div class="treatmentbox">
+                        	<h5>Add Specialization</h5>
+                        	<div class="boxcontent">
+                        	
+                                {{ form_row(form.specialization, { 'attr': {'class': 'input-xxlarge', 'onChange': 'loadSpecializationEntry($(this))' } }) }}
+                                {{ form_row(form.description) }}
+                                {{ form_rest(form) }}
+
+                        		<div id="specializationAccordion" class="accordion"></div>
+                                <hr>
+                            </div>
+                        </div>
+
+                    	<div class="pull-right">
+                    	    <input type="submit" class="btn btn-large btn-success" value="Add Another Medical Center" name="Submit">
+                    	    <span style="margin-left: 10px;">
+                    	        <input type="submit" class="btn btn-large btn-primary" value="DONE" name="Submit">
+                    	    </span>
+                        </div>		
+
+                    </form>  
+                </div><!--/span 12 end-->
+            </div><!--/row-fluid end-->
+        </div><!--/addcenterbox end-->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    function loadSpecializationEntry(elem)
+    {
+        var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + elem.val().toString();
+
+        $.get(url, function(specializationEntry){
+            $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion();
+
+            $('#institutionSpecialization_specialization').find('option[value='+elem.val()+']').hide();
+        });
+    }
+</script>
+{% endblock %}
