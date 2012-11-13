@@ -90,7 +90,10 @@
     <target name="phpcs"
         description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
+            <!--
             <arg value="--standard=${basedir}/build/phpcs.xml" />
+            -->
+            <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
@@ -100,7 +103,10 @@
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
+            <!--
             <arg value="--standard=${basedir}/build/phpcs.xml" />
+            -->
+            <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
@@ -114,13 +120,16 @@
     </target>
 
     <target name="phpdox" description="Generate API documentation using phpDox">
-        <exec executable="phpdox" />
+        <exec executable="phpdox">
+            <arg value="-f" />
+            <arg path="${basedir}/app/Resources/jenkins/phpdox.xml" />
+        </exec>
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
         <exec executable="phpunit" failonerror="true">
-            <arg value="-c app/" />
-            <arg path="${basedir}" />
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpunit.xml.dist" />
         </exec>
     </target>
 
@@ -132,6 +141,38 @@
             <arg path="${basedir}/src" />
             <arg value="--output" />
             <arg path="${basedir}/build/code-browser" />
+        </exec>
+    </target>
+
+    <target name="composer-install" description="Install composer.phar">
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="curl -s http://getcomposer.org/installer | php"/>
+        </exec>
+    </target>
+
+    <target name="composer-update" description="Update composer.phar">
+        <exec executable="composer.phar">
+            <arg value="self-update"/>
+        </exec>
+    </target>
+
+    <target name="vendors-install" description="Install vendors">
+        <exec executable="composer.phar" failonerror="true">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="vendors-update" description="update vendors">
+        <exec executable="composer.phar" failonerror="true">
+            <arg value="update" />
+        </exec>
+    </target>
+
+    <target name="parameters" description="Copy parameters">
+        <exec executable="cp" failonerror="true">
+            <arg path="app/config/parameters.yml.dist" />
+            <arg path="app/config/parameters.yml" />
         </exec>
     </target>
 </project>
