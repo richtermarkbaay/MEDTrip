@@ -26,7 +26,7 @@ class InstitutionAccountController extends Controller
 	 	}
 	 	//render template
 
-	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('edit_type' => false,'admin_add' => false));		
+	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false));		
 
 	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
 	 					'form' => $form->createView(),

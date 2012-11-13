@@ -1,7 +1,13 @@
+{% for flashMessage in app.session.flashbag.get('notice') %}
+    {{ flashMessage }}
+{% endfor %}
+<br />
+
 <div>Select a file to upload:</div>
 
-<form action="{{ path('media_upload') }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST">
-    <input type="file" name="file" />
+<form action="{{ path('media_upload') }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
+    <input type="file" name="file" accept="image/gif, image/jpeg" />
+    <input type="hidden" name="multiUpload" value="0"/>
 
     <input type="submit" value="Upload"/>
 </form>
@@ -9,3 +15,13 @@
 <div>
     Switch to the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': app.session.get('institutionId')}) }}">multi-file uploader</a>.
 </div>
+
+<script type="text/javascript">
+function validate(form) {
+   if ((/.(gif|jpe?g|png)$/i.test(form.['file'].value))==false) {
+
+       return (false);
+   }
+       return(true);
+}
+</script>

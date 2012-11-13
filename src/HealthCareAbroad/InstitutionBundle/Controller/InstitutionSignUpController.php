@@ -87,7 +87,6 @@ class InstitutionSignUpController  extends Controller
 	            
 	            // initialize required database fields
 	          	$institution->setAddress1('');
-    			$institution->setAddress2('');
     			$institution->setContactEmail('');
     			$institution->setContactNumber('');
     			$institution->setDescription('');

@@ -1,10 +1,10 @@
 parameters:
     database_driver: pdo_mysql
-    database_host: healthcare-dev
-    database_port: ~
-    database_name: fixtures_healthcareabroad
-    database_user: root
-    database_password: hcadbadmin
+    database_host:     @DATABASE_HOST@
+    database_port:     ~
+    database_name:     @DATABASE_NAME@
+    database_user:     @DATABASE_USER@
+    database_password: @DATABASE_PASSWORD@
 
     mailer_transport: smtp
     mailer_host: localhost
