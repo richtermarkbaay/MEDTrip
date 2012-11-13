@@ -12,31 +12,31 @@ use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TreatmentControllerTest extends AdminBundleWebTestCase
+class SubSpecializationControllerTest extends AdminBundleWebTestCase
 {
     
     public function testAdd()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/add');
-
+    	$crawler = $client->request('GET', '/admin/sub-specialization/add');
+    	
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment")')->count(), '"Add Treatment" string not found!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub-specialization")')->count(), '"Add Sub-specialization" string not found!');
     }
     
-    public function testAddFromMedicalCenter()
+    public function testAddFromSpecialization()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-type/add?medicalCenterId=1');
+        $crawler = $client->request('GET', '/admin/sub-specialization/add?specializationId=1');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Treatment")')->count(), '"Add Treatment" string not found!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub-specialization")')->count(), '"Add Sub-specialization" string not found!');
     }
     
-    public function testAddWithInvalidMedicalCenter()
+    public function testAddWithInvalidSpecialization()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-type/add?medicalCenterId=10010');
+        $crawler = $client->request('GET', '/admin/sub-specialization/add?specializationId=10010');
     
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
@@ -44,16 +44,16 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     public function testEdit()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/edit/2');
+    	$crawler = $client->request('GET', '/admin/sub-specialization/edit/2');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Treatment")')->count(), '"Edit Treatment" string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Sub-specialization")')->count(), '"Edit Sub-specialization" string not found!');
     }
     
-    public function testEditWithInvalidProcedureType()
+    public function testEditWithInvalidSubSpecialization()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-type/edit/10010');
+        $crawler = $client->request('GET', '/admin/sub-specialization/edit/10010');
     
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
@@ -61,13 +61,13 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
 	public function testAddSave()
 	{
 		$client = $this->getBrowserWithActualLoggedInUser();
-		$crawler = $client->request('GET', '/admin/procedure-type/add');
+		$crawler = $client->request('GET', '/admin/sub-specialization/add');
     
 		$formData = array(
-			'treatment[name]' => 'TestNewlyAdded MedProcType',
-			'treatment[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-			'treatment[medicalCenter]' => 1,
-			'treatment[status]' => 1
+			'subspecialization[name]' => 'TestNewlyAdded MedProcType',
+			'subspecialization[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+			'subspecialization[specialization]' => 1,
+			'subspecialization[status]' => 1
 		);
 
 		$form = $crawler->selectButton('submit')->first()->form();
@@ -76,27 +76,27 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
      	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
-    	// check of redirect url /admin/medical-procedure-types
-    	$this->assertEquals('/admin/procedure-type/edit/5', $client->getResponse()->headers->get('location'));
+    	// check of redirect url /admin/sub-specializations
+    	$this->assertEquals('/admin/sub-specialization/edit/3', $client->getResponse()->headers->get('location'));
 
     	// redirect request
 		$crawler = $client->followRedirect(true);
 
 		// check if the redirected response content has the newly added procedure name
-		$isAdded = $crawler->filter('#page-heading > h2:contains("Edit Treatment")')->count() > 0;
+		$isAdded = $crawler->filter('#page-heading > h2:contains("Edit Sub-specialization")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
     public function testAddSaveAndAddAnother()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-type/add');
+        $crawler = $client->request('GET', '/admin/sub-specialization/add');
     
         $formData = array(
-            'treatment[name]' => 'TestNewlyAdded MedProcType with andAddAnother',
-            'treatment[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-            'treatment[medicalCenter]' => 1,
-            'treatment[status]' => 1
+            'subspecialization[name]' => 'TestNewlyAdded MedProcType with andAddAnother',
+            'subspecialization[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+            'subspecialization[specialization]' => 1,
+            'subspecialization[status]' => 1
         );
     
         $form = $crawler->selectButton('submit')->last()->form();
@@ -105,58 +105,59 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
         // check if redirect code 302
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     
-        // check of redirect url /admin/medical-procedure-types
-        $this->assertEquals('/admin/procedure-type/add', $client->getResponse()->headers->get('location'));
+        // check of redirect url /admin/sub-specializations
+        $this->assertEquals('/admin/sub-specialization/add', $client->getResponse()->headers->get('location'));
     
         // redirect request
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added procedure name
-        $isAdded = $crawler->filter('#page-heading > h2:contains("Add Treatment")')->count() > 0;
+        $isAdded = $crawler->filter('#page-heading > h2:contains("Add Sub-specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     }
 
     public function testEditSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/edit/3');
-
+    	$crawler = $client->request('GET', '/admin/sub-specialization/edit/3');
+    	
 		$formData = array(
-			'treatment[name]' => 'TestNewlyAdded MedProcType Updated',
-			'treatment[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-			'treatment[medicalCenter]' => 1,
-			'treatment[status]' => 1
+			'subspecialization[name]' => 'TestNewlyAdded MedProcType Updated',
+			'subspecialization[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+			'subspecialization[specialization]' => 1,
+			'subspecialization[status]' => 1
 		);
-
+        
     	$form = $crawler->selectButton('submit')->first()->form();
+    	
     	$crawler = $client->submit($form, $formData);
 
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
     	// check of redirect url /admin/procedure-types
-    	$this->assertEquals('/admin/procedure-type/edit/3', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/sub-specialization/edit/3', $client->getResponse()->headers->get('location'));
 
     	// redirect request
 		$crawler = $client->followRedirect(true);
 
     	// check if the redirected response content has the newly added procedure type name
-    	$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Treatment")')->count() > 0;
+    	$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Sub-specialization")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
-    public function testEditSaveInvalidProcedureType()
+    public function testEditSaveInvalidSubSpecialization()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
 
         $formData = array(
-            'treatment[name]' => 'TestNewlyAdded MedProcType Updated',
-            'treatment[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-            'treatment[medicalCenter]' => 1,
-            'treatment[status]' => 1
+            'subspecialization[name]' => 'TestNewlyAdded MedProcType Updated',
+            'subspecialization[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+            'subspecialization[specialization]' => 1,
+            'subspecialization[status]' => 1
         );
         
-        $crawler = $client->request('POST', '/admin/procedure-type/edit/10010', $formData);
+        $crawler = $client->request('POST', '/admin/sub-specialization/edit/10010', $formData);
     
         // check if redirect code 302
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
@@ -165,13 +166,13 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     public function testCreateDuplicate()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/add');
+    	$crawler = $client->request('GET', '/admin/sub-specialization/add');
     
 		$formData = array(
-			'treatment[name]' => 'TestNewlyAdded MedProcType Updated',
-			'treatment[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
-			'treatment[medicalCenter]' => 1,
-			'treatment[status]' => 1
+			'subspecialization[name]' => 'TestNewlyAdded MedProcType Updated',
+			'subspecialization[description]' => 'the quick brown fox jump over the lazy dog! or Lorem ipsum dolor sit amit!',
+			'subspecialization[specialization]' => 1,
+			'subspecialization[status]' => 1
 		);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -183,7 +184,7 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
 
     public function testUpdateStatus(){
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/update-status/1');
+    	$crawler = $client->request('GET', '/admin/sub-specialization/update-status/1');
 
     	$response = $client->getResponse();
     	$this->assertEquals("Response code: 200", "Response code: " . $response->getStatusCode());
@@ -192,13 +193,13 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     public function testSaveInvalidData()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/procedure-type/add');
+    	$crawler = $client->request('GET', '/admin/sub-specialization/add');
     
 		$formData = array(
-			'treatment[name]' => '',
-			'treatment[description]' => 'the description',
-			'treatment[medicalCenter]' => 1,
-			'treatment[status]' => 1
+			'subspecialization[name]' => '',
+			'subspecialization[description]' => 'the description',
+			'subspecialization[specialization]' => 1,
+			'subspecialization[status]' => 1
 		);
 
     	$form = $crawler->selectButton('submit')->form();
@@ -211,13 +212,13 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     public function testEditSaveInvalidData()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-type/edit/1');
+        $crawler = $client->request('GET', '/admin/sub-specialization/edit/1');
     
         $formData = array(
-                        'treatment[name]' => '',
-                        'treatment[description]' => 'the description',
-                        'treatment[medicalCenter]' => 1,
-                        'treatment[status]' => 1
+                        'subspecialization[name]' => '',
+                        'subspecialization[description]' => 'the description',
+                        'subspecialization[specialization]' => 1,
+                        'subspecialization[status]' => 1
         );
 
         $form = $crawler->selectButton('submit')->form();
@@ -232,23 +233,23 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
     	$client = $this->getBrowserWithActualLoggedInUser();
     
     	$formData = array(
-			'treatment[name]' => '',
-			'treatment[description]' => 'the description',
-			'treatment[medicalCenter]' => 1,
-			'treatment[status]' => 1
+			'subspecialization[name]' => '',
+			'subspecialization[description]' => 'the description',
+			'subspecialization[specialization]' => 1,
+			'subspecialization[status]' => 1
     	);
 
-    	$crawler = $client->request('GET', '/admin/procedure-type/test-save', $formData);
+    	$crawler = $client->request('GET', '/admin/sub-specialization/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
     }
     
     public function testIndex()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/procedure-types');
+        $crawler = $client->request('GET', '/admin/sub-specializations');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Treatments")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Sub-specializations")')->count(), 'Wrong page header');
     }
     
     public function testIndexWithFilters()
@@ -256,29 +257,28 @@ class TreatmentControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         
         // Test Filter Active Status
-        $crawler = $client->request('GET', '/admin/procedure-types?status=1');
+        $crawler = $client->request('GET', '/admin/sub-specializations?status=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $isAllActive = $crawler->filter('#procedure-type-list tr a.icon-5')->count() == 0;
         $this->assertEquals(true, $isAllActive, 'ListFilter is not working properly!');
 
         // Test Filter Inactive Status
-        $crawler = $client->request('GET', '/admin/procedure-types?status=0');
+        $crawler = $client->request('GET', '/admin/sub-specializations?status=0');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $isAllActive = $crawler->filter('#procedure-type-list tr a.icon-2')->count() == 0;
         $this->assertEquals(true, $isAllActive, 'ListFilter is not working properly!');
 
-        // Test Filter medicalCenter
-        $crawler = $client->request('GET', '/admin/procedure-types?medicalCenter=1');        
+        // Test Filter specialization
+        $crawler = $client->request('GET', '/admin/sub-specializations?specialization=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $isFiltered = $crawler->filter('#procedure-type-list tr > td > a.medical-center:not(:contains("AddedFromTest Center"))')->count() == 0;
-        $this->assertEquals(true, $isFiltered, 'Filter MedicalCenter is not working properly!');
+        $isFiltered = $crawler->filter('#procedure-type-list tr > td > a.medical-center:not(:contains("Specialization 1"))')->count() == 0;
+        $this->assertEquals(true, $isFiltered, 'Filter Specialization is not working properly!');
 
-        // Test Filter status And medicalCenter
-        $crawler = $client->request('GET', '/admin/procedure-types?medicalCenter=1&status=1');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $isFiltered = $crawler->filter('#procedure-type-list tr > td > a.medical-center:not(:contains("AddedFromTest Center"))')->count() == 0;
+        // Test Filter status And specialization
+        $crawler = $client->request('GET', '/admin/sub-specializations?specialization=1&status=1');
+        $isFiltered = $crawler->filter('#procedure-type-list tr > td > a.medical-center:not(:contains("Specialization 1"))')->count() == 0;
         $isAllActive = $crawler->filter('#procedure-type-list tr a.icon-5')->count() == 0;
-        $this->assertEquals(true, $isFiltered && $isAllActive, 'Filter MedicalCenter and status is not working properly!');   
+        $this->assertEquals(true, $isFiltered && $isAllActive, 'Filter Specialization and status is not working properly!');   
     }
 }
 
