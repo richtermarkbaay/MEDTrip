@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\MinLength;
+use Symfony\Component\Validator\Constraints\MaxLength;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
@@ -50,12 +52,12 @@ class InstitutionDetailType extends AbstractType
 			$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 			$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
 			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
-			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+			$builder->add('description', 'textarea');
 			$builder->add('contactNumber', 'hidden');
 		}
 		if ($options['hidden_field']) {
 			
-			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+			$builder->add('description', 'textarea');
 			 
 		}
     }

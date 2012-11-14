@@ -141,7 +141,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
     
     public function testAddDetails()
 	{
-		$editAccountUrl = '/admin/institution/add-details?institutionId=1';
+		$editAccountUrl = '/admin/institution/1/add-details';
     
 		//---- test that this should not be accessed by anonymous user
 		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
@@ -153,13 +153,14 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->request('GET', $editAccountUrl);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
-		$formValues = array(			
+		$formValues = array(	
+						'institutionDetail[description]' => 'TEST',
 						'institutionDetail[contactEmail]' => 'tetmail2@fdfewed.com',
 						'institutionDetail[country]' => '1',
 						'institutionDetail[city]' => '1',
 						'institutionDetail[address1]' => '3434',
-						'institutionDetail[state]' => '34',
-						'institutionDetail[zipCode]' => '3434'
+						'institutionDetail[state]' => '324',
+						'institutionDetail[zipCode]' => '34324'
 		);
 		
 		//test for invalid description
@@ -167,8 +168,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$invalidFormValues['institutionDetail[description]'] = null;
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-		
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description is required.")')->count(), 'Expecting the validation message "Description is required."');
+	
 		//test valid values
 		$client = $this->getBrowserWithActualLoggedInUser();
 		$crawler = $client->request('GET', $editAccountUrl);
