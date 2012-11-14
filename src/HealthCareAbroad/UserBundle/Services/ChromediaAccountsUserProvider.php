@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException;
+
+use Guzzle\Http\Exception\CurlException;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Services\UserService;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -33,7 +37,11 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $chromediaAccount = $this->userService->find(array('email'=> $username), array('limit' => 1));
+        try {
+            $chromediaAccount = $this->userService->find(array('email'=> $username), array('limit' => 1));
+        } catch (CurlException $e) {
+            throw new FailedAccountRequestException('Authentication service unavailable.');
+        }
 
         if ($chromediaAccount) {
             if ($applicationUser = $this->getApplicationUser($chromediaAccount)) {
