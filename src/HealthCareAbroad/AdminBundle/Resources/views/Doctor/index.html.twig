@@ -32,25 +32,33 @@
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
                 <div style="width: 70%">
-                    <table id="doctor-list" class="generic-table sortable-list" width="100%">
+                    <table id="doctor-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name">First Name</th>
                         <th id="column-name">Middle Name</th>
                         <th id="column-name">Last Name</th>
                         <th>Status</th>
-                        <th class="actions" width="200">Action</th>
+                        <th width="150">Actions</th>
                     </tr>
 
                     {% for doctor in doctors %}
+                        {% if doctor.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
                         <tr>
                             <td>{{ doctor.firstName }}</td>
                             <td>{{ doctor.middleName }}</td>
                             <td>{{ doctor.lastName }}</td>
                             <td>{{ doctor.status ? 'Active' : 'Inactive' }}</td>
                             <td align="center">
-                                <a href="{{ path('admin_doctor_edit', {idId:doctor.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = doctor.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_doctor_updateStatus', {idId:doctor.id}) }}" title="{{ doctor.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                                <a href="{{ path('admin_doctor_edit', {idId:doctor.id}) }}" title="Edit">
+                                    <i class="icon-edit"></i> Edit
+                                </a>
+                                <a href="{{ path('admin_doctor_updateStatus', {idId:doctor.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> {{ statusLabel }} 
+                                </a>
                             </td>
                         </tr>
                     {% else  %}
