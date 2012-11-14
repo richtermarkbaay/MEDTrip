@@ -9,7 +9,7 @@ admin_treatment_testSave:
          id: \d+
          _method: GET
 
-admin_specialization_testSave:
+admin_subSpecialization_testSave:
     pattern:  /admin/sub-specialization/test-save
     defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
