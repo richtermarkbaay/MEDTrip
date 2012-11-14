@@ -2,81 +2,139 @@
  * Health Care Abroud Style
  *
  */
- body
- {
+ body {
     color: #002A5C;
- }
- body, .btn
- {
-font-size:12px;
-    
- }
-a:hover
-{
-    text-decoration:none;
-    
 }
-.institutionbox
-{
+body, .btn {
+    font-size:12px;
+}
+a:hover {
+    text-decoration:none;
+}
+.institutionbox {
     margin: 70px 0 0 0;
     padding-bottom: 2px;
 }
-.institutionbox-inner 
-{
+.institutionbox-inner {
     margin:10px 0 0 0;
-
 }
-.institutionbox-inner .navbar-inner
-{
+.institutionbox-inner .navbar-inner {
     padding:20px;
 }
-.institutionbox-inner .navbar-inner img
-{
+.institutionbox-inner .navbar-inner img {
     padding:2px;
     border: 1px solid #333;
 }
-.institutionbox-inner .span7
-{
+.institutionbox-inner .span7 {
     margin-left: 0;
 }
-.institutionbox-inner .span6
-{
+.institutionbox-inner .span6 {
     margin-left: 0;
 }
-.institutionbox-inner .span4
-{
+.institutionbox-inner .span4 {
     margin-left: 0;
 }
-
-.institutionbox-inner .span2
-{
+.institutionbox-inner .span2 {
     margin-left: 0;
     width: 160px;
 }
-.institutionbox-inner p
-{
+.institutionbox-inner p {
     line-height: 12px;
     font-size: 13px;
 }
-.institutionbox-inner h5
-{
+.institutionbox-inner h5 {
     font-weight: normal;
     color:#d4d4d4;
     padding-bottom: 10px;
-    
 }
-.institutionbox-inner h2 a:hover
-{   
+.institutionbox-inner h2 a:hover {
     text-decoration: none;
 }
-.institutionbox-inner h3
-{
+.institutionbox-inner h3 {
     color:#002A5C;
     padding-top: 20px;
     line-height:30px;
 }
-.maincontent h3 a
-{
+
+/*menu*/
+nav {
+    position: relative;
+    float: right;
+}
+
+.menu li {
+    float: left;
+    position: relative;
+    list-style-type: none;
+}
+
+.menu li a {
+    color: #444;
+    display: block;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 6px 12px;
+    margin: 8px 8px;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+.menu li a:hover {
+
+    color: #222;
+}
+
+/* Dropdown styles */
+
+.menu ul {
+    position: absolute;
+    left: -9999px;
+    list-style: none;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.menu ul li {
+    float: none;
+}
+
+.menu ul a {
+    white-space: nowrap;
+
+}
+
+/* Displays the dropdown on hover and moves back into position */
+.menu li:hover ul {
+    left: -160px;
+    opacity: 500;
+    background-color: #ffffff;
+    border: 1px solid #d4d4d4;
+    margin-top: -5px;
+
+}
+
+/* Persistant Hover State */
+.menu li:hover a {
+    color: #222;
+    background-color: #ffffff;
+    
+}
+
+.menu li:hover ul a {
+    background-color: #ffffff;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.menu li:hover ul li a:hover {
+background-color: #f2f2f2;
+
+
+
+}
+/*main conetn*/
+
+.maincontent h3 a {
     background-color: #CEECF6;
     color: #AAAAAA;
     font-weight: normal;
@@ -85,37 +143,27 @@ a:hover
 /*
 ==================== Feature ===========
 */
-#feature {
-
-  position: relative;
-  z-index: 1;
-  margin: 0;
-  padding-bottom: 0;
+ #feature {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding-bottom: 0;
 }
-#feature .row
-{
+#feature .row {
     margin-left: 0;
 }
-#feature .span12 
-{
+#feature .span12 {
     margin:0;
     padding:0;
     min-height: 10px;
-    
 }
- 
-
-
-.navbar .brand
-{
+.navbar .brand {
     color: #002A5C;
 }
-.navbar .btn span
-{
+.navbar .btn span {
     background-color: none;
 }
-.navbar .userbox
-{
+.navbar .userbox {
     display: inline-block;
     font-size: 12px;
     line-height: 20px;
@@ -124,85 +172,60 @@ a:hover
     text-align: center;
     vertical-align: middle;
 }
-.navbar .userbox a
-{
-    
+.navbar .userbox a {
     font-size: 13px;
     padding-left: 5px;
-    
 }
-.navbar-fixed-top .btn
-{
+.navbar-fixed-top .btn {
     border: none;
     background-image: none;
     background-color: none;
     box-shadow: none;
     font-size: 12px;
 }
-.navbar-fixed-top .btn a
-{
-
+.navbar-fixed-top .btn a {
     font-size: 13px;
     padding-left: 5px;
 }
-.navbar-fixed-top img
-{
+.navbar-fixed-top img {
     padding: 5px 7px;
 }
-.navbar-fixed-top .icon-user
-{
+.navbar-fixed-top .icon-user {
     margin-left: 5px;
 }
-#box-1 .span1
-{
+#box-1 .span1 {
     float: right;
     padding:0px 10px 0 10px;
     margin-top: 30px;
 }
-
-.stepbox
-{
-    background-color:#f2f2f2; 
+.stepbox {
+    background-color:#f2f2f2;
     padding: 10px 20px;
     margin: 20px 0;
 }
-.nav-tabs > li a:hover
-{
+.nav-tabs > li a:hover {
     background-color: #D9EDF7;
-    
 }
-.nav-tabs > .active > a, .nav-tabs > .active > a:hover
-{
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
     background-color: #e2e2e2;
 }
-.addcenterbox .nav-tabs > .active > a
-{
+.addcenterbox .nav-tabs > .active > a {
     background-color: #ffffff;
 }
-.addcenterbox .btn-medium
-{
-    font-size: 14px;    
+.addcenterbox .btn-medium {
+    font-size: 14px;
 }
-
-
-#myContent .nav-tabs > .active > a
-{
+#myContent .nav-tabs > .active > a {
     background-color: #e5e5e5;
 }
-
-#myContent .nav-tabs > ul
-{
+#myContent .nav-tabs > ul {
     clear: both;
     margin-left: 0;
-    
 }
-
-#myContent .nav-tabs > li 
-{
+#myContent .nav-tabs > li {
     padding: 0;
 }
-#myContent .nav-tabs > li > a
-{
+#myContent .nav-tabs > li > a {
     width:18%;
     min-height: 190px;
     padding: 10px;
@@ -210,227 +233,188 @@ a:hover
     border-bottom: 1px solid #DDDDDD;
     border-top: 1px solid #DDDDDD;
     float: left;
-    background-color:#ffffff ;
-
-
+    background-color:#ffffff;
 }
-#myContent .nav-tabs .nav-stacked> li > a
-{
+#myContent .nav-tabs .nav-stacked> li > a {
     border: none;
-    
 }
-#myContent .nav-tabs > li > a:hover
-{
+#myContent .nav-tabs > li > a:hover {
     background-color: #f4f4f4;
-
 }
 #myContent .nav-tabs li:first-child > a {
-  
     margin-left: 0px;
 }
-
-#myContent h2
-{
+#myContent h2 {
     color: #002A5C;
     line-height: 20px;
 }
-#myContent .nav-tabs
-{
+#myContent .nav-tabs {
     border: none;
 }
-#myContent p
-{
+#myContent p {
     color: #999999;
     font-size: 13px;
     clear: both;
     line-height: 20px;
 }
-#myContent h1
-{
+#myContent h1 {
     float: left;
     margin-right: 20px;
 }
-#myContent h5
-{
+#myContent h5 {
     padding:0 10px 0 0;
     margin: 10px 0 5px 0;
     line-height:22px;
-
 }
-#myContent .row
-{
+#myContent .row {
     margin-left: 0;
-
 }
-.maincontent .span3, .span1, .span4, .span5
-{
+.maincontent .span3, .span1, .span5 {
     margin-left:0;
 }
-
-.boxcontent .span3 ul
-{
+.boxcontent .span3 ul {
     margin-bottom:0px;
 }
-.boxcontent .span3 h1
-{
+.boxcontent .span3 h1 {
     line-height:10px;
     margin-right:10px;
     color:#0066CC;
 }
-.boxcontent .span3 table
-{
+.boxcontent .span3 table {
     margin:0 0 15px 50px;
 }
-.boxcontent .span3 td
-{
+.boxcontent .span3 td {
     padding:12px 0;
     color:#999999;
     vertical-align:bottom;
 }
-.boxcontent h7
-{
+.boxcontent h7 {
     font-size:14px;
     font-weight:bold;
 }
-.boxcontent h8
-{
+.boxcontent h8 {
     font-size:13px;
     font-weight:bold;
-
 }
-.boxcontent .listing
+.boxcontent .awards ul
 {
+    margin-left: 0;
+}
+.boxcontent .awards li
+{
+    list-style: none outside none;
+    line-height: 30px;
+    font-size: 13px;
+}
+.boxcontent .listing {
     padding:0px;
 }
-.boxcontent .listing .detailbox
-{
+.boxcontent .listing .detailbox {
     border:#CCCCCC solid 1px;
     padding:20px;
-    
-
 }
-.boxcontent .specialist h5
-{ 
+.boxcontent .specialist h5 {
     background: none;
     padding: 0;
-
 }
-.boxcontent .specialist img
-{
-    margin:0 10px 0 10px;
+.boxcontent .specialist img {
+    margin:0 0 0 -20px;
     padding:2px;
     border: 1px solid #cccccc;
 }
-.boxcontent .specialist .span4
-{
+.boxcontent .specialist .span4 {
     margin-bottom: 20px;
 }
-.boxcontent .specialist p
-{
+.boxcontent .specialist .span6 {
+    margin:10px 0 20px 25px;
+}
+.boxcontent .specialist p {
     margin-bottom: 5px;
 }
-
-.treatmentlisting
-{
+.treatmentlisting {
     margin-top:5px;
     margin-left:15px;
-
 }
-.treatmentlisting ul
-{
+.treatmentlisting ul {
     margin-top:8px;
     margin-left:0;
 }
-
-.treatmentlisting li
-{
+.treatmentlisting li {
     margin:10px 0 0 0;
 }
-.specializationdetails
-{
+.specializationdetails {
     margin:0 0 10px 0;
 }
-
 /*for adding center*/
-.addcenterbox
-{
-background-color: #FAFAFA;
-border-radius: 6px 6px 6px 6px;
-float: none;
-margin: 0 auto 30px;
-padding: 25px;  
+ .addcenterbox {
+    border-radius: 6px 6px 6px 6px;
+    float: none;
+    margin: 0 auto 30px;
+    padding: 25px;
 }
-.addcenterbox .tab-content
-{
-    background-color: #ffffff;
+.addcenterbox .tab-content {
     padding:10px 20px 20px 20px;
     margin-top: 0;
     border-bottom: 1px solid #DDDDDD;
     border-left: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
 }
-.addcenterbox .nav
-{
+.addcenterbox .nav {
     margin-bottom: 0;
 }
-.addcenterbox .row-fluid .span6
-{
+.addcenterbox .row-fluid .span6 {
+    /*margin-left: 0;*/
+    width: 46%;
+}
+.addcenterbox .row-fluid .span7 {
     margin-left: 0;
 }
-.addcenterbox .row-fluid .span7
-{
-    margin-left: 0;
-}
-
-.accordion-heading .accordion-toggle
-{
+.accordion-heading .accordion-toggle {
     padding: 0;
 }
-.addcenterbox .accordion-group
-{
+.addcenterbox .accordion-group {
     margin-bottom:0px;
 }
-.addcenterbox .accordion
-{
+.addcenterbox .accordion {
     margin-bottom:0px;
 }
-.addcenterbox h5
-{
-    
+.addcenterbox h5 {
     background-color: #F2F2F2;
-       margin: 0;
-       padding: 10px;
+    margin: 0;
+    padding: 10px;
 }
-
-
-
-
-.boxcontent label 
-{
+.boxcontent label {
     margin: 0 8px 4px 10px;
 }
-.boxcontent .comments 
-{
-padding: 0;
-
+.boxcontent .comments {
+    padding: 0;
 }
-.boxcontent li
-{
+.boxcontent li {
     list-style: none;
 }
-
-
-/*for adding center*/
-.listingbox
-{
-background-color: #FAFAFA;
-border-radius: 6px 6px 6px 6px;
-float: none;
-margin: 0 auto 30px;
-padding: 25px;  
+/*image overlay*/
+ .photo-wrapper {
+    position: relative;
+    margin: 0 auto;
+    display: table;
 }
-.listingbox .tab-content
-{
+.photo-wrapper {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
+/*tooltip */
+ .tooltip-inner {
+    background-color: #386E9D;
+}
+/*for adding center*/
+ .listingbox {
+    border-radius: 6px 6px 6px 6px;
+    float: none;
+    margin: 0 auto 30px;
+    padding: 25px;
+}
+.listingbox .tab-content {
     background-color: #ffffff;
     padding:10px 20px 20px 20px;
     margin-top: 0;
@@ -438,291 +422,257 @@ padding: 25px;
     border-left: 1px solid #DDDDDD;
     border-right: 1px solid #DDDDDD;
 }
-.listingbox .nav
-{
+.listingbox .nav {
     margin-bottom: 0;
 }
-.listingbox .row-fluid .span6
-{
+.listingbox .row-fluid .span6 {
     margin-left: 0;
 }
-.listingbox .row-fluid .span7
-{
+.listingbox .row-fluid .span7 {
     margin-left: 0;
 }
-.listingbox .btn
-{
+.listingbox .btn {
     float: right;
     margin-left:15px;
 }
-.listingbox .accordion-group
-{
+.listingbox .accordion-group {
     margin-bottom:0px;
 }
-
-
 /*accordion*/
-
-.treatmentbox
-{
-    
-    background-color: #f4f4f4;
-
+ .boxcontent .span6 {
+    margin-left: 20px;
+    width: 45.5%;
 }
-.treatmentbox h7
-{
+.treatments {
+    margin-left: 7px;
+}
+.treatments .pull-left {
+    margin-right: 5px;
+}
+.treatments label {
+    line-height: 20px;
+    margin-left: 20px;
+}
+.treatments .span1 {
+    width: 5%;
+    margin-right: 5px;
+}
+.treatmentbox {
+}
+.treatmentbox h7 {
     font-weight: bold;
     font-size: 14px;
-    margin-left: 10px;
 }
-.treatmentbox2
-{
+.treatmentbox h3 {
+    padding: 10px;
+    background-color: #f2f2f2;
+    margin:0 0 0 0;
+    font-size: 14px;
+    line-height: 20px;
+    color: #0088CC;
+    border: 1px solid #d4d4d4;
+}
+.treatmentbox2 {
     padding: 15px 20px;
 }
-.treatmentbox h5
-{
+.treatmentbox h5 {
     padding: 10px;
     background-color: #f2f2f2;
     margin:0 0 0 0;
 }
-.treatmentbox .boxcontent
-{
-    background-color: #ffffff;
-    padding: 20px 25px;
+.treatmentbox .boxcontent {
+    padding: 15px 10px;
 }
-.treatmentbox .boxcontent2
-{
+.treatmentbox .boxcontent2 {
     background-color: #fafafa;
     padding: 10px 10px 20px 10px;
 }
-.treatmentbox .boxcontent2 p
-{
+.treatmentbox .boxcontent2 p {
     margin: 0 0 0 12px;
     line-height: 15px;
 }
-.treatmentbox img
-{
-    float: right;
-    margin-top: -5px;
+.treatmentbox img {
+    margin: 5px 10px 10px 0;
+    float: left;
 }
-.treatmentbox .accordion-inner
-{
-    padding: 0;
+.treatmentbox .accordion-inner {
+    padding: 0 10px;
 }
-.sidebar-nav .nav-header
-{
+.sidebar-nav .nav-header {
     padding-left: 0;
     font-size: 13px;
 }
-.sidebar-nav [class^="icon-"], [class*=" icon-"] 
-{
+.sidebar-nav[class^="icon-"], [class*=" icon-"] {
     margin-right: 5px;
 }
-.sidebar-nav img
-{
+.sidebar-nav img {
     width: 50px;
     float: left;
     margin: 5px 15px 10px 0;
 }
 /*account form*/
-.accountbox
-{
-    float:none; margin:80px auto 0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; border: 3px solid #999999; margin-bottom: 30px; padding: 25px 30px 25px 30px; width: 850px;
+ .accountbox {
+    float:none;
+    margin:80px auto 0 auto;
+    background-color: #F4F4F4;
+    border-radius: 6px 6px 6px 6px;
+    border: 3px solid #999999;
+    margin-bottom: 30px;
+    padding: 25px 30px 25px 30px;
+    width: 850px;
 }
-.medicalbox-big
-{
-    margin: -85px 0 20px 0px; text-align: center;
+.medicalbox-big {
+    margin: -85px 0 20px 0px;
+    text-align: center;
 }
-.accountbox h2, h3, h4, h5
-{
-margin: 0;
+.accountbox h2, h3, h4, h5 {
+    margin: 0;
 }
-.accountbox h3
-{
-color: #002A5C;
-margin-left: 5px;
-background-image:url("../../images/institution/HCA-logo-small.png") ;
-background-repeat: no-repeat;
-padding: 0px 0 10px 40px;
-    
+.accountbox h3 {
+    color: #002A5C;
+    margin-left: 5px;
+    background-image:url("../../images/institution/HCA-logo-small.png");
+    background-repeat: no-repeat;
+    padding: 0px 0 10px 40px;
 }
-.title h4
-{
-background-color:#386e9d; color:#ffffff; font-weight:normal; padding:10px 15px; 
+.title h4 {
+    background-color:#386e9d;
+    color:#ffffff;
+    font-weight:normal;
+    padding:10px 15px;
 }
-.accountbox h5
-{
-color: #005fa7;
+.accountbox h5 {
+    color: #005fa7;
 }
-.accountbox .span6
-{
+.accountbox .span6 {
     padding: 10px 15px;
 }
-.accountbox .span6 .map
-{
+.accountbox .span6 .map {
     padding: 10px 0 15px 0px;
 }
-.accountbox .span6 ul
-{
-list-style-type: none;
-margin-left: 0;
-padding: 2px 5px;
+.accountbox .span6 ul {
+    list-style-type: none;
+    margin-left: 0;
+    padding: 2px 5px;
 }
-.accountbox2
-{
+.accountbox2 {
     margin: 10px;
 }
-.accountbox .span2, .span7
-{
+.accountbox .span2, .span7 {
     margin-right: 10px;
 }
-.accountbox .span11
-{
+.accountbox .span11 {
     margin-left: 55px;
 }
-.accountbox .pull-right .btn-primary
-{
-    padding: 10px 22px; font-size:18pt;
+.accountbox .pull-right .btn-primary {
+    padding: 10px 22px;
+    font-size:18pt;
     margin-right: 20px;
 }
 /*sign-up*/
-.signupbox
-{
-    float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; border: 3px solid #999999; margin-bottom: 30px; margin-top: 80px; padding: 25px 25px 10px 25px;
+ .signupbox {
+    float:none;
+    margin:0 auto;
+    background-color: #F4F4F4;
+    border-radius: 6px 6px 6px 6px;
+    border: 3px solid #999999;
+    margin-bottom: 30px;
+    margin-top: 80px;
+    padding: 25px 25px 10px 25px;
 }
-.signupbox ul
-{
-list-style-type: none;
-margin-left: 0;
-margin-right: 5px;
-padding: 2px 5px;
+.signupbox ul {
+    list-style-type: none;
+    margin-left: 0;
+    margin-right: 5px;
+    padding: 2px 5px;
 }
-.signupbox h3
-{
+.signupbox h3 {
     color: #002A5C;
     margin-left: 5px;
-    background-image:url("../../images/institution/HCA-logo-small.png") ;
+    background-image:url("../../images/institution/HCA-logo-small.png");
     background-repeat: no-repeat;
     padding: 0px 0 0px 40px;
 }
-.signupbox h5
-{
+.signupbox h5 {
     color:#005fa7;
 }
-.signupbox img
-{
-
+.signupbox img {
     clear: both;
 }
-.signupbox .span11
-{
+.signupbox .span11 {
     margin-left: 0;
     margin: 0 25px;
 }
-.signupbox .pull-right
-{
+.signupbox .pull-right {
     margin-right: 5px;
 }
-
-.signupbox input [type="radio"], input[type="checkbox"] 
-{
+.signupbox input[type="radio"], input[type="checkbox"] {
     cursor: pointer;
-        line-height: normal;
-        margin: -3px 3px 0 0;
+    line-height: normal;
+    margin: -3px 3px 0 0;
 }
-.signupbox label [type="radio"], input[type="checkbox"] 
-{
+.signupbox label[type="radio"], input[type="checkbox"] {
     cursor: pointer;
-        line-height: normal;
-        margin: -3px 3px 0 0;
+    line-height: normal;
+    margin: -3px 3px 0 0;
 }
-
-
-
 /*comments*/
-.commentsbox
-{
+ .commentsbox {
     margin:10px 0 30px -15px;
 }
-.commentsbox img
-{
+.commentsbox img {
     min-width:50px;
     margin-right:10px;
 }
-.commentsbox .span1
-{
+.commentsbox .span1 {
     margin-left:0;
 }
-.treatmentbox h6
-{
-    background-color: #F2F2F2;
+.treatmentbox h6 {
     margin: 0;
-    padding:5px  10px;
+    padding:5px 10px;
 }
-
-.commentsbox2
-{
+.commentsbox2 {
     border:#999999 1px solid;
     margin:0 15px 0 0px;
     padding:20px 10px 15px 0;
     width:87%;
 }
-.commentsbox ul li
-{
+.commentsbox ul li {
     list-style-type:none;
     margin-right:10px;
 }
-.commentsbox
-{
+.commentsbox {
     clear:both;
 }
 /*modal*/
-.modal
-{
+ .modal {
     width:600px;
 }
-.btn-mini
-{
+.btn-mini {
     color: #3399cc;
 }
-
-.row .mainfeature .table 
-{
+.row .mainfeature .table {
     background-color: #ffffff;
-
 }
-.row .mainfeature .table td active
-{
+.row .mainfeature .table td active {
     background-color: #333333;
-
 }
-
-.stepsbox ul, ol
-{
+.stepsbox ul, ol {
     width: 100%;
     background-color: #ffffff;
     margin: 0 0 0 0;
-    
 }
-.stepsbox li > a
-{
-    
-    
+.stepsbox li > a {
     background-color: #ffffff;
-    
 }
-.stepsbox li 
-{
-    
+.stepsbox li {
     display: block;
     width: 20%;
     float: left;
     background-color: #FFFFFF;
 }
-.stepsbox li .active 
-{
-background-color: #cccccc;
-
+.stepsbox li .active {
+    background-color: #cccccc;
 }
 .stepsbox li li:first-child > a {
     margin-left: 0;
@@ -730,17 +680,14 @@ background-color: #cccccc;
 .stepsbox li > .active > a {
     background-color: #E5E5E5;
 }
-
-
 /*
 ================== Responsive ======================
 */
-@media (max-width: 767px) {
-  
-  #feature {
-    display: none !important;
-  }
-  .institutionbox
-  {
-    margin: 0 0 0 0;
-  }
+ @media(max-width: 767px) {
+    #feature {
+        display: none !important;
+    }
+    .institutionbox {
+        margin: 0 0 0 0;
+    }
+    
