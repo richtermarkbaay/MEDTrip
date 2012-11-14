@@ -47,7 +47,7 @@ class InstitutionDetailType extends AbstractType
    
 		if ($options['profile_type']) {
     		
-			$builder->add('name', 'text');
+			$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 			$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
 			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
 			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));

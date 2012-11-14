@@ -39,6 +39,7 @@ class InstitutionAccountController extends Controller
 	 		
 	 		throw $this->createNotFoundException();
 	 	}
+	 	
 	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'hidden_field' => false));
 	 	 
 	 	//update institution details
