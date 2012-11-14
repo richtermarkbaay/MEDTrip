@@ -1,5 +1,9 @@
 <?php 
-
+/**
+ * Functional Test for InstitutionAccountController
+ * @author Chaztine Blance
+ *
+ */
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
 use \HCA_DatabaseManager;
@@ -17,6 +21,7 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
 		$this->assertGreaterThan(0,$crawler->filter('h2:contains("Institution Profile Form")')->count());
 		
 	}
+	
 	public function testSave()
 	{
 		$editAccountUrl = '/create/1';
@@ -28,7 +33,8 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
 		$client = $this->getBrowserWithActualLoggedInUser();
 		$crawler = $client->request('GET', $editAccountUrl);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-	
+		
+		//test for invalid data
 		$invalidFormValues = array(
 						'institutionDetail[contactEmail]' => '',
 						'institutionDetail[country]' => '1',
@@ -37,6 +43,7 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
 						'institutionDetail[state]' => '',
 						'institutionDetail[zipCode]' => ''
 		);
+		
 		$form = $crawler->selectButton('submit')->form();
 		$crawler = $client->submit($form, $invalidFormValues);
 		$this->assertEquals('POST', $client->getRequest()->getMethod(), "Expecting POST for form submission");
