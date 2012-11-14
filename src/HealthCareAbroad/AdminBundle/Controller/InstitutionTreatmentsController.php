@@ -224,7 +224,7 @@ class InstitutionTreatmentsController extends Controller
             'institutionMedicalCenter' => $this->institutionMedicalCenter
         );
         
-        return $this->render('AdminBundle:InstitutionTreatments:form.specialization.html.twig', $params);   
+        return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);   
     }
     
     /**
