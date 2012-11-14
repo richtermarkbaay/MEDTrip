@@ -40,13 +40,13 @@ class TreatmentController extends Controller
         $treatment = new Treatment();
 
         if($subSpecializationId = $this->getRequest()->get('subSpecializationId', 0)) {
-            $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($subSpecializationId);
+            $subSpecialization = $this->get('services.treatment_bundle')->getSubSpecialization($subSpecializationId);
 
             if(!$subSpecialization) {
                 throw $this->createNotFoundException("Invalid SubSpecialization.");
             }
-
-            $treatment->setSubSpecialization($subSpecialization);
+            $treatment->setSpecialization($subSpecialization->getSpecialization());
+            $treatment->addSubSpecialization($subSpecialization);
 
             $params['isAddFromSpecificType'] = true;
             $formActionParams['subSpecializationId'] = $subSpecializationId;
