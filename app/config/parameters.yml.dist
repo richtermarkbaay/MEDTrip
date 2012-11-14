@@ -7,9 +7,9 @@ parameters:
     database_password: @DATABASE_PASSWORD@
 
     alert_db:
-        port: 5984
-        host: healthcare-dev
-        database: alerts
+        port: @COUCHDB_PORT@
+        host: @COUCHDB_HOST@
+        database: @COUCHDB_NAME@
 
     mailer_transport:  smtp
     mailer_host:       localhost
