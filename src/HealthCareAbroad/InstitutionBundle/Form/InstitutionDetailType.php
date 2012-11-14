@@ -25,7 +25,7 @@ class InstitutionDetailType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-
+			'hidden_field' => true,
         	'profile_type' => true,
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
@@ -44,7 +44,7 @@ class InstitutionDetailType extends AbstractType
     	$builder->add('state', 'text');
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
     	$builder->add('address1', 'text', array('label' => 'Address'));
-
+   
 		if ($options['profile_type']) {
     		
 			$builder->add('name', 'text');
@@ -52,6 +52,11 @@ class InstitutionDetailType extends AbstractType
 			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
 			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
 			$builder->add('contactNumber', 'hidden');
+		}
+		if ($options['hidden_field']) {
+			
+			$builder->add('description', 'textarea', array('constraints'=>array(new NotBlank())));
+			 
 		}
     }
     
