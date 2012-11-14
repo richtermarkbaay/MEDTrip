@@ -8,7 +8,12 @@ Note: This widget is shared in other bundles e.g. AdminBundle
             <div class="navbar-inner">
                 <div class="span6">
                     <div class="span3">
-                        <a href="#"><img class="member-box-avatar" src="{{ asset('images/institution/institution-logo.gif') }}"></a>
+                        <div class="photo-group">
+                            <img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}" />
+                            <span class="label photo-label" style="margin-left:100px; position: absolute; margin-top: -25px;">
+                                <a href="#" data-placement="right" rel="tooltip" href="#" data-original-title="Manage Institution Profile Photo"><i class="icon-picture"></i></a>
+                            </span>
+                        </div>
                     </div>
                     
                     <div class="span9">
