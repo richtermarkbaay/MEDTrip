@@ -21,6 +21,14 @@ admin_institution_medicalCenter_edit:
         imcId: \d+
         _method: POST
 
+admin_institution_centerSpecializations:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specializations
+    defaults: { _controller: AdminBundle:InstitutionTreatments:centerSpecializations, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET
+
 admin_institution_medicalCenter_addSpecialization:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specialization/add
     defaults: { _controller: AdminBundle:InstitutionTreatments:addSpecialization }
