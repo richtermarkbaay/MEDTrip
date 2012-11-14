@@ -153,8 +153,7 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->request('GET', $editAccountUrl);
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
-		$formValues = array(
-						'institutionDetail[description]' => 'TEST',
+		$formValues = array(			
 						'institutionDetail[contactEmail]' => 'tetmail2@fdfewed.com',
 						'institutionDetail[country]' => '1',
 						'institutionDetail[city]' => '1',

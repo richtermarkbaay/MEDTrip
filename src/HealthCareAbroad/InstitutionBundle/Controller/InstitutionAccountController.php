@@ -21,12 +21,7 @@ class InstitutionAccountController extends Controller
 
 	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
 
-	 	if (!$institution) {
-	 		throw $this->createNotFoundException();
-	 	}
-	 	//render template
-
-	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false));		
+	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'hidden_field' => false));		
 
 	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
 	 					'form' => $form->createView(),
@@ -41,9 +36,10 @@ class InstitutionAccountController extends Controller
 	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
 	 
 	 	if (!$institution) {
+	 		
 	 		throw $this->createNotFoundException();
 	 	}
-	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false));
+	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'hidden_field' => false));
 	 	 
 	 	//update institution details
 	 	if ($request->isMethod('POST')) {
