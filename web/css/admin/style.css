@@ -802,22 +802,6 @@ div.raw-content {
     margin-bottom: 0;
 }
 
-/* Override jQuery UI style */
-.ui-widget {
-    font-size: inherit;
-    font-family: inherit;
-}
-
-.ui-widget-content a {
-    color: #FFFFFF;
-}
-
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-    font-family: inherit;
-}
-/* End of Override jQuery UI style */
-
-
 /* Filter Results */
 
 #filter-wrapper {
@@ -964,6 +948,21 @@ div.raw-content {
     background: url(/images/admin/table/sort_up.png) no-repeat scroll right 5px transparent;    
 }
 /* End of Sorting Lists */
+
+.ajax-loading {
+    width: 145px;
+    color: #888888;
+    font-size: 13px;
+    padding: 10px 45px; 
+    margin: 20px auto 50px;
+    text-transform: uppercase;      
+    background: url(/images/admin/ajax-loader.gif) no-repeat scroll 0px 0px transparent; 
+}
+
+.ajax-loading {
+	
+}
+
 /*
 ================== End of Custom CSS fixed ======================
 */
