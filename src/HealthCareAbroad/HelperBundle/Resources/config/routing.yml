@@ -17,6 +17,12 @@ helper_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
 
+helper_specializationAccordionEntry:
+    pattern:  /specialization-accordion-entry/{specializationId}
+    defaults: { _controller: HelperBundle:Default:getSpecializationAccordionEntry, specializationId: ~ }
+    requirements:
+        specializationId: \d+
+
 helper_searchTags:
     pattern:  /tags/search/{term}
     defaults: { _controller: HelperBundle:Default:searchTags }

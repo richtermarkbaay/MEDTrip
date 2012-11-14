@@ -15,10 +15,9 @@ parameters:
     secret: ThisTokenIsNotSoSecretChangeIt
 
     alert_db:
-        port: 5984
-        host: 192.168.1.249
-        database: fixtures_alerts
-
+        port: @COUCHDB_PORT@
+        host: @COUCHDB_HOST@
+        database: @COUCHDB_NAME@
 
     application_id:    1
     application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1

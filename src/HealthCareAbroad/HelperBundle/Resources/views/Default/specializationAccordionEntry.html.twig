@@ -1,0 +1,37 @@
+<h3 id="specialization-{{ specialization.id }}">
+    {{ specialization.name }} 
+    
+    {% if showCloseBtn %}
+    <a href="javascript:void(0)" style="float: right" class="remove-specialization">x</a>
+    {% endif %}
+</h3>
+<div>
+    <div class="boxcontent">
+        {% for subSpecializationName, treatments in subSpecializations %}
+            <h5 class="sub-specialization-title">{{ subSpecializationName }}</h5>
+
+            <div class="treatments">
+                {% for treatment in treatments %}
+                    <input type="checkbox" id="treatment-{{ treatment.id }}" name="treatments[]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
+                    <label for="treatment-{{ treatment.id }}">{{ treatment.name }}</label>
+                {% endfor %}
+            </div>
+
+        {% endfor %}
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $( ".remove-specialization" ).click(function(){
+        var header = $(this).parent();
+        var content = header.next();
+        var specializationId = header.attr('id').split('-').pop();
+
+        content.remove();
+        header.remove();
+
+        $('#institutionSpecialization_specialization').find('option[value='+specializationId+']').show();
+    });
+});
+</script>
