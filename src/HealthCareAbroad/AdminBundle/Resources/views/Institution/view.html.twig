@@ -1,50 +1,10 @@
-{% extends 'AdminBundle::layout.html.twig' %}
+{% extends 'AdminBundle::layout.institution.html.twig' %}
 {% set selectedTab = 'institutions'%}
 
 {% block content %}
-    <div id="content">
-
-        <!--  start page-heading -->
-        <div id="page-heading">
-            <h1>{{ institution.name }} Profile Page</h1>
-        </div>
-        <!-- end page-heading -->
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
-               {% include '::notice.admin.html.twig' %}
-            {# ----- Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in this clinic or medical institution', 'href': path('admin_institution_manageCenters', {institutionId: institution.id}), 'links': [{title:'Click here to view all centers',href: path('admin_institution_manageCenters', {institutionId: institution.id})}, {title:'Click here to add center', href: path('admin_institution_medicalCenter_add', {institutionId: institution.id})}]} %}
-
-            {% include '::relatedTasks.base.admin.html.twig' with
-                {'contents': [manageCentersTask]}
-            %}
-            {# ----- end Related tasks ----- #}
-
-            <div id="table-content" style="width:70%">
-                <h3>Alerts</h3>
-
-                Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-                <br />
-                <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-                <br />
-                <br />
-                Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua. Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et Lorem ipsum dolor sit amet consectetur
-                adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  dolore magna aliqua.
-                <br />
-                <br />
-            </div>
-
-            <a href="{{ path('admin_institution_gallery', {institutionId: institution.id} ) }}" title="View or manage gallery">Gallery</a> |
-             <a href="{{ path('admin_institution_add_details', {institutionId: institution.id} ) }}" title="Edit INstitution">Edit Institution</a>
-            {% endblock %}
-        {% endembed %}
-    </div>
-
+<div class="span9 title">
+    {# recently added medical centers box #}
+    {% include 'InstitutionBundle:Widgets:dashboard.recentMedicalCenters.html.twig'%}
+    
+</div>
 {% endblock %}

@@ -40,7 +40,7 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
         try {
             $chromediaAccount = $this->userService->find(array('email'=> $username), array('limit' => 1));
         } catch (CurlException $e) {
-            throw new FailedAccountRequestException('Authentication service unavailable.');
+            throw new FailedAccountRequestException('Authentication service unavailable. Please try again later.');
         }
 
         if ($chromediaAccount) {

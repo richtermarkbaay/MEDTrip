@@ -28,24 +28,36 @@
                     ]} 
                 %}
 
+{#
                 <!-- Render Filter Box -->
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}    
 
                 {% set sortBy = app.request.get('sortBy') %}
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
-            
+#}
                 <div style="width: 70%">
-                    <table class="table table-bordered sortable-list" id="medical-centers-list">
-                        <tr>
-                            <th id="column-medicalCenter" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'medicalCenter' ? 'sort-' ~ sortOrder : default }}">Medical Centers</a></th>
-                            <th id="column-specializations" width="300">Specialization</th>
-                            <th id="column-description" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
-                            <th width="100">Status</th>
-                            <th width="180">Actions</th>
-                        </tr>
+                    <div id="centersAccordion">
 
                         {% for center in institutionMedicalCenters %}
+                            <h4 class="medical-centers" style="border: 1px solid #eee; margin-top: 10px;padding: 10px">
+                                <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institutionId}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
+                                    <i class="icon-edit"></i> <span>edit</span>
+                                </a>
+                                <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institutionId}) }}">{{ center }}</a>
+                                <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
+                            </h4>
+                            <div class="content" style="background: #efefef;padding: 10px">
+                                <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
+                                    <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institutionId}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                                        <i class="icon-edit"></i> <span>edit</span>
+                                    </a>
+                                    <div class="center-description">{{ center.description | raw }}</div>
+                                    <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
+                                </div>
+                                <div class="specializations"></div>
+                            </div>
+{#
                             <tr id="medical-center-{{center.id}}">
                                 <td class="name">{{ center.name | title }}</td>
                                 <td class="specializations">
@@ -59,7 +71,7 @@
                                 <td class="status">{{ centerStatusList[center.status] }}</td>
                                 <td class="options-width">
                                     <a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="edit-medical-center">
-                                        <i class="icon-edit"></i> Edit
+                                        <i class="icon-edit"></i> <span>Edit</span>
                                     </a>
                                     <br/>
                                     <a id="status-{{ center.id }}" href="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId,imcId:center.id}) }}" class="show-update-status">
@@ -67,12 +79,11 @@
                                     </a>
                                 </td>
                             </tr>
+#}
                         {% else %}
-                            <tr>
-                                <td colspan="4" class="empty-list"> {{ app.session.get('institutionName') }} has no medical centers yet. </td>
-                            </tr>
+                            <div> {{ app.session.get('institutionName') }} has no medical centers yet. </div>
                         {% endfor %}
-                    </table>
+                    </div>
 
                     {% if pager.isPaginable %}
                         {{ paginate(pager, 'admin_institution_manageCenters', app.request.query.all | merge(app.request.get('_route_params')) ) }}
@@ -83,7 +94,7 @@
             {% endblock %}
         {% endembed %}
     </div>
-    
+    <!-- 
     <div id="update-status-container" title="Edit Institution Center Status">
         <p>
             <strong id="current-institution-center"></strong> is currently <strong id="current-status"></strong>. 
@@ -97,16 +108,72 @@
             </select>
             <input type="submit" class="green-button" value="Confirm"/>
         </form>
-
     </div>
+     -->
 
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
     $(function(){
+        $('#centersAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
 
-        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
+        $('.medical-centers').click(function(){
+            var url = $(this).find('.url').attr('href');
+            var specializationElem = $(this).next().find('.specializations:first');
+
+            if($.trim(specializationElem.html()) == '') {
+            	specializationElem.html('<div class="ajax-loading">loading...</div>');
+                $.get(url, function(result) {
+                	specializationElem.html(result);
+                });
+            }
+        });
+
+        $('.edit-center-description').click(function(){
+            if($(this).next().is(':visible')) {
+            	$(this).find('i').attr('class', 'icon-ok');
+            	$(this).find('span').html('save')
+                $(this).next().hide().siblings('.mceEditor').show();
+
+            } else {
+                var url = $(this).attr('href');
+                var param = { description: $(this).siblings('textarea').val() };
+
+            	$.post(url, param, function(result){}, 'json');
+
+            	$(this).find('i').attr('class', 'icon-edit');
+            	$(this).find('span').html('edit')
+                $(this).next().html(param.description).show().siblings('.mceEditor').hide();                
+            }
+
+            return false;
+        });
+
+        $('.edit-center-name').click(function(){
+            if($(this).next().is(':visible')) {
+            	$(this).find('i').attr('class', 'icon-ok');
+            	$(this).find('span').html('save')
+                $(this).next().hide().siblings('input').show();
+        
+            } else {
+                var url = $(this).attr('href');
+                var param = { name: $(this).siblings('input').val() };
+
+            	$.post(url, param, function(result){}, 'json');
+
+            	$(this).find('i').attr('class', 'icon-edit');
+            	$(this).find('span').html('edit')
+                $(this).next().html(param.name).show().siblings('input').hide();
+
+            	$("#centersAccordion").accordion("enable");
+            }
+
+            return false;
+        }).siblings('input').click(function(){$('#centersAccordion').accordion("disable"); });
+
+
+        /*$("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
 
         $("a.show-update-status").click(function() {
 
@@ -123,6 +190,12 @@
 
             return false;
         });
+        */
     });
+
+    function test()
+    {
+        alert('bert');
+        }
 </script>
 {% endblock %}

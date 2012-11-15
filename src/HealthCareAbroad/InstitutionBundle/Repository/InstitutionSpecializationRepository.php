@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -48,16 +50,20 @@ class InstitutionSpecializationRepository extends EntityRepository
 
     public function getByInstitutionMedicalCenter($institutionMedicalCenter)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder()
-        ->select('a', 'b')
-        ->from('InstitutionBundle:InstitutionSpecialization', 'a')
-        ->leftJoin('a.treatments', 'b')
-        ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
-        ->andWhere('a.status = :status')
-        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE)
-        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter);
-        echo $qb->getQuery()->getSQL(); exit;
-        return $qb->getQuery()->getResult(Query::HYDRATE_OBJECT);
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('a','b', 'c')
+           ->from('InstitutionBundle:InstitutionSpecialization', 'a')
+           ->leftJoin('a.specialization', 'b')
+           ->leftJoin('a.treatments', 'c')
+           ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
+           ->andWhere('a.status = :status')
+           ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
+           ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
+        
+        $result = $qb->getQuery()->getResult();
+
+        return $result;
     }
     
     public function getTreatmentCountByTreatmentId($treatmentId) {

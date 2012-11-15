@@ -3,34 +3,32 @@
 {% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
 
 {% block body %}
-
 <body>
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}
-    <!-- Start: page-top-outer -->
-
+    
     <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-            <a href="index.php" class="brand"><img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD</a>
-                   {% block top_search %}
-                {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
-            {% endblock %}
+        <div class="navbar-inner">
+            <div class="container">
+                <a href="index.php" class="brand">
+                    <img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD
+                </a>
+                
+	             {% block top_menu %}
+	                {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
+	            {% endblock %}
+            </div>
         </div>
-      </div>
     </div>
 
     <!-- End: page-top -->
     <div class="row-fluid">
         <div class="institutionbox">
-            {% include 'InstitutionBundle:Main:profileContainer.html.twig' %}
+            {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
         </div>
-
-    {% block content %}{% endblock %}
     </div>
     <!--  end content-outer........................................................END -->
 
+    {% block content %}{% endblock %}
+    
      <div class="container">
         <br/><hr>
         <footer>
@@ -41,7 +39,9 @@
         </footer>
     </div>
 
-
+    {% block javascripts %}
+        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+    {% endblock %}
     {% block inlineJavascriptCode %}{% endblock %}
 </body>
 

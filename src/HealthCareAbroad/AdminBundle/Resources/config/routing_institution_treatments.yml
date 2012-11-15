@@ -14,12 +14,28 @@ admin_institution_medicalCenter_add:
         _method: GET|POST
 
 admin_institution_medicalCenter_edit:
+    pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+
+admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}
     defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
     requirements:
         institutionId: \d+
         imcId: \d+
         _method: POST
+
+admin_institution_centerSpecializations:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specializations
+    defaults: { _controller: AdminBundle:InstitutionTreatments:centerSpecializations, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET
 
 admin_institution_medicalCenter_addSpecialization:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specialization/add
@@ -36,22 +52,6 @@ admin_institution_medicalCenter_editSpecialization:
         institutionId: \d+
         isId: \d+
         _method: GET|POST
-
-admin_institution_medicalCenter_edit:
-    pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
-    defaults: { _controller: AdminBundle:Institution:editMedicalCenter }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: GET
-
-admin_institution_medicalCenter_update:
-    pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
-    defaults: { _controller: AdminBundle:Institution:saveMedicalCenter }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
 
 admin_institution_medicalCenter_updateStatus:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status

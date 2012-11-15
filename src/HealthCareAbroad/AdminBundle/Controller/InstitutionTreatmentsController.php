@@ -23,6 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -77,12 +79,15 @@ class InstitutionTreatmentsController extends Controller
      */
     public function viewAllMedicalCentersAction()
     {
+        $criteria = array('institution' => $this->institution);
+        $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
+        
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionName' => $this->institution->getName(),
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-            'institutionMedicalCenters' => $this->filteredResult,
+            'institutionMedicalCenters' => $institutionMedicalCenters,
             'pager' => $this->pager
         );
         
@@ -140,40 +145,82 @@ class InstitutionTreatmentsController extends Controller
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
     }
 
+    
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateMedicalCenterAction()
+    {
+        if($this->request->get('description')) {
+            $description = $this->request->get('description'); 
+            $this->institutionMedicalCenter->setDescription($description);
+        }
+        
+        if($this->request->get('name')) {
+            $name = $this->request->get('name'); 
+            $this->institutionMedicalCenter->setName($name);
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $result = $em->flush();
+
+        $response = new Response (json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;        
+    }
+
     /**
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
-    public function updateMedicalCenterStatusAction()
+//     public function updateMedicalCenterStatusAction()
+//     {
+//         $request = $this->getRequest();
+//         $status = $request->get('status');
+    
+//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
+    
+//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
+//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
+    
+//             return $this->redirect($redirectUrl);
+//         }
+
+//         $this->institutionMedicalCenter->setStatus($status);
+    
+//         $em = $this->getDoctrine()->getEntityManager();
+//         $em->persist($this->institutionMedicalCenter);
+//         $em->flush($this->institutionMedicalCenter);
+
+//         // dispatch EDIT institutionMedicalCenter event
+//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
+//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
+//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+    
+//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+    
+
+//         return $this->redirect($redirectUrl);
+//     }
+
+    /**
+     * 
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function centerSpecializationsAction()
     {
-        $request = $this->getRequest();
-        $status = $request->get('status');
-    
-        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
-    
-        if(!InstitutionMedicalCenterStatus::isValid($status)) {
-            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
-    
-            return $this->redirect($redirectUrl);
-        }
+        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
-        $this->institutionMedicalCenter->setStatus($status);
-    
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalCenter);
-        $em->flush($this->institutionMedicalCenter);
+        $params = array('specializations' => $specializations);
 
-        // dispatch EDIT institutionMedicalCenter event
-        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+        return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
+    }   
     
-        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
-    
-
-        return $this->redirect($redirectUrl);
-    }
-
     /**
      * 
      * @return \Symfony\Component\HttpFoundation\Response
@@ -264,7 +311,6 @@ class InstitutionTreatmentsController extends Controller
 
                 // TODO: fire event
 
-                // redirect to step 2;
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_editSpecialization',array(
                     'institutionId' => $this->institution->getId(),
                     'isId' => $institutionSpecialization->getId()
