@@ -1,0 +1,37 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_awardingBodies' %}
+
+{% block content %}
+
+	<div id="content">
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Awarding Bodies</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+            {% set contents = [{
+					'title': 'View all Awarding Bodies', 
+					'description': 'View the list of Awarding Bodies',
+					'href': path('admin_awardingBodies_index'), 
+					'links': [{'title': 'View Awarding Bodies', 'href': path('admin_awardingBodies_index')}]
+				}]
+            %}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+
+				{{ form_row(form.name) }}
+				{{ form_row(form.details) }}
+				{{ form_row(form.website) }}
+				{{ form_row(form.status) }}
+				{{ form_rest(form) }}
+
+			    <input type="submit" class="form-submit" name="submit"/>
+			</form>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}
