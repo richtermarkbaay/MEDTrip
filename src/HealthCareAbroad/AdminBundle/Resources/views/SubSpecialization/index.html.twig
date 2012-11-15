@@ -63,7 +63,7 @@
                             <td>
                                 <a href="{{ path('admin_subSpecialization_edit', {id:each.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
                                 <br/>
-                                <a href="{{ path('admin_treatment_index', {treatment:each.id}) }}"><i class="icon-list"></i> View treatments</a>
+                                <a href="{{ path('admin_treatment_index', { specialization: each.specialization.id, supSpecialization:each.id } ) }}"><i class="icon-list"></i> View treatments</a>
                                 <br/>
                                 {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
                                 <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ statusLabel }}" class="update-status">
