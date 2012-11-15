@@ -6,7 +6,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
-class InstitutionUserRoleController extends Controller
+class InstitutionUserRoleController extends InstitutionAwareController
 {
     /**
      * View all user roles
