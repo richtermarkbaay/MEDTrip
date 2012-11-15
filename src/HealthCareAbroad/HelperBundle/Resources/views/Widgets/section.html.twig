@@ -3,7 +3,7 @@
         {{ title }}
         {% if actions is defined %}
             {% for action in actions %}
-                <a href="{{ action.link }}"></a>
+                <a href="{{ action.link }}">
             	<button class="btn btn-mini pull-right">
             	
             	    {% if action.icon is defined %}
@@ -12,6 +12,7 @@
 
             		{{ action.label }}
                 </button>
+                </a>
             {% endfor %}
         {% endif %}
     </h4>

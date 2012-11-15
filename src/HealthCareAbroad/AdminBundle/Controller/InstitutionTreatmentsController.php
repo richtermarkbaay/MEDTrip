@@ -83,8 +83,7 @@ class InstitutionTreatmentsController extends Controller
         $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
         
         $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionName' => $this->institution->getName(),
+            'institution' => $this->institution,
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
             'institutionMedicalCenters' => $institutionMedicalCenters,
