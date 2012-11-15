@@ -79,12 +79,15 @@ class InstitutionTreatmentsController extends Controller
      */
     public function viewAllMedicalCentersAction()
     {
+        $criteria = array('institution' => $this->institution);
+        $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
+        
         $params = array(
             'institutionId' => $this->institution->getId(),
             'institutionName' => $this->institution->getName(),
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-            'institutionMedicalCenters' => $this->filteredResult,
+            'institutionMedicalCenters' => $institutionMedicalCenters,
             'pager' => $this->pager
         );
         
@@ -308,7 +311,6 @@ class InstitutionTreatmentsController extends Controller
 
                 // TODO: fire event
 
-                // redirect to step 2;
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_editSpecialization',array(
                     'institutionId' => $this->institution->getId(),
                     'isId' => $institutionSpecialization->getId()
