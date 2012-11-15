@@ -16,7 +16,7 @@ admin_institution_add_details:
          _method: GET|POST   
 
 admin_institution_edit:
-    pattern:  /admin/institution/edit/{institutionId}
+    pattern:  /admin/institution/{institutionId}/edit
     defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
          institutionId: \d+

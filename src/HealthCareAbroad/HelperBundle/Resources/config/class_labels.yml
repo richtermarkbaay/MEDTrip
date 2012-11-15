@@ -1,0 +1,13 @@
+parameters:
+    #-- TODO: find way to optimize this
+    # class_keys are short cut keys to class labels and will be used when called from Twig templates
+    # Sample:
+    #    {{ getLabels('institution_medical_center') }}
+    class_keys:
+        institution_medical_center: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+
+    #--
+    # translation of class key to displayed labels in Twig templates
+    class_labels:
+        institution_medical_center: ["clinic", "clinics"]
+        institution_specialization: ["specialization", "specializations"]

@@ -8,7 +8,14 @@
              
         <div class="span9 title">
                 
+            <div id="dialog">
+            	
+            	
+                <p>This is an animated dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
             
+            </div>
+             
+            <button id="opener">Open Dialog</button>
                 	
                 	
                 	<div class="accordion" id="accordion2">

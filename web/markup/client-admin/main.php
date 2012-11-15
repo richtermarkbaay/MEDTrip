@@ -209,8 +209,9 @@
 						<div class="accordion-group">
 							<h4>Recently Added Medical Center
 								<span class="pull-right">
-									<button class="btn btn-mini">
+									<a href="addmedcenter.php"><button class="btn btn-mini">
 										<i class="icon-edit"></i>Add Medical Center</button>
+										</a>
 								</span>
 							</h4>
 							<div id="MedicalListing" class="accordion-body collapse in">
@@ -222,12 +223,11 @@
 											</span>
 											<h7>Medical Center Name 1</h7>
 											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-											<button class="btn btn-info">
-												<i class="icon-search"></i>View Details</button>
+											<a href="singlepage-medcenter.php"><button class="btn btn-info"><i class="icon-search"></i>View Details</button></a>
 											<div class="clearfix"></div>
 											<span class="pull-right">
-												<button class="btn btn-primary">
-													<i class="icon-search"></i>View List of All Medical Center</button>
+												<a href="medcenterlisting.php"><button class="btn btn-primary">
+													<i class="icon-search"></i>View List of All Medical Center</button></a>
 											</span>
 											<div class="clearfix"></div>
 										</div>
@@ -291,8 +291,9 @@
 												</div>
 											</div>
 											<span class="pull-right">
-												<button class="btn btn-primary">
-													<i class="icon-search"></i>View List of All Medical Specialist</button>
+												<a href="specialistlisting.php">
+													<button class="btn btn-primary"><i class="icon-search"></i>View List of All Medical Specialist</button>
+												</a>
 											</span>
 											<div class="clearfix"></div>
 										</div>

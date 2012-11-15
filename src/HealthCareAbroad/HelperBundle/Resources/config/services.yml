@@ -68,6 +68,9 @@ services:
 
     services.miscellaneous.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
+        calls:
+            - [setClassLabels, [%class_labels%]]
+            - [setClassKeys, [%class_keys%]]
         public: false
         tags:
             - { name: twig.extension }

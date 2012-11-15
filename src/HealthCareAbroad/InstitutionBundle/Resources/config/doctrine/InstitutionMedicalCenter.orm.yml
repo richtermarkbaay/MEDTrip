@@ -2,6 +2,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     type: entity
     table: institution_medical_centers
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository
+    singular: clinic
     gedmo:
         loggable:
             logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry

@@ -2,21 +2,21 @@
     <div class="sidebar-nav">
         <ul class="nav nav-tabs nav-stacked">
             <li class="active">
-                <a href="main.php"><i class="icon-home"></i> Dashboard</a>
+                <a href="{{ path('admin_institution_view', {'institutionId': institution.id}) }}"><i class="icon-home"></i> Dashboard</a>
             </li>
             <li>
-                <a href="medcenterlisting.php"><i class="icon-star"></i> Medical Center</a>
+                <a href="{{ path('admin_institution_manageCenters', {'institutionId': institution.id}) }}"><i class="icon-star"></i> Medical Center</a>
             </li>
             <li>
-                <a href="specialistlisting.php"><i class="icon-user"></i>Doctors Listing</a>
+                <a href="#"><i class="icon-user"></i>Doctors Listing</a>
             </li>
             <li>
-                <a href="staff.html"><i class="icon-user"></i>Staff Listing</a>
+                <a href="#"><i class="icon-user"></i>Staff Listing</a>
             </li>
             <li>
-                <a href="affiliations.php"><i class="icon-certificate"></i>Affiliations / Certifications</a>
+                <a href="#"><i class="icon-certificate"></i>Affiliations / Certifications</a>
             </li>
-            <li><a href="gallery.php"><i class="icon-picture"></i>Media Gallery</a></li>
+            <li><a href="{{ path('admin_institution_gallery', {institutionId: institution.id} ) }}"><i class="icon-picture"></i>Media Gallery</a></li>
         </ul>
     </div>
 </div>
