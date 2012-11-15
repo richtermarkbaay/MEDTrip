@@ -7,10 +7,6 @@
 
 <body>
 
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}
-
     <!-- Top Navigation -->
     <div class="navbar navbar-fixed-top">
           <div class="navbar-inner">
@@ -37,7 +33,7 @@
     <!-- End of Top Navigation -->
 
     <div class="row-fluid">
-        {% include 'InstitutionBundle:Embed:profileHeader.html.twig' %}
+        {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
 	</div>
 	
 	<div class="container" style="margin-top:20px;">
@@ -49,12 +45,13 @@
 	        
 		</div>
 		<!-- End of main_content-->
-	</div>
-
-    
+	</div>    
 
     <div id="dialog-container"></div>
 
+    {% block javascripts %}
+        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+    {% endblock %}
     {% block inlineJavascriptCode %}{% endblock %}
 </body>
 

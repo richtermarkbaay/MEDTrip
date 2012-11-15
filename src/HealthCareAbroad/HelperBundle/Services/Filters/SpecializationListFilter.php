@@ -5,8 +5,15 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 class SpecializationListFilter extends ListFilter
 {
+    public function __construct($doctrine)
+    {
+        parent::__construct($doctrine);
+        $this->defaultParams = array('status' => Specialization::STATUS_ACTIVE);
+    }
 
     function setFilterOptions()
     {

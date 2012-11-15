@@ -1,22 +1,12 @@
-<div class="span3">
-    <div class="sidebar-nav">
-        <ul class="nav nav-tabs nav-stacked">
-            <li class="active">
-                <a href="main.php"><i class="icon-home"></i> Dashboard</a>
-            </li>
-            <li>
-                <a href="medcenterlisting.php"><i class="icon-star"></i> Medical Center</a>
-            </li>
-            <li>
-                <a href="specialistlisting.php"><i class="icon-user"></i>Doctors Listing</a>
-            </li>
-            <li>
-                <a href="staff.html"><i class="icon-user"></i>Staff Listing</a>
-            </li>
-            <li>
-                <a href="affiliations.php"><i class="icon-certificate"></i>Affiliations / Certifications</a>
-            </li>
-            <li><a href="gallery.php"><i class="icon-picture"></i>Media Gallery</a></li>
-        </ul>
-    </div>
-</div>
+{% include 'HelperBundle:Widgets:subMenu.html.twig' 
+    with { 
+        links: [
+            {url: path('admin_institution_view', {'institutionId': institution.id}), label: 'Dashboard', icon: 'icon-home'},
+            {url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: 'Medical Center', icon: 'icon-star'},
+            {url: '#', label: 'Doctors', icon: 'icon-user'},
+            {url: '#', label: 'Staff', icon: 'icon-user'},
+            {url: '#', label: 'Affiliations / Certifications', icon: 'icon-certificate'},
+            {url: path('admin_institution_gallery', {institutionId: institution.id} ), label: 'Media Gallery', icon: 'icon-picture'},
+        ] 
+    }  
+%}
