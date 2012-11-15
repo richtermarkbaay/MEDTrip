@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 class SubSpecializationListFilter extends ListFilter
@@ -14,6 +16,9 @@ class SubSpecializationListFilter extends ListFilter
     {
         parent::__construct($doctrine);
 
+        // set default status filter to active
+        $this->defaultParams = array('status' => SubSpecialization::STATUS_ACTIVE);
+        
         // Add specialization in validCriteria
         $this->addValidCriteria('specialization');
     }
