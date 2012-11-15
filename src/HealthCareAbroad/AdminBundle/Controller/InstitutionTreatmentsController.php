@@ -23,6 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -138,6 +140,33 @@ class InstitutionTreatmentsController extends Controller
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
+    }
+
+    
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateMedicalCenterAction()
+    {
+        if($this->request->get('description')) {
+            $description = $this->request->get('description'); 
+            $this->institutionMedicalCenter->setDescription($description);
+        }
+        
+        if($this->request->get('name')) {
+            $name = $this->request->get('name'); 
+            $this->institutionMedicalCenter->setName($name);
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $result = $em->flush();
+
+        $response = new Response (json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;        
     }
 
     /**

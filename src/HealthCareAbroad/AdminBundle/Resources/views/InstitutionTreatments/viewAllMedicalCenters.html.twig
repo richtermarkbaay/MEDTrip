@@ -41,12 +41,19 @@
 
                         {% for center in institutionMedicalCenters %}
                             <h4 class="medical-centers" style="border: 1px solid #eee; margin-top: 10px;padding: 10px">
+                                <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institutionId}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
+                                    <i class="icon-edit"></i> <span>edit</span>
+                                </a>
                                 <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institutionId}) }}">{{ center }}</a>
+                                <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
                             </h4>
                             <div class="content" style="background: #efefef;padding: 10px">
                                 <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
-                                    <a href="#" class="pull-right" style="font-size:13px;font-weight:normal"><i class="icon-edit"></i> edit</a>
-                                    {{ center.description | raw }}
+                                    <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institutionId}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                                        <i class="icon-edit"></i> <span>edit</span>
+                                    </a>
+                                    <div class="center-description">{{ center.description | raw }}</div>
+                                    <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
                                 </div>
                                 <div class="specializations"></div>
                             </div>
@@ -64,7 +71,7 @@
                                 <td class="status">{{ centerStatusList[center.status] }}</td>
                                 <td class="options-width">
                                     <a href="{{ path('admin_institution_medicalCenter_edit', {institutionId:institutionId, imcId:center.id}) }}" title="Edit" class="edit-medical-center">
-                                        <i class="icon-edit"></i> Edit
+                                        <i class="icon-edit"></i> <span>Edit</span>
                                     </a>
                                     <br/>
                                     <a id="status-{{ center.id }}" href="{{ path('admin_institution_medicalCenter_updateStatus', {institutionId:institutionId,imcId:center.id}) }}" class="show-update-status">
@@ -122,6 +129,50 @@
                 });
             }
         });
+
+        $('.edit-center-description').click(function(){
+            if($(this).next().is(':visible')) {
+            	$(this).find('i').attr('class', 'icon-ok');
+            	$(this).find('span').html('save')
+                $(this).next().hide().siblings('.mceEditor').show();
+
+            } else {
+                var url = $(this).attr('href');
+                var param = { description: $(this).siblings('textarea').val() };
+
+            	$.post(url, param, function(result){}, 'json');
+
+            	$(this).find('i').attr('class', 'icon-edit');
+            	$(this).find('span').html('edit')
+                $(this).next().html(param.description).show().siblings('.mceEditor').hide();                
+            }
+
+            return false;
+        });
+
+        $('.edit-center-name').click(function(){
+            if($(this).next().is(':visible')) {
+            	$(this).find('i').attr('class', 'icon-ok');
+            	$(this).find('span').html('save')
+                $(this).next().hide().siblings('input').show();
+        
+            } else {
+                var url = $(this).attr('href');
+                var param = { name: $(this).siblings('input').val() };
+
+            	$.post(url, param, function(result){}, 'json');
+
+            	$(this).find('i').attr('class', 'icon-edit');
+            	$(this).find('span').html('edit')
+                $(this).next().html(param.name).show().siblings('input').hide();
+
+            	$("#centersAccordion").accordion("enable");
+            }
+
+            return false;
+        }).siblings('input').click(function(){$('#centersAccordion').accordion("disable"); });
+
+
         /*$("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
 
         $("a.show-update-status").click(function() {
@@ -141,5 +192,10 @@
         });
         */
     });
+
+    function test()
+    {
+        alert('bert');
+        }
 </script>
 {% endblock %}
