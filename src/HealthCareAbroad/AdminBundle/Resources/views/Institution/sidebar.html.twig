@@ -2,7 +2,7 @@
     with {
         links: [
             {name: 'dashboard', url: path('admin_institution_view', {'institutionId': institution.id}), label: 'Dashboard', icon: 'icon-home'},
-            {name: 'centers', url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: getClassLabel('institution_medical_center', true) | title, icon: 'icon-star'},
+            {name: 'centers', url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: getClassLabel('institution_medical_center').plural | title, icon: 'icon-star'},
             {name: 'doctors', url: '#', label: 'Doctors', icon: 'icon-user'},
             {name: 'staff', url: '#', label: 'Staff', icon: 'icon-user'},
             {name: 'affiliations', url: '#', label: 'Affiliations / Certifications', icon: 'icon-certificate'},
