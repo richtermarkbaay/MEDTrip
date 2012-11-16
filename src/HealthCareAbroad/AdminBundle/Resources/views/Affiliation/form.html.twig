@@ -1,0 +1,39 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_affiliation' %}
+
+{% block content %}
+
+	<div id="content">
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Affiliation</h2></div>
+
+		{% embed '::contentWrapper.admin.html.twig' %}
+			{% block wrappedContent %}
+
+            {% set contents = [{
+					'title': 'View all affiliation', 
+					'description': 'View the list of affiliation',
+					'href': path('admin_affiliation_index'), 
+					'links': [{'title': 'View affiliation', 'href': path('admin_affiliation_index')}]
+				}]
+            %}
+
+			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+			
+			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+
+				{{ form_row(form.name) }}
+				{{ form_row(form.details) }}
+				{{ form_row(form.awardingBodies) }}
+				{{ form_row(form.country) }}
+				{{ form_row(form.status) }}
+				
+				{{ form_rest(form) }}
+
+			    <input type="submit" class="form-submit" name="submit"/>
+			</form>
+			{% endblock %}
+		{% endembed %}
+	</div>
+
+{% endblock %}
