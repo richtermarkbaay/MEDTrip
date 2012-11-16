@@ -1,19 +1,21 @@
-<h3 id="specialization-{{ specialization.id }}">
-    {{ specialization.name }} 
+<h5 id="specialization-{{ specialization.id }}" style="border: 1px solid #eee; margin-top: 10px;padding: 10px">
+    {{ specialization.name }}
     
     {% if showCloseBtn %}
-    <a href="javascript:void(0)" style="float: right" class="remove-specialization">x</a>
+    <a href="javascript:void(0)" style="float: right" class="remove-specialization"><i class="icon-remove"></i></a>
     {% endif %}
-</h3>
+</h5>
 <div>
-    <div class="boxcontent">
+    <div class="boxcontent" style="border: 1px solid #EEEEEE;border-top:none;">
         {% for subSpecializationName, treatments in subSpecializations %}
-            <h5 class="sub-specialization-title">{{ subSpecializationName }}</h5>
+            <h6 class="sub-specialization-title">{{ subSpecializationName }}</h6>
 
-            <div class="treatments">
+            <div class="treatments" style="border: 1px dashed #EEEEEE;margin-bottom: 20px;border-top:none;padding:5px">
                 {% for treatment in treatments %}
-                    <input type="checkbox" id="treatment-{{ treatment.id }}" name="treatments[]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
-                    <label for="treatment-{{ treatment.id }}">{{ treatment.name }}</label>
+                    <label>
+                        <input type="checkbox" name="treatments[]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>                    
+                        {{ treatment.name }}
+                    </label>
                 {% endfor %}
             </div>
 
@@ -28,8 +30,8 @@ $(function(){
         var content = header.next();
         var specializationId = header.attr('id').split('-').pop();
 
-        content.remove();
-        header.remove();
+        content.fadeOut(function(){$(this).remove()});
+        header.fadeOut(function(){$(this).remove()});
 
         $('#institutionSpecialization_specialization').find('option[value='+specializationId+']').show();
     });
