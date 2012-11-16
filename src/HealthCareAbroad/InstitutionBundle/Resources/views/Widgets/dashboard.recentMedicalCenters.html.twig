@@ -8,16 +8,18 @@
 %}
 
     {% block sectionContent %}
-        <span class="pull-left" style="margin-right: 20px;">
-            <a href=""><img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/></a>
-        </span>
-
-        <h7>Medical Center Name 1</h7>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-
-        <button class="btn btn-primary pull-right"><i class="icon-search"></i>View List of All {{ getClassLabel('institution_medical_center', true) | title }}</button>
-
-        <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+        <div class="boxcontent">
+            <span class="pull-left" style="margin-right: 20px;">
+                <a href=""><img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/></a>
+            </span>
+    
+            <h6>Medical Center Name 1</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    
+            <button class="btn btn-primary pull-right"><i class="icon-search"></i>View List of All {{ getClassLabel('institution_medical_center', true) | title }}</button>
+    
+            <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+        </div>
 
     {% endblock  %}
 
