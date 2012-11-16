@@ -145,7 +145,7 @@ $(document).ready(function() {
         margin      : [20, 60, 20, 60]
     });
 
-    var media_id, media_caption, link;
+    var media_id, media_caption, link, institution_id={{ institutionId }};
 
     var showMessage = function(parent, message) {
         $message = $('<div style="display:none;">'+ message + '</div>');
@@ -188,7 +188,8 @@ $(document).ready(function() {
                 TODO: it might be better if we don't do ajax here. e.g. normal form submission or link.
                 */
                 $.ajax({
-                    url: $('#deleteMediaForm').attr('action') + '/' + media_id,
+                    url: $('#deleteMediaForm').attr('action'),
+                    data: {id: media_id, institutionId: institution_id},
                     type: 'post',
                     dataType: 'json',
                     success: function(success) {
@@ -236,7 +237,7 @@ $(document).ready(function() {
 
         $.ajax({
             url: $('#editMediaForm').attr('action'),
-            data: {id: media_id, caption: caption},
+            data: {id: media_id, institutionId: institution_id, caption: caption},
             type: 'post',
             dataType: 'json',
             success: function(success) {

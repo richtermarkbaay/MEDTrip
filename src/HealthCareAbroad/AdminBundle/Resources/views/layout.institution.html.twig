@@ -38,25 +38,25 @@
         <div class="row-fluid">
             {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
     	</div>
-    	
-    	<div class="container" style="margin-top:20px;">
-    	    <div class="maincontent">
-    		    
-    		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
-    	        
-    	        {% block content %}{% endblock %}
-    	        
-    		</div>
+
+    	<div class="container maincontent" style="margin-top:20px;">
+    	    {% include '::notice.admin.html.twig' %}
+
+		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+
+	        {% block content %}{% endblock %}
     		<!-- End of main_content-->
     	</div>
     </div>
 
+    {% include '::footer.admin.html.twig' %}
 
     <div id="dialog-container"></div>
 
     {% block javascripts %}
         <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
     {% endblock %}
+
     {% block inlineJavascriptCode %}{% endblock %}
 </body>
 

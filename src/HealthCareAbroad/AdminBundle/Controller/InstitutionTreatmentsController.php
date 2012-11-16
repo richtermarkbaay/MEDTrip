@@ -137,8 +137,9 @@ class InstitutionTreatmentsController extends Controller
         
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'selectedSubMenu' => 'centers'
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
@@ -266,8 +267,9 @@ class InstitutionTreatmentsController extends Controller
         
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'selectedSubMenu' => 'centers'
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);   

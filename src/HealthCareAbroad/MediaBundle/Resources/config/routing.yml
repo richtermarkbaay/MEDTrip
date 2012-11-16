@@ -25,15 +25,16 @@ media_upload:
         _method: POST
 
 media_delete:
-    pattern: /admin/media/delete/{id}
-    defaults: { _controller: MediaBundle:Default:delete, id: ~ }
+    pattern: /admin/media/delete
+    defaults: { _controller: MediaBundle:Default:delete}
     requirements:
         _method: POST
-        id: \d+
 
 media_edit_caption:
     pattern: /admin/media/edit-caption
     defaults: { _controller: MediaBundle:Default:editCaption }
+    requirements:
+        _method: POST
 
 # END DEFAULT ROUTES
 

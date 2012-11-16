@@ -267,6 +267,11 @@ a:hover
     margin-left:0;
 }
 
+.boxcontent {
+	clear: both;
+    margin-bottom: 50px;	
+}
+
 .boxcontent .span3 ul
 {
     margin-bottom:0px;

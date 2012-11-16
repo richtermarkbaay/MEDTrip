@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Resizer\SquareResizer;
+
 use HealthCareAbroad\MediaBundle\Resizer\DefaultResizer;
 use Gaufrette\File;
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
@@ -79,7 +81,9 @@ class MediaService
         $filesystem = $this->filesystemManager->get($institutionId, 'local');
 
         //TODO: rename/sanitize filename
+        //$filename = time();
         $filename = $file->getClientOriginalName();
+        $caption = $file->getClientOriginalName();
 
         $proceed = true;
         try {
@@ -97,7 +101,7 @@ class MediaService
             $media = new Media();
             $media->setName($filename);
             $media->setContentType($imageAttributes['mime']);
-            $media->setCaption($filename);
+            $media->setCaption($caption);
             $media->setContext($institutionId);
             $media->setUuid(\time());
             $media->setWidth($imageAttributes[0]);
@@ -112,8 +116,6 @@ class MediaService
             //TODO: inject this dynamically selecting the optimal ImagineInterface available
             $resizer = new SquareResizer(new \Imagine\Gd\Imagine());
             $resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
-
-            var_dump($out); exit;
 
             $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
 
@@ -161,7 +163,7 @@ class MediaService
 
     public function retrieveMedia($mediaId, $institutionId)
     {
-        return $this->entityManager->getRepository('MediaBundle:Media')->findWithInstitution($mediaId, $institutionId);
+        return $this->entityManager->getRepository('MediaBundle:Media')->findWithInstitutionId($mediaId, $institutionId);
     }
 
     public function editMediaCaption($mediaId, $institutionId, $caption)
@@ -184,6 +186,9 @@ class MediaService
         return $media;
     }
 
+    /**
+     * TODO: delete the physical file itself?
+     */
     public function delete($mediaId, $institutionId)
     {
         $success = 0;
