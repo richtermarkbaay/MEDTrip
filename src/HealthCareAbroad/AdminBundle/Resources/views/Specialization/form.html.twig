@@ -1,85 +1,36 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'specializations' %}
+{% set selectedSubMenu = 'specializations' %}
+{% set specializationLabel = getClassLabel('specialization').singular|title %}
 
 {% block content %}
 
-    <div id="content">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
 
-        <div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Specialization</h2></div>
+    <div class="span9">
 
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ specializationLabel ,
+                actions: [{link: path('admin_specialization_add'), label: 'Add '~ specializationLabel, 'icon' : 'icon-ok' }]
+            }
+        %}
+            {% block sectionContent %}
 
                 {% include '::notice.admin.html.twig' %}
 
-                {% set contents = [{
-                        'title': 'Back to list of specializations',
-                        'description': 'View the list available specializations',
-                        'href': path('admin_specialization_index'),
-                        'links': [{'title': 'View all', 'href': path('admin_specialization_index')}]
-                    }]
-                %}
-
-                {% if(specialization is defined) %}
-                    {% set contents = [{
-                            'title': 'Add Sub Specialization',
-                            'class': 'add-icon',
-                            'description': 'add sub-specialization for this specialization',
-                            'href': path('admin_subSpecialization_add', {specializationId:specialization.id}),
-                            'links': [{'title': 'Add sub specialization', 'href': path('admin_subSpecialization_add', {specializationId:specialization.id} )}]
-                        }, {
-                            title: 'View edit history',
-                            href: path('admin_showEditHistory', {'objectId': specialization.id, 'objectClass': base64_encode(getClass(specialization)) }),
-                            class: 'view-edit-history-link',
-                            description: 'Show all the changes made to this specialization content',
-                            links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': specialization.id, 'objectClass': base64_encode(getClass(specialization)) }) }]
-                        }] | merge(contents)
-                    %}
-                {% endif %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-
+                
+                
                 <form novalidate action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.name) }}
                     {{ form_row(form.description) }}
                     {{ form_rest(form) }}
-
-                    <input type="submit" value="Save" class="green-button" name="submit"/>
-                    <input type="submit" value="Save &amp; Add another specialization" class="green-button" name="submit"/>
+                    
+                    <div class="clear"><br></div>
+                    
+                    <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
+                    <input type="submit" value="Save &amp; Add another specialization" class="btn btn-large" name="submit"/>
                 </form>
-
-                {% set subSpecializations = specialization is defined ? specialization.subSpecializations : [] %}
-
-                {% if subSpecializations is not empty %}
-
-                    <h2 style="padding-top: 20px; border-top: 1px dashed #aaa;margin-top:30px;width:70%">Sub-specializations</h2>
-
-                    <table id="treatment-list" class="generic-table" width="70%">
-                    <tr>
-                        <th width="200"><a href="">Sub-specializations</a></th>
-                        <th><a href="">Description</a></th>
-                        <th width="70"><a href="">Status</a></th>
-                        <th class="actions" width="180"><a href="">Actions</a></th>
-                    </tr>
-
-                    {% for each in subSpecializations %}
-                        <tr>
-                            <td>{{ each.name }}</td>
-                            <td>{{ each.description }}</td>
-                            <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
-                            <td align="center">
-                                <a href="{{ path('admin_subSpecialization_edit', {id:each.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = each.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ each.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                                <a href="{{ path('admin_treatment_index', {subspecializationId:each.id}) }}" class="icon-type">procedures</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </table>
-
-                {% endif %}
 
             {% endblock %}
         {% endembed %}
