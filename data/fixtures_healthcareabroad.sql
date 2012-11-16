@@ -226,8 +226,8 @@ CREATE TABLE IF NOT EXISTS `affiliations` (
   `country_id` int(10) unsigned NOT NULL,
   `status` smallint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `country_id` (`country_id`),
-  UNIQUE KEY `awarding_bodies_id` (`awarding_bodies_id`)
+  KEY `country_id` (`country_id`),
+  KEY `awarding_bodies_id` (`awarding_bodies_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS `affiliations` (
 --
 
 INSERT INTO `affiliations` (`id`, `name`, `details`, `awarding_bodies_id`, `country_id`, `status`) VALUES
-(1, 'test affiliation', 'details test', 1, 11, 1);
+(1, 'test affiliation', 'details test', 1, 1, 1);
 
 -- --------------------------------------------------------
 

@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * @author Chaztine Blance
+ *
+ */
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
@@ -50,13 +55,13 @@ class AwardingBodiesControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
-    	// check of redirect url /admin/countries
+    	// check of redirect url /admin/awardingBodies
     	$this->assertEquals('/admin/awardingBodies', $client->getResponse()->headers->get('location'));
     	 
     	// redirect request
     	$crawler = $client->followRedirect(true);
     	
-    	// check if the redirected response content has the newly added country
+    	// check if the redirected response content has the newly added awardingBodies
     	$isAdded = $crawler->filter('#awardingBodies-list > tr > td:contains("'.$formData['awardingBodies[name]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
@@ -77,36 +82,17 @@ class AwardingBodiesControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     
-    	// check of redirect url /admin/countries
+    	// check of redirect url /admin/awardingBodies
     	$this->assertEquals('/admin/awardingBodies', $client->getResponse()->headers->get('location'));
     
     
     	// redirect request
     	$crawler = $client->followRedirect(true);
     
-    	// check if the redirected response content has the newly added country name
+    	// check if the redirected response content has the newly added awardingBodies name
     	$isAdded = $crawler->filter('#awardingBodies-list > tr > td:contains("'.$formData['awardingBodies[name]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
-
-//     public function testCreateDuplicate()
-//     {
-//     	$client = $this->getBrowserWithActualLoggedInUser();
-//     	$crawler = $client->request('GET', '/admin/awardingBodies/add');
-    
-// 		$formData = array(
-// 			'awardingBodies[name]' => 'test Again',
-// 			'awardingBodies[details]' => 'test',
-// 			'awardingBodies[website]' => 'test.com',
-// 			'awardingBodies[status]' => 1
-// 		);
-    
-//     	$form = $crawler->selectButton('submit')->form();
-//     	$crawler = $client->submit($form, $formData);
-
-//     	// check if status code is not 302
-//     	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Awarding Bodies" must not be able to create an entry with duplicate name.');
-//     }
 
     public function testUpdateStatusAction(){
     	$client = $this->getBrowserWithActualLoggedInUser();

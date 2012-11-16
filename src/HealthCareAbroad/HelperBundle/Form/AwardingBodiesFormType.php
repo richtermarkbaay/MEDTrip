@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-
 class AwardingBodiesFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -17,7 +16,7 @@ class AwardingBodiesFormType extends AbstractType
 			AwardingBodies::STATUS_INACTIVE => 'inactive',
 		);
 
-		$builder->add('name', 'text');
+		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('details', 'textarea', array('constraints'=>array(new NotBlank())));
 		$builder->add('website', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('status', 'choice', array('choices'=>$status));
