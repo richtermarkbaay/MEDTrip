@@ -107,8 +107,6 @@ a:hover
     min-height: 10px;
     
 }
- 
-
 
 .navbar .brand
 {
@@ -129,11 +127,9 @@ a:hover
     vertical-align: middle;
 }
 .navbar .userbox a
-{
-    
+{    
     font-size: 13px;
-    padding-left: 5px;
-    
+    padding-left: 5px;   
 }
 .navbar-fixed-top .btn
 {
@@ -730,7 +726,14 @@ background-color: #cccccc;
 }
 
 
+
+
 /*=============== Custom CSS for temporary fixed ============= */
+
+#main-content {
+	margin-top: 70px;
+}
+
 
 /* jQuery UI Dialg Style */
 

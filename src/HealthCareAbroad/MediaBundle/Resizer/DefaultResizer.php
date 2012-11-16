@@ -10,6 +10,10 @@ use HealthCareAbroad\MediaBundle\Entity\Media;
 
 class DefaultResizer implements Resizer
 {
+    /**
+     *
+     * @var \Imagine\Image\ImagineInterface $adapter
+     */
     protected $adapter;
 
     protected $mode;
@@ -18,7 +22,7 @@ class DefaultResizer implements Resizer
      * @param \Imagine\Image\ImagineInterface $adapter
      * @param string $mode
      */
-    public function __construct(ImagineInterface $adapter, $mode)
+    public function __construct(ImagineInterface $adapter, $mode=ImageInterface::THUMBNAIL_INSET)
     {
         $this->adapter = $adapter;
         $this->mode    = $mode;
@@ -29,6 +33,10 @@ class DefaultResizer implements Resizer
      */
     public function resize(Media $media, File $in, File $out, $format, array $settings)
     {
+        if (!array_key_exists('quality', $settings)) {
+            $settings['quality'] = 100;
+        }
+
         if (!isset($settings['width'])) {
             throw new \RuntimeException(sprintf('Width parameter is missing in context "%s" for provider "%s"', $media->getContext(), $media->getName()));
         }

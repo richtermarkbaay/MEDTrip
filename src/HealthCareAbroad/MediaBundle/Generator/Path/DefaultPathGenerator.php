@@ -10,9 +10,9 @@ class DefaultPathGenerator implements PathGeneratorInterface
 {
     public function generatePath($basePath, $discriminator)
     {
-    	return Path::normalize($basePath.'/'. $discriminator);
-    	
-    	/*
+        return Path::normalize($basePath.'/'. $discriminator);
+
+        /*
         if (empty($discriminator)) {
             return sprintf(
                 '%s/%s.%s',
@@ -30,7 +30,7 @@ class DefaultPathGenerator implements PathGeneratorInterface
             ExtensionGuesser::guess($media->getContentType())
         );
         */
-    	
-    	
+
+
     }
 }
