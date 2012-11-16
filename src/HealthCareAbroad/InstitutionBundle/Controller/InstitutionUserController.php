@@ -7,6 +7,7 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\UserBundle\Form\UserAccountDetailType;
 use HealthCareAbroad\UserBundle\Form\UserLoginType;
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -29,6 +30,8 @@ use Symfony\Component\Security\Http\RememberMe\TokenBasedRememberMeServices;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InstitutionUserController extends Controller
 {
+	protected $institution;
+	
     /*
     public function loginAction()
     {
@@ -116,6 +119,7 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
             'form' => $form->createView()));
     }
+    
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
@@ -123,16 +127,24 @@ class InstitutionUserController extends Controller
     public function editAccountAction()
     {
         $accountId = $this->getRequest()->get('accountId', null);
+        
         if (!$accountId){
             // no account id in parameter, editing currently logged in account
             $session = $this->getRequest()->getSession();
             $accountId = $session->get('accountId');
         }
+     
+        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+        $this->get('twig')->addGlobal('institution', $this->institution);
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
+        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
+        
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
 
         if (!$institutionUser) {
             throw $this->createNotFoundException('Cannot update invalid account.');
         }
+        
         $form = $this->createForm(new UserAccountDetailType(), $institutionUser);
 
         if ($this->getRequest()->isMethod('GET')) {
