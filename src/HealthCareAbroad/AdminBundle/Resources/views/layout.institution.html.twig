@@ -39,24 +39,22 @@
             {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
     	</div>
     	
-    	<div class="container" style="margin-top:20px;">
-    	    <div class="maincontent">
-    		    
-    		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
-    	        
-    	        {% block content %}{% endblock %}
-    	        
-    		</div>
+        {% include '::notice.admin.html.twig' %}
+
+    	<div class="container maincontent" style="margin-top:20px;">
+		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+
+	        {% block content %}{% endblock %}
     		<!-- End of main_content-->
     	</div>
     </div>
-
 
     <div id="dialog-container"></div>
 
     {% block javascripts %}
         <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
     {% endblock %}
+
     {% block inlineJavascriptCode %}{% endblock %}
 </body>
 

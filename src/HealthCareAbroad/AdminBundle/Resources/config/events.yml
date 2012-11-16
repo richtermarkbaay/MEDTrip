@@ -98,3 +98,10 @@ parameters:
     event.awarding_bodies.add: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
     event.awarding_bodies.edit: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
     event.awarding_bodies.delete: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
+    
+    #
+    # Affiliation related events
+    #
+    event.affiliation.add: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    event.affiliation.edit: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    event.affiliation.delete: HealthCareAbroad\AdminBundle\Event\AffiliationEvent

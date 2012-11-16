@@ -137,7 +137,7 @@ class InstitutionTreatmentsController extends Controller
         
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
+            'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter
         );
         
@@ -266,7 +266,7 @@ class InstitutionTreatmentsController extends Controller
         
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
+            'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter
         );
         

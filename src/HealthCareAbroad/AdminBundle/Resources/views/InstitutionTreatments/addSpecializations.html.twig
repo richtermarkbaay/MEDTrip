@@ -1,53 +1,52 @@
-{% extends 'AdminBundle::layout.html.twig' %}
-{% block title %}{{ parent() }} Add Center {% endblock %}
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+{% set centerLabel = getClassLabel('institution_medical_center') | title %}
+
+{% block title %}{{ parent() }} Add {{ centerLabel }} {% endblock %}
+
 
 {% block content %}
-<!-- start content -->
-<div class="container">
+    <div class="span9">
 
-    {% include '::notice.admin.html.twig' %}    
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { title: institutionMedicalCenter.name } %}
+            {% block sectionContent %}
+                <div style="border: 1px dashed #ddd; padding: 10px; margin-bottom: 20px">
+                    {{ institutionMedicalCenter.description | raw }}
+                </div>
 
-    <div class="title">
-        <h4>Medical Center Name</h4>
-        <div class="addcenterbox">
-            <div class="row-fluid">
-                <div class="span12">
-                
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                <div class="treatmentbox">
+                	<h5>Add Specialization</h5>
+                	<div class="boxcontent">
+                        <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addSpecialization', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }}>                	
+                            {{ form_row(form.specialization, { 'attr': {'class': 'input-xxlarge', 'onChange': 'loadSpecializationEntry($(this))' } }) }}
+                            {{ form_row(form.description) }}
+                            {{ form_rest(form) }}
 
-                    <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addSpecialization', { 'institutionId':institutionId, 'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }}>
+                            <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
+                    		<div id="specializationAccordion"></div>
+                    		<br>
+                    	    <input type="submit" class="btn btn-large btn-primary" value="Submit" name="Submit">
+                        </form>
+                    </div>
+                </div>
 
-                        <div class="treatmentbox">
-                        	<h5>Add Specialization</h5>
-                        	<div class="boxcontent">
-                        	
-                                {{ form_row(form.specialization, { 'attr': {'class': 'input-xxlarge', 'onChange': 'loadSpecializationEntry($(this))' } }) }}
-                                {{ form_row(form.description) }}
-                                {{ form_rest(form) }}
+            {% endblock %} 
 
-                        		<div id="specializationAccordion" class="accordion"></div>
-                                <hr>
-                            </div>
-                        </div>
-
-                	    <input type="submit" class="btn btn-large btn-primary" value="Submit" name="Submit">		
-                    </form>
-                </div><!--/span 12 end-->
-            </div><!--/row-fluid end-->
-        </div><!--/addcenterbox end-->
+        {% endembed %}
     </div>
-</div>
-
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
+
+    $('#specializationAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
+
     function loadSpecializationEntry(elem)
     {
         var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + elem.val().toString();
-
+        $('#specializationLoading').fadeIn();
         $.get(url, function(specializationEntry){
-            $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion();
+            $('#specializationLoading').hide();
+            $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion({heightStyle: "content"});
 
             $('#institutionSpecialization_specialization').find('option[value='+elem.val()+']').hide();
         });

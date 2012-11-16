@@ -133,6 +133,11 @@ services:
            - [setContainer, [@service_container]]
         tags:
            - { name: form.type, alias: advertisement_list }
+           
+    form.awarding_bodies_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodiesListType
+        tags:
+            - { name: form.type, alias: offeredService_list }
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
