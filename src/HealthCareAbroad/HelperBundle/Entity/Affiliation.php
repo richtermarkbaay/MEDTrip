@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Affiliation
 {
+	
+	const STATUS_ACTIVE = 1;
+	const STATUS_INACTIVE = 0;
     /**
      * @var integer $id
      */
@@ -24,26 +27,21 @@ class Affiliation
      */
     private $details;
 
-    /**
-     * @var integer $awardingBodyId
-     */
-    private $awardingBodyId;
-
-    /**
-     * @var integer $country
+	/**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
+    
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\AwardingBodies
+     */
+    private $awardingBodies;
+    
 
     /**
      * @var smallint $status
      */
     private $status;
-
-    /**
-     * @var string $manyToMany
-     */
-    private $manyToMany;
-
 
     /**
      * Get id
@@ -99,50 +97,52 @@ class Affiliation
         return $this->details;
     }
 
-    /**
-     * Set awardingBodyId
-     *
-     * @param integer $awardingBodyId
-     * @return Affiliation
-     */
-    public function setAwardingBodyId($awardingBodyId)
-    {
-        $this->awardingBodyId = $awardingBodyId;
-        return $this;
-    }
 
-    /**
-     * Get awardingBodyId
-     *
-     * @return integer 
-     */
-    public function getAwardingBodyId()
-    {
-        return $this->awardingBodyId;
-    }
-
-    /**
+	/**
      * Set country
      *
-     * @param integer $country
-     * @return Affiliation
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return City
      */
-    public function setCountry($country)
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
     {
         $this->country = $country;
         return $this;
     }
 
+    
     /**
      * Get country
      *
-     * @return integer 
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
      */
     public function getCountry()
     {
-        return $this->country;
+    	return $this->country;
     }
 
+    /**
+     * Get awardingBodies
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\AwardingBodies
+     */
+    public function getAwardingBodies()
+    {
+    	return $this->awardingBodies;
+    }
+    
+    /**
+     * Set awardingBodies
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\AwardingBodies $awardingBodies
+     * @return awardingBodies
+     */
+    public function setAwardingBodies(\HealthCareAbroad\HelperBundle\Entity\AwardingBodies $awardingBodies = null)
+    {
+    	$this->awardingBodies = $awardingBodies;
+    	return $this;
+    }
+    
     /**
      * Set status
      *

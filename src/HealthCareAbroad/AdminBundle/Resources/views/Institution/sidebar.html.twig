@@ -1,5 +1,5 @@
-{% include 'HelperBundle:Widgets:subMenu.html.twig' 
-    with { 
+{% include 'HelperBundle:Widgets:subMenu.html.twig'
+    with {
         links: [
             {url: path('admin_institution_view', {'institutionId': institution.id}), label: 'Dashboard', icon: 'icon-home'},
             {url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: 'Medical Center', icon: 'icon-star'},
@@ -7,6 +7,6 @@
             {url: '#', label: 'Staff', icon: 'icon-user'},
             {url: '#', label: 'Affiliations / Certifications', icon: 'icon-certificate'},
             {url: path('admin_institution_gallery', {institutionId: institution.id} ), label: 'Media Gallery', icon: 'icon-picture'},
-        ] 
-    }  
+        ]
+    }
 %}

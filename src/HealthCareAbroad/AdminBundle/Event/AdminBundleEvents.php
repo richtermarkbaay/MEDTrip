@@ -58,4 +58,8 @@ final class AdminBundleEvents
     const ON_ADD_AWARDING_BODIES = 'event.awarding_bodies.add';
     const ON_EDIT_AWARDING_BODIES = 'event.awarding_bodies.edit';
     const ON_DELETE_AWARDING_BODIES = 'event.awarding_bodies.delete';
+    
+    const ON_ADD_AFFILIATION = 'event.affiliation.add';
+    const ON_EDIT_AFFILIATION = 'event.affiliation.edit';
+    const ON_DELETE_AFFILIATION = 'event.affiliation.delete';
 }

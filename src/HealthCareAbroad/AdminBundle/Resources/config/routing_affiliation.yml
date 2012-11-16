@@ -1,5 +1,5 @@
 admin_affiliation_index:
-    pattern:  /admin/affiliations
+    pattern:  /admin/affiliation
     defaults: { _controller: AdminBundle:Affiliation:index }
     requirements:    
         _method:  GET
