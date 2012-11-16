@@ -9,5 +9,8 @@ parameters:
     #--
     # translation of class key to displayed labels in Twig templates
     class_labels:
-        institution_medical_center: ["clinic", "clinics"]
-        institution_specialization: ["specialization", "specializations"]
+        specialization: {singular: "specialization", plural: "specializations"}
+        sub_specialization: {singular: "sub specialization", plural: "sub specialization"}
+        treatment: {singular: "treatment", plural: "treatments"}
+        institution_medical_center: {singular: "clinic", plural: "clinics"}
+        institution_specialization: {singular: "specialization", plural: "specializations"}
