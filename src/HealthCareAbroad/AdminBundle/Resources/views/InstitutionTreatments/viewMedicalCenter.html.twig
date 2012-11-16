@@ -1,0 +1,11 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+
+{% set centerLabel = getClassLabel('institution_medical_center') | title %}
+
+{% block content %}
+    <div class="span9">
+
+        {% include 'InstitutionBundle:Widgets:viewMedicalCenter.html.twig' %}
+
+    </div>
+{% endblock %}

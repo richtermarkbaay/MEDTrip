@@ -13,13 +13,13 @@ admin_institution_medicalCenter_add:
         imcId: \d+
         _method: GET|POST
 
-admin_institution_medicalCenter_edit:
-    pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
+admin_institution_medicalCenter_view:
+    pattern:  /admin/institution/{institutionId}/medical-center/view/{imcId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:viewMedicalCenter, imcId: ~ }
     requirements:
         institutionId: \d+
         imcId: \d+
-        _method: POST
+        _method: GET
 
 admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}

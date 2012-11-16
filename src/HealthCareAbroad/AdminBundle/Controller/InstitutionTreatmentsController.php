@@ -92,7 +92,30 @@ class InstitutionTreatmentsController extends Controller
         
          return $this->render('AdminBundle:InstitutionTreatments:viewAllMedicalCenters.html.twig', $params);   
     }
+
+    /**
+     * Actionn handler for viewing all InstitutionMedicalCenter of selected institution
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewMedicalCenterAction()
+    {
+        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+
+        $params = array(
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $specializations,
+            'selectedSubMenu' => 'centers',
+            //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+            //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
+        );
     
+        return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
+    }
+
     /**
      * 
      * @return \Symfony\Component\HttpFoundation\Response

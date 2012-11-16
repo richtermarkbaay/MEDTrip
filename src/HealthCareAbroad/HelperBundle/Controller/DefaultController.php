@@ -51,7 +51,7 @@ class DefaultController extends Controller
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
 
-        return $this->render('HelperBundle:Default:specializationAccordionEntry.html.twig', $params);
+        return $this->render('HelperBundle:Widgets:specializationAccordionEntry.html.twig', $params);
     }
 
 
