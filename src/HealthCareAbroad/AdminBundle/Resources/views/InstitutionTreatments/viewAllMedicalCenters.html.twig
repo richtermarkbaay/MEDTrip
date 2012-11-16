@@ -1,7 +1,8 @@
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 
-{% set centerLabel = getClassLabel('institution_medical_center') | title %}
-{% set centersLabel = getClassLabel('institution_medical_center', true) | title %}
+{% set centerTerm = getClassLabel('institution_medical_center') %}
+{% set centerLabel = centerTerm.singular | title %}
+{% set centersLabel = centerTerm.plural | title %}
 
 {% block content %}
     <div class="span9">

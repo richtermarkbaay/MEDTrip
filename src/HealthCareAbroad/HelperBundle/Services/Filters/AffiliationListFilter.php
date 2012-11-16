@@ -27,10 +27,11 @@ class AffiliationListFilter extends ListFilter
     function setAwardingBodiesFilterOption()
     {
         // Set The Filter Option
-        $affiliation = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Affiliation')->findByStatus(1);
+        $awardingBodies = $this->doctrine->getEntityManager()->getRepository('HelperBundle:AwardingBodies')->findByStatus(1);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         
-        foreach($affiliation as $each) {
+ 
+        foreach($awardingBodies as $each) {
             $options[$each->getId()] = $each->getName();
         }
 
