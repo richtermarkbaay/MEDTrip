@@ -1,4 +1,6 @@
 {# This layout is used by pages viewed under a specific institution  #}
+
+{% set selectedTab = 'institutions' %}
 {% extends '::base.admin.html.twig' %}
 
 {% block title %}{{ parent() }} &raquo; Admin Panel{% endblock %}
@@ -31,21 +33,24 @@
           </div>
     </div>
     <!-- End of Top Navigation -->
+    
+    <div id="main-content">
+        <div class="row-fluid">
+            {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
+    	</div>
+    	
+    	<div class="container" style="margin-top:20px;">
+    	    <div class="maincontent">
+    		    
+    		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+    	        
+    	        {% block content %}{% endblock %}
+    	        
+    		</div>
+    		<!-- End of main_content-->
+    	</div>
+    </div>
 
-    <div class="row-fluid">
-        {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
-	</div>
-	
-	<div class="container" style="margin-top:20px;">
-	    <div class="maincontent">
-		    
-		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
-	        
-	        {% block content %}{% endblock %}
-	        
-		</div>
-		<!-- End of main_content-->
-	</div>    
 
     <div id="dialog-container"></div>
 
