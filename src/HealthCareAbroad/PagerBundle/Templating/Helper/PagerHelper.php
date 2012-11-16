@@ -47,7 +47,7 @@ class PagerHelper extends Helper
      * @param string $template The template name
      * @return string The html markup
      */
-    public function paginate(Pager $pager, $route, array $parameters = array(), $template = 'ChromediaPagerBundle:Pager:paginate.html.php')
+    public function paginate(Pager $pager, $route, array $parameters = array(), $template = 'PagerBundle:Pager:paginate.html.php')
     {
         return $this->engine->render($template, array('pager' => $pager, 'route' => $route, 'parameters' => $parameters));
     }

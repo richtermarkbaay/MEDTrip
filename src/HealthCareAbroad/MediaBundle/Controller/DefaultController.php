@@ -45,18 +45,14 @@ class DefaultController extends Controller
 
     public function deleteAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $success = $this->get('services.media')->delete($request->get('id'), $institutionId);
+        $success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
 
         return new Response($success);
     }
 
     public function editCaptionAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $media = $this->get('services.media')->editMediaCaption($request->get('id'), $institutionId, $request->get('caption'));
+        $media = $this->get('services.media')->editMediaCaption($request->get('id'), $request->get('institutionId'), $request->get('caption'));
 
         $response = 0;
         if ($media) {
