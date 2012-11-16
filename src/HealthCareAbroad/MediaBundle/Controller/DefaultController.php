@@ -31,7 +31,7 @@ class DefaultController extends Controller
                 $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
 
                 return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
-                        'institutionId' => $institutionId,
+                        'institution' => $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId),
                         'multiUpload' => $multiUpload));
             }
 

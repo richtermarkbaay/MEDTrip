@@ -5,7 +5,7 @@
 
 <div>Select a file to upload:</div>
 
-<form action="{{ path('media_upload', {'institutionId': institutionId}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
+<form action="{{ path('media_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
     <input type="file" name="file" accept="image/gif, image/jpeg" />
     <input type="hidden" name="multiUpload" value="0"/>
 
@@ -13,7 +13,7 @@
 </form>
 
 <div>
-    Switch to the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': institutionId}) }}">multi-file uploader</a>.
+    Switch to the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': institution.id}) }}">multi-file uploader</a>.
 </div>
 
 <script type="text/javascript">
