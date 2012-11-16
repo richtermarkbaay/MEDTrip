@@ -1,4 +1,6 @@
 {# This layout is used by pages viewed under a specific institution  #}
+
+{% set selectedTab = 'institutions' %}
 {% extends '::base.admin.html.twig' %}
 
 {% block title %}{{ parent() }} &raquo; Admin Panel{% endblock %}
@@ -6,10 +8,6 @@
 {% block body %}
 
 <body>
-
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}
 
     <!-- Top Navigation -->
     <div class="navbar navbar-fixed-top">
@@ -35,26 +33,30 @@
           </div>
     </div>
     <!-- End of Top Navigation -->
-
-    <div class="row-fluid">
-        {% include 'InstitutionBundle:Embed:profileHeader.html.twig' %}
-	</div>
-	
-	<div class="container" style="margin-top:20px;">
-	    <div class="maincontent">
-		    
-		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
-	        
-	        {% block content %}{% endblock %}
-	        
-		</div>
-		<!-- End of main_content-->
-	</div>
-
     
+    <div id="main-content">
+        <div class="row-fluid">
+            {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
+    	</div>
+    	
+    	<div class="container" style="margin-top:20px;">
+    	    <div class="maincontent">
+    		    
+    		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+    	        
+    	        {% block content %}{% endblock %}
+    	        
+    		</div>
+    		<!-- End of main_content-->
+    	</div>
+    </div>
+
 
     <div id="dialog-container"></div>
 
+    {% block javascripts %}
+        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+    {% endblock %}
     {% block inlineJavascriptCode %}{% endblock %}
 </body>
 

@@ -61,7 +61,8 @@ final class ListFilterFactory
             'admin_advertisement_index' => 'AdvertisementListFilter',
             'admin_user_index' => 'AdminUserListFilter',
             'admin_userType_index' => 'AdminUserTypeListFilter',
-            'admin_userRole_index' => 'AdminUserRoleListFilter'
+            'admin_userRole_index' => 'AdminUserRoleListFilter',
+        	'admin_awardingBodies_index' => 'AwardingBodiesListFilter'
         );
     }
 

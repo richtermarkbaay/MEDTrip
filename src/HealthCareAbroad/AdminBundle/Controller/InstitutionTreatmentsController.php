@@ -23,6 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -77,12 +79,14 @@ class InstitutionTreatmentsController extends Controller
      */
     public function viewAllMedicalCentersAction()
     {
+        $criteria = array('institution' => $this->institution);
+        $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
+        
         $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionName' => $this->institution->getName(),
+            'institution' => $this->institution,
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-            'institutionMedicalCenters' => $this->filteredResult,
+            'institutionMedicalCenters' => $institutionMedicalCenters,
             'pager' => $this->pager
         );
         
@@ -138,6 +142,33 @@ class InstitutionTreatmentsController extends Controller
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
+    }
+
+    
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateMedicalCenterAction()
+    {
+        if($this->request->get('description')) {
+            $description = $this->request->get('description'); 
+            $this->institutionMedicalCenter->setDescription($description);
+        }
+        
+        if($this->request->get('name')) {
+            $name = $this->request->get('name'); 
+            $this->institutionMedicalCenter->setName($name);
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $result = $em->flush();
+
+        $response = new Response (json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;        
     }
 
     /**
@@ -279,7 +310,6 @@ class InstitutionTreatmentsController extends Controller
 
                 // TODO: fire event
 
-                // redirect to step 2;
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_editSpecialization',array(
                     'institutionId' => $this->institution->getId(),
                     'isId' => $institutionSpecialization->getId()

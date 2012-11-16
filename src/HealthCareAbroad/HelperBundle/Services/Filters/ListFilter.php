@@ -23,6 +23,8 @@ abstract class ListFilter
 
     protected $validCriteria = array('status');
     
+    protected $defaultParams = array();
+    
     protected $sortBy;
 
     protected $sortOrder = 'asc';
@@ -77,15 +79,17 @@ abstract class ListFilter
     function setQueryParamsAndCriteria($queryParams = array())
     {
         $this->queryParams = $queryParams;
-
+        
         foreach($this->validCriteria as $key) {
 
             if(isset($queryParams[$key])) {
                 if(!is_null($queryParams[$key]) && $queryParams[$key] != self::FILTER_KEY_ALL)
                     $this->criteria[$key] = $queryParams[$key];
             }
-
-            else $this->queryParams[$key] = self::FILTER_KEY_ALL;
+            else {
+                // no param, check default first
+                $this->queryParams[$key] = \array_key_exists($key, $this->defaultParams) ? $this->defaultParams[$key] : self::FILTER_KEY_ALL;
+            }
         }
 
         if (isset($this->queryParams['sortBy'])) {
@@ -131,7 +135,7 @@ abstract class ListFilter
     function setPager()
     {
         $adapter = new DoctrineOrmAdapter($this->queryBuilder);
-
+        
         $params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
         $params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
 

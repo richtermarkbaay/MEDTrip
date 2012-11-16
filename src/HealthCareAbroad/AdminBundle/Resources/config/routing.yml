@@ -48,6 +48,16 @@ AdminBundle_doctor:
     resource: "@AdminBundle/Resources/config/routing_doctor.yml"
     prefix:   /
     
+# Routes for Admin Affiliations #
+AdminBundle_affiliation:
+    resource: "@AdminBundle/Resources/config/routing_affiliation.yml"
+    prefix:   /
+
+# Routes for Admin Awarding Bodies #
+AdminBundle_awardingBodies:
+    resource: "@AdminBundle/Resources/config/routing_awardingBodies.yml"
+    prefix:   /
+    
 # Routes for Admin NewsController #
 AdminBundle_news:
     resource: "@AdminBundle/Resources/config/routing_news.yml"
