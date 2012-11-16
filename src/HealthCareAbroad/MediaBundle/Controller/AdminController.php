@@ -15,24 +15,21 @@ class AdminController extends Controller
 {
     public function galleryAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
+        $institutionId = $request->get('institutionId');
 
         $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($institutionId)->toArray());
         $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 12));
 
         return $this->render('MediaBundle:Admin:gallery.html.twig', array(
                 'institutionId' => $institutionId,
-                //'institutionMedia' => $this->get('services.media')->retrieveAllMedia($institutionId)
                 'institutionMedia' => $pager
         ));
     }
 
     public function addAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-
         return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
-                'institutionId' => $institutionId,
+                'institutionId' => $request->get('institutionId'),
                 'multiUpload' => $request->get('multiUpload')
         ));
     }

@@ -1,24 +1,30 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Resizer\DefaultResizer;
+use Gaufrette\File;
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
-
 use Doctrine\ORM\UnitOfWork;
-
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
-
 use Doctrine\ORM\QueryBuilder;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use HealthCareAbroad\MediaBundle\Entity\Media;
-
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\EntityManager;
 use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
 use HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter;
-
+/**
+ * TODO:
+ * 1. REFACTOR!!!
+ * 2. REFACTOR!!!
+ * 3. REFACTOR!!!
+ * 4. REFACTOR!!!
+ * 5. REFACTOR specially the upload function
+ *
+ * @author harold
+ *
+ */
 class MediaService
 {
     private $entityManager;
@@ -75,30 +81,45 @@ class MediaService
         //TODO: rename/sanitize filename
         $filename = $file->getClientOriginalName();
 
-        $media = new Media();
-        $media->setName($filename);
-        $media->setContentType($file->getMimeType());
-        //TODO: the ff are temporary
-        $media->setCaption($filename);
-        $media->setContext($institutionId);
-        $media->setUuid(\time());
-        //TODO: ignore the other attributes for now
-
         $proceed = true;
         try {
             $file->move($this->filesystemManager->getUploadRootDir(), $filename);
+
         } catch (FileException $e) {
             $proceed = false;
         }
 
         if ($proceed) {
+            $filePath = $this->filesystemManager->getUploadRootDir().'/'.$filename;
+
+            $imageAttributes = getimagesize($filePath);
+
+            $media = new Media();
+            $media->setName($filename);
+            $media->setContentType($imageAttributes['mime']);
+            $media->setCaption($filename);
+            $media->setContext($institutionId);
+            $media->setUuid(\time());
+            $media->setWidth($imageAttributes[0]);
+            $media->setHeight($imageAttributes[1]);
+            //TODO: ignore the other attributes for now
+
+            $in = new File($filename, $filesystem);
+            $out = new File('thumbnail-'.$filename, $filesystem);
+
+            $format = image_type_to_extension($imageAttributes[2], false);
+
+            //TODO: inject this dynamically selecting the optimal ImagineInterface available
+            $resizer = new SquareResizer(new \Imagine\Gd\Imagine());
+            $resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
+
+            var_dump($out); exit;
 
             $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
 
             if (is_null($gallery)) {
                 $gallery = new Gallery();
                 $gallery->setInstitution($this->entityManager->getRepository('InstitutionBundle:Institution')->find($institutionId));
-
             }
 
             $gallery->addMedia($media);
@@ -111,7 +132,6 @@ class MediaService
                         $mediaEntity = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($context['contextId']);
 
                         break;
-
                 }
             }
 

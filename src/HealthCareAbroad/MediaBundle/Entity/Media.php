@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\MediaBundle\Entity;
 
+use Imagine\Image\Box;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -322,5 +324,10 @@ class Media
     public function getGallery()
     {
         return $this->gallery;
+    }
+
+    public function getBox()
+    {
+        return new Box($this->width, $this->height);
     }
 }

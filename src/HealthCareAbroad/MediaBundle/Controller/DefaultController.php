@@ -17,18 +17,18 @@ class DefaultController extends Controller
     public function uploadAction(Request $request)
     {
         $response = new Response();
-        $session = $this->get('session');
-        $institutionId = $session->get('institutionId');
+
+        $institutionId = $request->get('institutionId');
         $fileBag = $request->files;
 
         if ($fileBag->has('file')) {
-            //$errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
+            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
 
             $multiUpload = $request->get('multiUpload');
 
             if (isset($multiUpload) && $multiUpload === '0') {
 
-                $session->getFlashBag()->add('notice', 'File successfully uploaded!');
+                $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
 
                 return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
                         'institutionId' => $institutionId,
