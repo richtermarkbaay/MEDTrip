@@ -165,25 +165,4 @@ class Affiliation
         return $this->status;
     }
 
-    /**
-     * Set manyToMany
-     *
-     * @param string $manyToMany
-     * @return Affiliation
-     */
-    public function setManyToMany($manyToMany)
-    {
-        $this->manyToMany = $manyToMany;
-        return $this;
-    }
-
-    /**
-     * Get manyToMany
-     *
-     * @return string 
-     */
-    public function getManyToMany()
-    {
-        return $this->manyToMany;
-    }
 }

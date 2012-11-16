@@ -9,17 +9,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-
 class AffiliationFormType extends AbstractType
 {	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$status = array(Affiliation::STATUS_ACTIVE => 'active', Affiliation::STATUS_INACTIVE => 'inactive');
 
-		$builder->add('name');
+		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('awardingBodies', new AwardingBodiesListType());
 		$builder->add('country', 'country_list');
-		$builder->add('details');
+		$builder->add('details', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 
