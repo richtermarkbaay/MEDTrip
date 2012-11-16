@@ -200,4 +200,14 @@ class Treatment
     {
         return $this->description;
     }
+    
+    public function isActive()
+    {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
