@@ -2,7 +2,7 @@
     <div class="sidebar-nav">
         <ul class="nav nav-tabs nav-stacked">
             {% for link in links %}
-            <li class="{{ app.request.requestUri == link.url ? 'active' : '' }}">
+            <li class="{{ app.request.requestUri == link.url or (selectedSubMenu is defined and selectedSubMenu == link.name)  ? 'active' : '' }}">
                 <a href="{{ link.url }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
             </li>
             {% endfor %}

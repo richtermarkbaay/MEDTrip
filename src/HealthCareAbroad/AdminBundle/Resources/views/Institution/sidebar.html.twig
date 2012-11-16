@@ -1,12 +1,12 @@
 {% include 'HelperBundle:Widgets:subMenu.html.twig'
     with {
         links: [
-            {url: path('admin_institution_view', {'institutionId': institution.id}), label: 'Dashboard', icon: 'icon-home'},
-            {url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: 'Medical Center', icon: 'icon-star'},
-            {url: '#', label: 'Doctors', icon: 'icon-user'},
-            {url: '#', label: 'Staff', icon: 'icon-user'},
-            {url: '#', label: 'Affiliations / Certifications', icon: 'icon-certificate'},
-            {url: path('admin_institution_gallery', {institutionId: institution.id} ), label: 'Media Gallery', icon: 'icon-picture'},
+            {name: 'dashboard', url: path('admin_institution_view', {'institutionId': institution.id}), label: 'Dashboard', icon: 'icon-home'},
+            {name: 'centers', url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: 'Medical Center', icon: 'icon-star'},
+            {name: 'doctors', url: '#', label: 'Doctors', icon: 'icon-user'},
+            {name: 'staff', url: '#', label: 'Staff', icon: 'icon-user'},
+            {name: 'affiliations', url: '#', label: 'Affiliations / Certifications', icon: 'icon-certificate'},
+            {name: 'gallery', url: path('admin_institution_gallery', {institutionId: institution.id} ), label: 'Media Gallery', icon: 'icon-picture'},
         ]
     }
 %}

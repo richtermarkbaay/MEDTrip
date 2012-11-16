@@ -38,16 +38,18 @@
         <div class="row-fluid">
             {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
     	</div>
-    	
-        {% include '::notice.admin.html.twig' %}
 
     	<div class="container maincontent" style="margin-top:20px;">
+    	    {% include '::notice.admin.html.twig' %}
+
 		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
 
 	        {% block content %}{% endblock %}
     		<!-- End of main_content-->
     	</div>
     </div>
+
+    {% include '::footer.admin.html.twig' %}
 
     <div id="dialog-container"></div>
 
