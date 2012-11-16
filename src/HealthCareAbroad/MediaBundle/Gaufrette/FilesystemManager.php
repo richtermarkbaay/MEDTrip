@@ -20,7 +20,7 @@ class FilesystemManager
     public function get($institutionId, $adapterType = 'local')
     {
         $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $institutionId);
-var_dump($this->uploadRootDir); exit;
+
         switch ($adapterType) {
             default:
                 $adapter = new LocalAdapter($this->uploadRootDir, true);
