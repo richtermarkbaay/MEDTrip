@@ -45,7 +45,7 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	$formData = array(
     		'affiliation[name]' => 'TestAffiliation1',
     		'affiliation[details]' => 'test Details',
-    		'affiliation[awardingBodies]' => 2,
+    		'affiliation[awardingBody]' => 2,
 			'affiliation[country]' => 1,
     		'affiliation[status]' => 1
     	);
@@ -75,7 +75,7 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	$formData = array(
     			'affiliation[name]' => 'TestAffiliation1 Updated',
     			'affiliation[details]' => 'test Details',
-    			'affiliation[awardingBodies]' => 1,
+    			'affiliation[awardingBody]' => 1,
     			'affiliation[country]' => 1,
     			'affiliation[status]' => 1
     	);
@@ -113,7 +113,7 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	$formData = array(
     			'affiliation[name]' => '',
     			'affiliation[details]' => '',
-    			'affiliation[awardingBodies]' => 2,
+    			'affiliation[awardingBody]' => 2,
     			'affiliation[country]' => 1,
     			'affiliation[status]' => 1
     	);
@@ -132,7 +132,7 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	$formData = array(
     			'affiliation[name]' => 'saveUsingGet',
     			'affiliation[details]' => 'test Details',
-    			'affiliation[awardingBodies]' => 1,
+    			'affiliation[awardingBody]' => 1,
     			'affiliation[country]' => 1,
     			'affiliation[status]' => 1
     	);

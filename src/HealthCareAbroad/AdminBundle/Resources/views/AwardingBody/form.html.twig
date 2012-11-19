@@ -1,20 +1,20 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_awardingBodies' %}
+{% set selectedSubTab = 'manage_awardingBody' %}
 
 {% block content %}
 
 	<div id="content">
-		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Awarding Bodies</h2></div>
+		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Awarding Body</h2></div>
 
 		{% embed '::contentWrapper.admin.html.twig' %}
 			{% block wrappedContent %}
 
             {% set contents = [{
-					'title': 'View all Awarding Bodies', 
-					'description': 'View the list of Awarding Bodies',
-					'href': path('admin_awardingBodies_index'), 
-					'links': [{'title': 'View Awarding Bodies', 'href': path('admin_awardingBodies_index')}]
+					'title': 'View all Awarding Body', 
+					'description': 'View the list of Awarding Body',
+					'href': path('admin_awardingBody_index'), 
+					'links': [{'title': 'View Awarding Body', 'href': path('admin_awardingBody_index')}]
 				}]
             %}
 

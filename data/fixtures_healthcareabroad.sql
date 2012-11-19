@@ -201,14 +201,15 @@ CREATE TABLE IF NOT EXISTS `awarding_bodies` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-
 --
 -- Dumping data for table `awarding_bodies`
 --
 
 INSERT INTO `awarding_bodies` (`id`, `name`, `details`, `website`, `status`) VALUES
 (1, 'test Again', 'test', 'test.com', 1),
-(2, 'test', 'test', 'test.com', 1);
+(2, 'test', 'test', 'test.com', 1),
+(3, 'res test', 'test', 'test', 1);
+
 
 
 -- --------------------------------------------------------
@@ -222,19 +223,19 @@ CREATE TABLE IF NOT EXISTS `affiliations` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   `details` varchar(100) NOT NULL,
-  `awarding_bodies_id` int(10) NOT NULL,
+  `awarding_body_id` int(10) NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `status` smallint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  KEY `country_id` (`country_id`),
-  KEY `awarding_bodies_id` (`awarding_bodies_id`)
+  KEY `awarding_body_id` (`awarding_body_id`),
+  KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `affiliations`
 --
 
-INSERT INTO `affiliations` (`id`, `name`, `details`, `awarding_bodies_id`, `country_id`, `status`) VALUES
+INSERT INTO `affiliations` (`id`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
 (1, 'test affiliation', 'details test', 1, 1, 1);
 
 -- --------------------------------------------------------
@@ -1260,7 +1261,7 @@ ALTER TABLE `gallery_media`
 -- Constraints for table `affiliations`
 --
 ALTER TABLE `affiliations`
-  ADD CONSTRAINT `affiliations_ibfk_1` FOREIGN KEY (`awarding_bodies_id`) REFERENCES `awarding_bodies` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `affiliations_ibfk_3` FOREIGN KEY (`awarding_body_id`) REFERENCES `awarding_bodies` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `affiliations_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
 --
