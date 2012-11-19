@@ -15,16 +15,16 @@
             }
         %}
             {% block sectionContent %}
-                <div id="centersAccordion">
+                <div id="centersAccordion" class="hca-accordion">
                     {% for center in institutionMedicalCenters %}
-                        <h5 class="medical-centers" style="border: 1px solid #eee; margin-top: 10px;padding: 10px">
+                        <h5 class="medical-centers">
                             <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
                                 <i class="icon-edit"></i> <span>edit</span>
                             </a>
                             <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center }}</a>
                             <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
                         </h5>
-                        <div class="content" style="background: #efefef;padding: 10px">
+                        <div class="content">
                             <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
                                 <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
                                     <i class="icon-edit"></i> <span>edit</span>
@@ -101,7 +101,11 @@
             }
 
             return false;
-        }).siblings('input').click(function(){$('#centersAccordion').accordion("disable"); });
+        }).siblings('input').click(function(){
+			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
+			$(this).parent().removeClass('ui-state-disabled'); 
+		});
+
 
         /*// MODAL UPDATE CENTER STATUS 
         <div id="update-status-container" title="Edit Institution Center Status">
