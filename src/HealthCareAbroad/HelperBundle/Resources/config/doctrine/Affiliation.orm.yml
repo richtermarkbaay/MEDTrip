@@ -33,13 +33,13 @@ HealthCareAbroad\HelperBundle\Entity\Affiliation:
                 country_id:
                     referencedColumnName: id
             orphanRemoval: false
-        awardingBodies:
-            targetEntity: HealthCareAbroad\HelperBundle\Entity\AwardingBodies
+        awardingBody:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\AwardingBody
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                awarding_bodies_id:
+                awarding_body_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }

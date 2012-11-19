@@ -7,7 +7,7 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use Doctrine\ORM\QueryBuilder;
 
-class AwardingBodiesListFilter extends ListFilter
+class AwardingBodyListFilter extends ListFilter
 {
 
     function setFilterOptions()
@@ -17,7 +17,7 @@ class AwardingBodiesListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('c')->from('HelperBundle:AwardingBodies', 'c');
+        $this->queryBuilder->select('c')->from('HelperBundle:AwardingBody', 'c');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('c.status = :status');

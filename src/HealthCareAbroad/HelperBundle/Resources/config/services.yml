@@ -134,10 +134,10 @@ services:
         tags:
            - { name: form.type, alias: advertisement_list }
            
-    form.awarding_bodies_list:
-        class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodiesListType
+    form.awarding_body_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType
         tags:
-            - { name: form.type, alias: offeredService_list }
+            - { name: form.type, alias: awarding_body_list }
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener
