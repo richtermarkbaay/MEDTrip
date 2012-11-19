@@ -103,4 +103,4 @@ class AppKernel extends Kernel
 }
 CODE;
 
-file_put_contents('AppKernel.php', $code);
+file_put_contents('app/AppKernel.php', $code);
