@@ -1,7 +1,7 @@
-HealthCareAbroad\HelperBundle\Entity\AwardingBodies:
+HealthCareAbroad\HelperBundle\Entity\AwardingBody:
     type: entity
     table: awarding_bodies
-    repositoryClass: HealthCareAbroad\HelperBundle\Repository\AwardingBodiesRepository
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\AwardingBodyRepository
     fields:
         id:
             id: true

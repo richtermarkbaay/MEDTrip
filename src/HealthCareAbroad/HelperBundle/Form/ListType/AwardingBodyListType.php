@@ -10,14 +10,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class AwardingBodiesListType extends AbstractType
+class AwardingBodyListType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'label' => 'Awarding Bodies',
+            'label' => 'Awarding Body',
         	'property' => 'name',
-            'class' => 'HealthCareAbroad\HelperBundle\Entity\AwardingBodies',
+            'class' => 'HealthCareAbroad\HelperBundle\Entity\AwardingBody',
 			'query_builder' => function(EntityRepository $er){ return $er->createQueryBuilder('u') ->add('where', 'u.status = 1') ->orderBy('u.name', 'ASC');}
         ));
     }
@@ -29,6 +29,6 @@ class AwardingBodiesListType extends AbstractType
     
     public function getName()
     {
-        return 'awarding_bodies_list';
+        return 'awarding_body_list';
     }
 }

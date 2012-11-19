@@ -1,0 +1,37 @@
+admin_awardingBody_index:
+    pattern:  /admin/awardingBody
+    defaults: { _controller: AdminBundle:AwardingBody:index }
+    requirements:    
+        _method:  GET
+
+admin_awardingBody_add:
+    pattern:  /admin/awardingBody/add
+    defaults: { _controller: AdminBundle:AwardingBody:add }
+    requirements:    
+        _method:  GET
+        
+admin_awardingBody_create:
+    pattern:  /admin/awardingBody/add
+    defaults: { _controller: AdminBundle:AwardingBody:save }
+    requirements:
+         _method: POST
+         
+admin_awardingBody_edit:
+    pattern:  /admin/awardingBody/edit/{id}
+    defaults: { _controller: AdminBundle:AwardingBody:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_awardingBody_update:
+    pattern:  /admin/awardingBody/edit/{id}
+    defaults: { _controller: AdminBundle:AwardingBody:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_awardingBody_updateStatus:
+    pattern:  /admin/awardingBody/update-status/{id}
+    defaults: { _controller: AdminBundle:AwardingBody:updateStatus, id: ~ }
+    requirements:
+        id: \d+

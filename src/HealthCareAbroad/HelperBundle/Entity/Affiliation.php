@@ -33,9 +33,9 @@ class Affiliation
     private $country;
     
     /**
-     * @var HealthCareAbroad\HelperBundle\Entity\AwardingBodies
+     * @var HealthCareAbroad\HelperBundle\Entity\AwardingBody
      */
-    private $awardingBodies;
+    private $awardingBody;
     
 
     /**
@@ -122,24 +122,24 @@ class Affiliation
     }
 
     /**
-     * Get awardingBodies
+     * Get awardingBody
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\AwardingBodies
+     * @return HealthCareAbroad\HelperBundle\Entity\AwardingBody
      */
-    public function getAwardingBodies()
+    public function getAwardingBody()
     {
-    	return $this->awardingBodies;
+    	return $this->awardingBody;
     }
     
     /**
-     * Set awardingBodies
+     * Set awardingBody
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\AwardingBodies $awardingBodies
-     * @return awardingBodies
+     * @param HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody
+     * @return awardingBody
      */
-    public function setAwardingBodies(\HealthCareAbroad\HelperBundle\Entity\AwardingBodies $awardingBodies = null)
+    public function setAwardingBody(\HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody = null)
     {
-    	$this->awardingBodies = $awardingBodies;
+    	$this->awardingBody = $awardingBody;
     	return $this;
     }
     

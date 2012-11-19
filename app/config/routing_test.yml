@@ -43,6 +43,20 @@ admin_city_testSave:
     requirements:
          id: \d+
          _method: GET
+         
+admin_awardingBody_testSave:
+    pattern:  /admin/awardingBody/test-save
+    defaults: { _controller: AdminBundle:AwardingBody:save }
+    requirements:
+         id: \d+
+         _method: GET
+       
+admin_affiliation_testSave:
+    pattern:  /admin/affiliation/test-save
+    defaults: { _controller: AdminBundle:Affiliation:save }
+    requirements:
+         id: \d+
+         _method: GET
 
 admin_news_testSave:
     pattern:  /admin/news/test-save
