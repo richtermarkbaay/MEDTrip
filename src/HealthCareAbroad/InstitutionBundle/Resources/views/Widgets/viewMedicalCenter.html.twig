@@ -8,10 +8,12 @@
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                     {{ specializationLabel.plural }}
-                    <button class="btn btn-mini pull-right">
-                        <i class="icon-plus"></i>
-                        Add {{ specializationLabel.singular }}
-                    </button>
+					<a href="{{ path('admin_institution_medicalCenter_addSpecialization', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}">
+                    	<button class="btn btn-mini pull-right">
+							<i class="icon-plus"></i>
+                       		Add {{ specializationLabel.singular }}
+                    	</button>
+					</a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
                 {% for each in specializations %}
