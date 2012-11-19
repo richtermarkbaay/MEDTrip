@@ -53,9 +53,9 @@ AdminBundle_affiliation:
     resource: "@AdminBundle/Resources/config/routing_affiliation.yml"
     prefix:   /
 
-# Routes for Admin Awarding Bodies #
-AdminBundle_awardingBodies:
-    resource: "@AdminBundle/Resources/config/routing_awardingBodies.yml"
+# Routes for Admin Awarding Body #
+AdminBundle_awardingBody:
+    resource: "@AdminBundle/Resources/config/routing_awardingBody.yml"
     prefix:   /
     
 # Routes for Admin NewsController #

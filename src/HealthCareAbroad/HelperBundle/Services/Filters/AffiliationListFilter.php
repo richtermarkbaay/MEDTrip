@@ -13,7 +13,7 @@ class AffiliationListFilter extends ListFilter
         parent::__construct($doctrine);
 
         // Add country in validCriteria
-        $this->addValidCriteria('awardingBodies');
+        $this->addValidCriteria('awardingBody');
         $this->addValidCriteria('country');
     }
 
@@ -27,7 +27,7 @@ class AffiliationListFilter extends ListFilter
     function setAwardingBodiesFilterOption()
     {
         // Set The Filter Option
-        $awardingBodies = $this->doctrine->getEntityManager()->getRepository('HelperBundle:AwardingBodies')->findByStatus(1);
+        $awardingBodies = $this->doctrine->getEntityManager()->getRepository('HelperBundle:AwardingBody')->findByStatus(1);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         
  
@@ -35,9 +35,9 @@ class AffiliationListFilter extends ListFilter
             $options[$each->getId()] = $each->getName();
         }
 
-        $this->filterOptions['awardingBodies'] = array(
-            'label' => 'Awarding Bodies',
-            'selected' => $this->queryParams['awardingBodies'],
+        $this->filterOptions['awardingBody'] = array(
+            'label' => 'Awarding Body',
+            'selected' => $this->queryParams['awardingBody'],
             'options' => $options
         );
     }
@@ -62,9 +62,9 @@ class AffiliationListFilter extends ListFilter
     {   
         $this->queryBuilder->select('a')->from('HelperBundle:Affiliation', 'a');
 
-        if ($this->queryParams['awardingBodies'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('a.awardingBodies = :awardingBodies');
-            $this->queryBuilder->setParameter('awardingBodies', $this->queryParams['awardingBodies']);
+        if ($this->queryParams['awardingBody'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.awardingBody = :awardingBody');
+            $this->queryBuilder->setParameter('awardingBody', $this->queryParams['awardingBody']);
         }
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
@@ -82,8 +82,8 @@ class AffiliationListFilter extends ListFilter
         	$sort = 'b.name ' . $this->sortOrder;
         }
         
-        if($this->sortBy == 'awardingBodies') {
-            $this->queryBuilder->leftJoin('a.awardingBodies', 'b');
+        if($this->sortBy == 'awardingBody') {
+            $this->queryBuilder->leftJoin('a.awardingBody', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';

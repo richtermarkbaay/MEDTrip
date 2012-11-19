@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\HelperBundle\Entity\AwardingBodies
  */
-class AwardingBodies
+class AwardingBody
 {
 	
 	const STATUS_ACTIVE = 1;

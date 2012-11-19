@@ -93,11 +93,11 @@ parameters:
     event.language.delete: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     
     #
-    # awarding Bodies related events
+    # awarding Body related events
     #
-    event.awarding_bodies.add: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
-    event.awarding_bodies.edit: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
-    event.awarding_bodies.delete: HealthCareAbroad\AdminBundle\Event\AwardingBodiesEvent
+    event.awarding_body.add: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
+    event.awarding_body.edit: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
+    event.awarding_body.delete: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
     
     #
     # Affiliation related events

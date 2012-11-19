@@ -3,9 +3,9 @@ namespace HealthCareAbroad\AdminBundle\Event;
 
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
-class AwardingBodiesEvent extends BaseEvent
+class AwardingBodyEvent extends BaseEvent
 {
-    public function getAwardingBodies()
+    public function getAwardingBody()
     {
         return $this->getData();
     }

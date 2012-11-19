@@ -1,46 +1,22 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'sub_specializations' %}
+{% set selectedSubMenu = 'sub_specializations' %}
+{% set subSpecializationLabels = getClassLabel('sub_specialization') %}
 
 {% block content %}
 
-    <div id="content">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+    
+    <div class="span9">
 
-        <div id="page-heading"><h2>{{ form.vars.value.id  ? 'Edit' : 'Add' }} Sub-specialization</h2></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-
-            {% block wrappedContent %}
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ subSpecializationLabels.singular | title ,
+                actions: [{link: path('admin_subSpecialization_index'), label: 'View all '~ subSpecializationLabels.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+            {% block sectionContent %}
 
                 {% include '::notice.admin.html.twig' %}
-
-                {% set contents = [{
-                        'title': 'View all sub-specializations',
-                        'description': 'View the list of sub-specializations',
-                        'href': path('admin_subSpecialization_index'),
-                        'links': [{'title': 'View sub-specializations', 'href': path('admin_subSpecialization_index')}]
-                    }]
-                %}
-
-                {% if(subSpecialization is defined) %}
-                    {% set contents = [{
-                            'title': 'Add treatment',
-                            'class': 'add-icon',
-                            'description': 'add new treatment for this sub-specialization',
-                            'href': path('admin_treatment_add', {subSpecializationId:subSpecialization.id}),
-                            'links': [{'title': 'add treatment', 'href': path('admin_treatment_add', {subSpecializationId:subSpecialization.id} )}]
-                        },
-                        {
-                            title: 'View version history',
-                            href: path('admin_showEditHistory', {'objectId': subSpecialization.id, 'objectClass': base64_encode(getClass(subSpecialization)) }),
-                            class: 'view-edit-history-link',
-                            description: 'Show all the changes made to this center type content',
-                            links: [{class: 'view-edit-history-link', title: 'View versions', href: path('admin_showEditHistory', {'objectId': subSpecialization.id, 'objectClass': base64_encode(getClass(subSpecialization)) }) }]
-                        }] | merge(contents)
-                    %}
-                {% endif %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
 
                 <form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
@@ -57,46 +33,17 @@
                     {{ form_row(form.description) }}
                     {{ form_row(form.status) }}
                     {{ form_rest(form) }}
-
-                    <input type="submit" value="Save" class="green-button" name="submit"/>
-                    <input type="submit" value="Save &amp; Add another sub specialization" class="green-button" name="submit"/>
+                    <div class="clear"><br></div>
+                    <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
+                    {% if not form.vars.value.id %}
+                        <input type="submit" value="Save &amp; Add another {{ subSpecializationLabels.singular | lower }}" class="btn btn-large" name="submit"/>
+                    {% endif %}
                 </form>
 
-
-                <!-- Display List of Procedures -->
-                {% set treatments = subSpecialization is defined ? subSpecialization.treatments : [] %}
-
-                {% if treatments is not empty %}
-
-                    <h2 style="padding-top: 20px; border-top: 1px dashed #aaa;margin-top:30px;width:70%">Treatments</h2>
-
-                    <table id="procedure-list" class="generic-table" width="70%">
-                    <tr>
-                        <th><a href="">Treatment</a></th>
-                        <th width="70"><a href="">Status</a></th>
-                        <th class="actions" width="90"><a href="">Actions</a></th>
-                    </tr>
-
-                    {% for treatment in treatments %}
-                        <tr>
-                            <td>{{ treatment.name }}</td>
-                            <td>{{ treatment.status ? 'Active' : 'Inactive' }}</td>
-                            <td align="center">
-                                <a href="{{ path('admin_treatment_edit', {id:treatment.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                                {% set class = treatment.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_treatment_updateStatus', {id:treatment.id}) }}" title="{{ treatment.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </table>
-                {% endif %}
-                <!-- End of List of Procedures -->
-
             {% endblock %}
-
         {% endembed %}
     </div>
-
+    
 {% endblock %}
 
 {% block inlineJavascriptCode %}
