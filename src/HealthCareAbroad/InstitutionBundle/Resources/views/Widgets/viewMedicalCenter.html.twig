@@ -1,6 +1,4 @@
-{% set specializationLabel = getClassLabel('institution_specialization') | title %}
-{% set specializationsLabel = getClassLabel('institution_specialization', true) | title %}
-
+{% set specializationLabel = getClassLabel('institution_specialization') %}
 
 <div class="span9">
 
@@ -9,10 +7,10 @@
         {% block sectionContent %}
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
-                    {{ specializationsLabel }}
+                    {{ specializationLabel.plural }}
                     <button class="btn btn-mini pull-right">
                         <i class="icon-plus"></i>
-                        Add {{ specializationLabel }}
+                        Add {{ specializationLabel.singular }}
                     </button>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">

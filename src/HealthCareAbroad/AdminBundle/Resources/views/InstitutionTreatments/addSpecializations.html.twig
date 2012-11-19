@@ -1,5 +1,5 @@
 {% extends 'AdminBundle::layout.institution.html.twig' %}
-{% set centerLabel = getClassLabel('institution_medical_center') | title %}
+{% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
 
 {% block title %}{{ parent() }} Add {{ centerLabel }} {% endblock %}
 
