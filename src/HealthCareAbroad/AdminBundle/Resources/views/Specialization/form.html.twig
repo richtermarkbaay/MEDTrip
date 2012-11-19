@@ -1,7 +1,7 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
 {% set selectedSubMenu = 'specializations' %}
-{% set specializationLabel = getClassLabel('specialization').singular|title %}
+{% set specializationLabels = getClassLabel('specialization') %}
 
 {% block content %}
 
@@ -10,26 +10,24 @@
     <div class="span9">
 
         {% embed 'HelperBundle:Widgets:section.html.twig' with { 
-                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ specializationLabel ,
-                actions: [{link: path('admin_specialization_add'), label: 'Add '~ specializationLabel, 'icon' : 'icon-ok' }]
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ specializationLabels.singular | title ,
+                actions: [{link: path('admin_specialization_index'), label: 'View all '~ specializationLabels.plural | title, 'icon' : 'icon-list' }]
             }
         %}
             {% block sectionContent %}
 
                 {% include '::notice.admin.html.twig' %}
-
-                
                 
                 <form novalidate action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
                     {{ form_row(form.name) }}
                     {{ form_row(form.description) }}
                     {{ form_rest(form) }}
-                    
                     <div class="clear"><br></div>
-                    
                     <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
-                    <input type="submit" value="Save &amp; Add another specialization" class="btn btn-large" name="submit"/>
+                    {% if not form.vars.value.id %}
+                        <input type="submit" value="Save &amp; Add another {{ specializationLabels.singular | title }}" class="btn btn-large" name="submit"/>
+                    {% endif %}
                 </form>
 
             {% endblock %}
