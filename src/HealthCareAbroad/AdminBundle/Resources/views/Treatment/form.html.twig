@@ -23,7 +23,14 @@
     				{% if form.children.subSpecializations.vars.read_only %}
     				    <div>
     						{{ form_label(form.subSpecializations) }}
-    						<span class="fixed-value">{{ form.vars.value.subSpecializations.name }}</span>
+    						<select disabled="true" multiple="true">
+    						    {% for eachSub in form.vars.value.subSpecializations %}
+    						    <option>
+    						        {{ eachSub.name }}
+    						    </option>
+    						    {%  endfor %}
+    						</select>
+    						
     					</div>
     				{% else %}
     				    {{ form_row(form.specialization) }}
@@ -47,7 +54,6 @@
         {% endembed %}
     </div>
 
-}
 {% endblock %}
 
 {% block inlineJavascriptCode %}
@@ -68,7 +74,7 @@
 			    _subSpecializationEl.attr('disabled', true).html('<option value="0">Loading...</option>');
 			    $.ajax({
 				    url: '{{ path("admin_specialization_loadAvailableSubSpecializations") }}',
-				    data: {id: _id},
+				    data: {id: _id, 'treatmentId': '{{ form.vars.value.id }}', 'selectedSubSpecializationIds': $.parseJSON('{{ selectedSubSpecializationIds is defined ? selectedSubSpecializationIds : "[]"  }}')},
 				    type: 'get',
 				    dataType: 'json',
 				    success: function(json){
