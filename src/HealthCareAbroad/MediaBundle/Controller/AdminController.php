@@ -13,15 +13,30 @@ use Gaufrette\File;
 
 class AdminController extends Controller
 {
+    /**
+     * This is convenient but can be tricky because the requirement that the
+     * institutionId be defined becomes non-obvious.
+     */
+    function preExecute()
+    {
+        $request = $this->getRequest();
+        // Check Institution
+        if ($request->get('institutionId')) {
+            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
+
+            if(!$this->institution) {
+                throw $this->createNotFoundException('Invalid Institution');
+            }
+        }
+    }
+
     public function galleryAction(Request $request)
     {
-        $institutionId = $request->get('institutionId');
-
-        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($institutionId)->toArray());
+        $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($this->institution->getId())->toArray());
         $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 12));
 
         return $this->render('MediaBundle:Admin:gallery.html.twig', array(
-                'institutionId' => $institutionId,
+                'institution' => $this->institution,
                 'institutionMedia' => $pager
         ));
     }
@@ -29,7 +44,7 @@ class AdminController extends Controller
     public function addAction(Request $request)
     {
         return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
-                'institutionId' => $request->get('institutionId'),
+                'institution' => $this->institution,
                 'multiUpload' => $request->get('multiUpload')
         ));
     }

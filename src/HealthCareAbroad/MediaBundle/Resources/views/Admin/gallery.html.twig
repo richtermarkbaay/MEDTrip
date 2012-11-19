@@ -1,115 +1,103 @@
-{% extends 'AdminBundle::layout.html.twig' %}
+{% extends 'AdminBundle::layout.institution.html.twig' %}
 {% set selectedTab = 'institutions'%}
 
-{#% form_theme form '::form.admin.html.twig' %#}
-
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-        <h1>{{ app.session.get('institutionName') }} Media Gallery</h1>
-    </div>
-    <!-- end page-heading -->
 
-    {% embed '::contentWrapper.admin.html.twig' %}
+    <div class="span9 title">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with {
+            title: 'Media Gallery',
+            actions: [{link: path('admin_institution_gallery_add', {'institutionId': institution.id}), label: 'Add media', 'icon' : 'icon-edit' }]
+       }%}
 
-        {% block wrappedContent %}
-            {# ----- Related tasks ----- #}
-            {% include 'MediaBundle:Admin:relatedTasksGallery.html.twig' %}
-            {# ----- end Related tasks ----- #}
+            {% block sectionContent %}
 
-            <!--  start table-content  -->
-            <div id="table-content" style="width:74%;">
-                {% include '::notice.admin.html.twig' %}
+                <div id="table-content">
+                    {% include '::notice.admin.html.twig' %}
 
-                <div id="filter-wrapper" style="width: 100%;">
-                    <span class="caption">Search</span>
-                    <div style="float: left">
-                        <input type="text" value="" style="margin-left: 10px; margin-top: 4px;" size="30"/>
+                    <div id="filter-wrapper" style="width: 100%;">
+                        <span class="caption">Search</span>
+                        <div style="float: left">
+                            <input type="text" value="" style="margin-left: 10px; margin-top: 2px;" size="30"/>
+                        </div>
+                        <div>
+                            <label>Media type: </label>
+                            <select class="styledselect_form_1">
+                                <option value="1">All</option>
+                                <option value="2">Images</option>
+                                <option value="3">Videos</option>
+                                <option value="4">Pdfs</option>
+                            </select>
+                        </div>
+                        <a href="#" class="button-type">GO</a>
                     </div>
-                    <div>
-                        <label>Media type: </label>
-                        <select class="styledselect_form_1">
-                            <option value="1">All</option>
-                            <option value="2">Images</option>
-                            <option value="3">Videos</option>
-                            <option value="4">Pdfs</option>
-                        </select>
-                    </div>
-                    <a href="#" class="button-type">GO</a>
+
+                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+                        <thead>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="float: right; margin-right: 10px">
+                                        {% if institutionMedia.isPaginable %}
+                                            {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institution.id}) }}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div style="float: right; margin-right: 10px">
+                                        {% if institutionMedia.isPaginable %}
+                                            {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institution.id}) }}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                        {% set mediaCount = 0 %}
+                        {% for medium in institutionMedia %}
+
+                            {% if (loop.index - 1) % 4 == 0 %}
+                                {% set mediaCount = 1 %}
+                                <tr>
+                            {% else %}
+                                {% set mediaCount = mediaCount + 1 %}
+                            {% endif %}
+
+                                    <td valign="top">{{ media(medium, 'gallery', {'institutionId': institution.id}) | raw }}</td>
+
+                            {% if mediaCount == 4 %}
+                                </tr>
+                            {% endif %}
+
+                        {% else %}
+                            <tr class="">
+                                <td colspan="4" align="center"> No media yet. </td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
                 </div>
 
-                <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
-                    <thead>
-                        <tr>
-                            <td colspan="4">
-                                <div style="float: right; margin-right: 10px">
-                                    {% if institutionMedia.isPaginable %}
-                                        {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tfoot>
-                        <tr>
-                            <td colspan="4">
-                                <div style="float: right; margin-right: 10px">
-                                    {% if institutionMedia.isPaginable %}
-                                        {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institutionId}) }}
-                                    {% endif %}
-                                </div>
-                            </td>
-                        </tr>
-                    </tfoot>
+            {% endblock %}
 
-                    {% set mediaCount = 0 %}
-                    {% for medium in institutionMedia %}
+        {% endembed %}
+    </div>
 
-                        {% if (loop.index - 1) % 4 == 0 %}
-                            {% set mediaCount = 1 %}
-                            <tr>
-                        {% else %}
-                            {% set mediaCount = mediaCount + 1 %}
-                        {% endif %}
+    <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+        <form id="editMediaForm" name="editMediaForm" action="{{ path('media_edit_caption') }}" method="post">
+            <label for="caption">Caption</label>
+            <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
+        </form>
+    </div>
 
-                                <td valign="top">{{ media(medium, 'gallery', {'institutionId': institutionId}) | raw }}</td>
-
-                        {% if mediaCount == 4 %}
-                            </tr>
-                        {% endif %}
-
-                    {% else %}
-                        <tr class="">
-                            <td colspan="4" align="center"> {{ app.session.get('institutionName') }} has no media yet. </td>
-                        </tr>
-                    {% endfor %}
-
-                </table>
-            </div>
-
-        {% endblock %}
-
-    {% endembed %}
-
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
-
-<div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
-    <form id="editMediaForm" name="editMediaForm" action="{{ path('media_edit_caption') }}" method="post">
-        <label for="caption">Caption</label>
-        <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
-    </form>
-</div>
-
-<div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
-    <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
-    <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path('media_delete') }}" method="post">
-        <input type="hidden" name="media_id" id="media_id" />
-    </form>
-</div>
+    <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
+        <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+        <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path('media_delete') }}" method="post">
+            <input type="hidden" name="media_id" id="media_id" />
+        </form>
+    </div>
 
 {% endblock %}
 
@@ -145,7 +133,7 @@ $(document).ready(function() {
         margin      : [20, 60, 20, 60]
     });
 
-    var media_id, media_caption, link, institution_id={{ institutionId }};
+    var media_id, media_caption, link, institution_id={{ institution.id }};
 
     var showMessage = function(parent, message) {
         $message = $('<div style="display:none;">'+ message + '</div>');

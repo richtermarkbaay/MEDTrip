@@ -1,21 +1,22 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
-use HealthCareAbroad\MediaBundle\Resizer\SquareResizer;
-
-use HealthCareAbroad\MediaBundle\Resizer\DefaultResizer;
-use Gaufrette\File;
-use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
-use Doctrine\ORM\UnitOfWork;
-use HealthCareAbroad\MediaBundle\Entity\Gallery;
-use Doctrine\ORM\QueryBuilder;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 use HealthCareAbroad\MediaBundle\Entity\Media;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Doctrine\ORM\EntityManager;
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+use HealthCareAbroad\MediaBundle\Resizer\Resizer;
 use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
 use HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter;
+
+use Gaufrette\File;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
+use Doctrine\ORM\QueryBuilder;
+
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * TODO:
  * 1. REFACTOR!!!
@@ -31,11 +32,17 @@ class MediaService
 {
     private $entityManager;
     private $filesystemManager;
+    private $resizer;
 
     public function __construct(FilesystemManager $filesystemManager, EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->filesystemManager = $filesystemManager;
+    }
+
+    public function setResizer(Resizer $resizer)
+    {
+        $this->resizer = $resizer;
     }
 
     public function addMedia(UploadedFile $file, $institutionId)
@@ -81,29 +88,25 @@ class MediaService
         $filesystem = $this->filesystemManager->get($institutionId, 'local');
 
         //TODO: rename/sanitize filename
-        //$filename = time();
-        $filename = $file->getClientOriginalName();
+        $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $caption = $file->getClientOriginalName();
 
         $proceed = true;
         try {
             $file->move($this->filesystemManager->getUploadRootDir(), $filename);
-
         } catch (FileException $e) {
             $proceed = false;
         }
 
         if ($proceed) {
-            $filePath = $this->filesystemManager->getUploadRootDir().'/'.$filename;
-
-            $imageAttributes = getimagesize($filePath);
+            $imageAttributes = getimagesize($this->filesystemManager->getUploadRootDir().'/'.$filename);
 
             $media = new Media();
             $media->setName($filename);
             $media->setContentType($imageAttributes['mime']);
             $media->setCaption($caption);
             $media->setContext($institutionId);
-            $media->setUuid(\time());
+            $media->setUuid(time());
             $media->setWidth($imageAttributes[0]);
             $media->setHeight($imageAttributes[1]);
             //TODO: ignore the other attributes for now
@@ -114,8 +117,9 @@ class MediaService
             $format = image_type_to_extension($imageAttributes[2], false);
 
             //TODO: inject this dynamically selecting the optimal ImagineInterface available
-            $resizer = new SquareResizer(new \Imagine\Gd\Imagine());
-            $resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
+            //$resizer = new SquareResizer(new \Imagine\Gd\Imagine());
+            //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
+            $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
 
             $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
 

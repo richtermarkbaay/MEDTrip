@@ -1,0 +1,40 @@
+{% set specializationLabel = getClassLabel('institution_specialization') %}
+
+<div class="span9">
+
+    {% embed 'HelperBundle:Widgets:section.html.twig' with {title: institutionMedicalCenter.name } %}
+
+        {% block sectionContent %}
+            <div id="medicalCenterDetailsAccordion" class="treatmentbox">
+                <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                    {{ specializationLabel.plural }}
+                    <button class="btn btn-mini pull-right">
+                        <i class="icon-plus"></i>
+                        Add {{ specializationLabel.singular }}
+                    </button>
+                </h5>
+                <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                {% for each in specializations %}
+					<h5 style="padding: 5px;">
+					    {{ each.specialization.name | title }} 
+					    <a href="#" style="float:right"><i class="icon-remove"></i></a>
+					</h5>
+					<div style="margin-top: 10px">
+					    <a href="#"  class="pull-right"><i class="icon-edit"></i> edit</a>
+					    {{ each.description | raw }} 
+					</div>
+
+				    <dl style="font-size: 13px; border-bottom: 1px dashed #EFEFEF; padding-bottom: 10px; margin-bottom: 10px;">
+    				    <dt>Treatments</dt>
+    					{% for treatment in each.treatments %}
+    				        <dd>{{ treatment.name }} <a href="#"><i class="icon-remove"></i></a></dd>
+    				    {% endfor %}
+                    </dl>
+                {% endfor %}
+                </div>
+            </div>
+        {% endblock %} 
+
+    {% endembed %}
+</div>
+

@@ -15,6 +15,24 @@
 {
     background-image: url("/images/glyphicons-halflings.png");
 }
+
+.icon-white, 
+.nav-tabs > .active > a > [class^="icon-"], 
+.nav-tabs > .active > a > [class*=" icon-"], 
+.nav-pills > .active > a > [class^="icon-"], 
+.nav-pills > .active > a > [class*=" icon-"], 
+.nav-list > .active > a > [class^="icon-"], 
+.nav-list > .active > a > [class*=" icon-"], 
+.navbar-inverse .nav > .active > a > [class^="icon-"], 
+.navbar-inverse .nav > .active > a > [class*=" icon-"], 
+.dropdown-menu > li > a:hover > [class^="icon-"], 
+.dropdown-menu > li > a:hover > [class*=" icon-"], 
+.dropdown-menu > .active > a > [class^="icon-"], 
+.dropdown-menu > .active > a > [class*=" icon-"] 
+{
+    background-image: url("/images/glyphicons-halflings-white.png");	
+}
+
 a:hover
 {
     text-decoration:none;
@@ -739,6 +757,18 @@ background-color: #cccccc;
 	margin-top: 70px;
 }
 
+.auto-width: {
+	width: auto;
+}
+
+.align-left {
+	text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
 
 /* jQuery UI Dialg Style */
 
@@ -813,14 +843,19 @@ div.raw-content {
 /* Filter Results */
 
 #filter-wrapper {
+    /*
     width: 70%;
+    background: #F5F5DC;
+    border-top-right-radius: 5px;
+    margin: 30px 0 10px;
+    */
+    border-radius: 4px 4px 4px 4px;
     position: relative;
     padding: 6px 0;
     border: 1px solid #ddd;
-    border-top-right-radius: 5px;
-    margin: 30px 0 10px;
+    margin-bottom: 20px;
     text-align: right;
-    background: #F5F5DC;
+    
 }
 
 #filter-wrapper > div {

@@ -5,7 +5,7 @@
 </form>
 
 <div id="browser-uploader-switcher">
-    You are using the multi-file uploader. Problems? Try the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': institutionId, 'multiUpload': 0}) }}">browser uploader</a> instead.
+    You are using the multi-file uploader. Problems? Try the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': institution.id, 'multiUpload': 0}) }}">browser uploader</a> instead.
 </div>
 
 
@@ -29,7 +29,7 @@ $(function() {
         // General settings
         /*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
         runtimes : 'html5',
-        url : '{{ path('media_upload', {'institutionId': institutionId}) }}',
+        url : '{{ path('media_upload', {'institutionId': institution.id}) }}',
         max_file_size : '10mb',
         /*chunk_size : '1mb',*/
         unique_names : true,
