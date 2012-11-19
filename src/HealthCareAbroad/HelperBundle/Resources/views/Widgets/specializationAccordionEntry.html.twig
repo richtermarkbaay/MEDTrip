@@ -1,4 +1,4 @@
-<h5 id="specialization-{{ specialization.id }}" style="border: 1px solid #eee; margin-top: 10px;padding: 10px">
+<h5 id="specialization-{{ specialization.id }}">
     {{ specialization.name }}
     
     {% if showCloseBtn %}
@@ -6,7 +6,7 @@
     {% endif %}
 </h5>
 <div>
-    <div class="boxcontent" style="border: 1px solid #EEEEEE;border-top:none;">
+    <div class="boxcontent">
         {% for subSpecializationName, treatments in subSpecializations %}
             <h6 class="sub-specialization-title">{{ subSpecializationName }}</h6>
 
