@@ -21,7 +21,7 @@
                             <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
                                 <i class="icon-edit"></i> <span>edit</span>
                             </a>
-                            <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center }}</a>
+                            <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center.name }}</a>
                             <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
                         </h5>
                         <div class="content">
@@ -106,41 +106,6 @@
 			$(this).parent().removeClass('ui-state-disabled'); 
 		});
 
-
-        /*// MODAL UPDATE CENTER STATUS 
-        <div id="update-status-container" title="Edit Institution Center Status">
-            <p>
-                <strong id="current-institution-center"></strong> is currently <strong id="current-status"></strong>. 
-                Select an option below to update its status.
-            </p>
-            <form id="update-status-form" method="POST">
-                <select name="status" id="selected-status">
-                    {% for label,value in updateCenterStatusOptions %}
-                        <option value="{{value}}">{{label}}</option>
-                    {% endfor %}
-                </select>
-                <input type="submit" class="green-button" value="Confirm"/>
-            </form>
-        </div>
-         
-        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
-
-        $("a.show-update-status").click(function() {
-
-            var url = $(this).attr('href');
-            var institutionMedicalCenterId = $(this).attr('id').split('-').pop();
-            var currentStatus = $('#medical-center-'+institutionMedicalCenterId+' > td.status').html();
-            var institutionMedicalCenterName = $('#medical-center-'+institutionMedicalCenterId+' > td.name').html();
-
-            $('#current-status').html(currentStatus);
-            $('#current-institution-center').html(institutionMedicalCenterName);
-            $('#update-status-form').attr('action', url);
-
-            $("#update-status-container").dialog("open");
-
-            return false;
-        });
-        */
     });
 </script>
 {% endblock %}

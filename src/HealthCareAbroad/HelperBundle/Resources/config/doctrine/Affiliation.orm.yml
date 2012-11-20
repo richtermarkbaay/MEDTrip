@@ -42,4 +42,12 @@ HealthCareAbroad\HelperBundle\Entity\Affiliation:
                 awarding_body_id:
                     referencedColumnName: id
             orphanRemoval: false
+    manyToMany:
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            cascade: {}
+            mappedBy: institutionAffiliation
+            inversedBy: null
+            joinTable: null
+            orderBy: null
     lifecycleCallbacks: {  }

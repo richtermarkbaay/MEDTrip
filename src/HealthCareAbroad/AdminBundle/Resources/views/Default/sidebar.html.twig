@@ -1,0 +1,9 @@
+{% include 'HelperBundle:Widgets:subMenu.html.twig'
+    with {
+        links: [
+            {name: 'featuredInstitutions', url: '#', label: 'Featured Institutions', icon: 'icon-star'},
+            {name: 'featuredListings', url: '#', label: 'Featured ' ~ getClassLabel('institution_medical_center').plural | title, icon: 'icon-star'},
+            {name: 'premierBanner', url: '#', label: 'Premier Banner', icon: 'icon-star'},
+        ]
+    }
+%}

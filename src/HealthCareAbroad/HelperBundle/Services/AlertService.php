@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertClasses;
@@ -23,16 +25,17 @@ class AlertService
 
 
     protected $doctrine;
-    protected $container;
+    protected $router;
+    protected $routeCollection;
     protected $couchDb;
 
-    function __construct($doctrine, $container) 
+    function __construct($doctrine, $router, $alertDb) 
     {
         $this->doctrine = $doctrine;
-        $this->container = $container;
+        $this->router = $router;
+        $this->routeCollection = $router->getRouteCollection();
 
-        $alertCouchDb = $this->container->getParameter('alert_db');
-        $this->couchDB = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
+        $this->couchDB = new CouchDatabase($alertDb['host'], $alertDb['port'], $alertDb['database']);
     }
     
     /**
@@ -40,7 +43,7 @@ class AlertService
      * @param Institution $institution
      * @return array
      */
-    function getAlertsByInstitution(Institution $institution)
+    function getAlertsByInstitution(Institution $institution, $groupByType = false)
     {
         $params = array(
             'keys' => array(
@@ -49,7 +52,7 @@ class AlertService
             )
         );
 
-        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, $groupByType);
     }
 
     /**
@@ -57,7 +60,7 @@ class AlertService
      * @param int $accountId
      * @return \HealthCareAbroad\HelperBundle\Services\Ambigous
      */
-    function getAdminAlerts($accountId = null)
+    function getAdminAlerts($accountId = null, $groupByType = false)
     {
         $params = array(
             'keys' => array(
@@ -66,7 +69,7 @@ class AlertService
             )
         );
 
-        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, $groupByType);
     }
 
 
@@ -136,7 +139,9 @@ class AlertService
      * @return unknown
      */
     function formatAlert($data = array())
-    {
+    {        
+        $data['viewUrl'] = $this->getAlertViewUrl($data);
+
         return $data;
     }
 
@@ -224,7 +229,7 @@ class AlertService
             $data['type'] = AlertTypes::DEFAULT_TYPE;
         }
 
-        if(!isset($data['referenceData']) || !isset($data['referenceData']['id']) || !$data['referenceData']['id']) {
+        if(!isset($data['referenceData'])) {
             throw new \ErrorException('Invalid Alert Data! ' . json_encode($data));
         }
 
@@ -256,5 +261,31 @@ class AlertService
         $data['dateCreated'] = date(self::DATE_FORMAT);
 
         return $data;
+    }
+    
+    function getAlertViewUrl($data) 
+    {
+        $route = $this->routeCollection->get(@$data['viewRouteName']);
+
+        if(!$route) {
+            return '#';
+        }
+
+        $requirements = $route->getRequirements();
+        unset($requirements['_method']);
+
+        $routeParams = array();
+        foreach($requirements as $key => $val) {
+            if(isset($data['referenceData'][$key])) {
+                $routeParams[$key] = $data['referenceData'][$key];                
+            } else {
+                $routeParams[$key] = 0;                
+            }
+
+        }
+
+        $url = $this->router->generate($data['viewRouteName'], $routeParams);
+
+        return $url;
     }
 }

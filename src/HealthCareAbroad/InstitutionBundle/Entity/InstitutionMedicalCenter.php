@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
+    
     /**
      * @var bigint $id
      */
@@ -19,6 +20,11 @@ class InstitutionMedicalCenter
      * @var string $name
      */
     private $name;
+
+    /**
+     * @var string $businessHours
+     */
+    private $businessHours;
 
     /**
      * @var text $description
@@ -49,6 +55,11 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionSpecializations;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionAffiliations;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
@@ -63,13 +74,14 @@ class InstitutionMedicalCenter
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionAffiliations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return bigint
+     * @return bigint 
      */
     public function getId()
     {
@@ -91,11 +103,33 @@ class InstitutionMedicalCenter
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set businessHours
+     *
+     * @param string $businessHours
+     * @return InstitutionMedicalCenter
+     */
+    public function setBusinessHours($businessHours)
+    {
+        $this->businessHours = $businessHours;
+        return $this;
+    }
+
+    /**
+     * Get businessHours
+     *
+     * @return string 
+     */
+    public function getBusinessHours()
+    {
+        return $this->businessHours;
     }
 
     /**
@@ -113,7 +147,7 @@ class InstitutionMedicalCenter
     /**
      * Get description
      *
-     * @return text
+     * @return text 
      */
     public function getDescription()
     {
@@ -135,7 +169,7 @@ class InstitutionMedicalCenter
     /**
      * Get dateCreated
      *
-     * @return datetime
+     * @return datetime 
      */
     public function getDateCreated()
     {
@@ -157,7 +191,7 @@ class InstitutionMedicalCenter
     /**
      * Get dateUpdated
      *
-     * @return datetime
+     * @return datetime 
      */
     public function getDateUpdated()
     {
@@ -179,7 +213,7 @@ class InstitutionMedicalCenter
     /**
      * Get status
      *
-     * @return smallint
+     * @return smallint 
      */
     public function getStatus()
     {
@@ -201,7 +235,7 @@ class InstitutionMedicalCenter
     /**
      * Get slug
      *
-     * @return string
+     * @return string 
      */
     public function getSlug()
     {
@@ -209,31 +243,31 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Add institutionSpecialization
+     * Add institutionSpecializations
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecialization
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
      * @return InstitutionMedicalCenter
      */
-    public function addInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecialization)
+    public function addInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
     {
-        $this->institutionSpecializations[] = $institutionSpecialization;
+        $this->institutionSpecializations[] = $institutionSpecializations;
         return $this;
     }
 
     /**
-     * Remove institutionSpecialization
+     * Remove institutionSpecializations
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecialization
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
      */
-    public function removeInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecialization)
+    public function removeInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
     {
-        $this->institutionSpecializations->removeElement($institutionSpecialization);
+        $this->institutionSpecializations->removeElement($institutionSpecializations);
     }
 
     /**
      * Get institutionSpecializations
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getInstitutionSpecializations()
     {
@@ -244,7 +278,7 @@ class InstitutionMedicalCenter
      * Set institution
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
-     * @return InstitutionMedicalCenter
+     * @return institution
      */
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
@@ -255,7 +289,7 @@ class InstitutionMedicalCenter
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
      */
     public function getInstitution()
     {
@@ -283,19 +317,48 @@ class InstitutionMedicalCenter
     {
         $this->doctors->removeElement($doctors);
     }
+    
+    /**
+     * Add institutionAffiliations
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
+     * @return InstitutionAffiliation
+     */
+    public function addInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations)
+    {
+    	$this->institutionAffiliations[] = $institutionAffiliations;
+    	return $this;
+    }
+    
+    /**
+     * Remove institutionAffiliations
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
+     */
+    public function removeInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliation)
+    {
+    	$this->institutionAffiliations->removeElement($institutionAffiliations);
+    }
+    
+    /**
+     * Get institutionAffiliations
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getInstitutionAffiliations()
+    {
+    	return $this->institutionAffiliations;
+    }
+    
+    
 
     /**
      * Get doctors
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getDoctors()
     {
         return $this->doctors;
-    }
-
-    public function __toString()
-    {
-        return $this->getName();
     }
 }

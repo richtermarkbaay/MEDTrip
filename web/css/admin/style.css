@@ -15,7 +15,44 @@
 {
     background-image: url("/images/glyphicons-halflings.png");
 }
+.hour
+{
+    width: 70px;	
+}
+.hours-container
+{
+    display: table;
+    border-style: solid;
+    border-width: 1px;
+    width: 40%;
+}
+.hours-row
+{
+    display: table-row;
+    height:10px;
+    border-style: solid;
+    border-width: 1px;
+    width: 12px;
+}
 
+.hours-col
+{
+    display: table-cell;
+    text-align: center;
+    vertical-align: top;
+    border-style: solid;
+    border-width: 1px;
+   
+}
+
+#spinner
+{
+	width: 70px;
+}
+#spinner-1
+{
+    width: 70px;
+}
 .icon-white, 
 .nav-tabs > .active > a > [class^="icon-"], 
 .nav-tabs > .active > a > [class*=" icon-"], 

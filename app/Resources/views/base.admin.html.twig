@@ -6,7 +6,7 @@
 
         {% javascripts
             'js/jquery/jquery-1.8.2.js'
-            'js/jquery/jquery-ui-1.9.0.custom.min.js'
+            'js/jquery/jquery-ui-1.9.0.custom.js'
             'bundles/helper/js/Common.js'
             output='js/compiled-admin.js'
         %}
@@ -29,12 +29,11 @@
 
             </script>
 
-            {% stylesheets
-                'css/bootstrap.min.css'
-                'css/bootstrap-responsive.min.css'
-                'css/admin/style.css'
-                output='css/compiled-admin.css'
-
+            {% stylesheets 
+				'css/bootstrap.min.css'
+				'css/bootstrap-responsive.min.css'
+				'css/admin/style.css'
+				output='css/compiled-admin.css'
             %}
                 <link href="{{ asset_url }}" rel="stylesheet"/>
             {% endstylesheets %}

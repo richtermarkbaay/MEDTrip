@@ -248,8 +248,8 @@ DROP TABLE IF EXISTS `cities`;
 CREATE TABLE IF NOT EXISTS `cities` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `country_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) NOT NULL,
-  `slug` char(100) NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `country_id_2` (`country_id`,`name`),
@@ -598,6 +598,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `name` varchar(250) NOT NULL,
+  `business_hours` varchar(500) CHARACTER SET latin1 NOT NULL,
   `description` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
