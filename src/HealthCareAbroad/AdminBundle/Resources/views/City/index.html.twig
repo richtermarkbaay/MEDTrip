@@ -1,79 +1,63 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_cities' %}
+{% set selectedSubMenu = 'cities' %}
+{% set cityLabel = getClassLabel('city') %}
 
 {% block content %}
-
-    <div id="content">
-
-        <div id="page-heading"><h2>List of Cities</h2></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
-
-                {% include '::notice.admin.html.twig' %}
-
-                {% set contents = [{
-                        'title': 'Add city',
-                        'description': 'Add new city',
-                        'class': 'add-icon',
-                        'href': path('admin_city_add'),
-                        'links': [{'title': 'Add a city', 'href': path('admin_city_add')}]
-                    }]
-                %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-
-                <!-- Render Filter Box -->
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+	</div>
+    <div id="content" class="span9">
+ 
+ 	   {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: cityLabel.plural | title,
+                actions: [{link: path('admin_city_add'), label: 'Add '~ cityLabel.singular | title, 'icon' : 'icon-ok' }] 
+            }  
+        %}
+    
+ 		{% block sectionContent %}
+            
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
-
                 {% set sortBy = app.request.get('sortBy') %}
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
-
-                <div style="width: 70%">
-                    <table id="city-list" class="table table-bordered sortable-list">
-                        <tr>
-                            <th id="column-name">
-                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
-                            </th>
-                            <th id="column-country">
-                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a>
-                            </th>
-                            <th>Status</th>
-                            <th class="actions" width="100">Action</th>
-                        </tr>
-
-                        {% for city in cities %}
-                        {% if city.status %}
-                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
-                        {% else %}
-                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
-                        {% endif %}
-                            <tr>
-                                <td>{{ city.name }}</td>
-                                <td class="country">{{ city.country.name }}</td>
-                                <td>{{ city.status ? 'Active' : 'Inactive' }}</td>
-                                <td align="center">
-                                    <a href="{{ path('admin_city_edit', {id:city.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
-                                    <br/>
-                                    <a href="{{ path('admin_city_updateStatus', {id:city.id}) }}" title="{{ statusLabel }}" class="update-status">
-                                        <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        {% else  %}
-                            <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
-                        {% endfor %}
-                    </table>
-                    
-                    {% if pager.isPaginable %}
-                        {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
-                    {% endif %}
-                </div>
                 
+                <table id="city-list" class="table table-bordered sortable-list">
+                    <tr>
+                       <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                       <th id="column-country"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
+                       <th width="15%">Actions</th>
+                    </tr>
+            
+                {% for each in cities %}
+                     
+                    <tr>
+                        <td>{{ each.name }}</td>
+                        <td>{{ each.country.name }}</td>
+                        <td>
+                            <ul style="list-style: none;">
+                                <li><a href="{{ path('admin_city_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
+                                
+                                <li>
+                                    {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
+                                    <a href="{{ path('admin_city_updateStatus', {id: each.id} ) }}" title="" class="update-status">
+                                        <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
             {% endblock %}
+            
         {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
+        {% endif %}
+        
     </div>
-
+    
 {% endblock %}

@@ -6,7 +6,7 @@ parameters:
     class_keys:
         institution_medical_center: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
 
-    #--
+    #-- 
     # translation of class key to displayed labels in Twig templates
     class_labels:
         specialization: {singular: "specialization", plural: "specializations"}
@@ -14,3 +14,5 @@ parameters:
         treatment: {singular: "treatment", plural: "treatments"}
         institution_medical_center: {singular: "clinic", plural: "clinics"}
         institution_specialization: {singular: "specialization", plural: "specializations"}
+        country: {singular: "country", plural: "countries"}
+        city: {singular: "city", plural: "cities"}

@@ -27,4 +27,17 @@ class AffiliationRepository extends EntityRepository
 	
 		return $result;
 	}
+	
+	public function updateAffiliations($affiliationId, $institutionMedicalCenterId)
+	{
+		$conn = $this->_em->getConnection();
+		
+		$deleteQry = "DELETE FROM institution_affiliations " .
+						"WHERE institution_medical_center_id = $institutionMedicalCenterId " .
+						"AND affiliation_id = " . $affiliationId . " ";
+		
+		$result = $conn->executeQuery($deleteQry);
+		
+		return $result;
+	}
 }
