@@ -147,8 +147,11 @@ class InstitutionTreatmentsController extends Controller
                 $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
                 $this->request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
-                
-                // TODO: fire event
+
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+                        $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                    ));
 
                 // redirect to step 2;
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
@@ -189,6 +192,11 @@ class InstitutionTreatmentsController extends Controller
         $em->persist($this->institutionMedicalCenter);
         $result = $em->flush();
 
+        // dispatch event
+        //$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+            //$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+        //));
+        
         $response = new Response (json_encode($result));
         $response->headers->set('Content-Type', 'application/json');
 
