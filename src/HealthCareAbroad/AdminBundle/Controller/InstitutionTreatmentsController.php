@@ -13,6 +13,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -20,6 +22,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -99,11 +103,14 @@ class InstitutionTreatmentsController extends Controller
     {
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
+		
+        $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
+        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $specializations,
+        	'affiliations' => $affiliations,
             'selectedSubMenu' => 'centers'
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
@@ -297,6 +304,7 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
     }   
+
     
     /**
      * 
@@ -350,6 +358,38 @@ class InstitutionTreatmentsController extends Controller
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);   
+    }
+    
+    /**
+     *
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function addAffiliationsAction()
+    {
+    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+    	
+    	 if ($this->request->isMethod('POST')) {
+    		 
+    		$form->bind($request);
+    	
+    		if ($form->isValid()) {
+    	
+    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+    			->saveAsDraft($form->getData());
+    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
+    			
+    			return $this->redirect($this->generateUrl('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig',
+    							array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+    		}
+    	}
+    	 
+    	return $this->render('AdminBundle:InstitutionTreatments:addAffiliation.html.twig', array(
+    					'form' => $form->createView(),
+    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
+    					'formAction' => $this->generateUrl('admin_institution_medicalCenter_addAffiliations', 
+    									array('institutionId:' => $this->institution->getId() , 'imcId:' => $this->institutionMedicalCenter->getId()))
+    	));
     }
     
     /**
