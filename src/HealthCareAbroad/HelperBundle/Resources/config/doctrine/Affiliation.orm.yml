@@ -43,11 +43,7 @@ HealthCareAbroad\HelperBundle\Entity\Affiliation:
                     referencedColumnName: id
             orphanRemoval: false
     manyToMany:
-        institutionMedicalCenter:
+        institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            cascade: {}
-            mappedBy: institutionAffiliation
-            inversedBy: null
-            joinTable: null
-            orderBy: null
+            mappedBy: institutionAffiliations
     lifecycleCallbacks: {  }
