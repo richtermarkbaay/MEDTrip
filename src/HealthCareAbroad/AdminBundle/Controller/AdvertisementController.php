@@ -140,7 +140,6 @@ class AdvertisementController extends Controller
             $form->bind($request);
             
             if ($form->isValid()) {
-                $media = array();
                 if($request->files->get('advertisement')) {
                     
                     $adsArray = $request->files->get('advertisement');
@@ -149,7 +148,6 @@ class AdvertisementController extends Controller
                     if ($media) {
                         $media = $this->get('services.media')->addMedia($media, $institution->getId());
                         $media = $this->get('services.media')->addAdvertisementMedia($advertisement, $media);
-                        echo $media;
                     }
                 }
                 try {

@@ -68,15 +68,11 @@ class InstitutionTreatmentsController extends Controller
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
             }
+
         }
     }
     
-    /**
-     * Actionn handler for viewing all InstitutionMedicalCenter of selected institution 
-     * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
+    
     public function viewAllMedicalCentersAction()
     {
         $criteria = array('institution' => $this->institution);
@@ -108,7 +104,7 @@ class InstitutionTreatmentsController extends Controller
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $specializations,
-            'selectedSubMenu' => 'centers',
+            'selectedSubMenu' => 'centers'
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
         );
@@ -123,7 +119,7 @@ class InstitutionTreatmentsController extends Controller
     public function addMedicalCenterAction()
     {
         $service = $this->get('services.institution_medical_center');
-        
+        $request = $this->request;
         if (is_null($this->institutionMedicalCenter)) {
             $this->institutionMedicalCenter = new institutionMedicalCenter();
             $this->institutionMedicalCenter->setInstitution($this->institution);
@@ -132,21 +128,27 @@ class InstitutionTreatmentsController extends Controller
             // there is an imcId in the Request, check if this is a draft
             if ($this->institutionMedicalCenter && !$service->isDraft($this->institutionMedicalCenter)) {
                 
-                $this->request->getSession()->setFlash('error', 'Invalid medical center draft.');
+                $request->getSession()->setFlash('error', 'Invalid medical center draft.');
                 
                 return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
             }
         }
         
         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
-        if ($this->request->isMethod('POST')) {
+        if ($request->isMethod('POST')) {
             $form->bind($this->request);
+            
+            // Get contactNumbers and convert to json format
+            $businessHours = json_encode($request->get('businessHours'));
             
             if ($form->isValid()) {
                 
+                // Set BusinessHours before saving
+                $form->getData()->setBusinessHours($businessHours);
+                
                 $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
-                $this->request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
+                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
                 
                 // TODO: fire event
 
@@ -158,6 +160,7 @@ class InstitutionTreatmentsController extends Controller
             }
         }
         
+        $daysArr = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
         $params = array(
             'form' => $form->createView(),
             'institution' => $this->institution,
@@ -168,7 +171,58 @@ class InstitutionTreatmentsController extends Controller
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
     }
 
+    public function editMedicalCenterAction()
+    {
+        $service = $this->get('services.institution_medical_center');
+        $request = $this->request;
+        
+        if (is_null($this->institutionMedicalCenter)) {
+            $this->institutionMedicalCenter = new institutionMedicalCenter();
+            $this->institutionMedicalCenter->setInstitution($this->institution);
+        }
+        else {
+            // there is an imcId in the Request, check if this is a draft
+            if ($this->institutionMedicalCenter && !$service->isDraft($this->institutionMedicalCenter)) {
     
+                $this->request->getSession()->setFlash('error', 'Invalid medical center draft.');
+    
+                return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
+            }
+        }
+        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            
+            // Get contactNumbers and convert to json format
+            $businessHours = json_encode($request->get('businessHours'));
+            
+            if ($form->isValid()) {
+                // Set BusinessHours before saving
+                $form->getData()->setBusinessHours($businessHours);
+                
+                $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
+        
+                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been updated. You can now add Specializations to this center.");
+    
+                // TODO: fire event    
+                // redirect to step 2;
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
+                                'institutionId' => $this->institution->getId(),
+                                'imcId' => $this->institutionMedicalCenter->getId()
+                )));
+            }
+        }
+        
+        $params = array(
+                        'form' => $form->createView(),
+                        'institutionId' => $this->institution->getId(),
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter
+        );
+    
+        return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
+    }
+
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -199,35 +253,35 @@ class InstitutionTreatmentsController extends Controller
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
-//     public function updateMedicalCenterStatusAction()
-//     {
-//         $request = $this->getRequest();
-//         $status = $request->get('status');
+    public function updateMedicalCenterStatusAction()
+    {
+        $request = $this->getRequest();
+        $status = $request->get('status');
     
-//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
+        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
     
-//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
-//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
+        if(!InstitutionMedicalCenterStatus::isValid($status)) {
+            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
     
-//             return $this->redirect($redirectUrl);
-//         }
+            return $this->redirect($redirectUrl);
+        }
 
-//         $this->institutionMedicalCenter->setStatus($status);
+        $this->institutionMedicalCenter->setStatus($status);
     
-//         $em = $this->getDoctrine()->getEntityManager();
-//         $em->persist($this->institutionMedicalCenter);
-//         $em->flush($this->institutionMedicalCenter);
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $em->flush($this->institutionMedicalCenter);
 
-//         // dispatch EDIT institutionMedicalCenter event
-//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+        // dispatch EDIT institutionMedicalCenter event
+        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
+        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
+        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
     
-//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
     
 
-//         return $this->redirect($redirectUrl);
-//     }
+        return $this->redirect($redirectUrl);
+    }
 
     /**
      * 
