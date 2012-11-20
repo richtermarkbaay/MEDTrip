@@ -82,7 +82,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
              targetEntity: HealthCareAbroad\HelperBundle\Entity\Affiliation
              cascade: { }
              mappedBy: null
-             inversedBy: institution_medical_center
+             inversedBy: institutionMedicalCenters
              joinTable:
                 name: institution_affiliations
                 joinColumns:
