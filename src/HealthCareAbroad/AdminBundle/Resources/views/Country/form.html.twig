@@ -1,25 +1,23 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_countries' %}
-
+{% set selectedSubMenu = 'countries' %}
+{% set countriesLabel = getClassLabel('country') %}
 {% block content %}
+   <div class="span3">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+	</div>
+	<div class="span9">
+	
+	   {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ countriesLabel.singular | title ,
+                actions: [{link: path('admin_country_index'), label: 'View all '~ countriesLabel.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+	
+    	{% block sectionContent %}
 
-	<div id="content">
-		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Country</h2></div>
-
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
-
-            {% set contents = [{
-					'title': 'View all countries', 
-					'description': 'View the list of countries',
-					'href': path('admin_country_index'), 
-					'links': [{'title': 'View countries', 'href': path('admin_country_index')}]
-				}]
-            %}
-
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			
+                {% include '::notice.admin.html.twig' %}
+		
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
 				{{ form_row(form.name) }}
@@ -28,8 +26,9 @@
 
 			    <input type="submit" class="form-submit" name="submit"/>
 			</form>
-			{% endblock %}
-		{% endembed %}
-	</div>
+			
+            {% endblock %}
+        {% endembed %}
+    </div>
 
 {% endblock %}

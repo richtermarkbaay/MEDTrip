@@ -350,8 +350,6 @@ class InstitutionMedicalCenter
     	return $this->institutionAffiliations;
     }
     
-    
-
     /**
      * Get doctors
      *
