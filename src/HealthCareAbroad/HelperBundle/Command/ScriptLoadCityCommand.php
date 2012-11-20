@@ -65,21 +65,24 @@ class ScriptLoadCityCommand extends ContainerAwareCommand
             $line = explode(',"', trim($lineContent));
 
             $country_abbr = substr($line[1], 0, -1);
-            $city_name = substr($line[3], 0, -1);
-            
+            $city_name = utf8_encode(substr($line[3], 0, -1));
             if(!$city_name || !$country_abbr) {
                 continue;
             }
-                
+            
             if(isset($countries[$country_abbr])) {
-                $slug = str_replace(" ", "-",strtolower($city_name));
-                $subQuery .= "(". $countries[$country_abbr] .", '". addslashes($city_name) ."', '". addslashes($slug) ."', 1),";
+                $slug = str_replace(" ", "-",mb_strtolower($city_name, 'UTF-8'));
+                //$output->writeln(utf8_encode($line[3])."--> {$city_name} --> ".mb_strtolower(addslashes($city_name), 'UTF-8'));
+                //$output->writeln("{$city_name} --> ".addslashes($city_name));
+                $city_name = addslashes($city_name);
                 
+                $subQuery .= "(". $countries[$country_abbr] .", '". $city_name ."', '". addslashes($slug) ."', 1),";
+               
                 if(($ctr == 20000)|| ($count-1) == $i) {
                    $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE status=1";
                    $sqlQuery = "INSERT INTO cities (country_id, name, slug, status) VALUES $subQuery";
-                    $output->writeln($sqlQuery); 
-                    $output->writeln("\n");
+                    //$output->writeln($sqlQuery); 
+                    $output->write(".");
                     $conn = $em->getConnection();
                     
                     $conn->executeQuery($sqlQuery);
@@ -90,11 +93,20 @@ class ScriptLoadCityCommand extends ContainerAwareCommand
             }
 
             $ctr++;
-            echo "Memory: ".\memory_get_usage(). "\n";
+            //echo "Memory: ".\memory_get_usage(). "\n";
         }
         echo "done\n";
         exit;
     
+    }
+    
+    public function convert($city_name_temp)
+    {
+        $vSomeSpecialChars = array("‡", "Ž", "’", "—", "œ", "ç", "ƒ", "ê", "î", "ò", "–", "„");
+        $vReplacementChars = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", "n", "N");
+        
+        $city_name = str_replace($vSomeSpecialChars, $vReplacementChars, $city_name_temp);
+        return $city_name;
     }
     
 }

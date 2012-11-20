@@ -31,11 +31,11 @@ admin_institution_medicalCenter_addSpecialization:
 
 admin_institution_medicalCenter_edit:
     pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
-    defaults: { _controller: AdminBundle:Institution:editMedicalCenter }
+    defaults: { _controller: AdminBundle:InstitutionTreatments:editMedicalCenter }
     requirements:
         institutionId: \d+
         imcId: \d+
-        _method: GET
+        _method: GET|POST
 
 admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/edit/{imcId}
