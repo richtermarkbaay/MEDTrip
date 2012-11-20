@@ -40,13 +40,13 @@ class TreatmentController extends Controller
         $treatment = new Treatment();
 
         if($subSpecializationId = $this->getRequest()->get('subSpecializationId', 0)) {
-            $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($subSpecializationId);
+            $subSpecialization = $this->get('services.treatment_bundle')->getSubSpecialization($subSpecializationId);
 
             if(!$subSpecialization) {
                 throw $this->createNotFoundException("Invalid SubSpecialization.");
             }
-
-            $treatment->setSubSpecialization($subSpecialization);
+            $treatment->setSpecialization($subSpecialization->getSpecialization());
+            $treatment->addSubSpecialization($subSpecialization);
 
             $params['isAddFromSpecificType'] = true;
             $formActionParams['subSpecializationId'] = $subSpecializationId;
@@ -84,7 +84,12 @@ class TreatmentController extends Controller
 
         $params['form'] = $form->createView();
         $params['formAction'] = $this->generateUrl('admin_treatment_update', array('id' => $treatment->getId()));
-        $params['hasInstitutionTreatments'] = false; // TODO SELECT InstitutionTreatments count(*)
+        $params['selectedSubSpecializationIds'] = array();
+        foreach ($treatment->getSubSpecializations() as $eachSub) {
+            $params['selectedSubSpecializationIds'][] = $eachSub->getId();
+        }
+        $params['selectedSubSpecializationIds'] = \json_encode($params['selectedSubSpecializationIds']);
+        
         return $this->render('AdminBundle:Treatment:form.html.twig', $params);
     }
 

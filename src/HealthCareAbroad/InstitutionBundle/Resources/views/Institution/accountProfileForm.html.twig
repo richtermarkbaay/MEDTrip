@@ -6,49 +6,72 @@
     {% endblock %}
 <div class="container">
 	<div class="accountbox">
-	
-	<div class="row-fluid">
-	<div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#"></div>
-		 <form novalidate="novalidate" action="{{ path('institution_createProfile')}}" method="POST" {{ form_enctype(form) }} class="basic-form">
+		<div class="row-fluid">
+			<div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#"></div>
 		
-		<div class="accountbox2"><a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
-		<h2 style="margin-top: 15px; ;">Institution Profile Form</h2>
-		<p>In order to appear on our comprehensive MEDICAL DIRECTORY LISTING, please tell us more about your Institution (questions in grey are optional).</p>
-		<h5>{{ institution.name() }} </h5>
-		<h3>{{ institution.typeLabel() }}</h3>
-		</div>
-						
+			<div class="accountbox2"><a href="index.html"><h1>HEALTHCARE ABROAD</h1></a>
+				<h2 style="margin-top: 15px; ;">Institution Profile Form</h2>
+				<p>In order to appear on our comprehensive MEDICAL DIRECTORY LISTING, please tell us more about your Institution (questions in grey are optional).</p>
+				<h5>{{ institution.name() }} </h5>
+				<h3>{{ institution.typeLabel() }}</h3>
+			
+			</div>	
+			 <form novalidate="novalidate" action="{{ path('institution_createProfile', {institutionId: institution.id }) }}" method="POST" class="basic-form">
+	
+				{{ form_errors(form) }}	
 		  		<fieldset>
 		  			<div class="span6">
 		  				
 		  				<h4>This how your patients can connect to you.</h4>
 		  				
-		  				 {{ form_row( form.institutionSite ) }}
-		  				 {{ form_row( form.contactEmail ) }}
-		  				 
-					<label for="institution name">Institution Phone Number</label>
+		  				<label for="institution name">Institution Site</label>
 				
 						<div class="input-prepend">
-							<div id="phone">
-								<input type="text" size="3" maxlength="3" class="span2" name="contactNumber[1][area]">
-								<input type="text" size="4" maxlength="4" class="span7" name="contactNumber[1][number]">
-								<input type="hidden" name="contactNumber[1][type]" value="phone">
+							<div id="institutionSite">
+								<input type="text" name="websites[1][url]">					
+								<input type="hidden" name="websites[1][type]" value="institutionSite">
 							</div>
 						</div>
-				
-					<label for="institution name" style="color: #aeadad;">Institution Fax Number</label>
+		  	
+		  				{{ form_row( form.contactEmail ) }}
+  				
+						<label for="institution name">Institution Phone Number</label>
 					
-						<div class="input-prepend">
-							<div id="fax">
-								<input type="text" size="3" maxlength="3"  class="span2" name="contactNumbe qr[2][area]">
-								<input type="text" size="4" maxlength="4"  class="span7" name="contactNumber[2][number]">
-								<input type="hidden" name="contactNumber[2][type]" value="fax">
+							<div class="input-prepend">
+								<div id="phone">
+									<input type="text" size="3" maxlength="3" class="span2" name="contactNumber[1][area]">
+									<input type="text" size="4" maxlength="6" class="span7" name="contactNumber[1][number]">
+									<input type="hidden" name="contactNumber[1][type]" value="phone">
+								</div>
 							</div>
-						</div>
 					
-					 {{ form_row( form.facebook ) }}
- 				     {{ form_row( form.twitter ) }}
- 				     
+						<label for="institution name">Institution Fax Number</label>
+						
+							<div class="input-prepend">
+								<div id="fax">
+									<input type="text" size="3" maxlength="3"  class="span2" name="contactNumber[2][area]">
+									<input type="text" size="4" maxlength="6"  class="span7" name="contactNumber[2][number]">
+									<input type="hidden" name="contactNumber[2][type]" value="fax">
+								</div>
+							</div>
+							
+						<label for="institution Facebook">Facebook</label>
+					
+							<div class="input-prepend">
+								<div id="facebook">
+									<input type="text" name="websites[2][url]">					
+									<input type="hidden" name="websites[2][type]" value="facebook">
+								</div>
+							</div>
+							
+						<label for="institution Twitter">Twitter</label>
+					
+							<div class="input-prepend">
+								<div id="facebook">
+									<input type="text" name="websites[3][url]">					
+									<input type="hidden" name="websites[3][type]" value="twitter">
+								</div>
+							</div>
 		  			</div>
 		  				
 	  				<div class="span6">
@@ -65,26 +88,25 @@
 		  		   		{{ form_row( form.address1 ) }}   
 		  		   		{{ form_row( form.state ) }}               
 		  			    {{ form_row( form.zipCode ) }}
-			  			{{ form_row( form.coordinates ) }}
+			  			<input type="hidden" id="institutionDetail_coordinates" name="institutionDetail2[coordinates]" value="">
 		  			 
 		  			</div>
 
 		  		</fieldset>
           			{{ form_rest(form) }}
-		  		<div class="span11"><input type="submit" name="Submit" value="SUBMIT" class="btn-large btn-primary"/></div>
+		  		<div class="span11"><input type="submit" name="submit" value="SUBMIT" class="btn-large btn-primary"/></div>
 		  		</form>		  
+		</div>
 	</div>
+</div>
+<div class="container">
+	<br/>
+	<hr>
+	<footer>
+		<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
+	</footer>
+</div>
 
-</div>
-	</div>
-	<div class="container">
-<br/>
-<hr>
-<footer>
-	<p>&copy; Chromedia Far East Inc. <a href="#">www.HealthCareAbroad.com</a>. All rights reserved.</p>
-</footer>
-</div>
-</div>
 
 </body>
 	{% endblock %}

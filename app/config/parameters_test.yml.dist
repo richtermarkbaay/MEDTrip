@@ -1,0 +1,24 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host:     @DATABASE_HOST@
+    database_port:     ~
+    database_name:     @DATABASE_NAME@
+    database_user:     @DATABASE_USER@
+    database_password: @DATABASE_PASSWORD@
+
+    mailer_transport: smtp
+    mailer_host: localhost
+    mailer_user: ~
+    mailer_password: ~
+
+    locale: en
+    secret: ThisTokenIsNotSoSecretChangeIt
+
+    alert_db:
+        port: @COUCHDB_PORT@
+        host: @COUCHDB_HOST@
+        database: @COUCHDB_NAME@
+
+    application_id:    1
+    application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
+    chromedia_accounts_uri: http://accounts.test.chromedia.com/app_dev.php

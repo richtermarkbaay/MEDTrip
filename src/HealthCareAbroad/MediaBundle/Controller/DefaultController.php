@@ -18,12 +18,22 @@ class DefaultController extends Controller
     {
         $response = new Response();
 
-        $institutionId = $request->getSession()->get('institutionId');
-
+        $institutionId = $request->get('institutionId');
         $fileBag = $request->files;
 
         if ($fileBag->has('file')) {
             $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
+
+            $multiUpload = $request->get('multiUpload');
+
+            if (isset($multiUpload) && $multiUpload === '0') {
+
+                $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
+
+                return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
+                        'institution' => $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId),
+                        'multiUpload' => $multiUpload));
+            }
 
             return $response->create('Error code: '.$errorCode);
 
@@ -35,18 +45,14 @@ class DefaultController extends Controller
 
     public function deleteAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $success = $this->get('services.media')->delete($request->get('id'), $institutionId);
+        $success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
 
         return new Response($success);
     }
 
     public function editCaptionAction(Request $request)
     {
-        $institutionId = $request->getSession()->get('institutionId');
-
-        $media = $this->get('services.media')->editMediaCaption($request->get('id'), $institutionId, $request->get('caption'));
+        $media = $this->get('services.media')->editMediaCaption($request->get('id'), $request->get('institutionId'), $request->get('caption'));
 
         $response = 0;
         if ($media) {

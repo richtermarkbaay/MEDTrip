@@ -242,6 +242,13 @@ class Specialization
         return $this->subSpecializations;
     }
     
+    /** custom methods below **/
+    
+    public function isActive()
+    {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+    
     public function __toString()
     {
         return $this->name;

@@ -1,7 +1,12 @@
 HealthCareAbroad\InstitutionBundle\Entity\Institution:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This specialization already exists!
+            groups: [editInstitutionInformation]
     properties:
         name:
-            - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration, editInstitutionInformation]}
+            - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
             - NotBlank: {message: 'Institution name is required.', groups: [institutionRegistration, editInstitutionInformation]}
         description:
             - NotBlank: {message: 'Description is required.', groups: [editInstitutionInformation]}
@@ -15,7 +20,9 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation] }
         zipCode:
             - NotBlank: {message: 'Zip code is required.', groups: [editInstitutionInformation] }
-
+            - MinLength: { limit: 3, message: 'Zip Code must be atleast 3 digits.' }
+            - MaxLength: { limit: 6, message: 'Maximum digits must be 6 only.' }
+            
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
     properties:
         name:

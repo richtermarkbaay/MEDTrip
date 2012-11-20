@@ -10,7 +10,7 @@ class MediaHelper extends Helper
 {
     protected $container;
     protected $filesystemManager;
-    
+
     public function __construct(ContainerInterface $container, FilesystemManager $filesystemManager)
     {
         $this->container = $container;
@@ -22,33 +22,34 @@ class MediaHelper extends Helper
         $institutionId = isset($options['institutionId'])
                 ? $options['institutionId']
                 : $media->getGallery()->first()->getInstitution()->getId();
-        
+
         $filesystem = $this->filesystemManager->get($institutionId);
-        
+
         $options = $this->processOptions($media, $options);
-        
+
         return $this->container->get('templating')->render($this->getTemplate($format ? $format : 'gallery'), array(
             'media' => $media,
             'format' => $format,
             'options' => $options,
-            'src' => $this->filesystemManager->getWebRootPath().$institutionId.'/'.$media->getName()
+            'src' => $this->filesystemManager->getWebRootPath().$institutionId.'/'.$media->getName(),
+            'src_thumb' => $this->filesystemManager->getWebRootPath().$institutionId.'/thumbnail-'.$media->getName()
         ));
     }
-    
+
     private function processOptions(Media $media, $options = array())
     {
         //$useIFrame = strpos($media->getContentType(), 'video/') !== false ? true : false;
         $useIFrame = is_numeric(strpos($media->getContentType(), 'video/'));
-        
+
         $options['fancybox'] = array('useIFrame' => $useIFrame);
-        
+
         return $options;
     }
-    
+
     private function getTemplate($format)
     {
         $format = $format ? $format : 'default';
-        return 'MediaBundle:Helper:'.$format.'Helper.html.twig';	
+        return 'MediaBundle:Helper:'.$format.'Helper.html.twig';
     }
 
     /**

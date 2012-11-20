@@ -1,33 +1,48 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
-use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
-
-use Doctrine\ORM\UnitOfWork;
-
-use HealthCareAbroad\MediaBundle\Entity\Gallery;
-
-use Doctrine\ORM\QueryBuilder;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
+use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 use HealthCareAbroad\MediaBundle\Entity\Media;
-
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Doctrine\ORM\EntityManager;
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+use HealthCareAbroad\MediaBundle\Resizer\Resizer;
 use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
 use HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter;
 
+use Gaufrette\File;
+
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
+use Doctrine\ORM\QueryBuilder;
+
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+/**
+ * TODO:
+ * 1. REFACTOR!!!
+ * 2. REFACTOR!!!
+ * 3. REFACTOR!!!
+ * 4. REFACTOR!!!
+ * 5. REFACTOR specially the upload function
+ *
+ * @author harold
+ *
+ */
 class MediaService
 {
     private $entityManager;
     private $filesystemManager;
+    private $resizer;
 
     public function __construct(FilesystemManager $filesystemManager, EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->filesystemManager = $filesystemManager;
+    }
+
+    public function setResizer(Resizer $resizer)
+    {
+        $this->resizer = $resizer;
     }
 
     public function addMedia(UploadedFile $file, $institutionId)
@@ -73,16 +88,8 @@ class MediaService
         $filesystem = $this->filesystemManager->get($institutionId, 'local');
 
         //TODO: rename/sanitize filename
-        $filename = $file->getClientOriginalName();
-
-        $media = new Media();
-        $media->setName($filename);
-        $media->setContentType($file->getMimeType());
-        //TODO: the ff are temporary
-        $media->setCaption($filename);
-        $media->setContext($institutionId);
-        $media->setUuid(\time());
-        //TODO: ignore the other attributes for now
+        $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        $caption = $file->getClientOriginalName();
 
         $proceed = true;
         try {
@@ -92,13 +99,33 @@ class MediaService
         }
 
         if ($proceed) {
+            $imageAttributes = getimagesize($this->filesystemManager->getUploadRootDir().'/'.$filename);
+
+            $media = new Media();
+            $media->setName($filename);
+            $media->setContentType($imageAttributes['mime']);
+            $media->setCaption($caption);
+            $media->setContext($institutionId);
+            $media->setUuid(time());
+            $media->setWidth($imageAttributes[0]);
+            $media->setHeight($imageAttributes[1]);
+            //TODO: ignore the other attributes for now
+
+            $in = new File($filename, $filesystem);
+            $out = new File('thumbnail-'.$filename, $filesystem);
+
+            $format = image_type_to_extension($imageAttributes[2], false);
+
+            //TODO: inject this dynamically selecting the optimal ImagineInterface available
+            //$resizer = new SquareResizer(new \Imagine\Gd\Imagine());
+            //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
+            $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
 
             $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
 
             if (is_null($gallery)) {
                 $gallery = new Gallery();
                 $gallery->setInstitution($this->entityManager->getRepository('InstitutionBundle:Institution')->find($institutionId));
-
             }
 
             $gallery->addMedia($media);
@@ -111,7 +138,6 @@ class MediaService
                         $mediaEntity = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($context['contextId']);
 
                         break;
-
                 }
             }
 
@@ -141,7 +167,7 @@ class MediaService
 
     public function retrieveMedia($mediaId, $institutionId)
     {
-        return $this->entityManager->getRepository('MediaBundle:Media')->findWithInstitution($mediaId, $institutionId);
+        return $this->entityManager->getRepository('MediaBundle:Media')->findWithInstitutionId($mediaId, $institutionId);
     }
 
     public function editMediaCaption($mediaId, $institutionId, $caption)
@@ -164,6 +190,9 @@ class MediaService
         return $media;
     }
 
+    /**
+     * TODO: delete the physical file itself?
+     */
     public function delete($mediaId, $institutionId)
     {
         $success = 0;

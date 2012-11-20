@@ -1,0 +1,87 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_affiliation' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Affiliation</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add Affiliation',
+                        'description': 'Add new Affiliation',
+                        'class': 'add-icon',
+                        'href': path('admin_affiliation_add'),
+                        'links': [{'title': 'Add a Affiliation', 'href': path('admin_affiliation_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
+                <div style="width: 70%">
+                    <table id="affiliation-list" class="table table-bordered sortable-list">
+                        <tr>
+                            <th id="column-name">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a>
+                            </th>
+                            <th id="column-details">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : '' }}">Details</a>
+                            </th>
+                              <th id="column-awardingBody">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'awardingBody' ? 'sort-' ~ sortOrder : '' }}">Awarding Body</a>
+                            </th>
+                             <th id="column-country">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a>
+                            </th>
+                            <th>Status</th>
+                            <th class="actions" width="100">Action</th>
+                        </tr>
+
+                        {% for affiliation in affiliations %}
+                        {% if affiliation.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
+                            <tr>
+                                <td>{{ affiliation.name }}</td>
+                                 <td class="details">{{ affiliation.details }}</td>
+                                <td class="awardingBodies">{{ affiliation.awardingBody.name }}</td>
+                                 <td class="country">{{ affiliation.country.name }}</td>
+                                <td>{{ affiliation.status ? 'Active' : 'Inactive' }}</td>
+                                <td align="center">
+                                    <a href="{{ path('admin_affiliation_edit', {id:affiliation.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
+                                    <br/>
+                                    <a href="{{ path('admin_affiliation_updateStatus', {id:affiliation.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                        <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else  %}
+                            <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                        {% endfor %}
+                    </table>
+                    
+                    {% if pager.isPaginable %}
+                        {{ paginate(pager, 'admin_affiliation_index', app.request.query.all) }}
+                    {% endif %}
+                </div>
+                
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

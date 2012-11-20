@@ -2,15 +2,15 @@ InstitutionBundleTests:
     resource: "@InstitutionBundle/Resources/config/routing_test.yml"
     prefix:   /
 
-admin_treatmentProcedure_testSave:
-    pattern:  /admin/treatment-procedure/test-save
+admin_treatment_testSave:
+    pattern:  /admin/treatment/test-save
     defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          id: \d+
          _method: GET
 
-admin_treatment_testSave:
-    pattern:  /admin/treatment/test-save
+admin_subSpecialization_testSave:
+    pattern:  /admin/sub-specialization/test-save
     defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          id: \d+
@@ -40,6 +40,20 @@ admin_language_testSave:
 admin_city_testSave:
     pattern:  /admin/city/test-save
     defaults: { _controller: AdminBundle:City:save }
+    requirements:
+         id: \d+
+         _method: GET
+         
+admin_awardingBody_testSave:
+    pattern:  /admin/awardingBody/test-save
+    defaults: { _controller: AdminBundle:AwardingBody:save }
+    requirements:
+         id: \d+
+         _method: GET
+       
+admin_affiliation_testSave:
+    pattern:  /admin/affiliation/test-save
+    defaults: { _controller: AdminBundle:Affiliation:save }
     requirements:
          id: \d+
          _method: GET

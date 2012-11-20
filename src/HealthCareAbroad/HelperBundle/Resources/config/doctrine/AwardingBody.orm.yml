@@ -1,0 +1,31 @@
+HealthCareAbroad\HelperBundle\Entity\AwardingBody:
+    type: entity
+    table: awarding_bodies
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\AwardingBodyRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+        details:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        website:
+            type: string
+            length: 25
+            fixed: false
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

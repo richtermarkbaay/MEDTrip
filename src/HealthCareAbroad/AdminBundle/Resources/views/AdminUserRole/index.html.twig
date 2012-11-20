@@ -10,16 +10,15 @@
     </div>
 
     <!-- end page-heading -->
-    
     {% embed '::contentWrapper.admin.html.twig' %}
         
         {% block wrappedContent %}
 
             {% include '::notice.admin.html.twig' %}
             
-		    {% block related_tasks %}
-		        {% include 'AdminBundle:AdminUserRole:relatedTasks.html.twig' %}
-		    {% endblock %}
+            {% block related_tasks %}
+                {% include 'AdminBundle:AdminUserRole:relatedTasks.html.twig' %}
+            {% endblock %}
 
 			<div id="table-content" style="width:70%">
 			    <table class="table table-bordered sortable-list">
@@ -41,7 +40,11 @@
     				</tr>
     				{% endfor %}
 				</table>
-				<!--  end table-list................................... --> 
+				<!--  end table-list................................... -->
+				
+				{% if pager.isPaginable %}
+                    {{ paginate(pager, 'admin_userRole_index', app.request.query.all) }}
+                {% endif %} 
 			</div>
         {% endblock %}
     {% endembed %}

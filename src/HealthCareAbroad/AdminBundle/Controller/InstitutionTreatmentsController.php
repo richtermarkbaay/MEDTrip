@@ -23,6 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
@@ -73,18 +75,43 @@ class InstitutionTreatmentsController extends Controller
     
     public function viewAllMedicalCentersAction()
     {
+        $criteria = array('institution' => $this->institution);
+        $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
+        
         $params = array(
-            'institutionId' => $this->institution->getId(),
-            'institutionName' => $this->institution->getName(),
+            'institution' => $this->institution,
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-            'institutionMedicalCenters' => $this->filteredResult,
+            'institutionMedicalCenters' => $institutionMedicalCenters,
             'pager' => $this->pager
         );
         
          return $this->render('AdminBundle:InstitutionTreatments:viewAllMedicalCenters.html.twig', $params);   
     }
+
+    /**
+     * Actionn handler for viewing all InstitutionMedicalCenter of selected institution
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewMedicalCenterAction()
+    {
+        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+
+        $params = array(
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $specializations,
+            'selectedSubMenu' => 'centers'
+            //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+            //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
+        );
     
+        return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
+    }
+
     /**
      * 
      * @return \Symfony\Component\HttpFoundation\Response
@@ -136,9 +163,9 @@ class InstitutionTreatmentsController extends Controller
         $daysArr = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
+            'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'days' => $daysArr
+            'selectedSubMenu' => 'centers'
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);   
@@ -171,7 +198,6 @@ class InstitutionTreatmentsController extends Controller
             $businessHours = json_encode($request->get('businessHours'));
             
             if ($form->isValid()) {
-//                 var_dump($businessHours);
                 // Set BusinessHours before saving
                 $form->getData()->setBusinessHours($businessHours);
                 
@@ -196,8 +222,37 @@ class InstitutionTreatmentsController extends Controller
     
         return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
     }
-    
-    /// @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function updateMedicalCenterAction()
+    {
+        if($this->request->get('description')) {
+            $description = $this->request->get('description'); 
+            $this->institutionMedicalCenter->setDescription($description);
+        }
+        
+        if($this->request->get('name')) {
+            $name = $this->request->get('name'); 
+            $this->institutionMedicalCenter->setName($name);
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institutionMedicalCenter);
+        $result = $em->flush();
+
+        $response = new Response (json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;        
+    }
+
+    /**
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     */
     public function updateMedicalCenterStatusAction()
     {
         $request = $this->getRequest();
@@ -230,6 +285,21 @@ class InstitutionTreatmentsController extends Controller
 
     /**
      * 
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function centerSpecializationsAction()
+    {
+        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+
+        $params = array('specializations' => $specializations);
+
+        return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
+    }   
+    
+    /**
+     * 
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addSpecializationAction()
@@ -256,6 +326,10 @@ class InstitutionTreatmentsController extends Controller
                 $em->persist($institutionSpecialization);
                 $em->flush();
 
+                if($institutionSpecialization->getId() && count($treatmentIds = $this->request->get('treatments'))) {
+                    $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->updateTreatments($institutionSpecialization->getId(), $treatmentIds);
+                }
+
                 $this->request->getSession()->setFlash('success', "Specialization has been saved!");
 
                 // TODO: fire event
@@ -270,11 +344,66 @@ class InstitutionTreatmentsController extends Controller
         
         $params = array(
             'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'selectedSubMenu' => 'centers'
         );
         
-        return $this->render('AdminBundle:InstitutionTreatments:form.specialization.html.twig', $params);   
+        return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);   
+    }
+    
+    /**
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editSpecializationAction()
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($this->request->get('isId'));
+        $institutionTreatments = $institutionSpecialization->getTreatments();
+        $institutionTreatmentIds = array();
+        foreach($institutionTreatments as $treatment) {
+            $institutionTreatmentIds[] = $treatment->getId();
+        }
+
+        $institutionSpecializationForm = new InstitutionSpecializationFormType($this->institution);
+        $form = $this->createForm($institutionSpecializationForm, $institutionSpecialization);
+
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+    
+            if ($form->isValid()) {
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($form->getData());
+                $em->flush();
+
+                if($institutionSpecialization->getId()) {
+                    $treatmentIds = $this->request->get('treatments', array());
+                    $deleteTreatmentsIds = array_diff($institutionTreatmentIds, $treatmentIds);
+
+                    $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+                    $instSpecializationRepo->updateTreatments($institutionSpecialization->getId(), $treatmentIds, $deleteTreatmentsIds);
+                }
+
+                $this->request->getSession()->setFlash('success', "Specialization has been saved!");
+
+                // TODO: fire event
+
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_editSpecialization',array(
+                    'institutionId' => $this->institution->getId(),
+                    'isId' => $institutionSpecialization->getId()
+                )));
+            }
+        }
+
+        $params = array(
+            'form' => $form->createView(),
+            'institutionSpecialization' => $institutionSpecialization,
+            'institutionId' => $this->institution->getId(),
+            'institutionTreatmentIds' => $institutionTreatmentIds
+        );
+
+        return $this->render('AdminBundle:InstitutionTreatments:editSpecialization.html.twig', $params);
     }
 
     /**

@@ -1,7 +1,37 @@
-
-	<div class="btn-group pull-right">
-       		     
-		<span class="userbox">you are logged in as<i class="icon-user"><a href="{{ path('institution_editAccount')}}"></i>{{ userName }}</a></span>
-		<a href="{{ path('institution_edit_information') }}"><img src="{{ asset('images/institution/Setting-icon.png') }}"></a>
-		<a href="{{ path('institution_logout')}}"><img src="{{ asset('images/institution/logout-icon.png') }}"></a>
-	</div>
+<div class="pull-right">
+	<span class="userbox pull-left">you are logged in as
+           	<i class="icon-user">
+           		<a href="{{ path('institution_editAccount')}}"></i> {{ userName }}</a>
+           		<a href="{{ path('institution_edit_information') }}><img src="{{ asset('images/institution/Setting-icon.png') }}"></a>
+           		<a href="{{ path('institution_logout')}}"><img src="{{ asset('images/institution/logout-icon.png') }}"></a>
+           </span>
+	<nav>
+		<ul class="menu pull-right">
+   
+			<li><a href="#">MENU</a>
+           			<ul>
+           				<li><a href="{{ path('institution_homepage')}}"><i class="icon-home"></i>Main Dashboard</a></li>
+     					<li>
+           					<a href="{{ path('institution_medicalCenter_index') }}"><i class="icon-star"></i> Medical Center</a>
+           				</li>
+           				<li>
+           					<a href="specialistlisting.php"><i class="icon-user"></i>Doctors Listing</a>
+           				</li>
+           				<li>
+           					<a href="{{ path('institution_view_all_staff')}}"><i class="icon-user"></i>Staff Listing</a>
+           				</li>
+           				<li>
+           					<a href="affiliations.php"><i class="icon-certificate"></i>Affiliations / Certifications</a>
+           				</li>
+           				<li>
+           					<a href="{{ path('institution_gallery') }}"><i class="icon-picture"></i>Media Gallery</a>
+           				</li>
+           				<li>
+           					<a href="help.html"><i class="icon-info-sign"></i>Help</a>
+           				</li>
+           			</ul>
+			</li>
+		</ul>
+	</nav>
+	
+</div> 

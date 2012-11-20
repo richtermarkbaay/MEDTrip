@@ -185,12 +185,59 @@ CREATE TABLE IF NOT EXISTS `advertisement_media` (
   KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `advertisement_media`
+-- Table structure for table `awarding_bodies`
 --
 
-INSERT INTO `advertisement_media` (`advertisement_id`, `media_id`) VALUES
-(6, 47);
+DROP TABLE IF EXISTS `awarding_bodies`;
+CREATE TABLE IF NOT EXISTS `awarding_bodies` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `details` varchar(100) NOT NULL,
+  `website` varchar(25) NOT NULL,
+  `status` smallint(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `awarding_bodies`
+--
+
+INSERT INTO `awarding_bodies` (`id`, `name`, `details`, `website`, `status`) VALUES
+(1, 'test Again', 'test', 'test.com', 1),
+(2, 'test', 'test', 'test.com', 1),
+(3, 'res test', 'test', 'test', 1);
+
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `affiliations`
+--
+
+DROP TABLE IF EXISTS `affiliations`;
+CREATE TABLE IF NOT EXISTS `affiliations` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `details` varchar(100) NOT NULL,
+  `awarding_body_id` int(10) NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `status` smallint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `awarding_body_id` (`awarding_body_id`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `affiliations`
+--
+
+INSERT INTO `affiliations` (`id`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
+(1, 'test affiliation', 'details test', 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -238,9 +285,9 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(10) NOT NULL,
-  `abbr` varchar(10) NOT NULL,
-  `code` char(11) NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `abbr` varchar(10) DEFAULT NULL,
+  `code` char(11) DEFAULT NULL,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
@@ -382,7 +429,7 @@ CREATE TABLE IF NOT EXISTS `frontend_route_variables` (
 --
 -- Table structure for table `inquiries`
 --
-
+DROP TABLE IF EXISTS `inquiries`;
 CREATE TABLE IF NOT EXISTS `inquiries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(100) NOT NULL,
@@ -402,7 +449,7 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
 --
 -- Table structure for table `inquiry_subjects`
 --
-
+DROP TABLE IF EXISTS `inquiry_subjects`;
 CREATE TABLE IF NOT EXISTS `inquiry_subjects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
@@ -431,10 +478,9 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `description` text NOT NULL,
   `logo` varchar(100) NOT NULL,
   `contact_email` varchar(100) NOT NULL,
-  `contact_number` text NOT NULL,
-  `websites` varchar(100) NOT NULL,
+  `contact_number` varchar(150) NOT NULL,
+  `websites` varchar(200) NOT NULL,
   `address1` text NOT NULL,
-  `address2` text NOT NULL,
   `city_id` int(10) unsigned DEFAULT NULL,
   `country_id` int(10) unsigned DEFAULT NULL,
   `zip_code` int(11) NOT NULL,
@@ -454,9 +500,9 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 -- Dumping data for table `institutions`
 --
 
-INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo`, `contact_email`, `contact_number`, `address1`, `address2`, `city_id`, `country_id`, `zip_code`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 3, 'Dubai Hospital', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', 'logo.jpg', '', '', 'eng,', '..', 2, 1, 0, '2012-10-22 03:24:41', '2012-09-03 16:00:00', 'belo-churvaness-ness', 9),
-(2, 3, 'Test Institution', 'dsadsfdasf', '', '', '', 'afadsfsd', 'dsafasdf', 10, 1, 0, '2012-10-22 03:24:49', '2012-09-13 08:15:55', 'test-institution', 17);
+INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo`, `contact_email`, `contact_number`, `websites`, `address1`, `city_id`, `country_id`, `zip_code`, `state`, `coordinates`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 3, 'Dubai Hospital', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', 'logo.jpg', '', '', '', 'eng,', 1, 1, 0, NULL, '', '2012-10-22 03:24:41', '2012-09-03 16:00:00', 'belo-churvaness-ness', 9),
+(2, 3, 'Test Institution', 'dsadsfdasf', '', '', '', '', 'afadsfsd', 1, 1, 0, NULL, '', '2012-10-22 03:24:49', '2012-09-13 08:15:55', 'test-institution', 17);
 
 -- --------------------------------------------------------
 
@@ -547,6 +593,7 @@ CREATE TABLE IF NOT EXISTS `institution_media` (
 -- Table structure for table `institution_medical_centers`
 --
 
+DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
@@ -576,6 +623,7 @@ INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `desc
 -- Table structure for table `institution_specializations`
 --
 
+DROP TABLE IF EXISTS `institution_specializations`;
 CREATE TABLE IF NOT EXISTS `institution_specializations` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_medical_center_id` bigint(20) unsigned NOT NULL,
@@ -605,7 +653,7 @@ INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`
 -- Table structure for table `institution_medical_center_doctors`
 --
 
-
+DROP TABLE IF EXISTS `institution_medical_center_doctors`;
 CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
   `institution_medical_center_id` bigint(20) unsigned NOT NULL,
   `doctor_id` bigint(20) unsigned NOT NULL,
@@ -630,6 +678,7 @@ INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id
 -- Table structure for table `institution_treatments`
 --
 
+DROP TABLE IF EXISTS `institution_treatments`;
 CREATE TABLE IF NOT EXISTS `institution_treatments` (
   `institution_specialization_id` bigint(20) unsigned NOT NULL,
   `treatment_id` int(10) unsigned NOT NULL,
@@ -637,13 +686,6 @@ CREATE TABLE IF NOT EXISTS `institution_treatments` (
   KEY `treatment_id` (`treatment_id`),
   KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `institution_medical_center_treatment_procedures`
---
-
-INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES
-(1, 1);
 
 
 -- --------------------------------------------------------
@@ -875,7 +917,7 @@ CREATE TABLE IF NOT EXISTS `log_classes` (
 -- Table structure for table `mail_queue`
 --
 
-
+DROP TABLE IF EXISTS `mail_queue`;
 CREATE TABLE IF NOT EXISTS `mail_queue` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `message_data` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'serialized message data',
@@ -928,15 +970,16 @@ CREATE TABLE IF NOT EXISTS `specializations` (
 --
 
 INSERT INTO `specializations` (`id`, `name`, `description`, `date_created`, `slug`, `status`) VALUES
-(1, 'Philippine Center', 'The very first one! updated sdfsdfsdf testest. updatedrweetr', '2012-07-30 00:34:30', 'philippine-center', 1),
-(2, 'California Center', 'sd fsadf sadf updated sdfsdfdsf', '2012-07-30 06:54:56', 'california-center', 1),
-(3, 'inactive center', 'sdf sdf sdf', '2012-07-30 06:54:56', '', 0),
-(4, 'sige daw kon sluggable', 'asdfas', '2012-07-30 08:19:23', 'sige-daw-kon-sluggable', 1),
-(5, '5th Medical Center updated', 'The very first one!', '2012-07-31 02:35:37', '5th-medical-center-updated', 1);
+(1, 'Specialization 1', 'this is from test', '2012-07-30 00:34:30', 'specialization-1', 1);
 
 
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `sub_specializations`
+--
+
+DROP TABLE IF EXISTS `sub_specializations`;
 CREATE TABLE IF NOT EXISTS `sub_specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `specialization_id` int(10) unsigned NOT NULL,
@@ -947,21 +990,19 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
+  UNIQUE KEY `name` (`name`),
   KEY `specialization_id` (`specialization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments' AUTO_INCREMENT=5 ;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments';
 
 --
--- Dumping data for table `treatment_procedures`
+-- Dumping data for table `sub_specializations`
 --
-
 
 INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 107, 'Sub-spec for treatment refactoring test', 'test edited', '2012-10-29 05:18:55', '2012-10-29 05:13:14', 'sub-spec-for-treatment-refactoring-test', 1),
-(2, 2, 'sd fsdf sdf', 'sd fsdf asdf', '2012-10-29 08:04:14', '2012-10-29 08:04:14', 'sd-fsdf-sdf', 1),
-(3, 5, 'sd fsdf sdf', 's dfsd fsdf', '2012-10-29 08:04:24', '2012-10-29 08:04:24', 'sd-fsdf-sdf-1', 1),
-(4, 8, 'churvs', 'sd fsd fsdf sdfsdfdsf', '2012-10-29 08:11:22', '2012-10-29 08:04:36', 'churvs', 1);
+(1, 1, 'Sub with treatments', 'test', '2012-09-25 16:23:12', '2012-07-29 23:40:08', 'procedure-type-for-philippine-center', 1),
+(2, 1, 'Sub with no treatments', 'test', '2012-09-25 16:23:12', '2012-07-29 23:40:08', 'procedure-type-for-philippine-center', 1);
+
+
 -- --------------------------------------------------------
 
 --
@@ -971,26 +1012,46 @@ INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `descripti
 DROP TABLE IF EXISTS `treatments`;
 CREATE TABLE IF NOT EXISTS `treatments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `medical_center_id` int(10) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
   `name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) COLLATE utf8_unicode_ci NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `medical_center_id` (`medical_center_id`)
+  KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `treatments`
 --
 
-INSERT INTO `treatments` (`id`, `medical_center_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 1, 'Procedure Type1', 'the quick is not slow. the quick is not slow.the quick is not slow.the quick is not slow.the quick is not slow.', '2012-08-30 06:13:31', '2012-08-29 16:00:00', 'procedure-type1', 1),
-(2, 1, 'Test Proc Type with center2', 'lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. lorem ipsum dolor sit amet. ', '2012-08-30 06:13:31', '2012-08-29 16:00:00', '', 1),
-(3, 3, 'procType with center3', 'sdf sdf sdafd afds f', '2012-09-21 07:17:08', '2012-09-20 16:00:00', '', 1),
-(4, 5, 'procType with center5', 'sdf sdf sdafd afds f', '2012-09-21 07:17:08', '2012-09-20 16:00:00', '', 1);
+INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slug`, `status`) VALUES
+(1, 1, 'Treatment with sub specialization', '', 'treatment-1', 1),
+(2, 1, 'Treatment with no sub specialization', '', 'treatment-2', 1);
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `treatment_sub_specializations`
+--
+
+DROP TABLE IF EXISTS `treatment_sub_specializations`;
+CREATE TABLE IF NOT EXISTS `treatment_sub_specializations` (
+  `treatment_id` int(10) unsigned NOT NULL,
+  `sub_specialization_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`treatment_id`,`sub_specialization_id`),
+  KEY `sub_specialization_id` (`sub_specialization_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='association table for treatment and sub_specializations';
+
+--
+-- Dumping data for table `treatment_sub_specializations`
+--
+
+INSERT INTO `treatment_sub_specializations` (`treatment_id`, `sub_specialization_id`) VALUES
+(1, 2);
+
+
 
 -- --------------------------------------------------------
 
@@ -1041,22 +1102,6 @@ CREATE TABLE IF NOT EXISTS `news` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
--- phpMyAdmin SQL Dump
--- version 3.4.10.1deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generation Time: Oct 02, 2012 at 10:47 AM
--- Server version: 5.5.24
--- PHP Version: 5.3.10-1ubuntu3.2
-
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
---
--- Database: `healthcareabroad`
---
 
 -- --------------------------------------------------------
 
@@ -1214,6 +1259,13 @@ ALTER TABLE `gallery_media`
   ADD CONSTRAINT `gallery_media_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `affiliations`
+--
+ALTER TABLE `affiliations`
+  ADD CONSTRAINT `affiliations_ibfk_3` FOREIGN KEY (`awarding_body_id`) REFERENCES `awarding_bodies` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `affiliations_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `institution_medical_center_media`
 --
 ALTER TABLE `institution_medical_center_media`
@@ -1311,7 +1363,6 @@ ALTER TABLE `institution_media`
 -- Constraints for table `institution_medical_centers`
 --
 ALTER TABLE `institution_medical_centers`
-  ADD CONSTRAINT `institution_medical_centers_ibfk_2` FOREIGN KEY (`medical_center_id`) REFERENCES `medical_centers` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
 
 --
@@ -1329,19 +1380,11 @@ ALTER TABLE `institution_treatments`
   ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`institution_specialization_id`) REFERENCES `institution_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_treatment_procedures`
---
---ALTER TABLE `institution_treatment_procedures`
---  ADD CONSTRAINT `institution_treatment_procedures_ibfk_2` FOREIGN KEY (`treatment_procedure_id`) REFERENCES `treatment_procedures` (`id`) ON UPDATE CASCADE,
---  ADD CONSTRAINT `institution_treatment_procedures_ibfk_1` FOREIGN KEY (`institution_treatment_id`) REFERENCES `institution_treatments` (`id`) ON UPDATE CASCADE;
-
-
---
 -- Constraints for table `institution_offered_services`
 --
 ALTER TABLE `institution_offered_services`
-  ADD CONSTRAINT `institution_offered_services_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_offered_services_ibfk_2` FOREIGN KEY (`offered_service_id`) REFERENCES `offered_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_offered_services_ibfk_2` FOREIGN KEY (`offered_service_id`) REFERENCES `offered_services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_offered_services_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_users`
@@ -1377,18 +1420,23 @@ ALTER TABLE `logs`
   ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`log_class_id`) REFERENCES `log_classes` (`id`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `sub_specializations`
+--
+ALTER TABLE `sub_specializations`
+  ADD CONSTRAINT `sub_specializations_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `treatments`
 --
 ALTER TABLE `treatments`
-  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON UPDATE CASCADE;
-
---ALTER TABLE `treatment_procedures` ADD UNIQUE (`treatment_id` , `name`);
---ALTER TABLE `treatment_procedures`
---  ADD CONSTRAINT `treatment_procedures_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`);
-
-
-ALTER TABLE `sub_specializations`
-  ADD CONSTRAINT `sub_specializations_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
+  
+--
+-- Constraints for table `treatment_sub_specializations`
+--
+ALTER TABLE `treatment_sub_specializations`
+  ADD CONSTRAINT `treatment_sub_specializations_ibfk_2` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `treatment_sub_specializations_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `medical_term_suggestion_details`

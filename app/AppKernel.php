@@ -1,10 +1,14 @@
 <?php
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
-
+/**
+ * When you make changes to this class please modify the appKernelTransformer.php
+ * That file is used by the build script for deploying to staging.
+ */
 class AppKernel extends Kernel
 {
     // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
+    /**
     protected function initializeContainer()
     {
         static $first = true;
@@ -33,6 +37,7 @@ class AppKernel extends Kernel
 
         $this->debug = $debug;
     }
+    **/
 
     public function registerBundles()
     {

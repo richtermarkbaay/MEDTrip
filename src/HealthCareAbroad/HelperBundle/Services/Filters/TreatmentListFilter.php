@@ -15,6 +15,9 @@ class TreatmentListFilter extends ListFilter
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
+        
+        // set default status filter to active
+        $this->defaultParams = array('status' => Treatment::STATUS_ACTIVE);
 
         // Add treatment in validCriteria
         $this->addValidCriteria('specialization');

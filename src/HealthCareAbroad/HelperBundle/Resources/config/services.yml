@@ -68,6 +68,9 @@ services:
 
     services.miscellaneous.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
+        calls:
+            - [setClassLabels, [%class_labels%]]
+            - [setClassKeys, [%class_keys%]]
         public: false
         tags:
             - { name: twig.extension }
@@ -130,6 +133,11 @@ services:
            - [setContainer, [@service_container]]
         tags:
            - { name: form.type, alias: advertisement_list }
+           
+    form.awarding_body_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType
+        tags:
+            - { name: form.type, alias: awarding_body_list }
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

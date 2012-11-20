@@ -90,6 +90,11 @@ class TreatmentBundleService
         return $this->doctrine->getRepository('TreatmentBundle:Specialization')->find($id);
     }
 
+    /**
+     * Get a SubSpecialization by id. Apply caching here
+     * 
+     * @param int $id
+     */
     public function getSubSpecialization($id)
     {
         return $this->entityManager->getRepository('TreatmentBundle:SubSpecialization')->find($id);

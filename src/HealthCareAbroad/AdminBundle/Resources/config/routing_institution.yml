@@ -9,18 +9,18 @@ admin_institution_add:
          _method: POST|GET
          
 admin_institution_add_details:
-    pattern:  /admin/institution/add-details
+    pattern:  /admin/institution/{institutionId}/add-details
     defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
          institutionId: \d+
          _method: GET|POST   
-         
-admin_institution_add_save_details:
-    pattern:  /admin/institution/add-details-save
-    defaults: { _controller: AdminBundle:Institution:save}
+
+admin_institution_edit:
+    pattern:  /admin/institution/{institutionId}/edit
+    defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
          institutionId: \d+
-         _method: GET|POST        
+         _method: GET|POST            
          
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status

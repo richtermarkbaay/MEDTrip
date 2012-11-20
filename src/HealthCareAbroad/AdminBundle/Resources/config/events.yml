@@ -91,3 +91,17 @@ parameters:
     event.language.add: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     event.language.edit: HealthCareAbroad\AdminBundle\Event\LanguageEvent
     event.language.delete: HealthCareAbroad\AdminBundle\Event\LanguageEvent
+    
+    #
+    # awarding Body related events
+    #
+    event.awarding_body.add: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
+    event.awarding_body.edit: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
+    event.awarding_body.delete: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
+    
+    #
+    # Affiliation related events
+    #
+    event.affiliation.add: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    event.affiliation.edit: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    event.affiliation.delete: HealthCareAbroad\AdminBundle\Event\AffiliationEvent

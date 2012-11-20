@@ -19,8 +19,7 @@ class SpecializationRepository extends EntityRepository
             SELECT c
             FROM TreatmentBundle:Specialization AS c
             WHERE c.name LIKE :term
-            ORDER BY c.name ASC"
-        ;
+            ORDER BY c.name ASC";
 
         $query = $this->_em->createQuery($dql);
         $query->setParameter('term', "%$term%");

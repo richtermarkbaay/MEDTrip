@@ -72,8 +72,8 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $isAdded = $crawler->filter('#page-heading h2:contains("Edit Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
-        $isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
-        $this->assertTrue($isMessageShow, 'Save message does not show!');
+        $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
+        $this->assertTrue($isMessageShow, 'Success notice not found!');
     }
     public function testSaveAndAddAnother()
     {
@@ -102,7 +102,7 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $isAdded = $crawler->filter('#page-heading h2:contains("Add Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
-        $isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
+        $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
         $this->assertTrue($isMessageShow, 'Save message does not show!');
     }
     public function testEditSave()
@@ -132,7 +132,7 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $isAdded = $crawler->filter('#page-heading h2:contains("Edit Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
-        $isMessageShow = $crawler->filter('#content-table-inner #message-green')->count() > 0;
+        $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
         $this->assertTrue($isMessageShow, 'Save message does not show!');
     }
     public function testCreateDuplicate()

@@ -22,23 +22,28 @@
               <a href="{{ path('admin_homepage') }}" class="brand" style="padding-top:0;padding-bottom:0;"><img longdesc="#" alt="Health Care Abroad Logo" src="/images/institution/HCA-logo-small.png"></a>
               <div class="nav-collapse collapse">
                   {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
-    
+
                 <!-- Search Section -->
                 {#% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %#}
-    
-                
+
+
                 {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
-                
+
               </div><!--/.nav-collapse -->
             </div>
           </div>
     </div>
     <!-- End of Top Navigation -->
 
-    <div class="container" style="margin-top: 50px" id="main-content">
-        {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
-
-        {% block content %}{% endblock %}
+        
+    <div id="main-content"  class="container maincontent">
+        
+            {% if breadcrumbs is defined %}
+                {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
+            {% endif %}
+    
+            {% block content %}{% endblock %}
+        
     </div>
 
     {% include '::footer.admin.html.twig' %}

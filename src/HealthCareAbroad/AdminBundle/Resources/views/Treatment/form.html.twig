@@ -1,61 +1,58 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_treatments' %}
+{% set selectedSubMenu = 'treatments' %}
+{% set treatmentsLabel = getClassLabel('treatment') %}
 
 {% block content %}
 
-	<div id="content">
-		<div id="page-heading"><h2>{{ form.vars.value.id ? 'Edit' : 'Add' }} Treatment</h2></div>
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
 
-		{% embed '::contentWrapper.admin.html.twig' %}
+    <div class="span9">
 
-			{% block wrappedContent %}
-			
-			{% include '::notice.admin.html.twig' %}
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ treatmentsLabel.singular | title ,
+                actions: [{link: path('admin_treatment_index'), label: 'View all '~ treatmentsLabel.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+            {% block sectionContent %}
 
-            {% set contents = [{
-					'title': 'Back to all treatments', 
-					'description': 'View the list of treatments',
-					'href': path('admin_treatment_index'), 
-					'links': [{'title': 'Back to all treatments', 'href': path('admin_treatment_index')}]
-				}, 
-				{
-				    title: 'View version history',
-				    href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }),
-				    class: 'view-edit-history-link',
-				    description: 'Show all the changes made to this center type content',
-				    links: [{class: 'view-edit-history-link', title: 'View history', href: path('admin_showEditHistory', {'objectId': form.vars.value.id, 'objectClass': base64_encode(getClass(form.vars.value)) }) }]
-				}]
-            %}
+                {% include '::notice.admin.html.twig' %}
+                
+                <form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			
-			<form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
+    				{% if form.children.subSpecializations.vars.read_only %}
+    				    <div>
+    						{{ form_label(form.subSpecializations) }}
+    						<select disabled="true" multiple="true">
+    						    {% for eachSub in form.vars.value.subSpecializations %}
+    						    <option>
+    						        {{ eachSub.name }}
+    						    </option>
+    						    {%  endfor %}
+    						</select>
+    						
+    					</div>
+    				{% else %}
+    				    {{ form_row(form.specialization) }}
+    				    {{ form_row(form.subSpecializations) }}
+    				{% endif %}
+    
+    				{{ form_row(form.name) }}
+    				{{ form_row(form.description) }}
+    				{{ form_row(form.status) }}
+    				
+    				{{ form_rest(form) }}
+    				<div class="clear"><br></div>
+    			    <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
+                    {% if not form.vars.value.id %}
+                        <input type="submit" value="Save &amp; Add another {{ treatmentsLabel.singular | title }}" class="btn btn-large" name="submit"/>
+                    {% endif %}
+    				
+    			</form>
 
-				{% if form.children.subSpecializations.vars.read_only %}
-				    <div>
-						{{ form_label(form.subSpecializations) }}
-						<span class="fixed-value">{{ form.vars.value.subSpecializations.name }}</span>
-					</div>
-				{% else %}
-				    {{ form_row(form.specialization) }}
-				    {{ form_row(form.subSpecializations) }}
-				{% endif %}
-
-				{{ form_row(form.name) }}
-				{{ form_row(form.description) }}
-				{{ form_row(form.status) }}
-				
-				{{ form_rest(form) }}
-
-			    <input type="submit" value="Save" class="green-button" name="submit"/>
-			    <input type="submit" value="Save &amp; Add another procedure" class="green-button" name="submit"/>
-				
-			</form>
-			{% endblock %}
-
-		{% endembed %}
-	</div>
+            {% endblock %}
+        {% endembed %}
+    </div>
 
 {% endblock %}
 
@@ -77,7 +74,7 @@
 			    _subSpecializationEl.attr('disabled', true).html('<option value="0">Loading...</option>');
 			    $.ajax({
 				    url: '{{ path("admin_specialization_loadAvailableSubSpecializations") }}',
-				    data: {id: _id},
+				    data: {id: _id, 'treatmentId': '{{ form.vars.value.id }}', 'selectedSubSpecializationIds': $.parseJSON('{{ selectedSubSpecializationIds is defined ? selectedSubSpecializationIds : "[]"  }}')},
 				    type: 'get',
 				    dataType: 'json',
 				    success: function(json){

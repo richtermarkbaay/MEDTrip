@@ -27,7 +27,7 @@
 			 var selectedCity = document.getElementById('institutionDetail_city');
 			 var selectedCountry = document.getElementById('institutionDetail_country');
 
-		    var address = document.getElementById("institutionDetail_address1").value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "" + document.getElementById("institutionDetail_zipCode").value + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
+		    var address = document.getElementById("institutionDetail_address1").value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "," + document.getElementById("institutionDetail_zipCode").value + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
 		    geocoder.geocode( { 'address': address}, geocoderCallback ); 
 		  }
 		

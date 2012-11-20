@@ -31,8 +31,8 @@
 											<h3>{{ institution.name() }} </h3>
 											<h5>{{ institution.typeLabel() }}</h5>
 										
-										 <form novalidate="novalidate" action="{{ path('admin_institution_add_save_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
-											
+										 <form novalidate="novalidate" action="{{ path('admin_institution_add_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
+											{{ form_errors(form) }}
 													{{ form_row( form.description ) }}
 									  				{{ form_row( form.contactEmail ) }}
 								  		   		    {{ form_row( form.country ) }}
@@ -42,7 +42,7 @@
 									  			    {{ form_row( form.zipCode ) }}
 									 
 							
-									  		<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
+									  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
 									  		 			{{ form_rest(form) }}
 									  		</form>	
 							  			</div>

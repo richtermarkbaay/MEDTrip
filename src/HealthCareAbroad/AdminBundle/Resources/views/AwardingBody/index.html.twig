@@ -1,0 +1,77 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubTab = 'manage_awardingBody' %}
+
+{% block content %}
+
+    <div id="content">
+
+        <div id="page-heading"><h2>List of Awarding Body</h2></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+
+                {% include '::notice.admin.html.twig' %}
+
+                {% set contents = [{
+                        'title': 'Add Awarding Body',
+                        'description': 'Add new Awarding Body',
+                        'class': 'add-icon',
+                        'href': path('admin_awardingBody_add'),
+                        'links': [{'title': 'Add a Awarding Body', 'href': path('admin_awardingBody_add')}]
+                    }]
+                %}
+
+                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+
+                <!-- Render Filter Box -->
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+
+                <div style="width: 70%">
+                    <table id="awardingBody-list" class="table table-bordered sortable-list">
+                    <tr>
+                        <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                         <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : default }}">Details</a></th>
+                          <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'website' ? 'sort-' ~ sortOrder : default }}">Website</a></th>
+                        <th>Status</th>
+                        <th class="actions" width="150">Action</th>
+                    </tr>
+
+                    {% for award in awards %}
+                        {% if award.status %}
+                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
+                        {% else %}
+                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
+                        {% endif %}
+                        <tr>
+                            <td>{{ award.name }}</td>
+                            <td>{{ award.details }}</td>
+                            <td>{{ award.website }}</td>
+                            <td>{{ award.status ? 'Active' : 'Inactive' }}</td>
+                            <td align="center">
+                                <a href="{{ path('admin_awardingBody_edit', {id:award.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
+                                &nbsp;
+                                <a href="{{ path('admin_awardingBody_updateStatus', {id:award.id}) }}" title="{{ statusLabel }}" class="update-status">
+                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
+                    {% endfor %}
+                    </table>
+                    
+                    {% if pager.isPaginable %}
+                       {{ paginate(pager, 'admin_awardingBody_index', app.request.query.all) }}
+                    {% endif %}
+                </div>
+
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

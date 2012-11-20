@@ -20,19 +20,27 @@
     </li>
     {% endif %}
 
-    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_MEDICAL_CENTERS', 'CAN_MANAGE_MEDICAL_CENTER')") %}
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_SPECIALIZATIONS', 'CAN_VIEW_SUB_SPECIALIZATIONS', 'CAN_VIEW_TREATMENTS')") %}
     <li class="dropdown {{ selectedTab == 'manageHcaData' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Manage HCA Data <b class="caret"></b></a>
         <ul class="dropdown-menu">
+            {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_SPECIALIZATIONS')") %}
             <li class="{{ selectedSubTab == 'specializations' ? 'active' : '' }}" >
                 <a href="{{ path('admin_specialization_index') }}">Specializations</a>
             </li>
+            {% endif %}
+            
+            {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_SUB_SPECIALIZATIONS')") %}
             <li class="{{ selectedSubTab == 'subspecializations' ? 'active' : '' }}">
                 <a href="{{ path('admin_subSpecialization_index') }}">Sub-specializations</a>
             </li>
+            {% endif %}
+            
+            {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_TREATMENTS')") %}
             <li class="{{ selectedSubTab == 'treatments' ? 'active' : '' }}">
                 <a href="{{ path('admin_treatment_index') }}">Treatments</a>
             </li>
+            {% endif %}
             <li class="divider"></li>
             <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
                 <a href="{{ path('admin_country_index') }}">Manage Countries</a>
@@ -42,6 +50,12 @@
             </li>
             <li class="{{ selectedSubTab == 'manage_doctors' ? 'active' : '' }}">
                 <a href="{{ path('admin_doctor_index') }}">Manage Doctors</a>
+            </li>
+            <li class="{{ selectedSubTab == 'manage_awardingBody' ? 'active' : '' }}">
+                <a href="{{ path('admin_awardingBody_index') }}">Manage Awarding Body</a>
+            </li>
+             <li class="{{ selectedSubTab == 'manage_affiliations' ? 'active' : '' }}">
+                <a href="{{ path('admin_affiliation_index') }}">Manage Affiliations</a>
             </li>
         </ul>
     </li>

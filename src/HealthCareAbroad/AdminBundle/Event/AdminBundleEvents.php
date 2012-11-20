@@ -54,4 +54,12 @@ final class AdminBundleEvents
     const ON_ADD_LANGUAGE = 'event.language.add';
     const ON_EDIT_LANGUAGE = 'event.language.edit';
     const ON_DELETE_LANGUAGE = 'event.language.delete';
+    
+    const ON_ADD_AWARDING_BODY = 'event.awarding_body.add';
+    const ON_EDIT_AWARDING_BODY = 'event.awarding_body.edit';
+    const ON_DELETE_AWARDING_BODY = 'event.awarding_body.delete';
+    
+    const ON_ADD_AFFILIATION = 'event.affiliation.add';
+    const ON_EDIT_AFFILIATION = 'event.affiliation.edit';
+    const ON_DELETE_AFFILIATION = 'event.affiliation.delete';
 }

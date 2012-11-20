@@ -1,0 +1,45 @@
+HealthCareAbroad\HelperBundle\Entity\Affiliation:
+    type: entity
+    table: affiliations
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\AffiliationRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+        details:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        awardingBody:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\AwardingBody
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                awarding_body_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

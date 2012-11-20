@@ -46,7 +46,7 @@ class CountryControllerTest extends AdminBundleWebTestCase
 
     	$form = $crawler->selectButton('submit')->form();
     	$crawler = $client->submit($form, $formData);
-
+    	
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
@@ -56,7 +56,7 @@ class CountryControllerTest extends AdminBundleWebTestCase
     	 
     	// redirect request
     	$crawler = $client->followRedirect(true);
-
+    	
     	// check if the redirected response content has the newly added country
     	$isAdded = $crawler->filter('#country-list > tr > td:contains("'.$formData['country[name]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);

@@ -1,0 +1,37 @@
+admin_affiliation_index:
+    pattern:  /admin/affiliation
+    defaults: { _controller: AdminBundle:Affiliation:index }
+    requirements:    
+        _method:  GET
+
+admin_affiliation_add:
+    pattern:  /admin/affiliation/add
+    defaults: { _controller: AdminBundle:Affiliation:add }
+    requirements:    
+        _method:  GET
+        
+admin_affiliation_create:
+    pattern:  /admin/affiliation/add
+    defaults: { _controller: AdminBundle:Affiliation:save }
+    requirements:
+         _method: POST
+         
+admin_affiliation_edit:
+    pattern:  /admin/affiliation/edit/{id}
+    defaults: { _controller: AdminBundle:Affiliation:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_affiliation_update:
+    pattern:  /admin/affiliation/edit/{id}
+    defaults: { _controller: AdminBundle:Affiliation:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_affiliation_updateStatus:
+    pattern:  /admin/affiliation/update-status/{id}
+    defaults: { _controller: AdminBundle:Affiliation:updateStatus, id: ~ }
+    requirements:
+        id: \d+

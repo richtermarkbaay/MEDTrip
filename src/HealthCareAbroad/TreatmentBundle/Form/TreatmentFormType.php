@@ -24,8 +24,8 @@ class TreatmentFormType extends AbstractType
 		);
 		
 		if ($treatment->getId()) {
-			$institutionTreatmentRepo = $this->doctrine->getRepository('InstitutionBundle:Institution');
-			$hasInstitutionTreatment = $institutionTreatmentRepo->getCountByTreatmentId($treatment->getId());
+			$institutionSpecializationRepo = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization');
+			$hasInstitutionTreatment = $institutionSpecializationRepo->getTreatmentCountByTreatmentId($treatment->getId());
 
 		    if ($hasInstitutionTreatment) {
 		        $builder->add('specialization', 'hidden', array('virtual' => 'true', 'label' => 'Specialization', 'read_only' => true));

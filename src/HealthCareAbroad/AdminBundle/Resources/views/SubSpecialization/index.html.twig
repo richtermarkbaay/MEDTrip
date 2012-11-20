@@ -1,88 +1,63 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'subspecializations' %}
+{% set selectedSubMenu = 'sub_specializations' %}
+{% set subSpecializationLabel = getClassLabel('sub_specialization') %}
 
 {% block content %}
-    <div id="content">
+    
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
 
-        <div id="page-heading"><h2>List of Sub-specializations</h2></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
-
-                {% include '::notice.admin.html.twig' %}
-
-                {% set contents = [{
-                        'title': 'Add sub-specialization',
-                        'description': 'Add new sub-specialization',
-                        'class': 'add-icon',
-                        'href': path('admin_subSpecialization_add', {'specializationId': specializationId ? specializationId : null }),
-                        'links': [
-                            {'title': 'Add sub-specialization', 'href': path('admin_subSpecialization_add', {'specializationId': specializationId ? specializationId : null } )}
-                        ]
-                    }]
-                %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-
-
-                <!-- Render Filter Box -->
+    <div id="content" class="span9">
+        
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: subSpecializationLabel.plural | title,
+                actions: [{link: path('admin_subSpecialization_add'), label: 'Add '~ subSpecializationLabel.singular | title, 'icon' : 'icon-ok' }] 
+            }  
+        %}
+            {% block sectionContent %}
+            
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
-
-                {% set sortBy = app.request.get('sortBy') %}
-                {% set sortOrder = app.request.get('sortOrder') %}
-                {% set default = sortBy | length ? '' : 'sort-asc' %}
-
-                <div style="width: 70%">
-                    <table id="procedure-type-list" class="table table-bordered sortable-list">
+                
+                <table class="table table-bordered">
                     <tr>
-                        <th id="column-name" width="150">
-                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Sub-specialization</a>
-                        </th>
-                        <th id="column-description">
-                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a>
-                        </th>
-                        <th id="column-medicalCenter">
-                            <a href="{{ app.request.uri }}" class="{{ sortBy == 'specialization' ? 'sort-' ~ sortOrder : '' }}">Specialization</a>
-                        </th>
-                        <th class="actions" width="130">Actions</th>
+                        <th>Name of Sub Specialization</th>
+                        <th>Description</th>
+                        <th>Specialization</th>
+                        <th width="15%">Actions</th>
                     </tr>
-
-                    {% for each in subSpecializations %}
-                        {% if each.status %}
-                            {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
-                        {% else %}
-                            {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
-                        {% endif %}
-                        <tr>
-                            <td>{{ each.name }}</td>
-                            <td>{{ each.description }}</td>
-                            <td>
-                                <a href="#" class="medical-center">{{ each.specialization.name }}</a>
-                            </td>
-                            <td>
-                                <a href="{{ path('admin_subSpecialization_edit', {id:each.id}) }}" title="Edit"><i class="icon-edit"></i> Edit</a>
-                                <br/>
-                                <a href="{{ path('admin_treatment_index', {treatment:each.id}) }}"><i class="icon-list"></i> View treatments</a>
-                                <br/>
-                                {% set class = each.status ? 'icon-remove' : 'icon-ok' %}
-                                <a href="{{ path('admin_subSpecialization_updateStatus', {id:each.id}) }}" title="{{ statusLabel }}" class="update-status">
-                                    <i class="{{ class }}"></i> <span>{{ statusLabel }}</span>
-                                </a>
-                            </td>
-                        </tr>
-                    {% else  %}
-                        <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
-                    {% endfor %}
-                    </table>
-
-                    {% if pager.isPaginable %}
-                       {{ paginate(pager, 'admin_subSpecialization_index', app.request.query.all) }}
-                    {% endif %}
-                </div>
-
+            
+                {% for each in subSpecializations %}
+                    
+                    <tr>
+                        <td>{{ each.name }}</td>
+                        <td>{{ each.description | raw }}</td>
+                        <td>{{ each.specialization.name }}</td>
+                        <td>
+                            <ul style="list-style: none;">
+                                <li><a href="{{ path('admin_subSpecialization_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
+                                <li>
+                                    <a href="{{ path('admin_treatment_index', { specialization: each.specialization.id, supSpecialization:each.id } ) }}"><i class="icon-list"></i> View treatments</a>
+                                </li>
+                                <li>
+                                    {% set status = each.isActive() ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
+                                    <a href="{{ path('admin_subSpecialization_updateStatus', {id: each.id} ) }}" title="" class="update-status">
+                                        <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </table>
             {% endblock %}
+            
         {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_subSpecialization_index', app.request.query.all) }}
+        {% endif %}
+        
     </div>
-
 {% endblock %}

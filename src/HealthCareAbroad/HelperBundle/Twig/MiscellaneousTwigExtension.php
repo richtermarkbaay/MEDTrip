@@ -8,10 +8,25 @@ namespace HealthCareAbroad\HelperBundle\Twig;
 
 class MiscellaneousTwigExtension extends \Twig_Extension
 {
+    private $classKeys;
+    private $classLabels;
+    
+    public function setClassKeys($keys)
+    {
+        $this->classKeys = $keys;
+    }
+    
+    public function setClassLabels($labels)
+    {
+        $this->classLabels = $labels;
+    }
+    
     public function getFunctions()
     {
         return array(
             'getClass' => new \Twig_Function_Method($this, 'getClass'),
+            'getClassLabel' => new \Twig_Function_Method($this, 'getClassLabel'),
+            'getClassLabels' => new \Twig_Function_Method($this, 'getClassLabels'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode')
@@ -25,6 +40,41 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function getClass($object)
     {
         return \get_class($object);
+    }
+    
+    public function getClassLabels($classKeys=array())
+    {
+        $labels = array();
+        foreach ($classKeys as $classKey) {
+            $labels[$classKey] = $this->getClassLabel($classKey);
+        }
+        
+        return $labels;
+    }
+    
+    /**
+     * Get label for class.
+     * 
+     * @param mixed $classKey
+     * @param boolean $plural
+     */
+    public function getClassLabel($classKey)
+    {
+        if (\is_object($classKey)) {
+            $r = \array_flip($this->classKeys);
+            $class = $this->getClass($classKey);
+            if (!\array_key_exists($class, $r)) {
+                throw new \Exception("Unable to find class key for class {$class}");
+            }
+            
+            $classKey = $r[$class];
+        }
+        
+        if (!\array_key_exists($classKey, $this->classLabels)) {
+            throw new \Exception("Unable to find label for class {$classKey}");   
+        }
+        
+        return $this->classLabels[$classKey];
     }
     
     public function getName()

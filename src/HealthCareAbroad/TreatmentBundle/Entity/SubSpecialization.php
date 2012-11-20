@@ -255,8 +255,17 @@ class SubSpecialization
         return $this->treatments;
     }
     
+    /** custom methods below **/
+    
     public function __toString()
     {
         return $this->name;
     }
+    
+    public function isActive()
+    {
+        return $this->status == self::STATUS_ACTIVE;
+    }
+    
+    /** end custom methods**/
 }
