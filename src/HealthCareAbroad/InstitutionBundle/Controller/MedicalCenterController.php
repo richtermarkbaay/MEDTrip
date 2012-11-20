@@ -355,24 +355,27 @@ class MedicalCenterController extends InstitutionAwareController
     public function addAffiliationsAction(Request $request)
     {
 
-//     	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+    
+    	if ($request->isMethod('POST')) {
+    		
     	
-//     	if ($request->isMethod('POST')) {
-//     		$form->bind($request);
+    		$form->bind($request);
+    		
+    		if ($form->isValid()) {
+    
+    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+    			->saveAsDraft($form->getData());
+    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
+    			return $this->redirect($this->generateUrl('institution_medicalCenter_addDetails',array('imcId' => $this->institutionMedicalCenter->getId())));
+    		}
+    	}
     	
-//     		if ($form->isValid()) {
-    	
-//     			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-//     			->saveAsDraft($form->getData());
- 
-//     			return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
-//     		}
-//     	}
-    	
-//     	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
-//     					'form' => $form->createView(), 
-//     					'institutionMedicalCenter' => $this->institutionMedicalCenter,
-//     					));
+    	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
+    					'form' => $form->createView(), 
+    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
+    					'newObject' => true
+    					));
     }
 
     

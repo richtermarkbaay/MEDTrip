@@ -1,13 +1,13 @@
    {% embed '::contentWrapper.admin.html.twig' %}
 		{% block wrappedContent %}
-		
-					<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addDetails', { 'imcId': institutionMedicalCenter.id }) }}" method="post" class="basic-form">
+		  {% include '::notice.admin.html.twig' %}
+					<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addAffiliations', { 'imcId': institutionMedicalCenter.id }) }}" {{ form_enctype(form) }}  method="post" class="basic-form">
 		
 						{{ form_row(form.institutionAffiliations) }}
 				
 						{{ form_rest(form) }}
 		
-					    <input type="submit" class="a.add-edit-language form-submit" name="submit"/>
+					    <input type="submit" class="add-edit-affiliation form-submit" name="submit"/>
 					</form>
 				
 		{% endblock %}
