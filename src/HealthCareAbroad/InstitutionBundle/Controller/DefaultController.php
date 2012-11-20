@@ -30,18 +30,15 @@ class DefaultController extends InstitutionAwareController
     public function indexAction()
     {
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        $draftAlerts = isset($institutionAlerts[AlertTypes::DRAFT_LISTING]) ? $institutionAlerts[AlertTypes::DRAFT_LISTING] : array();
-        $expiredListingAlerts = isset($institutionAlerts[AlertTypes::EXPIRED_LISTING]) ? $institutionAlerts[AlertTypes::EXPIRED_LISTING] : array();
-        $approvedListingAlerts = isset($institutionAlerts[AlertTypes::APPROVED_LISTING]) ? $institutionAlerts[AlertTypes::APPROVED_LISTING] : array();
+//         $draftAlerts = isset($institutionAlerts[AlertTypes::DRAFT_LISTING]) ? $institutionAlerts[AlertTypes::DRAFT_LISTING] : array();
+//         $expiredListingAlerts = isset($institutionAlerts[AlertTypes::EXPIRED_LISTING]) ? $institutionAlerts[AlertTypes::EXPIRED_LISTING] : array();
+//         $approvedListingAlerts = isset($institutionAlerts[AlertTypes::APPROVED_LISTING]) ? $institutionAlerts[AlertTypes::APPROVED_LISTING] : array();
 
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
-        
+
         return $this->render('InstitutionBundle:Default:index.html.twig', array(
-            'hasAlerts' => count($institutionAlerts),
-            'draftAlerts' => $draftAlerts,
-            'expiredListingAlerts' => $expiredListingAlerts,
-            'approvedListingAlerts' => $approvedListingAlerts,
+            'alerts' => $institutionAlerts,
     		'news' => $news,
         ));
     }

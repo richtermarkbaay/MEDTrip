@@ -40,6 +40,13 @@ institution_medicalCenter_edit:
         _method: GET|POST
         imcId: \d+
 
+institution_medicalCenter_view:
+    pattern:  /medical-center/view/{imcId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:viewMedicalCenter, imcId: ~ }
+    requirements:
+        imcId: \d+
+        _method: GET
+
 institution_medicalCenter_loadAvailableSpecializations:
     pattern: /medical-center/load-available-specializations/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableSpecializations }

@@ -85,7 +85,7 @@ services:
 
     services.alert:
         class: %services.alert_class%
-        arguments: [@doctrine, @service_container]
+        arguments: [@doctrine, @router, %alert_db%]
 
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
