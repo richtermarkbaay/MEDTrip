@@ -377,26 +377,46 @@ class InstitutionTreatmentsController extends Controller
     	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
     	
     	 if ($this->request->isMethod('POST')) {
-    		 
-    		$form->bind($request);
+    		 $form->bind($this->request);
     	
     		if ($form->isValid()) {
-    	
+    			
     			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
     			->saveAsDraft($form->getData());
-    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
     			
-    			return $this->redirect($this->generateUrl('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig',
+    			$this->request->getSession()->setFlash('success', "Affiliation has been saved!");
+    			
+    			return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
     							array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
     		}
     	}
-    	 
     	return $this->render('AdminBundle:InstitutionTreatments:addAffiliation.html.twig', array(
     					'form' => $form->createView(),
     					'institutionMedicalCenter' => $this->institutionMedicalCenter,
-    					'formAction' => $this->generateUrl('admin_institution_medicalCenter_addAffiliations', 
-    									array('institutionId:' => $this->institution->getId() , 'imcId:' => $this->institutionMedicalCenter->getId()))
+    					'institution' => $this->institution
     	));
+    }
+    
+    /**
+     *
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function updateAffiliationsAction()
+    {
+    	$request = $this->getRequest();
+    	
+    	if (!$this->institutionMedicalCenter) {
+    		throw $this->createNotFoundException('Invalid institutionMedicalCenter');
+    	}
+    	
+   		$institutionAffiliationRepo = $this->getDoctrine()->getRepository('HelperBundle:Affiliation');
+        $institutionAffiliationRepo->updateAffiliations($request->get('affiliationId'), $this->institutionMedicalCenter->getId());
+    			 
+    	$this->request->getSession()->setFlash('success', "Affiliation has been removed!");
+    			
+    	return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
+    		   array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
     }
     
     /**

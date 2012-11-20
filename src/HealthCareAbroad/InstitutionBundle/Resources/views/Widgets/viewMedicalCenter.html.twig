@@ -48,7 +48,7 @@
                 {% for affiliation in affiliations %}
 						<div style="margin-top: 10px">
 					   {{ affiliation.name | title }} 
-					    <a href="#" style="float:right"><i class="icon-remove"></i></a>
+					    <a href="{{ path('admin_institution_medicalCenter_updateAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id , affiliationId: affiliation.id}) }}" style="float:right"><i class="icon-remove"></i></a>
 					</div>
 				
                 {% endfor %}
