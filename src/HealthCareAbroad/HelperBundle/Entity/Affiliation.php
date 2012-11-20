@@ -9,8 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Affiliation
 {
-	
 	const STATUS_ACTIVE = 1;
+	
 	const STATUS_INACTIVE = 0;
     /**
      * @var integer $id
@@ -45,11 +45,11 @@ class Affiliation
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionMedicalCenter;
+    private $institutionMedicalCenters;
 
     public function __construct()
     {
-        $this->institutionMedicalCenter = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -173,34 +173,34 @@ class Affiliation
     }
 
     /**
-     * Add institutionMedicalCenter
+     * Add institutionMedicalCenters
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
      * @return Affiliation
      */
-    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
     {
-        $this->institutionMedicalCenter[] = $institutionMedicalCenter;
+        $this->institutionMedicalCenters[] = $institutionMedicalCenters;
         return $this;
     }
 
     /**
-     * Remove institutionMedicalCenter
+     * Remove institutionMedicalCenters
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
      */
-    public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
+    public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
     {
-        $this->institutionMedicalCenter->removeElement($institutionMedicalCenter);
+        $this->institutionMedicalCenters->removeElement($institutionMedicalCenters);
     }
 
     /**
-     * Get institutionMedicalCenter
+     * Get institutionMedicalCenters
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getInstitutionMedicalCenter()
+    public function getInstitutionMedicalCenters()
     {
-        return $this->institutionMedicalCenter;
+        return $this->institutionMedicalCenters;
     }
 }
