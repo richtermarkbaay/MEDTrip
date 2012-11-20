@@ -3,7 +3,9 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
+
+use HealthCareAbroad\HelperBundle\Form\InstitutionSpecializationFormType;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -70,9 +72,9 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function indexAction(Request $request)
     {
-        //$this->institution
-        
-        var_dump(count($this->filteredResult)); exit;
+
+//         var_dump(count($this->filteredResult)); exit;
+        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array('medicalCenters' => $this->filteredResult));
     }
     
     /**
@@ -183,6 +185,11 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     public function editAction(Request $request)
+    {
+    
+    }
+    
+    public function viewAction(Request $request)
     {
     
     }
@@ -338,4 +345,38 @@ class MedicalCenterController extends InstitutionAwareController
         
         return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
     }
+    
+    /**
+     * @author Chaztine Blance
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * Adding of Insitution Affiliations
+     */
+    public function addAffiliationsAction(Request $request)
+    {
+
+    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+    
+    	if ($request->isMethod('POST')) {
+    		
+    	
+    		$form->bind($request);
+    		
+    		if ($form->isValid()) {
+    
+    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+    			->saveAsDraft($form->getData());
+    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
+    			return $this->redirect($this->generateUrl('institution_medicalCenter_addDetails',array('imcId' => $this->institutionMedicalCenter->getId())));
+    		}
+    	}
+    	
+    	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
+    					'form' => $form->createView(), 
+    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
+    					'newObject' => true
+    					));
+    }
+
+    
 }

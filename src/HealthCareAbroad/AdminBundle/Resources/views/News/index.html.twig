@@ -46,7 +46,7 @@
                                 <td>{{ newsData.description|raw}}</td>
                                 <td>{{ newsData.status ? 'Active' : 'Inactive' }}</td>
                                 <td align="center">
-                                    <a href="{{ path('admin_news_edit', {id:newsData.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
+                                    <a href="{{ path('admin_news_view', {id:newsData.id}) }}" title="Edit" class="icon-1 info-tooltip"></a>
                                     {% set class = newsData.status ? 'icon-2' : 'icon-5' %}
                                     <a href="{{ path('admin_news_updateStatus', {id:newsData.id}) }}" title="{{ newsData.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
                                 </td>

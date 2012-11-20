@@ -56,6 +56,9 @@
 													
 												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
 										</form>
+										
+											    <a href="{{ path('institution_medicalCenter_addAffiliations', {imcId:institutionMedicalCenter.id }) }}" title="Edit" class="add-affiliation icon-1 info-tooltip">Add Affiliation</a>
+											<div id="dialog-container"></div>
 									</div>
 								
 								</div><!-- /.tab-content end -->
@@ -71,4 +74,41 @@
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+    <script type="text/javascript">
+        $(function(){
+        	$('#dialog-container').dialog({
+                position: ['center', 100],
+                autoOpen: false,
+                width: 750,
+                modal: true,
+                resizable: false,
+                close: function() {}
+            });
+
+            $('a.add-affiliation').click(function(){
+            	var elem = $(this);
+				var _url = elem.attr('href');
+
+				$("#dialog-container").empty();
+				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+                $('#dialog-container').dialog({
+                	title: 'Add Affiliations',
+                    open: function() {
+                        $.ajax(_url)
+                            .done(function (data) {                        
+                            	$('#dialog-container').html(data);
+                            }
+                        );
+                    },
+                });
+
+            	$('#dialog-container').dialog("open");
+
+                 	return false;           
+            });
+        });
+    </script>
 {% endblock %}

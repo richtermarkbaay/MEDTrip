@@ -47,9 +47,7 @@ class InstitutionController extends InstitutionAwareController
 	
 		    // Get contactNumbers and convert to json format
 		    $contactNumber = json_encode($request->get('contactNumber')); 
-
 			$form->bindRequest($request);
-			
 			if ($form->isValid()) {
 			    
 			    // Set Contact Number before saving 

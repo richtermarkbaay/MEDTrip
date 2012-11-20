@@ -129,6 +129,8 @@ class SpecializationController extends Controller
     {
         $service = $this->get('services.treatment_bundle');
         $specialization = $service->getSpecialization($request->get('id', 0));
+        $selectedSubSpecializationIds = $request->get('selectedSubSpecializationIds', array());
+        
         $subSpecializations = $service->getActiveSubSpecializationsBySpecialization($specialization);
         $output = array(
             'data' => array(),
@@ -136,10 +138,12 @@ class SpecializationController extends Controller
         );
         
         foreach ($subSpecializations as $each) {
-            $output['html'] .= "<option value='{$each->getId()}'>{$each->getName()}</option>";
+            $isSelected = \in_array($each->getId(), $selectedSubSpecializationIds);
+            $output['html'] .= "<option value='{$each->getId()}' ".($isSelected?"selected":"").">{$each->getName()}</option>";
             $output['data'][] = array(
                 'id' => $each->getId(),
-                'name' => $each->getName()
+                'name' => $each->getName(),
+                'selected' => $isSelected
             );
         }
         
