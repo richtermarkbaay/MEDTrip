@@ -25,6 +25,13 @@ institution_medicalCenter_addDoctors:
     requirements:
         _method: GET|POST
         imcId: \d+
+        
+institution_medicalCenter_addAffiliations:
+    pattern: /medical-center/{imcId}/affiliations/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addAffiliations, imcId: ~}
+    requirements:
+        _method: GET|POST
+        imcId: \d+
 
 institution_medicalCenter_edit:
     pattern: /medical-center/edit/{imcId}
@@ -32,7 +39,6 @@ institution_medicalCenter_edit:
     requirements:
         _method: GET|POST
         imcId: \d+
-
 
 institution_medicalCenter_loadAvailableSpecializations:
     pattern: /medical-center/load-available-specializations/{imcId}

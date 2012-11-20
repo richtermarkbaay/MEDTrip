@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name="healthcareabroad" default="build">
-    <!--
-    <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
-    -->
     <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb" />
 
     <target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit,phpcb" />
@@ -29,7 +26,7 @@
         <delete dir="${basedir}/build/pdepend" />
     </target>
 
-    <target name="prepare" depends="clean,symfony-clear-cache" description="Prepare for build">
+    <target name="prepare" depends="clean,symfony-clear-cache,edit-app-kernel" description="Prepare for build">
         <mkdir dir="${basedir}/build/api" />
         <mkdir dir="${basedir}/build/code-browser" />
         <mkdir dir="${basedir}/build/coverage" />
@@ -167,6 +164,12 @@
         <exec executable="app/console" failonerror="true">
             <arg value="cache:clear" />
             <arg value="--env=test" />
+        </exec>
+    </target>
+
+    <target name="edit-app-kernel" description="Adds code to speed up unit tests">
+        <exec executable="php" failonerror="true">
+              <arg value="app/appKernelTransformer.php"/>
         </exec>
     </target>
 

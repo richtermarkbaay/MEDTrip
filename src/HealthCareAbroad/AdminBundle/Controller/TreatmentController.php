@@ -84,7 +84,12 @@ class TreatmentController extends Controller
 
         $params['form'] = $form->createView();
         $params['formAction'] = $this->generateUrl('admin_treatment_update', array('id' => $treatment->getId()));
-        $params['hasInstitutionTreatments'] = false; // TODO SELECT InstitutionTreatments count(*)
+        $params['selectedSubSpecializationIds'] = array();
+        foreach ($treatment->getSubSpecializations() as $eachSub) {
+            $params['selectedSubSpecializationIds'][] = $eachSub->getId();
+        }
+        $params['selectedSubSpecializationIds'] = \json_encode($params['selectedSubSpecializationIds']);
+        
         return $this->render('AdminBundle:Treatment:form.html.twig', $params);
     }
 

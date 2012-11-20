@@ -164,5 +164,47 @@ class Affiliation
     {
         return $this->status;
     }
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalCenter;
+    
+    public function __construct()
+    {
+    	$this->institution = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Add institutionMedicalCenter
+     *
+     * @param HealthCareAbroad\InstitutionMedicalCenterBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionMedicalCenterBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+    	$this->institutionMedicalCenter[] = $institutioMedicalCenter;
+    	return $this;
+    }
+    
+    /**
+     * Remove institutionMedicalCenter
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     */
+    public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+    	$this->institutionMedicalCenter->removeElement($institutionMedicalCenter);
+    }
+    
+    /**
+     * Get institutionMedicalCenter
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getInstitutionMedicalCenter()
+    {
+    	return $this->institutionMedicalCenter;
+    }
 
 }

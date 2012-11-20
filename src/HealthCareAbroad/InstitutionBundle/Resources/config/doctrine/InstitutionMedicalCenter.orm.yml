@@ -73,4 +73,20 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                     -
                         name: doctor_id
                         referencedColumnName: id
-            orderBy: null
+        institutionAffiliations:
+             targetEntity: HealthCareAbroad\HelperBundle\Entity\Affiliation
+             cascade: { }
+             mappedBy: null
+             inversedBy: institution_medical_center
+             joinTable:
+                name: institution_affiliations
+                joinColumns:
+                    -
+                        name: institution_medical_center_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: affiliation_id
+                        referencedColumnName: id
+                        orderBy: null
+                        lifecycleCallbacks: {}

@@ -50,3 +50,8 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
         tags:
             - { name: form.type, alias: treatment_list }
+
+    form.institution_affiliation_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType
+        tags:
+          - { name: form.type, alias: institution_affiliation_list }

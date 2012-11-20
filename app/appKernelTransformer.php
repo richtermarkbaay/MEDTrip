@@ -1,47 +1,45 @@
 <?php
+
+$code = <<< CODE
+<?php
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
-/**
- * When you make changes to this class please modify the appKernelTransformer.php
- * That file is used by the build script for deploying to staging.
- */
+
 class AppKernel extends Kernel
 {
     // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
-    /**
     protected function initializeContainer()
     {
-        static $first = true;
+        static \$first = true;
 
-        if ('test' !== $this->getEnvironment()) {
+        if ('test' !== \$this->getEnvironment()) {
             parent::initializeContainer();
             return;
         }
 
-        $debug = $this->debug;
+        \$debug = \$this->debug;
 
-        if (!$first) {
+        if (!\$first) {
             // disable debug mode on all but the first initialization
-            $this->debug = false;
+            \$this->debug = false;
         }
 
         // will not work with --process-isolation
-        $first = false;
+        \$first = false;
 
         try {
             parent::initializeContainer();
-        } catch (\Exception $e) {
-            $this->debug = $debug;
-            throw $e;
+        } catch (\Exception \$e) {
+            \$this->debug = \$debug;
+            throw \$e;
         }
 
-        $this->debug = $debug;
+        \$this->debug = \$debug;
     }
-    **/
 
     public function registerBundles()
     {
-        $bundles = array(
+        \$bundles = array(
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -51,7 +49,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
-            new JMS\DiExtraBundle\JMSDiExtraBundle($this),
+            new JMS\DiExtraBundle\JMSDiExtraBundle(\$this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             //new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
             new HealthCareAbroad\PagerBundle\PagerBundle(),
@@ -72,17 +70,17 @@ class AppKernel extends Kernel
             new HealthCareAbroad\DoctorBundle\DoctorBundle(),
         );
 
-        if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+        if (in_array(\$this->getEnvironment(), array('dev', 'test'))) {
+            \$bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            \$bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
+            \$bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
-            if ($this->getEnvironment() === 'dev') {
-                $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);
+            if (\$this->getEnvironment() === 'dev') {
+                \$bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle(\$this);
             }
         }
 
-        return $bundles;
+        return \$bundles;
     }
 
     /**
@@ -91,15 +89,18 @@ class AppKernel extends Kernel
      */
     protected function getContainerBaseClass()
     {
-        if ($this->getEnvironment() === 'dev') {
+        if (\$this->getEnvironment() === 'dev') {
             return '\JMS\DebuggingBundle\DependencyInjection\TraceableContainer';
         }
 
         return parent::getContainerBaseClass();
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface \$loader)
     {
-        $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
+        \$loader->load(__DIR__.'/config/config_'.\$this->getEnvironment().'.yml');
     }
 }
+CODE;
+
+file_put_contents('app/AppKernel.php', $code);
