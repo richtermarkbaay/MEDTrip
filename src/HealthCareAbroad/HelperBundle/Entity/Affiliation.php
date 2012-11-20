@@ -27,22 +27,31 @@ class Affiliation
      */
     private $details;
 
-	/**
-     * @var HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
-    
-    /**
-     * @var HealthCareAbroad\HelperBundle\Entity\AwardingBody
-     */
-    private $awardingBody;
-    
-
     /**
      * @var smallint $status
      */
     private $status;
 
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\AwardingBody
+     */
+    private $awardingBody;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionMedicalCenter;
+
+    public function __construct()
+    {
+        $this->institutionMedicalCenter = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -97,52 +106,6 @@ class Affiliation
         return $this->details;
     }
 
-
-	/**
-     * Set country
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
-     * @return City
-     */
-    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
-    {
-        $this->country = $country;
-        return $this;
-    }
-
-    
-    /**
-     * Get country
-     *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    public function getCountry()
-    {
-    	return $this->country;
-    }
-
-    /**
-     * Get awardingBody
-     *
-     * @return HealthCareAbroad\HelperBundle\Entity\AwardingBody
-     */
-    public function getAwardingBody()
-    {
-    	return $this->awardingBody;
-    }
-    
-    /**
-     * Set awardingBody
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody
-     * @return awardingBody
-     */
-    public function setAwardingBody(\HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody = null)
-    {
-    	$this->awardingBody = $awardingBody;
-    	return $this;
-    }
-    
     /**
      * Set status
      *
@@ -164,29 +127,63 @@ class Affiliation
     {
         return $this->status;
     }
-    
+
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return Affiliation
      */
-    private $institutionMedicalCenter;
-    
-    public function __construct()
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
     {
-    	$this->institution = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->country = $country;
+        return $this;
     }
-    
+
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set awardingBody
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody
+     * @return Affiliation
+     */
+    public function setAwardingBody(\HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody = null)
+    {
+        $this->awardingBody = $awardingBody;
+        return $this;
+    }
+
+    /**
+     * Get awardingBody
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\AwardingBody 
+     */
+    public function getAwardingBody()
+    {
+        return $this->awardingBody;
+    }
+
     /**
      * Add institutionMedicalCenter
      *
-     * @param HealthCareAbroad\InstitutionMedicalCenterBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
-     * @return InstitutionMedicalCenter
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @return Affiliation
      */
-    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionMedicalCenterBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
+    public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
     {
-    	$this->institutionMedicalCenter[] = $institutioMedicalCenter;
-    	return $this;
+        $this->institutionMedicalCenter[] = $institutionMedicalCenter;
+        return $this;
     }
-    
+
     /**
      * Remove institutionMedicalCenter
      *
@@ -194,17 +191,16 @@ class Affiliation
      */
     public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter)
     {
-    	$this->institutionMedicalCenter->removeElement($institutionMedicalCenter);
+        $this->institutionMedicalCenter->removeElement($institutionMedicalCenter);
     }
-    
+
     /**
      * Get institutionMedicalCenter
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getInstitutionMedicalCenter()
     {
-    	return $this->institutionMedicalCenter;
+        return $this->institutionMedicalCenter;
     }
-
 }
