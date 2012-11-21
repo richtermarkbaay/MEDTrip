@@ -1,0 +1,11 @@
+{% set hcaDataClassLabels = getClassLabels(['admin_setting', 'user', 'user_type' , 'user_permission']) %}
+{% include 'HelperBundle:Widgets:subMenu.html.twig' 
+    with { 
+        links: [
+        	{name: 'admin_setting',url: path('admin_settings'), label: 'Admin Settings', icon: 'icon-home'},
+       		{name: 'user',url: path('admin_user_index'), label: 'Users', icon: 'icon-list'},
+            {name: 'user_type', url: path('admin_userType_index'), label: 'User Types', icon: 'icon-list'},
+            {name: 'user_permission', url: path('admin_userRole_index'), label: 'User Permissions', icon: 'icon-list'}
+        ] 
+    }  
+%} 

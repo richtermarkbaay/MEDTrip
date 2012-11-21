@@ -17,5 +17,12 @@ parameters:
         country: {singular: "country", plural: "countries"}
         city: {singular: "city", plural: "cities"}
         doctor: {singular: "doctor", plural: "doctors"}
-        awardingBody: {singular: "awardingBody", plural: "awardingBodies"}
+        awardingBody: {singular: "awarding body", plural: "awarding bodies"}
         affiliation: {singular: "affiliation", plural: "affiliations"}
+        advertisement: {singular: "advertisement", plural: "advertisements"}
+        inquiry: {singular: "inquiry", plural: "inquiries"}
+        user: {singular: "user", plural: "users"}
+        user_type: {singular: "user type", plural: "user types"}
+        user_role: {singular: "user role", plural: "user roles"}
+        admin_setting: {singular: "admin setting", plural: "admin settings"}
+        user_permission: {singular: "user permission", plural: "user permissions"}

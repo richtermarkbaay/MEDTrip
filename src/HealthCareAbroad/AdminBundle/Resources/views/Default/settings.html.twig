@@ -1,26 +1,27 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab='settings' %}
+{% set admin_settingLabel = getClassLabel('admin_setting') %}
+
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>{{ site_name }} Admin Settings</h1>
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:settingsTasks.html.twig'%}
     </div>
-    <!-- end page-heading -->
+    <div id="content" class="span9">
+  	 	
+  	 	{% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: admin_settingLabel.plural | title
+            }  
+        %}
     
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
+    {% block sectionContent %}
             <table>
                 <tr>
                     <td style="vertical-align: top;">
                         <!--  start table-content  -->
             			<div id="table-content">
             			    
-            			    {% if app.session.hasFlash('notice') %}
-            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-            		        {% endif %}
+            			    {% include '::notice.admin.html.twig' %}
             			
             			    <h2>Sub Heading </h2>
                 			<h3>Local Heading</h3>
@@ -41,25 +42,13 @@
                 			
             			</div>
                     </td>
-                    <td>
-                        {% block related_tasks %}
-                            {% include 'AdminBundle:Default:settingsTasks.html.twig' %}
-                        {% endblock %}
-                    </td>
+               
                 </tr>
             
             </table>
-			
-			<!--  end table-content  -->
-			
-			
-			
-        {% endblock %}
-        
-    {% endembed %}
+			{% endblock %}
+            
+        {% endembed %}
+    </div>
     
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
 {% endblock %}
-

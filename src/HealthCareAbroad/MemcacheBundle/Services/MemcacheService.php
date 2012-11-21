@@ -39,47 +39,18 @@ class MemcacheService
         }
         
     }
-
-    /**
-     * Update the latest version of the key
-     * @param string $key
-     * @param string $newKeyVersion
-     */
-    private function _updateVersionKey($key, $newKeyVersion)
-    {
-        if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
-            $latestKeyVersions = array();
-        }
-        $latestKeyVersions[$key] = $newKeyVersion;
-        $this->memcache->set(self::MEMCACHE_LATEST_VERSIONS_KEY, $latestKeyVersions);
-    }
     
-    /**
-     * Get the latest version of the key $key
-     * 
-     * @param string $key
-     */
-    private function _getLatestVersionKey($key)
-    {
-        if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
+//     public function put($key, $value)
+//     {
+//         if (!$this->hasMemcache) {
             
-            return false;
-        }
+//             return false;
+//         }
         
-        return $latestKeyVersions[$key];
-    }
-    
-    public function put($key, $value)
-    {
-        if (!$this->hasMemcache) {
-            
-            return false;
-        }
+//         $this->memcache->put($key, $value);
         
-        $this->memcache->put($key, $value);
-        
-        return true;
-    }
+//         return true;
+//     }
     
     /**
      * 
@@ -112,15 +83,9 @@ class MemcacheService
             
             return false;
         }
-
-        // add a timestamp to the key for new version of key
-        $newKey = $key.'_'.time();
-
-        // update the latest version for this key
-        $this->_updateVersionKey($key, $newKey);
-
+        
         // save the value to memcache
-        $this->memcache->set($newKey, $value);
+        $this->memcache->set($key, $value);
         
         return true;
     }
@@ -138,6 +103,6 @@ class MemcacheService
             return false;
         }
         
-        return $this->memcache->get($this->_getLatestVersionKey($key));
+        return $this->memcache->get($key);
     }
 }

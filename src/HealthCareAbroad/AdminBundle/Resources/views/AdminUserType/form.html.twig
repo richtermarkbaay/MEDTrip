@@ -1,37 +1,26 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-
-{% block title %}{{ parent() }} &raquo; {{ userType.id ? 'Edit user type' : 'Create new user type' }} {% endblock %}
+{% set user_typesLabel = getClassLabel('user_type') %}
 
 {% set selectedTab = 'settings' %}
 {% form_theme form '::form.admin.html.twig' %}
-
+{% set selectedSubMenu = 'user_type' %}
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>
-    	    {% if userType.id %} 
-    	        Edit {{ userType.name | title }}   user type
-	        {% else %}
-	            Create new user type
-            {% endif %} 
-        </h1>
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:settingsTasks.html.twig'%}
     </div>
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-             <table style="width:100%;">
-                <tr>
-                    <td style="vertical-align: top; ">
-            			<!--  start table-content  -->
-            			<div id="table-content">
-            			
-            			    {% if app.session.hasFlash('notice') %}
-            			        {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-            		        {% endif %}
+    <div id="content" class="span9">
+    {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ user_typesLabel.singular | title ,
+                actions:[
+                		{link: path('admin_userType_index'), label: 'View all '~ user_typesLabel.plural | title, 'icon' : 'icon-list' } ,
+               			{link: path('admin_userType_add'), label: 'Add '~ user_typesLabel.plural | title, 'icon' : 'icon-list' },
+               			{link: path('admin_userRole_index'), label: 'View all Permissions ', 'icon' : 'icon-list' }]
+            }
+        %}
+	
+		{% block sectionContent %}
+
+                {% include '::notice.admin.html.twig' %}
             			
             			    <form novalidate="novalidate" action="{{ userType.id ? path('admin_userType_edit_save', {id: userType.id}) : path('admin_userType_add_save') }}" method="POST" {{ form_enctype(form) }} class="user">
                 			    <!-- start id-form -->
@@ -42,8 +31,8 @@
                                     <tr>
                                 		<th>&nbsp;</th>
                                 		<td valign="top">
-                                			<input type="submit" name="submit" value="" class="form-submit" />
-                                			<input type="reset" value="" class="form-reset"  />
+                                			<input type="submit" name="submit" value="Submit" class="btn btn-large btn-primary" />
+                                			<input type="reset" value="Reset" class="btn btn-large"  />
                                 		</td>
                                 		<td></td>
                                 	</tr>
@@ -53,23 +42,8 @@
                             	</table>
                             	<!-- end id-form  -->
                         	</form>
-            			</div>
-            			<!--  end table-content  -->
-        			</td>
-        			<td style="vertical-align: top; ">
-        			    {% block relatedTasks %}
-                            {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showList': true, 'showAdd': false, 'showRoles': true, 'userType' : userType}%}
-                        {% endblock %}
-        			</td>
-    			</tr>
-			</table>
-        {% endblock %}
-        
-        
-        
-    {% endembed %}
-    
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+           {% endblock %}
+        {% endembed %}
+    </div>
+
 {% endblock %}
