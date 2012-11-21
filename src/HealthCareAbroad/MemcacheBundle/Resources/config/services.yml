@@ -7,3 +7,9 @@ services:
     services.memcache:
         class: HealthCareAbroad\MemcacheBundle\Services\MemcacheService
         arguments: [%memcached.servers%]
+        
+    services.memcache.namespace_prefix_storage:
+        class: HealthCareAbroad\MemcacheBundle\Services\NamespacePrefixStorage
+        calls:
+            - [setMemcacheService, [@services.memcache]]
+            - [setBasePrefixes, [%memcache_namespaces%]]

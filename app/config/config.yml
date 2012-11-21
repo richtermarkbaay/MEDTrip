@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: shared_parameters.yml }
+    - { resource: memcache_namespaces.yml }
     - { resource: security.yml }
     - { resource: doctrine_extensions.yml }
 

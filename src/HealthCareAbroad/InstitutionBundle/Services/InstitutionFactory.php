@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
+
+use HealthCareAbroad\MemcacheBundle\Services\NamespacePrefixStorage;
+
 use HealthCareAbroad\InstitutionBundle\Repository\InstitutionRepository;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -33,11 +37,27 @@ class InstitutionFactory
     
     private $discriminatorMapping = array();
     
+    /**
+     * @var NamespacePrefixStorage
+     */
+    private $memcacheNamespacePrefixStorage;
+    
+    /**
+     * @var MemcacheService
+     */
+    private $memcache;
+    
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:Institution');
         $this->discriminatorMapping = InstitutionTypes::getDiscriminatorMapping();
+    }
+    
+    public function setMemcacheNamespacePrefixStorage(NamespacePrefixStorage $storage)
+    {
+        $this->memcacheNamespacePrefixStorage = $storage;
+        $this->memcache = $this->memcacheNamespacePrefixStorage->getMemcacheService();
     }
     
     /**
@@ -75,7 +95,18 @@ class InstitutionFactory
      */
     public function findById($id)
     {
-        return $this->repository->find($id);    
+        // get namespace key for institution with id $id
+        $institutionNamespace = $this->memcacheNamespacePrefixStorage->getNamespaceByConfigKey('institution.base', $id);
+        $memcacheKey = $institutionNamespace.'_entity';
+        $result = $this->memcache->get($memcacheKey);
+        if (!$result){
+            $result = $this->repository->find($id);
+            
+            // add to memcache
+            $this->memcache->set($memcacheKey, $result);
+        }
+        
+        return $result;
     }
     
     /**
