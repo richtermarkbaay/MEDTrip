@@ -37,7 +37,7 @@ class CouchDbService {
         curl_exec($ch);
         $result = curl_getinfo($ch, CURLINFO_HTTP_CODE) == 200;
         curl_close($ch);
-var_dump($result);
+
         return $result;
     }
 
