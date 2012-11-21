@@ -1,15 +1,17 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'inquire' %}
 {% set selectedSubTab = 'inquire_index'%}
-
+{% set inquiryLabel = getClassLabel('inquiry') %}
 {% block content %}
     <div id="content">
 
-        {{ app.session.flash('notice') }}
-        <div id="page-heading"><h1>List of Inquiries</h1></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
+    	{% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: inquiryLabel.plural | title
+            }  
+        %}
+    
+          {% block sectionContent %}
 
             {% include '::notice.admin.html.twig' %}
 
@@ -21,19 +23,17 @@
                 <th><a href="#">Email</a></th>
                 <th><a href="#">Date Created</a></th>
             </tr>
-
-            {% for inquiry in inquiries %}
+	
+			{% for each in inquiries %}
                 <tr>
-                    <td>{{ inquiry.firstName }} {{ inquiry.lastName }}</td>
-                    <td>{{ inquiry.inquirySubject.name }}</td>
-                    <td>{{ inquiry.message }}</td>
-                    <td>{{ inquiry.email }}</td>
-                    <td align="center">{{ inquiry.dateCreated|date("m/d/Y") }}</td>
+                    <td>{{ each.firstName }} {{ each.lastName }}</td>
+                    <td>{{ each.inquirySubject.name }}</td>
+                    <td>{{ each.message }}</td>
+                    <td>{{ each.email }}</td>
+                    <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
                 </tr>
-            {% else  %}
-                <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
-            {% endfor %}
-            </table>
+           {% endfor %}
+                </table>
             {% endblock %}
         {% endembed %}
     </div>

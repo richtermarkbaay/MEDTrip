@@ -1,25 +1,20 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'settings'%}
-
+{% set userLabel = getClassLabel('user') %}
 {% block content %}
 <!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>{{ site_name }} Admin users</h1>
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:settingsTasks.html.twig'%}
     </div>
+    <div id="content" class="span9">
+   	{% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: userLabel.plural | title,
+                actions: [{link: path('admin_user_add'), label: 'Add New Admin '~ userLabel.singular | title, 'icon' : 'icon-ok' }] 
+            }  
+     %}
 
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-
-            {% include '::notice.admin.html.twig' %}
-        
-		    {% block related_tasks %}
-		        {% include 'AdminBundle:AdminUser:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
-		    {% endblock %}
+     {% block sectionContent %}
 
 			<div id="table-content" style="width: 70%">
 
@@ -30,19 +25,21 @@
     					<th>User type</th>
     					<th>Options</th>
     				</tr>
-    				{% for user in users %}
+    				
+    				{% for each in users %}
     				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-        					<td>{{ user.fullName | title }}</td>
-        					<td>{{ user.email }}</td>
-        					<td>{{ user.adminUserType.name | title }}</td>
+        					<td>{{ each.fullName | title }}</td>
+        					<td>{{ each.email }}</td>
+        					<td>{{ each.adminUserType.name | title }}</td>
         					<td class="options-width">
         					</td>
         				</tr>
     				{% endfor %}
 				</table> 
-			</div>
-        {% endblock %}
-    {% endembed %}
-</div>
-<!--  end content -->
+		{% endblock %}
+            
+        {% endembed %}
+        
+    </div>
+    
 {% endblock %}
