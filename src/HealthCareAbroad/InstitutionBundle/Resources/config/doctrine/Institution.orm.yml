@@ -123,6 +123,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                        name: language_id
                        referencedColumnName: id
+
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
@@ -147,10 +148,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         gallery:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
             mappedBy: institution
-
-    oneToOne:
         media:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
-            mappedBy: institution
 
     lifecycleCallbacks: {  }
