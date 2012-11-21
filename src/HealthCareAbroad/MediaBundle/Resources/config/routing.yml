@@ -14,10 +14,31 @@ admin_institution_gallery_add:
         _method: GET
         institutionId: \d+
 
+admin_institution_medicalCenter_gallery:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/gallery
+    defaults:
+    requirements:
+        _method: GET
+        institutionId: \d+
+        imcId: \d+
 # END ADMIN INSTITUTION ROUTES
 
-
 # DEFAULT ROUTES
+admin_gallery_selection:
+    pattern: /admin/gallery/{context}/{id}/{page}
+    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
+    requirements:
+        _method: GET
+        id: \d+
+        page: \d+
+
+media_add:
+    pattern: /admin/media/add/{context}/{id}
+    defaults: { _controller: MediaBundle:Default:add }
+    requirements:
+        _method: GET
+        id: \d+
+
 media_upload:
     pattern: /admin/media/upload/{institutionId}
     defaults: { _controller: MediaBundle:Default:upload }

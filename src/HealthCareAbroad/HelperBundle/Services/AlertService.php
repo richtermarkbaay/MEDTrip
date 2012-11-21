@@ -29,13 +29,14 @@ class AlertService
     protected $routeCollection;
     protected $couchDb;
 
-    function __construct($doctrine, $router, $alertDb) 
+    function __construct($alertDb, $doctrine, $router, $couchDbService)
     {
         $this->doctrine = $doctrine;
         $this->router = $router;
         $this->routeCollection = $router->getRouteCollection();
 
-        $this->couchDB = new CouchDatabase($alertDb['host'], $alertDb['port'], $alertDb['database']);
+        $this->couchDB = $couchDbService;
+        $this->couchDB->setDatabase($alertDb);
     }
     
     /**

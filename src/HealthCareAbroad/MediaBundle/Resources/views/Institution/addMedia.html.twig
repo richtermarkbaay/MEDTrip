@@ -10,37 +10,37 @@
         <h1>Add Media to Gallery</h1>
     </div>
     <!-- end page-heading -->
-    
+
     {% embed '::contentWrapper.admin.html.twig' %}
-        
+
         {% block wrappedContent %}
             {# ----- Related tasks ----- #}
             {% include 'MediaBundle:Institution:relatedTasksAddMedia.html.twig' %}
             {# ----- end Related tasks ----- #}
-                    
+
                <!--  start table-content  -->
-               <div id="table-content" style="width:75%;">                    
-                    
+               <div id="table-content" style="width:75%;">
+
                 <div id="dialog-form" title="Add media">
                     <form>
                         <div id="uploader">
                             <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
                         </div>
                     </form>
-                </div>		
-                
+                </div>
+
             </div>
         {% endblock %}
-        
+
     {% endembed %}
 
 </div>
 <!--  end content -->
 <div class="clear">&nbsp;</div>
 {% endblock %}
-                            
 
-{% block inlineJavascriptCode %}                
+
+{% block inlineJavascriptCode %}
 <!-- Load Queue widget CSS and jQuery -->
 <style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
 
@@ -95,7 +95,7 @@ $(function() {
                     $('form')[0].submit();
                 }
             });
-                
+
             uploader.start();
         } else
             alert('You must at least upload one file.');

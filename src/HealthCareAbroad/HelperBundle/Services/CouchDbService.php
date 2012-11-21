@@ -6,18 +6,34 @@
  *
  */
 
-namespace HealthCareAbroad\HelperBundle\Classes;
+namespace HealthCareAbroad\HelperBundle\Services;
 
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
 use Guzzle\Service\Client;
 
-class CouchDatabase {
+class CouchDbService {
 
+    private $db;
     private $client;
-    
-    public function __construct($host, $port, $database) {
-        $this->client = new Client("$host:$port/$database/");
+    private $kernelException;
+
+    public function __construct($baseUrl, $kernelException) {
+        $this->client = new Client($baseUrl);
+        $this->kernelException = $kernelException;
+    }
+
+    public function setBaseUrl($baseUrl)
+    {
+        if($this->client)
+            $this->client->setBaseUrl($baseUrl);
+        else 
+            $this->client = new Client($baseUrl);
+    }
+
+    public function setDatabase($dbName)
+    {
+        $this->db = $dbName;
     }
 
     // Get _design/alerts/_view
@@ -86,14 +102,14 @@ class CouchDatabase {
 
     private function send($method, $uri, $post_data = null, $headers = array())
     {
-        try {
+        try {            
+            $uri = $this->db . '/' . $uri;
             $response = $this->client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
 
-//var_dump($response->); exit;
             return $response->getBody()->__toString();
 
         } catch(\Guzzle\Http\Exception\CurlException $e) {
-            throw $e;
+            $this->kernelException->logException($e);
         }
     }
 
@@ -104,7 +120,7 @@ class CouchDatabase {
             'headers' => $response->getHeaders(),
             'body' => $response->getBody()->__toString()
         );
-        
+
         return $formattedResponse;
     }
 }
