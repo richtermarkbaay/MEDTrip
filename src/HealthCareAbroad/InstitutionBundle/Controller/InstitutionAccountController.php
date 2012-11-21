@@ -1,8 +1,10 @@
 <?php 
-/*
+/* Create Profile after Sign up
  * @author Chaztine Blance
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
@@ -17,30 +19,32 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InstitutionAccountController extends Controller
 {
-	 public function accountAction(){
-
-	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
-
-	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'hidden_field' => false));		
-
-	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
-	 					'form' => $form->createView(),
-	 					'institution' => $institution
-	 	));
-	 }
+	protected $institution;
+	
+	function preExecute()
+	{
+		$request = $this->getRequest();
+		// Check Institution
+		if ($this->getRequest()->get('institutionId')) {
+	
+			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
+			
+			if(!$this->institution) {
+				throw $this->createNotFoundException('Invalid Institution');
+			}
+		 
+		}
+	}
 	 
-	 public function saveAction(){
+	 public function accountAction(Request $request){
 	 	
-	 	$request = $this->getRequest();
-	 	
-	 	$institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($this->getRequest()->get('institutionId', null));
-	 
-	 	if (!$institution) {
-	 		
-	 		throw $this->createNotFoundException();
+	 	if ($this->institution->getStatus() != InstitutionStatus::INACTIVE) {
+	 		 
+	 		return $this->redirect($this->generateUrl('institution_homepage'));
+	 			
 	 	}
 	 	
-	 	$form = $this->createForm(new InstitutionDetailType(), $institution, array('profile_type' => false, 'hidden_field' => false));
+	 	$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'hidden_field' => false));
 	 	 
 	 	//update institution details
 	 	if ($request->isMethod('POST')) {
@@ -52,17 +56,18 @@ class InstitutionAccountController extends Controller
 	 		$form->bindRequest($request);
 	
 	 		if ($form->isValid()) {
+
+	 			$this->institution = $form->getData();
 	 			
-	 			$institution = $form->getData();
-	 			
-	 			$institution->setWebsites($websites);
-	 			$institution->setContactNumber($contactNumber);
-	 	
-	 			$institution = $this->get('services.institution.factory')->save($institution);
+	 			$this->institution->setWebsites($websites);
+	 			$this->institution->setContactNumber($contactNumber);
+	 			$this->institution->setStatus(InstitutionStatus::getBitValueForUnapprovedStatus());
+
+	 			$institution = $this->get('services.institution.factory')->save($this->institution);
 	 			$this->get('session')->setFlash('notice', "Successfully updated account");
 	 	
 	 			//create event on editInstitution and dispatch
-	 			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+	 			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->institution));
 	 			
 	 			return $this->redirect($this->generateUrl('institution_homepage'));
 	 		}
@@ -70,7 +75,7 @@ class InstitutionAccountController extends Controller
 
 	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
 	 					'form' => $form->createView(),
-	 					'institution' => $institution
+	 					'institution' => $this->institution
 	 	));
 	 }
 }

@@ -96,10 +96,3 @@ institution_accountProfile:
     requirements:
         _method:  GET|POST
         institutionId:  \d+
-        
-institution_createProfile:
-    pattern:  /create/{institutionId}
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:save, institutionId: ~ }
-    requirements:
-        _method:  GET|POST
-        institutionId:  \d+
