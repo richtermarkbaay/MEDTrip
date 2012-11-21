@@ -13,10 +13,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHourFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -103,19 +103,20 @@ class InstitutionTreatmentsController extends Controller
     {
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-		
+        
+        $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
         
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $specializations,
+            'selectedSubMenu' => 'centers',
+            'form' => $form->createView(),
         	'affiliations' => $affiliations,
-            'selectedSubMenu' => 'centers'
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
         );
-    
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
 
@@ -169,7 +170,6 @@ class InstitutionTreatmentsController extends Controller
             }
         }
         
-        $daysArr = array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
         $params = array(
             'form' => $form->createView(),
             'institution' => $this->institution,
@@ -184,52 +184,23 @@ class InstitutionTreatmentsController extends Controller
     {
         $service = $this->get('services.institution_medical_center');
         $request = $this->request;
+        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
         
-        if (is_null($this->institutionMedicalCenter)) {
-            $this->institutionMedicalCenter = new institutionMedicalCenter();
-            $this->institutionMedicalCenter->setInstitution($this->institution);
-        }
-        else {
-            // there is an imcId in the Request, check if this is a draft
-            if ($this->institutionMedicalCenter && !$service->isDraft($this->institutionMedicalCenter)) {
-    
-                $this->request->getSession()->setFlash('error', 'Invalid medical center draft.');
-    
-                return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
-            }
-        }
-        
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             
             // Get contactNumbers and convert to json format
             $businessHours = json_encode($request->get('businessHours'));
-            
-            if ($form->isValid()) {
-                // Set BusinessHours before saving
-                $form->getData()->setBusinessHours($businessHours);
                 
-                $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
+            // Set BusinessHours before saving
+            $form->getData()->setBusinessHours($businessHours);
+            $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
         
                 $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been updated. You can now add Specializations to this center.");
-    
-                // TODO: fire event    
-                // redirect to step 2;
-                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
-                                'institutionId' => $this->institution->getId(),
-                                'imcId' => $this->institutionMedicalCenter->getId()
-                )));
-            }
         }
         
-        $params = array(
-                        'form' => $form->createView(),
-                        'institutionId' => $this->institution->getId(),
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter
-        );
-    
-        return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
     }
 
     /**
