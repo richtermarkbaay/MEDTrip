@@ -1,30 +1,23 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% block title %}{{ parent() }} &raquo; User types{% endblock %}
-
 {% set selectedTab = 'settings'%}
+{% set user_typeLabel = getClassLabel('user_type') %}
 
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>Admin user types</h1>
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:settingsTasks.html.twig'%}
     </div>
-
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-        
-		    {% include '::notice.admin.html.twig' %}
-
-		    {% block related_tasks %}
-		        {% include 'AdminBundle:AdminUserType:relatedTasks.html.twig' with {'showAdd': true, 'showList': false, 'showRoles' : true} %}
-		    {% endblock %}
-
-			<div id="table-content" style="width:70%">
-
+    <div id="content" class="span9">
+   
+   {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: user_typeLabel.plural | title,
+                actions:[
+                		{link: path('admin_userType_index'), label: 'View all '~ user_typeLabel.plural | title, 'icon' : 'icon-list' } ,
+               			{link: path('admin_userType_add'), label: 'Add '~ user_typeLabel.plural | title, 'icon' : 'icon-list' }]
+            }  
+     %}
+     {% block sectionContent %}
+ 		{% include '::notice.admin.html.twig' %}
 			    <table class="table table-bordered sortable-list" id="table-list">
 				<tr>
 					<th id="column-name"><a href="{{ app.request.uri }}" class="{{ 'sort-' ~ app.request.get('sortOrder', 'asc') }}">User type</a></th>
@@ -32,39 +25,30 @@
 					<th width="150">Actions</th>
 				</tr>
 
-				{% for userType in userTypes %}
-                    {% if userType.status %}
-                        {% set class = 'icon-remove' %} {% set statusLabel = 'Deactivate' %}
-                    {% else %}
-                        {% set class = 'icon-ok' %} {% set statusLabel = 'Activate' %}
-                    {% endif %}
+				{% for each in userTypes %}
 				    <tr>
-    					<td>{{ userType.name | title }}</td>
+    					<td>{{ each.name | title }}</td>
     					<td>
     					    <ul style="list-style:decimal; padding: 0 15px;">
-    					        {% for role in userType.adminUserRoles %}
+    					        {% for role in each.adminUserRoles %}
     					        <li> {{ role.label | title }}</li>
     					        {% endfor %}
     					    </ul>
 					    </td>
-    					<td>
-        					<a href="{{ path('admin_userType_edit', {id: userType.id }) }}" title="Edit {{ userType.name | title }}">
-        					    <i class="icon-edit"></i> Edit
-                            </a>
-                            &nbsp;
-        					<a href="#" title="{{ statusLabel }}"><i class="{{ class }}"></i> <span>{{ statusLabel }}</span></a>
-    					</td>
+    					 <td>
+                            <ul style="list-style: none;">
+                                <li><a href="{{ path('admin_userType_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
+                                <li>
+                                     <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
+                                </li>
+                            </ul>
+                        </td>
     				</tr>
 				{% endfor %}
 				</table>
-				<!--  end table-list................................... --> 
-			</div>
-
-        {% endblock %}
-        
-    {% endembed %}
-
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+			  {% endblock %}
+            
+        {% endembed %}
+    </div>
+    
 {% endblock %}
