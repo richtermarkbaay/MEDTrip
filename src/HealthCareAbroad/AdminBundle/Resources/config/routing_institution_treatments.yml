@@ -37,6 +37,23 @@ admin_institution_centerSpecializations:
         imcId: \d+
         _method: GET
 
+admin_institution_medicalCenter_addAffiliations:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/affiliations
+    defaults: { _controller: AdminBundle:InstitutionTreatments:addAffiliations }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
+admin_institution_medicalCenter_updateAffiliations:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/affiliations/{affiliationId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:updateAffiliations }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        affiliationId: \d+
+        _method: GET|POST
+
 admin_institution_medicalCenter_edit:
     #pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
     pattern: /admin/institution/{institutionId}/medical-center/view/{imcId}

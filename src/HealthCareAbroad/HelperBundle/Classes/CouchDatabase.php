@@ -14,12 +14,10 @@ use Guzzle\Service\Client;
 
 class CouchDatabase {
 
-    private $database;
+    private $client;
     
     public function __construct($host, $port, $database) {
-        $this->database = $database;
-        $this->host = $host;
-        $this->port = $port;
+        $this->client = new Client("$host:$port/$database/");
     }
 
     // Get _design/alerts/_view
@@ -89,14 +87,13 @@ class CouchDatabase {
     private function send($method, $uri, $post_data = null, $headers = array())
     {
         try {
-            $client = new Client($this->host. ":" . $this->port . "/". $this->database . "/");
-            $response = $client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
+            $response = $this->client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
 
-            //return $this->formatResponse($response);
+//var_dump($response->); exit;
             return $response->getBody()->__toString();
 
-        } catch(ClientErrorResponseException $e) {
-            throw new \ErrorException($e->getResponse());
+        } catch(\Guzzle\Http\Exception\CurlException $e) {
+            throw $e;
         }
     }
 

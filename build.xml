@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="healthcareabroad" default="build">
     <target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb" />
 
@@ -43,8 +42,6 @@
                 <include name="**/*.php" />
                 <modified />
             </fileset>
-            <!-- <fileset dir="${basedir}/tests"> <include name="**/*.php" /> <modified
-                /> </fileset> -->
         </apply>
     </target>
 
@@ -84,16 +81,14 @@
         </exec>
     </target>
 
-    <target name="phpcs"
-        description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+    <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="phpcs">
             <arg value="--standard=Symfony2" />
             <arg path="${basedir}/src" />
         </exec>
     </target>
 
-    <target name="phpcs-ci"
-        description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
+    <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
         <exec executable="phpcs" output="/dev/null">
             <arg value="--report=checkstyle" />
             <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
@@ -118,7 +113,7 @@
     </target>
 
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="phpunit" failonerror="true">
+        <exec executable="phpunit" failonerror="false">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.xml.dist" />
         </exec>
@@ -154,13 +149,13 @@
         </exec>
     </target>
 
-    <target name="vendors-update" description="update vendors">
+    <target name="vendors-update" description="Update vendors">
         <exec executable="composer.phar" failonerror="true">
             <arg value="update" />
         </exec>
     </target>
 
-    <target name="symfony-clear-cache" depends="parameters" description="Clear">
+    <target name="symfony-clear-cache" depends="parameters" description="Clear symfony cache">
         <exec executable="app/console" failonerror="true">
             <arg value="cache:clear" />
             <arg value="--env=test" />
@@ -169,7 +164,7 @@
 
     <target name="edit-app-kernel" description="Adds code to speed up unit tests">
         <exec executable="php" failonerror="true">
-              <arg value="app/appKernelTransformer.php"/>
+            <arg value="app/appKernelTransformer.php"/>
         </exec>
     </target>
 
@@ -184,13 +179,12 @@
 
             <filterchain>
                <replacetokens>
-                    <token key="DATABASE_HOST" value="${bp.DATABASE_HOST}"/>
-                    <token key="DATABASE_NAME" value="${bp.DATABASE_NAME}"/>
-                    <token key="DATABASE_USER" value="${bp.DATABASE_USER}"/>
+                    <token key="DATABASE_HOST"     value="${bp.DATABASE_HOST}"/>
+                    <token key="DATABASE_NAME"     value="${bp.DATABASE_NAME}"/>
+                    <token key="DATABASE_USER"     value="${bp.DATABASE_USER}"/>
                     <token key="DATABASE_PASSWORD" value="${bp.DATABASE_PASSWORD}" />
-                    <token key="COUCHDB_HOST" value="${bp.COUCHDB_HOST}"/>
-                    <token key="COUCHDB_PORT" value="${bp.COUCHDB_PORT}"/>
-                    <token key="COUCHDB_NAME" value="${bp.COUCHDB_NAME}"/>
+                    <token key="COUCHDB_URL"       value="${bp.COUCHDB_URL}"/>
+                    <token key="COUCHDB_DOCUMENT"  value="${bp.COUCHDB_DOCUMENT}"/>
                 </replacetokens>
             </filterchain>
         </copy>
@@ -199,13 +193,12 @@
                 tofile="${basedir}/app/config/parameters_test.yml" >
             <filterchain>
                <replacetokens>
-                    <token key="DATABASE_HOST" value="${bp.TEST_DATABASE_HOST}"/>
-                    <token key="DATABASE_NAME" value="${bp.TEST_DATABASE_NAME}"/>
-                    <token key="DATABASE_USER" value="${bp.TEST_DATABASE_USER}"/>
+                    <token key="DATABASE_HOST"     value="${bp.TEST_DATABASE_HOST}"/>
+                    <token key="DATABASE_NAME"     value="${bp.TEST_DATABASE_NAME}"/>
+                    <token key="DATABASE_USER"     value="${bp.TEST_DATABASE_USER}"/>
                     <token key="DATABASE_PASSWORD" value="${bp.TEST_DATABASE_PASSWORD}" />
-                    <token key="COUCHDB_HOST" value="${bp.TEST_COUCHDB_HOST}"/>
-                    <token key="COUCHDB_PORT" value="${bp.TEST_COUCHDB_PORT}"/>
-                    <token key="COUCHDB_NAME" value="${bp.TEST_COUCHDB_NAME}"/>
+                    <token key="COUCHDB_URL"       value="${bp.TEST.COUCHDB_URL}"/>
+                    <token key="COUCHDB_DOCUMENT"  value="${bp.TEST.COUCHDB_DOCUMENT}"/>
                 </replacetokens>
             </filterchain>
         </copy>

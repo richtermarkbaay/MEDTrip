@@ -43,6 +43,13 @@ class KernelExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+        $this->logException($exception);
+        
+        // do nothing since we only want to save this to database
+    }
+    
+    public function logException(\Exception $exception)
+    {
         $errorLog = new ErrorLog();
         $errorLog->setErrorType(ErrorType::EXCEPTION);
         $errorLog->setMessage($exception->getMessage());
@@ -57,10 +64,8 @@ class KernelExceptionListener
             $this->doctrine->resetEntityManager();
             $em = $this->doctrine->getEntityManager();
         }
-        
+
         $em->persist($errorLog);
         $em->flush(); // save log
-        
-        // do nothing since we only want to save this to database
     }
 }

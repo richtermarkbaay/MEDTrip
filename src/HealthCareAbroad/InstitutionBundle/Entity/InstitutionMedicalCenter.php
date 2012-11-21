@@ -55,6 +55,11 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionSpecializations;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionAffiliations;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
@@ -69,6 +74,7 @@ class InstitutionMedicalCenter
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionAffiliations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -272,7 +278,7 @@ class InstitutionMedicalCenter
      * Set institution
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
-     * @return InstitutionMedicalCenter
+     * @return institution
      */
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
@@ -311,7 +317,39 @@ class InstitutionMedicalCenter
     {
         $this->doctors->removeElement($doctors);
     }
-
+    
+    /**
+     * Add institutionAffiliations
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
+     * @return InstitutionAffiliation
+     */
+    public function addInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations)
+    {
+    	$this->institutionAffiliations[] = $institutionAffiliations;
+    	return $this;
+    }
+    
+    /**
+     * Remove institutionAffiliations
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
+     */
+    public function removeInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliation)
+    {
+    	$this->institutionAffiliations->removeElement($institutionAffiliations);
+    }
+    
+    /**
+     * Get institutionAffiliations
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getInstitutionAffiliations()
+    {
+    	return $this->institutionAffiliations;
+    }
+    
     /**
      * Get doctors
      *

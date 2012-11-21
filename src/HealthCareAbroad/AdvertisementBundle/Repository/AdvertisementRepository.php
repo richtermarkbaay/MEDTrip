@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  * @author Allejo Chris G. Velarde
  *
  */
@@ -21,7 +21,7 @@ class AdvertisementRepository extends EntityRepository
 {
     /**
      * Get active Advertisement by type discriminator column. Do not apply caching here, instead apply it in service class using this function.
-     * 
+     *
      * @param int $advertisementType
      * @param QueryOption $option
      * @return array Advertisement
@@ -29,28 +29,27 @@ class AdvertisementRepository extends EntityRepository
     public function getActiveAdvertisementsByType($advertisementType, QueryOption $option=null)
     {
         $qb = $this->getQueryBuilderForAdvertisementsByType($advertisementType, $option);
-        print_r($qb); return;
-        
+
         $results = $qb->getQuery()->getResult();
-  
+
         return $results;
     }
-	
+
     public function getQueryBuilderForAdvertisementsByType($advertisementType, QueryOption $option=null){
-    	
 
-    	$classMapping = AdvertisementTypes::getDiscriminatorMapping();
-    	if (!\array_key_exists($advertisementType, $classMapping)) {
-    		throw new \Exception("Invalid advertisement type '{$advertisementType}' passed to ".__CLASS__."::getActiveAdvertisementsByType.");
-    	}
-    	$advertisementTypeClass = $classMapping[$advertisementType];
 
-    	$qb = $this->getEntityManager()->createQueryBuilder()
-    	->select('a')
-    	->from($advertisementTypeClass, 'a')
-    	;
+        $classMapping = AdvertisementTypes::getDiscriminatorMapping();
+        if (!\array_key_exists($advertisementType, $classMapping)) {
+            throw new \Exception("Invalid advertisement type '{$advertisementType}' passed to ".__CLASS__."::getActiveAdvertisementsByType.");
+        }
+        $advertisementTypeClass = $classMapping[$advertisementType];
 
-    	return $qb;
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('a')
+        ->from($advertisementTypeClass, 'a')
+        ;
+
+        return $qb;
     }
 
 }

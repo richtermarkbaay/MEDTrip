@@ -6,6 +6,9 @@ parameters:
     database_user:     @DATABASE_USER@
     database_password: @DATABASE_PASSWORD@
 
+    couchDbBaseUrl: @COUCHDB_URL@
+    couchDbAlert: @COUCHDB_DOCUMENT@
+
     mailer_transport: smtp
     mailer_host: localhost
     mailer_user: ~
@@ -14,11 +17,10 @@ parameters:
     locale: en
     secret: ThisTokenIsNotSoSecretChangeIt
 
-    alert_db:
-        port: @COUCHDB_PORT@
-        host: @COUCHDB_HOST@
-        database: @COUCHDB_NAME@
-
     application_id:    1
     application_secret: 620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1
     chromedia_accounts_uri: http://accounts.test.chromedia.com/app_dev.php
+
+    memcached.servers:
+        - { host: 127.0.0.1, port: 11211 }
+    

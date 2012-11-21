@@ -39,35 +39,36 @@ class MemcacheService
         }
         
     }
-
-    /**
-     * Update the latest version of the key
-     * @param string $key
-     * @param string $newKeyVersion
-     */
-    private function _updateVersionKey($key, $newKeyVersion)
-    {
-        if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
-            $latestKeyVersions = array();
-        }
-        $latestKeyVersions[$key] = $newKeyVersion;
-        $this->memcache->set(self::MEMCACHE_LATEST_VERSIONS_KEY, $latestKeyVersions);
-    }
+    
+//     public function put($key, $value)
+//     {
+//         if (!$this->hasMemcache) {
+            
+//             return false;
+//         }
+        
+//         $this->memcache->put($key, $value);
+        
+//         return true;
+//     }
     
     /**
-     * Get the latest version of the key $key
      * 
      * @param string $key
+     * @return boolean
      */
-    private function _getLatestVersionKey($key)
+    public function increment($key)
     {
-        if (false === ($latestKeyVersions = $this->memcache->get(self::MEMCACHE_LATEST_VERSIONS_KEY))){
+        if (!$this->hasMemcache) {
             
             return false;
         }
         
-        return $latestKeyVersions[$key];
+        $this->memcache->increment($key);
+        
+        return true;
     }
+    
     
     /**
      * Store data to memcached server. Return false if no Memcache is available.
@@ -82,17 +83,11 @@ class MemcacheService
             
             return false;
         }
-
-        // add a timestamp to the key for new version of key
-        $newKey = $key.'_'.time();
-
-        // update the latest version for this key
-        $this->_updateVersionKey($key, $newKey);
-
-        // save the value to memcache
-        $this->memcache->set($newKey, $value);
         
-        return $this;
+        // save the value to memcache
+        $this->memcache->set($key, $value);
+        
+        return true;
     }
     
     /**
@@ -108,6 +103,6 @@ class MemcacheService
             return false;
         }
         
-        return $this->memcache->get($this->_getLatestVersionKey($key));
+        return $this->memcache->get($key);
     }
 }

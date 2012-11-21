@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use Guzzle\Service\Client;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertClasses;
@@ -15,7 +19,7 @@ class AlertService
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     const NULL_DATE = '1970-01-01 00:00:00';
-
+    
     const ALL_ALERT_VIEW_URI = '_design/alerts/_view/all';
     const RECIPIENT_ALERT_VIEW_URI = '_design/alerts/_view/recipient';
     const REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/reference';
@@ -23,16 +27,44 @@ class AlertService
 
 
     protected $doctrine;
-    protected $container;
-    protected $couchDb;
+    protected $router;
+    protected $routeCollection;
+    protected $couchDB;
 
-    function __construct($doctrine, $container) 
+    function __construct($doctrine, $router, $couchDbService)
     {
+        $this->router = $router;
         $this->doctrine = $doctrine;
-        $this->container = $container;
+        $this->couchDB = $couchDbService;
+        $this->routeCollection = $router->getRouteCollection();
+    }
+    
+    public function prepareAlertDb($alertDb)
+    {
+        // Create Database if NOT EXISTS
+        $this->couchDB->put($alertDb);
 
-        $alertCouchDb = $this->container->getParameter('alert_db');
-        $this->couchDB = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
+        // Set Database - This will append the database name to the couchDB baseUrl. Ex: http://localhost:5984/{$alertDb} 
+        // as a preparation for every request to couchDB
+        $this->couchDB->setDatabase($alertDb);
+
+        // Create Design Views if NOT EXISTS
+        $this->createAlertViews();
+    }
+
+    private function createAlertViews()
+    {
+        $data = array(
+            'language' => 'javascript',
+            'views' => array(
+                'all' => array("map" => "function(doc) { emit(doc.dateAlert, doc) }"),
+                'recipient' => array("map" => "function(doc) { var now = new Date(); now = now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); if(doc.dateAlert <= now || (doc.dateExpired != undefined && doc.dateExpired > now)) emit([doc.recipient, doc.recipientType], doc) }"),
+                'reference' => array("map" => "function(doc) { emit([doc.referenceData.id, doc.class], doc) }"),
+                'typeAndReference' => array("map" => "function(doc) { emit([doc.type, doc.referenceData.id, doc.class], doc) }")
+            )
+        );
+
+        $this->couchDB->put('_design/alerts', $data);
     }
     
     /**
@@ -40,7 +72,7 @@ class AlertService
      * @param Institution $institution
      * @return array
      */
-    function getAlertsByInstitution(Institution $institution)
+    function getAlertsByInstitution(Institution $institution, $groupByType = false)
     {
         $params = array(
             'keys' => array(
@@ -49,7 +81,7 @@ class AlertService
             )
         );
 
-        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, $groupByType);
     }
 
     /**
@@ -57,7 +89,7 @@ class AlertService
      * @param int $accountId
      * @return \HealthCareAbroad\HelperBundle\Services\Ambigous
      */
-    function getAdminAlerts($accountId = null)
+    function getAdminAlerts($accountId = null, $groupByType = false)
     {
         $params = array(
             'keys' => array(
@@ -66,7 +98,7 @@ class AlertService
             )
         );
 
-        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, true);
+        return $this->getAlerts(self::RECIPIENT_ALERT_VIEW_URI, $params, $groupByType);
     }
 
 
@@ -136,7 +168,9 @@ class AlertService
      * @return unknown
      */
     function formatAlert($data = array())
-    {
+    {        
+        $data['viewUrl'] = $this->getAlertViewUrl($data);
+
         return $data;
     }
 
@@ -224,7 +258,7 @@ class AlertService
             $data['type'] = AlertTypes::DEFAULT_TYPE;
         }
 
-        if(!isset($data['referenceData']) || !isset($data['referenceData']['id']) || !$data['referenceData']['id']) {
+        if(!isset($data['referenceData'])) {
             throw new \ErrorException('Invalid Alert Data! ' . json_encode($data));
         }
 
@@ -256,5 +290,31 @@ class AlertService
         $data['dateCreated'] = date(self::DATE_FORMAT);
 
         return $data;
+    }
+    
+    function getAlertViewUrl($data) 
+    {
+        $route = $this->routeCollection->get(@$data['viewRouteName']);
+
+        if(!$route) {
+            return '#';
+        }
+
+        $requirements = $route->getRequirements();
+        unset($requirements['_method']);
+
+        $routeParams = array();
+        foreach($requirements as $key => $val) {
+            if(isset($data['referenceData'][$key])) {
+                $routeParams[$key] = $data['referenceData'][$key];                
+            } else {
+                $routeParams[$key] = 0;                
+            }
+
+        }
+
+        $url = $this->router->generate($data['viewRouteName'], $routeParams);
+
+        return $url;
     }
 }

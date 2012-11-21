@@ -14,12 +14,11 @@
     <div class="navbar navbar-fixed-top">
           <div class="navbar-inner">
             <div class="container">
-              <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </a>
-              <a href="{{ path('admin_homepage') }}" class="brand" style="padding-top:0;padding-bottom:0;"><img longdesc="#" alt="Health Care Abroad Logo" src="/images/institution/HCA-logo-small.png"></a>
+
+              <a href="{{ path('admin_homepage') }}" class="brand" style="padding-top:0;padding-bottom:0;">
+                  <img longdesc="#" alt="Health Care Abroad Logo" src="/images/institution/HCA-logo-small.png">
+            </a>
+                  
               <div class="nav-collapse collapse">
                   {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
 
@@ -37,13 +36,15 @@
 
         
     <div id="main-content"  class="container maincontent">
-        
+
             {% if breadcrumbs is defined %}
                 {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
             {% endif %}
-    
+
+            {% include '::notice.admin.html.twig' %}
+            
             {% block content %}{% endblock %}
-        
+
     </div>
 
     {% include '::footer.admin.html.twig' %}

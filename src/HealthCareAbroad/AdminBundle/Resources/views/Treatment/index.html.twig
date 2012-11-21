@@ -4,10 +4,10 @@
 {% set treatmentLabel = getClassLabel('treatment') %}
 
 {% block content %}
+    <div class="span3">
     {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
-    
+    </div>
     <div id="content" class="span9">
-        
         
         {% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 

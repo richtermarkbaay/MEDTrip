@@ -1,0 +1,16 @@
+
+{% if alerts | length %}
+<div class="sidebar-nav span3">
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="nav-header">Latest System Messages</li>
+        {% for each in alerts %} 
+            <li>   
+                {% if (each.isDeletable is defined) and each.isDeletable %}
+                    <a href="{{ path('admin_removeAlert', {id: each._id, rev: each._rev}) }}" class="remove-alert pull-right" style="border: none"><i class="icon-remove"></i></a>
+                {% endif %}
+                <a href="{{ each.viewUrl is defined ? each.viewUrl : '#' }}">{{ each.message is defined ? each.message : 'nomessage' }} </a><br/>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

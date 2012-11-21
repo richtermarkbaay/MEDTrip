@@ -14,12 +14,16 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHourFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -101,6 +105,7 @@ class InstitutionTreatmentsController extends Controller
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
         
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
+        $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
         
         $params = array(
             'institution' => $this->institution,
@@ -108,6 +113,7 @@ class InstitutionTreatmentsController extends Controller
             'specializations' => $specializations,
             'selectedSubMenu' => 'centers',
             'form' => $form->createView(),
+        	'affiliations' => $affiliations,
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
         );
@@ -150,11 +156,13 @@ class InstitutionTreatmentsController extends Controller
                 
                 $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
-                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
-                
-                // TODO: fire event
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                ));
 
-                // redirect to step 2;
+                $this->request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
+
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
                     'institutionId' => $this->institution->getId(),
                     'imcId' => $this->institutionMedicalCenter->getId()
@@ -215,6 +223,11 @@ class InstitutionTreatmentsController extends Controller
         $em->persist($this->institutionMedicalCenter);
         $result = $em->flush();
 
+        // dispatch event
+        //$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+            //$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+        //));
+        
         $response = new Response (json_encode($result));
         $response->headers->set('Content-Type', 'application/json');
 
@@ -269,6 +282,7 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
     }   
+
     
     /**
      * 
@@ -322,6 +336,58 @@ class InstitutionTreatmentsController extends Controller
         );
         
         return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);   
+    }
+    
+    /**
+     *
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function addAffiliationsAction()
+    {
+    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+    	
+    	 if ($this->request->isMethod('POST')) {
+    		 $form->bind($this->request);
+    	
+    		if ($form->isValid()) {
+    			
+    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+    			->saveAsDraft($form->getData());
+    			
+    			$this->request->getSession()->setFlash('success', "Affiliation has been saved!");
+    			
+    			return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
+    							array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+    		}
+    	}
+    	return $this->render('AdminBundle:InstitutionTreatments:addAffiliation.html.twig', array(
+    					'form' => $form->createView(),
+    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
+    					'institution' => $this->institution
+    	));
+    }
+    
+    /**
+     *
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function updateAffiliationsAction()
+    {
+    	$request = $this->getRequest();
+    	
+    	if (!$this->institutionMedicalCenter) {
+    		throw $this->createNotFoundException('Invalid institutionMedicalCenter');
+    	}
+    	
+   		$institutionAffiliationRepo = $this->getDoctrine()->getRepository('HelperBundle:Affiliation');
+        $institutionAffiliationRepo->updateAffiliations($request->get('affiliationId'), $this->institutionMedicalCenter->getId());
+    			 
+    	$this->request->getSession()->setFlash('success', "Affiliation has been removed!");
+    			
+    	return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
+    		   array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
     }
     
     /**

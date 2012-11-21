@@ -1,36 +1,24 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'advertisements' %}
-
+{% set advertisementLabel = getClassLabel('advertisement') %}
 {% block content %}
 
     <div id="content">
 
-        <div id="page-heading"><h2>Advertisment Management</h2></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
-
-                {% include '::notice.admin.html.twig' %}
-
-                {% set contents = [{
-                        'title': 'Add Advertisement', 
-                        'description': 'Create a new advertisement',
-                        'class': 'add-icon',
-                        'href': path('admin_advertisement_addBasicDetail'), 
-                        'links': [{'title': 'Add advertisement', 'href': path('admin_advertisement_addBasicDetail')}]
-                    }]
-                %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-                
-                 <!-- Render Filter Box -->
+		{% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: advertisementLabel.plural | title,
+                actions: [{link: path('admin_advertisement_addBasicDetail'), label: 'Add '~ advertisementLabel.singular | title, 'icon' : 'icon-ok' }] 
+            }  
+        %}
+        
+          {% block sectionContent %}
+            
                 {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
-
                 {% set sortBy = app.request.get('sortBy') %}
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
                 
-                <div style="width: 70%">
                     <table id="advertisement-list" class="table table-bordered sortable-list">
                         <tr>
                             <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
@@ -38,24 +26,25 @@
                             <th>Type</th>
                             <th>Status</th>
                         </tr>
-
-	                    {% for advertisement in advertisements %}
-	                        <tr>
-	                            <td>{{ advertisement.title }}</td>
-	                            <td>{{ advertisement.description(30) }}</td>
-	                            <td>{{ adTypes[discriminatorMapping[getClass(advertisement)]] }}</td>                    
-	                            <td>{{ advertisement.status ? 'Active' : 'Inactive' }}</td>
-	                        </tr>
-	                    {% else  %}
-	                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
-	                    {% endfor %}
-                    </table>	                    
-                    {% if pager.isPaginable %}
-                       {{ paginate(pager, 'admin_advertisent_index', app.request.query.all) }}
-                    {% endif %}
-                </div>
+  						
+  						{% for each in advertisements %}
+  						
+	                    <tr>
+	                        <td>{{ each.title }}</td>
+	                        <td>{{ each.description(30) }}</td>
+	                        <td>{{ adTypes[discriminatorMapping[getClass(each)]] }}</td>  
+	                        <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
+                   		</tr>
+               			 {% endfor %}
+                </table>
             {% endblock %}
+            
         {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_advertisement_index', app.request.query.all) }}
+        {% endif %}
+        
     </div>
-
+    
 {% endblock %}

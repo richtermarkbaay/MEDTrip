@@ -33,7 +33,7 @@
           </div>
     </div>
     <!-- End of Top Navigation -->
-    
+
     <div id="main-content">
         <div class="row-fluid">
             {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
@@ -42,7 +42,10 @@
     	<div class="container maincontent" style="margin-top:20px;">
     	    {% include '::notice.admin.html.twig' %}
 
-		    {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+    	    <div class="span3">
+    	        {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+    	    </div>
+		    
 
 	        {% block content %}{% endblock %}
     		<!-- End of main_content-->

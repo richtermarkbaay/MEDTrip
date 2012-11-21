@@ -12,6 +12,8 @@ services:
     services.institution.factory:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
         arguments: [@doctrine]
+        calls:
+            - [setMemcacheNamespacePrefixStorage, [@services.memcache.namespace_prefix_storage]]
 
     services.institution_specialization:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionSpecializationService
@@ -50,3 +52,8 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
         tags:
             - { name: form.type, alias: treatment_list }
+
+    form.institution_affiliation_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType
+        tags:
+          - { name: form.type, alias: institution_affiliation_list }
