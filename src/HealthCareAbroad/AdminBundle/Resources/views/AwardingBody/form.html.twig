@@ -1,24 +1,23 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_awardingBody' %}
+{% set selectedSubMenu = 'awardingBodies' %}
+{% set awardingBodiesLabel = getClassLabel('awardingBody') %}
 
 {% block content %}
+  	<div class="span3">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+	</div>
+	<div class="span9">
 
-	<div id="content">
-		<div id="page-heading"><h2>{{ id ? 'Edit' : 'Add' }} Awarding Body</h2></div>
+		{% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ awardingBodiesLabel.singular | title ,
+                actions: [{link: path('admin_awardingBody_index'), label: 'View all '~ awardingBodiesLabel.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+	
+		  {% block sectionContent %}
 
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
-
-            {% set contents = [{
-					'title': 'View all Awarding Body', 
-					'description': 'View the list of Awarding Body',
-					'href': path('admin_awardingBody_index'), 
-					'links': [{'title': 'View Awarding Body', 'href': path('admin_awardingBody_index')}]
-				}]
-            %}
-
-			{% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
+                {% include '::notice.admin.html.twig' %}
 			
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
@@ -28,10 +27,11 @@
 				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
 
-			    <input type="submit" class="form-submit" name="submit"/>
+				 <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
 			</form>
-			{% endblock %}
-		{% endembed %}
-	</div>
+			
+            {% endblock %}
+        {% endembed %}
+    </div>
 
 {% endblock %}

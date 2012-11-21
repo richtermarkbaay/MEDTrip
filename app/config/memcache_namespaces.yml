@@ -1,0 +1,5 @@
+parameters:
+    memcache_namespaces:
+        #
+        # namespaces in InstitutionBundle
+        institution.base: "institution"

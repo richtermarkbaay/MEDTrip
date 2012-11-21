@@ -6,10 +6,8 @@ parameters:
     database_user:     @DATABASE_USER@
     database_password: @DATABASE_PASSWORD@
 
-    alert_db:
-        port: @COUCHDB_PORT@
-        host: @COUCHDB_HOST@
-        database: @COUCHDB_NAME@
+    couchDbBaseUrl: @COUCHDB_URL@
+    couchDbAlert: @COUCHDB_DOCUMENT@
 
     mailer_transport:  smtp
     mailer_host:       localhost

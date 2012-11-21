@@ -69,6 +69,36 @@ class MemcacheService
         return $latestKeyVersions[$key];
     }
     
+    public function put($key, $value)
+    {
+        if (!$this->hasMemcache) {
+            
+            return false;
+        }
+        
+        $this->memcache->put($key, $value);
+        
+        return true;
+    }
+    
+    /**
+     * 
+     * @param string $key
+     * @return boolean
+     */
+    public function increment($key)
+    {
+        if (!$this->hasMemcache) {
+            
+            return false;
+        }
+        
+        $this->memcache->increment($key);
+        
+        return true;
+    }
+    
+    
     /**
      * Store data to memcached server. Return false if no Memcache is available.
      * 
@@ -92,7 +122,7 @@ class MemcacheService
         // save the value to memcache
         $this->memcache->set($newKey, $value);
         
-        return $this;
+        return true;
     }
     
     /**

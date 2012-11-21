@@ -51,7 +51,9 @@ class InstitutionController extends Controller
         $request = $this->getRequest();
         // Check Institution
         if ($request->get('institutionId')) {
-            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
+            
+            //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
+            $this->institution = $this->get('services.institution.factory')->findById($request->get('institutionId'));
             
             if(!$this->institution) {
                 throw $this->createNotFoundException('Invalid Institution');                
