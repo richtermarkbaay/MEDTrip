@@ -40,17 +40,17 @@ class MemcacheService
         
     }
     
-    public function put($key, $value)
-    {
-        if (!$this->hasMemcache) {
+//     public function put($key, $value)
+//     {
+//         if (!$this->hasMemcache) {
             
-            return false;
-        }
+//             return false;
+//         }
         
-        $this->memcache->put($key, $value);
+//         $this->memcache->put($key, $value);
         
-        return true;
-    }
+//         return true;
+//     }
     
     /**
      * 

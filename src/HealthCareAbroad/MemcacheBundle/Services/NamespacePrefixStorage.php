@@ -79,7 +79,7 @@ class NamespacePrefixStorage
         if (!$version) {
             // generate new version for this key
             $version = time();
-            $this->memcacheService->put($namespaceKey, $version);
+            $this->memcacheService->set($namespaceKey, $version);
         }
         
         return $version;
