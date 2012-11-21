@@ -31,6 +31,7 @@ class DefaultController extends Controller
     {
         $accountId = $this->getRequest()->getSession()->get('accountId');
         $alerts = $this->container->get('services.alert')->getAdminAlerts($accountId);
+
         //$pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
         //$expiredListingAlerts = isset($alerts[AlertTypes::EXPIRED_LISTING]) ? $alerts[AlertTypes::EXPIRED_LISTING] : array();
 
