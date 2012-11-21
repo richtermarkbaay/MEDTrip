@@ -2,55 +2,6 @@
 
 {% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
 
-	    {# include '::stepHolder.base.admin.html.twig' with {
-                steps: [
-                    {title: '- Center Details', 'selected': true},
-                    {title: '- Specialization'},
-                    {title: '- Select Treatments'},
-                    {title: '- Assigned Doctors'},
-                    {title: '- Preview', 'selected': false},
-             ]}
-          #}
-        <form novalidate="novalidate" action="{{ institutionMedicalCenter.id ? path('admin_institution_medicalCenter_edit', { 'institutionId':institutionId, 'imcId': institutionMedicalCenter.id }) : path('admin_institution_medicalCenter_add', { 'institutionId':institutionId}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
-            {{ form_errors(form) }}   
-
-            {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
-            {{ form_row(form.description) }}<br>
-            
-            {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
-		
-                {% if not arrBusinessHours|length %}
-                    {% set arrBusinessHours = 
-                            [{"day" : "Sunday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Monday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Tuesday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Wednesday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Thursday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Friday", "from": "08:15 AM", "to": "07:00 PM" },
-                             {"day" : "Saturday", "from": "08:15 AM", "to": "07:00 PM" }]
-                    %}
-                {% endif %}
-                {{ form_label(form.businessHours) }}
-                <table style="width:40%;" border="1" cellpadding="0" cellspacing="0" class="table table-bordered" id="table-list">
-                    <tr>
-                        <th class="minwidth-1"> <a href="#">Is Closed</a></th>
-                        <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
-                        <th class="minwidth-1"> <a href="#">From</a></th>
-                        <th class="minwidth-1"> <a href="#">To</a></th>
-                    </tr>
-                    
-             	    {% for i, businessHour in arrBusinessHours %}
-                    <tr>
-                        <input type="hidden" name="businessHours[{{i}}][day]" value="{{businessHour.day}}"/>
-                        <td  align="center"><input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                        <td  align="center">{{ businessHour.day }}</td>
-                        <td  align="center"><input class="hour" name="businessHours[{{ i }}][from]" id="businessHours[{{ i }}][from]" value="{{ businessHour.from }}" /></td>
-                        <td  align="center"><input class="hour" name="businessHours[{{ i }}][to]" id="businessHours[{{ i }}][from]" value="{{ businessHour.to }}"/></td>
-                        
-                    </tr>
-                    {% endfor %}
-                </table>
-            {{ form_rest(form) }}
 {% block content %}
     <div class="span9">
 
@@ -61,8 +12,63 @@
     
                 <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_add', { 'institutionId':institution.id, 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
                     {{ form_errors(form) }}   
+        
                     {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
                     {{ form_row(form.description) }}
+                    
+                    {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
+        		    {% set daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
+                    {% if not arrBusinessHours %}
+                        {% set arrBusinessHours = {
+                                'Sunday' :{"from": "08:15 AM", "to": "07:00 PM"},
+                                'Monday' :{"from": "08:15 AM", "to": "07:00 PM"},
+                                'Tuesday' :{"from": "08:15 AM", "to": "07:00 PM" },
+                                'Wednesday' :{"from": "08:15 AM", "to": "07:00 PM"},
+                                'Thursday' :{"from": "08:15 AM", "to": "07:00 PM"},
+                                'Friday' :{"from": "08:15 AM", "to": "07:00 PM"},
+                                'Saturday' :{"from": "08:15 AM", "to": "07:00 PM"}
+                                }
+                        %}
+                    {% endif %}
+                    
+                    {{ form_label(form.businessHours) }}
+                    <table style="width:70%;" border="1" cellpadding="0" cellspacing="0" class="table table-bordered" id="table-list">
+                        <tr>
+                            <th class="minwidth-1"> <a href="#">Is Closed</a></th>
+                            <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
+                            <th class="minwidth-1"> <a href="#">From</a></th>
+                            <th class="minwidth-1"> <a href="#">To</a></th>
+                        </tr>
+                            
+                 	    {% for i, day in daysArr %}
+                            <tr>
+                                <td  align="center">
+                                    {% if arrBusinessHours[day] is not defined %}
+                                        <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                                    {% else %}
+                                        <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                                    {% endif %}
+                                </td>
+                                <td  align="center">{{ day }}</td>
+                                <td  align="center">
+                                    {% if arrBusinessHours[day] is not defined %}
+                                        <input class="hour" name="businessHours[{{day}}][from]" disabled="true" id="businessHours[{{day}}][from]" value="" />
+                                    {% else %}
+                                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
+                                    {% endif %}
+                                </td>
+                                <td  align="center">
+                                    {% if arrBusinessHours[day] is not defined %}
+                                        <input class="hour" name="businessHours[{{day}}][to]" disabled="true" id="businessHours[{{day}}][to]" value="" />
+                                    {% else %}
+                                         <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
+                                    {% endif %}
+                                </td>
+                                
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    
                     {{ form_rest(form) }}
                                         	                        	
                 	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
@@ -74,69 +80,4 @@
 
         {% endembed %}
     </div>
-{% endblock %}
-
-{% block inlineJavascriptCode %}
-<!-- 	<script src="{{ asset('js/jquery/jquery-1.8.2.js') }}"></script> -->
-	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
-	<script src="{{ asset('js/jquery/jquery.mousewheel.js') }}"></script>
-	<script src="{{ asset('js/jquery/jquery-ui-1.9.1.custom.js') }}"></script>
-	<script src="{{ asset('js/jquery/jquery-ui-1.9.1.custom.min.js') }}"></script>
-	<script>
-        $.widget( "ui.timespinner", $.ui.spinner, {
-            options: {
-                // seconds
-                step: 60 * 15000,
-                // hours
-                page: 60
-            },
-     
-            _parse: function( value ) {
-                if ( typeof value === "string" ) {
-                    // already a timestamp
-                    if ( Number( value ) == value ) {
-                        return Number( value );
-                    }
-                    return +Globalize.parseDate( value );
-                }
-                return value;
-            },
-     
-            _format: function( value ) {
-                return Globalize.format( new Date(value), "t" );
-            }
-        });
-	 
-	    $(function() {
-
-	    	var businessHours = $.parseJSON('{{ institutionMedicalCenter.businessHours | raw}}');
-	    	checkBusinessIsClosed(businessHours);
-	    	$( ".hour" ).timespinner();
-	    });
-
-	    function checkBusinessIsClosed(businessHours)
-	    {
-	    	for (var i = 0, l = businessHours.length; i <l; i++){
-                if( (businessHours[i]['from']) == "" && businessHours[i]['to'] == "" ) {
-                    $("#businessHours[i][from]").attr('disabled',true);
-                }
-            } 
-	    }
-	    
-	    $('input.is_closed_checkbox').change(function(){
-		    if(this.checked) {
-			    alert($(this));
-		    	$(this).parent().parent().find('.hour').val("");
-		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: true });
-		    	
-			}
-		    else 
-		    {
-		    	$(this).parent().parent().find('.hour').val("8:00 AM");
-		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: false });
-		    }
-		   
-		});
-		</script>
-        	
 {% endblock %}

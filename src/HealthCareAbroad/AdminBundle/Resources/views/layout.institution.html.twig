@@ -57,7 +57,80 @@
         <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
     {% endblock %}
 
-    {% block inlineJavascriptCode %}{% endblock %}
+    {% block inlineJavascriptCode %}
+    	<script src="{{ asset('js/jquery/jquery-1.8.2.js') }}"></script>
+    	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+    	<script src="{{ asset('js/jquery/jquery.mousewheel.js') }}"></script>
+    	<script src="{{ asset('js/jquery/jquery-ui-1.9.1.custom.js') }}"></script>
+    	<script src="{{ asset('js/jquery/jquery-ui-1.9.1.custom.min.js') }}"></script>
+    	<script >
+            $.widget( "ui.timespinner", $.ui.spinner, {
+                options: {
+                    // seconds
+                    step: 60 * 15000,
+                    // hours
+                    page: 60
+                },
+         
+                _parse: function( value ) {
+                    if ( typeof value === "string" ) {
+                        // already a timestamp
+                        if ( Number( value ) == value ) {
+                            return Number( value );
+                        }
+                        return +Globalize.parseDate( value );
+                    }
+                    return value;
+                },
+         
+                _format: function( value ) {
+                    return Globalize.format( new Date(value), "t" );
+                }
+            });
+    	 
+    	    $(function() {
+    	    	$( ".hour" ).timespinner();
+    
+    	    	$('input.is_closed_checkbox').each(function(){
+    			    if(this.checked) {
+    			    	$(this).parent().parent().find('.hour').val("");
+    			    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: true });
+    				}
+    			});
+    	    });
+    
+    	    $('input.is_closed_checkbox').change(function(){
+    		    if(this.checked) {
+    		    	$(this).parent().parent().find('.hour').val("");
+    		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: true });
+    			}
+    		    else 
+    		    {
+    		    	$(this).parent().parent().find('.hour').val("8:00 AM");
+    		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: false });
+    		    }
+    		   
+    		});
+    
+    		$('#saveBusinessHours').click(function() {
+    			var businessHours = $('#business').serialize();
+    			$('div#ajax_loader').show();
+    			$.ajax({
+    		        url: "{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
+    		        data: businessHours,
+    		        type: 'post',
+    		        success: function(){
+    		        	$('div#ajax_loader').hide();
+    		        }
+    	        });
+    	        
+    			
+    			return false;
+    		});
+    
+    		</script>
+        	
+        {% endblock %}
 </body>
 
 {% endblock %}
