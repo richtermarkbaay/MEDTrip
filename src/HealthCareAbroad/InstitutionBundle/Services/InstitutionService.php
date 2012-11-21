@@ -47,9 +47,9 @@ class InstitutionService
         return $returnValue;
     }
     
-    public function findById($id)
+    public function getAllActiveMedicalCenters()
     {
-        return $this->doctrine->getRepository('InstitutionBundle:Institution')->find($id);
+        
     }
     
 }

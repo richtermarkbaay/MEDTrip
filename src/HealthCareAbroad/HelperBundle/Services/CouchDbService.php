@@ -82,9 +82,9 @@ class CouchDbService {
     }
 
     // PUT an object
-    public function put($id, $object) 
+    public function put($id = '', $object = null) 
     {
-        return json_decode($this->send('PUT', "$id", $object), true);
+        return json_decode($this->send('PUT', $id, $object), true);
     }
 
     // DELETE an object
@@ -100,17 +100,20 @@ class CouchDbService {
         return json_decode($this->send('POST', "_bulk_docs", $bulkData, $headers), true);
     }
 
-    private function send($method, $uri, $post_data = null, $headers = array())
+    private function send($method, $uri = '', $post_data = null, $headers = array())
     {
-        try {            
-            $uri = $this->db . '/' . $uri;
-            $response = $this->client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
+        try {
+            if($this->db)  {
+                $uri = $this->db . '/' . $uri;        
+            }
 
+            $response = $this->client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
+            
             return $response->getBody()->__toString();
 
-        } catch(\Guzzle\Http\Exception\CurlException $e) {
-            $this->kernelException->logException($e);
-        }
+         } catch(\Exception $e) {
+             $this->kernelException->logException($e);
+         }
     }
 
     private function formatResponse($response)

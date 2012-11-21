@@ -1,9 +1,10 @@
-parameters:
-    memcached.servers:
-        - { host: 127.0.0.1, port: 11211 }
-        - { host: 192.168.1.249, port: 11211 }
-
 services:
     services.memcache:
         class: HealthCareAbroad\MemcacheBundle\Services\MemcacheService
         arguments: [%memcached.servers%]
+        
+    services.memcache.namespace_prefix_storage:
+        class: HealthCareAbroad\MemcacheBundle\Services\NamespacePrefixStorage
+        calls:
+            - [setMemcacheService, [@services.memcache]]
+            - [setBasePrefixes, [%memcache_namespaces%]]

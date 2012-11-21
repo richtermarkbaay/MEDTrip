@@ -86,8 +86,9 @@ services:
 
     services.alert:
         class: %services.alert_class%
-        arguments: [%couchDbAlert%, @doctrine, @router, @services.couchDb]
-
+        arguments: [@doctrine, @router, @services.couchDb]
+        calls:
+            - [prepareAlertDb, [%couchDbAlert%]]
     services.couchDb:
         class: %services.couch_db_class%
         arguments: [ %couchDbBaseUrl%, @listener.log.kernelexception]
