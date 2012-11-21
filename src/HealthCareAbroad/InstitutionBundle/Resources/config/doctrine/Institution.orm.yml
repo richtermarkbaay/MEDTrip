@@ -149,24 +149,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             mappedBy: institution
 
     oneToOne:
-        logo:
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
-            mappedBy: institution
-
-    manyToMany:
         media:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
-            cascade: {  }
-            mappedBy: null
-            joinTable:
-                name: advertisement_media
-                joinColumns:
-                    -
-                        name: advertisement_id
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    -
-                        name: media_id
-                        referencedColumnName: id
+            mappedBy: institution
 
     lifecycleCallbacks: {  }
