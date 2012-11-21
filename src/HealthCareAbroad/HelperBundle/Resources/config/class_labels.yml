@@ -16,3 +16,6 @@ parameters:
         institution_specialization: {singular: "specialization", plural: "specializations"}
         country: {singular: "country", plural: "countries"}
         city: {singular: "city", plural: "cities"}
+        doctor: {singular: "doctor", plural: "doctors"}
+        awardingBody: {singular: "awardingBody", plural: "awardingBodies"}
+        affiliation: {singular: "affiliation", plural: "affiliations"}
