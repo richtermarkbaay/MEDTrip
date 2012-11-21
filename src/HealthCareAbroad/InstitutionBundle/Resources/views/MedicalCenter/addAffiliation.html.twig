@@ -1,7 +1,7 @@
    {% embed '::contentWrapper.admin.html.twig' %}
 		{% block wrappedContent %}
 		  {% include '::notice.admin.html.twig' %}
-					<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addAffiliations', { 'imcId': institutionMedicalCenter.id }) }}" {{ form_enctype(form) }}  method="post" class="basic-form">
+					<form novalidate="novalidate" action="{{ formAction }}" {{ form_enctype(form) }}  method="post" class="basic-form">
 		
 						{{ form_row(form.institutionAffiliations) }}
 				

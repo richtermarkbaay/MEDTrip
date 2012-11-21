@@ -15,4 +15,29 @@ use Doctrine\ORM\EntityRepository;
 class AffiliationRepository extends EntityRepository
 {
 
+	function getInstitutionAffiliations($medicalCenterId)
+	{
+		$conn = $this->_em->getConnection();
+		$qry = "SELECT b.id,b.name FROM institution_affiliations AS a " .
+						"JOIN affiliations AS b ON a.affiliation_id = b.id " .
+						"JOIN  institution_medical_centers AS c ON a.institution_medical_center_id = c.id " .
+						"WHERE a.institution_medical_center_id = $medicalCenterId and b.status = ". Affiliation::STATUS_ACTIVE ." ";
+	
+		$result = $conn->executeQuery($qry)->fetchAll();
+	
+		return $result;
+	}
+	
+	public function updateAffiliations($affiliationId, $institutionMedicalCenterId)
+	{
+		$conn = $this->_em->getConnection();
+		
+		$deleteQry = "DELETE FROM institution_affiliations " .
+						"WHERE institution_medical_center_id = $institutionMedicalCenterId " .
+						"AND affiliation_id = " . $affiliationId . " ";
+		
+		$result = $conn->executeQuery($deleteQry);
+		
+		return $result;
+	}
 }

@@ -354,29 +354,28 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addAffiliationsAction(Request $request)
     {
-
-    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
-    
-    	if ($request->isMethod('POST')) {
-    		
-    	
-    		$form->bind($request);
-    		
-    		if ($form->isValid()) {
-    
-    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-    			->saveAsDraft($form->getData());
-    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
-    			return $this->redirect($this->generateUrl('institution_medicalCenter_addDetails',array('imcId' => $this->institutionMedicalCenter->getId())));
-    		}
-    	}
-    	
-    	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
-    					'form' => $form->createView(), 
-    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
-    					'newObject' => true
-    					));
+	    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+	    
+	    	if ($request->isMethod('POST')) {
+	    	
+	    		$form->bind($request);
+	    		
+	    		if ($form->isValid()) {
+	    
+	    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+	    			->saveAsDraft($form->getData());
+	    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
+	    			return $this->redirect($this->generateUrl('institution_medicalCenter_addDetails',array('imcId' => $this->institutionMedicalCenter->getId())));
+	    		}
+	    	}
+	    	
+	    	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
+	    					'form' => $form->createView(), 
+	    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
+	    					'formAction' => $this->generateUrl('institution_medicalCenter_addAffiliations',
+	    									array('imcId:' => $this->institutionMedicalCenter->getId())),
+	    					'newObject' => true
+	    					));
     }
 
-    
 }
