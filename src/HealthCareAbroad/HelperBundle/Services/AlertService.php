@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use Guzzle\Service\Client;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
@@ -17,7 +19,7 @@ class AlertService
 {
     const DATE_FORMAT = 'Y-m-d H:i:s';
     const NULL_DATE = '1970-01-01 00:00:00';
-
+    
     const ALL_ALERT_VIEW_URI = '_design/alerts/_view/all';
     const RECIPIENT_ALERT_VIEW_URI = '_design/alerts/_view/recipient';
     const REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/reference';
@@ -27,16 +29,42 @@ class AlertService
     protected $doctrine;
     protected $router;
     protected $routeCollection;
-    protected $couchDb;
+    protected $couchDB;
 
-    function __construct($alertDb, $doctrine, $router, $couchDbService)
+    function __construct($doctrine, $router, $couchDbService)
     {
-        $this->doctrine = $doctrine;
         $this->router = $router;
-        $this->routeCollection = $router->getRouteCollection();
-
+        $this->doctrine = $doctrine;
         $this->couchDB = $couchDbService;
+        $this->routeCollection = $router->getRouteCollection();
+    }
+    
+    public function prepareAlertDb($alertDb)
+    {
+        // Create Database if NOT EXISTS
+        $this->couchDB->put($alertDb);
+
+        // Set Database - This will append the database name to the couchDB baseUrl. Ex: http://localhost:5984/{$alertDb} 
+        // as a preparation for every request to couchDB
         $this->couchDB->setDatabase($alertDb);
+
+        // Create Design Views if NOT EXISTS
+        $this->createAlertViews();
+    }
+
+    private function createAlertViews()
+    {
+        $data = array(
+            'language' => 'javascript',
+            'views' => array(
+                'all' => array("map" => "function(doc) { emit(doc.dateAlert, doc) }"),
+                'recipient' => array("map" => "function(doc) { var now = new Date(); now = now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate() + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); if(doc.dateAlert <= now || (doc.dateExpired != undefined && doc.dateExpired > now)) emit([doc.recipient, doc.recipientType], doc) }"),
+                'reference' => array("map" => "function(doc) { emit([doc.referenceData.id, doc.class], doc) }"),
+                'typeAndReference' => array("map" => "function(doc) { emit([doc.type, doc.referenceData.id, doc.class], doc) }")
+            )
+        );
+
+        $this->couchDB->put('_design/alerts', $data);
     }
     
     /**
