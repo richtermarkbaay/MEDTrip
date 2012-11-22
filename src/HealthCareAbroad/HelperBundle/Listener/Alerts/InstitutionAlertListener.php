@@ -23,8 +23,11 @@ class InstitutionAlertListener extends BaseAlertListener
     protected $medicalCenterClassName;
     protected $specializationClassName;
 
+    const INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE = 'institution_medicalCenter_view';
+    const ADMIN_INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE = 'admin_institution_medicalCenter_view';
+
     public function __construct(ContainerInterface $container)
-    {        
+    {
         parent::__construct($container);
 
         $this->medicalCenterClassName = AlertClasses::getClassName(AlertClasses::INSTITUTION_MEDICAL_CENTER);
@@ -143,17 +146,22 @@ class InstitutionAlertListener extends BaseAlertListener
             'name' => $object->getName()
         );
 
+        $route = array(
+            'name' => 'institution_medicalCenter_view',
+            'params' => array('imcId' => (int)$object->getId())
+        );
+
         $pendingAlert = array(
             'recipient' => (int)$options->get('institutionId'),
             'recipientType' => AlertRecipient::INSTITUTION,
             'referenceData' => $referenceData,
             'class' => AlertClasses::INSTITUTION_MEDICAL_CENTER,
             'type' => AlertTypes::APPROVED_LISTING,
-            'viewRouteName' => 'institution_medicalCenter_view',
+            'route' => $route,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'isDeletable' => false
         );
-    
+
         return $pendingAlert;
     }
     
@@ -162,7 +170,15 @@ class InstitutionAlertListener extends BaseAlertListener
         $referenceData = array(
             'imcId' => (int)$object->getId(),
             'name' => $object->getName(),
-            'institutionId' => $options->get('institutionId')
+            'institutionId' => (int)$options->get('institutionId')
+        );
+
+        $route = array(
+            'name' => self::ADMIN_INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE,
+            'params' => array(
+                'imcId' => (int)$object->getId(),
+                'institutionId' => $options->get('institutionId')
+            )
         );
 
         // Set 30 Days to Expire Listing
@@ -177,14 +193,16 @@ class InstitutionAlertListener extends BaseAlertListener
             'type' => AlertTypes::EXPIRED_LISTING,
             'dateAlert' => $dateAlert,
             'message' => $object->getName() . ' is expiring listing!',
-            'viewRouteName' =>  'admin_institution_medicalCenter_view',
+            'route' => $route,
             'isDeletable' => true
         );
 
+        
         $institutionExpiredAlert = $adminExpiredAlert;
         $institutionExpiredAlert['recipient'] = $options->get('institutionId');
         $institutionExpiredAlert['recipientType'] = AlertRecipient::INSTITUTION;
-        $institutionExpiredAlert['viewRouteName'] = 'institution_medicalCenter_view';
+        $institutionExpiredAlert['route']['name'] = self::INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE;
+        unset($institutionExpiredAlert['route']['institutionId']);
 
         return array($adminExpiredAlert, $institutionExpiredAlert);
     }
@@ -196,6 +214,14 @@ class InstitutionAlertListener extends BaseAlertListener
             'name' => $object->getName(),
             'institutionId' => $options->get('institutionId')
         );
+        
+        $route = array(
+            'name' => self::ADMIN_INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE,
+            'params' => array(
+                'imcId' => (int)$object->getId(),
+                'institutionId' => $options->get('institutionId')
+            )
+        );
 
         $pendingAlert = array(
             'recipientType' => AlertRecipient::ALL_ACTIVE_ADMIN,
@@ -204,7 +230,7 @@ class InstitutionAlertListener extends BaseAlertListener
             'type' => AlertTypes::PENDING_LISTING,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'message' => 'New listing approval request "' . $object->getName() . '"!',
-            'viewRouteName' =>  'admin_institution_medicalCenter_view',
+            'route' => $route,
             'isDeletable' => false
         );
         
@@ -213,6 +239,12 @@ class InstitutionAlertListener extends BaseAlertListener
     
     private function createDraftListingAlert($object, $options)
     {
+        $route = array(
+            'name' => self::INSTITUTION_MEDICAL_CENTER_VIEW_ROUTE,
+            'params' => array(
+                'imcId' => (int)$object->getId(),
+            )
+        );
 
         $draftAlert = array(
             'recipient' => $options->get('institutionId'),
@@ -222,10 +254,10 @@ class InstitutionAlertListener extends BaseAlertListener
             'type' => AlertTypes::DRAFT_LISTING,
             'dateAlert' => date(AlertService::DATE_FORMAT),
             'message' => $object->getName() . ' has beed created as draft medical center!',
-            'viewRouteName' =>  'institution_medicalCenter_view',
+            'route' =>  $route,
             'isDeletable' => false
         );
-        
+
         return $draftAlert;
     }
 
