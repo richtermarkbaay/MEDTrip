@@ -1,3 +1,5 @@
+<div id="gallery-container">
+
     <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
         <thead>
             <tr>
@@ -12,7 +14,7 @@
             <tr>
                 <td colspan="4">
 
-                    <div style="float: right; margin-right: 10px">
+                    <div id="galleryPager" style="float: right; margin-right: 10px">
                         {% if institutionMedia.isPaginable %}
                             {{ paginate(institutionMedia, 'admin_gallery_selection', {context: 'institution-logo', id: institution.id}) }}
                         {% endif %}
@@ -42,18 +44,51 @@
             </tr>
         {% endfor %}
     </table>
+</div>
 
     <script type="text/javascript">
     $(function() {
+
+        // decorate the links with event handlers to subvert the normal behavior
+        // returning html fragments via ajax instead
+        if (document.getElementById('galleryPager').getElementsByTagName('ul') && document.getElementById('galleryPager').getElementsByTagName('ul').length) {
+
+            $("ul.pager > li > a").each(function(){
+                $(this).filter(":first").click(function(e){
+
+                    $.ajax({
+                        url: e.target,
+                        type: 'get',
+                        success: function(response) {
+                            if (response) {
+
+                                $('#gallery-container').html(response);
+
+                            } else {
+                                alert('An error occurred while processing the response. Please try again.');
+                            }
+                        },
+                        error: function() {
+                            alert('An error occurred while processing your request. Please try again.');
+                        }
+                    });
+
+                    return false;
+                });
+            });
+        }
 
         $(".selectLink").unbind('click').click(function(e) {
             $.ajax({
                 url: e.target,
                 type: 'get',
                 dataType: 'json',
-                success: function(success) {
-                    if (success) {
-                        $(e.target).hide();
+                success: function(response) {
+                    if (response.success) {
+                        //$(e.target).hide();
+                        if ($('#institution-logo-image')) {
+                            $('#institution-logo-image').attr('src', response.imgSrc);
+                        }
                     } else {
                         alert('An error occurred while processing your request. Please try again.');
                     }

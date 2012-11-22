@@ -52,15 +52,15 @@ class MediaService
 
         $media = $processedContext['media'];
 
-//         try {
-//             $entity = $processedContext['entity'];
-//             $entity->setMedia($processedContext['media']);
+        try {
+            $entity = $processedContext['entity'];
+            $entity->setMedia($processedContext['media']);
 
-//             $this->entityManager->persist($entity);
-//             $this->entityManager->flush($entity);
-//         } catch (\Exception $e) {
-//             return false;
-//         }
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush($entity);
+        } catch (\Exception $e) {
+            return false;
+        }
 
         $institution = $processedContext['institution'];
 

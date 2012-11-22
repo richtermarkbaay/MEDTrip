@@ -23,7 +23,6 @@ class InstitutionAlertListener extends BaseAlertListener
     protected $medicalCenterClassName;
     protected $specializationClassName;
 
-
     public function __construct(ContainerInterface $container)
     {        
         parent::__construct($container);
@@ -185,6 +184,7 @@ class InstitutionAlertListener extends BaseAlertListener
         $institutionExpiredAlert = $adminExpiredAlert;
         $institutionExpiredAlert['recipient'] = $options->get('institutionId');
         $institutionExpiredAlert['recipientType'] = AlertRecipient::INSTITUTION;
+        $institutionExpiredAlert['viewRouteName'] = 'institution_medicalCenter_view';
 
         return array($adminExpiredAlert, $institutionExpiredAlert);
     }

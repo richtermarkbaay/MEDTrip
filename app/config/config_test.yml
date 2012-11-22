@@ -3,6 +3,7 @@ imports:
     - { resource: shared_parameters.yml }
     - { resource: security_test.yml }
     - { resource: doctrine_extensions.yml }
+    - { resource: memcache_namespaces.yml }
 
 framework:
     templating: { engines: ['twig'] } #assets_version: SomeVersionScheme

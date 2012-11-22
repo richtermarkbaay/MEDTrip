@@ -4,7 +4,7 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 use HealthCareAbroad\DoctorBundle\Form\DoctorFormType;
-
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -93,5 +93,30 @@ class DoctorController extends Controller
                         'title' => $title
         ));
 
+    }
+    
+    /**
+     * Update status
+     */
+    public function updateStatusAction(Request $request)
+    {
+    	$result = false;
+    	$em = $this->getDoctrine()->getEntityManager();
+    	$doctor = $em->getRepository('DoctorBundle:Doctor')->find($request->get('idId', 0));
+  
+    	if ($doctor) {
+    		$doctor->setStatus($doctor->getStatus() ? $doctor::STATUS_INACTIVE : $doctor::STATUS_ACTIVE);
+    		$em->persist($doctor);
+    		$em->flush($doctor);
+    
+    		// dispatch event
+    		$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_DOCTOR, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_DOCTOR, $doctor));
+    		$result = true;
+    	}
+  
+    	$response = new Response(json_encode($result));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
     }
 }

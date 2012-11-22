@@ -32,7 +32,13 @@ class DefaultController extends Controller
                         'mediaId' => $request->get('mediaId')
         ));
 
-        return new Response($mediaPath !== false ? $mediaPath : 0, 200);
+        if ($mediaPath) {
+            $response = array('success' => 1, 'imgSrc' => $mediaPath);
+        } else {
+            $response = array('success' => 0);
+        }
+
+        return new Response(json_encode($response), 200, array('content-type', 'application/json'));
     }
 
     //TODO: refactor

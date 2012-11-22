@@ -65,8 +65,8 @@ TODO: don't preload content of tabs
                         // When all files are uploaded submit form
                         uploader.bind('StateChanged', function() {
                             if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
-                                //$('form')[0].submit();
-                                $('form[name=multiUploadForm]').submit();
+                                //$('form[name=multiUploadForm]').submit();
+                                $(this).submit();
                             }
                         });
 

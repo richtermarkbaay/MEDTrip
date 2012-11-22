@@ -105,3 +105,10 @@ parameters:
     event.affiliation.add: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
     event.affiliation.edit: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
     event.affiliation.delete: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    
+    #
+    # doctor related events
+    #
+    event.doctor.add: HealthCareAbroad\AdminBundle\Event\DoctorEvent
+    event.doctor.edit: HealthCareAbroad\AdminBundle\Event\DoctorEvent
+    event.doctor.delete: HealthCareAbroad\AdminBundle\Event\DoctorEvent
