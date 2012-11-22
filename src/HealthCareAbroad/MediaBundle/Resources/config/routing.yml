@@ -32,6 +32,13 @@ admin_gallery_selection:
         id: \d+
         page: \d+
 
+admin_media_attach:
+    pattern: /admin/media/attach/{context}/{id}/{mediaId}
+    defaults: { _controller: MediaBundle:Default:mediaAttach }
+    requirements:
+        id: \d+
+        mediaId: \d+
+
 media_add:
     pattern: /admin/media/add/{context}/{id}
     defaults: { _controller: MediaBundle:Default:add }
