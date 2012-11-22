@@ -8,8 +8,6 @@ namespace HealthCareAbroad\HelperBundle\Services;
 
 use Guzzle\Service\Client;
 
-use Symfony\Component\HttpFoundation\Request;
-
 use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertClasses;
@@ -25,18 +23,13 @@ class AlertService
     const REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/reference';
     const TYPE_AND_REFERENCE_ALERT_VIEW_URI = '_design/alerts/_view/typeAndReference';
 
-
     protected $doctrine;
-    protected $router;
-    protected $routeCollection;
     protected $couchDB;
 
-    function __construct($doctrine, $router, $couchDbService)
+    function __construct($doctrine, $couchDbService)
     {
-        $this->router = $router;
         $this->doctrine = $doctrine;
         $this->couchDB = $couchDbService;
-        $this->routeCollection = $router->getRouteCollection();
     }
     
     public function prepareAlertDb($alertDb)
@@ -168,9 +161,7 @@ class AlertService
      * @return unknown
      */
     function formatAlert($data = array())
-    {        
-        $data['viewUrl'] = $this->getAlertViewUrl($data);
-
+    {
         return $data;
     }
 
@@ -290,31 +281,5 @@ class AlertService
         $data['dateCreated'] = date(self::DATE_FORMAT);
 
         return $data;
-    }
-    
-    function getAlertViewUrl($data) 
-    {
-        $route = $this->routeCollection->get(@$data['viewRouteName']);
-
-        if(!$route) {
-            return '#';
-        }
-
-        $requirements = $route->getRequirements();
-        unset($requirements['_method']);
-
-        $routeParams = array();
-        foreach($requirements as $key => $val) {
-            if(isset($data['referenceData'][$key])) {
-                $routeParams[$key] = $data['referenceData'][$key];                
-            } else {
-                $routeParams[$key] = 0;                
-            }
-
-        }
-
-        $url = $this->router->generate($data['viewRouteName'], $routeParams);
-
-        return $url;
     }
 }

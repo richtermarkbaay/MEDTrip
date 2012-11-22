@@ -54,7 +54,6 @@ class CouchDbService {
         $this->db = $dbName;
     }
 
-    // Get _design/alerts/_view
     public function getView($uri, $params = array()) {
 
         if(isset($params['keys'])) {
