@@ -14,17 +14,10 @@
 
                     <div style="float: right; margin-right: 10px">
                         {% if institutionMedia.isPaginable %}
-                            {{ paginate(institutionMedia, 'admin_institution_gallery', {institutionId: institution.id}) }}
+                            {{ paginate(institutionMedia, 'admin_gallery_selection', {context: 'institution-logo', id: institution.id}) }}
                         {% endif %}
                     </div>
-                <!--
-                    <div style="float: right">
-                        <a href="#"><img src="/images/admin/table/paging_far_left.gif" ></a>
-                        <a href="#"><img src="/images/admin/table/paging_left.gif" ></a>
-                        <a href="#"><img src="/images/admin/table/paging_right.gif" ></a>
-                        <a href="#"><img src="/images/admin/table/paging_far_right.gif" ></a>
-                    </div>
- -->
+
                 </td>
             </tr>
         </tfoot>
@@ -38,7 +31,7 @@
                 <td>{{ media.caption }}</td>
 
                 <td>
-                    <a class="attachLink" href="{{ path('media_ajaxAttach_medicalCenter', { 'imcId': institution.id, 'mediaId': media.id }) }}">Attach</a>
+                    <a class="selectLink" href="{{ path('admin_media_attach', { context: 'institution-logo', id: institution.id, 'mediaId': media.id }) }}">Select</a>
                 </td>
 
                 <td></td>
@@ -53,7 +46,7 @@
     <script type="text/javascript">
     $(function() {
 
-        $(".attachLink").unbind('click').click(function(e) {
+        $(".selectLink").unbind('click').click(function(e) {
             $.ajax({
                 url: e.target,
                 type: 'get',
