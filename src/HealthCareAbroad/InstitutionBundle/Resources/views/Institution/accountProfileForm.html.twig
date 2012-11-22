@@ -16,7 +16,7 @@
 				<h3>{{ institution.typeLabel() }}</h3>
 			
 			</div>	
-			 <form novalidate="novalidate" action="{{ path('institution_createProfile', {institutionId: institution.id }) }}" method="POST" class="basic-form">
+			 <form novalidate="novalidate" action="{{ path('institution_accountProfile', {institutionId: institution.id }) }}" method="POST" class="basic-form">
 	
 				{{ form_errors(form) }}	
 		  		<fieldset>

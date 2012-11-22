@@ -94,7 +94,7 @@ class InstitutionSignUpController  extends Controller
     			$institution->setCoordinates('');
     			$institution->setState('');
     			$institution->setWebsites('');
-    			$institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
     			$factory->save($institution);
 	            
@@ -119,8 +119,8 @@ class InstitutionSignUpController  extends Controller
                 $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
-	            
-	            return $this->redirect($this->generateUrl('institution_homepage'));
+	           
+                return $this->redirect($this->generateUrl('institution_accountProfile',array('institutionId' => $institution->getId())));
 	        }
 	    }
 	    

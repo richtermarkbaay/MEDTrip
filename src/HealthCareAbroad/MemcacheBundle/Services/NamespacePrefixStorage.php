@@ -48,29 +48,20 @@ class NamespacePrefixStorage
         return \array_key_exists($configBaseKey, $this->basePrefixes);
     }
 
-    /**
-     * Get namespace key 
-     * 
-     * @param string $configBaseKey
-     * @param string $uniqueIdentifier
-     */
-    public function getNamespaceKey($configBaseKey, $uniqueIdentifier)
-    {
-        if (!$this->isValidBaseKey($configBaseKey)) {
-            throw MemcacheNamespacePrefixStorageException::invalidBaseKey($configBaseKey);
-        }
-        
-        $namespaceKey = $this->basePrefixes[$configBaseKey].'_'.$uniqueIdentifier;
-        
-        return $namespaceKey;
-    }
-    
     public function getNamespaceByConfigKey($configBaseKey, $uniqueIdentifier)
     {
         $key = $this->getNamespaceKey($configBaseKey, $uniqueIdentifier);
         $version = $this->getNamespaceVersion($key);
         
         return $key.'_v'.$version;
+    }
+    
+    public function invalidateNamespaceByConfigKey($configBaseKey, $uniqueIdentifier)
+    {
+        $key = $this->getNamespaceByConfigKey($configBaseKey, $uniqueIdentifier);
+        $this->invalidateNamespace($key);
+        
+        return true;
     }
     
     protected function getNamespaceVersion($namespaceKey)
@@ -81,22 +72,37 @@ class NamespacePrefixStorage
             $version = time();
             $this->memcacheService->set($namespaceKey, $version);
         }
-        
+    
         return $version;
     }
-    
-    
     
     /**
      * Invalidate cached values that are using this namespace 
      * 
      * @param string $namespaceKey
      */
-    public function invalidateNamespace($namespaceKey)
+    protected function invalidateNamespace($namespaceKey)
     {
         if (!$this->memcacheService->increment($namespaceKey)) {
-            // failed to increment value of namespace with key $namespaceKey
-            
+            // failed to increment value of namespace with key $namespaceKey, key does not exist so set new one
+            $this->memcacheService->set($namespaceKey, time());
         }
+    }
+    
+    /**
+     * Get namespace key
+     *
+     * @param string $configBaseKey
+     * @param string $uniqueIdentifier
+     */
+    protected function getNamespaceKey($configBaseKey, $uniqueIdentifier)
+    {
+        if (!$this->isValidBaseKey($configBaseKey)) {
+            throw MemcacheNamespacePrefixStorageException::invalidBaseKey($configBaseKey);
+        }
+    
+        $namespaceKey = $this->basePrefixes[$configBaseKey].'_'.$uniqueIdentifier;
+    
+        return $namespaceKey;
     }
 }

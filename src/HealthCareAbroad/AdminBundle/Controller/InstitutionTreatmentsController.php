@@ -198,9 +198,28 @@ class InstitutionTreatmentsController extends Controller
             $form->getData()->setBusinessHours($businessHours);
             $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
         
-                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been updated. You can now add Specializations to this center.");
+            $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been updated. You can now add Specializations to this center.");
+
+            // TODO: Verify Event!
+            // dispatch event
+            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
+                $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+            ));
+
+            // redirect to step 2;
+            return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
+                'institutionId' => $this->institution->getId(),
+                'imcId' => $this->institutionMedicalCenter->getId()
+            )));
         }
-        
+
+        $params = array(
+            'form' => $form->createView(),
+            'institutionId' => $this->institution->getId(),
+            'institutionMedicalCenter' => $this->institutionMedicalCenter
+        );
+    
+        return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
     }
 
     /**
@@ -319,6 +338,10 @@ class InstitutionTreatmentsController extends Controller
                 $this->request->getSession()->setFlash('success', "Specialization has been saved!");
 
                 // TODO: fire event
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                ));
 
                 // redirect to step 2;
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(

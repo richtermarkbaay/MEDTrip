@@ -119,5 +119,14 @@ class InstitutionFactory
         $em = $this->doctrine->getEntityManager();
         $em->persist($institution);
         $em->flush();
+        
+        $this->memcacheNamespacePrefixStorage->invalidateNamespaceByConfigKey('institution.base', $institution->getId());
+        
+        /**
+        $institutionNamespace = $this->memcacheNamespacePrefixStorage->getNamespaceByConfigKey('institution.base', $institution->getId());
+        $memcacheKey = $institutionNamespace.'_entity';
+        $this->memcache->set($memcacheKey, $institution);
+        */
+        
     }
 }
