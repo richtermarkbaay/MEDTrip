@@ -40,59 +40,11 @@
                     Business Hours
                 </h5>
                 
-                {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
-                {% set daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
-                {% if not arrBusinessHours %}
-                    {% set arrBusinessHours = {
-                            'Sunday' :{"from": "08:15 AM", "to": "07:00 PM"},
-                            'Monday' :{"from": "08:15 AM", "to": "07:00 PM"},
-                            'Tuesday' :{"from": "08:15 AM", "to": "07:00 PM" },
-                            'Wednesday' :{"from": "08:15 AM", "to": "07:00 PM"},
-                            'Thursday' :{"from": "08:15 AM", "to": "07:00 PM"},
-                            'Friday' :{"from": "08:15 AM", "to": "07:00 PM"},
-                            'Saturday' :{"from": "08:15 AM", "to": "07:00 PM"}
-                            }
-                    %}
-                {% endif %}
-		        
 		        <form id="business" class="basic-form">    
     		        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                        <table style="width:70%;" border="1" cellpadding="0" cellspacing="0" class="table table-bordered" id="table-list">
-                            <tr>
-                                <th class="minwidth-1"> <a href="#">Is Closed</a></th>
-                                <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
-                                <th class="minwidth-1"> <a href="#">From</a></th>
-                                <th class="minwidth-1"> <a href="#">To</a></th>
-                            </tr>
-                            
-                     	    {% for i, day in daysArr %}
-                                <tr>
-                                    <td  align="center">
-                                        {% if arrBusinessHours[day] is not defined %}
-                                            <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                                        {% else %}
-                                            <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                                        {% endif %}
-                                    </td>
-                                    <td  align="center">{{ day }}</td>
-                                    <td  align="center">
-                                        {% if arrBusinessHours[day] is not defined %}
-                                            <input class="hour" name="businessHours[{{day}}][from]" disabled="true" id="businessHours[{{day}}][from]" value="" />
-                                        {% else %}
-                                             <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
-                                        {% endif %}
-                                    </td>
-                                    <td  align="center">
-                                        {% if arrBusinessHours[day] is not defined %}
-                                            <input class="hour" name="businessHours[{{day}}][to]" disabled="true" id="businessHours[{{day}}][to]" value="" />
-                                        {% else %}
-                                             <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
-                                        {% endif %}
-                                    </td>
-                                    
-                                </tr>
-                            {% endfor %}
-                        </table>
+                        
+                        {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+                        
                         <input type="submit" name="submit" id="saveBusinessHours" value="Submit" class="btn btn-large btn-primary" />
                     </div>
                     
@@ -121,7 +73,7 @@
     {% endembed %}
 </div>
 {% block inlineJavascriptCode %}
-<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+    <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
 	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
@@ -165,50 +117,16 @@
                  	return false;           
             });
 	    });
-        /*$.widget( "ui.timespinner", $.ui.spinner, {
-        	options: {
-                // seconds
-                step: 60 * 15000,
-                // hours
-                page: 60
-            },
-     
-            _parse: function( value ) {
-                if ( typeof value === "string" ) {
-                    // already a timestamp
-                    if ( Number( value ) == value ) {
-                        return Number( value );
-                    }
-                    return +Globalize.parseDate( value );
-                }
-                return value;
-            },
-     
-            _format: function( value ) {
-                return Globalize.format( new Date(value), "t" );
-            }
-        });
-	 
-	    $(function() {
-	    	$( ".hour" ).timespinner();
-
-	    	$('input.is_closed_checkbox').each(function(){
-			    if(this.checked) {
-			    	$(this).parent().parent().find('.hour').val("");
-			    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: true });
-				}
-			});
-	    });
-	    */
+        
 	    $('input.is_closed_checkbox').change(function(){
 		    if(this.checked) {
 		    	$(this).parent().parent().find('.hour').val("");
-		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: true });
+		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
 			}
 		    else 
 		    {
 		    	$(this).parent().parent().find('.hour').val("8:00 AM");
-		    	var id = $(this).parent().parent().find('.hour').timespinner({ disabled: false });
+		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
 		    }
 		   
 		});
