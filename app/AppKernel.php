@@ -8,7 +8,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 class AppKernel extends Kernel
 {
     // code from: http://kriswallsmith.net/post/27979797907/get-fast-an-easy-symfony2-phpunit-optimization
-    /**
+
     protected function initializeContainer()
     {
         static $first = true;
@@ -37,7 +37,6 @@ class AppKernel extends Kernel
 
         $this->debug = $debug;
     }
-    **/
 
     public function registerBundles()
     {
