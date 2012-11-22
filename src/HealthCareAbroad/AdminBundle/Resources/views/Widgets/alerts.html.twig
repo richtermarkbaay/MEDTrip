@@ -8,7 +8,7 @@
                 {% if (each.isDeletable is defined) and each.isDeletable %}
                     <a href="{{ path('admin_removeAlert', {id: each._id, rev: each._rev}) }}" class="remove-alert pull-right" style="border: none"><i class="icon-remove"></i></a>
                 {% endif %}
-                <a href="{{ each.viewUrl is defined ? each.viewUrl : '#' }}">{{ each.message is defined ? each.message : 'nomessage' }} </a><br/>
+                <a href="{{ path(each.route.name, each.route.params) }}">{{ each.message is defined ? each.message : 'nomessage' }} </a><br/>
             </li>
         {% endfor %}
     </ul>
