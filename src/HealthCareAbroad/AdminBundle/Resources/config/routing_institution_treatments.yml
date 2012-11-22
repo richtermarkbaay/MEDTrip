@@ -55,7 +55,8 @@ admin_institution_medicalCenter_updateAffiliations:
         _method: GET|POST
 
 admin_institution_medicalCenter_edit:
-    pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
+    #pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
+    pattern: /admin/institution/{institutionId}/medical-center/view/{imcId}
     defaults: { _controller: AdminBundle:InstitutionTreatments:editMedicalCenter }
     requirements:
         institutionId: \d+
