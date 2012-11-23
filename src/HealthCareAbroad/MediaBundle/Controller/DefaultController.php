@@ -24,6 +24,23 @@ class DefaultController extends Controller
         return new Response($html, 200);
     }
 
+    public function mediaAttachAction(Request $request)
+    {
+        $mediaPath = $this->get('services.media')->attachMedia(array(
+                        'id' => $request->get('id'),
+                        'context' => $request->get('context'),
+                        'mediaId' => $request->get('mediaId')
+        ));
+
+        if ($mediaPath) {
+            $response = array('success' => 1, 'imgSrc' => $mediaPath);
+        } else {
+            $response = array('success' => 0);
+        }
+
+        return new Response(json_encode($response), 200, array('content-type', 'application/json'));
+    }
+
     //TODO: refactor
     public function uploadAction(Request $request)
     {

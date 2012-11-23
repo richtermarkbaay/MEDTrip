@@ -19,10 +19,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: text
             nullable: false
         logo:
-            type: string
-            length: 100
+            type: integer
+            length: 20
             fixed: false
-            nullable: false
+            nullable: true
         contactEmail:
             type: string
             length: 100
@@ -123,6 +123,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                        name: language_id
                        referencedColumnName: id
+
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
@@ -147,5 +148,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         gallery:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
             mappedBy: institution
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
 
     lifecycleCallbacks: {  }
