@@ -5,8 +5,8 @@ TODO: don't preload content of tabs
 <div id="add-media-dialog" style="display: none;" title="Select media">
     <div id="add-media-tabs">
         <ul>
-            <li><a href="#preloaded-tab">Upload from my computer</a></li>
-            <li><a href="{{ path('admin_gallery_selection', {context: 'institutionLogo', id: institution.id}) }}">Media Gallery</a></li>
+            <li><a href="#preloaded-tab">From my computer</a></li>
+            <li><a href="{{ path('admin_gallery_selection', {context: 'institutionLogo', id: institution.id}) }}">From Media Gallery</a></li>
         </ul>
         <div id="preloaded-tab">
             <form name="multiUploadForm">
@@ -65,6 +65,7 @@ TODO: don't preload content of tabs
                         // When all files are uploaded submit form
                         uploader.bind('StateChanged', function() {
                             if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                                //$('form[name=multiUploadForm]').submit();
                                 $(this).submit();
                             }
                         });

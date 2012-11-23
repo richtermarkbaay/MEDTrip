@@ -8,7 +8,13 @@ Note: This widget is shared in other bundles e.g. AdminBundle
             <div class="span6">
                 <div class="span3">
                     <div class="photo-group">
-                        <img id="institution-logo-image" alt="..." src="{{ asset('images/institution/institution-logo.gif') }}" />
+
+                        {% if institution.media %}
+                            {{ media(institution.media, 'institutionLogo', {alt: 'institution logo'}) | raw }}
+                        {% else %}
+                            <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                        {% endif %}
+
                         <span class="label photo-label" style="margin-left:100px; position: absolute; margin-top: -25px;">
                             <a id="institution-logo-link" href="#" data-placement="right" rel="tooltip" href="#" data-original-title="Manage Institution Profile Photo">
                                 <i class="icon-picture"></i>

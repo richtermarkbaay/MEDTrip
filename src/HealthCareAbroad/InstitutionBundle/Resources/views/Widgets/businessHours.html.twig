@@ -1,0 +1,52 @@
+{% set daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
+
+{% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
+{% if not arrBusinessHours %}
+    {% set arrBusinessHours = {
+            'Sunday' :{"from": "08:15 AM", "to": "07:00 PM"},
+            'Monday' :{"from": "08:15 AM", "to": "07:00 PM"},
+            'Tuesday' :{"from": "08:15 AM", "to": "07:00 PM" },
+            'Wednesday' :{"from": "08:15 AM", "to": "07:00 PM"},
+            'Thursday' :{"from": "08:15 AM", "to": "07:00 PM"},
+            'Friday' :{"from": "08:15 AM", "to": "07:00 PM"},
+            'Saturday' :{"from": "08:15 AM", "to": "07:00 PM"}
+            }
+    %}
+{% endif %}
+
+<table style="width:70%;" border="1" cellpadding="0" cellspacing="0" class="table table-bordered" id="table-list">
+    <tr>
+        <th class="minwidth-1"> <a href="#">Is Closed</a></th>
+        <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
+        <th class="minwidth-1"> <a href="#">From</a></th>
+        <th class="minwidth-1"> <a href="#">To</a></th>
+    </tr>
+    
+    {% for i, day in daysArr %}
+        <tr>
+            <td  align="center">
+                {% if arrBusinessHours[day] is not defined %}
+                    <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                {% else %}
+                    <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                {% endif %}
+            </td>
+            <td  align="center">{{ day }}</td>
+            <td  align="center">
+                {% if arrBusinessHours[day] is not defined %}
+                    <input class="hour" name="businessHours[{{day}}][from]" disabled="true" id="businessHours[{{day}}][from]" value="" />
+                {% else %}
+                     <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
+                {% endif %}
+            </td>
+            <td  align="center">
+                {% if arrBusinessHours[day] is not defined %}
+                    <input class="hour" name="businessHours[{{day}}][to]" disabled="true" id="businessHours[{{day}}][to]" value="" />
+                {% else %}
+                     <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
+                {% endif %}
+            </td>
+            
+        </tr>
+    {% endfor %}
+</table>

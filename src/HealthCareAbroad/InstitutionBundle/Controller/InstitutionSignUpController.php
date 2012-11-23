@@ -73,6 +73,7 @@ class InstitutionSignUpController  extends Controller
 	 */
 	public function signUpAction(Request $request)
 	{
+		
 	    $institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createByType($institutionType);
@@ -120,7 +121,7 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                return $this->redirect($this->generateUrl('institution_accountProfile',array('institutionId' => $institution->getId())));
+                return $this->redirect($this->generateUrl('institution_accountProfile'));
 	        }
 	    }
 	    
