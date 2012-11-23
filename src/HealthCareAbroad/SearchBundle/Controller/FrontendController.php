@@ -15,19 +15,6 @@ use HealthCareAbroad\HelperBundle\Repository\CityRepository;
  */
 class FrontendController extends Controller
 {
-	protected $match;
-	/*
-	 * check if path is search and redirect to splash page
-	 */
-	function preExecute()
-	{
-		$this->request =  $this->container->get('request');
-		
-		$pathInfo = $this->request->server->get('PATH_INFO');
-		
-		$this->match =  preg_match("/search/i", $pathInfo);
-	}
-	
     public function showWidgetAction(Request $request)
     {
         $options['context'] = $request->get('context');
@@ -96,10 +83,6 @@ class FrontendController extends Controller
      */
     public function searchHomepageAction(Request $request)
     {
-    	//redirect to splash page
-    	if ($this->match) {
-    		return $this->redirect($this->generateUrl('main_home'));
-    	}
     	
         $searchTerms = $this->parseSearchTerms($request->get('treatment_id'), $request->get('destination_id'));
 
