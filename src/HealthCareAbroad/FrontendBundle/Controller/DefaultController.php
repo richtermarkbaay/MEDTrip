@@ -40,6 +40,11 @@ class DefaultController extends Controller
      */
     public function newAction()
     {
+    	if($this->getRequest()->attributes->get('_route_params')){
+    	
+    		return $this->redirect($this->generateUrl('main_homepage'));
+    	}
+    
     	//get IP Address
     	$ipAddress = $this->getRequest()->getClientIp();
     	
