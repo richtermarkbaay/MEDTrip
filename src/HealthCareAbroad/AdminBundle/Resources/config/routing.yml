@@ -137,5 +137,5 @@ admin_error403:
     defaults: { _controller: AdminBundle:Default:error403 }
 
 admin_homepage:
-    pattern:  /admin
+    pattern:  /admin/dashboard
     defaults: { _controller: AdminBundle:Default:index }
