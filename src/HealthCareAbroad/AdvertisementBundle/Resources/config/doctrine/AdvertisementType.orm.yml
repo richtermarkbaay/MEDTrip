@@ -1,0 +1,19 @@
+HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType:
+    type: entity
+    table: advertisement_types
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

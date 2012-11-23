@@ -1,18 +1,17 @@
 HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
     type: entity
     table: advertisements
-    repositoryClass: HealthCareAbroad\AdvertisementBundle\Repository\AdvertisementRepository
     fields:
         id:
             id: true
             type: bigint
-            unsigned: true
             nullable: false
             generator:
                 strategy: IDENTITY
         title:
             type: string
             length: 250
+            fixed: true
             nullable: false
         description:
             type: text
@@ -22,26 +21,14 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
             nullable: false
             column: date_created
         status:
-            type: integer
-            length: 1
+            type: boolean
             nullable: true
-    inheritanceType: SINGLE_TABLE
-    discriminatorColumn:
-        name: advertisement_type
-        type: integer
-        length: 10
-    discriminatorMap:
-        1: NewsTickerAdvertisement
-        2: FeaturedInstitutionAdvertisement
-        3: FeaturedListingAdvertisement
-    manyToOne:
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
     manyToMany:
         media:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             cascade: {  }
             mappedBy: null
+            inversedBy: advertisement
             joinTable:
                 name: advertisement_media
                 joinColumns:
@@ -53,4 +40,23 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
                         name: media_id
                         referencedColumnName: id
             orderBy: null
-    lifecycleCallbacks: {}
+    manyToOne:
+        advertisementType:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institution:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -1,0 +1,40 @@
+HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName:
+    type: entity
+    table: advertisement_property_names
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        label:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        dataClass:
+            type: string
+            length: 250
+            fixed: true
+            nullable: false
+            column: data_class
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        dataType:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\DataType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                data_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

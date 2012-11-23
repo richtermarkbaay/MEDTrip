@@ -1,0 +1,33 @@
+HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue:
+    type: entity
+    table: advertisement_property_values
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        value:
+            type: text
+            nullable: false
+    manyToOne:
+        advertisementPropertyName:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_property_name_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        advertisement:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\Advertisement
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

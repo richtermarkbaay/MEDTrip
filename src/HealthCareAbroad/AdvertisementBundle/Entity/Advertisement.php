@@ -3,7 +3,7 @@ namespace HealthCareAbroad\AdvertisementBundle\Entity;
 
 abstract class Advertisement
 {
-    
+   
     /**
      * @var bigint $id
      */
@@ -25,12 +25,17 @@ abstract class Advertisement
     private $dateCreated;
 
     /**
-     * @var integer $status
+     * @var boolean $status
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+     */
+    private $advertisementType;
+
+    /**
+     * @var HealthCareAbroad\AdvertisementBundle\Entity\Institution
      */
     private $institution;
 
@@ -123,7 +128,7 @@ abstract class Advertisement
     /**
      * Set status
      *
-     * @param integer $status
+     * @param boolean $status
      * @return Advertisement
      */
     public function setStatus($status)
@@ -135,7 +140,7 @@ abstract class Advertisement
     /**
      * Get status
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getStatus()
     {
@@ -143,12 +148,34 @@ abstract class Advertisement
     }
 
     /**
-     * Set institution
+     * Set advertisementType
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType
      * @return Advertisement
      */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    public function setAdvertisementType(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType = null)
+    {
+        $this->advertisementType = $advertisementType;
+        return $this;
+    }
+
+    /**
+     * Get advertisementType
+     *
+     * @return HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType 
+     */
+    public function getAdvertisementType()
+    {
+        return $this->advertisementType;
+    }
+
+    /**
+     * Set institution
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\Institution $institution
+     * @return Advertisement
+     */
+    public function setInstitution(\HealthCareAbroad\AdvertisementBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
         return $this;
@@ -157,7 +184,7 @@ abstract class Advertisement
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\AdvertisementBundle\Entity\Institution 
      */
     public function getInstitution()
     {
