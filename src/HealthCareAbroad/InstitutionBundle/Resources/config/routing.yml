@@ -29,11 +29,11 @@ institution_gallery:
     requirements:
         _method: GET
 
-institution_signUp:
-    pattern:  /sign-up
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
-    requirements:
-        _method: GET|POST
+#institution_signUp:
+#    pattern:  /sign-up
+#    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
+#    requirements:
+#        _method: GET|POST
        
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
