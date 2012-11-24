@@ -15,6 +15,8 @@ use HealthCareAbroad\MemcacheBundle\Key\MemcacheKeyCollection;
 class KeyFactory
 {
     
+    const MEMCACHE_GENERATED_KEY_STORAGE_PREFIX = 'hca_memcache_generated_keys';
+    
     /**
      * @var KeyCompiler
      */
@@ -92,10 +94,20 @@ class KeyFactory
             $memcacheNamespaceKeys[] = $memcacheNamespaceKeyString;
         }
         
-        $memcacheKeyString = $memcacheKeyString . '_'. \implode('_',$memcacheNamespaceKeys).'_'.time();
+        $memcacheKeyString = $memcacheKeyString . '_'. \implode('_',$memcacheNamespaceKeys);
         
-        // hash the string so we can have equal lengths of memcache keys
-        $memcacheKeyString = SecurityHelper::hash_sha256($memcacheKeyString);
+        // check if this key has been generated and saved to memcache before
+        $generatedKeyStorageKey = self::MEMCACHE_GENERATED_KEY_STORAGE_PREFIX.'_'.$memcacheKeyString;
+        $storedMemcachekey = $this->memcache->get($generatedKeyStorageKey);
+        if (!$storedMemcachekey) {
+            // no stored key, let's save this key
+            // hash the string so we can have equal lengths of memcache keys
+            $memcacheKeyString = SecurityHelper::hash_sha256($memcacheKeyString.time());
+            $this->memcache->set($generatedKeyStorageKey, $memcacheKeyString);
+        }
+        else {
+            $memcacheKeyString = $storedMemcachekey;
+        }
         
         return $memcacheKeyString;
     }

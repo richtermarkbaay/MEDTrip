@@ -4,12 +4,6 @@ namespace HealthCareAbroad\MemcacheBundle\Services;
 
 class MemcacheService
 {
-
-    /**
-     * Memcache key used for storing latests versions of a memcache key
-     */
-    const MEMCACHE_LATEST_VERSIONS_KEY = 'hca_key_latest_versions';
-    
     /**
      * @var boolean if setup for Memcache client is already done
      */
