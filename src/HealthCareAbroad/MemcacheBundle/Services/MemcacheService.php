@@ -28,6 +28,7 @@ class MemcacheService
     public function __construct($servers=array())
     {
         $this->hasMemcache = \class_exists('Memcache');
+        echo "constructed ".__CLASS__."<br />";
 
         if (!static::$setupMemcacheComplete && $this->hasMemcache) {
             
@@ -40,19 +41,23 @@ class MemcacheService
         
     }
     
-//     public function put($key, $value)
-//     {
-//         if (!$this->hasMemcache) {
-            
-//             return false;
-//         }
+    /**
+     * Delete an item from the memcache server
+     * 
+     * @param string $key
+     * @return
+     */
+    public function delete($key)
+    {
+        if (!$this->hasMemcache) {
+            return false;
+        }
         
-//         $this->memcache->put($key, $value);
-        
-//         return true;
-//     }
+        return $this->memcache->delete($key);
+    }
     
     /**
+     * Increment the value of the given key
      * 
      * @param string $key
      * @return boolean

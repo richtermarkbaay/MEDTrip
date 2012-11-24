@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\MemcacheBundle\Services\KeyFactory;
+
 use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
 
 use HealthCareAbroad\MemcacheBundle\Services\NamespacePrefixStorage;
@@ -47,11 +49,26 @@ class InstitutionFactory
      */
     private $memcache;
     
+    /**
+     * @var KeyFactory
+     */
+    private $memcacheKeyFactory;
+    
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:Institution');
         $this->discriminatorMapping = InstitutionTypes::getDiscriminatorMapping();
+    }
+    
+    public function setMemcacheKeyFactory(KeyFactory $factory)
+    {
+        $this->memcacheKeyFactory = $factory;
+    }
+    
+    public function setMemcache(MemcacheService $memcache)
+    {
+        $this->memcache = $memcache;
     }
     
     public function setMemcacheNamespacePrefixStorage(NamespacePrefixStorage $storage)
@@ -96,13 +113,12 @@ class InstitutionFactory
     public function findById($id)
     {
         // get namespace key for institution with id $id
-        $institutionNamespace = $this->memcacheNamespacePrefixStorage->getNamespaceByConfigKey('institution.base', $id);
-        $memcacheKey = $institutionNamespace.'_entity';
+        $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $id), array('institutionId' => $id));
         $result = $this->memcache->get($memcacheKey);
-        if (!$result){
+        if (!$result) {
             $result = $this->repository->find($id);
             
-            // add to memcache
+            // save this to memcache
             $this->memcache->set($memcacheKey, $result);
         }
         
@@ -120,13 +136,10 @@ class InstitutionFactory
         $em->persist($institution);
         $em->flush();
         
-        $this->memcacheNamespacePrefixStorage->invalidateNamespaceByConfigKey('institution.base', $institution->getId());
+        // get the memcache key for this institution
+        $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $institution->getId()), array('institutionId' => $institution->getId()));
         
-        /**
-        $institutionNamespace = $this->memcacheNamespacePrefixStorage->getNamespaceByConfigKey('institution.base', $institution->getId());
-        $memcacheKey = $institutionNamespace.'_entity';
-        $this->memcache->set($memcacheKey, $institution);
-        */
-        
+        // delete this from memcache
+        $this->memcache->delete($memcacheKey);
     }
 }

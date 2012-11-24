@@ -2,9 +2,13 @@ services:
     services.memcache:
         class: HealthCareAbroad\MemcacheBundle\Services\MemcacheService
         arguments: [%memcached.servers%]
-        
-    services.memcache.namespace_prefix_storage:
-        class: HealthCareAbroad\MemcacheBundle\Services\NamespacePrefixStorage
+    
+    services.memcache.keyCompiler:
+        class: HealthCareAbroad\MemcacheBundle\Services\KeyCompiler
+        arguments: [%memcache_namespaces%, %memcache_keys%]
+            
+    services.memcache.keyFactory:
+        class: HealthCareAbroad\MemcacheBundle\Services\KeyFactory
         calls:
-            - [setMemcacheService, [@services.memcache]]
-            - [setBasePrefixes, [%memcache_namespaces%]]
+            - [setCompiler, [@services.memcache.keyCompiler]]
+            - [setMemcache, [@services.memcache]]

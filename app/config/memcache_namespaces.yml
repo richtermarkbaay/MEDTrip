@@ -1,5 +1,9 @@
 parameters:
     memcache_namespaces:
-        #
-        # namespaces in InstitutionBundle
-        institution.base: "institution"
+        #-- start InstitutionBundle
+        #-
+        
+        # namespace in context of a specific institution
+        institution.single_entity.base: 
+            pattern: institution_{institutionId}
+            separator: ~

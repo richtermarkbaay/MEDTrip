@@ -1,0 +1,9 @@
+parameters:
+    memcache_keys:
+        #--- InstitutionBundle
+        institution_entity:
+            pattern: institution_entity_{id}_version
+            namespaces: [institution.single_entity.base]
+            
+            
+                    

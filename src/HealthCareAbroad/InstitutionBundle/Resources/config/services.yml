@@ -13,7 +13,8 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
         arguments: [@doctrine]
         calls:
-            - [setMemcacheNamespacePrefixStorage, [@services.memcache.namespace_prefix_storage]]
+            - [setMemcache, [@services.memcache]]
+            - [setMemcacheKeyFactory, [@services.memcache.keyFactory]]
 
     services.institution_specialization:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionSpecializationService
