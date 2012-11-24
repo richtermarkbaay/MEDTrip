@@ -1,4 +1,6 @@
 <?php
+use Guzzle\Http\Client;
+
 use HealthCareAbroad\HelperBundle\Services\AlertService;
 
 use HealthCareAbroad\HelperBundle\Classes\CouchDatabase;
@@ -143,26 +145,18 @@ class HCA_DatabaseManager
     
     public function restoreAlertCouchDbState()
     {
-        $alertCouchDb = HCA_ServiceManager::getInstance()->getContainer()->getParameter('alert_db');
+        $baseUrl = HCA_ServiceManager::getInstance()->getContainer()->getParameter('couchDbBaseUrl');
+        $couchDbAlert = HCA_ServiceManager::getInstance()->getContainer()->getParameter('couchDbAlert');
 
-        if ($alertCouchDb['database'] != 'fixtures_alerts'){
-            throw new \Exception("You must use `fixtures_alerts` couch database for testing instead of `{$alertCouchDb['database']}`");
+        if ($couchDbAlert != 'fixtures_alerts'){
+            throw new \Exception("You must use `fixtures_alerts` couch database for testing instead of `$couchDbAlert`");
         }
 
-        $couchDb = new CouchDatabase($alertCouchDb['host'], $alertCouchDb['port'], $alertCouchDb['database']);
-        $result = json_decode($couchDb->getView(AlertService::ALL_ALERT_VIEW_URI), true);
-        
-        if($result['total_rows']) {
-            $data = array();
-            $alerts = $result['rows'];
-            for($i=0; $i < count($alerts); $i++) {
-                $data[$i] = $alerts[$i]['value'];
-                $data[$i]['_deleted'] = true;
-
-            }
-
-            // DELETE Alert Documents
-            $couchDb->multipleUpdate($data);
+        try {
+            $client = new Client($baseUrl);
+            $response = $client->delete($couchDbAlert)->send();            
+        } catch(\Exception $e) {
+            //echo $e->getMessage();
         }
 
         return $this;

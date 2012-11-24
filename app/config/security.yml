@@ -55,7 +55,7 @@ security:
                 login_path: /admin/login
                 check_path: /admin/login-check
                 always_use_default_target_path: false
-                default_target_path: /admin
+                default_target_path: /admin/dashboard
                 remember_me: false
                 failure_path: /admin/login
 

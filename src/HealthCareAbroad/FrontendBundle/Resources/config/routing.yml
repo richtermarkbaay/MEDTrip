@@ -1,14 +1,9 @@
-main_homepage:
-    pattern:  /
-    #defaults: { _controller: FrontendBundle:Default:index }
-    defaults: { _controller: FrontendBundle:Default:index}
-    
 main_homepage_index_html:
     pattern:  /index.html
     defaults: { _controller: FrontendBundle:Default:index}
 
 newsletter_new:
-    pattern:  /newsletter
+    pattern:  /
     defaults: { _controller: FrontendBundle:Default:new}
     requirements:
         _method: GET|POST
@@ -53,3 +48,13 @@ page_institution_profile:
     defaults: { _controller: FrontendBundle:Institution:profile }
     requirements:    
         _method:  GET
+
+splash_page:
+    pattern:  /{url}
+    defaults: { _controller: FrontendBundle:Default:new, url: /}  
+    requirements:
+         url: ".*"
+
+main_homepage:
+    pattern:  /
+    defaults: { _controller: FrontendBundle:Default:index}

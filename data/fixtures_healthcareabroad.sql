@@ -477,6 +477,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `name` varchar(250) NOT NULL,
   `description` text NOT NULL,
   `logo` varchar(100) NOT NULL,
+  `media_id` bigint(20) unsigned DEFAULT NULL COMMENT 'This serves as the logo.',
   `contact_email` varchar(100) NOT NULL,
   `contact_number` varchar(150) NOT NULL,
   `websites` varchar(200) NOT NULL,
@@ -1311,7 +1312,7 @@ ALTER TABLE `cities`
 ALTER TABLE `doctor_specializations`
   ADD CONSTRAINT `doctor_specializations_ibfk_2` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `doctor_specializations_ibfk_1` FOREIGN KEY (`doctor_id`) REFERENCES `doctors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
+
 --
 -- Constraints for table `frontend_route_variables`
 --
@@ -1330,7 +1331,7 @@ ALTER TABLE `inquiries`
 ALTER TABLE `institutions`
   ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE;
-
+  ADD CONSTRAINT `institutions_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_contact_details`
@@ -1430,7 +1431,7 @@ ALTER TABLE `sub_specializations`
 --
 ALTER TABLE `treatments`
   ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
-  
+
 --
 -- Constraints for table `treatment_sub_specializations`
 --

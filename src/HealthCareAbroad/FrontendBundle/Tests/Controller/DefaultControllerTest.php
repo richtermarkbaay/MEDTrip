@@ -8,7 +8,16 @@ use \HCA_DatabaseManager;
 
 class DefaultControllerTest extends FrontendBundleWebTestCase
 {
-   
+	
+	public function testIndex()
+	{
+		$client = static::createClient();
+		$crawler = $client->request('GET', '/');
+	
+		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("HealthCareAbroad.com")')->count(), '"HealthCareAbroad.com" string not found!');
+	}
+	
     public function testErrorReport()
     {
     	$client = static::createClient();
@@ -34,4 +43,5 @@ class DefaultControllerTest extends FrontendBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
          
     }
+    
 }

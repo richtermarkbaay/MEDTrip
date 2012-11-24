@@ -4,6 +4,7 @@ namespace HealthCareAbroad\MediaBundle\Services;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 use HealthCareAbroad\MediaBundle\Entity\Media;
+use HealthCareAbroad\MediaBundle\MediaContext;
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
 use HealthCareAbroad\MediaBundle\Resizer\Resizer;
 use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
@@ -43,6 +44,60 @@ class MediaService
     public function setResizer(Resizer $resizer)
     {
         $this->resizer = $resizer;
+    }
+
+    public function attachMedia($context)
+    {
+        $processedContext = $this->processContext($context);
+
+        $media = $processedContext['media'];
+
+        try {
+            $entity = $processedContext['entity'];
+            $entity->setMedia($processedContext['media']);
+
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush($entity);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        $institution = $processedContext['institution'];
+
+        //TODO: abstract this out
+        return '/media/'.$institution->getId().'/thumbnail-'.$media->getName();
+    }
+
+    private function processContext($context)
+    {
+        $processedContext = array();
+
+        switch ($context['context']) {
+            case MediaContext::INSTITUTION_LOGO:
+                $institution = $this->entityManager->getRepository('InstitutionBundle:Institution')->find($context['id']);
+
+                $processedContext['entity'] = $institution;
+                $processedContext['institution'] = $institution;
+
+                break;
+        }
+
+        $processedContext['media'] = $this->entityManager->getRepository('MediaBundle:Media')->find($context['mediaId']);
+
+        return $processedContext;
+    }
+
+    private function getEntityFromContext($context)
+    {
+        $entity = null;
+
+        switch ($context['context']) {
+            case MediaContext::INSTITUTION_LOGO:
+                $entity = $this->entityManager->getRepository('InstitutionBundle:Institution')->find($context['id']);
+                break;
+        }
+
+        return $entity;
     }
 
     public function addMedia(UploadedFile $file, $institutionId)

@@ -120,6 +120,11 @@ abstract class Institution
      */
     private $gallery;
 
+    /**
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
+     */
+    private $media;
+
     public function __construct()
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
@@ -625,6 +630,16 @@ abstract class Institution
     }
 
     /**
+     * Get gallery
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Gallery
+     */
+    public function getGallery()
+    {
+        return $this->gallery;
+    }
+
+    /**
      * Set gallery
      *
      * @param HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
@@ -637,12 +652,25 @@ abstract class Institution
     }
 
     /**
-     * Get gallery
+     * Get media
      *
-     * @return HealthCareAbroad\MediaBundle\Entity\Gallery
+     * @return HealthCareAbroad\MediaBundle\Entity\Media
      */
-    public function getGallery()
+    public function getMedia()
     {
-        return $this->gallery;
+        return $this->media;
     }
+
+    /**
+     * Set media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return Institution
+     */
+    public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media=null)
+    {
+        $this->media = $media;
+        return $this;
+    }
+
 }

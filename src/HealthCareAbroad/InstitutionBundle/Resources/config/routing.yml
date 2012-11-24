@@ -29,11 +29,11 @@ institution_gallery:
     requirements:
         _method: GET
 
-institution_signUp:
-    pattern:  /sign-up
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
-    requirements:
-        _method: GET|POST
+#institution_signUp:
+#    pattern:  /sign-up
+#    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
+#    requirements:
+#        _method: GET|POST
        
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
@@ -79,7 +79,7 @@ institution_invitation:
        _method:  GET|POST
 
 InstitutionBundle_confirmed_token:
-    pattern:  /confirm/t={token}
+    pattern:  /confirm/{token}
     defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
     requirements:
        _method: GET
@@ -91,8 +91,7 @@ institution_exception_report_create:
         _method:  GET|POST
         
 institution_accountProfile:
-    pattern:  /account/{institutionId}
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:account, institutionId: ~ }
+    pattern:  /institution/account
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
     requirements:
         _method:  GET|POST
-        institutionId:  \d+

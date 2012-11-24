@@ -24,14 +24,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-
-    public function indexAction()
+	
+    public function indexAction(Request $request)
     {
-    	//$request = $this->container->get('request');
-    	
-    	// this is the matched route
-    	//$pathUrl = $request->getPathInfo();
-    	
     	$form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
   
     		return $this->render('::splash.frontend.html.twig', array(
@@ -45,6 +40,11 @@ class DefaultController extends Controller
      */
     public function newAction()
     {
+    	if($this->getRequest()->attributes->get('_route_params')){
+    	
+    		return $this->redirect($this->generateUrl('main_homepage'));
+    	}
+    
     	//get IP Address
     	$ipAddress = $this->getRequest()->getClientIp();
     	

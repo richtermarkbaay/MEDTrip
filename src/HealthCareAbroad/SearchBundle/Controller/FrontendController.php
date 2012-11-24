@@ -83,6 +83,7 @@ class FrontendController extends Controller
      */
     public function searchHomepageAction(Request $request)
     {
+    	
         $searchTerms = $this->parseSearchTerms($request->get('treatment_id'), $request->get('destination_id'));
 
         $entityManager = $this->getDoctrine()->getManager();
