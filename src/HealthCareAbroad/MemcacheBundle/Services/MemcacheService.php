@@ -28,7 +28,6 @@ class MemcacheService
     public function __construct($servers=array())
     {
         $this->hasMemcache = \class_exists('Memcache');
-        echo "constructed ".__CLASS__."<br />";
 
         if (!static::$setupMemcacheComplete && $this->hasMemcache) {
             
