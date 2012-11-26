@@ -19,4 +19,8 @@ HealthCareAbroad\FrontendBundle\Entity\NewsletterSubscriber:
             type: string
             length: 20
             nullable: false
+        date_created:
+            type: datetime
+            nullable: false
+            column: date_created
     lifecycleCallbacks: {  }

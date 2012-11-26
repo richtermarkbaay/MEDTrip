@@ -24,6 +24,10 @@ class NewsletterSubscriber
      */
     private $ip_address;
 
+    /**
+     * @var string $ip_address
+     */
+    private $date_created;
 
     /**
      * Get id
@@ -77,5 +81,27 @@ class NewsletterSubscriber
     public function getIpAddress()
     {
         return $this->ip_address;
+    }
+    
+    /**
+     * Set date_created
+     *
+     * @param string $dateCreated
+     * @return NewsletterSubscriber
+     */
+    public function setDateCreated($dateCreated)
+    {
+    	$this->dateCreated = $dateCreated;
+    	return $this;
+    }
+    
+    /**
+     * Get dateCreated
+     *
+     * @return string
+     */
+    public function getDateCreated()
+    {
+    	return $this->dateCreated;
     }
 }
