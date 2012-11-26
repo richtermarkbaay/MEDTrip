@@ -13,7 +13,7 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue:
             nullable: false
     manyToOne:
         advertisementPropertyName:
-            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName
             cascade: {  }
             mappedBy: null
             inversedBy: null
