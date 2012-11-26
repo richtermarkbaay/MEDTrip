@@ -16,7 +16,7 @@ final class ListFilterFactory
      * @param string $routeName
      * @param Doctrine $doctrine
      * @throws Exception
-     * @return Object ListFilter type
+     * @return ListFilter
      */
     public static function create($routeName = '', $doctrine)
     {

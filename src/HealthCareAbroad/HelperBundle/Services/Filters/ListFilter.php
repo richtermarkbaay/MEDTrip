@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\HelperBundle\Exception\ListFilterException;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\ORM\QueryBuilder;
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
@@ -38,6 +42,16 @@ abstract class ListFilter
     protected $pager;
 
     protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
+    
+    /**
+     * @var array list of services that this filter depends on
+     */
+    protected $serviceDependencies = array();
+    
+    /**
+     * @var array of injected service classes
+     */
+    protected $injectedDependencies = array();
 
     /**
      * @desc Default options value for Status Filter Option
@@ -54,6 +68,25 @@ abstract class ListFilter
     abstract function setFilterOptions();
 
     abstract function buildQueryBuilder();
+    
+    final public function getServiceDependencies()
+    {
+        return $this->serviceDependencies;
+    }
+    
+    final public function injectDependency($serviceId, $service)
+    {
+        $this->injectedDependencies[$serviceId] = $service;
+    }
+    
+    final public function getInjectedDependcy($serviceId)
+    {
+        if (!\array_key_exists($serviceId, $this->injectedDependencies)){
+            throw ListFilterException::unregisteredServiceDependency($serviceId);
+        }
+        
+        return $this->injectedDependencies[$serviceId];
+    }
 
     /**
      * @desc Prepare the ListFilter object
