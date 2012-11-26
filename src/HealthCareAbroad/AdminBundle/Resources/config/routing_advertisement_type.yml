@@ -1,0 +1,38 @@
+admin_advertisementType_index:
+    pattern:  /admin/advertisement-types
+    defaults: { _controller: AdminBundle:AdvertisementType:index }
+    requirements:
+        _method:  GET
+
+admin_advertisementType_add:
+    pattern:  /admin/advertisement-type/add
+    defaults: { _controller: AdminBundle:AdvertisementType:add }
+    requirements:
+        _method: GET
+
+admin_advertisementType_create:
+    pattern:  /admin/advertisement-type/add
+    defaults: { _controller: AdminBundle:AdvertisementType:save }
+    requirements:
+        _method: POST
+
+admin_advertisementType_edit:
+    pattern:  /admin/advertisement-type/{id}/edit
+    defaults: { _controller: AdminBundle:AdvertisementType:edit }
+    requirements:
+        _method: GET
+        id: \d+
+
+admin_advertisementType_update:
+    pattern:  /admin/advertisement-type/{id}/edit
+    defaults: { _controller: AdminBundle:AdvertisementType:save }
+    requirements:
+        _method: POST
+        id: \d+
+
+admin_advertisementType_updateStatus:
+    pattern:  /admin/advertisement-type/update/status/{id}
+    defaults: { _controller: AdminBundle:AdvertisementType:updateStatus }
+    requirements:
+        _method: POST
+        id: \d+

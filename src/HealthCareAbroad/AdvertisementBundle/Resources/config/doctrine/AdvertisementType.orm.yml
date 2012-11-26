@@ -16,4 +16,22 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType:
         status:
             type: smallint
             nullable: false
+
+    manyToMany:
+        advertisementTypeConfigurations:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName
+            cascade: {  }
+            mappedBy: null
+            joinTable:
+                name: advertisement_type_configurations
+                joinColumns:
+                    -
+                        name: advertisement_type_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: advertisement_property_name_id
+                        referencedColumnName: id
+            orderBy: null
+
     lifecycleCallbacks: {  }

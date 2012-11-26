@@ -51,7 +51,7 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
                     referencedColumnName: id
             orphanRemoval: false
         institution:
-            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\Institution
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
             cascade: {  }
             mappedBy: null
             inversedBy: null

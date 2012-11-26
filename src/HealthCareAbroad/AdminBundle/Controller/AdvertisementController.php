@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
@@ -57,27 +59,58 @@ class AdvertisementController extends Controller
      */
     public function indexAction(Request $request)
     {   
-        $advertisementTypeId = $request->get('advertisementTypes', 0);
+        $advertisementTypeId = $request->get('advertisementType', 0);
 
         if ($advertisementTypeId == ListFilter::FILTER_KEY_ALL) {
-
         	$advertisementTypeId = 0;
         }
 
-        $adTypes = AdvertisementTypes::getList();
-        $discriminatorMapping = array_flip(AdvertisementTypes::getDiscriminatorMapping());
-        
         $params = array(
             'advertisementTypeId' => $advertisementTypeId,
             'advertisements' => $this->filteredResult,
-            'adTypes' => $adTypes,
-            'discriminatorMapping' => $discriminatorMapping,
             'pager' => $this->pager);
 
         return $this->render('AdminBundle:Advertisement:index.html.twig', $params);
         
     }
+
+    /**
+     * This is the first step when adding an advertisement
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @param Request $request
+     */
+    public function addAction(Request $request)
+    {
+        $advertisement = new Advertisement();
+        $advertisementTypeId = $request->get('advertisementType', 1);
+        $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementTypeId);
+        $advertisement->setAdvertisementType($advertisementType);
+
+        $form = $this->createForm(new AdvertisementFormType(), $advertisement);
     
+        if ($request->isMethod('POST')) {
+    
+            $form->bind($request);
+            //var_dump($form->getData());exit;
+            // set session data for this draft advertisement
+            $data = array(
+                            AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE => $form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData(),
+                            AdvertisementFormType::FIELD_INSTITUTION => $form->get(AdvertisementFormType::FIELD_INSTITUTION)->getData()->getId()
+            );
+            $draftAdvertisements = $request->getSession()->get('draftAdvertisements', array());
+            $uid = \uniqid();
+            $draftAdvertisements[$uid] = $data;
+            // update draftAdvertisements session data
+            $request->getSession()->set('draftAdvertisements', $draftAdvertisements);
+    
+            return $this->redirect($this->generateUrl('admin_advertisement_addSpecificDetail', array('uid'=>$uid)));
+        }
+    
+        return $this->render('AdminBundle:Advertisement:add.html.twig', array(
+                        'form' => $form->createView()
+        ));
+    }
+
     /**
      * This is the first step when adding an advertisement
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
@@ -90,7 +123,7 @@ class AdvertisementController extends Controller
                 AdvertisementFormType::OPTION_IS_NEW => true, 
                 AdvertisementFormType::OPTION_FORCED_HIDDEN_FIELDS => array(AdvertisementFormType::FIELD_OBJECT, AdvertisementFormType::FIELD_TITLE, AdvertisementFormType::FIELD_DESCRIPTION
         )));
-        
+
         if ($request->isMethod('POST')) {
             
             $form->bind($request);
