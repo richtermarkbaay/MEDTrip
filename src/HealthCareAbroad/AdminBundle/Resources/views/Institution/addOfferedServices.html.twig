@@ -1,0 +1,12 @@
+ {% block sectionContent %}
+		  {% include '::notice.admin.html.twig' %}
+					<form novalidate="novalidate" action="{{ path('admin_addInstitutionOfferedServices', {institutionId: institution.id }) }}" {{ form_enctype(form) }}  method="post" class="basic-form">
+		
+             			{{ form_row( form.institutionOfferedServices ) }}
+				
+						{{ form_rest(form) }}
+		
+					    <input type="submit" class="btn-large btn-primary" name="submit"/>
+					</form>
+				
+		{% endblock %}

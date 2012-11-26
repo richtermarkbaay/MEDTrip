@@ -26,3 +26,4 @@ parameters:
         user_role: {singular: "user role", plural: "user roles"}
         admin_setting: {singular: "admin setting", plural: "admin settings"}
         user_permission: {singular: "user permission", plural: "user permissions"}
+        institution_detail: {singular: "instiution detail", plural: "instiution details"}

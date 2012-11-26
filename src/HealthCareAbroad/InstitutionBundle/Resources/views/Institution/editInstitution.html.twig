@@ -24,7 +24,6 @@
 		                    
 		                        {{ form_row(form.name) }}
 		                        {{ form_row(form.description) }}
-		                        {{ form_row(form.institutionOfferedServices) }}
 		                        {{ form_row(form.country) }}
 		                        
 		                        {{ form_row(form.city)}}
@@ -61,23 +60,6 @@
 		                            </div>
 		                        </div>
 		                        
-		                        <div>
-		                            <label>Languages Spoken</label>
-		                            <input type="text" value="" id="languageButton">             			
-		             			</div>
-		             			
-		             			<div>             			
-		             				<div id="tags">
-		             				{% if institutionLanguage %}
-		    	             			{% for language in institutionLanguage %}
-		    	                			<a href="#" id="language{{ language.id }}" class="click" > {{ language.name }}</a>
-		                    			{% endfor %}
-			                		{% endif %}
-		                			</div>
-		                		</div>
-		
-		             			{{ form_row( form.institutionLanguagesSpoken ) }}
-		
 		                        {{ form_rest(form) }}
 		
 								<input type="reset" value="Reset" class="form-reset"  />

@@ -17,7 +17,7 @@ admin_institution_add_details:
 
 admin_institution_edit:
     pattern:  /admin/institution/{institutionId}/edit
-    defaults: { _controller: AdminBundle:Institution:addDetails}
+    defaults: { _controller: AdminBundle:Institution:editDetails}
     requirements:
          institutionId: \d+
          _method: GET|POST            
@@ -148,3 +148,17 @@ admin_loadMedicalProcedures:
     requirements:
          institution_id: \d+
          procedure_type_id: \d+
+
+admin_addInstitutionLanguages:
+    pattern:  /admin/institution/{institutionId}/add-languages
+    defaults: { _controller: AdminBundle:Institution:addInstitutionLanguagesSpoken}
+    requirements:
+         institutionId: \d+
+         _method: GET|POST   
+
+admin_addInstitutionOfferedServices:
+    pattern:  /admin/institution/{institutionId}/add-offered-services
+    defaults: { _controller: AdminBundle:Institution:addInstitutionOfferedServices}
+    requirements:
+         institutionId: \d+
+         _method: GET|POST  

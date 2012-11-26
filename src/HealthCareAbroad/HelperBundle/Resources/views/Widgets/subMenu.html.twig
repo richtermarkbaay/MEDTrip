@@ -2,7 +2,14 @@
     <ul class="nav nav-tabs nav-stacked">
         {% for link in links %}
         <li class="{{ app.request.requestUri == link.url or (selectedSubMenu is defined and selectedSubMenu == link.name)  ? 'active' : '' }}">
-            <a href="{{ link.url }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
+         	 {% if link.class is not defined  %}
+			 	 <a href="{{ link.url }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
+			 {% endif %}
+			        
+			 {% if link.class is defined %}
+              	 <a href="{{ link.url }}" class="{{ link.class }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
+             {% endif %}
+           
         </li>
         {% endfor %}
     </ul>

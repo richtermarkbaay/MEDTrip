@@ -1,0 +1,8 @@
+{% include 'HelperBundle:Widgets:subMenu.html.twig'
+    with {
+        links: [
+            {name: 'languages', url: path('admin_addInstitutionLanguages', {'institutionId': institution.id}), label: 'Add Language', icon: 'icon-list', class: 'addLanguageButton'},
+            {name: 'offered_services', url: path('admin_addInstitutionOfferedServices', {'institutionId': institution.id}), label: 'Add Offered Services', icon: 'icon-list' , class: 'addofferedServices'},
+        ]
+    }
+%}

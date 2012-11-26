@@ -30,7 +30,9 @@ var LanguageAuto = {
 	
 	log : function( message , id) 
 	{
-		$( "<a/ href='#' id='language"+id+"' class='click' onclick=''>" ).bind('click', LanguageAuto.clickRemove).text( message ).prependTo( "#tags" );
+//		$( "<a/ href='#' id='language"+id+"' class='click btn btn-mini' onclick=''>" ).bind('click btn btn-mini', LanguageAuto.clickRemove).text( message ).prependTo( "#tags" );
+		$("<a href='#' id='language"+id+"' class='click btn btn-mini' onclick=''><i class='icon-trash'></i> "+message+" </a> ").bind('click btn btn-mini', LanguageAuto.clickRemove).text( message ).prependTo( "#tags" );
+		$("<i class='icon-trash'></i>").prependTo( "#language"+id+"" );
 		$( "#tags" ).scrollTop( 0 );
 	},	
 	

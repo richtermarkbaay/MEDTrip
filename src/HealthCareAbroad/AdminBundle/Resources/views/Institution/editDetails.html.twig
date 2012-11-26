@@ -1,0 +1,157 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_edit'%}
+{% set insitutionDetailLabels = getClassLabel('institution_detail') %}
+{% block content %}
+     <div class="span3">
+    {% include 'AdminBundle:Widgets:institution.subMenu.html.twig'%}
+	</div>
+    <div class="span9"> 
+    	 {% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ insitutionDetailLabels.singular | title 
+            }
+        %}
+    	
+        	{% block sectionContent %}
+			      {% include '::notice.admin.html.twig' %}
+				<h5>{{ institution.typeLabel() }}</h5>
+				
+					 <form novalidate="novalidate" action="{{ path('admin_institution_edit', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
+						{{ form_errors(form) }}
+								{{ form_row( form.name ) }}
+								{{ form_row( form.description ) }}
+				  				{{ form_row( form.contactEmail ) }}
+			  		   		    {{ form_row( form.country ) }}
+				                {{ form_row( form.city ) }}
+				  		   		{{ form_row( form.address1 ) }}   
+				  		   		{{ form_row( form.state ) }}               
+				  			    {{ form_row( form.zipCode ) }}
+				  		
+				  		       {% set arrContactNumber = json_decode(institution.contactNumber) %}
+				  		          {% if not arrContactNumber|length %}
+	                                {% set arrContactNumber = [{"area": "","number" : "", "type": ""}] %}
+	                            {% endif %}
+				  		      
+                                {% for i, contact in arrContactNumber %}
+									{% if i == 0 %}
+						 				<label for="institution name">Institution Phone Number</label>
+										<div class="input-prepend">
+											<div id="phone">
+												<input type="text" maxlength="3" class="span1" name="contactNumber[0][area]" value="{{contact.area}}">
+												<input type="text" maxlength="6" name="contactNumber[0][number]" value="{{contact.number}}">
+												<input type="hidden" name="contactNumber[0][type]" value="phone">
+											</div>
+										</div>
+										
+									{% else %}
+										<label for="institution name">Institution Fax Number</label>
+										<div class="input-prepend">
+											<div id="fax">
+												<input type="text" maxlength="3" class="span1" name="contactNumber[1][area]" value="{{contact.area}}">
+												<input type="text" maxlength="6" name="contactNumber[1][number]" value="{{contact.number}}">
+												<input type="hidden" name="contactNumber[1][type]" value="fax">
+											</div>
+										</div>
+									{% endif %}
+						 		{% endfor %}
+						 		
+ 				  		        {% set arrWebsite = json_decode(institution.websites) %}
+				  		          {% if not arrWebsite|length %}
+	                                {% set arrWebsite = [{"url": "","type" : ""}] %}
+	                            {% endif %}
+				  		      
+                                {% for i, website in arrWebsite %}
+									{% if i == 0 %}
+						 				<label for="institution name">Institution Site</label>
+										<div class="input-prepend">
+											<div id="institutionSite">
+												<input type="text" name="websites[0][url]" value="{{website.url}}">					
+												<input type="hidden" name="websites[0][type]" value="institutionSite">
+											</div>
+										</div>
+									{% endif %}
+									{% if i == 1 %}
+										<label for="institution Facebook">Facebook</label>
+										<div class="input-prepend">
+											<div id="facebook">
+												<input type="text" name="websites[1][url]" value="{{website.url}}">						
+												<input type="hidden" name="websites[1][type]" value="facebook">
+											</div>
+										</div>
+									{% endif %}
+									{% if i == 2 %}
+										<label for="institution Twitter">Twitter</label>
+										<div class="input-prepend">
+											<div id="twitter">
+												<input type="text" name="websites[2][url]" value="{{website.url}}">						
+												<input type="hidden" name="websites[2][type]" value="twitter">
+											</div>
+										</div>
+									{% endif %}
+						 		{% endfor %}
+									
+				  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
+				  		 			{{ form_rest(form) }}
+				  		</form>	
+		  		 {% endblock %}
+	  		   {% endembed %}
+		</div>
+  {% endblock %}
+  {% block inlineJavascriptCode %}
+    <script type="text/javascript">
+        $(function(){
+        	$('#dialog-container').dialog({
+                position: ['center', 100],
+                autoOpen: false,
+                width: 750,
+                modal: true,
+                resizable: false,
+                close: function() {}
+            });
+
+            $('a.addLanguageButton').click(function(){
+            	var elem = $(this);
+				var _url = elem.attr('href');
+
+				$("#dialog-container").empty();
+				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+                $('#dialog-container').dialog({
+                	title: 'Add Languages',
+                    open: function() {
+                        $.ajax(_url)
+                            .done(function (data) {                        
+                            	$('#dialog-container').html(data);
+                            }
+                        );
+                    },
+                });
+
+            	$('#dialog-container').dialog("open");
+
+                 	return false;           
+            });
+
+            $('a.addofferedServices').click(function(){
+            	var elem = $(this);
+				var _url = elem.attr('href');
+
+				$("#dialog-container").empty();
+				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+                $('#dialog-container').dialog({
+                	title: 'Add Offered Services',
+                    open: function() {
+                        $.ajax(_url)
+                            .done(function (data) {                        
+                            	$('#dialog-container').html(data);
+                            }
+                        );
+                    },
+                });
+
+            	$('#dialog-container').dialog("open");
+
+                 	return false;           
+            });
+        });
+    </script>
+{% endblock %}

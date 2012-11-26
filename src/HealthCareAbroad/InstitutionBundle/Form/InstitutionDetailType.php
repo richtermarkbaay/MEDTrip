@@ -18,8 +18,6 @@ use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use HealthCareAbroad\InstitutionBundle\Form\ListType\LanguageListType;
-use HealthCareAbroad\InstitutionBundle\Form\Transformer\LanguageTransformer;
 use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
 
 class InstitutionDetailType extends AbstractType
@@ -43,21 +41,22 @@ class InstitutionDetailType extends AbstractType
     	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
     	$builder->add('city', new CityListType($countryId));
       	$builder->add('zipCode', 'integer', array('label' => 'Zip Code'));
-    	$builder->add('state', 'text');
-    	$builder->add('contactEmail', 'text', array('label' => 'Contact Email'));
+    	$builder->add('state', 'text', array('constraints' => new NotBlank()));
+    	$builder->add('contactEmail', 'text', array('label' => 'Contact Email', 'constraints' => new NotBlank()));
     	$builder->add('address1', 'text', array('label' => 'Address'));
    
 		if ($options['profile_type']) {
     		
 			$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
-			$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
-			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
+// 			$builder->add('institutionLanguagesSpoken','language_autocomplete', array('constraints' => new NotBlank(),'label' => ' '));
+// 			$builder->add('institutionOfferedServices', new InstitutionOfferedServiceListType(), array('expanded' => true,'multiple' => true));
 			$builder->add('description', 'textarea');
 			$builder->add('contactNumber', 'hidden');
+			$builder->add('websites', 'hidden');
 		}
 		if ($options['hidden_field']) {
 			
-			$builder->add('description', 'textarea');
+			$builder->add('description', 'textarea', array('constraints' => new NotBlank()));
 			 
 		}
     }

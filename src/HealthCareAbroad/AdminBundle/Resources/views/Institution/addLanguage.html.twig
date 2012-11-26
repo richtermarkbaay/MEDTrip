@@ -1,0 +1,49 @@
+ {% block sectionContent %}
+		  {% include '::notice.admin.html.twig' %}
+					<form novalidate="novalidate" action="{{ path('admin_addInstitutionLanguages', {institutionId: institution.id }) }}" {{ form_enctype(form) }}  method="post" class="basic-form">
+		
+				       <div>
+                            <label>Languages Spoken</label>
+                            <input type="text" value="" id="languageButton">             			
+             			</div>
+             			
+             			<div>             			
+             				<div id="tags">
+             				{% if institutionLanguage %}
+    	             			{% for language in institutionLanguage %}
+    	                			<a href="#" id="language{{ language.id }}" class="click btn btn-mini" > <i class="icon-trash"></i>{{ language.name }}</a>
+                    			{% endfor %}
+	                		{% endif %}
+                			</div>
+                		</div>
+		
+             			{{ form_row( form.institutionLanguagesSpoken ) }}
+				
+						{{ form_rest(form) }}
+					    <input type="submit" class="btn-large btn-primary" name="submit"/>
+					</form>
+				
+		{% endblock %}
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/helper/js/Autocomplete.js') }}"></script>
+	<script type="text/javascript">
+
+		$(function() {
+			var availableLang = $.parseJSON('{{ languagesJSON | raw}}');
+			var inputHiddenField = "#admin_institutionLanguagesSpoken";
+			var inputAutoLanguage = "#languageButton";
+			var selectedTags = [];
+	
+        	var params = {
+                	availableTags: availableLang,
+                	selectedTags : selectedTags,
+                	inputHiddenField :inputHiddenField,
+                	inputAutoLanguage :inputAutoLanguage
+        		};
+        	LanguageAuto.init(params);
+
+		});
+
+		</script>	
+{% endblock %}
