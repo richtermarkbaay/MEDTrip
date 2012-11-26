@@ -81,7 +81,7 @@ class TreatmentListFilter extends ListFilter
             $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
         }
         
-        if ( 0 != $this->queryParams['subSpecialization']) {
+        if (\array_key_exists('subSpecialization', $this->queryParams) &&  0 != $this->queryParams['subSpecialization']) {
             $this->queryBuilder->innerJoin('a.subSpecializations', 'b', Join::WITH, 'b.id = :subSpecialization')
                 ->setParameter('subSpecialization', $this->queryParams['subSpecialization']);
         }
