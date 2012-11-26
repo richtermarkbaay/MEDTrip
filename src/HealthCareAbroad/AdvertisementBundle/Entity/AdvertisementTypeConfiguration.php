@@ -15,11 +15,6 @@ class AdvertisementTypeConfiguration
     private $id;
 
     /**
-     * @var string $value
-     */
-    private $value;
-
-    /**
      * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName
      */
     private $advertisementPropertyName;
@@ -38,28 +33,6 @@ class AdvertisementTypeConfiguration
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     * @return AdvertisementTypeConfiguration
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-
-    /**
-     * Get value
-     *
-     * @return string 
-     */
-    public function getValue()
-    {
-        return $this->value;
     }
 
     /**

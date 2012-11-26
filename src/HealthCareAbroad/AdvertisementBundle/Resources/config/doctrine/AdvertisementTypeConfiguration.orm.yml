@@ -9,11 +9,6 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypeConfiguration:
             nullable: false
             generator:
                 strategy: IDENTITY
-        value:
-            type: string
-            length: 250
-            fixed: false
-            nullable: false
     manyToOne:
         advertisementPropertyName:
             targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName

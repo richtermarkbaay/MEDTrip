@@ -3,7 +3,7 @@
 {% set advertisementLabel = getClassLabel('advertisement') %}
 {% block content %}
 
-    <div id="content">
+    <div id="main-content">
 
 		{% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
@@ -23,28 +23,30 @@
                         <tr>
                             <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
                             <th>Description</th>
-                            <th>Type</th>
+                            <th id="column-advertisementType">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'advertisementType' ? 'sort-' ~ sortOrder : default }}">Type</a>
+                            </th>
                             <th>Status</th>
                         </tr>
-  						
+
   						{% for each in advertisements %}
-  						
 	                    <tr>
 	                        <td>{{ each.title }}</td>
 	                        <td>{{ each.description(30) }}</td>
-	                        <td>{{ adTypes[discriminatorMapping[getClass(each)]] }}</td>  
+	                        <td>{{ each.advertisementType.name }}</td>  
 	                        <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
                    		</tr>
-               			 {% endfor %}
+                   		{% else %}
+	                    <tr><td>{{ each.title }}</td></tr>
+                        {% endfor %}
                 </table>
             {% endblock %}
-            
+
         {% endembed %}
-        
+
         {% if pager.isPaginable %}
            {{ paginate(pager, 'admin_advertisement_index', app.request.query.all) }}
         {% endif %}
-        
     </div>
     
 {% endblock %}

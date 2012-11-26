@@ -1,9 +1,11 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Entity;
 
-abstract class Advertisement
+class Advertisement
 {
-   
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+    
     /**
      * @var bigint $id
      */
@@ -35,7 +37,7 @@ abstract class Advertisement
     private $advertisementType;
 
     /**
-     * @var HealthCareAbroad\AdvertisementBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
@@ -172,10 +174,10 @@ abstract class Advertisement
     /**
      * Set institution
      *
-     * @param HealthCareAbroad\AdvertisementBundle\Entity\Institution $institution
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
      * @return Advertisement
      */
-    public function setInstitution(\HealthCareAbroad\AdvertisementBundle\Entity\Institution $institution = null)
+    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
         return $this;
@@ -184,7 +186,7 @@ abstract class Advertisement
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\AdvertisementBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
      */
     public function getInstitution()
     {

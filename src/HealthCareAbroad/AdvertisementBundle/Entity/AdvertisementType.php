@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AdvertisementType
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
     /**
      * @var smallint $id
      */
@@ -24,7 +27,16 @@ class AdvertisementType
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $advertisementTypeConfigurations;
 
+    public function __construct()
+    {
+        $this->advertisementTypeConfigurations = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -77,5 +89,37 @@ class AdvertisementType
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add advertisementTypeConfigurations
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementTypeConfigurations
+     * @return AdvertisementType
+     */
+    public function addAdvertisementTypeConfiguration(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementTypeConfigurations)
+    {
+        $this->advertisementTypeConfigurations[] = $advertisementTypeConfigurations;
+        return $this;
+    }
+
+    /**
+     * Remove advertisementTypeConfigurations
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementTypeConfigurations
+     */
+    public function removeAdvertisementTypeConfiguration(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementTypeConfigurations)
+    {
+        $this->advertisementTypeConfigurations->removeElement($advertisementTypeConfigurations);
+    }
+
+    /**
+     * Get advertisementTypeConfigurations
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getAdvertisementTypeConfigurations()
+    {
+        return $this->advertisementTypeConfigurations;
     }
 }

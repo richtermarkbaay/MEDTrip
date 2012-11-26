@@ -1,0 +1,48 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubMenu = 'countries' %}
+{% set countriesLabel = getClassLabel('country') %}
+{% block content %}
+
+    <style type="text/css">
+        .tmp-form label {
+            display: inline-block;
+        }
+        
+        .tmp-form input[type=checkbox] {
+            margin-top: 4px;
+            float: left;
+        }
+        
+        .tmp-form h5 {
+            margin-bottom: 5px;
+        }
+        
+        .tmp-form .properties {
+            margin-left: 20px;
+        }
+    </style>
+
+    <div class="span3">{% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}</div>
+
+	<div class="span9">	
+	   {% embed 'HelperBundle:Widgets:section.html.twig' with { title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ ' Advertisement Type ' | title} %}
+	
+        	{% block sectionContent %}
+    			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="tmp-form">
+    
+    				{{ form_row(form.name) }}
+    				
+
+    				<h5>Properties: </h5>
+    
+                    <div class="properties">{{ form_rest(form) }}</div>
+    
+                    <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
+    			</form>
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+
+{% endblock %}

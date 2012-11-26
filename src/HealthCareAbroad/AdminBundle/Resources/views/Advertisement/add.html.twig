@@ -8,8 +8,8 @@
 
 {% block content %}
 
-	<div id="content">
-	
+	<div id="main-content">
+
 	{% embed 'HelperBundle:Widgets:section.html.twig' with { 
                 title: ( 'Add ' ) ~ advertisementsLabel.singular | title ,
                 actions: [{link: path('admin_advertisement_index'), label: 'View all '~ advertisementsLabel.plural | title, 'icon' : 'icon-list' }]
@@ -23,16 +23,7 @@
 			    <!--  start table-content  -->
                 <div id="table-content" style="width:70%">
                     {% include '::notice.admin.html.twig' %}
-				
-    				{% include '::stepHolder.base.admin.html.twig' with {
-    				    steps: [
-                            {title: 'Basic Detail', 'selected': (selectedStep == 'step1')},
-                            {title: 'Specific Detail', 'selected': (selectedStep == 'step2')},
-                            {title: 'Generate Invoice'},
-                            {title: 'Preview', 'selected': false},
-                        ]}
-                    %}
-                    
+
     				<!-- start form -->
     				<form action="{{ formAction }}" enctype="multipart/form-data" method="post" {{ form_enctype(form) }} class="basic-form">
     
