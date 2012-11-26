@@ -28,7 +28,7 @@ class AdvertisementTypeFormType extends AbstractType
 		$builder->add('title', 'checkbox', array('virtual' => true, 'attr' => array('checked' => true, 'disabled' => true)));
 		$builder->add('description', 'checkbox', array('virtual' => true, 'attr' => array('checked' => true, 'disabled' => true)));
 		
-		$builder->add('sdf', new AdvertisementPropertyNameListType(), array('virtual' => true));
+		$builder->add('advertisementTypeConfigurations', new AdvertisementPropertyNameListType());
 
 // 		$builder->add(
 //             $builder->create('AdvertisementTypeConfigurations', new AdvertisementPropertyNameListType())
