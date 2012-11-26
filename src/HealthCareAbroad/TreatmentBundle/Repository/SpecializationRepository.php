@@ -52,7 +52,11 @@ class SpecializationRepository extends EntityRepository
     public function getQueryBuilderForActiveSpecializations()
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a')->from('TreatmentBundle:Specialization', 'a')->add('where', 'a.status = :status')->setParameter('status', Specialization::STATUS_ACTIVE);
+        $qb->select('a')
+            ->from('TreatmentBundle:Specialization', 'a')
+            ->add('where', 'a.status = :status')
+            ->orderBy('a.name')
+            ->setParameter('status', Specialization::STATUS_ACTIVE);
 
         return $qb;
     }
