@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
-    
+
     /**
      * @var bigint $id
      */
@@ -55,7 +55,7 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionSpecializations;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -71,17 +71,23 @@ class InstitutionMedicalCenter
      */
     private $doctors;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $media;
+
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionAffiliations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -103,7 +109,7 @@ class InstitutionMedicalCenter
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -125,7 +131,7 @@ class InstitutionMedicalCenter
     /**
      * Get businessHours
      *
-     * @return string 
+     * @return string
      */
     public function getBusinessHours()
     {
@@ -147,7 +153,7 @@ class InstitutionMedicalCenter
     /**
      * Get description
      *
-     * @return text 
+     * @return text
      */
     public function getDescription()
     {
@@ -169,7 +175,7 @@ class InstitutionMedicalCenter
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -191,7 +197,7 @@ class InstitutionMedicalCenter
     /**
      * Get dateUpdated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateUpdated()
     {
@@ -213,7 +219,7 @@ class InstitutionMedicalCenter
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
@@ -235,7 +241,7 @@ class InstitutionMedicalCenter
     /**
      * Get slug
      *
-     * @return string 
+     * @return string
      */
     public function getSlug()
     {
@@ -267,7 +273,7 @@ class InstitutionMedicalCenter
     /**
      * Get institutionSpecializations
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionSpecializations()
     {
@@ -289,7 +295,7 @@ class InstitutionMedicalCenter
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     public function getInstitution()
     {
@@ -317,7 +323,7 @@ class InstitutionMedicalCenter
     {
         $this->doctors->removeElement($doctors);
     }
-    
+
     /**
      * Add institutionAffiliations
      *
@@ -326,10 +332,10 @@ class InstitutionMedicalCenter
      */
     public function addInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations)
     {
-    	$this->institutionAffiliations[] = $institutionAffiliations;
-    	return $this;
+        $this->institutionAffiliations[] = $institutionAffiliations;
+        return $this;
     }
-    
+
     /**
      * Remove institutionAffiliations
      *
@@ -337,9 +343,9 @@ class InstitutionMedicalCenter
      */
     public function removeInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliation)
     {
-    	$this->institutionAffiliations->removeElement($institutionAffiliations);
+        $this->institutionAffiliations->removeElement($institutionAffiliations);
     }
-    
+
     /**
      * Get institutionAffiliations
      *
@@ -347,16 +353,48 @@ class InstitutionMedicalCenter
      */
     public function getInstitutionAffiliations()
     {
-    	return $this->institutionAffiliations;
+        return $this->institutionAffiliations;
     }
-    
+
     /**
      * Get doctors
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getDoctors()
     {
         return $this->doctors;
+    }
+
+    /**
+     * Add media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return InstitutionMedicalCenter
+     */
+    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media[] = $media;
+        return $this;
+    }
+
+    /**
+     * Remove media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     */
+    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media->removeElement($media);
+    }
+
+    /**
+     * Get media
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 }

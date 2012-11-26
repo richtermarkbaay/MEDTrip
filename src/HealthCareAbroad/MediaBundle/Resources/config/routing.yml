@@ -1,4 +1,88 @@
-# ADMIN INSTITUTION ROUTES
+# DEFAULT CONTROLLER ROUTES
+admin_gallery_selection:
+    pattern: /admin/gallery/{context}/{id}/{page}
+    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
+    requirements:
+        _method: GET
+        id: \d+
+        page: \d+
+
+institution_gallery_selection:
+    pattern: /institution/gallery/{context}/{id}/{page}
+    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
+    requirements:
+        _method: GET
+        id: \d+
+        page: \d+
+
+admin_media_attach:
+    pattern: /admin/media/attach/{context}/{id}/{mediaId}
+    defaults: { _controller: MediaBundle:Default:mediaAttach }
+    requirements:
+        id: \d+
+        mediaId: \d+
+
+institution_media_attach:
+    pattern: /institution/media/attach/{context}/{id}/{mediaId}
+    defaults: { _controller: MediaBundle:Default:mediaAttach }
+    requirements:
+        id: \d+
+        mediaId: \d+
+
+admin_media_add:
+    pattern: /admin/media/add/{context}/{id}
+    defaults: { _controller: MediaBundle:Default:add }
+    requirements:
+        _method: GET
+        id: \d+
+
+institution_media_add:
+    pattern: /institution/media/add/{context}/{id}
+    defaults: { _controller: MediaBundle:Default:add }
+    requirements:
+        _method: GET
+        id: \d+
+
+admin_media_upload:
+    pattern: /admin/media/upload/{institutionId}
+    defaults: { _controller: MediaBundle:Default:upload }
+    requirements:
+        _method: POST
+
+institution_media_upload:
+    pattern: /institution/media/upload/{institutionId}
+    defaults: { _controller: MediaBundle:Default:upload }
+    requirements:
+        _method: POST
+
+admin_media_delete:
+    pattern: /admin/media/delete
+    defaults: { _controller: MediaBundle:Default:delete}
+    requirements:
+        _method: POST
+
+institution_media_delete:
+    pattern: /institution/media/delete
+    defaults: { _controller: MediaBundle:Default:delete}
+    requirements:
+        _method: POST
+
+admin_media_edit_caption:
+    pattern: /admin/media/edit-caption
+    defaults: { _controller: MediaBundle:Default:editCaption }
+    requirements:
+        _method: POST
+
+institution_media_edit_caption:
+    pattern: /institution/media/edit-caption
+    defaults: { _controller: MediaBundle:Default:editCaption }
+    requirements:
+        _method: POST
+
+# END DEFAULT CONTROLLER ROUTES
+
+# ADMIN CONTROLLER ROUTES
+
 admin_institution_gallery:
     pattern: /admin/institution/{institutionId}/gallery/{page}
     defaults: { _controller: MediaBundle:Admin:gallery, page: 1 }
@@ -14,6 +98,24 @@ admin_institution_gallery_add:
         _method: GET
         institutionId: \d+
 
+# END ADMIN CONTROLLER ROUTES
+
+institution_gallery:
+    pattern: /institution/gallery/{page}
+    defaults: { _controller: MediaBundle:Institution:gallery, page: 1 }
+    requirements:
+        _method: GET
+        page: \d+
+
+institution_gallery_add:
+    pattern:  /institution/{institutionId}/gallery/add/{multiUpload}
+    defaults: { _controller: MediaBundle:Default:addMediaToGallery, multiUpload: 1 }
+    requirements:
+        _method: GET
+        institutionId: \d+
+
+# UNCONFIRMED ROUTES
+
 admin_institution_medicalCenter_gallery:
     pattern: /admin/institution/{institutionId}/medical-center/{imcId}/gallery
     defaults:
@@ -21,63 +123,7 @@ admin_institution_medicalCenter_gallery:
         _method: GET
         institutionId: \d+
         imcId: \d+
-# END ADMIN INSTITUTION ROUTES
 
-# DEFAULT ROUTES
-admin_gallery_selection:
-    pattern: /admin/gallery/{context}/{id}/{page}
-    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
-    requirements:
-        _method: GET
-        id: \d+
-        page: \d+
-
-admin_media_attach:
-    pattern: /admin/media/attach/{context}/{id}/{mediaId}
-    defaults: { _controller: MediaBundle:Default:mediaAttach }
-    requirements:
-        id: \d+
-        mediaId: \d+
-
-media_add:
-    pattern: /admin/media/add/{context}/{id}
-    defaults: { _controller: MediaBundle:Default:add }
-    requirements:
-        _method: GET
-        id: \d+
-
-media_upload:
-    pattern: /admin/media/upload/{institutionId}
-    defaults: { _controller: MediaBundle:Default:upload }
-    requirements:
-        _method: POST
-
-media_delete:
-    pattern: /admin/media/delete
-    defaults: { _controller: MediaBundle:Default:delete}
-    requirements:
-        _method: POST
-
-media_edit_caption:
-    pattern: /admin/media/edit-caption
-    defaults: { _controller: MediaBundle:Default:editCaption }
-    requirements:
-        _method: POST
-
-# END DEFAULT ROUTES
-
-institution_gallery:
-    pattern: /institution/gallery/{page}
-    defaults: { _controller: MediaBundle:Default:gallery, page: 1 }
-    requirements:
-        _method: GET
-        page: \d+
-
-institution_gallery_add:
-    pattern:  /institution/gallery/add
-    defaults: { _controller: MediaBundle:Default:add }
-    requirements:
-        _method: GET
 
 media_upload_medicalCenter:
     pattern: /media/upload/medical-center/{imcId}
