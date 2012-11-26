@@ -40,6 +40,8 @@ class TreatmentBundleService
         $this->doctrine = $doctrine;
         $this->entityManager = $doctrine->getEntityManager();
     }
+    
+    /** ----- Start Specialization related functionalities ------ **/
 
     /**
      * Get Specializations with status ACTIVE
@@ -63,22 +65,6 @@ class TreatmentBundleService
         return $result;
     }
     
-    public function getSpecializationTreatments($specialization)
-    {
-        $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
-            ->select('a')
-            ->from('TreatmentBundle:Treatment', 'a')
-            ->leftJoin('a.subSpecialization', 'b')
-            ->leftJoin('b.specialization', 'c')
-            ->where('c = :specialization')
-            ->andWhere('a.status = :status')
-            ->orderBy('b.name, a.name', 'ASC')
-            ->setParameter('specialization', $specialization)
-            ->setParameter('status', Treatment::STATUS_ACTIVE);
-
-        return $qb->getQuery()->getResult();
-    }
-    
     /**
      * Get an Specialization by Id. Apply caching here
      * 
@@ -88,6 +74,32 @@ class TreatmentBundleService
     public function getSpecialization($id)
     {
         return $this->doctrine->getRepository('TreatmentBundle:Specialization')->find($id);
+    }
+    
+    /** ----- Endi Specialization related functionalities ------ **/
+    
+    
+    /** ----- Start Sub Specialization related functionalities ------ **/
+    
+    /**
+     * Get all active SubSpecializations of Specialization
+     *
+     * @param Specialization $specialization
+     */
+    public function getActiveSubSpecializationsBySpecialization(Specialization $specialization)
+    {
+        $key = 'TreatmentBundle:TreatmentService:getActiveSubSpecializationBySpecialization_'.$specialization->getId();
+        $result = $this->memcache->get($key);
+        if (!$result) {
+            $result = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')
+            ->getQueryBuilderForGettingAvailableSubSpecializations($specialization)
+            ->getQuery()
+            ->getResult();
+    
+            $this->memcache->set($key, $result);
+        }
+    
+        return $result;
     }
 
     /**
@@ -107,6 +119,10 @@ class TreatmentBundleService
 
         return $entity;
     }
+    
+    /** ----- End Sub Specialization related functionalities ------ **/
+    
+    /** ----- Start Treatment related functionalities ------ **/
 
     public function getTreatment($id)
     {
@@ -146,24 +162,5 @@ class TreatmentBundleService
         return $result;
     }
     
-    /**
-     * Get all active SubSpecializations of Specialization
-     * 
-     * @param Specialization $specialization
-     */
-    public function getActiveSubSpecializationsBySpecialization(Specialization $specialization)
-    {
-        $key = 'TreatmentBundle:TreatmentService:getActiveSubSpecializationBySpecialization_'.$specialization->getId();
-        $result = $this->memcache->get($key);
-        if (!$result) {
-            $result = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')
-                ->getQueryBuilderForGettingAvailableSubSpecializations($specialization)
-                ->getQuery()
-                ->getResult();
-            
-            $this->memcache->set($key, $result);
-        }
-        
-        return $result;
-    }
+    /** ----- End Treatment related functionalities ------ **/
 }

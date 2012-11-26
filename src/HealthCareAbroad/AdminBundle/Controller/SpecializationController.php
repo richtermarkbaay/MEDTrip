@@ -130,12 +130,17 @@ class SpecializationController extends Controller
         $service = $this->get('services.treatment_bundle');
         $specialization = $service->getSpecialization($request->get('id', 0));
         $selectedSubSpecializationIds = $request->get('selectedSubSpecializationIds', array());
+        $emptyValue = $request->get('empty_value', null);
         
         $subSpecializations = $service->getActiveSubSpecializationsBySpecialization($specialization);
         $output = array(
             'data' => array(),
             'html' => ''
         );
+        
+        if ($emptyValue) {
+            $output['html'] .= "<option value='0' >{$emptyValue}</option>";
+        }
         
         foreach ($subSpecializations as $each) {
             $isSelected = \in_array($each->getId(), $selectedSubSpecializationIds);

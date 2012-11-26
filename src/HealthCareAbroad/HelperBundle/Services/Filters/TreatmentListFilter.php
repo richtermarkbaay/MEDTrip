@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
@@ -29,6 +31,8 @@ class TreatmentListFilter extends ListFilter
     function setFilterOptions()
     {
         $this->setSpecializationFilterOption();
+        
+        $this->setSubSpecializationFilterOption();
 
         $this->setStatusFilterOption();
     }
@@ -51,6 +55,17 @@ class TreatmentListFilter extends ListFilter
             'options' => $options
         );
     }
+    
+    public function setSubSpecializationFilterOption()
+    {
+        $treatmentBundleService = $this->getInjectedDependcy('services.treatment_bundle');
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        $this->filterOptions['subSpecialization'] = array(
+            'label' => 'Sub Specialization',
+            'selected' => ListFilter::FILTER_KEY_ALL,
+            'options' => $options
+        );
+    }
 
     function buildQueryBuilder()
     {
@@ -64,6 +79,11 @@ class TreatmentListFilter extends ListFilter
         if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('a.specialization = :specialization');
             $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
+        }
+        
+        if ( 0 != $this->queryParams['subSpecialization']) {
+            $this->queryBuilder->innerJoin('a.subSpecializations', 'b', Join::WITH, 'b.id = :subSpecialization')
+                ->setParameter('subSpecialization', $this->queryParams['subSpecialization']);
         }
 
         if($this->sortBy == 'specialization') {
