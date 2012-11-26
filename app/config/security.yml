@@ -70,7 +70,11 @@ security:
             logout:
                 path:   /admin/logout
                 target: /admin/login
-
+                
+        institution.signup:
+            pattern: ^/institution/sign-up$
+            security: false
+                
         institution_login:
             pattern:  ^/institution/login$
             security: false
