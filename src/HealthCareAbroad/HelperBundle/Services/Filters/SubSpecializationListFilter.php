@@ -11,6 +11,9 @@ use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 class SubSpecializationListFilter extends ListFilter
 {
+    protected $serviceDependencies = array(
+        'services.treatment_bundle'
+    );
 
     function __construct($doctrine)
     {
@@ -32,9 +35,9 @@ class SubSpecializationListFilter extends ListFilter
 
     function setSpecializationFilterOption()
     {
-
         // Set The Filter Option
-        $specializations = $this->doctrine->getEntityManager()->getRepository('TreatmentBundle:Specialization')->findByStatus(Specialization::STATUS_ACTIVE);
+        $treatmentBundleService = $this->getInjectedDependcy('services.treatment_bundle');
+        $specializations = $treatmentBundleService->getAllActiveSpecializations();
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($specializations as $each) {
             $options[$each->getId()] = $each->getName();

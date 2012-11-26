@@ -1,13 +1,13 @@
-{# This requires that institution is defined in parent context.
+{# This requires that institution is defined in parent context. #}
+{# TODO: don't preload content of tabs #}
 
-TODO: don't preload content of tabs
-#}
 <div id="add-media-dialog" style="display: none;" title="Select media">
     <div id="add-media-tabs">
         <ul>
             <li><a href="#preloaded-tab">From my computer</a></li>
-            <li><a href="{{ path('admin_gallery_selection', {context: 'institutionLogo', id: institution.id}) }}">From Media Gallery</a></li>
+            <li><a href="{{ path(routes.gallery_selection, {context: context, id: institution.id}) }}">From Media Gallery</a></li>
         </ul>
+
         <div id="preloaded-tab">
             <form name="multiUploadForm">
                 <div id="uploader">
@@ -18,7 +18,7 @@ TODO: don't preload content of tabs
             <style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
 
             <!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
-            <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+            <!-- script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script> -->
 
             <!-- Load plupload and all it's runtimes and finally the jQuery UI queue widget -->
 
@@ -33,7 +33,7 @@ TODO: don't preload content of tabs
                     // General settings
                     /*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
                     runtimes : 'html5',
-                    url : '{{ path('media_upload', {institutionId: institution.id}) }}',
+                    url : '{{ path(routes.media_upload, {institutionId: institution.id, context: context}) }}',
                     max_file_size : '10mb',
                     /*chunk_size : '1mb',*/
                     unique_names : true,
@@ -50,7 +50,7 @@ TODO: don't preload content of tabs
                     ],
 
                     // Flash settings
-                    flash_swf_url : '/plupload/js/plupload.flash.swf',
+                    //flash_swf_url : '/plupload/js/plupload.flash.swf',
                     //http://www.youtube.com/watch?v=kPIM6V9eeRE
                     // Silverlight settings
                     //silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
@@ -88,11 +88,6 @@ TODO: don't preload content of tabs
 
 $(function() {
     $("#add-media-tabs").tabs();
-
-    $("#institution-logo-link").click(function() {
-        $("#add-media-dialog").dialog("open");
-        return false;
-    });
 
     $("#add-media-dialog").dialog({
         autoOpen: false,

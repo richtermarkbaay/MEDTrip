@@ -866,6 +866,7 @@ background-color: #cccccc;
     width: auto;
     margin: 0;
     min-width: 100px;
+    max-width: 160px;
 }
 
 

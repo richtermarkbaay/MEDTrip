@@ -37,6 +37,9 @@ abstract class ListFilter
 
     protected $filteredResult = array();
 
+    /**
+     * @var QueryBuilder
+     */
     protected $queryBuilder;
 
     protected $pager;

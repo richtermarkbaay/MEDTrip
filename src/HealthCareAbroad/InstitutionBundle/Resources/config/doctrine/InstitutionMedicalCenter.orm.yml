@@ -64,6 +64,17 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                 name: institution_id
                 referencedColumnName: id
     manyToMany:
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            joinTable:
+                name: institution_medical_center_media
+                joinColumns:
+                    institution_medical_center_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    media_id:
+                        referencedColumnName: id
+
         doctors:
             targetEntity: HealthCareAbroad\DoctorBundle\Entity\Doctor
             cascade: {}

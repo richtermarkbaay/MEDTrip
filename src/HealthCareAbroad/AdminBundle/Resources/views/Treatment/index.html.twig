@@ -68,4 +68,27 @@
         
     </div>
     
+    {% block inlineJavascriptCode %}
+        <script src="{{ asset('bundles/admin/js/AdminHcaData.js') }}"></script>
+        <script type="text/javascript">
+        <!--
+        AdminTreatmentsManager.init({
+            'loadSubSpecializationsBySpecializationUrl': '{{ path("admin_specialization_loadAvailableSubSpecializations") }}',
+            'subSpecializationsDropdownElement': $('#filter-subSpecialization')
+        });
+
+        $(function(){
+            $('#filter-specialization').change(function(event){
+                _id = $(this).val();
+                if ('all' != _id) {
+                    AdminTreatmentsManager.loadSubSpecializationsBySpecialization(_id, { selectedSubSpecializationIds: ['{{ app.request.get("subSpecialization") }}'] });                
+                }
+            }).change();
+        });
+        
+        
+        //-->
+        </script>
+    {% endblock %}
+    
 {% endblock %}

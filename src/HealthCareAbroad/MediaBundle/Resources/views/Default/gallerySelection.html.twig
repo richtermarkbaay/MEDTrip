@@ -1,12 +1,14 @@
 <div id="gallery-container">
 
+    <div id="messages"></div>
+
     <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
         <thead>
             <tr>
                 <th style="width: 90px"></th>
-                <th class="table-header-repeat line-left minwidth-1"><a href="#">File</a></th>
-                <th class="table-header-repeat line-left minwidth-1"><a href="#">Attached to</a></th>
-                <th class="table-header-options line-left"><a href="#">Date</a></th>
+                <th class="table-header-repeat line-left minwidth-1">File</th>
+                <th class="table-header-repeat line-left minwidth-1">Attached to</th>
+                <th class="table-header-options line-left">Date</th>
             </tr>
         </thead>
 
@@ -16,7 +18,7 @@
 
                     <div id="galleryPager" style="float: right; margin-right: 10px">
                         {% if institutionMedia.isPaginable %}
-                            {{ paginate(institutionMedia, 'admin_gallery_selection', {context: 'institution-logo', id: institution.id}) }}
+                            {{ paginate(institutionMedia, routes.gallery_selection, {context: context, id: institution.id}) }}
                         {% endif %}
                     </div>
 
@@ -33,7 +35,7 @@
                 <td>{{ media.caption }}</td>
 
                 <td>
-                    <a class="selectLink" href="{{ path('admin_media_attach', { context: 'institution-logo', id: institution.id, 'mediaId': media.id }) }}">Select</a>
+                    <a class="selectLink" href="{{ path(routes.media_attach, { context: context, id: institution.id, 'mediaId': media.id }) }}">Select</a>
                 </td>
 
                 <td></td>

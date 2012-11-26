@@ -8,29 +8,29 @@
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                     {{ specializationLabel.plural }}
-					<a href="{{ path('admin_institution_medicalCenter_addSpecialization', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}">
-                    	<button class="btn btn-mini pull-right">
-							<i class="icon-plus"></i>
-                       		Add {{ specializationLabel.singular }}
-                    	</button>
-					</a>
+                    <a href="{{ path('admin_institution_medicalCenter_addSpecialization', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}">
+                        <button class="btn btn-mini pull-right">
+                            <i class="icon-plus"></i>
+                               Add {{ specializationLabel.singular }}
+                        </button>
+                    </a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
                 {% for each in specializations %}
-					<h5 style="padding: 5px;">
-					    {{ each.specialization.name | title }} 
-					    <a href="#" style="float:right"><i class="icon-remove"></i></a>
-					</h5>
-					<div style="margin-top: 10px">
-					    <a href="#"  class="pull-right"><i class="icon-edit"></i> edit</a>
-					    {{ each.description | raw }} 
-					</div>
+                    <h5 style="padding: 5px;">
+                        {{ each.specialization.name | title }}
+                        <a href="#" style="float:right"><i class="icon-remove"></i></a>
+                    </h5>
+                    <div style="margin-top: 10px">
+                        <a href="#"  class="pull-right"><i class="icon-edit"></i> edit</a>
+                        {{ each.description | raw }}
+                    </div>
 
-				    <dl style="font-size: 13px; border-bottom: 1px dashed #EFEFEF; padding-bottom: 10px; margin-bottom: 10px;">
-    				    <dt>Treatments</dt>
-    					{% for treatment in each.treatments %}
-    				        <dd>{{ treatment.name }} <a href="#"><i class="icon-remove"></i></a></dd>
-    				    {% endfor %}
+                    <dl style="font-size: 13px; border-bottom: 1px dashed #EFEFEF; padding-bottom: 10px; margin-bottom: 10px;">
+                        <dt>Treatments</dt>
+                        {% for treatment in each.treatments %}
+                            <dd>{{ treatment.name }} <a href="#"><i class="icon-remove"></i></a></dd>
+                        {% endfor %}
                     </dl>
                 {% endfor %}
                 </div>
@@ -39,55 +39,68 @@
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                     Business Hours
                 </h5>
-                
-		        <form id="business" class="basic-form">    
-    		        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                        
+
+                <form id="business" class="basic-form">
+                    <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+
                         {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
-                        
+
                         <input type="submit" name="submit" id="saveBusinessHours" value="Submit" class="btn btn-large btn-primary" />
                     </div>
-                    
+
                 </form>
-            </div>   
+            </div>
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                   Affiliations / Certifications
-					<a href="{{ path('admin_institution_medicalCenter_addAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-affiliation btn btn-mini pull-right">
-							<i class="icon-plus"></i>
-                       		Add Affiliations
-					</a> 
+                    <a href="{{ path('admin_institution_medicalCenter_addAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-affiliation btn btn-mini pull-right">
+                            <i class="icon-plus"></i>
+                               Add Affiliations
+                    </a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
                 {% for affiliation in affiliations %}
-						<div style="margin-top: 10px">
-					   {{ affiliation.name | title }} 
-					    <a href="{{ path('admin_institution_medicalCenter_updateAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id , affiliationId: affiliation.id}) }}" style="float:right"><i class="icon-remove"></i></a>
-					</div>
-				
+                        <div style="margin-top: 10px">
+                       {{ affiliation.name | title }}
+                        <a href="{{ path('admin_institution_medicalCenter_updateAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id , affiliationId: affiliation.id}) }}" style="float:right"><i class="icon-remove"></i></a>
+                    </div>
+
                 {% endfor %}
                 </div>
             </div>
-        {% endblock %} 
+
+            <div id="medicalCenterDetailsAccordion" class="treatmentbox">
+                <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                    Media
+                    <a href="{{ path('admin_media_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                        <i class="icon-plus"></i>Add
+                    </a>
+                </h5>
+                <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                    {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                </div>
+            </div>
+
+        {% endblock %}
 
     {% endembed %}
 </div>
 {% block inlineJavascriptCode %}
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
-	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+    <script src="{{ asset('js/jquery/globalize.js') }}"></script>
+    <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
-	
-    	$(function() {
-	    	$(".hour").timepicker({ seconds: false });
-	    	$('input.is_closed_checkbox').each(function(){
-			    if(this.checked) {
-			    	$(this).parent().parent().find('.hour').val("");
-			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-				}
-			});
 
-	    	$('#dialog-container').dialog({
+        $(function() {
+            $(".hour").timepicker({ seconds: false });
+            $('input.is_closed_checkbox').each(function(){
+                if(this.checked) {
+                    $(this).parent().parent().find('.hour').val("");
+                    var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+                }
+            });
+
+            $('#dialog-container').dialog({
                 position: ['center', 100],
                 autoOpen: false,
                 width: 750,
@@ -97,54 +110,54 @@
             });
 
             $('a.add-affiliation').click(function(){
-            	var elem = $(this);
-				var _url = elem.attr('href');
+                var elem = $(this);
+                var _url = elem.attr('href');
 
-				$("#dialog-container").empty();
+                $("#dialog-container").empty();
                 $('#dialog-container').dialog({
-                	title: 'Affiliations / Certifications',
+                    title: 'Affiliations / Certifications',
                     open: function() {
                         $.ajax(_url)
-                            .done(function (data) {                        
-                            	$('#dialog-container').html(data);
+                            .done(function (data) {
+                                $('#dialog-container').html(data);
                             }
                         );
                     },
                 });
 
-            	$('#dialog-container').dialog("open");
+                $('#dialog-container').dialog("open");
 
-                 	return false;           
+                     return false;
             });
-	    });
-        
-	    $('input.is_closed_checkbox').change(function(){
-		    if(this.checked) {
-		    	$(this).parent().parent().find('.hour').val("");
-		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-			}
-		    else 
-		    {
-		    	$(this).parent().parent().find('.hour').val("8:00 AM");
-		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-		    }
-		   
-		});
+        });
 
-		$('#saveBusinessHours').click(function() {
-			var businessHours = $('#business').serialize();
-			$('div#ajax_loader').show();
-			$.ajax({
-		        url: "{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
-		        data: businessHours,
-		        type: 'post',
-		        success: function(){
-		        	$('div#ajax_loader').hide();
-		        }
-	        });
-	        
-			
-			return false;
-		});
+        $('input.is_closed_checkbox').change(function(){
+            if(this.checked) {
+                $(this).parent().parent().find('.hour').val("");
+                var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+            }
+            else
+            {
+                $(this).parent().parent().find('.hour').val("8:00 AM");
+                var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+            }
+
+        });
+
+        $('#saveBusinessHours').click(function() {
+            var businessHours = $('#business').serialize();
+            $('div#ajax_loader').show();
+            $.ajax({
+                url: "{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
+                data: businessHours,
+                type: 'post',
+                success: function(){
+                    $('div#ajax_loader').hide();
+                }
+            });
+
+
+            return false;
+        });
     </script>
 {% endblock %}

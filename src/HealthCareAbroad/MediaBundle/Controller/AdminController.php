@@ -1,10 +1,9 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\MediaContext;
 use HealthCareAbroad\PagerBundle\Pager;
-
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +36,9 @@ class AdminController extends Controller
 
         return $this->render('MediaBundle:Admin:gallery.html.twig', array(
                 'institution' => $this->institution,
-                'institutionMedia' => $pager
+                'institutionMedia' => $pager,
+                'routes' => DefaultController::getRoutes($request->getPathInfo()),
+                'context' => MediaContext::ADMIN_INSTITUTION_GALLERY
         ));
     }
 
@@ -45,7 +46,8 @@ class AdminController extends Controller
     {
         return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
                 'institution' => $this->institution,
-                'multiUpload' => $request->get('multiUpload')
+                'multiUpload' => $request->get('multiUpload'),
+                'routes' => DefaultController::getRoutes($request->getPathInfo())
         ));
     }
 

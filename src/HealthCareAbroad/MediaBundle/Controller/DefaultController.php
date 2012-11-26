@@ -11,17 +11,43 @@ use Gaufrette\File;
 
 class DefaultController extends Controller
 {
+    public function addAction(Request $request)
+    {
+        return $this->render('MediaBundle:Default:addMedia.html.twig', array(
+                        'institution' => $institution,
+                        'context' => $request->get('context'),
+                        'contextId' => $request->get('contextId'),
+                        'routes' => $this->getRoutes($request->getPathInfo())
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addMediaAction(Request $request)
+    {
+        $institution = $request->get('institution');
+
+        return $this->render('MediaBundle:Default:addMedia.html.twig', array(
+                        'institution' => $institution,
+                        'context' => $request->get('context'),
+                        'contextId' => $institution->getId(),
+                        'routes' => $this->getRoutes($request->getPathInfo())
+        ));
+    }
+
     public function gallerySelectionAction(Request $request)
     {
         $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($request->get('id'))->toArray());
         $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1));
 
-        $html = $this->render('MediaBundle:Default:gallerySelection.html.twig', array(
-            'institution' => $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('id')),
-            'institutionMedia' => $pager
-        ))->getContent();
-
-        return new Response($html, 200);
+        return $this->render('MediaBundle:Default:gallerySelection.html.twig', array(
+                        'institution' => $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('id')),
+                        'institutionMedia' => $pager,
+                        'routes' => $this->getRoutes($request->getPathInfo()),
+                        'context' => $request->get('context')
+        ));
     }
 
     public function mediaAttachAction(Request $request)
@@ -131,5 +157,34 @@ class DefaultController extends Controller
         }
 
         return $context;
+    }
+
+    /**
+     * @param string $pathInfo
+     */
+    public static function getRoutes($pathInfo)    {
+        $routes = array();
+
+        if (strpos($pathInfo, 'admin') === 1) {
+            $routes['gallery'] = 'admin_institution_gallery';
+            $routes['gallery_add'] = 'admin_institution_gallery_add';
+            $routes['gallery_selection'] = 'admin_gallery_selection';
+            $routes['media_attach'] = 'admin_media_attach';
+            $routes['media_upload'] = 'admin_media_upload';
+            $routes['media_edit_caption'] = 'admin_media_edit_caption';
+            $routes['media_delete'] = 'admin_media_delete';
+        } else if (strpos($pathInfo, 'institution') === 1) {
+            $routes['gallery'] = 'institution_gallery';
+            $routes['gallery_add'] = 'institution_gallery_add';
+            $routes['gallery_selection'] = 'institution_gallery_selection';
+            $routes['media_attach'] = 'institution_media_attach';
+            $routes['media_upload'] = 'institution_media_upload';
+            $routes['media_edit_caption'] = 'institution_media_edit_caption';
+            $routes['media_delete'] = 'institution_media_delete';
+        } else {
+            throw new \Exception('Invalid pathinfo: '. $pathInfo);
+        }
+
+        return $routes;
     }
 }

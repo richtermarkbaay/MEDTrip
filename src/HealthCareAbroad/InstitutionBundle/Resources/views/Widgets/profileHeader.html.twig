@@ -10,7 +10,7 @@ Note: This widget is shared in other bundles e.g. AdminBundle
                     <div class="photo-group">
 
                         {% if institution.media %}
-                            {{ media(institution.media, 'institutionLogo', {alt: 'institution logo'}) | raw }}
+                            {{ media(institution.media, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
                         {% else %}
                             <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                         {% endif %}
@@ -39,4 +39,13 @@ Note: This widget is shared in other bundles e.g. AdminBundle
 
 </div>
 
-{% include 'MediaBundle:Default:addMedia.html.twig' %}
+{% render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} %}
+
+<script type="text/javascript">
+$(function() {
+    $("#institution-logo-link").click(function() {
+        $("#add-media-dialog").dialog("open");
+        return false;
+    });
+});
+</script>
