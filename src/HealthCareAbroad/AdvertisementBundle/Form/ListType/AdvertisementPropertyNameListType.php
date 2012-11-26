@@ -15,7 +15,8 @@ class AdvertisementPropertyNameListType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'property' => 'name',
+            'label' => 'Optional Properties: ',
+            'property' => 'label',
             'multiple' => true,
             'expanded' => true,
 			'class' => 'HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName'

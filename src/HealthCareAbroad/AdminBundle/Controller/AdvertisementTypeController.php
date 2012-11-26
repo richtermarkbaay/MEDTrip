@@ -18,7 +18,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 class AdvertisementTypeController extends Controller
 {
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEWADVERTISEMENT_TYPES')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_ADVERTISEMENT_TYPES')")
      */
     public function indexAction()
     {
@@ -34,36 +34,13 @@ class AdvertisementTypeController extends Controller
     public function addAction()
     {
         $request = $this->getRequest();
-
-        $properties = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementPropertyName')->findByStatus(AdvertisementPropertyName::STATUS_ACTIVE);
  
-        $form = $this->createForm(New AdvertisementTypeFormType($properties), new AdvertisementType());
+        $form = $this->createForm(New AdvertisementTypeFormType(), new AdvertisementType());
 
-        if($request->isMethod(Request::POST)) {
-            $advertisementType = $request->get('advertisementType');
-            $propertyNames = $advertisementType['advertisementTypeConfigurations'];
-            
-            $form->bind($advertisementType);
-            if($form->isValid()) {
-                $advertisementType = $form->getData();
-                
-                //var_dump($advertisementType);
-                
-                $advertisementType->setStatus(AdvertisementType::STATUS_ACTIVE);
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($advertisementType);
-                $em->flush();
-            
-                
-            }            
-        }
-        
-
-        
         return $this->render('AdminBundle:AdvertisementType:form.html.twig', array(
             'id' => null,
             'form' => $form->createView(),
-            'formAction' => $this->generateUrl('admin_advertisement_type_create')
+            'formAction' => $this->generateUrl('admin_advertisementType_create')
         ));
     }
 
@@ -72,15 +49,14 @@ class AdvertisementTypeController extends Controller
      */
     public function editAction($id)
     {
-        $advertisementType = $this->getDoctrine()->getEntityManager()
-                ->getRepository('Advertisement:AdvertisementType')->find($id);
+        $advertisementType = $this->getDoctrine()->getEntityManager()->getRepository('AdvertisementBundle:AdvertisementType')->find($id);
 
-        $form = $this->createForm(New CountryFormType(), $advertisementType);
+        $form = $this->createForm(New AdvertisementTypeFormType(), $advertisementType);
 
         return $this->render('AdminBundle:AdvertisementType:form.html.twig', array(
-                'id' => $id,
-                'form' => $form->createView(),
-                'formAction' => $this->generateUrl('admin_advertisement_type_update', array('id' => $id))
+            'id' => $id,
+            'form' => $form->createView(),
+            'formAction' => $this->generateUrl('admin_advertisementType_update', array('id' => $id))
         ));
     }
 
@@ -90,37 +66,41 @@ class AdvertisementTypeController extends Controller
     public function saveAction()
     {
         $request = $this->getRequest();
-        if('POST' != $request->getMethod()) {
+        
+        if(!$request->isMethod(Request::POST)) {
             return new Response("Save requires POST method!", 405);
         }
 
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();
 
-        $advertisementType = $id ? $em->getRepository('Advertisement:AdvertisementType')->find($id) : new Country();
+        $advertisementType = $id ? $em->getRepository('AdvertisementBundle:AdvertisementType')->find($id) : new AdvertisementType();
 
-        $form = $this->createForm(New CountryFormType(), $advertisementType);
-           $form->bind($request);
+        $form = $this->createForm(New AdvertisementTypeFormType(), $advertisementType);
+        
+        $form->bind($request);
 
-           if ($form->isValid()) {
-               $em->persist($advertisementType);
-               $em->flush($advertisementType);
+        if ($form->isValid()) {
+            $advertisementType = $form->getData();
+            $advertisementType->setStatus(AdvertisementType::STATUS_ACTIVE);
+            $em->persist($advertisementType);
+            $em->flush();
 
-               // dispatch event
-               $eventName = $id ? AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE : AdminBundleEvents::ON_ADD_ADVERTISEMENT_TYPE;
-               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $advertisementType));
-               
-               $request->getSession()->setFlash('success', 'Country has been saved!');
-
-               return $this->redirect($this->generateUrl('admin_advertisement_type_index'));
+            // dispatch event
+            //$eventName = $id ? AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE : AdminBundleEvents::ON_ADD_ADVERTISEMENT_TYPE;
+            //$this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $advertisementType));
+           
+            $request->getSession()->setFlash('success', 'Advertisement type has been saved!');
+        
+            return $this->redirect($this->generateUrl('admin_advertisementType_index'));
         }
 
-        $formAction = $id ? $this->generateUrl('admin_advertisement_type_update', array('id' => $id)) : $this->generateUrl('admin_advertisement_type_create');
+        $formAction = $id ? $this->generateUrl('admin_advertisementType_update', array('id' => $id)) : $this->generateUrl('admin_advertisementType_create');
 
         return $this->render('AdminBundle:AdvertisementType:form.html.twig', array(
-                'id' => $id,
-                'form' => $form->createView(),
-                'formAction' => $formAction
+            'id' => $id,
+            'form' => $form->createView(),
+            'formAction' => $formAction
         ));
     }
 
@@ -131,15 +111,15 @@ class AdvertisementTypeController extends Controller
     {
         $result = false;
         $em = $this->getDoctrine()->getEntityManager();
-        $advertisementType = $em->getRepository('Advertisement:AdvertisementType')->find($id);
+        $advertisementType = $em->getRepository('AdvertisementBundle:AdvertisementType')->find($id);
 
         if ($advertisementType) {
             $advertisementType->setStatus($advertisementType->getStatus() ? $advertisementType::STATUS_INACTIVE : $advertisementType::STATUS_ACTIVE);
             $em->persist($advertisementType);
-            $em->flush($advertisementType);
+            $em->flush();
 
             // dispatch event
-            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE, $advertisementType));
+            //$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT_TYPE, $advertisementType));
 
             $result = true;
         }

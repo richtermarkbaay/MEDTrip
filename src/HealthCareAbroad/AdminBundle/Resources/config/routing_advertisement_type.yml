@@ -1,44 +1,38 @@
-admin_advertisement_index:
-    pattern:  /admin/advertisements
-    defaults: { _controller: AdminBundle:Advertisement:index }
+admin_advertisementType_index:
+    pattern:  /admin/advertisement-types
+    defaults: { _controller: AdminBundle:AdvertisementType:index }
     requirements:
         _method:  GET
 
-admin_advertisement_add:
-    pattern:  /admin/advertisement/add
-    defaults: { _controller: AdminBundle:Advertisement:add }
-    requirements:
-        _method: GET|POST
-
-admin_advertisement_addBasicDetail:
-    pattern:  /admin/advertisement/add/step-one
-    defaults: { _controller: AdminBundle:Advertisement:addBasicDetail }
-    requirements:
-        _method: GET|POST
-        
-admin_advertisement_addSpecificDetail:
-    pattern:  /admin/advertisement/add/step-two
-    defaults: { _controller: AdminBundle:Advertisement:addSpecificDetail }
-    requirements:
-        _method: GET|POST
-        
-admin_advertisement_addInvoice:
-    pattern:  /admin/advertisement/{advertisementId}/add-invoice
-    defaults: { _controller: AdminBundle:Advertisement:addInvoice }
-    requirements:
-        _method: GET|POST
-        advertisementId: \d+
-        
-admin_advertisement_preview:
-    pattern:  /admin/advertisement/{advertisementId}/preview
-    defaults: { _controller: AdminBundle:Advertisement:preview }
+admin_advertisementType_add:
+    pattern:  /admin/advertisement-type/add
+    defaults: { _controller: AdminBundle:AdvertisementType:add }
     requirements:
         _method: GET
-        advertisementId: \d+
-        
-admin_advertisement_edit:
-    pattern:  /admin/advertisement/{advertisementId}/edit
-    defaults: { _controller: AdminBundle:Advertisement:edit }
+
+admin_advertisementType_create:
+    pattern:  /admin/advertisement-type/add
+    defaults: { _controller: AdminBundle:AdvertisementType:save }
     requirements:
-        _method: GET|POST
-        advertisementId: \d+
+        _method: POST
+
+admin_advertisementType_edit:
+    pattern:  /admin/advertisement-type/{id}/edit
+    defaults: { _controller: AdminBundle:AdvertisementType:edit }
+    requirements:
+        _method: GET
+        id: \d+
+
+admin_advertisementType_update:
+    pattern:  /admin/advertisement-type/{id}/edit
+    defaults: { _controller: AdminBundle:AdvertisementType:save }
+    requirements:
+        _method: POST
+        id: \d+
+
+admin_advertisementType_updateStatus:
+    pattern:  /admin/advertisement-type/update/status/{id}
+    defaults: { _controller: AdminBundle:AdvertisementType:updateStatus }
+    requirements:
+        _method: POST
+        id: \d+

@@ -13,14 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
 class AdvertisementTypeFormType extends AbstractType
-{
-    protected $properties;
-    
-    public function __construct($properties)
-    {
-        $this->properties = $properties;
-    }
-    
+{   
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('name', 'text', array('label' => 'Name: '));
@@ -28,18 +21,7 @@ class AdvertisementTypeFormType extends AbstractType
 		$builder->add('title', 'checkbox', array('virtual' => true, 'attr' => array('checked' => true, 'disabled' => true)));
 		$builder->add('description', 'checkbox', array('virtual' => true, 'attr' => array('checked' => true, 'disabled' => true)));
 		
-		$builder->add('advertisementTypeConfigurations', new AdvertisementPropertyNameListType());
-
-// 		$builder->add(
-//             $builder->create('AdvertisementTypeConfigurations', new AdvertisementPropertyNameListType())
-// 		            ->addModelTransformer()
-//         );
-
-		
-// 		foreach($this->properties as $property){
-// 		    $attr = array('label' => $property->getLabel(), 'virtual' => true, 'value' => $property->getId());
-// 		    $builder->add($property->getName(), 'checkbox', $attr);
-// 		}
+		$builder->add('advertisementTypeConfigurations', 'advertisementPropertyName_list');
 	}
 
 	// How does it work?

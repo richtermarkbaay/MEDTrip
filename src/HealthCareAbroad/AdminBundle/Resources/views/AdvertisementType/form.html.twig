@@ -5,21 +5,30 @@
 {% block content %}
 
     <style type="text/css">
-        .tmp-form label {
-            display: inline-block;
-        }
         
         .tmp-form input[type=checkbox] {
             margin-top: 4px;
             float: left;
         }
-        
+
         .tmp-form h5 {
             margin-bottom: 5px;
         }
         
-        .tmp-form .properties {
+        .tmp-form .default-properties, .tmp-form .optional-properties {
+            margin-bottom: 20px;
+        }
+        
+        .tmp-form .optional-properties > div > label {
+            font-weight: bold;
+        }
+        
+        .tmp-form .default-properties > div, .tmp-form .optional-properties > div > div {
             margin-left: 20px;
+        }
+        
+        .tmp-form .default-properties label {
+            display: inline-block;
         }
     </style>
 
@@ -33,10 +42,17 @@
     
     				{{ form_row(form.name) }}
     				
+    				<div class="default-properties">
+                        <h5>Default Properties: </h5>
+        				{{ form_row(form.title) }}
+        				{{ form_row(form.description) }}			    
+    				</div>
 
-    				<h5>Properties: </h5>
-    
-                    <div class="properties">{{ form_rest(form) }}</div>
+    				<div class="optional-properties">
+    				    {{ form_row(form.advertisementTypeConfigurations) }}
+                    </div>
+
+                    {{ form_rest(form) }}
     
                     <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
     			</form>

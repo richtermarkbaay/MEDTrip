@@ -1,31 +1,44 @@
-admin_advertisement_type_index:
+admin_advertisement_index:
     pattern:  /admin/advertisements
-    defaults: { _controller: AdminBundle:AdvertisementType:index }
+    defaults: { _controller: AdminBundle:Advertisement:index }
     requirements:
         _method:  GET
 
-admin_advertisement_type_add:
-    pattern:  /admin/advertisement-type/add
-    defaults: { _controller: AdminBundle:AdvertisementType:add }
+admin_advertisement_add:
+    pattern:  /admin/advertisement/add
+    defaults: { _controller: AdminBundle:Advertisement:add }
     requirements:
-        _method: GET
+        _method: GET|POST
 
-admin_advertisement_type_create:
-    pattern:  /admin/advertisement-type/add
-    defaults: { _controller: AdminBundle:AdvertisementType:add }
+admin_advertisement_addBasicDetail:
+    pattern:  /admin/advertisement/add/step-one
+    defaults: { _controller: AdminBundle:Advertisement:addBasicDetail }
     requirements:
-        _method: POST
-
-admin_advertisement_type_edit:
-    pattern:  /admin/advertisement-type/{advertisementTypeId}/edit
-    defaults: { _controller: AdminBundle:AdvertisementType:edit }
-    requirements:
-        _method: GET
-        advertisementTypeId: \d+
+        _method: GET|POST
         
-admin_advertisement_type_update:
-    pattern:  /admin/advertisement-type/{advertisementTypeId}/edit
-    defaults: { _controller: AdminBundle:AdvertisementType:edit }
+admin_advertisement_addSpecificDetail:
+    pattern:  /admin/advertisement/add/step-two
+    defaults: { _controller: AdminBundle:Advertisement:addSpecificDetail }
     requirements:
-        _method: POST
-        advertisementTypeId: \d+
+        _method: GET|POST
+        
+admin_advertisement_addInvoice:
+    pattern:  /admin/advertisement/{advertisementId}/add-invoice
+    defaults: { _controller: AdminBundle:Advertisement:addInvoice }
+    requirements:
+        _method: GET|POST
+        advertisementId: \d+
+        
+admin_advertisement_preview:
+    pattern:  /admin/advertisement/{advertisementId}/preview
+    defaults: { _controller: AdminBundle:Advertisement:preview }
+    requirements:
+        _method: GET
+        advertisementId: \d+
+        
+admin_advertisement_edit:
+    pattern:  /admin/advertisement/{advertisementId}/edit
+    defaults: { _controller: AdminBundle:Advertisement:edit }
+    requirements:
+        _method: GET|POST
+        advertisementId: \d+
