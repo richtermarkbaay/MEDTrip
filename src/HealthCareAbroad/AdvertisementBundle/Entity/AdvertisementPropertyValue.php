@@ -20,7 +20,7 @@ class AdvertisementPropertyValue
     private $value;
 
     /**
-     * @var HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName
+     * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName
      */
     private $advertisementPropertyName;
 
@@ -65,10 +65,10 @@ class AdvertisementPropertyValue
     /**
      * Set advertisementPropertyName
      *
-     * @param HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName $advertisementPropertyName
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementPropertyName
      * @return AdvertisementPropertyValue
      */
-    public function setAdvertisementPropertyName(\HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName $advertisementPropertyName = null)
+    public function setAdvertisementPropertyName(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName $advertisementPropertyName = null)
     {
         $this->advertisementPropertyName = $advertisementPropertyName;
         return $this;
@@ -77,7 +77,7 @@ class AdvertisementPropertyValue
     /**
      * Get advertisementPropertyName
      *
-     * @return HealthCareAbroad\AdvertisementBundle\Entity\AAdvertisementPropertyName 
+     * @return HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName 
      */
     public function getAdvertisementPropertyName()
     {
