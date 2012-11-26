@@ -33,33 +33,34 @@
 		                        
 		                        {{ form_row( form.contactEmail ) }}
 		
-		                        
-		                        <div>
-		                            {% set arrContactNumber = json_decode(institution.contactNumber) %}
-		
-		                            {% if not arrContactNumber|length %}
-		                                {% set arrContactNumber = [{"number" : "", "type": ""}] %}
-		                            {% endif %}
-		                        
-		                            {{ form_label(form.contactNumber) }}
-		
-		                            <div style="margin-bottom: 5px;display:inline-block;" id="contactNumberContainer">
-		                                {% for i, contact in arrContactNumber %}
-		                                    <div id="contact-{{ i }}">
-		                                        <input type="text" name="contactNumber[{{ i }}][number]" value="{{ contact.number}}">
-		                                        <a href="javascript:addAnotherContact()" class="add-another-number"> add another</a> 
-		                                        <span class="bar"> | </span> 
-		                                        <a href="javascript:removeContact({{ i }})" class="remove-contact">remove</a>
-		                                        <div style="margin-top: 3px;font-size: 11px;padding-left:5px;">
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="phone" id="phone{{ i }}" {{ ('phone' == contact.type) or ('' == contact.type) ? 'checked' : '' }}><label for="phone{{ i }}">Phone</label> &nbsp;
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="mobile" id="mobile{{ i }}" {{ 'mobile' == contact.type ? 'checked' : '' }}><label for="mobile{{ i }}">Mobile</label> &nbsp;
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="fax"  id="fax{{ i }}" {{ 'fax' == contact.type ? 'checked' : '' }}><label for="fax{{ i }}">Fax</label>
-		                                        </div>
-		                                    </div> 
-		                                {% endfor %}
-		                            </div>
-		                        </div>
-		                        
+      							 {% set arrContactNumber = json_decode(institution.contactNumber) %}
+					  		         {% if not arrContactNumber|length %}
+			                                {% set arrContactNumber = [{"area": "","number" : "", "type": ""}] %}
+			                            {% endif %}
+						  		      
+		                             {% for i, contact in arrContactNumber %}
+									 {% if i == 0 %}
+						 				<label for="institution name">Institution Phone Number</label>
+										<div class="input-prepend">
+											<div id="phone">
+												<input type="text" maxlength="3" class="span1" name="contactNumber[0][area]" value="{{contact.area}}">
+												<input type="text" maxlength="6" name="contactNumber[0][number]" value="{{contact.number}}">
+												<input type="hidden" name="contactNumber[0][type]" value="phone">
+											</div>
+										</div>
+										
+									 {% else %}
+										<label for="institution name">Institution Fax Number</label>
+										<div class="input-prepend">
+											<div id="fax">
+												<input type="text" maxlength="3" class="span1" name="contactNumber[1][area]" value="{{contact.area}}">
+												<input type="text" maxlength="6" name="contactNumber[1][number]" value="{{contact.number}}">
+												<input type="hidden" name="contactNumber[1][type]" value="fax">
+											</div>
+										</div>
+									{% endif %}
+						 		{% endfor %}		                        
+		                       
 		                        {{ form_rest(form) }}
 		
 								<input type="reset" value="Reset" class="form-reset"  />
