@@ -90,13 +90,13 @@ class TreatmentBundleService
     {
         $key = 'TreatmentBundle:TreatmentService:getActiveSubSpecializationBySpecialization_'.$specialization->getId();
         $result = $this->memcache->get($key);
-        if (!$result) {
+        if (true) {
             $result = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')
             ->getQueryBuilderForGettingAvailableSubSpecializations($specialization)
             ->getQuery()
             ->getResult();
     
-            $this->memcache->set($key, $result);
+            //$this->memcache->set($key, $result);
         }
     
         return $result;
