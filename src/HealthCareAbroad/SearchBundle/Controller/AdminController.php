@@ -59,6 +59,6 @@ class AdminController extends Controller
 				break;
 		}
 		
-		return $this->render($template, array("{$varName}" => $this->get('services.search')->initiate($searchCriteria)));
+		return $this->render($template, array("{$varName}" => $this->get('services.admin_search')->initiate($searchCriteria)));
 	}
 }

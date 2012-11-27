@@ -1,11 +1,16 @@
 parameters:
     services.search.class: HealthCareAbroad\SearchBundle\Services\SearchService
-    
+    services.admin_search.class: HealthCareAbroad\SearchBundle\Services\AdminSearchService
     services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
 
 services:
     services.search:
         class: "%services.search.class%"
+        arguments:
+            - @doctrine.orm.entity_manager
+            
+    services.admin_search:
+        class: "%services.admin_search.class%"
         arguments:
             - @doctrine.orm.entity_manager
             
