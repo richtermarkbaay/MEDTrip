@@ -33,33 +33,23 @@
 		                        
 		                        {{ form_row( form.contactEmail ) }}
 		
-      							 {% set arrContactNumber = json_decode(institution.contactNumber) %}
-					  		         {% if not arrContactNumber|length %}
-			                                {% set arrContactNumber = [{"area": "","number" : "", "type": ""}] %}
-			                            {% endif %}
-						  		      
-		                             {% for i, contact in arrContactNumber %}
-									 {% if i == 0 %}
-						 				<label for="institution name">Institution Phone Number</label>
+      							{% set arrContactNumber = json_decode(institution.contactNumber) %}
+				  		          {% if not arrContactNumber|length %}
+	                                {% set arrContactNumber = [{"area": "","number" : "", "type": ""}] %}
+	                            {% endif %}
+				  		      
+                                {% for i, contact in arrContactNumber %}
+							
+						 				<label for="institution name">Institution {{contact.type|capitalize}} Number</label>
 										<div class="input-prepend">
 											<div id="phone">
-												<input type="text" maxlength="3" class="span1" name="contactNumber[0][area]" value="{{contact.area}}">
-												<input type="text" maxlength="6" name="contactNumber[0][number]" value="{{contact.number}}">
-												<input type="hidden" name="contactNumber[0][type]" value="phone">
+												<input type="text" maxlength="3" class="span1" name="contactNumber[{{i}}][{{contact.area}}]" value="{{contact.area}}">
+												<input type="text" maxlength="6" name="contactNumber[{{i}}][{{contact.number}}]" value="{{contact.number}}">
+												<input type="hidden" name="contactNumber[{{i}}][{{contact.type}}]" value="phone">
 											</div>
 										</div>
-										
-									 {% else %}
-										<label for="institution name">Institution Fax Number</label>
-										<div class="input-prepend">
-											<div id="fax">
-												<input type="text" maxlength="3" class="span1" name="contactNumber[1][area]" value="{{contact.area}}">
-												<input type="text" maxlength="6" name="contactNumber[1][number]" value="{{contact.number}}">
-												<input type="hidden" name="contactNumber[1][type]" value="fax">
-											</div>
-										</div>
-									{% endif %}
-						 		{% endfor %}		                        
+									
+						 		{% endfor %}	                        
 		                       
 		                        {{ form_rest(form) }}
 		

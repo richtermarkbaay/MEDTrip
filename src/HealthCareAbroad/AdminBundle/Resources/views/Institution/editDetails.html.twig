@@ -28,32 +28,17 @@
 				  		   		{{ form_row( form.state ) }}               
 				  			    {{ form_row( form.zipCode ) }}
 				  		
-				  		       {% set arrContactNumber = json_decode(institution.contactNumber) %}
-				  		          {% if not arrContactNumber|length %}
-	                                {% set arrContactNumber = [{"area": "","number" : "", "type": ""}] %}
-	                            {% endif %}
-				  		      
                                 {% for i, contact in arrContactNumber %}
-									{% if i == 0 %}
-						 				<label for="institution name">Institution Phone Number</label>
-										<div class="input-prepend">
-											<div id="phone">
-												<input type="text" maxlength="3" class="span1" name="contactNumber[0][area]" value="{{contact.area}}">
-												<input type="text" maxlength="6" name="contactNumber[0][number]" value="{{contact.number}}">
-												<input type="hidden" name="contactNumber[0][type]" value="phone">
-											</div>
+							
+					 				<label for="institution name">Institution {{ contact.type == 'phone' ? 'Phone' : 'Fax' }} Number</label>
+									<div class="input-prepend">
+										<div id="phone">
+											<input type="text" maxlength="3" class="span1" name="contactNumber[{{i}}][{{contact.area}}]" value="{{contact.area}}">
+											<input type="text" maxlength="6" name="contactNumber[{{i}}][{{contact.number}}]" value="{{contact.number}}">
+											<input type="hidden" name="contactNumber[{{i}}][{{contact.type}}]" value="phone">
 										</div>
-										
-									{% else %}
-										<label for="institution name">Institution Fax Number</label>
-										<div class="input-prepend">
-											<div id="fax">
-												<input type="text" maxlength="3" class="span1" name="contactNumber[1][area]" value="{{contact.area}}">
-												<input type="text" maxlength="6" name="contactNumber[1][number]" value="{{contact.number}}">
-												<input type="hidden" name="contactNumber[1][type]" value="fax">
-											</div>
-										</div>
-									{% endif %}
+									</div>
+									
 						 		{% endfor %}
 						 		
  				  		        {% set arrWebsite = json_decode(institution.websites) %}
@@ -62,33 +47,15 @@
 	                            {% endif %}
 				  		      
                                 {% for i, website in arrWebsite %}
-									{% if i == 0 %}
-						 				<label for="institution name">Institution Site</label>
+							
+						 				<label for="{{website.type}} name">{{website.type|capitalize}} Site</label>
 										<div class="input-prepend">
-											<div id="institutionSite">
-												<input type="text" name="websites[0][url]" value="{{website.url}}">					
-												<input type="hidden" name="websites[0][type]" value="institutionSite">
+											<div id="{{website.type}}">
+												<input type="text" name="websites[{{i}}][{{website.url}}]" value="{{website.url}}">					
+												<input type="hidden" name="websites[{{i}}][{{website.type}}]" value="{{website.type}}">
 											</div>
 										</div>
-									{% endif %}
-									{% if i == 1 %}
-										<label for="institution Facebook">Facebook</label>
-										<div class="input-prepend">
-											<div id="facebook">
-												<input type="text" name="websites[1][url]" value="{{website.url}}">						
-												<input type="hidden" name="websites[1][type]" value="facebook">
-											</div>
-										</div>
-									{% endif %}
-									{% if i == 2 %}
-										<label for="institution Twitter">Twitter</label>
-										<div class="input-prepend">
-											<div id="twitter">
-												<input type="text" name="websites[2][url]" value="{{website.url}}">						
-												<input type="hidden" name="websites[2][type]" value="twitter">
-											</div>
-										</div>
-									{% endif %}
+									
 						 		{% endfor %}
 									
 				  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
