@@ -134,10 +134,9 @@ class InstitutionController extends Controller
     							));
 	    	
 	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('institutionId' => $institution->getId())));
-
 	    		}
 	    	}
-  	
+	    	
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
     					'institutionTypes' => InstitutionTypes::getList(),
@@ -184,6 +183,7 @@ class InstitutionController extends Controller
     										
 	    ));
     }
+    
     /*
      * Edit Institution Details
      */
@@ -212,12 +212,24 @@ class InstitutionController extends Controller
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     		}
     	}
-    	 
+    	
+    	//Check if there is an area code in Contact Number values
+    	$json = '[{"area":"","number":"","type":"phone"}]';
+    	$a1 = json_decode( $this->institution->getContactNumber(), true );
+    	$keys = array_keys($a1[0]);
+    	
+    	if ($keys[0] == 'area'){
+	    		$contactNumbers = $a1;
+	    }
+    	else{
+	    		$contactNumbers = json_decode( $json, true );
+	    }
+   
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
     					'form' => $form->createView(),
     					'institution' => $this->institution,
+    					'arrContactNumber' => $contactNumbers,
     					'id' => $this->institution->getId()
-    
     	));
     }
     
