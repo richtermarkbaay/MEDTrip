@@ -1480,7 +1480,6 @@ Globalize.parseFloat = function( value, radix, cultureSelector ) {
 
 	// trim leading and trailing whitespace
 	value = trim( value );
-
 	// allow infinity or hexidecimal
 	if ( regexInfinity.test(value) ) {
 		ret = parseFloat( value );
@@ -1510,7 +1509,7 @@ Globalize.parseFloat = function( value, radix, cultureSelector ) {
 		}
 
 		sign = sign || "+";
-
+		alert(sign)
 		// determine exponent and number
 		var exponent,
 			intAndFraction,

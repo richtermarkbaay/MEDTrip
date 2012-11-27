@@ -357,7 +357,7 @@ $.widget( "ui.mask", {
 		if ( this.optionalPosition > index ) {
 			this.optionalPosition--;
 		}
-
+		alert(index + 1);
 		return mask.substring( 0, index ) + mask.substring( index + 1 );
 	},
 	_parseMask: function() {
@@ -503,7 +503,7 @@ $.widget( "ui.mask", {
 				delete bufferObject.value;
 			}
 		}
-		this._shiftLeft( begin, end + 1 );
+		this._shiftLeft( begin, end + 2 );
 		return this;
 	},
 

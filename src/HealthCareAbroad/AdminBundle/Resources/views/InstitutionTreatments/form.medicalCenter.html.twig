@@ -38,7 +38,7 @@
     	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
         <script>
         	$(function() {
-    	    	$(".hour").timepicker({ seconds: false });
+    	    	$(".hour").timepicker({ seconds: false});
     	    	$('input.is_closed_checkbox').each(function(){
     			    if(this.checked) {
     			    	$(this).parent().parent().find('.hour').val("");

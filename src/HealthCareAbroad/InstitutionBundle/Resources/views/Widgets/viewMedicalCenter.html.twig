@@ -90,13 +90,12 @@
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
-
         $(function() {
-            $(".hour").timepicker({ seconds: false });
+            $(".hour").timepicker({ seconds: false  });
             $('input.is_closed_checkbox').each(function(){
                 if(this.checked) {
                     $(this).parent().parent().find('.hour').val("");
-                    var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+                    //var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
                 }
             });
 

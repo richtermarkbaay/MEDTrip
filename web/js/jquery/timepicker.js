@@ -120,7 +120,7 @@ $.widget( "ui.timepicker", {
 			value[ 0 ] = maskDefinitions.HH( "" + value[ 0 ] );
 			return value.join( ":" );
 		} else {
-
+			
 			// setter for values
 			value = value.split( ":" );
 			for ( bufferIndex = 0; bufferIndex < bufferLength; bufferIndex += 3 ) {
@@ -211,11 +211,11 @@ $.widget( "ui.timepicker", {
 			case 1:
 			case this.options.seconds ? 2 : -1 :
 				this.spinner.options.min = 0;
-				this.spinner.options.max = 59;
+				this.spinner.options.max = 45;
 				break;
 			case this.options.seconds ? 3 : 2 :
 				this.spinner.options.min = 0;
-				this.spinner.options.max = 1;
+				this.spinner.options.max = 45;
 				break;
 		}
 	},
