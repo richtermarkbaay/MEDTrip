@@ -149,4 +149,9 @@ class OfferedService
     {
         return $this->institution;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
