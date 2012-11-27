@@ -1,0 +1,26 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty:
+    type: entity
+    table: institution_properties
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionPropertyRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        value:
+            type: text
+            nullable: false
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
+        institutionPropertyType:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType
+            joinColumn:
+                name: institution_property_type_id
+                referencedColumnName: id
