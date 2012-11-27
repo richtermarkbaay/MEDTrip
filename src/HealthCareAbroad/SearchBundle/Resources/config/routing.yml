@@ -5,7 +5,7 @@ search_admin_showWidget:
 
 search_admin_initiate:
     pattern: /admin/search
-    defaults: { _controller: SearchBundle:Default:initiate }
+    defaults: { _controller: SearchBundle:Admin:initiate }
 
 ## FRONTEND BUNDLE
 search_frontend_homepage:

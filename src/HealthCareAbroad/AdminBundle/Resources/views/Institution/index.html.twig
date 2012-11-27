@@ -47,9 +47,7 @@
                 {% endfor %}
                 </table>
 
-                {% if pager.isPaginable %}
-                    {{ paginate(pager, 'admin_institution_index', app.request.query.all) }}
-                {% endif %}
+     
             </div>
             
             {% endblock %}

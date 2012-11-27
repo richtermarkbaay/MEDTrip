@@ -4,14 +4,13 @@ namespace HealthCareAbroad\SearchBundle\Controller;
 
 use HealthCareAbroad\SearchBundle\Form\FilterFormType;
 
-use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalCenterListType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
+use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalCenterListType;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\SearchBundle\Constants;
-
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\SearchBundle\Form\AdminDefaultSearchType;
@@ -36,11 +35,18 @@ class AdminController extends Controller
     public function initiateAction(Request $request)
     {
 		$searchCriteria = $request->get('adminDefaultSearch', array());
-
+		$params['context'] = $request->get('context');
+		
 		switch ($searchCriteria['category']) {
 			case Constants::SEARCH_CATEGORY_INSTITUTION:
 				$template = 'AdminBundle:Institution:index.html.twig';
 				$varName = 'institutions';
+				
+				return $this->render($template,
+								array("{$varName}" => $this->get('services.admin_search')->initiate($searchCriteria),
+								"statusList" => InstitutionStatus::getBitValueLabels(),
+								"updateStatusOptions" => InstitutionStatus::getUpdateStatusOptions()
+								));
 				break;
 		
 			case Constants::SEARCH_CATEGORY_CENTER:
@@ -59,6 +65,7 @@ class AdminController extends Controller
 				break;
 		}
 		
-		return $this->render($template, array("{$varName}" => $this->get('services.admin_search')->initiate($searchCriteria)));
+	return $this->render($template, array("{$varName}" => $this->get('services.search')->initiate($searchCriteria)));
+
 	}
 }
