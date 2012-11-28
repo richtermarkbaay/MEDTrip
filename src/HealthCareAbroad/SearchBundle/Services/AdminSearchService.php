@@ -40,26 +40,6 @@ class AdminSearchService
 		$this->doctrine = $doctrine;
 		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
 	}
-	
-//     private $repositoryMap = array(
-    				
-//         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
-//         Constants::SEARCH_CATEGORY_CENTER => 'InstitutionBundle:InstitutionMedicalCenter',
-//         Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
-//         Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
-//     );
-
-    /**
-     *
-     * @param array $searchCriteria
-     * @todo rename method
-     */
-//     public function initiate(array $searchCriteria = array())
-//     {
-//         $repository = $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']]);
-
-//         return $repository->search($searchCriteria['term']);
-//     }
     
     function buildQueryBuilder(array $searchCriteria = array())
     {
@@ -67,18 +47,24 @@ class AdminSearchService
     
     	if ($searchCriteria['category'] == 1) {
     		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
-    		$this->queryBuilder->andWhere('a.name = :name');
-    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+    		$this->queryBuilder->andWhere('a.name LIKE :name');
+    		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
-
-    	$adapter = new DoctrineOrmAdapter($this->queryBuilder);
+    	$result = $this->setPager($this->queryBuilder);
     	
+		return $result->getResults();
+    }
+    
+   function setPager($query)
+    {
+    	$adapter = new DoctrineOrmAdapter($query);
+    
     	$params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
     	$params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
-    	
+    
     	$this->pager = new Pager($adapter, $params);
-    	
-		return $this->pager->getResults();
+    
+    	return $this->pager;
     }
     
     function getPager()
