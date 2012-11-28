@@ -66,10 +66,8 @@ class AdminSearchService
     		$this->queryBuilder->where('a.institution = b.id');
     		$this->queryBuilder->andWhere('a.id = c.institutionMedicalCenter');
     		$this->queryBuilder->andWhere('c.specialization = d.id');
-    		$this->queryBuilder->andWhere('a.name LIKE :name OR b.name LIKE :institutionName OR d.name LIKE :specialization');
+    		$this->queryBuilder->andWhere('a.name LIKE :name');
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
-    		$this->queryBuilder->setParameter('institutionName', '%'.$searchCriteria['term'].'%');
-    		$this->queryBuilder->setParameter('specialization', '%'.$searchCriteria['term'].'%');
     	
     	}else{
     		
