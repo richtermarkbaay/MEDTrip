@@ -14,4 +14,9 @@ HealthCareAbroad\HelperBundle\Entity\DataType:
             fixed: true
             nullable: false
             column: column_type
+        formField:
+            type: string
+            length: 30
+            nullable: false
+            column: form_field
     lifecycleCallbacks: {  }

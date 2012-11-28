@@ -1,0 +1,7 @@
+
+parameters:
+    institution_property_type_form_options:
+        ancilliary_service_id:
+            data_class: HealthCareAbroad\AdminBundle\Entity\OfferedService
+            query_builder_class:
+            query_builder_method:

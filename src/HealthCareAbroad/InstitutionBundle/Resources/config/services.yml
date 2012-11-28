@@ -19,6 +19,16 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionSpecializationService
         arguments: [@doctrine]
         
+    services.institution_property:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionPropertyService
+        arguments: [@doctrine, @services.memcache]
+        
+    services.institution_property.form_factory:
+        class: HealthCareAbroad\InstitutionBundle\Form\InstitutionPropertyType\Factory\InstitutionPropertyTypeFormFactory
+        arguments: [@form.factory]
+        calls:
+            - [setInstitutionPropertyService, [@services.institution_property]]
+        
     services.institution_medical_center:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:

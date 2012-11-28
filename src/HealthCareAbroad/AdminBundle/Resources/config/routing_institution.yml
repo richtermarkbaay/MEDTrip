@@ -20,7 +20,22 @@ admin_institution_edit:
     defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
          institutionId: \d+
-         _method: GET|POST            
+         _method: GET|POST
+         
+##-----         
+## institution property related routes
+admin_institution_addAncilliaryService:
+    pattern:  /admin/institution/{institutionId}/add-ancilliary-service
+    defaults: { _controller: AdminBundle:InstitutionProperties:addAncilliaryService }
+    requirements:
+        institutionId: \d+
+        
+admin_institution_addLanguageSpoken:
+    pattern:  /admin/institution/{institutionId}/add-language-spoken
+    defaults: { _controller: AdminBundle:InstitutionProperties:addLanguageSpoken }
+    requirements:
+        institutionId: \d+
+##-----
          
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status
@@ -36,104 +51,6 @@ admin_institution_view:
     requirements:
          institutionId: \d+
          _method: GET
-
-# Manage Procedure Types Routes #
-admin_institution_procedureType_add:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/add
-    defaults: { _controller: AdminBundle:Institution:addProcedureType }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: GET
-
-admin_institution_procedureType_create:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/add
-    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
-
-admin_institution_procedureType_edit:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/edit/{imptId}
-    defaults: { _controller: AdminBundle:Institution:editProcedureType }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        _method: GET
-
-admin_institution_procedureType_update:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/edit/{imptId}
-    defaults: { _controller: AdminBundle:Institution:saveProcedureType }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        _method: POST
-
-admin_institution_procedureType_updateStatus:
-    pattern:  /admin/institution/procedure-type/update-status
-    defaults: { _controller: AdminBundle:Institution:updateProcedureTypeStatus }
-    requirements:
-        imptId: \d+
-        _method: POST
-# End of Manage Procedure Types Routes #
-
-
-# Treatment Procedure Routes #
-admin_institution_manageProcedures:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/manage-procedures
-    defaults: { _controller: AdminBundle:Institution:mnageProcedures }
-    requirements:
-        institutionId: \d+
-        institution_medical_procedure_type_id: \d+
-
-admin_institution_treatmentProcedure_add:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/procedure/add
-    defaults: { _controller: AdminBundle:Institution:addProcedure }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        _method: GET
-
-admin_institution_treatmentProcedure_create:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/procedure/add
-    defaults: { _controller: AdminBundle:Institution:saveProcedure }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        _method: POST
-
-admin_institution_treatmentProcedure_edit:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/procedure/edit/{impId}
-    defaults: { _controller: AdminBundle:Institution:editProcedure }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        impId: \d+
-        _method: GET
-
-admin_institution_treatmentProcedure_update:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/procedure-type/{imptId}/procedure/edit/{impId}
-    defaults: { _controller: AdminBundle:Institution:saveProcedure }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        imptId: \d+
-        impId: \d+
-        _method: POST
-        
-admin_institution_treatmentProcedure_updateStatus:
-    pattern:  /admin/institution/procedure/{impId}/update-status/{status}
-    defaults: { _controller: AdminBundle:Institution:updateProcedureStatus, status: ~ }
-    requirements:
-        impId: \d+
-        _method: POST
-# End of Treatment Procedure Routes #
 
 
 admin_loadTreatments:

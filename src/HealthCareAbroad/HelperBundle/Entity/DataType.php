@@ -18,6 +18,11 @@ class DataType
      * @var string $columnType
      */
     private $columnType;
+    
+    /**
+     * @var string $formField
+     */
+    private $formField;
 
 
     /**
@@ -50,5 +55,27 @@ class DataType
     public function getColumnType()
     {
         return $this->columnType;
+    }
+
+    /**
+     * Set formField
+     *
+     * @param string $formField
+     * @return DataType
+     */
+    public function setFormField($formField)
+    {
+        $this->formField = $formField;
+        return $this;
+    }
+
+    /**
+     * Get formField
+     *
+     * @return string 
+     */
+    public function getFormField()
+    {
+        return $this->formField;
     }
 }
