@@ -63,8 +63,8 @@ class AdminController extends Controller
 				break;
 		}
 		
-		var_dump($this->pager);
-		exit;
+		var_dump($this->get('services.admin_search')->buildQueryBuilder($searchCriteria));exit;
+		
 		return $this->render($template,
 						array("{$varName}" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria)
 						));

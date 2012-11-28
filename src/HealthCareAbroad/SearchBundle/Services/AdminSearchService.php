@@ -23,7 +23,8 @@ class AdminSearchService
 	protected $queryParams = array();
 	public $pager;
 	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
-	
+	protected $category = array('1' => 'InstitutionBundle:Institution', 
+	                            '2' => 'InstitutionBundle:InstitutionMedicalCenter');
 	/**
 	 * @desc Prepare the ListFilter object
 	 * @param array $queryParams
@@ -41,35 +42,29 @@ class AdminSearchService
 		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
 	}
 	
-//     private $repositoryMap = array(
-    				
-//         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
-//         Constants::SEARCH_CATEGORY_CENTER => 'InstitutionBundle:InstitutionMedicalCenter',
-//         Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
-//         Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
-//     );
-
     /**
      *
      * @param array $searchCriteria
      * @todo rename method
      */
-//     public function initiate(array $searchCriteria = array())
-//     {
-//         $repository = $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']]);
-
-//         return $repository->search($searchCriteria['term']);
-//     }
     
     function buildQueryBuilder(array $searchCriteria = array())
     {
     	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-    
-    	if ($searchCriteria['category'] == 1) {
-    		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
+        $isDoctor = false;
+    	if (!$isDoctor) {
+    		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
     		$this->queryBuilder->andWhere('a.name = :name');
     		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
     	}
+        else {
+            
+        }
+//     	if ($searchCriteria['category'] == 1) {
+//     		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
+//     		$this->queryBuilder->andWhere('a.name = :name');
+//     		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+//     	}
 
     	$adapter = new DoctrineOrmAdapter($this->queryBuilder);
     	
