@@ -1,5 +1,5 @@
 parameters:
-    services.institution_list : HealthCareAbroad\InstitutionBundle\Form\InstitutionListType
+    services.institution_list : HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionListType
     services.doctor_list: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorListType
 
 services:
