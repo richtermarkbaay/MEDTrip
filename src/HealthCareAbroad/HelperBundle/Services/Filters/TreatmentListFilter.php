@@ -69,25 +69,32 @@ class TreatmentListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('TreatmentBundle:Treatment', 'a');
+        $this->queryBuilder->select('a, b')->from('TreatmentBundle:Treatment', 'a');
+        
+        if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->innerJoin('a.specialization', 'b', Join::WITH, 'b.id = :specialization');
+            $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
+        }
+        else {
+            $this->queryBuilder->leftJoin('a.specialization', 'b');
+        }
+        
+        if (\array_key_exists('subSpecialization', $this->queryParams) &&  0 != $this->queryParams['subSpecialization']) {
+            $this->queryBuilder->innerJoin('a.subSpecializations', 'c', Join::WITH, 'c.id = :subSpecialization')
+            ->setParameter('subSpecialization', $this->queryParams['subSpecialization']);
+        }
+        else {
+            $this->queryBuilder->leftJoin('a.subSpecializations', 'c');
+        }
+        
+        $this->queryBuilder->groupBy('a.id');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
-        
-        if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.specialization = :specialization');
-            $this->queryBuilder->setParameter('specialization', $this->criteria['specialization']);
-        }
-        
-        if (\array_key_exists('subSpecialization', $this->queryParams) &&  0 != $this->queryParams['subSpecialization']) {
-            $this->queryBuilder->innerJoin('a.subSpecializations', 'b', Join::WITH, 'b.id = :subSpecialization')
-                ->setParameter('subSpecialization', $this->queryParams['subSpecialization']);
-        }
 
         if($this->sortBy == 'specialization') {
-            $this->queryBuilder->leftJoin('a.specialization', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';
