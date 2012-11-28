@@ -39,7 +39,7 @@ class AdminController extends Controller
     public function initiateAction(Request $request)
     {
 		$searchCriteria = $request->get('adminDefaultSearch', array());
-		
+		$isDoctor = false;
 		switch ($searchCriteria['category']) {
 			case Constants::SEARCH_CATEGORY_INSTITUTION:
 				$varName = 'institutions';
@@ -52,14 +52,15 @@ class AdminController extends Controller
 				$varName = 'procedureTypes';
 				break;
 		
-			case Constants::SEARCH_CATEGORY_PROCEDURE:
-				$varName = 'procedures';
+			case Constants::SEARCH_CATEGORY_DOCTOR:
+				$varName = 'doctors';
+				$isDoctor = true;
 				break;
 		}
-		
 		$params = array(
 						"datas" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria),
 						"pager" => $this->get('services.admin_search')->pager,
+		                "isDoctor" => $isDoctor
 		);
 		
 		return $this->render('SearchBundle:Admin:searchResult.html.twig',$params);

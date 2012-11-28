@@ -1,28 +1,91 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% block content %}
-<!-- start content -->
-    <div id="content">
-   
-      {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_index'%}
 
-			<div id="table-content" style="width: 70%">
-			    <table class="table table-bordered sortable-list">
-    				<tr>
-    					<th>Name</th>
-    					<th>Description</th>
-    				</tr>
-    				
-    				{% for each in datas %}
-    				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
-        					<td>{{ each.name | title }}</td>
-        					<td>{{ each.description }}</td>
-        					</td>
-        				</tr>
-    				{% endfor %}
-				</table> 
-		     {% endblock %}
+{% block content %}
+    <div id="content">
+
+        <div id="page-heading"><h3>List of Institutions</h3></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            
+            {% include '::notice.admin.html.twig' %}
+
+            <!-- Render Filter Box -->
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+            {% set sortBy = app.request.get('sortBy') %}
+            {% set sortOrder = app.request.get('sortOrder') %}
+            {% set default = sortBy | length ? '' : 'sort-asc' %}
+            
+            <div>
+                <table class="table table-bordered sortable-list">
+                    <tr>
+                        <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                        <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                    </tr>
+                
+                    {% for each in datas %}
+                        <tr id="each-{{each.id}}">
+                            {% if isDoctor is sameas(false) %}
+                                <td><a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a> </td>
+                                <td>{{ each.description }}</td>
+                            
+                            {% else %}
+                                <td><a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.firstName }}">{{ each.firstName }} {{ each.middleName }} {{ each.lastName }}</a> </td>
+                                <td></td>
+                            {% endif %}
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                    {% endfor %}
+                
+                </table>
+
+     
+            </div>
+            
+            {% endblock %}
         {% endembed %}
     </div>
+
+    <div id="update-status-container" title="Edit Institution Status" style="display:none">
+        <p>
+            <strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
+            Select an option below to update its status.
+        </p>
+        <form id="update-status-form" method="POST">
+        <select name="status" id="selected-status">
+        </select>
+        <input type="submit" class="green-button" value="Confirm"/>
+        </form>
+
+    </div>
     
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function(){
+
+        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
+
+        $("a.show-update-status").click(function() {
+
+            var url = $(this).attr('href');
+            var institutionId = $(this).attr('id').split('-').pop();
+            var currentStatus = $('#institution-'+institutionId+' > td.status').html();
+            var institutionName = $('#institution-'+institutionId+' td > a.name').html();
+
+            $('#current-status').html(currentStatus);
+            $('#current-institution').html(institutionName);
+
+            $('#update-status-form').attr('action', url);
+            
+            $("#update-status-container").dialog("open");
+            return false;
+        });
+    });
+</script>
 {% endblock %}
