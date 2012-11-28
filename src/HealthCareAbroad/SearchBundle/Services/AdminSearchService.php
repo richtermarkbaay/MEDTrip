@@ -51,26 +51,41 @@ class AdminSearchService
     function buildQueryBuilder(array $searchCriteria = array())
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+        $this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
+        
     	if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_DOCTOR) {
-    		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
+    		
     		$this->queryBuilder->andWhere('a.firstName LIKE :name OR a.middleName LIKE :name OR a.lastName LIKE :name');
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
-    	else {
-    		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
-    		$this->queryBuilder->andWhere('a.name LIKE :name');
+    	if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_CENTER) {
+    		
+    		$this->queryBuilder->join('a.institution', 'b');
+    		$this->queryBuilder->join('a.institutionSpecializations', 'c');
+    		$this->queryBuilder->innerJoin('c.specialization', 'd');
+    		$this->queryBuilder->where('a.institution = b.id');
+    		$this->queryBuilder->andWhere('a.id = c.institutionMedicalCenter');
+    		$this->queryBuilder->andWhere('c.specialization = d.id');
+    		$this->queryBuilder->andWhere('a.name LIKE :name OR b.name LIKE :institutionName OR d.name LIKE :specialization');
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
+    		$this->queryBuilder->setParameter('institutionName', '%'.$searchCriteria['term'].'%');
+    		$this->queryBuilder->setParameter('specialization', '%'.$searchCriteria['term'].'%');
+    	
+    	}else{
+    		
+    		$this->queryBuilder->andWhere('a.name = :name');
+    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
     	}
-    	
+  
     	$result = $this->setPager($this->queryBuilder);
-    	
-		return $result->getResults();
+
+    	return $result->getResults();
     }
     
    function setPager($query)
     {
     	$adapter = new DoctrineOrmAdapter($query);
-    
+    	
     	$params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
     	$params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
     
