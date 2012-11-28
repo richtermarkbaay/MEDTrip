@@ -11,8 +11,7 @@ services:
             
     services.admin_search:
         class: "%services.admin_search.class%"
-        arguments:
-            - @doctrine.orm.entity_manager
+        arguments: [@doctrine]
             
 #    services.filesystemfactory:
 #        class: HealthCareAbroad\MediaBundle\Classes\FilesystemFactory

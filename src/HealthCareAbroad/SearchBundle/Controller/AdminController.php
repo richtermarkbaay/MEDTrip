@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\Filters\SearchResultListFilter;
+
+use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+
 use HealthCareAbroad\SearchBundle\Form\FilterFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -39,16 +43,10 @@ class AdminController extends Controller
 		
 		switch ($searchCriteria['category']) {
 			case Constants::SEARCH_CATEGORY_INSTITUTION:
+				
 				$template = 'AdminBundle:Institution:index.html.twig';
 				$varName = 'institutions';
-				
-				return $this->render($template,
-								array("{$varName}" => $this->get('services.admin_search')->initiate($searchCriteria),
-								"statusList" => InstitutionStatus::getBitValueLabels(),
-								"updateStatusOptions" => InstitutionStatus::getUpdateStatusOptions()
-								));
 				break;
-		
 			case Constants::SEARCH_CATEGORY_CENTER:
 				$template = 'AdminBundle:MedicalCenter:index.html.twig';
 				$varName = 'medicalCenters';
@@ -65,7 +63,9 @@ class AdminController extends Controller
 				break;
 		}
 		
-	return $this->render($template, array("{$varName}" => $this->get('services.search')->initiate($searchCriteria)));
-
+		return $this->render($template,
+						array("{$varName}" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria)
+						));
+		
 	}
 }

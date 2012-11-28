@@ -13,35 +13,50 @@ use Doctrine\ORM\EntityManager;
  * Temporary holder of all search related functionality
  *
  */
-class AdminSearchService
+class AdminSearchService 
 {
-    private $entityManager;
-    private $repositoryMap = array(
-        Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
-        Constants::SEARCH_CATEGORY_CENTER => 'MedicalProcedureBundle:MedicalCenter',
-        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
-        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
-    );
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+	protected $doctrine;
+	protected $queryBuilder;
+	
+	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+	{
+		$this->doctrine = $doctrine;
+		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
+	}
+//     private $repositoryMap = array(
+    				
+//         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
+//         Constants::SEARCH_CATEGORY_CENTER => 'InstitutionBundle:InstitutionMedicalCenter',
+//         Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
+//         Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
+//     );
 
     /**
      *
      * @param array $searchCriteria
      * @todo rename method
      */
-    public function initiate(array $searchCriteria = array())
-    {
-        $repository = $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']]);
+//     public function initiate(array $searchCriteria = array())
+//     {
+//         $repository = $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']]);
 
-        return $repository->search($searchCriteria['term']);
+//         return $repository->search($searchCriteria['term']);
+//     }
+    
+    function buildQueryBuilder(array $searchCriteria = array())
+    {
+    	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+    
+    	if ($searchCriteria['category'] == 1) {
+    		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
+    		$this->queryBuilder->andWhere('a.name = :name');
+    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+    	}
+    	echo "<pre>";
+		   print_r($this->queryBuilder);
+		echo "</pre>";
+    	return $this->queryBuilder;
     }
+    
+    
 }
