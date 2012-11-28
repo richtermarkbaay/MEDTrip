@@ -23,6 +23,8 @@ class AdminSearchService
 	protected $queryParams = array();
 	public $pager;
 	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
+	protected $category = array('1' => 'InstitutionBundle:Institution', 
+	                            '2' => 'InstitutionBundle:InstitutionMedicalCenter');
 	
 	/**
 	 * @desc Prepare the ListFilter object
@@ -44,12 +46,20 @@ class AdminSearchService
     function buildQueryBuilder(array $searchCriteria = array())
     {
     	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-    
-    	if ($searchCriteria['category'] == 1) {
+		
+		$isDoctor = false;
+    	
+    	if (!$isDoctor) {
+    		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
+    		$this->queryBuilder->andWhere('a.name = :name');
+    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+    	}
+    	else {
     		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
     		$this->queryBuilder->andWhere('a.name LIKE :name');
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
+    	
     	$result = $this->setPager($this->queryBuilder);
     	
 		return $result->getResults();

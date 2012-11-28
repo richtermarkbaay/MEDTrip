@@ -67,6 +67,5 @@ class AdminController extends Controller
 				array("{$varName}" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria),
 				"pager" => $this->get('services.admin_search')->pager,
 				));
-		
 	}
 }
