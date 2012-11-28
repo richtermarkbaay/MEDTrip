@@ -9,6 +9,9 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityManager;
 
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
 /**
  * Temporary holder of all search related functionality
  *
@@ -17,12 +20,27 @@ class AdminSearchService
 {
 	protected $doctrine;
 	protected $queryBuilder;
+	protected $queryParams = array();
+	public $pager;
+	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
+	
+	/**
+	 * @desc Prepare the ListFilter object
+	 * @param array $queryParams
+	 */
+	function prepare($queryParams = array())
+	{
+		$this->setQueryParamsAndCriteria($queryParams);
+		$this->buildQueryBuilder();
+		$this->setPager();
+	}
 	
 	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
 	{
 		$this->doctrine = $doctrine;
 		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
 	}
+	
 //     private $repositoryMap = array(
     				
 //         Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
@@ -52,11 +70,19 @@ class AdminSearchService
     		$this->queryBuilder->andWhere('a.name = :name');
     		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
     	}
-    	echo "<pre>";
-		   print_r($this->queryBuilder);
-		echo "</pre>";
-    	return $this->queryBuilder;
+
+    	$adapter = new DoctrineOrmAdapter($this->queryBuilder);
+    	
+    	$params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
+    	$params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
+    	
+    	$this->pager = new Pager($adapter, $params);
+    	
+		return $this->pager->getResults();
     }
     
-    
+    function getPager()
+    {
+    	return $this->pager;
+    }
 }
