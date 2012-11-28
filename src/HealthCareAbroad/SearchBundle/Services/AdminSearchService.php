@@ -62,7 +62,6 @@ class AdminSearchService
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
     	
-    	
     	$result = $this->setPager($this->queryBuilder);
     	
 		return $result->getResults();

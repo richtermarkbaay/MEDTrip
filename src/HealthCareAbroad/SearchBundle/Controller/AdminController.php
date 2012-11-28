@@ -39,33 +39,31 @@ class AdminController extends Controller
     public function initiateAction(Request $request)
     {
 		$searchCriteria = $request->get('adminDefaultSearch', array());
-		$params['context'] = $request->get('context');
+		
+		$params = array();
 		
 		switch ($searchCriteria['category']) {
 			case Constants::SEARCH_CATEGORY_INSTITUTION:
-				
-				$template = 'AdminBundle:Institution:index.html.twig';
 				$varName = 'institutions';
 				break;
 			case Constants::SEARCH_CATEGORY_CENTER:
-				$template = 'AdminBundle:MedicalCenter:index.html.twig';
 				$varName = 'medicalCenters';
 				break;
 
 			case Constants::SEARCH_CATEGORY_PROCEDURE_TYPE:
-				$template = 'AdminBundle:Treatment:index.html.twig';
 				$varName = 'procedureTypes';
 				break;
 		
 			case Constants::SEARCH_CATEGORY_PROCEDURE:
-				$template = 'AdminBundle:MedicalProcedure:index.html.twig';
 				$varName = 'procedures';
 				break;
 		}
 		
-		return $this->render($template,
-				array("{$varName}" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria),
-				"pager" => $this->get('services.admin_search')->pager,
-				));
+		$params = array(
+						"datas" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria),
+						"pager" => $this->get('services.admin_search')->pager,
+		);
+		
+		return $this->render('SearchBundle:Admin:searchResult.html.twig',$params);
 	}
 }

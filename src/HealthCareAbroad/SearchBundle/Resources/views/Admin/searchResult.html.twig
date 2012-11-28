@@ -1,29 +1,28 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% block content %}
 <!-- start content -->
-    <div id="content" class="span9">
+    <div id="content">
    
-     {% block sectionContent %}
+      {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
 
 			<div id="table-content" style="width: 70%">
 			    <table class="table table-bordered sortable-list">
     				<tr>
     					<th>Name</th>
-    					<th>Desc</th>
+    					<th>Description</th>
     				</tr>
     				
-    				{% for each in users %}
+    				{% for each in datas %}
     				    <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
         					<td>{{ each.name | title }}</td>
-        					<td>{{ each.desc }}</td>
+        					<td>{{ each.description }}</td>
         					</td>
         				</tr>
     				{% endfor %}
 				</table> 
-		{% endblock %}
-            
+		     {% endblock %}
         {% endembed %}
-        
     </div>
     
 {% endblock %}
