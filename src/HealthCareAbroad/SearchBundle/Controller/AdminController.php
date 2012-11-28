@@ -40,8 +40,6 @@ class AdminController extends Controller
     {
 		$searchCriteria = $request->get('adminDefaultSearch', array());
 		
-		$params = array();
-		
 		switch ($searchCriteria['category']) {
 			case Constants::SEARCH_CATEGORY_INSTITUTION:
 				$varName = 'institutions';
