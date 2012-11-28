@@ -42,7 +42,9 @@ class DoctrineOrmAdapter implements PagerAdapterInterface, \Countable
 
     /**
      * Returns the count query instance
-     *
+     * WARNING!!!!
+     *    This will REMOVE ALL GROUP BY clause. If count query produced different result from what is expected, 
+     *    please extend this Adapter and override  getCountQuery method.
      * @return QueryBuilder
      */
     public function getCountQuery($offset = null, $limit = null)
@@ -56,8 +58,18 @@ class DoctrineOrmAdapter implements PagerAdapterInterface, \Countable
         $alias = $aliases[0];
 
         $qb = clone $queryBuilder;
+        $groupBy = $qb->getDQLPart('groupBy');
+        if (\is_array($groupBy) && \count($groupBy) > 0 ){
+            $qb->resetDQLPart('groupBy');
+            $qb->select('COUNT( DISTINCT ' . $alias . ')');
+            
+        }
+        else {
+            $qb->select('COUNT(' . $alias . ')');
+        }
 
-        return $qb->select('COUNT(' . $alias . ')')->resetDQLPart('orderBy')->setMaxResults($limit)->setFirstResult($offset);
+        return $qb->resetDQLPart('orderBy')->setMaxResults($limit)->setFirstResult($offset);
+        
     }
 
     /**

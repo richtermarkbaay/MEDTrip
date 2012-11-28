@@ -284,5 +284,11 @@ class Pager implements \Countable, \IteratorAggregate
         $this->adapter = $adapter;
         return $this;
     }
+    
+    
+    public function getTotalResults()
+    {
+        return $this->adapter->getTotalResults();
+    }
 
 }
