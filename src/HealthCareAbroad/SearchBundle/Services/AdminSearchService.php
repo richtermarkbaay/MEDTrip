@@ -24,7 +24,12 @@ class AdminSearchService
 	public $pager;
 	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
 	protected $category = array('1' => 'InstitutionBundle:Institution', 
-	                            '2' => 'InstitutionBundle:InstitutionMedicalCenter');
+	                            '2' => 'InstitutionBundle:InstitutionMedicalCenter',
+	                            '3' => 'TreatmentBundle:Treatment',
+	                            '4' => 'TreatmentBundle:Treatment',
+	                            '5' => 'DoctorBundle:Doctor',
+            	                '6' => 'TreatmentBundle:Specialization',
+	                            '7' => 'TreatmentBundle:SubSpecialization');
 	
 	/**
 	 * @desc Prepare the ListFilter object
@@ -45,20 +50,18 @@ class AdminSearchService
     
     function buildQueryBuilder(array $searchCriteria = array())
     {
-    	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-		
-		$isDoctor = false;
-    	
-    	if (!$isDoctor) {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+    	if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_DOCTOR) {
     		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
-    		$this->queryBuilder->andWhere('a.name = :name');
-    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+    		$this->queryBuilder->andWhere('a.firstName LIKE :name OR a.middleName LIKE :name OR a.lastName LIKE :name');
+    		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
     	else {
-    		$this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
+    		$this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
     		$this->queryBuilder->andWhere('a.name LIKE :name');
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
+    	
     	
     	$result = $this->setPager($this->queryBuilder);
     	
