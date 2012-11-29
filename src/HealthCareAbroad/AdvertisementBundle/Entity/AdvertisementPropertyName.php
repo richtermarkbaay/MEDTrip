@@ -11,7 +11,7 @@ class AdvertisementPropertyName
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-    
+
     /**
      * @var smallint $id
      */
@@ -31,6 +31,11 @@ class AdvertisementPropertyName
      * @var string $dataClass
      */
     private $dataClass;
+
+    /**
+     * @var string $propertyConfig
+     */
+    private $propertyConfig;
 
     /**
      * @var smallint $status
@@ -117,6 +122,28 @@ class AdvertisementPropertyName
     public function getDataClass()
     {
         return $this->dataClass;
+    }
+
+    /**
+     * Set propertyConfig
+     *
+     * @param string $propertyConfig
+     * @return AdvertisementPropertyName
+     */
+    public function setPropertyConfig($propertyConfig)
+    {
+        $this->propertyConfig = $propertyConfig;
+        return $this;
+    }
+
+    /**
+     * Get propertyConfig
+     *
+     * @return string 
+     */
+    public function getPropertyConfig()
+    {
+        return $this->propertyConfig;
     }
 
     /**

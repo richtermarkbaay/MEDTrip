@@ -23,9 +23,10 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue:
             orphanRemoval: false
         advertisement:
             targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\Advertisement
-            cascade: {  }
+            cascade: 
+                - "persist"
             mappedBy: null
-            inversedBy: null
+            inversedBy: advertisementPropertyValues
             joinColumns:
                 advertisement_id:
                     referencedColumnName: id

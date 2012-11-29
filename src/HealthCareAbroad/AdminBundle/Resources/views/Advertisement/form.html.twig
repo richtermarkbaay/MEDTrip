@@ -1,0 +1,73 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'advertisements' %}
+{% set selectedSubTab = '' %}
+{% set selectedStep = selectedStep is defined ? selectedStep : 'step1' %}
+{% set nextButtonLabel = nextButtonLabel is defined ? nextButtonLabel: 'Next' %}
+{% set advertisementsLabel = getClassLabel('advertisement') %}
+
+{% block content %}
+
+    <style type="text/css">
+        
+        .tmp-form input[type=checkbox] {
+            margin-top: 4px;
+            float: left;
+        }
+        
+        .tmp-form > div > label {
+            font-weight: bold;
+        }
+        
+        .tmp-form > div > div {
+            margin-left: 20px;
+        }
+
+        .tmp-form .default-properties label {
+            display: inline-block;
+        }
+    </style>
+
+	<div id="main-content">
+
+	{% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( 'Add ' ) ~ advertisementsLabel.singular | title ,
+                actions: [{link: path('admin_advertisement_index'), label: 'View all '~ advertisementsLabel.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+
+	{% block sectionContent %}
+			
+			    <!--  start table-content  -->
+                <div id="table-content" style="width:70%">
+
+    				<!-- start form -->
+    				<form novalidate="novalidate" action="{{ path('admin_advertisement_create') }}" enctype="multipart/form-data" method="post" {{ form_enctype(form) }} class="tmp-form">
+    
+    					{{ form_rest(form) }}
+    					
+    				    <input type="submit" value="Submit" class="btn btn-large btn-primary" name="submit"/>
+    				</form>
+                </div>
+				
+          {% endblock %}
+        {% endembed %}
+    </div>
+
+<script type="text/javascript">
+    $(function(){
+        $('#advertisement_institution, #advertisement_advertisementType').change(function(){
+
+            var institutionId = $('#advertisement_institution').val();
+            var advertisementTypeId = $('#advertisement_advertisementType').val();
+
+alert(institutionId);
+            
+            if(institutionId != '' && advertisementTypeId != '') {
+                window.location = "{{ path('admin_advertisement_add') }}?institutionId="+institutionId+"&advertisementTypeId="+advertisementTypeId;
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+

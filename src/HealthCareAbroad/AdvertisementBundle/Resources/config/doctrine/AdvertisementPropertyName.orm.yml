@@ -24,6 +24,12 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName:
             fixed: true
             nullable: false
             column: data_class
+        propertyConfig:
+            type: string
+            length: 500
+            fixed: false
+            nullable: false
+            column: property_config
         status:
             type: smallint
             nullable: false

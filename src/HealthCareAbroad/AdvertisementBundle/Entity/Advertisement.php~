@@ -36,7 +36,7 @@ class Advertisement
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     */ 
+     */
     private $advertisementPropertyValues;
 
     /**

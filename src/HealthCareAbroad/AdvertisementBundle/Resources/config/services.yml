@@ -13,6 +13,12 @@ services:
         tags:
             - {name: form.type, alias: advertisement }
 
+
+    form.advertisementType_list:
+        class: HealthCareAbroad\AdvertisementBundle\Form\ListType\AdvertisementTypeListType
+        tags:
+            - {name: form.type, alias: advertisementType_list }
+
     form.advertisementPropertyName_list:
         class: HealthCareAbroad\AdvertisementBundle\Form\ListType\AdvertisementPropertyNameListType
         tags:

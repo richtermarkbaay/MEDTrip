@@ -8,7 +8,13 @@ admin_advertisement_add:
     pattern:  /admin/advertisement/add
     defaults: { _controller: AdminBundle:Advertisement:add }
     requirements:
-        _method: GET|POST
+        _method: GET
+
+admin_advertisement_create:
+    pattern:  /admin/advertisement/add
+    defaults: { _controller: AdminBundle:Advertisement:save }
+    requirements:
+        _method: POST
 
 admin_advertisement_addBasicDetail:
     pattern:  /admin/advertisement/add/step-one

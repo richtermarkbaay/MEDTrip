@@ -23,23 +23,6 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
         status:
             type: boolean
             nullable: true
-    manyToMany:
-        media:
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
-            cascade: {  }
-            mappedBy: null
-            inversedBy: advertisement
-            joinTable:
-                name: advertisement_media
-                joinColumns:
-                    -
-                        name: advertisement_id
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    -
-                        name: media_id
-                        referencedColumnName: id
-            orderBy: null
     manyToOne:
         advertisementType:
             targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
@@ -59,4 +42,10 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
                 institution_id:
                     referencedColumnName: id
             orphanRemoval: false
+    oneToMany:
+        advertisementPropertyValues:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue
+            mappedBy: advertisement
+            cascade:
+                - "persist"
     lifecycleCallbacks: {  }
