@@ -52,13 +52,12 @@ class AdminSearchService
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
-        
+
     	if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_DOCTOR) {
-    		
-    		$this->queryBuilder->andWhere('a.firstName LIKE :name OR a.middleName LIKE :name OR a.lastName LIKE :name');
-    		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
+    		$this->queryBuilder->andWhere('a.firstName LIKE :seachTerm OR a.middleName LIKE :seachTerm OR a.lastName LIKE :seachTerm');
+    		$this->queryBuilder->setParameter('seachTerm', '%'.$searchCriteria['term'].'%');
     	}
-    	if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_CENTER) {
+    	else if ($searchCriteria['category'] == Constants::SEARCH_CATEGORY_CENTER) {
     		
     		$this->queryBuilder->join('a.institution', 'b');
     		$this->queryBuilder->join('a.institutionSpecializations', 'c');
@@ -70,13 +69,11 @@ class AdminSearchService
     		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	
     	}else{
-    		
-    		$this->queryBuilder->andWhere('a.name = :name');
-    		$this->queryBuilder->setParameter('name', $searchCriteria['term']);
+    		$this->queryBuilder->andWhere('a.name LIKE :name');
+    		$this->queryBuilder->setParameter('name', '%'.$searchCriteria['term'].'%');
     	}
   
     	$result = $this->setPager($this->queryBuilder);
-
     	return $result->getResults();
     }
     

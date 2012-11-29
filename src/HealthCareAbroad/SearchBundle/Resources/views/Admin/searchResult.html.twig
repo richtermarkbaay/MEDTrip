@@ -29,11 +29,27 @@
                     {% for each in datas %}
                         <tr id="each-{{each.id}}">
                             {% if isDoctor is sameas(false) %}
-                                <td><a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a> </td>
+                                <td>
+                                {% if category is sameas('institutions') %}
+                                    <a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
+                                
+                                {% elseif category is sameas('medicalCenters') %}
+                                    <a class="name" href="{{ path('admin_institution_medicalCenter_view', {imcId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
+                                
+                                {% elseif category is sameas('procedureTypes') %}
+                                    <a class="name" href="{{ path('admin_treatment_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
+                                
+                                {% elseif category is sameas('specialization') %}
+                                    <a class="name" href="{{ path('admin_specialization_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
+                                
+                                {% elseif category is sameas('sub-specialization') %}
+                                    <a class="name" href="{{ path('admin_subSpecialization_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
+                                {% endif %}
+                                 </td>
                                 <td>{{ each.description }}</td>
                             
                             {% else %}
-                                <td><a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.firstName }}">{{ each.firstName }} {{ each.middleName }} {{ each.lastName }}</a> </td>
+                                <td><a class="name" href="{{ path('admin_doctor_edit', {idId: each.id}) }}" title="View {{ each.firstName }}">{{ each.firstName }} {{ each.middleName }} {{ each.lastName }}</a> </td>
                                 <td></td>
                             {% endif %}
                         </tr>
@@ -65,27 +81,3 @@
     
 {% endblock %}
 
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-    $(function(){
-
-        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
-
-        $("a.show-update-status").click(function() {
-
-            var url = $(this).attr('href');
-            var institutionId = $(this).attr('id').split('-').pop();
-            var currentStatus = $('#institution-'+institutionId+' > td.status').html();
-            var institutionName = $('#institution-'+institutionId+' td > a.name').html();
-
-            $('#current-status').html(currentStatus);
-            $('#current-institution').html(institutionName);
-
-            $('#update-status-form').attr('action', url);
-            
-            $("#update-status-container").dialog("open");
-            return false;
-        });
-    });
-</script>
-{% endblock %}
