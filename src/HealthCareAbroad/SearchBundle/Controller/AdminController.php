@@ -68,7 +68,7 @@ class AdminController extends Controller
 		}
 		
 		$params = array(
-						"datas" => $this->get('services.admin_search')->buildQueryBuilder($searchCriteria),
+						"datas" => $this->get('services.admin_search')->search($searchCriteria),
 						"pager" => $this->get('services.admin_search')->pager,
 		                "isDoctor" => $isDoctor,
 		                "category" => $varName
