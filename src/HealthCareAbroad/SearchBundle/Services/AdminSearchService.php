@@ -47,8 +47,17 @@ class AdminSearchService
 		$this->doctrine = $doctrine;
 		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
 	}
+	
+	public function search($categoryKey, $searchCriteria)
+	{
+		$searchCategorySpecificBuilder = $categories[$categoryKey];
+	
+		$results = $searchCategorySpecificBuilder->getResults($searchCriteria);
+	
+		return $results;
+	}
     
-    function buildQueryBuilder(array $searchCriteria = array())
+    public function buildQueryBuilder(array $searchCriteria = array())
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from($this->category[$searchCriteria['category']], 'a');
