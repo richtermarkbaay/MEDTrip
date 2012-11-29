@@ -1,9 +1,7 @@
 <?php
-namespace HealthCareAbroad\UserBundle\Entity;
+namespace HealthCareAbroad\AdminBundle\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
-abstract class SearchResults
+abstract class SearchAdminResults
 {
     protected $id;
     protected $firstName;
@@ -12,21 +10,11 @@ abstract class SearchResults
     protected $name;
     protected $description;
 
-    /**
-     * @var bigint $accountId
-     */
-    protected $accountId;
-
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    /**
-     * Alias for getAccountId
-     *
-     * @return bigint
-     */
     public function getId()
     {
         return $this->accountId;

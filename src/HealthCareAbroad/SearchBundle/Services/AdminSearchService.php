@@ -59,10 +59,20 @@ class AdminSearchService extends SearchCategoryBuilder
 // 		else{
 			$results = $this->getResults($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
 // 		}
+        $this->hydrateSearchData($results);
 		
     	return $results;
 	}
-    
+	public function hydrateSearchData($searchResult)
+	{
+	    $searchData = new SearchAdminResults();
+	    foreach ($searchResult->getResults() as $data => $each)
+	    {
+	        //$searchData->setDescription($description);
+	
+	        echo $data->getId();exit;
+	    }
+	}
     public function buildQueryBuilder($searchCriteria,$searchTerm)
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
