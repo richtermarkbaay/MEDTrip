@@ -7,6 +7,7 @@ use HealthCareAbroad\SearchBundle\Classes\SearchCategoryBuilder;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\SearchBundle\Constants;
+use HealthCareAbroad\AdminBundle\Entity\SearchAdminResults;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityManager;
@@ -65,12 +66,12 @@ class AdminSearchService extends SearchCategoryBuilder
 	}
 	public function hydrateSearchData($searchResult)
 	{
-	    $searchData = new SearchAdminResults();
-	    foreach ($searchResult->getResults() as $data => $each)
+// 	    $searchData = new SearchAdminResults();
+	    foreach ($searchResult as $data => $each)
 	    {
 	        //$searchData->setDescription($description);
 	
-	        echo $data->getId();exit;
+	        echo $each->getId();exit;
 	    }
 	}
     public function buildQueryBuilder($searchCriteria,$searchTerm)
