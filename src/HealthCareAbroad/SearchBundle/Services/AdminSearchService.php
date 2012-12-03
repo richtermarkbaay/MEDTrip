@@ -45,13 +45,8 @@ class AdminSearchService
 
 	public function search(array $searchCriteria = array())
 	{
-		
 		$builder = $this->factory->getBuilderByCategory($searchCriteria);
-		
 		$result = $builder->search($searchCriteria);
-// 		exit;
-		
-        //$this->hydrateSearchData($searchCriteria['category'], $results);
 		
     	return $result;
 	}

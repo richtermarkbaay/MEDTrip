@@ -23,7 +23,7 @@ class DoctorSearchResultBuilder extends SearchResultBuilder
         $result->setLastName($val->getLastName());
         $result->setMiddleName($val->getMiddleName());
         $result->setUrl("/admin/doctor/edit/{$val->getId()}");
-        
+        $result->setName($result->getFullName());
         return $result;
     }
 }

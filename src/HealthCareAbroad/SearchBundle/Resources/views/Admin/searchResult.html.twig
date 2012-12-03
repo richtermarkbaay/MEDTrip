@@ -27,11 +27,10 @@
                     </tr>
                 
                     {% for each in datas %}
-                      {#  <tr id="each-{{each.id}}">
+                        <tr id="each-{{each.id}}">
                         	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name }}</a></td>
                             <td>{{ each.description }}</td>
                         </tr>
-                        #}
                     {% else  %}
                         <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                     {% endfor %}

@@ -66,7 +66,6 @@ class AdminController extends Controller
 			    $varName = 'sub-specialization';
 				break;
 		}
-		
 		$params = array(
 						"datas" => $this->get('services.admin_search')->search($searchCriteria),
 // 						"pager" => $this->get('services.admin_search')->pager,

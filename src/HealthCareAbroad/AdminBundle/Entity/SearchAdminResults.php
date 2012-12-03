@@ -1,14 +1,14 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Entity;
 
-abstract class SearchAdminResults
+class SearchAdminResults
 {
-    protected $id;
-    protected $firstName;
-    protected $middleName;
-    protected $lastName;
-    protected $name;
-    protected $description;
+    private $id;
+    private $firstName;
+    private $middleName;
+    private $lastName;
+    private $name;
+    private $description;
 
     public function setId($id)
     {
