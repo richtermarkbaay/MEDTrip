@@ -4,13 +4,13 @@ namespace HealthCareAbroad\SearchBundle\Services\Admin;
 
 class AdminSearchResult
 {
-    protected $id;
-    protected $firstName;
-    protected $middleName;
-    protected $lastName;
-    protected $name;
-    protected $description;
-    protected $url;
+    private $id;
+    private $firstName;
+    private $middleName;
+    private $lastName;
+    private $name;
+    private $description;
+    private $url;
     
 	public function getId()
 	{
@@ -72,7 +72,7 @@ class AdminSearchResult
     }
     public function setMiddleName($middleName)
     {
-        $this->middleName = $middleName
+        $this->middleName = $middleName;
     }
     public function getFullName()
     {
