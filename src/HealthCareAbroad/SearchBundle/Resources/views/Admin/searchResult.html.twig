@@ -27,32 +27,11 @@
                     </tr>
                 
                     {% for each in datas %}
-                        <tr id="each-{{each.id}}">
-                            {% if isDoctor is sameas(false) %}
-                                <td>
-                                {% if category is sameas('institutions') %}
-                                    <a class="name" href="{{ path('admin_institution_view', {institutionId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
-                                
-                                {% elseif category is sameas('medicalCenters') %}
-                                    <a class="name" href="{{ path('admin_institution_medicalCenter_view', {imcId: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
-                                
-                                {% elseif category is sameas('procedureTypes') %}
-                                    <a class="name" href="{{ path('admin_treatment_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
-                                
-                                {% elseif category is sameas('specialization') %}
-                                    <a class="name" href="{{ path('admin_specialization_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
-                                
-                                {% elseif category is sameas('sub-specialization') %}
-                                    <a class="name" href="{{ path('admin_subSpecialization_edit', {id: each.id}) }}" title="View {{ each.name }}">{{ each.name }}</a>
-                                {% endif %}
-                                 </td>
-                                <td>{{ each.description }}</td>
-                            
-                            {% else %}
-                                <td><a class="name" href="{{ path('admin_doctor_edit', {idId: each.id}) }}" title="View {{ each.firstName }}">{{ each.firstName }} {{ each.middleName }} {{ each.lastName }}</a> </td>
-                                <td></td>
-                            {% endif %}
+                      {#  <tr id="each-{{each.id}}">
+                        	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name }}</a></td>
+                            <td>{{ each.description }}</td>
                         </tr>
+                        #}
                     {% else  %}
                         <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                     {% endfor %}

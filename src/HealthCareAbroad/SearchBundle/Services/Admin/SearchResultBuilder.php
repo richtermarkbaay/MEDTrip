@@ -43,8 +43,8 @@ abstract class SearchResultBuilder
         
         $arr = array();
         
-        foreach ($results as $ea) {
-            $arr[] = $this->buildResult($ea);
+        foreach ($results as $val) {
+            $arr[] = $this->buildResult($val);
         }
         
         return $arr;
@@ -69,7 +69,7 @@ abstract class SearchResultBuilder
     
     abstract protected function buildQueryBuilder($criteria);
     
-    abstract protected function buildResult();
+    abstract protected function buildResult($val);
     
     
 }

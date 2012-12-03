@@ -16,11 +16,19 @@ class DoctorSearchResultBuilder extends SearchResultBuilder
     	return $this->queryBuilder;
     }
     
-    protected function buildResult()
+    protected function buildResult($val)
     {
+//     	echo "<pre>";
+// 		   print_r($val);
+// 		echo "</pre>";
+// 		exit;
         $result = new AdminSearchResult();
-        $result->setId();
-        $result->setName();
-       
+        $result->setId($val->getId());
+        $result->setFirstName($val->getFirstName());
+        $result->setLastName($val->getLastName());
+        $result->setMiddleName($val->getMiddleName());
+        $result->setUrl("/admin/doctor/edit/{$val->getId()}");
+        
+//         $result->setUrl($val->getUrl());
     }
 }
