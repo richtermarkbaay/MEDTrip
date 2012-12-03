@@ -8,6 +8,7 @@ abstract class SearchResultBuilder
     
     public function search(array $criteria)
     {
+        var_dump($criteria);exit;
         $queryBuilder = $this->buildQueryBuilder($criteria);
         
         $pager = new Pager();
