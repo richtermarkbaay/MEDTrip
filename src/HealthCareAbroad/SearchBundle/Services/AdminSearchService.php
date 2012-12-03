@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory;
+
 use Doctrine\ORM\QueryBuilder;
 
 use HealthCareAbroad\SearchBundle\Classes\SearchCategoryBuilder;
@@ -19,7 +21,7 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
  * Temporary holder of all search related functionality
  *
  */
-class AdminSearchService extends SearchCategoryBuilder
+class AdminSearchService
 {
 	protected $doctrine;
 	protected $queryBuilder;
@@ -50,29 +52,35 @@ class AdminSearchService extends SearchCategoryBuilder
 	
 	public function search(array $searchCriteria = array())
 	{
-		//pass the result to searchCategory Class
-// 		if($searchCriteria['category'] == Constants::SEARCH_CATEGORY_CENTER){
-// 			$results = $this->getResultForMedicalCenter($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
-// 		}
-// 		else if($searchCriteria['category'] == Constants::SEARCH_CATEGORY_DOCTOR){
-// 			$results = $this->getResultForDoctors($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
-// 		}
-// 		else{
-			$results = $this->getResults($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
-// 		}
-        $this->hydrateSearchData($results);
+		//$results = $this->getResults($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
+		
+		$builder = SearchResultBuilderFactory::getBuilderByCategory($searchCriteria['category']);//Constants::SEARCH_CATEGORY_DOCTOR);
+		
+		$builder->search($searchCriteria);
+		exit;
+		
+        //$this->hydrateSearchData($searchCriteria['category'], $results);
 		
     	return $results;
 	}
-	public function hydrateSearchData($searchResult)
+	public function hydrateSearchData($searchCategory, $searchResult)
 	{
-// 	    $searchData = new SearchAdminResults();
+	    $searchData = new SearchAdminResults();
 	    foreach ($searchResult as $data => $each)
 	    {
-	        //$searchData->setDescription($description);
-	
-	        echo $each->getId();exit;
-	    }
+	        $searchData->setDescription($each->getDescription());
+	        if($searchCategory == Constants::SEARCH_CATEGORY_DOCTOR) {
+	            $searchData->setFirstName($each->getFirstName());
+	            $searchData->setMiddleName($each->getMiddleName());
+	            $searchData->setLastName($each->getLastName());
+	            $searchData->setName($searchData->getFullName());
+	        }
+	        else {
+	            $searchData->setName($each->getName());
+	        }
+	        $searchData->setId($each->getId());
+	        
+	    }var_dump($searchData);exit;
 	}
     public function buildQueryBuilder($searchCriteria,$searchTerm)
     {
