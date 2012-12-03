@@ -67,7 +67,7 @@ class AdminController extends Controller
 				break;
 		}
 		$params = array(
-						"datas" => $this->get('services.admin_search')->search($searchCriteria),
+						"data" => $this->get('services.admin_search')->search($searchCriteria),
 // 						"pager" => $this->get('services.admin_search')->pager,
 		                "isDoctor" => $isDoctor,
 		                "category" => $varName
