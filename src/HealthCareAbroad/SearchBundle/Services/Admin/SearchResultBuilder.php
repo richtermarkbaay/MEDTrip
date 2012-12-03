@@ -1,10 +1,12 @@
 <?php
 
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
+use Doctrine\ORM\Query\ResultSetMapping;
+
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManager;
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
-
 abstract class SearchResultBuilder
 {
 	protected $queryParams = array();
@@ -19,16 +21,22 @@ abstract class SearchResultBuilder
 	function prepare($queryParams = array())
 	{
 		$this->setQueryParamsAndCriteria($queryParams);
-	
+		$this->buildQueryBuilder();
 		$this->setPager();
 	}
 
+	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+	{
+		$this->doctrine = $doctrine;
+		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
+	}
+	
     public function search(array $criteria)
     {
-
+    
         $queryBuilder = $this->buildQueryBuilder($criteria);
-//         print_r($queryBuilder);
-//         exit;
+        print_r($queryBuilder);
+        exit;
 //         $pager->setQueryBuilder($queryBuilder);
         
         $pager = $this->setPager($queryBuilder);
