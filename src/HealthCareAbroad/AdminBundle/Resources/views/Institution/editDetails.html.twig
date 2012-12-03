@@ -42,13 +42,11 @@
 						 		{% endfor %}
 						 		
  				  		        {% set arrWebsite = json_decode(institution.websites) %}
-				  		          {% if not arrWebsite|length %}
-	                                {% set arrWebsite = [{"url": "","type" : ""}] %}
-	                            {% endif %}
-				  		      
+				  		        {% set defaultWebsiteValues = {url: "", type: ""} %}
                                 {% for i, website in arrWebsite %}
-							
-						 				<label for="{{website.type}} name">{{website.type|capitalize}} Site</label>
+                                        {% set website =  defaultWebsiteValues | merge(website) %}
+							            
+						 				<label for="{{ website.type }} name">{{ website.type |capitalize}} Site</label>
 										<div class="input-prepend">
 											<div id="{{website.type}}">
 												<input type="text" name="websites[{{i}}][{{website.url}}]" value="{{website.url}}">					
@@ -76,6 +74,8 @@
                 resizable: false,
                 close: function() {}
             });
+
+            $('#institutionDetail_country').change();
 
             $('a.addLanguageButton').click(function(){
             	var elem = $(this);

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
@@ -15,10 +17,7 @@ use Symfony\Component\Validator\Constraints\MaxLength;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
-use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
 
 class InstitutionDetailType extends AbstractType
 {
@@ -33,13 +32,16 @@ class InstitutionDetailType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {	
-    	$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
-    	$builder->addEventSubscriber($subscriber);
-    	 
-    	$countryId = ($country =$builder->getData()->getCountry()) ? $country->getId() : 0;
+        $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
+    	
+    	$cityId = 0;
+    	if ($city = $builder->getData()->getCity()) {
+    	    $cityId = $city->getId();
+    	}
 
-    	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this))')));
-    	$builder->add('city', new CityListType($countryId));
+    	$builder->add('country', 'country_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
+    	$builder->add('city', 'city_list');
       	$builder->add('zipCode', 'integer', array('label' => 'Zip Code'));
     	$builder->add('state', 'text', array('constraints' => new NotBlank()));
     	$builder->add('contactEmail', 'text', array('label' => 'Contact Email', 'constraints' => new NotBlank()));

@@ -193,7 +193,7 @@ class InstitutionController extends Controller
     
     	if ($request->isMethod('POST')) {
     		
-    		$contactNumber = json_encode($request->get('contactNumber'));
+    	    $contactNumber = json_encode($request->get('contactNumber'));
     		$websites = json_encode($request->get('websites'));
     		 
     		$form->bindRequest($request);
@@ -201,6 +201,8 @@ class InstitutionController extends Controller
     		if ($form->isValid()) {
     			
     			$this->institution = $form->getData();
+    			
+    			$this->institution->getCity()->setCountry($this->institution->getCountry());
     				
     			$this->institution->setWebsites($websites);
     			$this->institution->setContactNumber($contactNumber);
@@ -211,19 +213,27 @@ class InstitutionController extends Controller
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     		}
+    		else {
+    		    //var_dump($form->getErrors());
+    		    //echo "invalid form"; exit;
+    		}
     	}
     	
     	//Check if there is an area code in Contact Number values
     	$json = '[{"area":"","number":"","type":"phone"}]';
     	$a1 = json_decode( $this->institution->getContactNumber(), true );
-    	$keys = array_keys($a1[0]);
+    	$contactNumbers = array();
+    	if ($a1){
+    	    $keys = array_keys($a1[0]);
+    	     
+    	    if ($keys[0] == 'area'){
+    	        $contactNumbers = $a1;
+    	    }
+    	    else{
+    	        $contactNumbers = json_decode( $json, true );
+    	    }    
+    	}
     	
-    	if ($keys[0] == 'area'){
-	    		$contactNumbers = $a1;
-	    }
-    	else{
-	    		$contactNumbers = json_decode( $json, true );
-	    }
    
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
     					'form' => $form->createView(),

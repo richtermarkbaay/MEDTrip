@@ -58,6 +58,9 @@
 
     {% block javascripts %}
         <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+        <script type="text/javascript">
+        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+        </script>
     {% endblock %}
     
     {% block inlineJavascriptCode %}{% endblock %}

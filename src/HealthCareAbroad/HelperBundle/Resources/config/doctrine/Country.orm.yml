@@ -9,7 +9,7 @@ HealthCareAbroad\HelperBundle\Entity\Country:
             unsigned: false
             nullable: false
             generator:
-                strategy: IDENTITY
+                strategy: NONE
         name:
             type: string
             length: 250

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 class City
 {
 	const STATUS_ACTIVE = 1;
+	
 	const STATUS_INACTIVE = 0;
-
     /**
      * @var integer $id
      */
@@ -23,7 +23,12 @@ class City
     private $name;
 
     /**
-     * @var boolean $status
+     * @var string $slug
+     */
+    private $slug;
+
+    /**
+     * @var smallint $status
      */
     private $status;
 
@@ -32,6 +37,18 @@ class City
      */
     private $country;
 
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return City
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Get id
@@ -66,9 +83,31 @@ class City
     }
 
     /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return City
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * Set status
      *
-     * @param boolean $status
+     * @param smallint $status
      * @return City
      */
     public function setStatus($status)
@@ -80,7 +119,7 @@ class City
     /**
      * Get status
      *
-     * @return boolean 
+     * @return smallint 
      */
     public function getStatus()
     {
@@ -107,32 +146,5 @@ class City
     public function getCountry()
     {
         return $this->country;
-    }
-    /**
-     * @var string $slug
-     */
-    private $slug;
-
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return City
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
-    public function getSlug()
-    {
-        return $this->slug;
     }
 }

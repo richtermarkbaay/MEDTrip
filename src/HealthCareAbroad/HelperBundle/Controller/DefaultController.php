@@ -3,6 +3,8 @@
 namespace HealthCareAbroad\HelperBundle\Controller;
 
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
@@ -22,9 +24,11 @@ class DefaultController extends Controller
         return $this->render('HelperBundle:Default:index.html.twig', array('name' => $name));
     }
     
-    public function loadCitiesAction($countryId)
+    public function loadCitiesAction(Request $request)
     {
-    	$data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
+        $countryId = $request->get('countryId', 0);
+        $selectedCity = $request->get('selectedCityId', 0);
+    	$data = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
 
 		$response = new Response(json_encode($data));
 		$response->headers->set('Content-Type', 'application/json');

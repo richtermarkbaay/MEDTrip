@@ -127,7 +127,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
-            cascade: {  }
+            cascade: 
+                - "persist"
             mappedBy: null
             inversedBy: null
             joinColumns:
@@ -136,7 +137,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             orphanRemoval: false
         city:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\City
-            cascade: {  }
+            cascade:
+                - "persist"
             mappedBy: null
             inversedBy: null
             joinColumns:

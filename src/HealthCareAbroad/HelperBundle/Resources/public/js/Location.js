@@ -1,23 +1,34 @@
 var Location = {
+        
+    loadCitiesUrl: '',
 	
-	loadCities : function(elem)
-	{
-		var countryId = elem.val();
-		var citiesElem = elem.parent().next().find('select');
+    /**
+     * @param jQuery DOM object
+     */
+    loadCities : function(elem, selectedCityId)
+    {
+        var countryId = elem.val();
+        
+        var citiesElem = elem.parent().next().find('select');
 		if (citiesElem.length == 0) {
 			citiesElem = elem.parent().parent().next().find('select');
 		}
+		citiesElem.attr("disabled", true).html('<option value="0">Loading...</option>');
 		
-		$.getJSON('/app_dev.php/location/load-cities/' + countryId, function(cities){
-			var len = cities.length;
-			
-			citiesElem.empty();
-			for(var i=0; i< len; i++) {
-				citiesElem.append('<option value="'+ cities[i].id +'">' + cities[i].name + '</option>');
-			}
-			citiesElem.attr('disabled', false);
-
+		$.ajax({
+		   url:  Location.loadCitiesUrl,
+		   data: {'countryId': countryId, 'selectedCityId': selectedCityId },
+		   dataType: 'json',
+		   type: 'get',
+		   success: function(cities){
+		       citiesElem.empty();
+	            $.each(cities, function(e){
+	                citiesElem.append('<option value="'+ this.id +'" '+(this.id==selectedCityId ? 'selected': '')+' >' + this.name + '</option>')
+	            });
+	            citiesElem.attr('disabled', false);
+		   }
 		});
+	
 	}
 	
 	

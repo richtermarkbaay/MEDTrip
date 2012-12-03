@@ -9,11 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Country
 {
-	
 	const STATUS_ACTIVE = 1;
+	
 	const STATUS_INACTIVE = 0;
 	
-    
+	
     /**
      * @var integer $id
      */
@@ -44,6 +44,18 @@ class Country
      */
     private $status;
 
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     * @return Country
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * Get id

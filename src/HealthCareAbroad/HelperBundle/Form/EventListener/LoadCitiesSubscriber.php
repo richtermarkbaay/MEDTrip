@@ -1,6 +1,8 @@
 <?php 
 namespace HealthCareAbroad\HelperBundle\Form\EventListener;
 
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 use HealthCareAbroad\HelperBundle\Form\ListType\CityListType;
@@ -21,16 +23,28 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_BIND => 'prebindSetData');
+        return array(FormEvents::PRE_BIND => 'prebind',
+                        FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+    
+    public function preSetData(DataEvent $event)
+    {
+        
     }
 
-    public function prebindSetData(DataEvent $event)
+    public function prebind(DataEvent $event)
     {
     	$data = $event->getData();
         $form = $event->getForm();
-        $countryId = !empty($data) && $data['country'] ? $data['country'] : 1;
-        $form->add($this->factory->createNamed('city', new CityListType($countryId)));
-    	
-       
+        
+        $locationService = LocationService::getCurrentInstance();
+        $countryId = !empty($data) && $data['country'] ? $data['country'] : 0;
+        $cities = $locationService->getGlobalCitiesListByContry($countryId);
+        $choices = array();
+        foreach ($cities as $id => $value){
+            $choices[$id] = $value['name'];
+        }
+        
+        $form->add($this->factory->createNamed('city', 'city_list', null, compact('choices')));
     }
 }

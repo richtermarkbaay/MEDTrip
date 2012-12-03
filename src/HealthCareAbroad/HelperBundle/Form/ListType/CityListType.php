@@ -1,6 +1,16 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
+use Symfony\Component\Form\FormEvents;
+
+use Symfony\Component\Form\FormEvent;
+
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\CityTransformer;
+
+use Symfony\Component\Form\FormBuilderInterface;
+
 use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use Doctrine\ORM\EntityRepository;
@@ -11,36 +21,33 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CityListType extends AbstractType 
 {	
-	private $container;
-	private $countryId;
-	
-	public function __construct($countryId)
-	{
-		$this->countryId = $countryId;		
-	}
-	
-	public function setContainer(ContainerInterface $container = null) {
-		$this->container = $container;
-	}
-	
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /**
+     * @var LocationService
+     */
+    private $service;
+    
+    public function __construct(LocationService $service)
     {
-    	$countryId = $this->countryId;
-        $resolver->setDefaults(array(
-        	'property' => 'name',
-			'class' => 'HealthCareAbroad\HelperBundle\Entity\City',
-        	'query_builder' => function(EntityRepository $er) use ($countryId) { 
-        		return $er->createQueryBuilder('u')
-        			->add('where', 'u.status = 1 AND u.country = :country')
-        			->setParameter('country', $countryId)
-        			->orderBy('u.name', 'ASC'); 
-        	}
+        $this->service = $service;
+    }
+    
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->prependNormTransformer(new CityTransformer($this->service));
+    }
+    
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        
+    	$resolver->setDefaults(array(
+        	//'choices' => array(1=> 'city 1', 2 => 'city 2')
+    	    'choices' => array()
         ));
     }
    
     public function getParent()
     {
-        return 'entity';
+        return 'choice';
     }
 
     public function getName()
