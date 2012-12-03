@@ -3,9 +3,9 @@ namespace HealthCareAbroad\SearchBundle\Services;
 
 use HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory;
 
-use Doctrine\ORM\QueryBuilder;
-
 use HealthCareAbroad\SearchBundle\Classes\SearchCategoryBuilder;
+
+use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
 use HealthCareAbroad\SearchBundle\Constants;
@@ -23,7 +23,6 @@ use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
  */
 class AdminSearchService
 {
-	protected $doctrine;
 	protected $queryBuilder;
 	protected $queryParams = array();
 	protected $category = array(
@@ -35,26 +34,19 @@ class AdminSearchService
 					Constants::SEARCH_CATEGORY_SUB_SPECIALIZATION => 'TreatmentBundle:SubSpecialization');
 	
 	/**
-	 * @desc Prepare the ListFilter object
-	 * @param array $queryParams
+	 * @var SearchResultBuilderFactory
 	 */
-	function prepare($queryParams = array())
-	{
-		$this->setQueryParamsAndCriteria($queryParams);
-		$this->buildQueryBuilder();
-	}
+	private $factory;
 	
-	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
+	public function setSearchBuilderFactory(SearchResultBuilderFactory $sf)
 	{
-		$this->doctrine = $doctrine;
-		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
+		$this->factory = $sf;
 	}
-	
+
 	public function search(array $searchCriteria = array())
 	{
-		//$results = $this->getResults($this->buildQueryBuilder($searchCriteria['category'], $searchCriteria['term']));
 		
-		$builder = SearchResultBuilderFactory::getBuilderByCategory($searchCriteria['category']);//Constants::SEARCH_CATEGORY_DOCTOR);
+		$builder = $this->factory->getBuilderByCategory($searchCriteria);
 		
 		$builder->search($searchCriteria);
 		exit;
@@ -63,50 +55,50 @@ class AdminSearchService
 		
     	return $results;
 	}
-	public function hydrateSearchData($searchCategory, $searchResult)
-	{
-	    $searchData = new SearchAdminResults();
-	    foreach ($searchResult as $data => $each)
-	    {
-	        $searchData->setDescription($each->getDescription());
-	        if($searchCategory == Constants::SEARCH_CATEGORY_DOCTOR) {
-	            $searchData->setFirstName($each->getFirstName());
-	            $searchData->setMiddleName($each->getMiddleName());
-	            $searchData->setLastName($each->getLastName());
-	            $searchData->setName($searchData->getFullName());
-	        }
-	        else {
-	            $searchData->setName($each->getName());
-	        }
-	        $searchData->setId($each->getId());
+// 	public function hydrateSearchData($searchCategory, $searchResult)
+// 	{
+// 	    $searchData = new SearchAdminResults();
+// 	    foreach ($searchResult as $data => $each)
+// 	    {
+// 	        $searchData->setDescription($each->getDescription());
+// 	        if($searchCategory == Constants::SEARCH_CATEGORY_DOCTOR) {
+// 	            $searchData->setFirstName($each->getFirstName());
+// 	            $searchData->setMiddleName($each->getMiddleName());
+// 	            $searchData->setLastName($each->getLastName());
+// 	            $searchData->setName($searchData->getFullName());
+// 	        }
+// 	        else {
+// 	            $searchData->setName($each->getName());
+// 	        }
+// 	        $searchData->setId($each->getId());
 	        
-	    }var_dump($searchData);exit;
-	}
-    public function buildQueryBuilder($searchCriteria,$searchTerm)
-    {
-        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-        $this->queryBuilder->select('a')->from($this->category[$searchCriteria], 'a');
+// 	    }var_dump($searchData);exit;
+// 	}
+//     public function buildQueryBuilder($searchCriteria,$searchTerm)
+//     {
+//         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+//         $this->queryBuilder->select('a')->from($this->category[$searchCriteria], 'a');
 
-    	if ($searchCriteria == Constants::SEARCH_CATEGORY_DOCTOR) {
-    		$this->queryBuilder->andWhere('a.firstName LIKE :seachTerm OR a.middleName LIKE :seachTerm OR a.lastName LIKE :seachTerm');
-    		$this->queryBuilder->setParameter('seachTerm', '%'.$searchTerm.'%');
-    	}
-    	else if ($searchCriteria == Constants::SEARCH_CATEGORY_CENTER) {
+//     	if ($searchCriteria == Constants::SEARCH_CATEGORY_DOCTOR) {
+//     		$this->queryBuilder->andWhere('a.firstName LIKE :seachTerm OR a.middleName LIKE :seachTerm OR a.lastName LIKE :seachTerm');
+//     		$this->queryBuilder->setParameter('seachTerm', '%'.$searchTerm.'%');
+//     	}
+//     	else if ($searchCriteria == Constants::SEARCH_CATEGORY_CENTER) {
     		
-    		$this->queryBuilder->join('a.institution', 'b');
-    		$this->queryBuilder->join('a.institutionSpecializations', 'c');
-    		$this->queryBuilder->innerJoin('c.specialization', 'd');
-    		$this->queryBuilder->where('a.institution = b.id');
-    		$this->queryBuilder->andWhere('a.id = c.institutionMedicalCenter');
-    		$this->queryBuilder->andWhere('c.specialization = d.id');
-    		$this->queryBuilder->andWhere('a.name LIKE :name');
-    		$this->queryBuilder->setParameter('name', '%'.$searchTerm.'%');
+//     		$this->queryBuilder->join('a.institution', 'b');
+//     		$this->queryBuilder->join('a.institutionSpecializations', 'c');
+//     		$this->queryBuilder->innerJoin('c.specialization', 'd');
+//     		$this->queryBuilder->where('a.institution = b.id');
+//     		$this->queryBuilder->andWhere('a.id = c.institutionMedicalCenter');
+//     		$this->queryBuilder->andWhere('c.specialization = d.id');
+//     		$this->queryBuilder->andWhere('a.name LIKE :name');
+//     		$this->queryBuilder->setParameter('name', '%'.$searchTerm.'%');
     	
-    	}else{
-    		$this->queryBuilder->andWhere('a.name LIKE :name');
-    		$this->queryBuilder->setParameter('name', '%'.$searchTerm.'%');
-    	}
+//     	}else{
+//     		$this->queryBuilder->andWhere('a.name LIKE :name');
+//     		$this->queryBuilder->setParameter('name', '%'.$searchTerm.'%');
+//     	}
     	
-    	return $this->queryBuilder;
-    }
+//     	return $this->queryBuilder;
+//     }
 }
