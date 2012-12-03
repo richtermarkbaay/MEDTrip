@@ -32,7 +32,7 @@ class KernelExceptionListener
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->repository = $this->doctrine->getRepository('LogBundle:ErrorLog');
+        $this->repository = $this->doctrine->getEntityManager('logger')->getRepository('LogBundle:ErrorLog');
     }
     
     /**
@@ -58,11 +58,10 @@ class KernelExceptionListener
         $errorLog->setRemoteAddress(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
         $errorLog->setServerJSON(\json_encode($_SERVER));
         
-        //TODO: note to self, use a separate entity manager here
-        $em = $this->doctrine->getEntityManager();
+        $em = $this->doctrine->getEntityManager('logger');
         if (!$em->isOpen()) {
-            $this->doctrine->resetEntityManager();
-            $em = $this->doctrine->getEntityManager();
+            $this->doctrine->resetEntityManager('logger');
+            $em = $this->doctrine->getEntityManager('logger');
         }
 
         $em->persist($errorLog);

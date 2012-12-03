@@ -36,14 +36,14 @@ class LogService
     
     public function save(Log $log)
     {
-        $em = $this->doctrine->getEntityManager();
+        $em = $this->doctrine->getEntityManager('logger');
         $em->persist($log);
         $em->flush();
     }
     
     public function saveLogClass(LogClass $logClass)
     {
-        $em = $this->doctrine->getEntityManager();
+        $em = $this->doctrine->getEntityManager('logger');
         $em->persist($logClass);
         $em->flush();
     }
@@ -76,7 +76,7 @@ class LogService
 //             }
 //         }
 
-        $logClass = $this->doctrine->getRepository('LogBundle:LogClass')->findOneBy(array('name' => $className));
+        $logClass = $this->doctrine->getEntityManager('logger')->getRepository('LogBundle:LogClass')->findOneBy(array('name' => $className));
         
         if (!$logClass) {
             $logClass = new LogClass();

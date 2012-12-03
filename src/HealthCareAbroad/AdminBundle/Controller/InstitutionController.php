@@ -192,17 +192,19 @@ class InstitutionController extends Controller
     	$form = $this->createForm(new InstitutionDetailType(), $this->institution);
     
     	if ($request->isMethod('POST')) {
+    	    
     		
     	    $contactNumber = json_encode($request->get('contactNumber'));
     		$websites = json_encode($request->get('websites'));
     		 
     		$form->bindRequest($request);
-    	  
+    		
     		if ($form->isValid()) {
     			
     			$this->institution = $form->getData();
     			
     			$this->institution->getCity()->setCountry($this->institution->getCountry());
+    			
     				
     			$this->institution->setWebsites($websites);
     			$this->institution->setContactNumber($contactNumber);
@@ -212,6 +214,8 @@ class InstitutionController extends Controller
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+    			
+    			return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
     		}
     		else {
     		    //var_dump($form->getErrors());
@@ -233,13 +237,12 @@ class InstitutionController extends Controller
     	        $contactNumbers = json_decode( $json, true );
     	    }    
     	}
-    	
    
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
-    					'form' => $form->createView(),
-    					'institution' => $this->institution,
-    					'arrContactNumber' => $contactNumbers,
-    					'id' => $this->institution->getId()
+			'form' => $form->createView(),
+			'institution' => $this->institution,
+			'arrContactNumber' => $contactNumbers,
+			'id' => $this->institution->getId()
     	));
     }
     
