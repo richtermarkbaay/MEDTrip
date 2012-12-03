@@ -21,13 +21,20 @@ class MedicalCenterSearchResultBuilder extends SearchResultBuilder
     }
     
     protected function buildResult($val)
-    {
-    	
+    {	
+    	// for specialization
+//     	$specialization = array();
+//     	foreach ($val->getInstitutionSpecializations() as $v){
+//     		$re = $v->getSpecialization();
+//     		$specialization[] = $re->getName();
+//     	}
+
         $result = new AdminSearchResult();
         $result->setId($val->getId());
         $result->setName($val->getName());
-        $result->setUrl("admin/institution/{institutionId}/medical-centers/{$val->getId()}/edit");
-        
+        $result->setDescription("Medical Center Name : {$val->getDescription()}, Institution Name: {$val->getInstitution()->getName()}");
+        $result->setUrl("admin/institution/{$val->getInstitution()->getId()}/medical-centers/{$val->getId()}/edit");
+
     	return $result;
     }
 }
