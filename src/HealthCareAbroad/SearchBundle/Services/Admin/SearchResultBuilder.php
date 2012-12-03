@@ -37,7 +37,6 @@ abstract class SearchResultBuilder
   
 //         $pager->setQueryBuilder($queryBuilder);
         
-        
         $pager = $this->setPager($queryBuilder);
         
         $results = $pager->getResults();
