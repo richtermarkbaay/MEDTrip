@@ -33,17 +33,14 @@ abstract class SearchResultBuilder
 	
     public function search(array $criteria)
     {
-    
         $queryBuilder = $this->buildQueryBuilder($criteria);
-        print_r($queryBuilder);
-        exit;
+  
 //         $pager->setQueryBuilder($queryBuilder);
+        
         
         $pager = $this->setPager($queryBuilder);
         
         $results = $pager->getResults();
-        
-      
         
         $arr = array();
         

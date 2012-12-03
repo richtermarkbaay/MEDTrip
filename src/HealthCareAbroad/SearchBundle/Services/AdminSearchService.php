@@ -48,12 +48,12 @@ class AdminSearchService
 		
 		$builder = $this->factory->getBuilderByCategory($searchCriteria);
 		
-		$builder->search($searchCriteria);
-		exit;
+		$result = $builder->search($searchCriteria);
+// 		exit;
 		
         //$this->hydrateSearchData($searchCriteria['category'], $results);
 		
-    	return $results;
+    	return $result;
 	}
 // 	public function hydrateSearchData($searchCategory, $searchResult)
 // 	{
