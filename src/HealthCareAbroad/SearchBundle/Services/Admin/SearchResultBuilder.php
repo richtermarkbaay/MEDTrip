@@ -35,8 +35,6 @@ abstract class SearchResultBuilder
     {
         $queryBuilder = $this->buildQueryBuilder($criteria);
   
-//         $pager->setQueryBuilder($queryBuilder);
-        
         $pager = $this->setPager($queryBuilder);
         
         $results = $pager->getResults();
