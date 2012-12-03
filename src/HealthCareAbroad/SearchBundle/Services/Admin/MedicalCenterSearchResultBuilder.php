@@ -33,7 +33,7 @@ class MedicalCenterSearchResultBuilder extends SearchResultBuilder
         $result->setId($val->getId());
         $result->setName($val->getName());
         $result->setDescription("Medical Center Name : {$val->getDescription()} Institution Name: {$val->getInstitution()->getName()}");
-        $result->setUrl("admin/institution/{$val->getInstitution()->getId()}/medical-centers/{$val->getId()}/edit");
+        $result->setUrl("institution/{$val->getInstitution()->getId()}/medical-centers");
 
     	return $result;
     }
