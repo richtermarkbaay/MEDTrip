@@ -35,12 +35,12 @@ class SearchResultBuilderFactory
     static public function _initMapping()
     {
         static::$builderMapping = array(
-                    Constants::SEARCH_CATEGORY_INSTITUTION => 'HealthCareAbroad\SearchBundle\Services\Admin\DoctorSearchResultBuilder',
+                    Constants::SEARCH_CATEGORY_INSTITUTION => 'HealthCareAbroad\SearchBundle\Services\Admin\InstitutionSearchResultBuilder',
                     Constants::SEARCH_CATEGORY_CENTER => 'HealthCareAbroad\SearchBundle\Services\Admin\MedicalCenterSearchResultBuilder',
-                    Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'HealthCareAbroad\SearchBundle\Services\Admin\DoctorSearchResultBuilder' ,
+                    Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'HealthCareAbroad\SearchBundle\Services\Admin\TreatmentsSearchResultBuilder' ,
                     Constants::SEARCH_CATEGORY_DOCTOR => 'HealthCareAbroad\SearchBundle\Services\Admin\DoctorSearchResultBuilder',
-                    Constants::SEARCH_CATEGORY_SPECIALIZATION => 'HealthCareAbroad\SearchBundle\Services\Admin\DoctorSearchResultBuilder',
-                    Constants::SEARCH_CATEGORY_SUB_SPECIALIZATION => 'HealthCareAbroad\SearchBundle\Services\Admin\DoctorSearchResultBuilder'
+                    Constants::SEARCH_CATEGORY_SPECIALIZATION => 'HealthCareAbroad\SearchBundle\Services\Admin\SpecializationSearchResultBuilder',
+                    Constants::SEARCH_CATEGORY_SUB_SPECIALIZATION => 'HealthCareAbroad\SearchBundle\Services\Admin\SubSpecializationSearchResultBuilder'
               );
     }
 }
