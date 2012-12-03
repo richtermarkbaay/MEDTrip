@@ -20,7 +20,6 @@ class AdminDefaultSearchType extends AbstractType
     			Constants::SEARCH_CATEGORY_SUB_SPECIALIZATION =>Constants::SEARCH_CATEGORY_LABEL_SUB_SPECIALIZATION,
     			Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => Constants::SEARCH_CATEGORY_LABEL_PROCEDURE_TYPE,
     			Constants::SEARCH_CATEGORY_DOCTOR => Constants::SEARCH_CATEGORY_LABEL_DOCTOR,
-    			Constants::SEARCH_CATEGORY_PROCEDURE => Constants::SEARCH_CATEGORY_LABEL_PROCEDURE,
     		),
     		'required'  => true
 		));
