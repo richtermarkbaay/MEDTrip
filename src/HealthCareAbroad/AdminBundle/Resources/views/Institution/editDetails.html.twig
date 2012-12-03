@@ -27,9 +27,9 @@
 				  		   		{{ form_row( form.address1 ) }}   
 				  		   		{{ form_row( form.state ) }}               
 				  			    {{ form_row( form.zipCode ) }}
-				  		
+				  		        {% set defaulContactValues = {type: "Phone", area: "", number: ""} %}
                                 {% for i, contact in arrContactNumber %}
-							
+							        {% set contact =  defaulContactValues | merge(contact) %}
 					 				<label for="institution name">Institution {{ contact.type == 'phone' ? 'Phone' : 'Fax' }} Number</label>
 									<div class="input-prepend">
 										<div id="phone">
