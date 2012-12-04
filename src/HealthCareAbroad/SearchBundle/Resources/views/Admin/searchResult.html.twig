@@ -26,7 +26,7 @@
                         {% if isDoctor is sameas(false) %}<th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>{% endif%}
                     </tr>
                 
-                    {% for each in datas %}
+                    {% for each in data %}
                         <tr id="each-{{each.id}}">
                         	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name|raw }}</a></td>
                         	{% if isDoctor is sameas(false) %}
