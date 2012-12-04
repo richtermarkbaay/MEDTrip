@@ -13,7 +13,7 @@ abstract class SearchResultBuilder
 	protected $queryBuilder;
 	protected $pager;
 	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
-	
+	protected $router;
 	/**
 	 * @desc Prepare the ListFilter object
 	 * @param array $queryParams
@@ -24,7 +24,11 @@ abstract class SearchResultBuilder
 		$this->buildQueryBuilder();
 		$this->setPager();
 	}
-
+	/**
+	 * @var Symfony\Bundle\FrameworkBundle\Routing\Router
+	 */
+	private $router;
+	
 	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
 	{
 		$this->doctrine = $doctrine;

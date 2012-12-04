@@ -36,6 +36,7 @@ class AdminSearchService
 	public function search(array $searchCriteria = array())
 	{
 		$builder = $this->factory->getBuilderByCategory($searchCriteria);
+		var_dump($builder);exit;
 		$result = $builder->search($searchCriteria);
 		
     	return $result;
