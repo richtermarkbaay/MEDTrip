@@ -16,9 +16,6 @@ class AdvertisementCustomFormType extends AbstractType
 	    $builder->add('advertisementPropertyName', 'entity', array(
             'class' => 'HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName','property' => 'name',
         ));
-
-// 	    $transformer = new AdvertisementCustomPropertyValueTransformer();
-// 	    $builder->addModelTransformer($transformer);
 	}
 
 	// How does it work?

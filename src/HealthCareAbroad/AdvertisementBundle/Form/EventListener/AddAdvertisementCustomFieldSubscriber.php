@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Form\EventListener;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Doctrine\Common\Collections\Collection;
+
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
+
 use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementCustomFormType;
 
 use Symfony\Component\Form\Event\DataEvent;
@@ -14,27 +20,58 @@ class AddAdvertisementCustomFieldSubscriber implements EventSubscriberInterface
 {
     private $factory;
     private $advertisement;
+    private $em;
 
-    public function __construct(FormFactoryInterface $factory, $advertisement)
+    public function __construct(FormFactoryInterface $factory, $advertisement, $em)
     {
+        $this->em = $em;
         $this->factory = $factory;
         $this->advertisement = $advertisement;
     }
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::POST_SET_DATA => 'postSetData', FormEvents::PRE_BIND => 'preBind', FormEvents::POST_BIND => 'postBind');
+        return array(FormEvents::PRE_SET_DATA => 'preSetData', FormEvents::POST_SET_DATA => 'postSetData', FormEvents::POST_BIND => 'postBind');
     }
-    
-    public function preBind(FormEvent $event)
+
+    public function preSetData(FormEvent $event)
     {
-//         var_dump('preBind');
+        $data = $event->getData();
+        $form = $event->getForm();
         
-//         $data = $event->getData();
-//         $form = $event->getForm();
+        if(!$this->em) {
+            return;
+        }
         
-//         var_dump($form->getData());
-//         var_dump($this->advertisement);
+        $collectionProperties = array();
+        $collectionPropertyValues = array();
+        
+        foreach($data as $i => $each) {
+            $property = $each->getAdvertisementPropertyName();
+        
+            if($property->getDataType()->getFormField() == 'entity') {
+
+                $newValue = $this->em->getRepository($property->getDataClass())->find($each->getValue());
+                
+                if(!isset($collectionPropertyValues[$property->getId()])) {
+                    $collectionProperties[] = $each;
+                    $collectionPropertyValues[$property->getId()] = new ArrayCollection();
+
+                } else {
+                    $data->removeElement($each);
+                    unset($form[$i]);
+                }
+
+                $collectionPropertyValues[$property->getId()]->add($newValue);
+            }
+        }
+
+        foreach($collectionProperties as $each) {
+            $propertyId = $each->getAdvertisementPropertyName()->getId();
+            $each->setValue($collectionPropertyValues[$propertyId]);
+        }
+
+
     }
 
     public function postSetData(FormEvent $event)
@@ -42,6 +79,7 @@ class AddAdvertisementCustomFieldSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $form = $event->getForm();
 
+        
         // During form creation setData() is called with null as an argument
         // by the FormBuilder constructor. You're only concerned with when
         // setData is called with an actual Entity object in it (whether new
@@ -51,32 +89,18 @@ class AddAdvertisementCustomFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-//         // check if the product object is "new"
-       if (!empty($data)) {
+        $properties = $this->advertisement->getAdvertisementType()->getAdvertisementTypeConfigurations();
+        $param = $this->advertisement->getInstitution(); // TODO - This param should be dynamic
 
-           $properties = $this->advertisement->getAdvertisementType()->getAdvertisementTypeConfigurations();
-           $param = $this->advertisement->getInstitution(); // TODO - This param should be dynamic
-           
-           foreach($properties as $i => $each) {
+        foreach($properties as $i => $each) {
 
-               $config = json_decode($each->getPropertyConfig(), true);
-               $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
-
-               foreach($form->all() as $i => $valueForm) {
-//var_dump($valueForm->get('advertisementPropertyName')->getData()->getId());
-                   if($each->getName() == $valueForm->get('advertisementPropertyName')->getData()->getName()) {
-
-                       $fiedConfig = array_merge($config['config'], array('label' => $each->getLabel()));
-                       
-                       //var_dump($fiedConfig);
-                       
-                       $form->get($i)->add($this->factory->createNamed('value', $type, null, $fiedConfig));
-                   }
-               }
-           }
-           
-           //exit;
-       }
+            $config = json_decode($each->getPropertyConfig(), true);
+            $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
+            
+            $fiedConfig = array_merge($config['config'], array('label' => $each->getLabel()));
+            
+            $form->get($i)->add($this->factory->createNamed('value', $type, null, $fiedConfig));
+        }
     }
 
     public function postBind(FormEvent $event)
@@ -85,11 +109,6 @@ class AddAdvertisementCustomFieldSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $transformData = array();
 
-//         var_dump('postBind');
-//         var_dump($data);
-//         var_dump($this->advertisement);
-//         exit;
-        
         foreach($data as $i => $each) {
             foreach($each->getValue() as $j => $property) {
 

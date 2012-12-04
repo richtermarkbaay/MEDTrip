@@ -121,18 +121,10 @@ class AdvertisementController extends Controller
         if(!$advertisement) {
             return;
         }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
         
-//         var_dump($advertisement); 
-        
-//         foreach($advertisement->getAdvertisementPropertyValues() as $each) {
-//             var_dump($each);
-//         }
-//         exit;
-    
-        $form = $this->createForm(new AdvertisementFormType(), $advertisement);
-        
-        //exit;
-    
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'form' => $form->createView()
         ));
