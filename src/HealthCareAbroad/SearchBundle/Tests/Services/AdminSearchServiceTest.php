@@ -1,4 +1,7 @@
 <?php
+/*
+ * author Alnie L. Jacobe
+ */
 namespace HealthCareAbroad\SearchBundle\Tests\Services;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -22,6 +25,12 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
      * @var HealthCareAbroad\SearchBundle\Services\AdminSearchService
      */
     protected $service;
+    
+    /**
+     *
+     * @var HealthCareAbroad\SearchBundle\Services\Admin\SearchAdminPagerService
+     */
+    protected $pagerService;
     /**
      * @var Symfony\Bundle\FrameworkBundle\Routing\Router
      */
@@ -37,6 +46,10 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         $factory = new SearchResultBuilderFactory($this->getServiceContainer()->get('doctrine'));
         $factory->setRouter($this->getRouter());     
         $this->service->setSearchBuilderFactory($factory);
+        
+        //test for pagerService
+        $this->pagerService = new SearchAdminPagerService();
+        $this->pagerService->getPager();
     }
     
     public function tearDown()
@@ -52,4 +65,5 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         
         return $adminSearchResults;
     }
+    
 }
