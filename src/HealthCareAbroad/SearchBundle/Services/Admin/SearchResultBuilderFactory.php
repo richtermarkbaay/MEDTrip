@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+
+use Symfony\Component\Routing\RouteCollection;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 use HealthCareAbroad\SearchBundle\Constants;
@@ -14,12 +18,19 @@ class SearchResultBuilderFactory
      * @var Registry
      */
     private $doctrine;
-    
+    /**
+     * @var Symfony\Bundle\FrameworkBundle\Routing\Router
+     */
+    private $router;
     public function __construct(Registry $doctrine)
     {
     	$this->doctrine = $doctrine;
     }
     
+    public function setRouter(Router $router)
+    {
+        $this->router = $router;
+    }
     
     /**
      * 
@@ -29,7 +40,10 @@ class SearchResultBuilderFactory
     public function getBuilderByCategory($category)
     {
         $cls =  static::$builderMapping[$category['category']];
-        return new $cls($this->doctrine);
+        $builder = new $cls($this->doctrine);
+        $builder->setRouter($this->router);
+        
+        return $builder;
     }
     
     static public function _initMapping()

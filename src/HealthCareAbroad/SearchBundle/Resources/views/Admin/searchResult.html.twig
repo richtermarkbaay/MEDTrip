@@ -23,14 +23,16 @@
                 <table class="table table-bordered sortable-list">
                     <tr>
                         <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                        <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                        {% if isDoctor is sameas(false) %}<th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>{% endif%}
                     </tr>
                 	
                     {% for each in data %}
                     	
                         <tr id="each-{{each.id}}">
                         	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name|raw }}</a></td>
+                        	{% if isDoctor is sameas(false) %}
                             <td>{{ each.description|raw }}</td>
+                            {% endif %}
                         </tr>
                     {% else  %}
                         <tr><td class="empty-list" colspan="4">No records yet!</td></tr>

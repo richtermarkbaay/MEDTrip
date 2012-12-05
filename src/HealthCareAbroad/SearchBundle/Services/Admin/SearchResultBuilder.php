@@ -1,6 +1,10 @@
 <?php
 
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+
+use Symfony\Component\Routing\RouteCollection;
+
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use Doctrine\ORM\QueryBuilder;
@@ -27,7 +31,12 @@ abstract class SearchResultBuilder
 	protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
 	
 	/**
-	 * @desc Sets queryParams and the valid criteria
+	 * @var Symfony\Bundle\FrameworkBundle\Routing\Router
+	 */
+	protected $router;
+	
+	/**
+	 * @desc Prepare the ListFilter object
 	 * @param array $queryParams
 	 */
 	function setQueryParamsAndCriteria($queryParams = array())
@@ -78,13 +87,15 @@ abstract class SearchResultBuilder
 	{
 	    array_push($this->validCriteria, $val);
 	}
-	
 	public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
 	{
 		$this->doctrine = $doctrine;
 		$this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
 	}
-	
+	public function setRouter(Router $router)
+	{
+	    $this->router = $router;
+	}
     public function search(array $criteria, SearchAdminPagerService $p)
     {
         $queryParams = array('page' => $criteria['page']);

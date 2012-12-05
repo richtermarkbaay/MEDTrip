@@ -18,7 +18,8 @@ class InstitutionSearchResultBuilder extends SearchResultBuilder
         $result = new AdminSearchResult();
         $result->setId($val->getId());
         $result->setDescription($val->getDescription());
-        $result->setUrl("/admin/institution/{$val->getId()}/view");
+        $route = $this->router->generate("admin_institution_view",array('institutionId' => $val->getId()));
+        $result->setUrl($route);
         $result->setName($val->getName());
         
         return $result;
