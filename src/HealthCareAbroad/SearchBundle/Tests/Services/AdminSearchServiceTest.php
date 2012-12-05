@@ -26,6 +26,11 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
      * @var Symfony\Bundle\FrameworkBundle\Routing\Router
      */
     protected static $router;
+    
+    /**
+     * @var SearchResultBuilderFactory
+     */
+    private $factory;
     public function setUp()
     {
         $this->service = new AdminSearchService();
@@ -33,15 +38,7 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         $factory->setRouter($this->getRouter());     
         $this->service->setSearchBuilderFactory($factory);
     }
-    /**
-     * @var SearchResultBuilderFactory
-     */
-    private $factory;
     
-    public function setSearchBuilderFactory(SearchResultBuilderFactory $searchfactory)
-    {
-        $this->factory = $searchfactory;
-    }
     public function tearDown()
     {
         $this->service = null;
@@ -52,12 +49,7 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         $params = array('term' => 'a', 'category' => '1', 'page' => 1);
         $adminSearchResults =  $this->service->search($params, $p);
         $this->assertNotEmpty($adminSearchResults);
+        
         return $adminSearchResults;
-        
-//         $token = "94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7";
-//         $institution = $this->service->getActiveInstitutionInvitationByToken($token);
-//         $this->assertNotEmpty($institution);
-        
-//         return $institution;
     }
 }
