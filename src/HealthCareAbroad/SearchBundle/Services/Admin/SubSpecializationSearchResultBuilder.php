@@ -19,7 +19,8 @@ class SubSpecializationSearchResultBuilder extends SearchResultBuilder
         $result = new AdminSearchResult();
         $result->setId($val->getId());
         $result->setDescription($val->getDescription());
-        $result->setUrl("/admin/sub-specialization/edit/{$val->getId()}");
+        $route = $this->router->generate("admin_subSpecialization_edit",array('id' => $val->getId()));
+        $result->setUrl($route);
         $result->setName($val->getName());
         return $result;
     }

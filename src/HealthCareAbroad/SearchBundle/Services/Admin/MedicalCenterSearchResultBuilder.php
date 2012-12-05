@@ -33,7 +33,8 @@ class MedicalCenterSearchResultBuilder extends SearchResultBuilder
         $result->setId($val->getId());
         $result->setName($val->getName());
         $result->setDescription("Medical Center Name : {$val->getDescription()} Institution Name: {$val->getInstitution()->getName()}");
-        $result->setUrl("institution/{$val->getInstitution()->getId()}/medical-centers");
+        $route = $this->router->generate("admin_institution_medicalCenter_view",array('institutionId' => $val->getInstitution()->getId(), 'imcId' => $val->getId()));
+        $result->setUrl($route);
 
     	return $result;
     }

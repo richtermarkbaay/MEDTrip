@@ -10,7 +10,7 @@ services:
     services.search_builder_factory:
         class: HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory
         arguments: [@doctrine]
-        class:
+        calls:
             - [setRouter, [@router]]
     services.admin_search:
         class: HealthCareAbroad\SearchBundle\Services\AdminSearchService

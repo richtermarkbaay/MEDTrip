@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+
+use Symfony\Component\Routing\RouteCollection;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 use HealthCareAbroad\SearchBundle\Constants;
@@ -23,7 +27,7 @@ class SearchResultBuilderFactory
     	$this->doctrine = $doctrine;
     }
     
-    public function setRouter($router)
+    public function setRouter(Router $router)
     {
         $this->router = $router;
     }
