@@ -1,0 +1,43 @@
+{% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span8' %}
+<div id="content_wrap">
+        <div class="container content">
+            <div class="row">
+                <div class="{{ contentSpanClass }}">
+                    <div id="slider">
+                    </div>
+                    <!--End of slider-->
+                    
+                    <div id="maincontent">
+                        <div class="heading">
+                            <div class="heading_text">{{ pageTitle is defined ? pageTitle : '' }}</div>
+                        </div>
+                        
+                        <div class="maincontent_wrap">
+                            <div class="maincontent_item">
+                                <div class="row upper_part">
+                                    <div class="brief_description">
+                                        <div class="row-fluid">
+                                            {% block wrappedContent %}{% endblock %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of maincontent 2-->
+                            
+                        </div>
+                        <!--End of maincontent_wrap-->
+                    </div>
+                    <!-- End of maincontent -->
+                </div>
+                <!--End of span8-->
+                
+                {% block sideBox %}{% endblock %}
+                
+            </div>
+            <!--End of row-->
+        
+        </div>
+        <!--End of container-->
+        
+    </div>
+    <!-- End of content_wrap -->

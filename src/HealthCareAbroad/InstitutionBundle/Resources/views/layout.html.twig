@@ -4,45 +4,63 @@
 
 {% block body %}
 <body>
+
+    <!-- header -->
+    {% include 'InstitutionBundle:Default:header.layout.html.twig' %}
     
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a href="index.php" class="brand">
-                    <img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD
-                </a>
-                
-	             {% block top_menu %}
-	                {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
-	            {% endblock %}
+    
+    <div id="header2">
+        <div class="top_line2"></div>
+        <div class="container">
+            <div class="row">
+                <div class="pull-right">
+                    <ul class="nav nav-tabs">
+                        <li><a href="dashboard-after-login.html">Dashboard</a> </li>
+                        <li class="active"><a href="institution-profile-initial.html">Institutional Profile</a> </li>
+                        <li><a href="medical-listing.html">Medical Listing</a> </li>
+                        <li><a href="site-logs.html">Events</a> </li>
+                    </ul>
+                </div>
             </div>
         </div>
+        <!--End of container -->
     </div>
-
-    <!-- End: page-top -->
-    <div class="row-fluid">
-        <div class="institutionbox">
-            {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
-        </div>
-    </div>
-    <!--  end content-outer........................................................END -->
-
+    <!--End of header -->
+    
     {% block content %}{% endblock %}
     
-     <div class="container">
-        <br/><hr>
-        <footer>
-            <p>
-                &copy; {{ cfe_company_name }}
-                <a href="{{ site_url }}">{{ site_name }}</a>. All rights reserved.
-            </p>
-        </footer>
-    </div>
+    
+        
+        <div class="footer_wrap">
+            <div class="lfooter_wrap">
+                <div class="container">
+                    <!--This is for the lower footer-->
+                    <div class="row">
+                        <div class="span4 lfooter_item">
+                            <p>
+                                © 2012 healthcareabroad.com | All rights reserved.
+                            </p><a href="#">Privacy</a> <a href="#">Terms of Use</a> <a href="#">Ad Choice</a>
+                        </div>
+                        <div class="pull-right lfooter_socials">
+                            <ul>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/facebook_icon.png') }}" alt="facebook"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/tumblr_icon.png') }}" alt="tumblr"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/linkedin_icon.png') }}" alt="linkedin"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/rss_icon.png') }}" alt="rss"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!--End of row-->
+                </div><!--End of container-->
+            </div>
 
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}
-    {% block inlineJavascriptCode %}{% endblock %}
 </body>
 
 {% endblock %}

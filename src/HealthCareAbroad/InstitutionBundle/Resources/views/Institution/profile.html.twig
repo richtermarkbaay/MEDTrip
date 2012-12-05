@@ -1,0 +1,29 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+
+{% block content %}
+
+    {% embed 'InstitutionBundle:Widgets:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+            
+            <div id="maincontent">
+                <div class="heading2">
+                    <div class="heading_text2">List of Clinics</div>
+                </div>
+                
+                <div class="span12 marginleft0">
+                    <p>Some TExt that there is no clinic has been added. <a href="add-new-clinic.html">Click here</a> to add clinic.</p>
+                </div>
+            </div>
+        
+        {% endblock %}
+        
+        {% block sidebar %}
+            <div class="span3">
+                {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+                {% include 'InstitutionBundle:Widgets:sidebar.mediaGallery.html.twig' %}
+            </div>
+        {% endblock %}
+        
+    {% endembed %}
+
+{% endblock %}
