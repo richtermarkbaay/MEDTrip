@@ -35,13 +35,3 @@ class AdminSearchService
 	}
 
 }
-
-// $result = $service->search(array(), true);
-
-
-
-// $results = $service->search(array());
-
-
-// $someconverter->convertToVO($results);
-
