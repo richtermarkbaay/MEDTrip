@@ -25,8 +25,9 @@
                         <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                         <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
                     </tr>
-                
+                	
                     {% for each in data %}
+                    	
                         <tr id="each-{{each.id}}">
                         	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name|raw }}</a></td>
                             <td>{{ each.description|raw }}</td>
@@ -39,9 +40,14 @@
 
      
             </div>
-            
             {% endblock %}
+            
         {% endembed %}
+        {% if pager.isPaginable %}
+            {% set params = app.request.query.all | merge({'category': category, 'term': term }) %}
+            {{ paginate(pager, 'search_admin_initiate' , params) }}
+
+        {% endif %}
     </div>
 
     <div id="update-status-container" title="Edit Institution Status" style="display:none">

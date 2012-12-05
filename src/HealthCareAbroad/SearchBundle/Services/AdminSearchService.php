@@ -1,21 +1,15 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchAdminPagerService;
+
 use HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory;
 
 use HealthCareAbroad\SearchBundle\Classes\SearchCategoryBuilder;
 
 use Symfony\Component\HttpFoundation\Request;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
-use HealthCareAbroad\SearchBundle\Constants;
 use HealthCareAbroad\AdminBundle\Entity\SearchAdminResults;
-use HealthCareAbroad\HelperBundle\Entity\Country;
-use Doctrine\ORM\Query\ResultSetMapping;
-use Doctrine\ORM\EntityManager;
-
-use HealthCareAbroad\PagerBundle\Pager;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 
 /**
  * Temporary holder of all search related functionality
@@ -28,17 +22,26 @@ class AdminSearchService
 	 */
 	private $factory;
 	
-	public function setSearchBuilderFactory(SearchResultBuilderFactory $sf)
+	public function setSearchBuilderFactory(SearchResultBuilderFactory $searchfactory)
 	{
-		$this->factory = $sf;
+		$this->factory = $searchfactory;
 	}
 
-	public function search(array $searchCriteria = array())
+	public function search(array $searchCriteria = array(), SearchAdminPagerService $p)
 	{
 		$builder = $this->factory->getBuilderByCategory($searchCriteria);
-		$result = $builder->search($searchCriteria);
-		
-    	return $result;
+		$result = $builder->search($searchCriteria, $p);
+		return $result;
 	}
 
 }
+
+// $result = $service->search(array(), true);
+
+
+
+// $results = $service->search(array());
+
+
+// $someconverter->convertToVO($results);
+

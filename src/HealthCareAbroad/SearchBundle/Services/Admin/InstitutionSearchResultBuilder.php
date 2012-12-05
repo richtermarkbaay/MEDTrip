@@ -3,7 +3,6 @@
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
 class InstitutionSearchResultBuilder extends SearchResultBuilder
 {
-
     protected function buildQueryBuilder($criteria)
     {
     	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();

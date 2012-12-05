@@ -2,14 +2,11 @@
 
 namespace HealthCareAbroad\SearchBundle\Controller;
 
-use HealthCareAbroad\HelperBundle\Services\Filters\SearchResultListFilter;
-
-use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchAdminPagerService;
 
 use HealthCareAbroad\SearchBundle\Form\FilterFormType;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilder;
 use HealthCareAbroad\MedicalProcedureBundle\Form\ListType\MedicalCenterListType;
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
@@ -38,7 +35,21 @@ class AdminController extends Controller
      */
     public function initiateAction(Request $request)
     {
+
 		$searchCriteria = $request->get('adminDefaultSearch', array());
+		
+		if(!$searchCriteria){
+		    
+		    $searchCriteria['category'] = $request->get('category');
+		    $searchCriteria['term'] = $request->get('term');
+		}
+		
+		if($request->get('page')){
+		    $searchCriteria['page'] = $request->get('page');
+		}else{
+		    $searchCriteria['page'] = 1;
+		}
+		
 		$isDoctor = false;
 		$route = "";
 		switch ($searchCriteria['category']) {
@@ -66,11 +77,13 @@ class AdminController extends Controller
 			    $varName = 'sub-specialization';
 				break;
 		}
+		$p = new SearchAdminPagerService();
 		$params = array(
-						"data" => $this->get('services.admin_search')->search($searchCriteria),
-// 						"pager" => $this->get('services.admin_search')->pager,
+						"data" => $this->get('services.admin_search')->search($searchCriteria, $p),
+						"pager" => $p->getPager(),
 		                "isDoctor" => $isDoctor,
-		                "category" => $varName
+		                "category" => $searchCriteria['category'],
+						"term" => $searchCriteria['term'],
 		);
 		
 		return $this->render('SearchBundle:Admin:searchResult.html.twig',$params);
