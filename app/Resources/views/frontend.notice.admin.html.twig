@@ -1,0 +1,14 @@
+{% for alert, message in app.session.flashes %}
+	{% if alert == 'warning' %}
+	    {% set class = '' %}
+	{% elseif alert == 'error' %}
+	    {% set class = 'alert-error' %}
+	{% elseif alert == 'success' %}
+	    {% set class = 'success' %}
+	{% elseif (alert == 'notice') or alert == 'info' %}
+	    {% set class = 'alert-info' %}
+	{% else %}
+	    {% set class = '' %}
+	{% endif %}
+     <span class="message alert alert-{{ class }}">{{ message }}</span> 
+{% endfor %}

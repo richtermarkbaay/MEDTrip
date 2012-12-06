@@ -14,7 +14,8 @@ class NewsletterSubscriberFormType extends AbstractType
 {
 public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('email','email', array('constraints' => array(new Email(), new NotBlank()), 'data' => 'Enter your Email'));
+		$builder->add('email','email', array('constraints' => array(new Email(array('message' => 'Please enter valid email address.')), 
+		                new NotBlank(array('message' => 'Email is required.'))), 'data' => 'Enter your email address','label' => ' '));
 	}
 
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

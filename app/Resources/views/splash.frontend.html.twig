@@ -26,66 +26,35 @@
         {% endjavascripts %}
 
         {% block stylesheets %}
-             <link href="{{ asset('css/frontend/shortcodes.css') }}" rel="stylesheet"/>
+             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/frontend/style_splash.css') }}" rel="stylesheet"/>
             <!-- Google Fonts -->
             <link href='http://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
 
         {% endblock %}
     </head>
-    {% block body %}
+{% block body %}
 
-        <body>
-
-            <div class="fixed">
-
-                <div id="top" class="top_bar">
-                    <div class="inner">
-                            <div class="news_ticker">
-                            </div><!--News Ticker-->
-                    </div> <!--End Inner-->
-                </div> <!--End Topbar-->
-
-                <header id="header">
-                    <div class="top_line"></div>
-                    <div class="inner">
-                        <div class="container">
-                            <article class="cat_article">
-
-                                <div id="article_content" class="single_article_content">
-                                    <br /> <a href="index.html"><img src="{{ asset('images/frontend/logo3.png') }}" alt="#" /> </a>
-
-                                    <div class="brdr3"></div>
-                                        <h1 style="font-size:14px;margin-top:8px;">HealthCareAbroad.com&#8482; is a directory that provides a World of Healthcare Options.</h1><br />
-
-                                    <div class="box_note box clear" style="">
-
-                                        <h1 class="box_head" style="border-bottom-color:; background-color:#e4e4e4;color:#444;-moz-border-radius-topleft:; -moz-border-radius-topright:px; border-top-left-radius:px; border-top-right-radius:px; font-size:16px; height:8px;"></h1>
-                                        <h2>Be among the first to know when we launch Healthcare Abroad!<br />
-                                        <strong>Sign up below:</strong></h2><br />
-
-                                        <div class="contact_form">
-                                             {% include '::notice.admin.html.twig' %}
-                                            <form novalidate="novalidate"  id="newsletterForm" action="{{ path('newsletter_new') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-
-                                                  {{ form_row(form.email) }}
-                                                    <input type="submit" name="submit" id="newsletterButton" value="Notify me" class="form-submit button black_b" />
-                                                     {{ form_rest(form) }}
-
-                                            </form>
-
-                                        </div> <!--End Contact Form-->
-
-                                    </div>
-                                    <div class="clear"></div>
-                                </div> <!--Single Article content-->
-
-                            </article> <!--End Cat Article-->
-                        </div> <!--End Container-->
-
-                        <!--Footer-->
-                    </div> <!--End Inner-->
-                </header> <!--End Header-->
+    <body>
+        <div id="main-wrapper">
+    		<h1 id="logo">HealthcareAbroad</h1>
+    		<h2 id="caption">THE RESOURCE FOR GLOBAL <b>HEALTHCARE</b>
+    			<br>
+    			A comprehensive, <b>unbiased</b> directory for <b>Medical Tourism</b>
+    		</h2>
+    		<div id="signup">
+    			<span class="signup-heading">Do you want to be notified when we launch HealthcareAbroad?</span>
+    			
+                <form id="newsletterForm" action="{{ path('newsletter_new') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                 {{ form_errors(form) }}
+                  {{ form_widget(form.email) }}
+                  <button class="btn" id="newsletterButton">Notify Me</button>
+                 {{ form_rest(form) }}
+    
+                </form>
+                {% include '::frontend.notice.admin.html.twig' %}
+    		</div>
+    	</div>
 
           <script type="text/javascript">
               $(function() {
@@ -96,9 +65,9 @@
               });
           </script>
 
-        </body>
+    </body>
 
-    {% endblock %}
+{% endblock %}
 
 
 </html>
