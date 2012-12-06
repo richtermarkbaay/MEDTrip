@@ -41,16 +41,30 @@ class AdvertisementController extends Controller
      * @var Advertisement
      */
     private $advertisement;
+        
+    /**
+     * @var Institution
+     */
+    private $institution;
     
+
     public function preExecute()
     {
         $this->factory = $this->get('services.advertisement.factory');
-        
+
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
             $this->advertisement = $this->factory->findById($advertisementId);
             
             if (!$this->advertisement) {
                 throw $this->createNotFoundException("Invalid advertisement.");
+            }
+        }
+
+        if ($institutionId = $this->getRequest()->get('institutionId', 1)) {
+            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+
+            if (!$this->institution) {
+                throw $this->createNotFoundException("Invalid institution.");
             }
         }
     }
@@ -86,8 +100,9 @@ class AdvertisementController extends Controller
     public function addAction(Request $request)
     {
         $advertisement = new Advertisement();
-        $institutionId = $request->get('institutionId', 0);
-        $advertisementTypeId = $request->get('advertisementTypeId', 0);
+        $advertisementTypeId = $request->get('advertisementTypeId', 1);
+
+        $advertisement->setInstitution($this->institution);
 
         if($advertisementTypeId) {
             $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementTypeId);
@@ -100,32 +115,22 @@ class AdvertisementController extends Controller
             $advertisement->addAdvertisementPropertyValue($propertyValue);            
         }
 
-        if($institutionId) {
-            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
-            $advertisement->setInstitution($institution);
-        }
-
-        $form = $this->createForm(new AdvertisementFormType(), $advertisement);
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
     
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $this->generateUrl('admin_advertisement_create'),
             'form' => $form->createView()
         ));
     }
 
     public function editAction(Request $request)
     {
-        $id = $request->get('advertisementId', 0);
-        
-        $advertisement = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($id);
-
-        if(!$advertisement) {
-            return;
-        }
-
         $em = $this->getDoctrine()->getEntityManager();
-        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
-        
+        $form = $this->createForm(new AdvertisementFormType($em), $this->advertisement);
+
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
             'form' => $form->createView()
         ));
     }
@@ -138,43 +143,64 @@ class AdvertisementController extends Controller
     public function saveAction()
     {
         $request = $this->getRequest();
+        $advertisementData = $request->get('advertisement');
 
         if(!$request->getMethod() == 'POST') {
             return new Response("Save requires POST method!", 405);
         }
         
-        $advertisementData = $request->get('advertisement');
+        if(!$this->advertisement) {
+            $advertisement = new Advertisement();
+            
 
-        $id = $request->get('id', null);
-        $advertisement = $id 
-            ? $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($id)
-            : new Advertisement();
+            $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
+            $advertisement->setAdvertisementType($advertisementType);
+            
+            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($advertisementData['institution']);
+            $advertisement->setInstitution($institution);
 
+            foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
+                $propertyValue = new AdvertisementPropertyValue();
+                $propertyValue->setAdvertisementPropertyName($each);
+                $propertyValue->setAdvertisement($advertisement);
+                $advertisement->addAdvertisementPropertyValue($propertyValue);
+            }
+            
+            $formAction = $this->generateUrl('admin_advertisement_create');
 
-        $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
-        $advertisement->setAdvertisementType($advertisementType);
-
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($advertisementData['institution']);
-        $advertisement->setInstitution($institution);
-
-        foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
-            $propertyValue = new AdvertisementPropertyValue();
-            $propertyValue->setAdvertisementPropertyName($each);
-            $propertyValue->setAdvertisement($advertisement);
-            $advertisement->addAdvertisementPropertyValue($propertyValue);
+        } else {
+            $advertisement = $this->advertisement;
+            $formAction = $this->generateUrl('admin_advertisement_update', array('advertisementId'=>$advertisement->getId()));
         }
 
-        $form = $this->createForm(new AdvertisementFormType(), $advertisement);
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement); 
+        
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
+
+            foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+                $em->remove($value);
+            }
+            
+            
             $em->persist($advertisement);
             $em->flush();
+            
 
-        } else {
-            var_dump($form->getData()->getAdvertisementPropertyValues()); exit;
+            
+            var_dump('flush');
+exit;
+            $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
+
+            return $this->redirect($this->generateUrl('admin_advertisement_index'));
         }
+
+        return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $formAction,
+            'form' => $form->createView()
+        ));
     }
 
     /**

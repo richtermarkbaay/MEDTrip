@@ -9,11 +9,20 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AdvertisementCustomFormType extends AbstractType
+class AdvertisementPropertyValueFormType extends AbstractType
 {
+    protected $em;
+    
+    public function __construct($em = null)
+    {
+        $this->em = $em;
+    }
+    
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	    $builder->add('advertisementPropertyName', 'entity', array(
+            'label' => ' ',
+            'attr' => array('style' => 'display:none'),
             'class' => 'HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName','property' => 'name',
         ));
 	}

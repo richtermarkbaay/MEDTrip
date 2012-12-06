@@ -1,9 +1,6 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Entity;
-
-use HealthCareAbroad\HelperBundle\Classes\CommonArrayAccess;
-
-// TODO - extending CommonArrayAccess which implements ArrayAccess is a temporary fix for expanded: true 
+ 
 class Advertisement
 {
     const STATUS_ACTIVE = 1;
@@ -30,13 +27,18 @@ class Advertisement
     private $dateCreated;
 
     /**
+     * @var datetime $dateExpiry
+     */
+    private $dateExpiry;
+
+    /**
      * @var boolean $status
      */
     private $status;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
-     */ 
+     */
     private $advertisementPropertyValues;
 
     /**
@@ -128,6 +130,28 @@ class Advertisement
     public function getDateCreated()
     {
         return $this->dateCreated;
+    }
+
+    /**
+     * Set dateExpiry
+     *
+     * @param datetime $dateExpiry
+     * @return Advertisement
+     */
+    public function setDateExpiry($dateExpiry)
+    {
+        $this->dateExpiry = $dateExpiry;
+        return $this;
+    }
+
+    /**
+     * Get dateExpiry
+     *
+     * @return datetime 
+     */
+    public function getDateExpiry()
+    {
+        return $this->dateExpiry;
     }
 
     /**

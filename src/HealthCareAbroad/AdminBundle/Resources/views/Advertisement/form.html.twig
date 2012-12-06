@@ -19,12 +19,21 @@
         }
         
         .tmp-form > div > div {
-            margin-left: 20px;
+            /*margin-left: 20px; */
         }
 
         .tmp-form .default-properties label {
             display: inline-block;
         }
+
+        #advertisement_dateExpiry > select {
+            width: 65px;
+        }
+
+        #advertisement_dateExpiry > select:first-child {
+            width: 80px;
+        }
+        
     </style>
 
 	<div id="main-content">
@@ -41,8 +50,23 @@
                 <div id="table-content" style="width:70%">
 
     				<!-- start form -->
-    				<form novalidate="novalidate" action="{{ path('admin_advertisement_create') }}" enctype="multipart/form-data" method="post" {{ form_enctype(form) }} class="tmp-form">
-    
+    				<form novalidate="novalidate" action="{{ formAction }}" enctype="multipart/form-data" method="post" {{ form_enctype(form) }} class="tmp-form">
+    				
+    				    {{ form_row(form.institution) }}
+    				
+    				    {{ form_row(form.advertisementType) }}
+    				    
+    				    {{ form_row(form.title) }}
+    				    
+    				    {{ form_row(form.description) }}
+    				    
+    				    {% for propertyValue in form.advertisementPropertyValues %}
+    				        {{ form_row(propertyValue.advertisementPropertyName) }}
+    				        {{ form_row(propertyValue.value) }}
+    				    {% endfor %}
+    				    
+    				    {{ form_row(form.dateExpiry) }}
+    				
     					{{ form_rest(form) }}
     					
     				    <input type="submit" value="Submit" class="btn btn-large btn-primary" name="submit"/>

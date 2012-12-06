@@ -16,6 +16,20 @@ admin_advertisement_create:
     requirements:
         _method: POST
 
+admin_advertisement_edit:
+    pattern:  /admin/advertisement/{advertisementId}/edit
+    defaults: { _controller: AdminBundle:Advertisement:edit }
+    requirements:
+        _method: GET
+        advertisementId: \d+
+
+admin_advertisement_update:
+    pattern:  /admin/advertisement/{advertisementId}/edit
+    defaults: { _controller: AdminBundle:Advertisement:save }
+    requirements:
+        _method: POST
+        advertisementId: \d+
+
 admin_advertisement_addBasicDetail:
     pattern:  /admin/advertisement/add/step-one
     defaults: { _controller: AdminBundle:Advertisement:addBasicDetail }
@@ -40,11 +54,4 @@ admin_advertisement_preview:
     defaults: { _controller: AdminBundle:Advertisement:preview }
     requirements:
         _method: GET
-        advertisementId: \d+
-        
-admin_advertisement_edit:
-    pattern:  /admin/advertisement/{advertisementId}/edit
-    defaults: { _controller: AdminBundle:Advertisement:edit }
-    requirements:
-        _method: GET|POST
         advertisementId: \d+
