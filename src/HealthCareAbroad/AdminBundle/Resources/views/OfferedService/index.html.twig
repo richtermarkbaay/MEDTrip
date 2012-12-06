@@ -22,8 +22,7 @@
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
 
-                <div style="width: 70%">
-                    <table id="news-list" class="generic-table" width="100%">
+                 <table id="offered-services-list" class="table table-bordered sortable-list">
                             <tr>
                         <th id="column-name"><a href="">Name</a></th>
                         <th width="15%">Actions</th>
