@@ -1,0 +1,45 @@
+<div id="header">
+    <div class="top_line"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="span4">
+                <div class="logo"> 
+                    <a href="{{ path('main_homepage') }}"><img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad"></a> 
+                </div>
+            </div>
+            
+            <div class="pull-right">
+                <form class="navbar-search pull-left">
+                    <input type="text" class="search-query" placeholder="Search">
+                </form>
+                
+                <div class="pull-left">
+                    <div class="dropdown"> 
+                        <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#help"> Help <b class="caret"></b> </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li><a href="feedback.html">Feedback</a></li>
+                            <li><a href="faq.html">FAQ</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="pull-left">
+                    <p style="margin-left:10px;">you are logged in as</p>
+                </span>
+                
+                <div class="pull-right">
+                    <div class="dropdown"> 
+                        <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="{{ path('institution_editAccount') }}"> {{ app.user.username }} <b class="caret"></b> </a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <li><a href="{{ path('institution_editAccount') }}">Manage Account Profile</a></li>
+                            <li><a href="#">Invite User</a></li>
+                            <li><a href="{{ path('institution_logout')}}">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End of container -->
+</div>
+<!--End of header -->

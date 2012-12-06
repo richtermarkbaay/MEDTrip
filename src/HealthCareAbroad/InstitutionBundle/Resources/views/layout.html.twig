@@ -1,43 +1,62 @@
 {% extends '::base.institution.html.twig' %}
 
-{% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
+{% block title %}{% endblock %}
 
 {% block body %}
-    <body>
-        <div id="header">
-            <div class="top_line"></div>
-              <div class="container">
-                <div class="row">
-                  <div class="span4">
-                    <div class="logo"> <a href="{{ path('institution_homepage')}}"><img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad"></a> </div>
-                  </div>
-                      {% block top_menu %}
-                        {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
-                    {% endblock %}
+
+<body>
+
+    <!-- header -->
+    {% include 'InstitutionBundle:Default:header.layout.html.twig' %}
+    
+    
+    <div id="header2">
+        <div class="top_line2"></div>
+        <div class="container">
+            <div class="row">
+                <div class="pull-right">
+                    {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
                 </div>
             </div>
-            <!--End of container -->
         </div>
-        
-        {% include 'InstitutionBundle:Default:headerNavigation.html.twig' %}
+        <!--End of container -->
+    </div>
+    <!--End of header -->
     
-        <div id="content_wrap">
-            <div class="container content">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
+    {% block content %}{% endblock %}
+    
+    
         
         <div class="footer_wrap">
-          {% include 'InstitutionBundle:Default:footer.html.twig' %}
-          
-        </div>
-        
-        {% block javascripts %}
-            <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-        {% endblock %}
-        
-        {% block inlineJavascriptCode %}{% endblock %}
-    </body>
+            <div class="lfooter_wrap">
+                <div class="container">
+                    <!--This is for the lower footer-->
+                    <div class="row">
+                        <div class="span4 lfooter_item">
+                            <p>
+                                © 2012 healthcareabroad.com | All rights reserved.
+                            </p><a href="#">Privacy</a> <a href="#">Terms of Use</a> <a href="#">Ad Choice</a>
+                        </div>
+                        <div class="pull-right lfooter_socials">
+                            <ul>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/facebook_icon.png') }}" alt="facebook"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/tumblr_icon.png') }}" alt="tumblr"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/linkedin_icon.png') }}" alt="linkedin"></a>
+                                </li>
+                                <li>
+                                    <a href="#"><img src="{{ asset('images/institution/rss_icon.png') }}" alt="rss"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div><!--End of row-->
+                </div><!--End of container-->
+            </div>
+
+</body>
 
 {% endblock %}

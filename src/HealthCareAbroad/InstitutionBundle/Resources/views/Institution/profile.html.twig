@@ -1,0 +1,36 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'profile'} %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Widgets:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+            <div class="span9 marginleft0">
+            {% include 'InstitutionBundle:Widgets:institution.profileHeader.html.twig' %}
+            
+            <div class="clear"></div>
+            
+                <div id="maincontent">
+                    <div class="heading2">
+                        <div class="heading_text2">List of Clinics</div>
+                    </div>
+                    
+                    <div class="span12 marginleft0">
+                        <p>Some TExt that there is no clinic has been added. <a href="add-new-clinic.html">Click here</a> to add clinic.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- end span9 -->
+        
+        {% endblock %}
+        
+        {% block sidebar %}
+            <div class="span3">
+                {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+                {% include 'InstitutionBundle:Widgets:sidebar.mediaGallery.html.twig' %}
+            </div>
+            <div class="clear"></div>
+        {% endblock %}
+        
+    {% endembed %}
+
+{% endblock %}

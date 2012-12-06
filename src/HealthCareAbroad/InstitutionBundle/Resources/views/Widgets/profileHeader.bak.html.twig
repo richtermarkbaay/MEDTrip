@@ -1,0 +1,51 @@
+{##
+Note: This widget is shared in other bundles e.g. AdminBundle
+##}
+
+<div class="container">
+    <div class="institutionbox-inner">
+        <div class="navbar-inner">
+            <div class="span6">
+                <div class="span3">
+                    <div class="photo-group">
+
+                        {% if institution.media %}
+                            {{ media(institution.media, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
+                        {% else %}
+                            <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                        {% endif %}
+
+                        <span class="label photo-label" style="margin-left:100px; position: absolute; margin-top: -25px;">
+                            <a id="institution-logo-link" href="#" data-placement="right" rel="tooltip" href="#" data-original-title="Manage Institution Profile Photo">
+                                <i class="icon-picture"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+                <div class="span9">
+                    <h3>{{ institution.name }}</h3>
+                    <a href="#"><h5>Manage Your Accreditations, Affiliations and Awards</h5></a>
+                </div>
+            </div>
+            <div class="span6">
+                <a href="#"><h5>Manage Your Institution Profile</h5></a>
+
+                <p>+6332-2555555 (contact number)</p>
+                <p>{{ institution.address1 }} {{ institution.state }}, {{ institution.zipCode }}</p>
+                <p>www.site.com (address)</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} %}
+
+<script type="text/javascript">
+$(function() {
+    $("#institution-logo-link").click(function() {
+        $("#add-media-dialog").dialog("open");
+        return false;
+    });
+});
+</script>

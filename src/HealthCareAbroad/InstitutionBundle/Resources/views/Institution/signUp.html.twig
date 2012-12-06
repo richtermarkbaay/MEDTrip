@@ -1,118 +1,77 @@
-{% extends '::base.institution.html.twig' %}
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
 
-{% block title %} {{ site_name }} &raquo; Sign up{% endblock %}
+{% block title %} Client Sign-up {% endblock %}
 
-{% block body %}
-
-<body>
-    <div class="container">
-        <div class="span5 signupbox">
-            <div class="medicalbox-big"><img src="{{ asset('images/institution/medical-clip.png') }}"/></div>
-            <a href="{{ path('main_homepage') }}"><h1>HEALTHCARE ABROAD</h1></a>
-            
-            <h3>Create an account.</h3>
-            <p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
-            <div class="row-fluid">
-                <form novalidate="novalidate" action="{{ path('institution_signUp') }}" method="POST" class="form">
-    
-                    <fieldset>
-                        <label for="institution name"><b>Name of the Institution</b></label>
-                        <div>
-                            <div class="input-prepend">
-                                {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
-                            </div>
+{% block content %}
+    {% embed 'InstitutionBundle:Widgets:contentWrapper.html.twig' 
+        with {'pageTitle': 'Create an Account'} 
+    %}
+        
+        {% block wrappedContent %}
+            <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
+                <fieldset>
+                    <div>
+                        <label for="institution_name"><b>Name of the Institution</b></label>
+                        {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
+                    </div>
                     
-                          	{% if form_errors(form.name) %}
-  								<ul class="alert-error">
-	                                <li>
-                                     	{{ form_errors(form.name) }}
-	                                </li>
-				  				</ul>
-  							{% endif %}
-                            
-                        </div>
-                    </fieldset>
-                    
-                    <h5>Create USER account.</h5>
-                    
-                    <fieldset>
-                        <label for="username">email 
-                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
-                        </label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.email, { 'attr': {'class': 'span12'} }) }}
-                        </div>
-                        
-	                        {% if form_errors(form.email) %}
-  								<ul class="alert-error">
-	                                <li>
-                                         {{ form_errors(form.email) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                        
-                        <label for="password">password</label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.password, { 'attr': {'class': 'span12'} }) }}
-                        </div>
-                        
-	                        {% if form_errors(form.password) %}
-  								<ul class="alert-error">
-	                                <li>
-                                         {{ form_errors(form.password) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                        
-                        <label for="confirm_password">re-type password</label>
-                        
-                        <div class="input-prepend">
-                            {{ form_widget(form.confirm_password, { 'attr': {'class': 'span12'} }) }}
-                        </div>
-                               
-	                        {% if form_errors(form.confirm_password) %}
-  								<ul class="alert-error">
-	                                <li>
-	                                         {{ form_errors(form.confirm_password) }}
-	                                </li>
-				  				</ul>
-	  						{% endif %}
-                        
+                    <div>
                         <label for="password">Types of Institution</label>
-                        
-                        <div id="tabs">
-                            <div id="nav">
-                                {% for key, type in institutionTypes %}
-                                <label>
-                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
-                                </label>    
-                            {% endfor %}
-                            </div>
-                        </div>
-                    </fieldset>
+                        {% for key, type in institutionTypes %}
+                            <label>
+                                <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
+                            </label>    
+                        {% endfor %}
+                    </div>
+                    
+                    <hr>
+                    <h4>Create USER account.</h4>
+                    <div>
+                    <label for="username">Email 
+                        <span>
+                            <small>&nbsp;(your OWN email NOT the email of the institution)</small>
+                        </span>
+                    </label>
+                        {{ form_widget(form.email, { 'attr': {'class': 'span9'} }) }}
+                    </div>
+                    
+                    
+                    {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
+                            
+                    {{ form_row(form.confirm_password, { 'attr': {'class': 'span8'} }) }}
                     
                     <br/>
+                    
                     <label>
-                        {{ form_widget(form.agree_to_terms) }}
-                        I read and agree the <a href="#">Terms and Conditions</a>.
+                        {{ form_widget(form.agree_to_terms) }} I read and agree the <a href="#">Terms and Conditions</a>.
                     </label>
                     
-                  		{% if form_errors(form.agree_to_terms) %}
-							<ul class="alert-error">
-                                <li>
-                                    {{ form_errors(form.agree_to_terms) }}
-                                </li>
-							</ul>
-						{% endif %}
-                    
-                    <input type="submit" name="Submit" value="SIGN-UP" class="span12 btn-large btn-primary" />
-                    {{ form_rest(form) }}
-                </form>
+                    <input type="submit" name="Submit" value="SIGN-UP" class="span6 btn-large btn-primary" />
+                </fieldset>
+            </form>
+            
+            <div id="modal">
+                <a href="#" title="" class="close">X</a>
+                <div class="span12">
+                    <h4>Thank you for creating an account in Health Care Abroad</h4>
+                </div>
             </div>
+        {% endblock %}
+        
+        {% block sideBox %}
+        <div class="span4">
+            <div class="aside">
+                <div class="aside box">
+                    <p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
+                </div>
+            </div>
+            <!-- End of aside-->
         </div>
-    </div>
-</body>
-
+        <!--End of span4-->
+    {% endblock %}
+        
+    {% endembed %}
+                                            
+    
+    
 {% endblock %}
