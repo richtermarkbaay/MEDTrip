@@ -22,8 +22,8 @@
             {% set sortBy = app.request.get('sortBy') %}
             {% set sortOrder = app.request.get('sortOrder') %}
             {% set default = sortBy | length ? '' : 'sort-asc' %}
-
-                <table id="language-list" class="generic-table" width="100%">
+             
+             <table id="language-list" class="table table-bordered sortable-list">
                         <tr>         	 
                             <th id="column-name"><a href="">Name</a></th>
                          <th id="column-name"><a href="">Iso Code</a></th>
