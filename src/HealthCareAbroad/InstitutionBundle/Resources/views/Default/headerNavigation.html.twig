@@ -1,0 +1,21 @@
+<div id="header2">
+        {% if selectedTab is not defined %}
+            {% set selectedTab = 'dashboard' %}
+        {% endif %}
+  <div class="top_line2"></div>
+  <div class="container">
+    <div class="row">
+      <div class="pull-right">
+          <ul class="nav nav-tabs">
+            <li class="{{ selectedTab == 'dashboard' ? 'active' : 'select' }}"><a href="{{ path('institution_homepage')}}">Dashboard</a> </li>
+            <li class="{{ selectedTab == 'institution_profile' ? 'active' : 'select' }}"><a href="institution-profile-initial.html">Institutional Profile</a> </li>
+            <li class="{{ selectedTab == 'medical_listing' ? 'active' : 'select' }}"><a href="medical-listing.html">Medical Listing</a> </li>
+            <li class="{{ selectedTab == 'events' ? 'active' : 'select' }}"><a href="site-logs.html">Events</a> </li>
+          </ul>
+      </div>
+    </div>
+  </div>
+  <!--End of container --> 
+</div>
+<!--End of header -->
+

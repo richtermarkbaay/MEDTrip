@@ -3,46 +3,41 @@
 {% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
 
 {% block body %}
-<body>
+    <body>
+        <div id="header">
+            <div class="top_line"></div>
+              <div class="container">
+                <div class="row">
+                  <div class="span4">
+                    <div class="logo"> <a href="{{ path('institution_homepage')}}"><img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad"></a> </div>
+                  </div>
+                      {% block top_menu %}
+                        {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
+                    {% endblock %}
+                </div>
+            </div>
+            <!--End of container -->
+        </div>
+        
+        {% include 'InstitutionBundle:Default:headerNavigation.html.twig' %}
     
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <a href="index.php" class="brand">
-                    <img src="{{ asset('images/institution/HCA-logo-small.png') }}" alt="Health Care Abroad Logo" longdesc="#"> HEALTHCARE ABROAD
-                </a>
-                
-	             {% block top_menu %}
-	                {% include 'InstitutionBundle:Default:topHeader.html.twig' %}
-	            {% endblock %}
+        <div id="content_wrap">
+            <div class="container content">
+                {% block content %}
+                {% endblock %}
             </div>
         </div>
-    </div>
-
-    <!-- End: page-top -->
-    <div class="row-fluid">
-        <div class="institutionbox">
-            {% include 'InstitutionBundle:Widgets:profileHeader.html.twig' %}
+        
+        <div class="footer_wrap">
+          {% include 'InstitutionBundle:Default:footer.html.twig' %}
+          
         </div>
-    </div>
-    <!--  end content-outer........................................................END -->
-
-    {% block content %}{% endblock %}
-    
-     <div class="container">
-        <br/><hr>
-        <footer>
-            <p>
-                &copy; {{ cfe_company_name }}
-                <a href="{{ site_url }}">{{ site_name }}</a>. All rights reserved.
-            </p>
-        </footer>
-    </div>
-
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-    {% endblock %}
-    {% block inlineJavascriptCode %}{% endblock %}
-</body>
+        
+        {% block javascripts %}
+            <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+        {% endblock %}
+        
+        {% block inlineJavascriptCode %}{% endblock %}
+    </body>
 
 {% endblock %}

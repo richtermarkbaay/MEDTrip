@@ -1,20 +1,18 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'dashboard'%}
 {% block content %}
-     {% include 'InstitutionBundle:Widgets:stepsContainer.html.twig' %}
-<div class="container">
-	<div class="maincontent">
-	 	<div class="span3">
-            {% include 'AdminBundle:Widgets:alerts.html.twig' %}
-			
-			{% include 'InstitutionBundle:Widgets:sidebar.latestHcaCommunity.html.twig' %}
-			
-			{% include 'InstitutionBundle:Widgets:sidebar.ads.html.twig' %}
-		</div>
-		<div class="span9 title">
-		 	{% include 'InstitutionBundle:Main:content.html.twig' %}
-		 </div>
-	</div>
+     
+<div class="span12 marginleft0">
+    {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
+    
+    <div class="span9 marginleft0">
+       {% include 'InstitutionBundle:Widgets:dashboard.statistics.html.twig' %}
+       {% include 'InstitutionBundle:Widgets:dashboard.recentComments.html.twig' %}
+    </div>
+    <!-- dashboard sidebar -->
+    <div class="span3">
+        {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+    </div>
 </div>
 
 {% endblock %}
