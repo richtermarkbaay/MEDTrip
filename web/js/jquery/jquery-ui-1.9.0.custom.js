@@ -10379,7 +10379,7 @@ $.widget( "ui.spinner", {
 		min: null,
 		numberFormat: null,
 		page: 10,
-		step: 1,
+		step: 15,
 
 		change: null,
 		spin: null,
@@ -10618,11 +10618,46 @@ $.widget( "ui.spinner", {
 
 	_spin: function( step, event ) {
 		var value = this.value() || 0;
-
-		if ( !this.counter ) {
-			this.counter = 1;
+		if(step > 0) {
+			if(value == 15 || value == 0 || value == 30 || value == 45) {
+				step = 15;
+			}
+			else if(value == 12)
+			{
+				step = 1;
+			}
+			else if(value === 1)
+			{
+				step = 1;
+			}
+			else {
+				step = 1;
+			}
+			if ( !this.counter ) {
+				this.counter = 1;
+				//step = 1;
+			}
 		}
-
+		else {
+			if(value == 15 || value == 0 || value == 30 || value == 45) {
+				step = -15;
+			}
+			else if(value == 12)
+			{
+				step = -1;
+			}
+			else if(value === 1)
+			{
+				step = -1;
+			}
+			else {
+				step = -1;
+			}
+			if ( !this.counter ) {
+				this.counter = 1;
+				//step = 1;
+			}
+		}
 		value = this._adjustValue( value + step * this._increment( this.counter ) );
 
 		if ( !this.spinning || this._trigger( "spin", event, { value: value } ) !== false) {

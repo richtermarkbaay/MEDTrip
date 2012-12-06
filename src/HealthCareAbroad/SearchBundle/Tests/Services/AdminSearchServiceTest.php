@@ -47,9 +47,6 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         $factory->setRouter($this->getRouter());     
         $this->service->setSearchBuilderFactory($factory);
         
-        //test for pagerService
-        $this->pagerService = new SearchAdminPagerService();
-        $this->pagerService->getPager();
     }
     
     public function tearDown()
@@ -64,6 +61,14 @@ class AdminSearchServiceTest extends ContainerAwareUnitTestCase
         $this->assertNotEmpty($adminSearchResults);
         
         return $adminSearchResults;
+    }
+    
+    public function testGetPager()
+    {
+        $this->pagerService = new SearchAdminPagerService();
+        $pager = $this->pagerService->getPager();
+        
+        return $pager;
     }
     
 }
