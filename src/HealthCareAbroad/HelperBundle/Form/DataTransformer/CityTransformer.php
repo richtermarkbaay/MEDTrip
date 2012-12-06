@@ -30,8 +30,8 @@ class CityTransformer implements DataTransformerInterface
         $city = $this->service->getCityById($data);
         if (!$city) {
             $cityGlobalData = $this->service->getGlobalCityById($data);
-            $data = $this->service->createCityFromArray($cityGlobalData); 
+            $city = $this->service->createCityFromArray($cityGlobalData); 
         }   
-        return $data;
+        return $city;
     }
 }
