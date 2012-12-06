@@ -12,16 +12,19 @@
                 <fieldset>
                     <div>
                         <label for="institution_name"><b>Hospital / Clinic / Company Name:</b></label>
+                        {{ form_errors(form.name) }}
                         {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
                     </div>
                     
                     <div>
                         <label for="password">Please select which best describes the healthcare provider you are adding:</label>
-                        {% for key, type in institutionTypes %}
+                        {{ form_errors(form.type) }}
+                        {# for key, type in institutionTypes %}
                             <label>
                                 <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
                             </label>    
-                        {% endfor %}
+                        {% endfor #}
+                        {{ form_widget(form.type) }}
                     </div>
                     
                     <hr>
@@ -43,11 +46,14 @@
                     <br/>
                     
                     <label>
+                        {{ form_errors(form.agree_to_terms) }}
                         {{ form_widget(form.agree_to_terms) }} I read and agree the <a href="#">Terms and Conditions</a>.
                     </label>
                     
                     <input type="submit" name="Submit" value="SIGN-UP" class="span6 btn-large btn-primary" />
                 </fieldset>
+                
+                {{ form_rest(form) }}
             </form>
             
             <div id="modal">

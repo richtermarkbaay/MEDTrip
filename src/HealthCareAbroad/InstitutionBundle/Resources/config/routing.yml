@@ -22,6 +22,10 @@ InstitutionBundle_userType:
 InstitutionBundle_userRole:
     resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
     prefix:   /institution
+    
+InstitutionBundle_account:
+    resource: "@InstitutionBundle/Resources/config/routing_account.yml"
+    prefix: /
 
 institution_gallery:
     pattern: /institution/gallery
@@ -90,8 +94,4 @@ institution_exception_report_create:
     requirements:
         _method:  GET|POST
         
-institution_accountProfile:
-    pattern:  /institution/account
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
-    requirements:
-        _method:  GET|POST
+

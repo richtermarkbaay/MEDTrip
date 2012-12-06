@@ -74,9 +74,9 @@ class InstitutionSignUpController  extends Controller
 	public function signUpAction(Request $request)
 	{
 		
-	    $institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
+	    $institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);
 	    $factory = $this->get('services.institution.factory');
-	    $institution = $factory->createByType($institutionType);
+	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
 	    
 	    if ($request->isMethod('POST')) {
@@ -92,7 +92,7 @@ class InstitutionSignUpController  extends Controller
     			$institution->setContactNumber('');
     			$institution->setDescription('');
     			$institution->setLogo('');
-    			$institution->setCoordinates('');
+    			//$institution->setCoordinates('');
     			$institution->setState('');
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -121,13 +121,13 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                return $this->redirect($this->generateUrl('institution_accountProfile'));
+                return $this->redirect($this->generateUrl('institution_after_registration_landing'));
 	        }
 	    }
 	    
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
-            'institutionTypes' => InstitutionTypes::getList(),
+            'institutionTypes' => InstitutionTypes::getFormChoices(),
             'selectedInstitutionType' => $institutionType,
         ));
 	}

@@ -46,7 +46,7 @@ class InstitutionFactoryTest extends InstitutionBundleTestCase
     public function testCreateByType()
     {
         // test create medical group network member
-        $institution = $this->factory->createByType(InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);
+        $institution = $this->factory->createByType(InstitutionTypes::MULTIPLE_CENTER);
         $this->assertInstanceOf('HealthCareAbroad\InstitutionBundle\Entity\MedicalGroupNetworkMember', $institution);
         
         // test medical tourism facilitator
@@ -54,7 +54,7 @@ class InstitutionFactoryTest extends InstitutionBundleTestCase
         $this->assertInstanceOf('HealthCareAbroad\InstitutionBundle\Entity\MedicalTourismFacilitator', $institution);
         
         // test independent hospital
-        $institution = $this->factory->createByType(InstitutionTypes::INDEPENDENT_HOSPITAL);
+        $institution = $this->factory->createByType(InstitutionTypes::SINGLE_CENTER);
         $this->assertInstanceOf('HealthCareAbroad\InstitutionBundle\Entity\IndependentHospital', $institution);
     }
     
@@ -68,7 +68,7 @@ class InstitutionFactoryTest extends InstitutionBundleTestCase
     
     public function testSave()
     {
-        $institution = $this->factory->createByType(InstitutionTypes::INDEPENDENT_HOSPITAL);
+        $institution = $this->factory->createByType(InstitutionTypes::SINGLE_CENTER);
         $name = 'test institution '.time();
         $institution->setName($name);
         $this->_setCommonInstitutionData($institution);

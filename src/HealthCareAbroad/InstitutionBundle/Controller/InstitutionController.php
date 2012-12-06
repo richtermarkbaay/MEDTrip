@@ -30,7 +30,9 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 	
 class InstitutionController extends InstitutionAwareController
 {
-	
+    
+    
+    
 	/**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
      */

@@ -75,12 +75,11 @@ class InstitutionSignUpFormType extends AbstractType
                 'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))
             ));
         
-//         $builder->add('institution_type', 'choice', array(
-//                         'expanded' => true,
-//                         'multiple' => false,
-//                         'choices' => InstitutionTypes::getList(),
-//                         'virtual' => true
-//                     ));
+        $builder->add('type', 'choice', array(
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => InstitutionTypes::getFormChoices(),
+            ));
         
         if ($options['include_terms_agreement']) {
         	$builder->add('agree_to_terms', 'checkbox', array(
