@@ -38,6 +38,7 @@ class DefaultController extends InstitutionAwareController
         $news = $newsRepository->getLatestNews();
 
         //return $this->render('InstitutionBundle:Default:index.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
         return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
             'alerts' => $institutionAlerts,
     		'news' => $news,

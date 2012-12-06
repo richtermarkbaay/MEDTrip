@@ -8,16 +8,10 @@
                 </p>
             </div>
             
-            {% include 'InstitutionBundle:Widgets:institution.profileHeader.html.twig' %}
-            
-            <div class="clear"></div>
-            
             {% block wrappedContent %}{% endblock %}
+            
+            {% block sidebar %}{% endblock %}
         </div>
-        
-        {% block sidebar %}{% endblock %}
-        
-        <div class="clear"></div>
     </div>
 </div><!--End of container-->
         

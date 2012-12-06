@@ -1,0 +1,57 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'dashboard'} %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Widgets:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+        <div class="span9 marginleft0">
+            <div id="maincontent">
+                <div class="heading2">
+                    <div class="heading_text2">Getting Started with HEALTH CARE ABROAD</div>
+                </div>
+            </div>
+                
+            <ul class="dashboard-member-activity">
+                <li>
+                    <a href="#"><img src="{{ asset('images/institution/image_ph.png') }}" class="dashboard-member-activity-avatar"> <span class="blue"><strong class="stepsdone">Add Contact Details</strong></span></a>
+                    <p>
+                        Some text explaining the important of adding contact details.
+                    </p>
+                </li>
+                <li>
+                    <a href="#"><img src="{{ asset('images/institution/image_ph.png') }}" class="dashboard-member-activity-avatar"> <span class="blue"><strong class="stepsdone">Add Location Details</strong></span></a>
+                    <p>
+                        Some text explaining the important of adding Location details.
+                    </p>
+                </li>
+                <li>
+                    <a href="#"><img src="{{ asset('images/institution/image_ph.png') }}" class="dashboard-member-activity-avatar"> <span class="blue"><strong>Add Institution Logo</strong></span></a>
+                    <p>
+                        Some text explaining the important of adding profile logo.
+                    </p>
+                </li>
+                 <li>
+                    <a href="#"><img src="{{ asset('images/institution/image_ph.png') }}" class="dashboard-member-activity-avatar"> <span class="blue"><strong>Manage Institution Awards and Certifications</strong></span></a>
+                    <p>
+                        Some text explaining the important of adding awards.
+                    </p>
+                </li>
+                <li>
+                    <a href="single-clinic-profile-tab-form.html"><img src="{{ asset('images/institution/image_ph.png') }}" class="dashboard-member-activity-avatar"> <span class="blue"><h4>Manage your Clinic Profile</h4></span></a>
+                    <p>
+                        Some text explaining the important of adding profile logo.
+                    </p>
+                </li>
+            </ul>
+        </div>
+        {% endblock %}
+        
+        {% block sidebar %}
+        <div class="span3">
+            {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+        </div>
+        {% endblock %}
+        
+    {% endembed %}
+
+{% endblock %}
