@@ -3,20 +3,20 @@
 {% block title %} Client Sign-up {% endblock %}
 
 {% block content %}
-    {% embed 'InstitutionBundle:Widgets:contentWrapper.html.twig' 
-        with {'pageTitle': 'Create an Account'} 
+    {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
+        with {'pageTitle': 'Create an Account', 'contentSpanClass': 'span8 marginleft0'} 
     %}
         
         {% block wrappedContent %}
             <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
                 <fieldset>
                     <div>
-                        <label for="institution_name"><b>Name of the Institution</b></label>
+                        <label for="institution_name"><b>Hospital / Clinic / Company Name:</b></label>
                         {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
                     </div>
                     
                     <div>
-                        <label for="password">Types of Institution</label>
+                        <label for="password">Please select which best describes the healthcare provider you are adding:</label>
                         {% for key, type in institutionTypes %}
                             <label>
                                 <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
@@ -27,9 +27,9 @@
                     <hr>
                     <h4>Create USER account.</h4>
                     <div>
-                    <label for="username">Email 
+                    <label for="username">Your email address 
                         <span>
-                            <small>&nbsp;(your OWN email NOT the email of the institution)</small>
+                            <br/><small>&nbsp;(Please indicate YOUR own email address, you will be asked to add your clinic/company's email address later.)</small>
                         </span>
                     </label>
                         {{ form_widget(form.email, { 'attr': {'class': 'span9'} }) }}
