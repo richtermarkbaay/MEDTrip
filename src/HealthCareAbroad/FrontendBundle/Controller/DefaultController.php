@@ -64,7 +64,7 @@ class DefaultController extends Controller
 			    		$em->persist($newsletterSubscriber);
 			    		$em->flush($newsletterSubscriber);
 				    	
-			    		$this->get('session')->setFlash('success', "Successfully Subscribe to HealthCareAbroad");
+			    		$this->get('session')->setFlash('success', "Thank you for signing up!");
     			}
     			catch (\Exception $e) {
     				
