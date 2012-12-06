@@ -1,0 +1,86 @@
+
+    <div class="span2 marginleft0">
+        <a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal">
+            <img src="{{ asset('images/institution/image_ph.png') }}" height="90" width="140" alt="[Gallery Photo]" class="pic" />
+            <span class="image-icon"><img src="{{ asset('images/institution/image-icon.png') }}" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
+        </a>
+    </div>
+    <!-- end span2 -->
+    
+    <div class="span7 marginleft0">
+        <h2 class="pull-left" style="margin-top:5px;">Institution  Name</h2>
+        <a href="#editinstitutionname" role="button" data-toggle="modal">
+            <div style="margin-top:15px; margin-left:15px;">
+                <i class="icon-pencil pull-left" title="Edit"></i><small>Edit</small>
+            </div>
+        </a>
+    </div>
+    <!-- end span7 -->
+    
+    <div class="clear"></div>
+    
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non quam venenatis diam rhoncus malesuada. Nulla ut eros dolor. Cras condimentum congue erat id luctus. Vivamus vel sagittis tortor. Nam ac purus vitae mauris iaculis sodales ac at elit. Praesent quis sapien vehicula lorem posuere euismod. Mauris ut sem lorem. Duis vitae felis urna. 
+        <a href="#editinstitutiondescription" role="button" data-toggle="modal">
+            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+        </a>
+    </p>
+
+
+<!-- Start of modal boxes -->
+
+<!-- Modal Upload profile Photo -->
+<div id="upload" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Upload Profile Photo</h3>
+    </div>
+    
+    <div class="modal-body">
+        <input type="file" name="profile_photofile" size="40" class="profilephoto">
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary">Upload</button>
+    </div>
+</div>
+<!-- End Upload profile Photo -->
+
+<!-- Modal Edit Name of the Institution -->
+<div id="editinstitutionname" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Edit Institution Name</h3>
+    </div>
+    
+    <div class="modal-body">
+        <div>
+            <input name="institution_name" type="text" id="institution_name" value="Name of the Institution" class="institution_name"/>
+        </div>
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</div>
+<!-- End Modal Edit Name of the Institution-->
+
+<!-- Modal Edit Description of the Institution -->
+<div id="editinstitutiondescription" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Edit Institution Description</h3>
+    </div>
+    <div class="modal-body">
+        <div>
+            <textarea name="Clinic_Description" class="span5" rows="5" cols="60">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non quam venenatis diam rhoncus malesuada. Nulla ut eros dolor. Cras condimentum congue erat id luctus. Vivamus vel sagittis tortor. Nam ac purus vitae mauris iaculis sodales ac at elit. Praesent quis sapien vehicula lorem posuere euismod. Mauris ut sem lorem. Duis vitae felis urna.</textarea>
+        </div>
+    </div>
+    
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-primary">Submit</button>
+    </div>
+</div>
+<!-- End Modal Edit Description of the Institution-->

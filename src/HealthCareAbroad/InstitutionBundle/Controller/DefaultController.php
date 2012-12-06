@@ -1,6 +1,8 @@
 <?php
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\HelperBundle\Services\AlertRecipient;
 
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
@@ -20,13 +22,15 @@ use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
-
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionFormType;
 class DefaultController extends InstitutionAwareController
 {
+    public $institutionMedicalCenter;
     /**
      * @PreAuthorize("hasAnyRole('INSTITUTION_USER')")
      *
      */
+    
     public function indexAction()
     {
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
@@ -36,10 +40,18 @@ class DefaultController extends InstitutionAwareController
 
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
-
-        return $this->render('InstitutionBundle:Default:index.html.twig', array(
+        $this->institutionMedicalCenter = new institutionMedicalCenter();
+        $this->institutionMedicalCenter->setInstitution($this->institution);
+//         var_dump($this->institutionMedicalCenter);exit;
+        $form = $this->createForm(new InstitutionFormType(), $this->institutionMedicalCenter);
+//         return $this->render('InstitutionBundle:Default:index.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
+        return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'alerts' => $institutionAlerts,
     		'news' => $news,
+            'institution' => $this->institution
         ));
     }
 

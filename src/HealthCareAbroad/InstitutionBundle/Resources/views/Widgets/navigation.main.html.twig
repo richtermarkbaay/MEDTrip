@@ -1,0 +1,17 @@
+{% set _mainNavDefaults = {'selected' : 'dashboard'} %}
+{% set mainNavigation = mainNavigation is defined ? _mainNavDefaults | merge(mainNavigation) : _mainNavDefaults %}
+
+<ul class="nav nav-tabs">
+    <li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
+        <a href="{{ path('institution_homepage')}}">Dashboard</a>
+    </li>
+    <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
+        <a href="institution-profile-initial.html">Institutional Profile</a> 
+    </li>
+    <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
+        <a href="medical-listing.html">Medical Listing</a>
+    </li>
+    <li class="{{ 'logs' == mainNavigation.selected  ? 'active' : '' }}">
+        <a href="site-logs.html">Events</a>
+    </li>
+</ul>
