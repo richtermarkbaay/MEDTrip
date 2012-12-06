@@ -114,7 +114,8 @@ class InstitutionFactory
     {
         // get namespace key for institution with id $id
         $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $id), array('institutionId' => $id));
-        $result = $this->memcache->get($memcacheKey);
+        //$result = $this->memcache->get($memcacheKey);
+        $result = false;
         if (!$result) {
             $result = $this->repository->find($id);
             
