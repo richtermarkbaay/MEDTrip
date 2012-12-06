@@ -6,9 +6,6 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-
-use HealthCareAbroad\MediaBundle\Controller\DefaultController;
-
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -118,7 +115,7 @@ class InstitutionTreatmentsController extends Controller
             'affiliations' => $affiliations,
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
-            'routes' => DefaultController::getRoutes($this->request->getPathInfo())
+            //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
         );
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
