@@ -40,21 +40,32 @@ class DefaultController extends InstitutionAwareController
 
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
-        $this->institutionMedicalCenter = new institutionMedicalCenter();
-        $this->institutionMedicalCenter->setInstitution($this->institution);
-//         var_dump($this->institutionMedicalCenter);exit;
-        $form = $this->createForm(new InstitutionFormType(), $this->institutionMedicalCenter);
+        
         //return $this->render('InstitutionBundle:Default:index.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+        //    'alerts' => $institutionAlerts,
+    	//	'news' => $news,
+        //    'institution' => $this->institution
+        //));
+        
+        
+        //for adding new clinic
+        $this->institutionMedicalCenter = new institutionMedicalCenter();
+        $this->institutionMedicalCenter->setInstitution($this->institution);
+        $form = $this->createForm(new InstitutionFormType(), $this->institutionMedicalCenter);
         return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'alerts' => $institutionAlerts,
-    		'news' => $news,
-            'institution' => $this->institution
+                        'form' => $form->createView(),
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'alerts' => $institutionAlerts,
+                        'news' => $news,
+                        'institution' => $this->institution
         ));
     }
 
+    
+    
     public function error403Action()
     {
         return $this->render('InstitutionBundle:Exception:error403.html.twig');

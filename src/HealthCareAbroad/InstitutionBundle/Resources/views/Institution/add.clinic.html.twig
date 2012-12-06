@@ -6,7 +6,8 @@
         {% block wrappedContent %}
         <div class="span9 marginleft0">
             <h2>Create New Medical Listing</h2>
-            <form id="formwizard" class="span12">
+            <form id="formwizard" class="span12" action="{{ path('admin_institution_medicalCenter_add', { 'institutionId':institution.id, 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                {{ form_errors(form) }}   
                 <fieldset title="1">
                     <legend>Clinic Details</legend>
                     <div class="span9 marginleft0" style="min-height:500px">
@@ -22,7 +23,7 @@
                         <div class="clearfix"></div></br>
                         <div>
                             <label for="username">Email</label>
-                            <input name="email" type="email" id="email" value="" class="span6" required>
+                            {{ form_widget(form.email, { 'attr': {'class': 'span6'} }) }}
                         </div>
                         <div>
                             <label for="institution_website">Institution Phone Number</label>
@@ -50,10 +51,11 @@
                             <label for="twitter_account">Twitter Account</label> <input name="twitter" type="text" id="twitter_account" value="" class="span4">
                         </div>
                         <div class="clearfix"></div>
-                        <div>
-                            <label for="Country">Country</label>   
-                            <input name="twitter" type="text" id="twitter_account" value="Philippines" class="span4">
-                        </div>
+                        {{ form_row(form.country) }}
+<!--                         <div> -->
+<!--                             <label for="Country">Country</label>    -->
+<!--                             <input name="twitter" type="text" id="twitter_account" value="Philippines" class="span4"> -->
+<!--                         </div> -->
                         <div>
                             <label for="State">State / Province</label> 
                             <input name="twitter" type="text" id="twitter_account" value="Cebu" class="span4">
@@ -96,10 +98,8 @@
                                 </select>
                             </div>
                             <br>
-                            <div>
-                                <label for="Timezone">Clinic Hours</label>
+                                {{ form_label(form.businessHours) }}
                                 {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
-                            </div>
                             <div class="clearfix"><br></div>
                         </div>
                     </div>
@@ -115,5 +115,33 @@
         {% endblock %}
         
     {% endembed %}
-
+    {% block inlineJavascriptCode %}
+        <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+    	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+    	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+        <script>
+        	$(function() {
+    	    	$(".hour").timepicker({ seconds: false});
+    	    	$('input.is_closed_checkbox').each(function(){
+    			    if(this.checked) {
+    			    	$(this).parent().parent().find('.hour').val("");
+    			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    				}
+    			});
+    	    });
+           
+    	    $('input.is_closed_checkbox').change(function(){
+    		    if(this.checked) {
+    		    	$(this).parent().parent().find('.hour').val("");
+    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    			}
+    		    else 
+    		    {
+    		    	$(this).parent().parent().find('.hour').val("8:00 AM");
+    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    		    }
+    		   
+    		});
+        </script>
+    {% endblock %}
 {% endblock %}
