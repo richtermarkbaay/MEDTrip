@@ -19,6 +19,8 @@ parameters:
         doctor: {singular: "doctor", plural: "doctors"}
         awardingBody: {singular: "awarding body", plural: "awarding bodies"}
         affiliation: {singular: "affiliation", plural: "affiliations"}
+        ancilliary_service: {singular: "ancilliary service", plural: "ancilliary services"}
+        language: {singular: "language", plural: "languages"}
         advertisement: {singular: "advertisement", plural: "advertisements"}
         inquiry: {singular: "inquiry", plural: "inquiries"}
         user: {singular: "user", plural: "users"}

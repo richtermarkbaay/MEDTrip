@@ -57,6 +57,12 @@
              <li class="{{ selectedSubTab == 'manage_affiliations' ? 'active' : '' }}">
                 <a href="{{ path('admin_affiliation_index') }}">Manage Affiliations</a>
             </li>
+             <li class="{{ selectedSubTab == 'manage_offered_service' ? 'active' : '' }}">
+                <a href="{{ path('admin_offered_service_index') }}">Manage Ancilliary Services</a>
+            </li>
+            <li class="{{ selectedSubTab == 'manage_languages' ? 'active' : '' }}">
+                <a href="{{ path('admin_language_index') }}">Manage Languages</a>
+            </li>
         </ul>
     </li>
     {% endif %}
