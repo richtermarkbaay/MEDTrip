@@ -75,15 +75,11 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         status:
             type: smallint
             nullable: false
-    inheritanceType: SINGLE_TABLE
-    discriminatorColumn:
-        name: institution_type
-        type: integer
-        length: 1
-    discriminatorMap:
-        1: MedicalGroupNetworkMember
-        2: MedicalTourismFacilitator
-        3: IndependentHospital
+        type:
+            type: integer
+            unsigned: true
+            nullable: false
+            column: institution_type
     oneToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter

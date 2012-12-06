@@ -94,7 +94,7 @@ class InstitutionController extends Controller
      */
     public function addAction(Request $request){
     
-    	$institutionType = $request->get('institutionType', InstitutionTypes::MEDICAL_GROUP_NETWORK_MEMBER);   
+    	$institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);   
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createByType($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));

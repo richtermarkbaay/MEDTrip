@@ -1,0 +1,11 @@
+#institution_accountProfile:
+#    pattern:  /institution/account
+#    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
+#    requirements:
+#        _method:  GET|POST
+
+institution_after_registration_landing:
+    pattern: /institution/complete-profile.html
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:editInstitutionProfile }
+    requirements:
+        _method: GET|POST

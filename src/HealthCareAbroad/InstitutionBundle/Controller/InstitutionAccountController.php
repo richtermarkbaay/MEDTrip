@@ -21,25 +21,33 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
 
 
-class InstitutionAccountController extends Controller
+class InstitutionAccountController extends InstitutionAwareController
 {
 	protected $institution;
 	
-	function preExecute()
-	{
-		$request = $this->getRequest();
-		$session = $this->getRequest()->getSession();
+// 	function preExecute()
+// 	{
+// 		$request = $this->getRequest();
+// 		$session = $this->getRequest()->getSession();
 		 
-		// Check Institution
-		if ($session->get('institutionId')) {
+// 		// Check Institution
+// 		if ($session->get('institutionId')) {
 	
-			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+// 			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
 			
-			if(!$this->institution) {
-				throw $this->createNotFoundException('Invalid Institution');
-			}
-		}
-	}
+// 			if(!$this->institution) {
+// 				throw $this->createNotFoundException('Invalid Institution');
+// 			}
+// 		}
+// 	}
+	
+	
+    public function editInstitutionProfileAction(Request $request)
+    {
+        echo "adi na"; exit;
+    }
+    
+    
 	 
 	 public function accountAction(Request $request){
 	
