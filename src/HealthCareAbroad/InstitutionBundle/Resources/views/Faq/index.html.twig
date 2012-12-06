@@ -1,0 +1,35 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set selectedTab = 'faq'%}
+{% block content %}
+     
+<div class="span12 marginleft0">
+    {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
+    
+    <div class="span9 marginleft0">
+        <div id="maincontent">
+            <div class="heading2">
+                <div class="heading_text2">
+                    Frequently Asked Questions
+                </div>
+            </div>
+        </div>
+        <dl>
+            <dt>1. I want to change my email address and password. Please help.</dt>
+            <dd>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+            </dd>
+            <dt>2. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...?</dt>
+            <dd>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...
+                </p>
+            </dd>
+        </dl>
+    </div>
+  
+    <!-- dashboard sidebar -->
+    <div class="span3">
+        {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+    </div>
+</div>
+
+{% endblock %}

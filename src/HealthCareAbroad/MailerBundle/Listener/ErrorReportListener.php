@@ -46,8 +46,8 @@ class ErrorReportListener
     	// send email
     	$message = \Swift_Message::newInstance()
     	->setSubject('New Error Report')
-    	->setFrom('chris.velarde@chromedia.com')
-    	->setTo('chaztine.blance@chromedia.com')
+    	->setFrom('error_report@chromedia.com')
+    	->setTo('chris.velarde@chromedia.com')
     	->setBody($messageBody);
     	$sendResult = $this->mailer->send($message);
     	

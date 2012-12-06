@@ -46,8 +46,10 @@ class DefaultController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionFormType(), $this->institutionMedicalCenter);
 //         return $this->render('InstitutionBundle:Default:index.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
-        return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
-        //return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+//         return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
+//         return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+//             return $this->render('InstitutionBundle:Faq:index.html.twig', array(
+            return $this->render('InstitutionBundle:Feedback:form.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'alerts' => $institutionAlerts,
     		'news' => $news,
