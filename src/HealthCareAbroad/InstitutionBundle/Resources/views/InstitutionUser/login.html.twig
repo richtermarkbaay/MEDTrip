@@ -3,7 +3,7 @@
 {% block title %}Client Login{% endblock %}
 
 {% block content %}
-    {% embed 'InstitutionBundle:Widgets:contentWrapper.html.twig' 
+    {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
         with {'pageTitle': 'Sign In', contentSpanClass: 'span7'} 
     %}
         {% block wrappedContent %}
