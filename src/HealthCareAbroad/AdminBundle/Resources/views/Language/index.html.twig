@@ -1,61 +1,56 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
 {% set selectedSubTab = 'manage_language' %}
+{% set languageLabel = getClassLabel('language') %}
 
 {% block content %}
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+    </div>
+    
+    <div id="content" class="span9">
 
-    <div id="content">
+           {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: languageLabel.plural | title,
+                actions: [{link: path('admin_language_add'), label: 'Add '~ languageLabel.singular | title, 'icon' : 'icon-ok','class' : 'add-edit-language' }] 
+            }  
+        %}
+            {% block sectionContent %}
+    
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+            {% set sortBy = app.request.get('sortBy') %}
+            {% set sortOrder = app.request.get('sortOrder') %}
+            {% set default = sortBy | length ? '' : 'sort-asc' %}
 
-        <div id="page-heading"><h2>List of Language</h2></div>
-
-        {% embed '::contentWrapper.admin.html.twig' %}
-            {% block wrappedContent %}
-
-                {% include '::notice.admin.html.twig' %}
-
-                {% set contents = [{
-                        'title': 'Add Language', 
-                        'description': 'Add Languagee',
-                        'class': 'add-edit-language add-icon',
-                        'href': path('admin_language_add'), 
-                        'links': [{'class': 'add-edit-language add-icon', 'title': 'Add a Language', 'href': path('admin_language_add')}]
-                    }]
-                %}
-
-                {% include '::relatedTasks.base.admin.html.twig' with {contents: contents} %}
-			<!--  start table-content  -->
-				<div id="table-content"   style="width:70%;">
-
-                    <table id="language-list" class="generic-table" width="100%">
+                <table id="language-list" class="generic-table" width="100%">
                         <tr>         	 
-                            <th><a href="">Name</a></th>
-                            <th><a href="">Iso Code</a></th>
-                            <th><a href="">Status</a></th>
-                            <th class="actions" width="150">Action</th>
+                            <th id="column-name"><a href="">Name</a></th>
+                         <th id="column-name"><a href="">Iso Code</a></th>
+                           <th width="15%">Actions</th>
                         </tr>
-				     {% for languageData in Language %}
+				     {% for each in Language %}
                         <tr>
-                            <td>{{ languageData.name }}</td>
-                             <td>{{ languageData.isoCode }}</td>
-                            <td>{{ languageData.status ? 'Active' : 'Inactive' }}</td>
-                            <td align="center">
-                                <a href="{{ path('admin_language_edit', {id:languageData.id}) }}" title="Edit" class="add-edit-language edit icon-1 info-tooltip"></a>
-                                {% set class = languageData.status ? 'icon-2' : 'icon-5' %}
-                                <a href="{{ path('admin_language_updateStatus', {id:languageData.id}) }}" title="{{ languageData.status ? 'Delete' : 'Activate' }}" class="update-status {{ class }} info-tooltip"></a>
+                            <td>{{ each.name }}</td>
+                            <td>{{ each.isoCode }}</td>
+                            <td>
+                                <ul style="list-style: none;">
+                                    <li><a href="{{ path('admin_language_edit', { id:each.id } ) }}" class="add-edit-language"> <i class="icon-edit"></i> Edit</a></li>
+                                    <li>
+                                        {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
+                                        <a href="{{ path('admin_language_updateStatus', {id: each.id} ) }}" title="" class="update-status">
+                                            <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </td>
                         </tr>
-                    {% else  %}
-                        <tr><td class="empty-list" colspan="3">No records yet!</td></tr>
                     {% endfor %}
-                    
-                    </table>
- 
-                </div>
-                        
-            {% endblock %}
-        {% endembed %}
-    </div>
-
+            </table>
+       {% endblock %}
+    {% endembed %}
+</div>
+    
 {% endblock %}
 
 {% block inlineJavascriptCode %}

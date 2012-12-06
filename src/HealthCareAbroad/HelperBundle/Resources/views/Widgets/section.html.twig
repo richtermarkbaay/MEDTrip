@@ -3,7 +3,13 @@
         {{ title }}
         {% if actions is defined %}
             {% for action in actions %}
-                <a href="{{ action.link }}">
+            
+                 {% if action.class is defined %}
+                    <a href="{{ action.link }}" class="{{ action.class }}">
+                  {% else %}
+                    <a href="{{ action.link }}">
+                {% endif %}
+                
             	<button class="btn btn-mini pull-right">
             	
             	    {% if action.icon is defined %}
