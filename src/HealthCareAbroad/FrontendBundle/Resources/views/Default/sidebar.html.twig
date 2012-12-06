@@ -1,50 +1,176 @@
-<aside class="sidebar">
+                            <div id="aside_wrap">
+                                <div class="heading">
+                                    <div class="heading_text">
+                                        LATEST NEWS
+                                    </div>
+                                </div>
+                                <!--This aside items has a javascript scrollbar-->
+                                <div id="aside_scrollbar">
 
-	<div class="box_outer">
-	
-		<div class="widget">
-		
-			<div class="tabbed_widget">
+                                    <div class="viewport">
+                                        <div class="overview">
+                                            <div class="aside_item">
+                                                <div class="image_preview">
+                                                    <a href="#"><img src="images/latest2.png" alt="image_preview" /></a>
+                                                </div>
+                                                <div class="description_preview">
+                                                    <h4>Cum Soluta Nobis</h4>
+                                                    <a href="#"><p>Sectetut amet fermens m fortiter in re madre mecha anchiba nib...</p></a>
+                                                    <p class="date">February 15th 2012 By Crucio</p>
+                                                </div>
+                                                <div class="clearer">&nbsp;</div>
+                                            </div>
+                                            <div class="aside_item">
+                                                <div class="image_preview">
+                                                    <a href="#"><img src="images/latest1.png" alt="image_preview" /></a>
+                                                </div>
+                                                <div class="description_preview">
+                                                    <h4>Cum Soluta Nobis</h4>
+                                                    <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                                    <p class="date">February 15th 2012 By Crucio</p>
+                                                </div>
+                                                <div class="clearer">&nbsp;</div>
+                                            </div>
+                                            <div class="aside_item">
+                                                <div class="image_preview">
+                                                    <a href="#"><img src="images/latest3.png" alt="image_preview" /></a>
+                                                </div>
+                                                <div class="description_preview">
+                                                    <h4>Cum Soluta Nobis</h4>
+                                                    <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                                    <p class="date">February 15th 2012 By Crucio</p>
+                                                </div>
+                                                <div class="clearer">&nbsp;</div>
+                                            </div>
+                                            <div class="aside_item">
+                                                <div class="image_preview">
+                                                    <a href="#"><img src="images/latest3.png" alt="image_preview" /></a>
+                                                </div>
+                                                <div class="description_preview">
+                                                    <h4>Cum Soluta Nobis</h4>
+                                                    <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                                    <p class="date">February 15th 2012 By Crucio</p>
+                                                </div>
+                                                <div class="clearer">&nbsp;</div>
+                                            </div>
+                                        </div>
+                                    </div> <!--End of scroll viewport-->
+                                    <div class="scrollbar">
+                                        <div class="track">
+                                            <div class="thumb">
+                                                <div class="end"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- End of aside 1-->
 
-			<!-- the tabs -->
-			<ul class="tabbed_nav">		
-				<li class="tabbed1"><a class="sidebar_tabbed_links" href="{{ path('page_popular_sidebar') }}" class="current">Popular</a></li>			
-				<li class="tabbed2"><a class="sidebar_tabbed_links" href="{{ path('page_recent_sidebar') }}">Recent</a></li>			
-				<li class="tabbed3"><a class="sidebar_tabbed_links" href="{{ path('page_comments_sidebar') }}">Comments</a></li>			
-				<li class="tabbed4"><a class="sidebar_tabbed_links" href="{{ path('page_tags_sidebar') }}">Tags</a></li>			
-			</ul>
-			
-				<div class="tabbed_container" id="tabbed_container_sidebar">
-				<!-- sidebar post -->
-					{% include 'FrontendBundle:Sidebar:popularPost.html.twig' %}
-					{% include 'FrontendBundle:Sidebar:recent.html.twig' %}
-					{% include 'FrontendBundle:Sidebar:comments.html.twig' %}
-					{% include 'FrontendBundle:Sidebar:tags.html.twig' %}
-				
-				</div>
-			</div>
-		</div>
-	</div> <!--End Widget-->
-	       
-		<!-- Newsletter -->      
-       {% include 'FrontendBundle:Sidebar:newsletter.html.twig' %}
-</aside> <!--End Sidebar-->
-	
-<script type="text/javascript">
-$(function(){
-	$('a.sidebar_tabbed_links').click(function(){
+                                <div class="heading">
+                                    <div class="heading_text">POPULAR TREATMENTS</div>
+                                </div>
+                                <div class="aside">
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment1.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment2.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment3.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment4.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment5.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment6.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment7.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                    <div class="aside_item">
+                                        <div class="image_preview">
+                                            <a href="#"><img src="images/treatment8.png" alt="image_preview" /></a>
+                                        </div>
+                                        <div class="description_preview">
+                                            <h4>Cum Soluta Nobis</h4>
+                                            <a href="#"><p>Sectetut amet fermens m nib...</p></a>
+                                            <p class="date">February 15th 2012 By Crucio</p>
+                                        </div>
+                                        <div class="clearer">&nbsp;</div>
+                                    </div>
+                                </div> <!-- End of aside 2-->
 
-		var link = $(this);
+                                <div class="media">
+                                    <div class="media_item">
+                                        <img src="images/media.png" alt="image_preview" />
+                                    </div>
+                                </div> <!-- End of aside 3-->
 
-		$.ajax({
-			url: link.attr('href'),
-			success: function(json) {
-				$('div.tabbed_container_sidebar').html(json.html);
-			}
-		});
-		return false;
-	});
+                                <div class="heading">
+                                    <div class="heading_text">ADVERTISEMENTS</div>
+                                </div>
+                                <div class="ad">
+                                    <div class="ad_item">
+                                        <img src="images/advertisement.png" alt="image_preview" />
+                                    </div>
+                                </div> <!-- End of aside 4-->
 
-});
-
-</script>
+                            </div> <!-- End of aside_wrap -->

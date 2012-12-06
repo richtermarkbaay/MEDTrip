@@ -1,37 +1,40 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% block searchBox %}
-    {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'destinationsPage', 'countryId': country.id, 'countryName' : country.name} %}
+{% block header %}
+    {% embed "FrontendBundle:Default:header.html.twig" %}
+        {% block headerContent %}
+            {% block searchBox %}
+                {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'destinationsPage', 'countryId': country.id, 'countryName' : country.name} %}
+            {% endblock %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="span8">
+            <div class="main">
+                <div class="box_outer">
+                    <h4>You searched for medical centers located at {{ country.name }}</h4>
+                    <ul>
+                    {% for result in searchResults %}
+                        <!-- Hardcode for now -->
+                        <li>
+                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ country.slug }}/{{ result.slug }}" >{{ result.name }}</a>
+                        </li>
+                    {% else %}
+                        <li>No medical centers found.</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div> <!--End Main-->
+        </div> <!--End of span8-->
 
-    {% block wrappedContent %}
-
-        <div class="main">
-            <div class="box_outer">
-
-                You searched for medical centers located at {{ country.name }}
-
-                <ul>
-                {% for center in centers %}
-                    <li>
-                        <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ country.slug }}/{{ center.medicalCenter.slug }}" >{{ center.medicalCenter.name }}</a>
-                    </li>
-                {% else %}
-                    <li>No medical centers found.</li>
-                {% endfor %}
-                </ul>
-
-            </div>
-
-        </div> <!--End Main-->
-        <!-- Sidebar Navigation -->
-        {% block right_navigation %}
+        <div class="span4">
             {% include 'FrontendBundle:Default:sidebar.html.twig' %}
-        {% endblock %}
+        </div> <!--End of span4-->
 
-    {% endblock %}
+    </div> <!--End of row-->
 
     {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
 

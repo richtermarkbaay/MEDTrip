@@ -24,60 +24,69 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-	
+
     public function indexAction(Request $request)
     {
-    	$form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
-  
-    		return $this->render('::splash.frontend.html.twig', array(
-    						'form' => $form->createView(),
-    		));
+        $form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
+
+            return $this->render('::splash.frontend.html.twig', array(
+                            'form' => $form->createView(),
+            ));
     }
-    
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexTempAction(Request $request)
+    {
+        return $this->render('FrontendBundle:Default:index.temp.html.twig');
+    }
+
     /*
      * Newsletter subscribe
      * @author Chaztine Blance
      */
     public function newAction()
     {
-    	if($this->getRequest()->attributes->get('_route_params')){
-    	
-    		return $this->redirect($this->generateUrl('main_homepage'));
-    	}
-    
-    	//get IP Address
-    	$ipAddress = $this->getRequest()->getClientIp();
-    	
-    	$request = $this->getRequest();
-    	$em = $this->getDoctrine()->getEntityManager();
-    	
-    	$newsletterSubscriber = new NewsletterSubscriber();
-    	$form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+        if($this->getRequest()->attributes->get('_route_params')){
 
-    	if ($request->isMethod('POST')) {
-    		$form->bind($request);
-    	
-    		if ($form->isValid()) {
-    	
-    			try {
-    				  	$newsletterSubscriber->setIpAddress($ipAddress);
-			    		$em->persist($newsletterSubscriber);
-			    		$em->flush($newsletterSubscriber);
-				    	
-			    		$this->get('session')->setFlash('success', "Thank you for signing up!");
-    			}
-    			catch (\Exception $e) {
-    				
-    				$request->getSession()->setFlash("error", "Failed. Please try again.");
-    				$redirectUrl = $this->generateUrl("main_homepage");
-    			}
-    		}
-    	}
-    	
-    	return $this->render('::splash.frontend.html.twig', array(    					 
-    					'form' => $form->createView(),
-    	));
-   
+            return $this->redirect($this->generateUrl('main_homepage'));
+        }
+
+        //get IP Address
+        $ipAddress = $this->getRequest()->getClientIp();
+
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $newsletterSubscriber = new NewsletterSubscriber();
+        $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+
+                try {
+                          $newsletterSubscriber->setIpAddress($ipAddress);
+                        $em->persist($newsletterSubscriber);
+                        $em->flush($newsletterSubscriber);
+
+                        $this->get('session')->setFlash('success', "Thank you for signing up!");
+                }
+                catch (\Exception $e) {
+
+                    $request->getSession()->setFlash("error", "Failed. Please try again.");
+                    $redirectUrl = $this->generateUrl("main_homepage");
+                }
+            }
+        }
+
+        return $this->render('::splash.frontend.html.twig', array(
+                        'form' => $form->createView(),
+        ));
+
     }
 
     /**************************************************************************

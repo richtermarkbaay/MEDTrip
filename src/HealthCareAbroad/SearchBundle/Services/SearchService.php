@@ -1,11 +1,11 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
-use Doctrine\ORM\QueryBuilder;
+use HealthCareAbroad\SearchBundle\SearchParameterBag;
 
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Treatment;
-use HealthCareAbroad\SearchBundle\Constants;
-use HealthCareAbroad\HelperBundle\Entity\Country;
+use Symfony\Component\DependencyInjection\Parameter;
+
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityManager;
 
@@ -15,13 +15,11 @@ use Doctrine\ORM\EntityManager;
  */
 class SearchService
 {
+    /**
+     *
+     * @var Doctrine\ORM\EntityManager
+     */
     private $entityManager;
-    private $repositoryMap = array(
-        Constants::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
-        Constants::SEARCH_CATEGORY_CENTER => 'MedicalProcedureBundle:MedicalCenter',
-        Constants::SEARCH_CATEGORY_PROCEDURE_TYPE => 'MedicalProcedureBundle:Treatment',
-        Constants::SEARCH_CATEGORY_PROCEDURE => 'MedicalProcedureBundle:TreatmentProcedure'
-    );
 
     /**
      * Constructor
@@ -33,54 +31,142 @@ class SearchService
         $this->entityManager = $entityManager;
     }
 
-    /**
-     *
-     * @param array $searchCriteria
-     * @todo rename method
-     */
-    public function initiate(array $searchCriteria = array())
+    public function searchByCountry($countryId)
     {
-        $repository = $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']]);
+        if (!$country = $this->entityManager->getRepository('HelperBundle:Country')->find($countryId)) {
+            throw new \Exception('Country not found');
+        }
+        $searchResults = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByCountry($country);
 
-        return $repository->search($searchCriteria['term']);
+        return array($searchResults, $country);
+    }
+
+    public function searchByCity($cityId, $hydrateCountry = false)
+    {
+        if ($hydrateCountry) {
+            //TODO:
+        }
+
+        if (!$city = $this->entityManager->getRepository('HelperBundle:City')->find($cityId)) {
+            throw new \Exception('City not found');
+        }
+        $searchResults = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByCity($city);
+
+        return array($searchResults, $city);
+    }
+
+    public function searchBySpecialization($specialization)
+    {
+        if (is_numeric($specialization)) {
+            $specialization = $this->entityManager->getRepository('TreatmentBundle:Specialization')->find($specialization);
+        } else if (is_string($specialization)) {
+            $specialization = $this->entityManager->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $specialization));
+        }
+
+        if (!$specialization) {
+            throw new \Exception('Specialization not found');
+        }
+
+        $searchResults = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
+
+        return array($searchResults, $specialization);
+    }
+
+    public function searchByTreatment($treatment)
+    {
+        if (is_numeric($treatment)) {
+            $treatment = $this->entityManager->getRepository('TreatmentBundle:Treatment')->find($treatment);
+        } else if (is_string($treatment)) {
+            $treatment = $this->entityManager->getRepository('TreatmentBundle:Treatment')->findOneBy(array('slug' => $treatment));
+        }
+
+        if (!$treatment) {
+            throw new \Exception('Specialization not found');
+        }
+
+        $searchResults = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
+
+        return array($searchResults, $treatment);
     }
 
     /**
-     * Retrieves treatments (procedures or procedure types) by name with optional
-     * destination filter.
      *
-     * @param string $name
-     * @param mixed $destinationId
-     * @return string
+     * @param SearchParameterBag $searchParams
+     * @return multitype:Ambigous <NULL, object> Ambigous <NULL, object, string>
+     * @todo Rename function
      */
-    public function getTreatmentsByName($name, $destinationId = 0)
+    public function getSearchVariables(SearchParameterBag $searchParams)
+    {
+        $specialization = null;
+        $subSpecialization = null;
+        $treatment = null;
+        $country = null;
+        $city = null;
+
+        if ($treatmentType = $searchParams->get('treatmentType', '')) {
+            $specialization = $this->entityManager->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'));
+
+            switch ($treatmentType) {
+                case 'subSpecialization':
+                    $subSpecialization = $this->entityManager->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'));
+                    break;
+                case 'treatment':
+                    $treatment = $this->entityManager->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'));
+                    break;
+            }
+        }
+
+        if ($searchParams->get('countryId', 0)) {
+            $country = $this->entityManager->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'));
+        }
+
+        if ($searchParams->get('cityId', 0)) {
+            $city = $this->entityManager->getRepository('HelperBundle:City')->find($searchParams->get('cityId'));
+            $country = $city->getCountry();
+        }
+
+        return array($specialization, $subSpecialization, $treatment, $country, $city);
+    }
+
+    /**
+     * Retrieves treatments (specialization, subspecialization, treatment) by
+     * name with optional destination filter.
+     *
+     * @param SearchParameterBag $searchParams
+     * @return array $result
+     */
+    public function getTreatmentsByName(SearchParameterBag $searchParams)
     {
         $result = array();
 
-        if (empty($destinationId) || $destinationId == '0-0') {
-            $treatments = $this->searchTreatmentsByName($name);
+        if ($searchParams->get('countryId') || $searchParams->get('cityId')) {
+            $treatments = $this->searchTreatmentsByNameWithDestination($searchParams);
         } else {
-            $treatments = $this->searchTreatmentsByNameWithDestination($name, $destinationId);
+            $treatments = $this->searchTreatmentsByName($searchParams->get('term'));
         }
 
         foreach ($treatments as $t ) {
-            $label = $t['medical_procedure_name'] ? $t['medical_procedure_name'] : $t['medical_procedure_type_name'];
-            $value = $t['medical_procedure_type_id'].'-'.$t['medical_procedure_id'];
 
-            $result[] = array('label' => $label, 'value' => $value);
+            $value = (is_null($t['specialization_id']) ? 0 : $t['specialization_id']) .'-'.
+                     (is_null($t['sub_specialization_id']) ? 0 : $t['sub_specialization_id']) .'-'.
+                     (is_null($t['treatment_id']) ? 0 : $t['treatment_id']) .'-'.
+                     $t['treatment_type'];
+
+            $result[] = array('label' => $t['treatment_name'], 'value' => $value);
         }
 
         return $result;
     }
 
-    public function getDestinationsByName($name, $treatmentId = 0)
+    public function getDestinationsByName(SearchParameterBag $searchParams)
     {
         $result = array();
 
-        if (empty($treatmentId) || $treatmentId == '0-0') {
-            $destinations = $this->searchDestinationsByName($name);
+        $destinations = null;
+        if ($searchParams->get('treatmentType')) {
+            $destinations = $this->searchDestinationsByNameWithTreatment($searchParams);
         } else {
-            $destinations = $this->searchDestinationsByNameWithTreatment($name, $treatmentId);
+            $destinations = $this->searchDestinationsByName($searchParams->get('term'));
         }
 
         foreach ($destinations as $d ) {
@@ -94,50 +180,67 @@ class SearchService
         return $result;
     }
 
-    public function getCountriesWithTreatment(Treatment $treatment)
-    {
-        $sql = "
-            SELECT DISTINCT country.id, country.name
-            FROM institution_treatments AS a
-            LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
-            LEFT JOIN institutions AS c ON b.institution_id = c.id
-            LEFT JOIN countries AS country ON c.country_id = country.id
-            LEFT JOIN treatments AS d ON a.treatment_id = d.id
-            WHERE d.id = :treatmentId
-        ";
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue('treatmentId', $treatment->getId());
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
     /**
-     * Searches treatments (procedures and procedure types) by name.
+     * Searches treatments (specializations, subspecializations and treatment) by name.
      *
      * @param string $name
      */
-    public function searchTreatmentsByName($name)
+    private function searchTreatmentsByName($name)
     {
         $connection = $this->entityManager->getConnection();
 
         $sql ="
-            SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
-            FROM institution_treatment_procedures AS a
-            LEFT JOIN treatment_procedures AS b ON a.treatment_procedure_id = b.id
+            SELECT
+                        f.id AS specialization_id,
+                        e.id AS sub_specialization_id,
+                        c.id AS treatment_id,
+                        c.name AS treatment_name,
+                        'treatment' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
             WHERE a.status = 1
-            AND (b.name LIKE :name OR c.name LIKE :name)
+            AND c.name LIKE :name
 
             UNION
 
-            SELECT 0, '', b.id, b.name
-            FROM institution_treatments AS a
-            LEFT JOIN treatments AS b ON a.treatment_id = b.id
-            WHERE a.status = 1 AND b.name LIKE :name
+            SELECT
+                        f.id AS specialization_id,
+                        e.id AS sub_specialization_id,
+                        0 AS treatment_id,
+                        e.name AS treatment_name,
+                        'subSpecialization' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            WHERE a.status = 1
+            AND e.name LIKE :name
 
-            ORDER BY medical_procedure_type_name ASC, medical_procedure_name ASC
+            UNION
+
+            SELECT
+                        f.id AS specialization_id,
+                        0 AS sub_specialization_id,
+                        0 AS treatment_id,
+                        f.name AS treatment_name,
+                        'specialization' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            WHERE a.status = 1
+            AND f.name LIKE :name
+
+            GROUP BY treatment_name
+            ORDER BY treatment_name ASC
         ";
 
         $stmt = $connection->prepare($sql);
@@ -148,68 +251,111 @@ class SearchService
     }
 
     /**
-     * Search treatments (medical procedures or treatments) located
+     * Search treatments (specialization, subspecialization or treatments) located
      * at destinations with $destinationId.
      *
-     * @param string $treatmentTerm
-     * @param int $destionationId
+     * @param SearchParameterBag $searchParams
+     * @return array:
      * @todo optimize sql; verify that results are what we want;
      *       compare query performance with the one using subselects in
      *       searchDestinationsByNameWithTreatementId
      */
-    public function searchTreatmentsByNameWithDestination($treatmentTerm, $destinationId)
+    private function searchTreatmentsByNameWithDestination(SearchParameterBag $searchParams)
     {
         $connection = $this->entityManager->getConnection();
-
-        $destinationIds = $this->parseIds($destinationId, 'destination');
+        $cityId = $searchParams->get('cityId', 0);
+        $countryId = $searchParams->get('countryId', 0);
 
         $sql ="
-            SELECT b.id AS medical_procedure_id, b.name AS medical_procedure_name, c.id AS medical_procedure_type_id, c.name AS medical_procedure_type_name
-            FROM institution_treatment_procedures AS a
-            LEFT JOIN treatment_procedures AS b ON a.treatment_procedure_id = b.id
+            SELECT
+                        f.id AS specialization_id,
+                        e.id AS sub_specialization_id,
+                        c.id AS treatment_id,
+                        c.name AS treatment_name,
+                        'treatment' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments AS c ON b.treatment_id = c.id
-            LEFT JOIN institution_treatments AS d ON a.institution_treatment_id = d.id
-            LEFT JOIN institution_medical_centers AS e ON d.institution_medical_center_id = e.id
-            LEFT JOIN institutions AS f ON e.institution_id = f.id
-            WHERE (b.name LIKE :treatmentTerm OR c.name LIKE :treatmentTerm)
-            AND f.country_id = :countryId
-        ";
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
+            LEFT JOIN institutions AS h ON g.institution_id = h.id
+            WHERE a.status = 1
+            AND c.name LIKE :name ";
 
-        if ($destinationIds['cityId']) {
-            $sql .= "
-            AND f.city_id = :cityId
-            ";
-        }
+            if ($cityId) {
+                $sql .= " AND h.city_id = :cityId ";
+            } else if ($countryId) {
+                $sql .= " AND h.country_id = :countryId ";
+            }
 
-        $sql .= "
+        $sql .="
+
             UNION
 
-            SELECT 0, '', b.id, b.name
-            FROM institution_treatments AS a
-            LEFT JOIN treatments AS b ON a.treatment_id = b.id
-            LEFT JOIN institution_medical_centers AS c ON a.institution_medical_center_id = a.id
-            LEFT JOIN institutions AS d ON c.institution_id = d.id
-            WHERE a.status = 1 AND b.name LIKE :treatmentTerm
-            AND d.country_id = :countryId
+            SELECT
+                        f.id AS specialization_id,
+                        e.id AS sub_specialization_id,
+                        c.id AS treatment_id,
+                        e.name AS treatment_name,
+                        'subSpecialization' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
+            LEFT JOIN institutions AS h ON g.institution_id = h.id
+            WHERE a.status = 1
+            AND e.name LIKE :name ";
+
+            if ($cityId) {
+                $sql .= " AND h.city_id = :cityId ";
+            } else if ($countryId) {
+                $sql .= " AND h.country_id = :countryId ";
+            }
+
+        $sql .="
+
+            UNION
+
+            SELECT
+                        f.id AS specialization_id,
+                        e.id AS sub_specialization_id,
+                        c.id AS treatment_id,
+                        f.name AS treatment_name,
+                        'specialization' AS treatment_type
+            FROM institution_specializations AS a
+            LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments AS c ON b.treatment_id = c.id
+            LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
+            LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
+            LEFT JOIN institutions AS h ON g.institution_id = h.id
+            WHERE a.status = 1
+            AND f.name LIKE :name ";
+
+            if ($cityId) {
+                $sql .= " AND h.city_id = :cityId ";
+            } else if ($countryId) {
+                $sql .= " AND h.country_id = :countryId ";
+            }
+
+        $sql .="
+            GROUP BY treatment_name
+            ORDER BY treatment_name ASC
         ";
-
-        if ($destinationIds['cityId']) {
-            $sql .= "
-            AND d.city_id = :cityId
-            ";
-        }
-
-        $sql .= "
-            ORDER BY medical_procedure_type_name ASC, medical_procedure_name ASC
-        ";
-
 
         $stmt = $connection->prepare($sql);
-        $stmt->bindValue('treatmentTerm', '%'.$treatmentTerm.'%');
-        $stmt->bindValue('countryId', $destinationIds['countryId']);
+        $stmt->bindValue('name', '%'.$searchParams->get('term').'%');
 
-        if ($destinationIds['cityId']) {
-            $stmt->bindValue('cityId', $destinationIds['cityId']);
+        if ($cityId) {
+            $stmt->bindValue('cityId', $cityId);
+        } else if ($countryId) {
+            $stmt->bindValue('countryId', $countryId);
         }
 
         $stmt->execute();
@@ -217,7 +363,7 @@ class SearchService
         return $stmt->fetchAll();
     }
 
-    public function searchDestinationsByName($name)
+    private function searchDestinationsByName($name)
     {
         $connection = $this->entityManager->getConnection();
 
@@ -225,12 +371,20 @@ class SearchService
         SELECT a.id AS city_id, a.name AS city_name, b.id AS country_id, b.name AS country_name
         FROM cities AS a
         LEFT JOIN countries AS b ON a.country_id = b.id
+        LEFT JOIN institutions AS c ON a.id = c.city_id AND b.id = c.country_id
+        LEFT JOIN institution_medical_centers AS d ON c.id = d.institution_id
+        RIGHT JOIN institution_specializations AS e ON d.id = e.institution_medical_center_id
         WHERE a.status = 1 AND b.status = 1
         AND (a.name LIKE :name OR b.name LIKE :name)
 
         UNION
 
-        SELECT 0, '', id, name FROM countries WHERE status = 1 AND name LIKE :name
+        SELECT 0, '', a.id, a.name FROM countries AS a
+        LEFT JOIN institutions AS b ON a.id = b.country_id
+        LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
+        RIGHT JOIN institution_specializations AS d ON c.id = d.institution_medical_center_id
+
+        WHERE a.status = 1 AND a.name LIKE :name
 
         ORDER BY city_name ASC, country_name ASC
         ";
@@ -252,78 +406,57 @@ class SearchService
      * 	     compare query performance with the one used in
      * 		 searchTreatmentByNameWithDestination()
      */
-    public function searchDestinationsByNameWithTreatment($destinationTerm, $treatmentId)
+    private function searchDestinationsByNameWithTreatment(SearchParameterBag $searchParams)
     {
         $connection = $this->entityManager->getConnection();
 
-        $treatmentIds = $this->parseIds($treatmentId, 'treatment');
+        $variableWhereClause = '';
+        switch ($searchParams->get('treatmentType')) {
+            case 'specialization':
+                $variableWhereClause = ' AND h.id=' . $searchParams->get('specializationId');
+                break;
+            case 'subSpecialization':
+                $variableWhereClause = ' AND g.sub_specialization_id=' . $searchParams->get('subSpecializationId');
+                break;
+            case 'treatment':
+                $variableWhereClause = ' AND f.treatment_id=' . $searchParams->get('treatmentId');
+                break;
+        }
 
-        // The subqueries are non-correlated but mysql executes them as dependent
-        // subqueries. Used EXISTS to force mysql optimizer to run them only once.
-        // This bug is fixed (?) in later versions (mysql 6.*)
-        $sql ="
+        $sql = "
             SELECT a.id AS city_id, a.name AS city_name, b.id AS country_id, b.name AS country_name
             FROM cities AS a
             LEFT JOIN countries AS b ON a.country_id = b.id
+            LEFT JOIN institutions AS c ON a.id = c.city_id AND b.id = c.country_id
+            LEFT JOIN institution_medical_centers AS d ON c.id = d.institution_id
+            LEFT JOIN institution_specializations AS e ON d.id = e.institution_medical_center_id
+            LEFT JOIN institution_treatments AS f ON e.id = f.institution_specialization_id
+            LEFT JOIN treatment_sub_specializations AS g ON f.treatment_id = g.treatment_id
+            LEFT JOIN specializations AS h ON e.specialization_id = h.id
             WHERE a.status = 1 AND b.status = 1
-            AND (a.name LIKE :destinationTerm OR b.name LIKE :destinationTerm)
-            AND (
-                EXISTS (
-                SELECT a.id FROM cities AS a
-                LEFT JOIN institutions AS b ON a.id = b.city_id
-                LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
-                WHERE e.id = :treatmentId)
-
-                OR
-
-                EXISTS (
-                SELECT a.id FROM countries AS a
-                LEFT JOIN institutions AS b ON a.id = b.country_id
-                LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
-                WHERE e.id = :treatmentId)
-            )
+            AND (a.name LIKE :name OR b.name LIKE :name)
+            $variableWhereClause
 
             UNION
 
-            SELECT 0, '', id, name
-            FROM countries
-            WHERE status = 1 AND name LIKE :destinationTerm
-            AND EXISTS (
-                SELECT a.id FROM countries AS a
-                LEFT JOIN institutions AS b ON a.id = b.country_id
-                LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
-                LEFT JOIN institution_treatments AS d ON c.id = d.institution_medical_center_id
-                LEFT JOIN institution_treatment_procedures AS e ON d.id = e.institution_treatment_id
-                WHERE e.id = :treatmentId)
+            SELECT 0, '', a.id, a.name FROM countries AS a
+            LEFT JOIN institutions AS b ON a.id = b.country_id
+            LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
+            LEFT JOIN institution_specializations AS e ON c.id = e.institution_medical_center_id
+            LEFT JOIN institution_treatments AS f ON e.id = f.institution_specialization_id
+            LEFT JOIN treatment_sub_specializations AS g ON f.treatment_id = g.treatment_id
+            LEFT JOIN specializations AS h ON e.specialization_id = h.id
+            WHERE a.status = 1 AND a.name LIKE :name
+            $variableWhereClause
 
-            ORDER BY country_name ASC, city_name ASC
+            ORDER BY city_name ASC, country_name ASC
         ";
 
         $stmt = $connection->prepare($sql);
-        $stmt->bindValue('destinationTerm', '%'.$destinationTerm.'%');
-        $stmt->bindValue('treatmentId', $treatmentId);
+        $stmt->bindValue('name', '%'.$searchParams->get('term').'%');
         $stmt->execute();
 
         return $stmt->fetchAll();
-    }
-
-    private function parseIds($ids, $context)
-    {
-        list($majorId, $minorId) = \explode('-', $ids);
-
-        if ('treatment' == $context) {
-            $majorLabel = 'treatmentId';
-            $minorLabel = 'medicalProcedureId';
-        } else if ('destination' == $context){
-            $majorLabel = 'countryId';
-            $minorLabel = 'cityId';
-        }
-
-        return array($majorLabel => (int) $majorId, $minorLabel => (int) $minorId);
     }
 
     /**
@@ -363,6 +496,25 @@ class SearchService
         $query = preg_replace($keys, $values, $query, 1, $count);
 
         return $query;
+    }
+
+    public function getCountriesWithTreatment(Treatment $treatment)
+    {
+        $sql = "
+            SELECT DISTINCT country.id, country.name
+            FROM institution_treatments AS a
+            LEFT JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id
+            LEFT JOIN institutions AS c ON b.institution_id = c.id
+            LEFT JOIN countries AS country ON c.country_id = country.id
+            LEFT JOIN treatments AS d ON a.treatment_id = d.id
+            WHERE d.id = :treatmentId
+        ";
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue('treatmentId', $treatment->getId());
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
 }

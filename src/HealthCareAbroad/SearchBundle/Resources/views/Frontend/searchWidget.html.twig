@@ -1,52 +1,32 @@
-<form action="{{ path('search_frontend_homepage') }}" id="ui_element" class="sb_wrapper">
+<div class="row search_box">
+    <div class="search_wrap span11 offset1">
+        <form action="{{ path('search_frontend') }}" class="search form-inline" method="get" name="searchForm">
+            <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
+            <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
 
-    <input type="hidden" id="treatment_id" name="treatment_id" value=""/>
-    <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
-
-    <ul>
-        <!-- <span class="sb_down"></span> -->
-        <li>
-            <input id="sb_treatment" type="text" value="treatment" />
-        </li>
-        <li>
-            <input id="sb_destination" class="sb_input" type="text" value="{{ options.destinationLabel }}" />
-        </li>
-    </ul>
-
-    <input class="sb_search" type="submit" value="&nbsp;"/>
-
-    <!--
-    <ul class="sb_dropdown" style="display:none;">
-        <h4><input type="checkbox"/><label for="all"> All Categories</h4></label>
-
-        <li class="sb_filter"><input type="checkbox"/>Procedures</li>
-        <li class="sb_filter"><input type="checkbox"/>Destinations</li>
-     </ul>
-     -->
-
-</form>
+            <label>Search</label>
+            <input type="text" class="input-large" placeholder="Any Treatment" name="sb_treatment" id="sb_treatment" value="{{ options.treatmentLabel }}"/>
+            <label>Near</label>
+            <input type="text" class="input-large" placeholder="Anywhere" name="sb_destination" id="sb_destination" value="{{ options.destinationLabel }}" />
+            <!--
+            <input type="button" onclick="document.forms['searchForm'].submit();" class="btn" value="Let's Go" name="submit" />
+             -->
+            <input type="submit" class="btn" value="Let's Go" name="submit" />
+        </form>
+    </div>
+</div> <!-- End search_box-->
 
 <style>
 .ui-autocomplete {
     max-height: 200px;
     overflow-y: auto;
-    /* prevent horizontal scrollbar */
     overflow-x: hidden;
-    /* add padding to account for vertical scrollbar */
     padding-right: 20px;
 }
-
-/* IE 6 doesn't support max-height
- * we use height instead, but this forces the menu to always be this tall
- */
-
-/*
- * html .ui-autocomplete {
-      height: 100px;
-    }*/
 </style>
 
 <script type="text/javascript">
+
 $(function() {
     $('#sb_treatment').autocomplete({
         source: function(request, response) {
@@ -62,17 +42,17 @@ $(function() {
             });
         },
         focus: function( event, ui ) {
-            $("#sb_treatment").val( ui.item.label );
+            $(this).val( ui.item.label );
             return false;
         },
         select: function( event, ui ) {
-            $("#sb_treatment").val( ui.item.label );
+            $(this).val( ui.item.label );
             $("#treatment_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0-0');
+            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0-0-0-0');
         },
         delay: 200,
         minLength: 1
@@ -98,21 +78,22 @@ $(function() {
             });
         },
         focus: function( event, ui ) {
-            $("#sb_destination").val( ui.item.label );
+            $(this).val( ui.item.label );
             return false;
         },
         select: function( event, ui ) {
-            $("#sb_destination").val( ui.item.label );
+            $(this).val( ui.item.label );
             $("#destination_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $("#destination_id").val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+            $("#destination_id").val((ui.item && ui.item.value) ? ui.item.value : '0-0-0-0');
         },
         delay: 200,
         minLength: 1
     });
 
 });
+
 </script>

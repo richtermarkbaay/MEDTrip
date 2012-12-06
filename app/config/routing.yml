@@ -10,9 +10,9 @@ advertisement:
     resource: "@AdvertisementBundle/Resources/config/routing.yml"
     prefix:   /
 
-#SearchBundle:
-#    resource: "@SearchBundle/Resources/config/routing.yml"
-#   prefix:   /
+SearchBundle:
+    resource: "@SearchBundle/Resources/config/routing.yml"
+    prefix:   /
 
 InstitutionBundle:
     resource: "@InstitutionBundle/Resources/config/routing.yml"
@@ -37,7 +37,7 @@ HelperBundle:
 UserBundle:
     resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /
-    
+
 AdminBundle:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /

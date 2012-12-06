@@ -215,7 +215,8 @@ class MediaService
 
     public function retrieveAllMedia($institutionId)
     {
-        $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
+        //$gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
+        $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findBy(array('institution_id'), $institutionId);
 
         return $gallery->getMedia();
     }

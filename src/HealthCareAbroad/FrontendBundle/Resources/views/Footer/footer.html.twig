@@ -1,24 +1,133 @@
-<footer id="footer">
+            <div class="footer_wrap">
+                <div class="foot_border"></div>
+                <div class="ufooter_wrap">
+                    <div class="container"> <!--This is for the upper footer-->
+                        <div class="row">
+                            <div class="span4 site_map">
+                                <div class="footer_heading">
+                                    <h5>SITE MAP</h5>
+                                </div>
+                                <div class="map_item_wrapper row">
+                                    <div class="span1">
+                                        <div class="map_item">
+                                            <a href="#"><h6>HOME</h6></a>
+                                            <ul>
+                                                <li><a href="#">Listings</a></li>
+                                                <li><a href="#">Listings</a></li>
+                                                <li><a href="#">Listings</a></li>
+                                            </ul>
+                                        </div>
 
-    <div class="footer_wrap">
-        <div class="foot_border"></div>
-            <div class="inner">
-                <!-- Destination -->
-				{% include 'FrontendBundle:Footer:footerDestination.html.twig' %}
-				
-				<!-- Health Care Centers -->
-           
-				{% include 'FrontendBundle:Footer:footerHealthCenters.html.twig' %}
-				
-                <!-- Directories -->
-                {% include 'FrontendBundle:Footer:footerDirectories.html.twig' %}
-                
-        		<!-- Another Widget here -->
-        		 {% include 'FrontendBundle:Footer:footerWidget.html.twig' %}
-        		 
-            </div> <!--End Inner-->
-    </div> <!--footer wrap-->
+                                        <div class="map_item">
+                                            <a href="#"><h6>ABOUT</h6></a>
+                                            <ul>
+                                                <li><a href="#">History</a></li>
+                                                <li><a href="#">Team</a></li>
+                                            </ul>
+                                        </div>
 
-</footer> <!--End Footer-->
+                                        <div class="map_item">
+                                             <a href="#"><h6>LOGIN</h6></a>
+                                        </div>
+                                    </div>
 
-{% include 'FrontendBundle:Footer:footerBottomBar.html.twig' %}
+                                    <div class="span1">
+                                        <div class="map_item">
+                                            <a href="#"><h6>SEARCH</h6></a>
+                                            <ul>
+                                                <li><a href="#">Centers</a></li>
+                                                <li><a href="#">Procedures</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="map_item">
+                                            <a href="#"><h6>BLOG</h6></a>
+                                        </div>
+                                        <div class="map_item">
+                                            <a href="#"><h6>SIGNUP</h6></a>
+                                        </div>
+                                    </div>
+                                    <div class="span2">
+                                        <div class="map_item">
+                                            <a href="#"><h6>SOME LINKS</h6></a>
+                                            <ul>
+                                                <li><a href="#">Sub Link 1</a></li>
+                                                <li><a href="#">Sub Link 2</a></li>
+                                                <li><a href="#">Sub Link 3</a></li>
+                                                <li><a href="#">Sub Link 4</a></li>
+                                                <li><a href="#">Sub Link 5</a></li>
+                                                <li><a href="#">Sub Link 6</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="map_item">
+                                            <a href="#"><h6>OTHER LINKS</h6></a>
+                                        </div>
+
+                                        <div class="map_item">
+                                            <a href="#"><h6>SOME LINKS</h6></a>
+                                        </div>
+                                    </div>
+
+                                </div> <!--End of row-->
+                            </div> <!--End of span4-->
+
+                            <div class="span4 socials">
+                                <div class="footer_heading">
+                                    <h5>LIKE US ON FACEBOOK</h5>
+                                </div>
+                                <div class="socials_item_wrapper row">
+
+                                    <!-- Facebook LIKE API here. -->
+
+                                </div>
+                            </div>
+
+                            <div class="span4 subscribe">
+                                <div class="footer_heading">
+                                    <h5>SUBSCRIBE TO OUR NEWSLETTER</h5>
+                                </div>
+                                <div class="subscribe_item_wrapper row">
+                                    <div class="subscribe_item">
+                                        <form class="subscribe_form" method="get">
+                                            <div>
+                                                <input type="text" class="span4" placeholder="Enter your e-mail address here..." name="email" />
+                                            </div>
+                                            <div class="form-inline">
+                                                <label><input type="checkbox">Unsubscribe</label>
+                                                <button type="submit" class="btn">Subscribe Now</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div id="register">
+                                        <h5>Want to register an Institution?</h5>
+                                        <button id="login" value="login" class="btn">Log In</button>
+                                        <button id="signup" value="signup" class="btn">Sign Up</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!--End of row-->
+                    </div> <!--End of container -->
+                </div>
+
+                <div class="lfooter_wrap">
+                    <div class="container"> <!--This is for the lower footer-->
+                        <div class="row">
+                            <div class="span4 lfooter_item">
+                                <p>&COPY; 2012 healthcareabroad.com | All rights reserved.</p>
+                                <a href="#">Privacy</a>
+                                <a href="#">Terms of Use</a>
+                                <a href="#">Ad Choice</a>
+                            </div>
+                            <div class="span2 offset6 lfooter_socials">
+                                <ul>
+                                    <li><a href="#"><img src="images/facebook_icon.png" alt="facebook"/></a></li>
+                                    <li><a href="#"><img src="images/tumblr_icon.png" alt="tumblr"/></a></li>
+                                    <li><a href="#"><img src="images/linkedin_icon.png" alt="linkedin"/></a></li>
+                                    <li><a href="#"><img src="images/rss_icon.png" alt="rss"/></a></li>
+                                </ul>
+                            </div>
+                        </div> <!--End of row-->
+                    </div> <!--End of container-->
+                </div>
+
+            </div> <!--End of footer_wrap -->

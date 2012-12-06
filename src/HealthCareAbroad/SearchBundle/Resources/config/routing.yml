@@ -8,9 +8,9 @@ search_admin_initiate:
     defaults: { _controller: SearchBundle:Default:initiate }
 
 ## FRONTEND BUNDLE
-search_frontend_homepage:
+search_frontend:
     pattern: /search
-    defaults: { _controller: SearchBundle:Frontend:searchHomepage }
+    defaults: { _controller: SearchBundle:Frontend:search }
 
 search_frontend_ajaxLoadTreatments:
     pattern: /search/ajaxLoadTreatments
@@ -20,18 +20,34 @@ search_frontend_ajaxLoadDestinations:
     pattern: /search/ajaxLoadDestinations
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
 
-search_frontend_results_countries:
-    pattern: /search/destinations/{country}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsCountries }
-
-search_frontend_results_cities:
-    pattern: /search/destinations/{country}/{city}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsCities }
+search_frontend_results_destinations:
+    pattern: /search/destinations
+    defaults: { _controller: SearchBundle:Frontend:searchResultsDestinations }
 
 search_frontend_results_treatments:
-    pattern: /search/treatment/{medicalCenter}/{treatment}
+    pattern: /search/treatments
     defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
 
-search_frontend_results_medicalCenters:
-    pattern: /search/treatment/{medicalCenter}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsMedicalCenters }
+#search_frontend_results_countries:
+#    pattern: /search/destination/{country}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsCountries }
+
+#search_frontend_results_cities:
+#    pattern: /search/destination/{country}/{city}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsCities }
+
+#search_frontend_results_specializations:
+#   pattern: /search/treatment/{specialization}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsSpecializations }
+
+#search_frontend_results_treatments:
+#    pattern: /search/treatment/{specialization}/{treatment}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
+
+#search_frontend_results_treatments:
+#    pattern: /search/treatment/{medicalCenter}/{treatment}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
+
+#search_frontend_results_medicalCenters:
+#    pattern: /search/treatment/{medicalCenter}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsMedicalCenters }

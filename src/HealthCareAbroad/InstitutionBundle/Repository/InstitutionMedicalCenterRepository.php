@@ -43,7 +43,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
          INNER JOIN `institution_medical_centers` imc ON dmc.medical_center_id = imc.medical_center_id AND imc.institution_medical_center_group_id = 1
          WHERE
          d.status = 1
-          
+
          SELECT d0_.id AS id0, d0_.first_name AS first_name1, d0_.middle_name AS middle_name2, d0_.last_name AS last_name3, d0_.date_created AS date_created4, d0_.status AS status5
          FROM doctors d0_
          INNER JOIN doctor_to_medical_centers d2_ ON d0_.id = d2_.doctor_id
@@ -65,8 +65,54 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         ->setParameter('imcgId', $institutionMedicalCenterGroup->getId())
         ->setParameter('activeStatus', 1)
         ->setParameter('searchKey', '%'.$searchKey.'%');
-    
+
         return $qb->getQuery()->getResult();
+    }
+
+    public function getMedicalCentersByCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                LEFT JOIN a.institution b
+                WHERE b.country = :country')
+            ->setParameter('country', $country);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersByCity(\HealthCareAbroad\HelperBundle\Entity\City $city)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+            LEFT JOIN a.institution b
+            WHERE b.city = :city'
+        )->setParameter('city', $city);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+            LEFT JOIN a.institutionSpecializations b
+            WHERE b.specialization = :specialization'
+        )->setParameter('specialization', $specialization);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersByTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+            LEFT JOIN a.institutionSpecializations b
+            LEFT JOIN b.treatments c
+            WHERE c.id = :treatment'
+        )->setParameter('treatment', $treatment);
+
+        return $query->getResult();
     }
 
     private function _getCommonRSM()
