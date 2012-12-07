@@ -1,31 +1,23 @@
 <?php 
-
+/**
+ * 
+ * @author Adelbert D. Silla
+ *
+ */
 namespace HealthCareAbroad\AdvertisementBundle\Form\DataTransformer;
 
-use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
-
-use Doctrine\ORM\PersistentCollection;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Doctrine\ORM\EntityManager;
-
-use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Doctrine\Common\Persistence\ObjectManager;
-use Acme\TaskBundle\Entity\Issue;
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
 
-class AdvertisementCustomPropertyValueTransformer implements DataTransformerInterface
+class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
 {
-    protected $em;
-    
     /**
-     * @var advertisementPropertyNameId
+     * @var em
      */
-    //private $advertisementPropertyNameId;
-    
+    private $em;
+
     /**
      */
     public function __construct($em = null)
@@ -34,10 +26,8 @@ class AdvertisementCustomPropertyValueTransformer implements DataTransformerInte
     }
 
     /**
-     * Transforms an 
+     * Transforms AdvertisementPrortyValues value entity/collection IDs to objects
      *
-     * @param  
-     * @return 
      */
     public function transform($data)
     {
@@ -84,11 +74,8 @@ class AdvertisementCustomPropertyValueTransformer implements DataTransformerInte
     }
 
     /**
-     * Transforms a string 
+     * Transforms AdvertisementPrortyValues value string entity/collection objects to IDs
      *
-     * @param  
-     * @return 
-     * @throws TransformationFailedException if object (issue) is not found.
      */
     public function reverseTransform($data)
     {

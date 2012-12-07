@@ -52,4 +52,5 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
             mappedBy: advertisement
             cascade:
                 - "persist"
+                - "remove"
     lifecycleCallbacks: {  }

@@ -1,14 +1,17 @@
 <?php
+/**
+ * 
+ * @author Adelbert D. Silla
+ *
+ */
 namespace HealthCareAbroad\AdvertisementBundle\Form;
-
-use HealthCareAbroad\AdvertisementBundle\Form\DataTransformer\AdvertisementCustomPropertyValueTransformer;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
-use HealthCareAbroad\AdvertisementBundle\Form\EventListener\AdvertisementCustomPropertySubscriber;
+use HealthCareAbroad\AdvertisementBundle\Form\EventListener\AdvertisementPropertyValuesSubscriber;
+use HealthCareAbroad\AdvertisementBundle\Form\DataTransformer\AdvertisementPropertyValuesTransformer;
 
 class AdvertisementFormType extends AbstractType
 {
@@ -28,19 +31,18 @@ class AdvertisementFormType extends AbstractType
 	    $builder->add('dateExpiry', 'date', array('label' => 'Expiry Date'));
 
 	    $advertisement = $options['data'];
-	    $customPropertySubscriber = new AdvertisementCustomPropertySubscriber($builder->getFormFactory(), $advertisement);
+	    $customPropertySubscriber = new AdvertisementPropertyValuesSubscriber($builder->getFormFactory(), $advertisement);
 
 	    $builder->add(
             $builder->create('advertisementPropertyValues', 'collection', 
                 array('type' => new AdvertisementPropertyValueFormType($this->em))
             )->addEventSubscriber($customPropertySubscriber)
         );
-	    
-	    $dataTransformer = new AdvertisementCustomPropertyValueTransformer($this->em, $advertisement);
-	    $builder->addModelTransformer($dataTransformer);
+
+	    $valuesTransformer = new AdvertisementPropertyValuesTransformer($this->em, $advertisement);
+	    $builder->addModelTransformer($valuesTransformer);
 	}
 
-	// How does it work?
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(

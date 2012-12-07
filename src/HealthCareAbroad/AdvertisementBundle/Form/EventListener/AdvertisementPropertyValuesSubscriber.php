@@ -1,14 +1,10 @@
 <?php 
-
+/**
+ * 
+ * @author Adelbert D. Silla
+ *
+ */
 namespace HealthCareAbroad\AdvertisementBundle\Form\EventListener;
-
-use Doctrine\Common\Collections\ArrayCollection;
-
-use Doctrine\Common\Collections\Collection;
-
-use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
-
-use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementCustomFormType;
 
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -16,7 +12,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-class AdvertisementCustomPropertySubscriber implements EventSubscriberInterface
+class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
 {
     private $factory;
     private $advertisement;
@@ -32,9 +28,13 @@ class AdvertisementCustomPropertySubscriber implements EventSubscriberInterface
         return array(FormEvents::POST_SET_DATA => 'postSetData');
     }
 
+    /**
+     * Transform advertisementPropertyValues form/field type based on advertisementPropertyName
+     * Also removes duplicate advertisementPropertyName form/field
+     * @param FormEvent $event
+     */
     public function postSetData(FormEvent $event)
     {
-
         $data = $event->getData();
         $form = $event->getForm(); 
         
@@ -42,6 +42,7 @@ class AdvertisementCustomPropertySubscriber implements EventSubscriberInterface
             return;
         }
 
+        // Removes duplicate advertisementPropertyName form/field 
         foreach($data as $i => $each) {
             $property = $each->getAdvertisementPropertyName();
             if($property->getDataType()->getColumnType() == 'collection' && is_string($each->getValue())) {
@@ -52,6 +53,7 @@ class AdvertisementCustomPropertySubscriber implements EventSubscriberInterface
         $properties = $this->advertisement->getAdvertisementType()->getAdvertisementTypeConfigurations();
         $param = $this->advertisement->getInstitution(); // TODO - This param should be dynamic
 
+        // Transform advertisementPropertyValues form/field type based on advertisementPropertyName
         foreach($properties as $i => $each) {
 
             $config = json_decode($each->getPropertyConfig(), true);

@@ -151,8 +151,6 @@ class AdvertisementController extends Controller
         
         if(!$this->advertisement) {
             $advertisement = new Advertisement();
-            
-
             $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
             $advertisement->setAdvertisementType($advertisementType);
             
@@ -165,9 +163,8 @@ class AdvertisementController extends Controller
                 $propertyValue->setAdvertisement($advertisement);
                 $advertisement->addAdvertisementPropertyValue($propertyValue);
             }
-            
-            $formAction = $this->generateUrl('admin_advertisement_create');
 
+            $formAction = $this->generateUrl('admin_advertisement_create');
         } else {
             $advertisement = $this->advertisement;
             $formAction = $this->generateUrl('admin_advertisement_update', array('advertisementId'=>$advertisement->getId()));
@@ -175,23 +172,20 @@ class AdvertisementController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement); 
-        
+
         $form->bind($request);
 
         if ($form->isValid()) {
-
-            foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
-                $em->remove($value);
+            
+            if($advertisement->getId()) {
+                foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+                    $em->remove($value);
+                }
             }
-            
-            
+
             $em->persist($advertisement);
             $em->flush();
-            
 
-            
-            var_dump('flush');
-exit;
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
             return $this->redirect($this->generateUrl('admin_advertisement_index'));

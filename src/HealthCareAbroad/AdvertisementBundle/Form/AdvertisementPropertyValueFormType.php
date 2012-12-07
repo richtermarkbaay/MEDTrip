@@ -1,9 +1,10 @@
 <?php
+/**
+ * 
+ * @author Adelbert D. Silla
+ *
+ */
 namespace HealthCareAbroad\AdvertisementBundle\Form;
-
-use HealthCareAbroad\AdvertisementBundle\Form\DataTransformer\AdvertisementCustomPropertyValueTransformer;
-
-use HealthCareAbroad\AdvertisementBundle\Form\EventListener\AddAdvertisementCustomFieldSubscriber;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +28,6 @@ class AdvertisementPropertyValueFormType extends AbstractType
         ));
 	}
 
-	// How does it work?
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
