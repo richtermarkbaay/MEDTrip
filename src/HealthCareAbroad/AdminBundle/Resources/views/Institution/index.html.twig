@@ -6,7 +6,6 @@
     <div id="content">
 
         <div id="page-heading"><h3>List of Institutions</h3></div>
-
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
             
@@ -24,6 +23,7 @@
                 <tr>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                     <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                    <th width="100">Country</th>
                     <th width="100">Status</th>
                     <th width="130">Actions</th>
                 </tr>
@@ -32,6 +32,9 @@
                     <tr id="institution-{{institution.id}}">
                         <td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
                         <td>{{ institution.description }}</td>
+                        <td>{{ institution.country ? institution.country.name : '' }}</td>
+                        <td class="status">{{ statusList[institution.status] }}</td>
+
                         <td>
                             <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> 
                             <br/>
