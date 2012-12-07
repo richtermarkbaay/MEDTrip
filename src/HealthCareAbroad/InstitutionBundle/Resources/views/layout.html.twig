@@ -9,7 +9,6 @@
     <!-- header -->
     {% include 'InstitutionBundle:Default:header.layout.html.twig' %}
     
-    
     <div id="header2">
         <div class="top_line2"></div>
         <div class="container">
@@ -22,40 +21,15 @@
         <!--End of container -->
     </div>
     <!--End of header -->
-    
-    {% block content %}{% endblock %}
-    
-    
-        
+    <div id="content_wrap">
+        <div class="container content">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
         <div class="footer_wrap">
-            <div class="lfooter_wrap">
-                <div class="container">
-                    <!--This is for the lower footer-->
-                    <div class="row">
-                        <div class="span4 lfooter_item">
-                            <p>
-                                © 2012 healthcareabroad.com | All rights reserved.
-                            </p><a href="#">Privacy</a> <a href="#">Terms of Use</a> <a href="#">Ad Choice</a>
-                        </div>
-                        <div class="pull-right lfooter_socials">
-                            <ul>
-                                <li>
-                                    <a href="#"><img src="{{ asset('images/institution/facebook_icon.png') }}" alt="facebook"></a>
-                                </li>
-                                <li>
-                                    <a href="#"><img src="{{ asset('images/institution/tumblr_icon.png') }}" alt="tumblr"></a>
-                                </li>
-                                <li>
-                                    <a href="#"><img src="{{ asset('images/institution/linkedin_icon.png') }}" alt="linkedin"></a>
-                                </li>
-                                <li>
-                                    <a href="#"><img src="{{ asset('images/institution/rss_icon.png') }}" alt="rss"></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div><!--End of row-->
-                </div><!--End of container-->
-            </div>
+          {% include 'InstitutionBundle:Default:footer.html.twig' %}
+          
+        </div>
 
 </body>
 

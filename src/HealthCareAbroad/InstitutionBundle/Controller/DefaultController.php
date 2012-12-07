@@ -45,6 +45,8 @@ class DefaultController extends InstitutionAwareController
         //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+        //return $this->render('InstitutionBundle:Faq:index.html.twig', array(
+        //return $this->render('InstitutionBundle:Feedback:form.html.twig', array(
         //    'alerts' => $institutionAlerts,
     	//	'news' => $news,
         //    'institution' => $this->institution

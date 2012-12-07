@@ -1,57 +1,123 @@
-{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
-
-{% block title %}Client Login{% endblock %}
-
-{% block content %}
-    {% embed 'InstitutionBundle:Widgets:contentWrapper.html.twig' 
-        with {'pageTitle': 'Sign In', contentSpanClass: 'span7'} 
-    %}
-        {% block wrappedContent %}
-            <form action="{{ path('institution_login_check') }}" id="signinForm" method="POST" class="form">
-                <fieldset>
-                    
-                    {% if error %}
-                        <div class="alert alert-error">
-                            {{ error.message }}
-                        </div>
-                    {% endif %}
-                
-                    <div>
-                        <label for="username">Email</label>
-                        <input name="_username" type="text" id="username" value="{{ last_username }}" class="span8" required="required"  />
-                        
-                        {#
-                        <ul>
-                            <li>Please enter a valid email address.</li>
-                        </ul>
-                        #}
-                    </div>
-                    
-                    <div>
-                        <label for="password">Password</label>
-                        <input name="_password" type="password" id="password" value="" class="span8" required="required"  />
-                    </div>
-                    
-                    <label><a href="#">Forogt Password</a>.</label>
-                    <input type="submit" name="Submit" value="SIGN-IN" class="span6 btn-large btn-primary" />
-                </fieldset>
-            </form>
-        {% endblock %}
-        
-        {% block sideBox %}
-            <div class="span5">
-                <div class="aside">
-                    <div class="aside box">
-                        <h4>Some Text here that urge medical institution to sign up for Health Care Abroad Medical Listing!</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-                        <a href="register.html"><input type="submit" name="Submit" value="JOIN NOW!" class="span3 btn-large btn-primary" /></a>
-                    </div>
-                </div>
-                <!-- End of aside-->
+{% extends '::base.institution.html.twig' %}
+{% block body %}
+  <div id="header">
+    <div class="top_line"></div>
+    <div class="container">
+      <div class="row">
+        <div class="span4">
+          <div class="logo"> <a href="index.html"> <img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad" /> </a> </div>
+        </div>
+        <div class="span5 offset3">
+          <nav class="links">
+            <ul>
+              <li> <img src="{{ asset('images/institution/about.png') }}" alt="about" /> <a href="#">ABOUT</a> </li>
+              <li> <img src="{{ asset('images/institution/blog.png') }}" alt="blog" /> <a href="#">BLOG</a> </li>
+              <li> <img src="{{ asset('images/institution/contact.png') }}" alt="contact" /> <a href="#">CONTACT US</a> </li>
+  
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <!--End of container --> 
+  </div>
+  <!--End of header -->
+  
+  <div id="content_wrap">
+    <div class="container content">
+      <div class="row">
+        <div class="span7 marginleft0">
+<!--          <div class="bread_crumbs"> <a href="#"><img src="img/home_icon.png" />Home</a> </div>
+ -->          <div id="slider">
+           
+          </div>
+          <!--End of slider-->
+          
+        <div id="maincontent">
+            <div class="heading">
+              <div class="heading_text"> Sign In </div>
             </div>
-            <!--End of span5-->
-        {% endblock %}
+            <div class="maincontent_wrap">
+              
+              <div class="maincontent_item">
+                <div class="row upper_part">
+                 
+                  <div class="brief_description">
+                   
+                    <div class="row-fluid">
+                        <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
+                            {#{ form_errors(form) }#}
+                            {#% if app.session.hasFlash('notice') %#}
+                        
+                           <fieldset>
+                                <label for="username">Email</label>
+                                
+                                <div class="input-prepend">
+  									<span class="add-on"><i class="icon-envelope"></i></span>
+  									<input name="_username" type="text" id="username" value="{{ last_username }}"  class="username span8" />
+  								</div>
+  								
+  								{% if error %}
+	  								<ul class="alert-error">
+		                                <li>
+		                                    {# app.session.flash('notice') #}
+		                                    {{ error.message }}
+		                                </li>
+					  				</ul>
+  							 	 {% endif %}
+  							 	 
+                                <label for="password">Password</label>
+                                
+                                <div class="input-prepend">
+  									<span class="add-on"><i class="icon-lock"></i></span>
+  									<input name="_password" type="password" id="password" class="password span8" />
+  								</div>
+                                <label><a href="#">Forogt Password</a>.</label>
+  								    <!-- <div class="span11"><input name="_institution_remember_me"  checked type="checkbox" type="checkbox" id="login-check" value="forever" />&nbsp;<small>Remember me</small> -->
+  								    <input type="submit" name="Submit" value="SIGN-IN" class="span6 btn-large btn-primary" />
+                                      <!--  <div>New User?&nbsp;<a href="{{ path('institution_signUp') }}">Click here to register</a></div> -->
+                         </fieldset>
+                                {#{ form_rest(form) }#}
+        			    </form> 
+                    </div>
+                   
+                  </div>
+                 
+                </div>
+                
+              </div>
+              <!-- End of maincontent 2-->
+      
+            </div>
+            <!--End of maincontent_wrap--> 
+          </div>
+          <!-- End of maincontent --> 
+        </div>
+        <!--End of span8-->
         
-    {% endembed %}
+        <div class="span5">
+
+			       <div class="aside">
+            <div class="aside box">
+                <h4>Some Text here that urge medical institution to sign up for Health Care Abroad Medical Listing!</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                <a href="register.html"><input type="submit" name="Submit" value="JOIN NOW!" class="span3 btn-large btn-primary" /></a>
+            </div>
+          </div>
+          <!-- End of aside--> 
+          
+        </div>
+        <!--End of span6--> 
+      </div>
+      <!--End of row--> 
+    </div>
+    <!--End of container--> 
+    
+  </div>
+   <div class="footer_wrap">
+          {% include 'InstitutionBundle:Default:footer.html.twig' %}
+          
+        </div>
+
 {% endblock %}
 
