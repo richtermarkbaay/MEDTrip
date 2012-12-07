@@ -58,7 +58,7 @@ class InstitutionFactory
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:Institution');
-        $this->discriminatorMapping = InstitutionTypes::getDiscriminatorMapping();
+        //$this->discriminatorMapping = InstitutionTypes::getDiscriminatorMapping();
     }
     
     public function setMemcacheKeyFactory(KeyFactory $factory)
@@ -78,20 +78,30 @@ class InstitutionFactory
     }
     
     /**
+     * Create new instance of Institution
+     * 
+     * @return \HealthCareAbroad\InstitutionBundle\Entity\Institution
+     */
+    public function createInstance()
+    {
+        return new Institution();    
+    }
+    
+    /**
      * Create an instance of Institution by discriminator type
      * 
      * @param int $type
      * @return Institution
      */
-    public function createByType($type)
-    {
-        if (!\array_key_exists($type, $this->discriminatorMapping)) {
-            throw InstitutionFactoryException::invalidDiscriminator($type);
-        }
-        $cls = $this->discriminatorMapping[$type];
+//     public function createByType($type)
+//     {
+//         if (!\array_key_exists($type, $this->discriminatorMapping)) {
+//             throw InstitutionFactoryException::invalidDiscriminator($type);
+//         }
+//         $cls = $this->discriminatorMapping[$type];
         
-        return new $cls;
-    }
+//         return new $cls;
+//     }
     
     /**
      * Layer for Doctrine findOneBy slug

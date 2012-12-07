@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
@@ -21,25 +23,75 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
 
 
-class InstitutionAccountController extends Controller
+class InstitutionAccountController extends InstitutionAwareController
 {
-	protected $institution;
-	
-	function preExecute()
+    /**
+     * @var InstitutionService
+     */
+    protected $institutionService;
+    
+    /**
+     * @var Request
+     */
+    protected $request;
+    
+	public function preExecute()
 	{
-		$request = $this->getRequest();
-		$session = $this->getRequest()->getSession();
+	    $this->institutionService = $this->get('services.institution');
+	    $this->request = $this->getRequest();
+	    
+// 		$request = $this->getRequest();
+// 		$session = $this->getRequest()->getSession();
 		 
-		// Check Institution
-		if ($session->get('institutionId')) {
+// 		// Check Institution
+// 		if ($session->get('institutionId')) {
 	
-			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+// 			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
 			
-			if(!$this->institution) {
-				throw $this->createNotFoundException('Invalid Institution');
-			}
-		}
+// 			if(!$this->institution) {
+// 				throw $this->createNotFoundException('Invalid Institution');
+// 			}
+// 		}
 	}
+	
+	/**
+	 * @param Request $request
+	 */
+    public function afterRegistrationLandingAction(Request $request)
+    {
+        switch ($this->institution->getType())
+        {
+            case InstitutionTypes::SINGLE_CENTER:
+                $response = $this->completeRegistrationSingleCenter();
+                break;
+            case InstitutionTypes::MULTIPLE_CENTER:
+                break;
+            case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
+            default:
+                $response = $this->completeRegistrationMultipleCenter();
+                break;
+        }
+
+        return $response;
+    }
+    
+    /**
+     * @return
+     */
+    protected function completeRegistrationSingleCenter()
+    {
+        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig');
+    }
+    
+    /**
+     * 
+     */
+    protected function completeRegistrationMultipleCenter()
+    {
+        return $this->render($view);
+    }
+    
+    
 	 
 	 public function accountAction(Request $request){
 	

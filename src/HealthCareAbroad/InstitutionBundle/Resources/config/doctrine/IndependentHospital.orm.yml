@@ -1,4 +1,0 @@
-HealthCareAbroad\InstitutionBundle\Entity\IndependentHospital:
-    type: entity
-    table: null
-    lifecycleCallbacks: {}

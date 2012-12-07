@@ -7,29 +7,18 @@
 <body>
 
     <!-- header -->
-    {% include 'InstitutionBundle:Default:header.layout.html.twig' %}
+    {% include 'InstitutionBundle:Widgets:header.layout.html.twig' %}
     
-    <div id="header2">
-        <div class="top_line2"></div>
-        <div class="container">
-            <div class="row">
-                <div class="pull-right">
-                    {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
-                </div>
-            </div>
-        </div>
-        <!--End of container -->
+    {% set disableMainNavigation = disableMainNavigation is defined and disableMainNavigation %}
+    {% if not disableMainNavigation %}
+        {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
+    {% endif %}
+    
+    {% block content %}{% endblock %}
+    
+    <div class="footer_wrap">
+      {% include 'InstitutionBundle:Default:footer.html.twig' %}
     </div>
-    <!--End of header -->
-    <div id="content_wrap">
-        <div class="container content">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
-        <div class="footer_wrap">
-          {% include 'InstitutionBundle:Default:footer.html.twig' %}
-          
-        </div>
 
 </body>
 
