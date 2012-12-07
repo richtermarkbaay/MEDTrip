@@ -40,10 +40,24 @@ class DefaultController extends InstitutionAwareController
 
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
+        
+        //return $this->render('InstitutionBundle:Default:index.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
+        //return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', array(
+        //return $this->render('InstitutionBundle:Faq:index.html.twig', array(
+        //return $this->render('InstitutionBundle:Feedback:form.html.twig', array(
+        //    'alerts' => $institutionAlerts,
+    	//	'news' => $news,
+        //    'institution' => $this->institution
+        //));
+        
+        
+        //for adding new clinic
         $this->institutionMedicalCenter = new institutionMedicalCenter();
         $this->institutionMedicalCenter->setInstitution($this->institution);
-//         var_dump($this->institutionMedicalCenter);exit;
         $form = $this->createForm(new InstitutionFormType(), $this->institutionMedicalCenter);
+
 //         return $this->render('InstitutionBundle:Default:index.html.twig', array(
         //return $this->render('InstitutionBundle:Institution:dashboard.singleClinic.html.twig', array(
 //         return $this->render('InstitutionBundle:Institution:profile.html.twig', array(
@@ -57,6 +71,8 @@ class DefaultController extends InstitutionAwareController
         ));
     }
 
+    
+    
     public function error403Action()
     {
         return $this->render('InstitutionBundle:Exception:error403.html.twig');
