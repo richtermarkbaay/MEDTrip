@@ -33,7 +33,7 @@
 					                        <label for="username">Email 
 					                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
 					                        </label>
-					                     <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="margin-right:674px;">
+					                     <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 687px;margin-top: 4px;">
 					                        <div class="input-prepend" >
 						                      	{{ form_widget(form.email) }}
 						                  
@@ -94,15 +94,7 @@
 					                
 					                        <label for="password">Types of Institution</label>
 					                        
-					                        <div id="tabs">
-					                            <div id="nav">
-					                                {% for key, type in institutionTypes %}
-					                                <label>
-					                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
-					                                </label>    
-					                            {% endfor %}
-					                            </div>
-					                        </div>
+					                            {{ form_widget(form.type) }}
 					               
 					                    
 					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />

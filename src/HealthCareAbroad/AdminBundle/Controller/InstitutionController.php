@@ -96,7 +96,7 @@ class InstitutionController extends Controller
     
     	$institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);   
     	$factory = $this->get('services.institution.factory');
-    	$institution = $factory->createByType($institutionType);  	
+    	$institution = $factory->createInstance($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
 		
 	    	if ($request->isMethod('POST')) {
@@ -139,7 +139,7 @@ class InstitutionController extends Controller
 	    	
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
-    					'institutionTypes' => InstitutionTypes::getList(),
+    					'institutionTypes' => InstitutionTypes::getFormChoices(),
     					'selectedInstitutionType' => $institutionType,
     	));
     }
@@ -150,7 +150,7 @@ class InstitutionController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addDetailsAction(Request $request){
-
+       
 	    $form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false));
 
 	    //redirect to edit institution field if not newly added institution
@@ -215,11 +215,7 @@ class InstitutionController extends Controller
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     			
-    			return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
-    		}
-    		else {
-    		    //var_dump($form->getErrors());
-    		    //echo "invalid form"; exit;
+    			return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
     		}
     	}
     	
@@ -227,6 +223,7 @@ class InstitutionController extends Controller
     	$json = '[{"area":"","number":"","type":"phone"}]';
     	$a1 = json_decode( $this->institution->getContactNumber(), true );
     	$contactNumbers = array();
+    	
     	if ($a1){
     	    $keys = array_keys($a1[0]);
     	     
