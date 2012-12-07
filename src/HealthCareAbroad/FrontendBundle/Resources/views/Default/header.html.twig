@@ -1,36 +1,84 @@
-<header id="header">
+            <div id="top" class="top_bar">
+                <div class="container">
+                    <div class="row">
+                            <div class="span2">
+                                <div class="ticker_icon"><img src="images/news.png"/></div>
+                                <div class="ticker_label">
+                                    <span>NEWS UPDATES :</span>
+                                </div>
+                            </div>
+                            <div class="span10">
+                                <ul id="ticker01">
+                                    <li><span>&#9733;</span><a href="#">lorem ipsum dolor sit amet</a></li>
+                                    <li><span>&#9733;</span><a href="#">magni dolores eos</a></li>
+                                    <li><span>&#9733;</span><a href="#">vel illum qui dolorem eum fugiat</a></li>
+                                    <li><span>&#9733;</span><a href="#">Ut enim ad minima veniam, quis nostrum exercitationem</a></li>
+                                </ul>
+                            </div>
+                    </div> <!--End of row-->
+                </div>
+            </div><!--End of top bar-->
 
-    <div class="top_line">
+            <div id="header">
+                <div class="top_line"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="span4">
+                            <div class="logo">
+                                <a href="index.html">
+                                    <img src="images/logo.png" alt="healthcareabroad" />
+                                </a>
+                            </div>
+                        </div>
+                        <div class="span5 offset3">
+                            <nav class="links">
+                                <ul>
+                                    <li>
+                                        <img src="images/about.png" alt="about" />
+                                        <a href="#">ABOUT</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/blog.png" alt="blog" />
+                                        <a href="#">BLOG</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/contact.png" alt="contact" />
+                                        <a href="#">CONTACT US</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/login.png" alt="login" />
+                                        <a href="#">LOGIN</a>
+                                    </li>
+                                    <li>
+                                        <img src="images/signup.png" alt="signup" />
+                                        <a href="#">SIGNUP</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div> <!--End of container -->
+            </div> <!--End of header -->
 
-    </div>
-    <div class="inner">
+            {% block headerContent %}
+            <div id="banner_wrap">
+                <div class="top_line"></div>
+                <div class="container">
+                    <div class="row banner">
+                        <div class="span9 offset1">
+                            <h1>
+                                WELCOME TO HEALTH CARE ABROAD!
+                            </h1>
+                            <h3>
+                                THE RESOURCE FOR GLOBAL HEALTHCARE<br>
+                                A COMPREHENSIVE, NON-BIASED DIRECTORY
+                            </h3>
+                        </div>
+                    </div>
 
-        <div class="logo">
-
-            <a href="index.html">
-                   <img src="{{ asset('images/frontend/logo.png') }}" alt="#" />
-            </a>
-
-        </div> <!--End Logo-->
-
-        <!--
-        <div class="search_box">
-
-           <form method="get" action="#">
-
-                <input type="submit" class="sb" value="Search" />
-
-                <input type="text" class="sf" value="Search here ..." name="s"" />
-
-            </form>
-
-        </div>
-        -->
-        <!--Search Box-->
-        {% block searchBox %}
-            {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'homepage' } %}
-        {% endblock %}
-
-    </div> <!--Inner-->
-
-</header> <!--End Header-->
+                    {% block searchBox %}
+                        {% render "SearchBundle:Frontend:showWidget" with { 'context' : 'homepage' } %}
+                    {% endblock %}
+                </div>
+            </div> <!-- End banner_wrap-->
+            {% endblock %}

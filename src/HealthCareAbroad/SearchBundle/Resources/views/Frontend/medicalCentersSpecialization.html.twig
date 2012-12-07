@@ -1,0 +1,41 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block header %}
+    {% embed "FrontendBundle:Default:header.html.twig" %}
+        {% block headerContent %}
+            {% block searchBox %}
+                {% render "SearchBundle:Frontend:showWidget" with { context : 'specializationsPage', specializationId: specialization.id, treatmentLabel: specialization.name} %}
+            {% endblock %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="span8">
+            <div class="main">
+                <div class="box_outer">
+                    <h4>You searched for medical centers having specialization: {{ specialization.name }}</h4>
+                    <ul>
+                    {% for result in searchResults %}
+                        <!-- Hardcode for now -->
+                        <li>
+                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}/{{ result.slug }}/{{ specialization.slug}}" >{{ result.name }}</a>
+                        </li>
+                    {% else %}
+                        <li>No medical centers found.</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div> <!--End Main-->
+        </div> <!--End of span8-->
+
+        <div class="span4">
+            {% include 'FrontendBundle:Default:sidebar.html.twig' %}
+        </div> <!--End of span4-->
+
+    </div> <!--End of row-->
+
+    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
+
+{% endblock %}

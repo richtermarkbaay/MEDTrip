@@ -1,3 +1,7 @@
+temp_homepage_index.html:
+    pattern: /temp.html
+    defaults: { _controller: FrontendBundle:Default:indexTemp }
+
 main_homepage_index_html:
     pattern:  /index.html
     defaults: { _controller: FrontendBundle:Default:index}
@@ -24,7 +28,7 @@ page_recent_sidebar:
     defaults: { _controller: FrontendBundle:Sidebar:recent }
     requirements:
         _method: GET|POST
-        
+
 page_comments_sidebar:
     pattern: /comments
     defaults: { _controller: FrontendBundle:Sidebar:comments }
@@ -36,22 +40,22 @@ page_tags_sidebar:
     defaults: { _controller: FrontendBundle:Sidebar:tags }
     requirements:
         _method: GET|POST
-        
+
 page_exception_report_create:
     pattern: /error
     defaults: { _controller: FrontendBundle:Default:errorReport }
-    requirements:    
+    requirements:
         _method:  GET|POST
- 
+
 page_institution_profile:
     pattern: /clinic/{institutionSlug}
     defaults: { _controller: FrontendBundle:Institution:profile }
-    requirements:    
+    requirements:
         _method:  GET
 
 splash_page:
     pattern:  /{url}
-    defaults: { _controller: FrontendBundle:Default:new, url: /}  
+    defaults: { _controller: FrontendBundle:Default:new, url: /}
     requirements:
          url: ".*"
 

@@ -1,0 +1,15 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block content %}
+    <div class="row">
+
+        <div class="span8">
+            {% include 'FrontendBundle:Default:content.html.twig' %}
+        </div> <!--End of span8-->
+
+        <div class="span4">
+            {% include 'FrontendBundle:Default:sidebar.html.twig' %}
+        </div> <!--End of span4-->
+
+    </div> <!--End of row-->
+{% endblock %}

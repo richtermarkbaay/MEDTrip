@@ -1,57 +1,42 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{#% block searchBox %#}
-    {#% render "SearchBundle:Frontend:showWidget" with {
-        'context': 'destinationsPage',
-        'countryId': city.country.id,
-        'countryName': city.country.name,
-        'cityId': city.id,
-        'cityName' : city.name}
-    %#}
-{#% endblock %#}
+{% block header %}
+    {% embed "FrontendBundle:Default:header.html.twig" %}
+        {% block headerContent %}
+            {% block searchBox %}
+                {% render "SearchBundle:Frontend:showWidget" with {
+                    context: 'treatments', treatmentId: treatmentId, treatmentLabel: treatmentLabel }
+              %}
+            {% endblock %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
 {% block content %}
-    {% block wrappedContent %}
-
-        <div class="main">
-            <div class="box_outer">
-
-                <!-- Country List -->
-                {% if countries|length %}
-                <div>
+    <div class="row">
+        <div class="span8">
+            <div class="main">
+                <div class="box_outer">
+                    <h4>You searched for medical centers having treatment: {{ treatmentLabel }}</h4>
                     <ul>
-                    {% for country in countries %}
-                        <li><a href="{{ country.url }}">{{ country.name }}</a></li>
-                    {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Search Results -->
-                <div>
-                    You searched for medical centers having {% if procedure %}{{ procedure.name }}{% else %}{{treatment.name}}{% endif %}
-                    <ul>
-                    {% for center in centers %}
+                    {% for result in searchResults %}
+                        <!-- Hardcode for now -->
                         <li>
-                            <!-- Hardcode for now -->
-                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ center.institution.country.slug }}/{{ center.institution.city.slug }}/{{ center.medicalCenter.slug }}/{{ treatment.slug }}" >
-                                {{ center.medicalCenter.name }}
-                            </a>
+                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}/{{ result.slug }}/{{ specialization.slug }}" >{{ result.name }}</a>
                         </li>
                     {% else %}
                         <li>No medical centers found.</li>
                     {% endfor %}
                     </ul>
                 </div>
-            </div>
+            </div> <!--End Main-->
+        </div> <!--End of span8-->
 
-        </div> <!--End Main-->
-        <!-- Sidebar Navigation -->
-        {% block right_navigation %}
+        <div class="span4">
             {% include 'FrontendBundle:Default:sidebar.html.twig' %}
-        {% endblock %}
+        </div> <!--End of span4-->
 
-    {% endblock %}
+    </div> <!--End of row-->
 
     {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
 

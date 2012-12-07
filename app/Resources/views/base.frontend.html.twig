@@ -1,46 +1,35 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
     <head>
-        <meta http-equiv="Content-Type" content="text/html"; charset=utf-8" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-        <!-- Mobile -->
-
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-        <!--[if lt IE 9]>
-
-        <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
-
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-
-        <![endif]-->
         <title>{% block title %}HealthCareAbroad{% endblock %}</title>
+
+        {% block stylesheets %}
+            <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
+            <link href="{{ asset('css/frontend/style.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.9.1.custom.min.css') }}" rel="stylesheet"/>
+            <!--
+            <link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>
+             -->
+            <link href="{{ asset('http://fonts.googleapis.com/css?family=Muli') }}" rel="stylesheet"/>
+        {% endblock %}
 
         {% javascripts
             'js/jquery/jquery-1.8.2.js'
-			'js/jquery/jquery-ui-1.9.0.custom.min.js'
-            'js/main/jquery.tools.min.js'
+            'js/jquery/jquery-ui-1.9.0.custom.min.js'
             'js/main/jquery.cycle.all.min.js'
-            'js/main/jquery.jplayer.min.js'
-            'js/main/jquery.tweet.js'
-            'js/main/jquery.prettyPhoto.js'
-            'js/main/jquery.tipsy.js'
-            'js/main/jquery.li-scroller.1.0.js'
-            'js/main/jquery.fitvids.js'
-            'js/main/custom.js'
+            'js/main/jquery.qtip-1.0.0-rc3.min.js'
+            'js/main/jquery.tinyscrollbar.min.js'
             output='js/compiled-frontend.js'
         %}
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
-        {% block stylesheets %}
-            <link href="{{ asset('css/frontend/style.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/jquery-ui/base/jquery.ui.theme.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/jquery-ui/base/jquery.ui.autocomplete.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('http://fonts.googleapis.com/css?family=Play:400,700') }}" rel="stylesheet"/>
-        {% endblock %}
     </head>
-    {% block body %}{% endblock %}
 
+    {% block body %}{% endblock %}
 
 </html>
