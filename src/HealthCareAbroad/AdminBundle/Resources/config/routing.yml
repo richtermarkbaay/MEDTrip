@@ -8,6 +8,11 @@ AdminBundle_advertisement:
     resource: "@AdminBundle/Resources/config/routing_advertisement.yml"
     prefix:   /
 
+# Routes for Admin AdvertisementController #
+AdminBundle_advertisementType:
+    resource: "@AdminBundle/Resources/config/routing_advertisement_type.yml"
+    prefix:   /
+
 # Routes for Admin SubSpecializationController #
 AdminBundle_subSpecialization:
     resource: "@AdminBundle/Resources/config/routing_subSpecialization.yml"

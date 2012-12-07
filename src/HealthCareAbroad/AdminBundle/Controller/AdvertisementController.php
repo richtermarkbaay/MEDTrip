@@ -6,6 +6,12 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorFormType;
+
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
@@ -35,16 +41,30 @@ class AdvertisementController extends Controller
      * @var Advertisement
      */
     private $advertisement;
+        
+    /**
+     * @var Institution
+     */
+    private $institution;
     
+
     public function preExecute()
     {
         $this->factory = $this->get('services.advertisement.factory');
-        
+
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
             $this->advertisement = $this->factory->findById($advertisementId);
             
             if (!$this->advertisement) {
                 throw $this->createNotFoundException("Invalid advertisement.");
+            }
+        }
+
+        if ($institutionId = $this->getRequest()->get('institutionId', 1)) {
+            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+
+            if (!$this->institution) {
+                throw $this->createNotFoundException("Invalid institution.");
             }
         }
     }
@@ -57,27 +77,126 @@ class AdvertisementController extends Controller
      */
     public function indexAction(Request $request)
     {   
-        $advertisementTypeId = $request->get('advertisementTypes', 0);
+        $advertisementTypeId = $request->get('advertisementType', 0);
 
         if ($advertisementTypeId == ListFilter::FILTER_KEY_ALL) {
-
         	$advertisementTypeId = 0;
         }
 
-        $adTypes = AdvertisementTypes::getList();
-        $discriminatorMapping = array_flip(AdvertisementTypes::getDiscriminatorMapping());
-        
         $params = array(
             'advertisementTypeId' => $advertisementTypeId,
             'advertisements' => $this->filteredResult,
-            'adTypes' => $adTypes,
-            'discriminatorMapping' => $discriminatorMapping,
             'pager' => $this->pager);
 
         return $this->render('AdminBundle:Advertisement:index.html.twig', $params);
         
     }
+
+    /**
+     * This is the first step when adding an advertisement
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @param Request $request
+     */
+    public function addAction(Request $request)
+    {
+        $advertisement = new Advertisement();
+        $advertisementTypeId = $request->get('advertisementTypeId', 1);
+
+        $advertisement->setInstitution($this->institution);
+
+        if($advertisementTypeId) {
+            $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementTypeId);
+            $advertisement->setAdvertisementType($advertisementType);
+        }
+
+        foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
+            $propertyValue = new AdvertisementPropertyValue();
+            $propertyValue->setAdvertisementPropertyName($each);
+            $advertisement->addAdvertisementPropertyValue($propertyValue);            
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
     
+        return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $this->generateUrl('admin_advertisement_create'),
+            'form' => $form->createView()
+        ));
+    }
+
+    public function editAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $this->advertisement);
+
+        return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * This is the first step when adding an advertisement
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @param Request $request
+     */
+    public function saveAction()
+    {
+        $request = $this->getRequest();
+        $advertisementData = $request->get('advertisement');
+
+        if(!$request->getMethod() == 'POST') {
+            return new Response("Save requires POST method!", 405);
+        }
+        
+        if(!$this->advertisement) {
+            $advertisement = new Advertisement();
+            $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
+            $advertisement->setAdvertisementType($advertisementType);
+            
+            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($advertisementData['institution']);
+            $advertisement->setInstitution($institution);
+
+            foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
+                $propertyValue = new AdvertisementPropertyValue();
+                $propertyValue->setAdvertisementPropertyName($each);
+                $propertyValue->setAdvertisement($advertisement);
+                $advertisement->addAdvertisementPropertyValue($propertyValue);
+            }
+
+            $formAction = $this->generateUrl('admin_advertisement_create');
+        } else {
+            $advertisement = $this->advertisement;
+            $formAction = $this->generateUrl('admin_advertisement_update', array('advertisementId'=>$advertisement->getId()));
+        }
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement); 
+
+        $form->bind($request);
+
+        if ($form->isValid()) {
+            
+            if($advertisement->getId()) {
+                foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+                    $em->remove($value);
+                }
+            }
+
+            $em->persist($advertisement);
+            $em->flush();
+
+            $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
+
+            return $this->redirect($this->generateUrl('admin_advertisement_index'));
+        }
+
+        return $this->render('AdminBundle:Advertisement:form.html.twig', array(
+            'formAction' => $formAction,
+            'form' => $form->createView()
+        ));
+    }
+
     /**
      * This is the first step when adding an advertisement
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
@@ -90,7 +209,7 @@ class AdvertisementController extends Controller
                 AdvertisementFormType::OPTION_IS_NEW => true, 
                 AdvertisementFormType::OPTION_FORCED_HIDDEN_FIELDS => array(AdvertisementFormType::FIELD_OBJECT, AdvertisementFormType::FIELD_TITLE, AdvertisementFormType::FIELD_DESCRIPTION
         )));
-        
+
         if ($request->isMethod('POST')) {
             
             $form->bind($request);
@@ -216,33 +335,33 @@ class AdvertisementController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request)
-    {
-        $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
+//     public function editAction(Request $request)
+//     {
+//         $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
         
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
+//         if ($request->isMethod('POST')) {
+//             $form->bind($request);
             
-            if ($form->isValid()) {
-                try {
-                    $advertisement = $this->factory->save($form->getData());
+//             if ($form->isValid()) {
+//                 try {
+//                     $advertisement = $this->factory->save($form->getData());
                 
-                    // dispatch event
-                    $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $advertisement));
+//                     // dispatch event
+//                     $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $advertisement));
                     
-                    $request->getSession()->setFlash("success", "Successfully updated advertisement.");
-                }
-                catch (\Exception $e) {
-                    $request->getSession()->setFlash("error", "Failed to updated advertisement due to unexpected error.");
-                }
+//                     $request->getSession()->setFlash("success", "Successfully updated advertisement.");
+//                 }
+//                 catch (\Exception $e) {
+//                     $request->getSession()->setFlash("error", "Failed to updated advertisement due to unexpected error.");
+//                 }
                 
-                return $this->redirect($this->generateUrl("admin_advertisement_index"));
-            }
-        }
+//                 return $this->redirect($this->generateUrl("admin_advertisement_index"));
+//             }
+//         }
         
-        return $this->render('AdminBundle:Advertisement:edit.html.twig', array(
-            'form' => $form->createView(),
-            'advertisement' => $this->advertisement
-        ));
-    }
+//         return $this->render('AdminBundle:Advertisement:edit.html.twig', array(
+//             'form' => $form->createView(),
+//             'advertisement' => $this->advertisement
+//         ));
+//     }
 }

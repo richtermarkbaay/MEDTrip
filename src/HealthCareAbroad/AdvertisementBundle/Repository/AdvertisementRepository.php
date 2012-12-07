@@ -7,8 +7,6 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Repository;
 
-use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
-
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
@@ -34,22 +32,4 @@ class AdvertisementRepository extends EntityRepository
 
         return $results;
     }
-
-    public function getQueryBuilderForAdvertisementsByType($advertisementType, QueryOption $option=null){
-
-
-        $classMapping = AdvertisementTypes::getDiscriminatorMapping();
-        if (!\array_key_exists($advertisementType, $classMapping)) {
-            throw new \Exception("Invalid advertisement type '{$advertisementType}' passed to ".__CLASS__."::getActiveAdvertisementsByType.");
-        }
-        $advertisementTypeClass = $classMapping[$advertisementType];
-
-        $qb = $this->getEntityManager()->createQueryBuilder()
-        ->select('a')
-        ->from($advertisementTypeClass, 'a')
-        ;
-
-        return $qb;
-    }
-
 }
