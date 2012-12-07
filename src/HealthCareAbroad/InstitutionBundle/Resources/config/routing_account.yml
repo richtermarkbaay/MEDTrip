@@ -6,6 +6,6 @@
 
 institution_after_registration_landing:
     pattern: /institution/complete-profile.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:editInstitutionProfile }
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:afterRegistrationLanding }
     requirements:
         _method: GET|POST

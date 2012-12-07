@@ -1,11 +1,21 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% set disableMainNavigation = true %}
 {% block content %}
 
-    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
         {% block wrappedContent %}
-        <div class="span9 marginleft0">
+            
+            <div class="aside">
+                <h4>Welcome, {{ app.user.username }}</h4>
+                <p>
+                    You're 1 step away to appear in our medical listing. Please tell us more about your Medical Institution.
+                </p>
+            </div>
+            
             <h2>Create New Medical Listing</h2>
+            <br />
+            
             <form id="formwizard" class="span12">
                 <fieldset title="1">
                     <legend>Clinic Details</legend>
@@ -98,20 +108,22 @@
                             <br>
                             <div>
                                 <label for="Timezone">Clinic Hours</label>
-                                {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+                                {# include 'InstitutionBundle:Widgets:businessHours.html.twig' #}
                             </div>
                             <div class="clearfix"><br></div>
                         </div>
                     </div>
+                    
                 </fieldset>
             </form>
-        </div>
+            
+        
         {% endblock %}
         
         {% block sidebar %}
-        <div class="span3">
-            {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
-        </div>
+            <div class="span3">
+                {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+            </div>
         {% endblock %}
         
     {% endembed %}

@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
@@ -23,10 +25,21 @@ use Symfony\Component\Security\Core\SecurityContext;
 
 class InstitutionAccountController extends InstitutionAwareController
 {
-	protected $institution;
-	
-// 	function preExecute()
-// 	{
+    /**
+     * @var InstitutionService
+     */
+    protected $institutionService;
+    
+    /**
+     * @var Request
+     */
+    protected $request;
+    
+	public function preExecute()
+	{
+	    $this->institutionService = $this->get('services.institution');
+	    $this->request = $this->getRequest();
+	    
 // 		$request = $this->getRequest();
 // 		$session = $this->getRequest()->getSession();
 		 
@@ -39,12 +52,43 @@ class InstitutionAccountController extends InstitutionAwareController
 // 				throw $this->createNotFoundException('Invalid Institution');
 // 			}
 // 		}
-// 	}
+	}
 	
-	
-    public function editInstitutionProfileAction(Request $request)
+	/**
+	 * @param Request $request
+	 */
+    public function afterRegistrationLandingAction(Request $request)
     {
-        echo "adi na"; exit;
+        switch ($this->institution->getType())
+        {
+            case InstitutionTypes::SINGLE_CENTER:
+                $response = $this->completeRegistrationSingleCenter();
+                break;
+            case InstitutionTypes::MULTIPLE_CENTER:
+                break;
+            case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
+            default:
+                $response = $this->completeRegistrationMultipleCenter();
+                break;
+        }
+
+        return $response;
+    }
+    
+    /**
+     * @return
+     */
+    protected function completeRegistrationSingleCenter()
+    {
+        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig');
+    }
+    
+    /**
+     * 
+     */
+    protected function completeRegistrationMultipleCenter()
+    {
+        return $this->render($view);
     }
     
     
