@@ -87,6 +87,11 @@ AdminBundle_settings:
 AdminBundle_AdminUser:
     resource: "@AdminBundle/Resources/config/routing_admin_user.yml"
     prefix:   /
+    
+# Routes for helper section #
+AdminBundle_helper_text:
+    resource: "@AdminBundle/Resources/config/routing_helper_text.yml"
+    prefix:   /
 
 # vier edit
 admin_showEditHistory:

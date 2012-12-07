@@ -73,7 +73,9 @@ class InstitutionSignUpController  extends Controller
 	 */
 	public function signUpAction(Request $request)
 	{
-		
+	    //get Helper Route Details
+	    $this->get('twig')->addGlobal('routeDetails', $this->get('services.helper_route')->getHelperTextByRoute($this->container->get('request')->get('_route')));
+	    
 	    $institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();

@@ -1,0 +1,37 @@
+admin_helper_text_index:
+    pattern:  /admin/helper-text
+    defaults: { _controller: AdminBundle:HelperText:index }
+    requirements:    
+        _method:  GET
+
+admin_helper_text_add:
+    pattern:  /admin/helper-text/add
+    defaults: { _controller: AdminBundle:HelperText:add }
+    requirements:    
+        _method:  GET
+        
+admin_helper_text_create:
+    pattern:  /admin/helper-text/add
+    defaults: { _controller: AdminBundle:HelperText:save }
+    requirements:
+         _method: POST
+         
+admin_helper_text_edit:
+    pattern:  /admin/helper-text/edit/{id}
+    defaults: { _controller: AdminBundle:HelperText:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_helper_text_update:
+    pattern:  /admin/helper-text/edit/{id}
+    defaults: { _controller: AdminBundle:HelperText:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_helper_text_updateStatus:
+    pattern:  /admin/helper-text/update-status/{id}
+    defaults: { _controller: AdminBundle:HelperText:updateStatus, id: ~ }
+    requirements:
+        id: \d+

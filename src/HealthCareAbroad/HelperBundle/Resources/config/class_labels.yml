@@ -15,6 +15,7 @@ parameters:
         institution_medical_center: {singular: "clinic", plural: "clinics"}
         institution_specialization: {singular: "specialization", plural: "specializations"}
         country: {singular: "country", plural: "countries"}
+        helper_text: {singular: "helper text", plural: "helper text"}
         city: {singular: "city", plural: "cities"}
         doctor: {singular: "doctor", plural: "doctors"}
         awardingBody: {singular: "awarding body", plural: "awarding bodies"}

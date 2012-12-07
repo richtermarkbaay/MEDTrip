@@ -1,7 +1,7 @@
-HealthCareAbroad\HelperBundle\Entity\HelpText:
+HealthCareAbroad\HelperBundle\Entity\HelperText:
     type: entity
-    table: help_text
-    repositoryClass: HealthCareAbroad\AdminBundle\Repository\HelpTextRepository
+    table: helper_text
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\HelperTextRepository
     fields:
         id:
             id: true

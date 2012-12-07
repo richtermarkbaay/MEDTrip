@@ -66,4 +66,8 @@ final class AdminBundleEvents
     const ON_ADD_DOCTOR = 'event.doctor.add';
     const ON_EDIT_DOCTOR = 'event.doctor.edit';
     const ON_DELETE_DOCTOR = 'event.doctor.delete';
+    
+    const ON_ADD_HELPER_TEXT = 'event.helper_text.add';
+    const ON_EDIT_HELPER_TEXT = 'event.helper_text.edit';
+    const ON_DELETE_HELPER_TEXT = 'event.helper_text.delete';
 }

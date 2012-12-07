@@ -77,6 +77,8 @@ class InstitutionController extends Controller
      */
     public function indexAction()
     {
+        var_dump(InstitutionStatus::getBitValueLabels());
+        exit;
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
