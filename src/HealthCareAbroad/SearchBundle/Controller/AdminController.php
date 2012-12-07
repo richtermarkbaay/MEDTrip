@@ -35,6 +35,9 @@ class AdminController extends Controller
      */
     public function initiateAction(Request $request)
     {
+        if (!$request->isMethod('POST')) {
+            return $this->redirect($this->generateUrl('admin_homepage'));
+        }
 
 		$searchCriteria = $request->get('adminDefaultSearch', array());
 		

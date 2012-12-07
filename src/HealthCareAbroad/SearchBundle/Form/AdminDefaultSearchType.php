@@ -11,7 +11,7 @@ class AdminDefaultSearchType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('term', 'text', array('data' => 'Search'));
+		$builder->add('term', 'text');
 		$builder->add('category', 'choice', array(
     		'choices' => array(
 	   			Constants::SEARCH_CATEGORY_INSTITUTION => Constants::SEARCH_CATEGORY_LABEL_INSTITUTION, 
