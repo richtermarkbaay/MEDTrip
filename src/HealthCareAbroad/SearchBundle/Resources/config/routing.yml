@@ -1,11 +1,16 @@
 ## ADMIN BUNDLE
+
+#search_admin_showWidget:
+#    pattern:  /admin/search/widget/{context}
+#    defaults: { _controller: SearchBundle:Default:showWidget }
+#
 search_admin_showWidget:
     pattern:  /admin/search/widget/{context}
-    defaults: { _controller: SearchBundle:Default:showWidget }
+    defaults: { _controller: SearchBundle:Admin:showWidget }
 
 search_admin_initiate:
     pattern: /admin/search
-    defaults: { _controller: SearchBundle:Default:initiate }
+    defaults: { _controller: SearchBundle:Admin:initiate }
 
 ## FRONTEND BUNDLE
 search_frontend:

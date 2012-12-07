@@ -1,42 +1,33 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
 
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchAdminPagerService;
+use HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory;
+use HealthCareAbroad\SearchBundle\Classes\SearchCategoryBuilder;
+use Symfony\Component\HttpFoundation\Request;
+use HealthCareAbroad\AdminBundle\Entity\SearchAdminResults;
+
+/**
+ * Temporary holder of all search related functionality
+ *
+ */
 class AdminSearchService
 {
-    const SEARCH_CATEGORY_INSTITUTION =       1;
-    const SEARCH_CATEGORY_CENTER =            2;
-    const SEARCH_CATEGORY_SPECIALIZATION =    3;
-    const SEARCH_CATEGORY_SUBSPECIALIZATION = 4;
-    const SEARCH_CATEGORY_TREATMENT =         5;
+	/**
+	 * @var SearchResultBuilderFactory
+	 */
+	private $factory;
+	
+	public function setSearchBuilderFactory(SearchResultBuilderFactory $searchfactory)
+	{
+		$this->factory = $searchfactory;
+	}
 
-    private $entityManager;
-
-    private $repositoryMap = array(
-        self::SEARCH_CATEGORY_INSTITUTION => 'InstitutionBundle:Institution',
-        self::SEARCH_CATEGORY_CENTER => 'InstitutionBundle:InstitutionMedicalCenter',
-        self::SEARCH_CATEGORY_SPECIALIZATION => 'TreatmentBundle:Specialization',
-        self::SEARCH_CATEGORY_SUBSPECIALIZATION => 'TreatmentBundle:SubSpecialization',
-        self::SEARCH_CATEGORY_TREATMENT => 'TreatmentBundle:Treatment'
-    );
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager $entityManager
-     */
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * This simply delegates the actual searching to the corresponding
-     * repository class of the search entity.
-     *
-     * @param array $searchCriteria
-     */
-    public function execute(array $searchCriteria = array())
-    {
-        return $this->entityManager->getRepository($this->repositoryMap[$searchCriteria['category']])->search($searchCriteria['term']);
-    }
+	public function search(array $searchCriteria = array(), SearchAdminPagerService $p)
+	{
+		$builder = $this->factory->getBuilderByCategory($searchCriteria);
+		$result = $builder->search($searchCriteria, $p);
+		
+		return $result;
+	}
 }
