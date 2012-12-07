@@ -15,7 +15,7 @@
     	
         	{% block sectionContent %}
 			      {% include '::notice.admin.html.twig' %}
-				<h5>{{ institution.typeLabel() }}</h5>
+				<h5>{# institution.typeLabel() #}</h5>
 				
 					 <form novalidate="novalidate" action="{{ path('admin_institution_edit', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
 						{{ form_errors(form) }}

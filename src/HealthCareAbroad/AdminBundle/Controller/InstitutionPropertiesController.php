@@ -48,7 +48,7 @@ class InstitutionPropertiesController extends Controller
         $params = array(
             'formAction' => $formActionUrl, 
             'form' => $form->createView()
-        );
+        );    
         return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
     }
     

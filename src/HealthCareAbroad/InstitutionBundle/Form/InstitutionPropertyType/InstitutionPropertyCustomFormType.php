@@ -25,10 +25,24 @@ class InstitutionPropertyCustomFormType extends AbstractType
         }
         
         $institutionPropertyType = $institutionProperty->getInstitutionPropertyType();
+        //echo json_encode(array('multiple' => true, 'expanded' => true, 'type' => 'choice'));
         
-        $fieldType = new InstitutionPropertyValueCustomFieldType($institutionProperty);
-        
+        var_dump($institutionPropertyType->getDataClass());exit;
         $formOptions = \json_decode($institutionPropertyType->getFormConfiguration(), true);
+        
+        if (\array_key_exists('type', $formOptions)) {
+            $fieldType = $formOptions['type'];
+            unset($formOptions['type']);
+            $formOptions['choices'] = array('1' => 'adfdsf', 2 => 'bbbb');
+        }
+        else {
+            $fieldType = new InstitutionPropertyValueCustomFieldType($institutionProperty);
+        }
+        
+        
+        
+        
+        
         if (\is_null($formOptions) || !\is_array($formOptions)) {
             $formOptions = array();
         }
