@@ -1,9 +1,11 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Entity;
-
-abstract class Advertisement
+ 
+class Advertisement
 {
-    
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+
     /**
      * @var bigint $id
      */
@@ -25,23 +27,33 @@ abstract class Advertisement
     private $dateCreated;
 
     /**
-     * @var integer $status
+     * @var datetime $dateExpiry
+     */
+    private $dateExpiry;
+
+    /**
+     * @var boolean $status
      */
     private $status;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $advertisementPropertyValues;
+
+    /**
+     * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+     */
+    private $advertisementType;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $media;
-
     public function __construct()
     {
-        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->advertisementPropertyValues = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -121,9 +133,31 @@ abstract class Advertisement
     }
 
     /**
+     * Set dateExpiry
+     *
+     * @param datetime $dateExpiry
+     * @return Advertisement
+     */
+    public function setDateExpiry($dateExpiry)
+    {
+        $this->dateExpiry = $dateExpiry;
+        return $this;
+    }
+
+    /**
+     * Get dateExpiry
+     *
+     * @return datetime 
+     */
+    public function getDateExpiry()
+    {
+        return $this->dateExpiry;
+    }
+
+    /**
      * Set status
      *
-     * @param integer $status
+     * @param boolean $status
      * @return Advertisement
      */
     public function setStatus($status)
@@ -135,11 +169,65 @@ abstract class Advertisement
     /**
      * Get status
      *
-     * @return integer 
+     * @return boolean 
      */
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add advertisementPropertyValues
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue $advertisementPropertyValues
+     * @return Advertisement
+     */
+    public function addAdvertisementPropertyValue(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue $advertisementPropertyValues)
+    {
+        $this->advertisementPropertyValues[] = $advertisementPropertyValues;
+        return $this;
+    }
+
+    /**
+     * Remove advertisementPropertyValues
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue $advertisementPropertyValues
+     */
+    public function removeAdvertisementPropertyValue(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue $advertisementPropertyValues)
+    {
+        $this->advertisementPropertyValues->removeElement($advertisementPropertyValues);
+    }
+
+    /**
+     * Get advertisementPropertyValues
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getAdvertisementPropertyValues()
+    {
+        return $this->advertisementPropertyValues;
+    }
+
+    /**
+     * Set advertisementType
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType
+     * @return Advertisement
+     */
+    public function setAdvertisementType(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType = null)
+    {
+        $this->advertisementType = $advertisementType;
+        return $this;
+    }
+
+    /**
+     * Get advertisementType
+     *
+     * @return HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType 
+     */
+    public function getAdvertisementType()
+    {
+        return $this->advertisementType;
     }
 
     /**
@@ -162,37 +250,5 @@ abstract class Advertisement
     public function getInstitution()
     {
         return $this->institution;
-    }
-
-    /**
-     * Add media
-     *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
-     * @return Advertisement
-     */
-    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
-    {
-        $this->media[] = $media;
-        return $this;
-    }
-
-    /**
-     * Remove media
-     *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
-     */
-    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
-    {
-        $this->media->removeElement($media);
-    }
-
-    /**
-     * Get media
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getMedia()
-    {
-        return $this->media;
     }
 }

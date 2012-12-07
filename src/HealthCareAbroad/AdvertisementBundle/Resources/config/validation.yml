@@ -1,0 +1,4 @@
+HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
+    properties:
+        title:
+            - NotBlank: ~

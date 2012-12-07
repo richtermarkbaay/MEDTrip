@@ -18,24 +18,37 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class InstitutionSpecializationListType extends AbstractType
 {
-     private $serviceContainer;
+    const SHOW_SELECTED = 1;
+    const SHOW_UNSELECTED = 2;
+    
+    private $serviceContainer;
 
      private $institution;
+     private $filter;
 
-    public function __construct($institution=null) {
+    public function __construct($institution=null, $filter = self::SHOW_SELECTED) {
+        $this->filter = $filter;
         $this->institution = $institution;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $filter = $this->filter;
         $institution = $this->institution;
+        $params = array(
+            'filter' => $this->filter,
+            'institution' => $this->institution,
+            'selected' => self::SHOW_SELECTED,
+            'unselected' => self::SHOW_UNSELECTED
+        );
+
         $resolver->setDefaults(array(
             'virtual' => true,
             'empty_value' => '<-- select specialization -->',
             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
-            'query_builder' => function(EntityRepository $er) use ($institution) {
+            'query_builder' => function(EntityRepository $er) use ($params) {
                 $qb = $er->createQueryBuilder('a');
-
+                
                 $qb1 = $qb->getEntityManager()->createQueryBuilder();
                 $qb1->select('d.id')
                     ->from('InstitutionBundle:InstitutionSpecialization', 'b')
@@ -44,9 +57,14 @@ class InstitutionSpecializationListType extends AbstractType
                     ->where('c.institution = :institution')
                     ->groupBy('b.specialization');
 
-                $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
+                if($params['filter'] == $params['unselected']) {
+                    $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
 
-                $qb->setParameter('institution', $institution->getId());
+                } else if($params['filter'] == $params['selected']) {
+                    $qb->where($qb->expr()->in('a.id', $qb1->getDQL()));                    
+                }                
+
+                $qb->setParameter('institution', $params['institution']->getId());
 
                 return $qb;
             }

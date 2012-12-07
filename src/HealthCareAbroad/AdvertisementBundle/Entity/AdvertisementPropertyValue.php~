@@ -1,0 +1,12 @@
+<?php
+
+namespace HealthCareAbroad\AdvertisementBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue
+ */
+class AdvertisementPropertyValue
+{
+}

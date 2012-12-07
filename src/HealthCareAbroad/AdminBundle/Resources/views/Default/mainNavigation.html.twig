@@ -74,6 +74,13 @@
             <li class="{{ selectedSubTab == 'advertisement_index' ? 'active' : '' }}">
                 <a href="{{ path('admin_advertisement_index') }}">View all</a>
             </li>
+            <li class="{{ selectedSubTab == 'advertisementType_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_advertisementType_index') }}">View all Advertisement Types</a>
+            </li>
+            
+            <li class="{{ selectedSubTab == 'advertisementType_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_advertisementType_add') }}">Add Advertisement Type</a>
+            </li>
         </ul>
     </li>
     {% endif %}

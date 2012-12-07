@@ -29,7 +29,7 @@ class InstitutionSpecializationFormType extends AbstractType
         }
 
         if (!$institutionSpecialization->getId()) {
-            $builder->add('specialization', new InstitutionSpecializationListType($this->institution), array('virtual'=>false));
+            $builder->add('specialization', new InstitutionSpecializationListType($this->institution, InstitutionSpecializationListType::SHOW_UNSELECTED), array('virtual'=>false));
         }
         
 //         $builder->add('treatment', 'entity', array(

@@ -64,7 +64,8 @@
                             <div class="addresscity">
                                 <span class="span3 marginleft0">
                                     <label>City</label> 
-                                    <input name="institution_cityaddress" type="text" id="institution_cityaddress" value="Cebu" class="institution_cityaddress span3">
+                                    {{ form_widget(form.city, { 'attr': {'class': 'institution_cityaddress span3'} }) }}
+<!--                                     <input name="institution_cityaddress" type="text" id="institution_cityaddress" value="Cebu" class="institution_cityaddress span3"> -->
                                 </span> 
                                 <span class="span3">
                                     <label>Zip/Mail Code</label> 

@@ -1,5 +1,5 @@
 <?php
-namespace HealthCareAbroad\InstitutionBundle\Form;
+namespace HealthCareAbroad\InstitutionBundle\Form\ListType;
 
 use Doctrine\ORM\EntityRepository;
 

@@ -1,6 +1,8 @@
 <?php 
 /**
- * @autor Chaztine Blance
+ * 
+ * @author Adelbert Silla
+ *
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
@@ -14,7 +16,7 @@ class AdvertisementListFilter extends ListFilter
         parent::__construct($doctrine);
 
         // Add advertisementType in validCriteria
-        $this->addValidCriteria('advertisementTypes');
+        $this->addValidCriteria('advertisementType');
     }
 
     function setFilterOptions()
@@ -35,42 +37,28 @@ class AdvertisementListFilter extends ListFilter
             $options[$each] = $m;
         }
 
-        $this->filterOptions['advertisementTypes'] = array(
+        $this->filterOptions['advertisementType'] = array(
             'label' => 'Advertisement Types',
-            'selected' => $this->queryParams['advertisementTypes'],
+            'selected' => $this->queryParams['advertisementType'],
             'options' => $options
         );
     }
 
     function buildQueryBuilder()
     {
- 
-    	if ( $this->queryParams['status'] == "all" && $this->queryParams['advertisementTypes'] != ListFilter::FILTER_KEY_ALL ) {
-    	
-    		 $this->queryBuilder = $this->doctrine->getRepository("AdvertisementBundle:Advertisement")->getQueryBuilderForAdvertisementsByType($this->queryParams['advertisementTypes']);
-			
-    	} 
-    	if ( $this->queryParams['status'] != ListFilter::FILTER_KEY_ALL && $this->queryParams['advertisementTypes'] == 'all' ) {
-    	
-    		$this->queryBuilder->select('a')->from('AdvertisementBundle:Advertisement', 'a');
-    		$this->queryBuilder->where('a.status = :status');
+        $this->queryBuilder->select('a')->from('AdvertisementBundle:Advertisement', 'a');
+
+    	if ($this->queryParams['advertisementType'] != ListFilter::FILTER_KEY_ALL) {
+	         $this->queryBuilder->where('a.advertisementType = :advertisementType');
+	         $this->queryBuilder->setParameter('advertisementType', $this->queryParams['advertisementType']);
+    	}
+
+    	if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+    		$this->queryBuilder->andWhere('a.status = :status');
     		$this->queryBuilder->setParameter('status', $this->queryParams['status']);
-    		
     	}
-    	if ( $this->queryParams['status'] != ListFilter::FILTER_KEY_ALL && $this->queryParams['advertisementTypes'] != ListFilter::FILTER_KEY_ALL ) {
-    	
-    	   	 $this->queryBuilder = $this->doctrine->getRepository("AdvertisementBundle:Advertisement")->getQueryBuilderForAdvertisementsByType($this->queryParams['advertisementTypes']);
-    	   	 $this->queryBuilder->where('a.status = :status');
-    	   	 $this->queryBuilder->setParameter('status', $this->queryParams['status']);
-    	   	 
-    	}
-    	if ( $this->queryParams['status'] == "all" && $this->queryParams['advertisementTypes'] == "all" ) {
-    		
-    		$this->queryBuilder->select('a')->from('AdvertisementBundle:Advertisement', 'a');  		
-    	
-    	}
+
     	if($this->sortBy == 'title') {
-    	
     		$sort = 'a.title ' . $this->sortOrder;
     	} else {
     		$sortBy = $this->sortBy ? $this->sortBy : 'title';

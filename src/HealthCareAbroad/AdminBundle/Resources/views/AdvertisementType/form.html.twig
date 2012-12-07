@@ -1,0 +1,64 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'advertisements' %}
+{% set selectedSubMenu = 'countries' %}
+{% set countriesLabel = getClassLabel('country') %}
+{% block content %}
+
+    <style type="text/css">
+        
+        .tmp-form input[type=checkbox] {
+            margin-top: 4px;
+            float: left;
+        }
+
+        .tmp-form h5 {
+            margin-bottom: 5px;
+        }
+        
+        .tmp-form .default-properties, .tmp-form .optional-properties {
+            margin-bottom: 20px;
+        }
+        
+        .tmp-form .optional-properties > div > label {
+            font-weight: bold;
+        }
+        
+        .tmp-form .default-properties > div, .tmp-form .optional-properties > div > div {
+            margin-left: 20px;
+        }
+
+        .tmp-form .default-properties label {
+            display: inline-block;
+        }
+    </style>
+
+    <div class="span3">{% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}</div>
+
+	<div class="span9">	
+	   {% embed 'HelperBundle:Widgets:section.html.twig' with { title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ ' Advertisement Type ' | title} %}
+	
+        	{% block sectionContent %}
+    			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="tmp-form">
+    
+    				{{ form_row(form.name) }}
+    				
+    				<div class="default-properties">
+                        <h5>Default Properties: </h5>
+        				{{ form_row(form.title) }}
+        				{{ form_row(form.description) }}			    
+    				</div>
+
+    				<div class="optional-properties">
+    				    {{ form_row(form.advertisementTypeConfigurations) }}
+                    </div>
+
+                    {{ form_rest(form) }}
+    
+                    <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
+    			</form>
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+
+{% endblock %}

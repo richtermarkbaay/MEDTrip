@@ -300,6 +300,34 @@ CREATE TABLE IF NOT EXISTS `countries` (
 
 INSERT INTO `countries` (`id`, `name`, `abbr` , `code`, `slug`, `status`) VALUES(1, 'Philippines', 'PH', 63 ,'test', 1);
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `data_types`
+--
+
+DROP TABLE IF EXISTS `data_types`;
+CREATE TABLE IF NOT EXISTS `data_types` (
+  `id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `column_type` char(30) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `column_type` (`column_type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `data_types`
+--
+
+INSERT INTO `data_types` (`id`, `column_type`) VALUES
+(2, 'bigint'),
+(7, 'bool'),
+(6, 'collection'),
+(5, 'entity'),
+(1, 'int'),
+(3, 'string'),
+(4, 'text');
+
 -- --------------------------------------------------------
 --
 -- Table structure for table `doctors`
@@ -494,6 +522,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `city_id` (`city_id`),
+  KEY `media_id` (`media_id`),
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
@@ -501,9 +530,9 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 -- Dumping data for table `institutions`
 --
 
-INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo`, `contact_email`, `contact_number`, `websites`, `address1`, `city_id`, `country_id`, `zip_code`, `state`, `coordinates`, `date_modified`, `date_created`, `slug`, `status`) VALUES
-(1, 3, 'Dubai Hospital', 'The quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.\r\n\r\nThe quick brown fox jump over the lazy dog. The quick brown fox jump over the lazy dog.', 'logo.jpg', '', '', '', 'eng,', 1, 1, 0, NULL, '', '2012-10-22 03:24:41', '2012-09-03 16:00:00', 'belo-churvaness-ness', 9),
-(2, 3, 'Test Institution', 'dsadsfdasf', '', '', '', '', 'afadsfsd', 1, 1, 0, NULL, '', '2012-10-22 03:24:49', '2012-09-13 08:15:55', 'test-institution', 17);
+INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo`, `media_id`, `contact_email`, `contact_number`, `websites`, `address1`, `city_id`, `country_id`, `zip_code`, `state`, `coordinates`, `date_modified`, `date_created`, `slug`, `status`) VALUES
+(1, 3, 'Dubai Hospital', 'description to', 'logo.jpg', NULL, '', '', '', 'eng,', 1, 1, 0, NULL, '', '2012-10-22 03:24:41', '2012-09-03 16:00:00', 'belo-churvaness-ness', 9),
+(2, 3, 'Test Institution', 'description to', 'logo.jpg', NULL, '', '', '', 'afadsfsd', 1, 1, 0, NULL, '', '2012-10-22 03:24:49', '2012-09-13 08:15:55', 'test-institution', 17);
 
 -- --------------------------------------------------------
 
@@ -616,6 +645,51 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 
 INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `description`, `date_created`, `date_updated`, `slug`, `status`) VALUES
 (1, 1, 'adelbert center', '<p>the quick churva nels.</p>', '2012-10-23 07:04:47', '2012-10-22 01:26:37', 'adelbert-center', 2);
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_properties`
+--
+
+DROP TABLE IF EXISTS `institution_properties`;
+CREATE TABLE IF NOT EXISTS `institution_properties` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `institution_property_type_id` int(10) unsigned NOT NULL,
+  `value` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `institution_property_type_id` (`institution_property_type_id`),
+  KEY `institution_id` (`institution_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_property_types`
+--
+
+DROP TABLE IF EXISTS `institution_property_types`;
+CREATE TABLE IF NOT EXISTS `institution_property_types` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `label` varchar(250) NOT NULL,
+  `data_type_id` smallint(3) unsigned NOT NULL,
+  `data_class` varchar(250) NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `data_type_id` (`data_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `institution_property_types`
+--
+
+INSERT INTO `institution_property_types` (`id`, `name`, `label`, `data_type_id`, `data_class`, `status`) VALUES
+(1, 'ancilliary_service_id', 'Ancilliary Service', 5, 'HealthCareAbroad\\AdminBundle\\Entity\\OfferedService', 1),
+(2, 'language_id', 'Language Spoken', 5, 'HealthCareAbroad\\AdminBundle\\Entity\\Language', 1);
+
 
 
 -- --------------------------------------------------------
@@ -1329,9 +1403,9 @@ ALTER TABLE `inquiries`
 -- Constraints for table `institutions`
 --
 ALTER TABLE `institutions`
-  ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE;
-  ADD CONSTRAINT `institutions_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `institutions_ibfk_3` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institutions_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_contact_details`
@@ -1365,6 +1439,19 @@ ALTER TABLE `institution_media`
 --
 ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_properties`
+--
+ALTER TABLE `institution_properties`
+  ADD CONSTRAINT `institution_properties_ibfk_2` FOREIGN KEY (`institution_property_type_id`) REFERENCES `institution_property_types` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_properties_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_property_types`
+--
+ALTER TABLE `institution_property_types`
+  ADD CONSTRAINT `institution_property_types_ibfk_1` FOREIGN KEY (`data_type_id`) REFERENCES `data_types` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_specializations`

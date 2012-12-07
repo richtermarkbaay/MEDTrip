@@ -1,0 +1,22 @@
+HealthCareAbroad\HelperBundle\Entity\DataType:
+    type: entity
+    table: data_types
+    fields:
+        id:
+            id: true
+            type: smallint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        columnType:
+            type: string
+            length: 30
+            fixed: true
+            nullable: false
+            column: column_type
+        formField:
+            type: string
+            length: 30
+            nullable: false
+            column: form_field
+    lifecycleCallbacks: {  }

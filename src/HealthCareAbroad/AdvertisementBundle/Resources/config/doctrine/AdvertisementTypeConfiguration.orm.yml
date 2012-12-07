@@ -1,0 +1,31 @@
+HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypeConfiguration:
+    type: entity
+    table: advertisement_type_configurations
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+    manyToOne:
+        advertisementPropertyName:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_property_name_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        advertisementType:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
