@@ -27,8 +27,9 @@
 
                 <!-- Search Section -->
                 {#% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %#}
-
-
+	{% block searchBox %}
+	            {% render "SearchBundle:Default:showWidget" with { 'context' : 'admin' } %}
+	        {% endblock %}
                 {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
 
               </div><!--/.nav-collapse -->

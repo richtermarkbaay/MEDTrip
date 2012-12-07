@@ -1,0 +1,69 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_index'%}
+
+{% block content %}
+    <div id="content">
+
+        <div id="page-heading"><h3>List of Institutions</h3></div>
+
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            
+            {% include '::notice.admin.html.twig' %}
+
+            <!-- Render Filter Box -->
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+
+            {% set sortBy = app.request.get('sortBy') %}
+            {% set sortOrder = app.request.get('sortOrder') %}
+            {% set default = sortBy | length ? '' : 'sort-asc' %}
+            
+            <div>
+                <table class="table table-bordered sortable-list">
+                    <tr>
+                        <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                        {% if isDoctor is sameas(false) %}<th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>{% endif%}
+                    </tr>
+                	
+                    {% for each in data %}
+                    	
+                        <tr id="each-{{each.id}}">
+                        	<td><a class="name" href="{{ each.url }}" title="View {{ each.name }}">{{ each.name|raw }}</a></td>
+                        	{% if isDoctor is sameas(false) %}
+                            <td>{{ each.description|raw }}</td>
+                            {% endif %}
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                    {% endfor %}
+                
+                </table>
+
+     
+            </div>
+            {% endblock %}
+            
+        {% endembed %}
+        {% if pager.isPaginable %}
+            {% set params = app.request.query.all | merge({'category': category, 'term': term }) %}
+            {{ paginate(pager, 'search_admin_initiate' , params) }}
+
+        {% endif %}
+    </div>
+
+    <div id="update-status-container" title="Edit Institution Status" style="display:none">
+        <p>
+            <strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
+            Select an option below to update its status.
+        </p>
+        <form id="update-status-form" method="POST">
+        <select name="status" id="selected-status">
+        </select>
+        <input type="submit" class="green-button" value="Confirm"/>
+        </form>
+
+    </div>
+    
+{% endblock %}
+
