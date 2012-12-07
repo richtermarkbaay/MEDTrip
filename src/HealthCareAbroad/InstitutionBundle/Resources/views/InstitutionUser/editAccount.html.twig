@@ -1,53 +1,126 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set selectedTab = 'staff'%}
+{% set selectedTab = 'manage_account'%}
 {% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>Edit {{ app.session.get('accountId') == institutionUser.getAccountId() ? 'my account' : institutionUser.getFullName() }}</h1>
+
+<div class="span12 marginleft0">
+    {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
+    
+    <div class="span9 marginleft0">
+       <div class="bread_crumbs">
+                        <a href="#"><img src="{{ asset('images/institution/home_icon.png') }}"><span>Home</span></a>
+                    </div>
+        <div id="maincontent">
+            <div class="heading2">
+                <div class="heading_text2">
+                   General Account Settings
+                </div>
+            </div>
+        </div>
+    <!-- accordion start -->
+        <div class="accountsettings">
+            <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <span class="pull-left">Personal Information</span>
+                            <a class="accordion-toggle pull-right" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                            <i class="icon-pencil" title="Edit"></i> <small>Edit</small>
+                        </a>
+                        <div class="clear"></div>
+                    </div>
+                    <div id="collapseOne" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            
+                            {% include '::notice.admin.html.twig' %}
+                            
+                            <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                                    			    <!-- start id-form -->
+                                <table class="offset2">
+                                    
+                                    {{ form_row(form.firstName) }}
+                                    {{ form_row(form.middleName) }}
+                                    {{ form_row(form.lastName) }}
+                                    
+                                    <tr>
+                                        <th>&nbsp;</th>
+                                        <td valign="top">
+                                            <input type="reset" value="Reset" class="btn-medium btn"  />
+                                            <input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />   
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    {{ form_rest(form) }}
+                                </table>
+                            <!-- end id-form  -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <span class="pull-left">Login Information</span>
+                            <a class="accordion-toggle pull-right" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                <i class="icon-pencil" title="Edit"></i> <small>Edit</small>
+                            </a>
+                        <div class="clear"></div>
+                        
+                    </div>
+                    <div id="collapseTwo" class="accordion-body collapse">
+                        <div class="accordion-inner">
+                            <strong>    Password
+                            </strong>
+                            <p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>
+                           
+                            <table class="offset2">
+                                <tbody>
+                                    <tr>
+                                        <th><label>Current Password</label></th>
+                                        <td class="data"><input type="password" value="" name="password">&nbsp;&nbsp;<a href="#">Forgot Password?</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label>New Password</label></th>
+                                        <td class="data"> <input type="password" value="" name="password"></td>
+                                    </tr>
+                                    <tr>
+                                        <th><label>Repeat Password</label> </th>
+                                        <td class="data"> <input type="password" value="" name="password"></td>
+                                    </tr>
+                                    <tr>
+                                        <td  colspan="2"><a id="" class="btn-medium btn btn-info" href="#">Save Changes</a>&nbsp;<a id="" class="btn-medium btn" href="#">Cancel</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- end page-heading -->
     
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
-        {% block wrappedContent %}
-			<!--  start table-content  -->
-			<div id="table-content">
-			
-			    {% include '::notice.admin.html.twig' %}
-			
-			    <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-    			    <!-- start id-form -->
-            		<table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-            		    
-            		    {{ form_row(form.firstName) }}
-                        {{ form_row(form.middleName) }}
-                        {{ form_row(form.lastName) }}
-                        
-                        <tr>
-                    		<th>&nbsp;</th>
-                    		<td valign="top">
-                    				<input type="reset" value="Reset" class="form-reset"  />
-									<input type="submit" name="submit" value="Submit" class="green-button" />   
-                    		</td>
-                    		<td></td>
-                    	</tr>
-                        
-                        {{ form_rest(form) }}
-                        
-                	</table>
-                	<!-- end id-form  -->
-            	</form>
-			</div>
-			<!--  end table-content  -->
-        {% endblock %}
-        
-    {% endembed %}
-    
+    <!-- dashboard sidebar -->
+    <div class="span3">
+        {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+    </div>
 </div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+
+{% endblock %}
+{% block inlineJavascriptCode %}
+    <script type="text/javascript">
+
+        $(function() {
+                //DDSLICk
+                $('#social-select-a').ddslick();
+                $('#social-select-b').ddslick();
+                
+                $('#formwizard').stepy({
+                        backLabel:  'Backward',
+                        block:    true,
+                        errorImage: true,
+                        nextLabel:  'Forward',
+                        titleClick: true,
+                        validate: true
+                }); 
+        });
+    </script>
 {% endblock %}
