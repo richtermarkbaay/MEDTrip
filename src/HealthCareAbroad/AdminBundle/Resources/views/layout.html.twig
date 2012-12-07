@@ -13,30 +13,7 @@
         </script>
     {% endblock %}
 
-    <!-- Top Navigation -->
-    <div class="navbar navbar-fixed-top">
-          <div class="navbar-inner">
-            <div class="container">
-
-              <a href="{{ path('admin_homepage') }}" class="brand" style="padding-top:0;padding-bottom:0;">
-                  <img longdesc="#" alt="Health Care Abroad Logo" src="/images/institution/HCA-logo-small.png">
-            </a>
-                  
-              <div class="nav-collapse collapse">
-                  {% include 'AdminBundle:Default:mainNavigation.html.twig' %}
-
-                <!-- Search Section -->
-                {#% render 'SearchBundle:Default:showWidget' with {'context': 'admin'} %#}
-	{% block searchBox %}
-	            {% render "SearchBundle:Default:showWidget" with { 'context' : 'admin' } %}
-	        {% endblock %}
-                {% include 'AdminBundle:Default:rightNavigation.html.twig' %}
-
-              </div><!--/.nav-collapse -->
-            </div>
-          </div>
-    </div>
-    <!-- End of Top Navigation -->
+    {% include 'AdminBundle:Embed:header.layout.html.twig' %}
 
         
     <div id="main-content"  class="container maincontent">
