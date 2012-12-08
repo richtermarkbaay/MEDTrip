@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Classes\QueryOption;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
@@ -63,6 +67,22 @@ class InstitutionService
     public function getAllActiveMedicalCenters()
     {
         
+    }
+    
+    public function getRecentlyAddedMedicalCenters(Institution $institution, QueryOptionBag $options=null)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('i')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
+            ->where('i.institution = :institutionId')
+            ->orderBy('i.dateCreated','asc')
+            ->setParameter('institutionId', $institution->getId());
+        
+        if ($limit = $options->get(QueryOption::LIMIT, null)) {
+            $qb->setMaxResults($limit);
+        }
+        
+        return $qb->getQuery()->getResult();
     }
     
 }

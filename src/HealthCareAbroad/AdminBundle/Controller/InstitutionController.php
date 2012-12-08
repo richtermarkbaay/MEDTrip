@@ -3,6 +3,10 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
+use HealthCareAbroad\HelperBundle\Classes\QueryOption;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
@@ -223,7 +227,12 @@ class InstitutionController extends Controller
      */
     public function viewAction(Request $request)
     {   
-        return $this->render('AdminBundle:Institution:view.html.twig', array('institution' => $this->institution));
+        $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
+        
+        return $this->render('AdminBundle:Institution:view.html.twig', array(
+            'recentMedicalCenters' => $recentMedicalCenters,
+            'institution' => $this->institution
+        ));
     }
     
     /**

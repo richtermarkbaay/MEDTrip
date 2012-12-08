@@ -4,7 +4,7 @@
 {% block content %}
 <div class="span9 title">
     {# recently added medical centers box #}
-    {% include 'InstitutionBundle:Widgets:dashboard.recentMedicalCenters.html.twig'%}
+    {% include 'InstitutionBundle:Widgets:dashboard.recentMedicalCenters.html.twig' with {'medicalCenters': recentMedicalCenters } %}
     
 </div>
 {% endblock %}
