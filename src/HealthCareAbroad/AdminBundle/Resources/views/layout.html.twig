@@ -5,17 +5,7 @@
 {% block body %}
 
 <body>
-
-    {% block javascripts %}
-        <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-        <script type="text/javascript">
-        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-        </script>
-    {% endblock %}
-
-    {% include 'AdminBundle:Embed:header.layout.html.twig' %}
-
-        
+    {% include 'AdminBundle:Embed:header.layout.html.twig' %}  
     <div id="main-content"  class="container maincontent">
 
             {% if breadcrumbs is defined %}
