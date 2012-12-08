@@ -19,19 +19,6 @@
     	<div class="container maincontent" style="margin-top:20px;">
     	    {% include '::notice.admin.html.twig' %}
     	    
-    	    
-    	    <div class="span3">
-    	        <div class="sidebar-nav">
-    	        
-    	            {% block searchBox %}
-        	            {% render "SearchBundle:Default:showWidget" with { 'context' : 'admin' } %}
-    	            {% endblock %}
-    	        
-    	        
-	            </div>
-            </div>
-            
-    	    
     	    <div class="span3">
     	        {% include 'AdminBundle:Institution:sidebar.html.twig' %}
     	    </div>

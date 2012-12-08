@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 class MiscellaneousTwigExtension extends \Twig_Extension
 {
     private $classKeys;
@@ -29,8 +31,9 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'getClassLabels' => new \Twig_Function_Method($this, 'getClassLabels'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
+            'institution_address_to_array' => new \Twig_Function_Method($this, 'institution_address_to_array'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
-                    'json_encode' => new  \Twig_Function_Method($this, 'json_encode')
+            'json_encode' => new  \Twig_Function_Method($this, 'json_encode')
         );
     }
     
@@ -93,5 +96,37 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function json_decode($jsonData)
     {
         return json_decode($jsonData, true);
+    }
+    
+    /**
+     * Convert institution address to array
+     *     - city
+     *     - state
+     *     - country
+     *     - zip code
+     * 
+     * @param Institution $institution
+     */
+    public function institution_address_to_array(Institution $institution)
+    {
+        $elements = array();
+        
+        if ($institution->getCity()) {
+            $elements['city'] = $institution->getCity()->getName();
+        }
+        
+        if ('' != $institution->getState()) {
+            $elements['state'] = $institution->getState();
+        }
+        
+        if ($institution->getCountry()) {
+            $elements['country'] = $institution->getCountry()->getName();
+        }
+        
+        if (0 != $institution->getZipCode() || '' != $institution->getZipCode()) {
+            $elements['zip_code'] = $institution->getZipCode();
+        }
+        
+        return $elements;
     }
 }

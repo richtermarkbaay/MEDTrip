@@ -200,14 +200,7 @@ class InstitutionController extends Controller
     		
     		if ($form->isValid()) {
     			
-    			$this->institution = $form->getData();
-    			
-    			$this->institution->getCity()->setCountry($this->institution->getCountry());
-    			
-    				
-    			$this->institution->setWebsites($websites);
-    			$this->institution->setContactNumber($contactNumber);
-    
+    			$this->institution = $form->getData();    
     			$institution = $this->get('services.institution.factory')->save($this->institution);
     			$this->get('session')->setFlash('notice', "Successfully updated account");
     			 
