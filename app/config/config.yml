@@ -22,6 +22,9 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources: 
+            - 'HelperBundle:Form:fields.custom.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction

@@ -1,0 +1,9 @@
+services:
+    form.detailed_street_address:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\DetailedStreetAddressFieldType
+        tags:
+            - { name: form.type, alias: detailed_street_address }
+    form.custom.contact_number:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactNumberFieldType
+        tags:
+            - { name: form.type, alias: contact_number }
