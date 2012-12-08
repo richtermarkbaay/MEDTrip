@@ -63,7 +63,7 @@ institution_error403:
 
 
 institution_homepage:
-    pattern:  /institution
+    pattern:  /institution/dashboard
     defaults: { _controller: InstitutionBundle:Default:index }
 
 institution_accept_user_invitation:

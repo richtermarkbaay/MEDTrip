@@ -31,6 +31,19 @@ class InstitutionService
     	$this->doctrine = $doctrine;
     }
     
+    /**
+     * 
+     * @param Institution $institution
+     * @return boolean
+     */
+    public function isActive(Institution $institution)
+    {
+        $activeStatus = InstitutionStatus::getBitValueForActiveStatus();
+
+        
+        return $activeStatus == $activeStatus & $institution->getStatus() ? true : false;
+    }
+    
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;

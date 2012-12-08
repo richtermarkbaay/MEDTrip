@@ -4,8 +4,6 @@
 
 {% block body %}
 
-<body>
-
     <!-- header -->
     {% include 'InstitutionBundle:Widgets:header.layout.html.twig' %}
     
@@ -20,6 +18,6 @@
       {% include 'InstitutionBundle:Default:footer.html.twig' %}
     </div>
 
-</body>
+    {% block inlineJavascriptCode %}{% endblock %}
 
 {% endblock %}

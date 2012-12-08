@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -80,7 +82,24 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationSingleCenter()
     {
-        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig');
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+            
+            if ($form->isValid()) {
+                
+                $this->get('services.institution.factory')->save($form->getData());
+                
+                return $this->redirect($this->generateUrl('institution_homepage'));
+            }
+            else {
+                
+            }
+        }
+        
+        return $this->render('InstitutionBundle:Institution:demoWithForm.html.twig', array('form' => $form->createView()));
+        //return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig');
     }
     
     /**
