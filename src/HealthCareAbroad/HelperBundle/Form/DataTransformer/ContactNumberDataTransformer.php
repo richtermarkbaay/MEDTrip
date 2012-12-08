@@ -10,7 +10,7 @@ class ContactNumberDataTransformer implements DataTransformerInterface
         $data = \json_decode($data, true);
         
         if (!$data) {
-            $data = array('country_code' => '222', 'area_code' => '', 'number' => '');
+            $data = array('country_code' => '', 'area_code' => '', 'number' => '');
         }
         
         return $data;
