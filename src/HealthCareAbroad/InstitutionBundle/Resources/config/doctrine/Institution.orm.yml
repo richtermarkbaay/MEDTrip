@@ -88,6 +88,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             mappedBy: institution
+            cascade:
+                - "persist"
         institutionUsers:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser
             mappedBy: institution

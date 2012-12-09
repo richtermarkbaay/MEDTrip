@@ -72,7 +72,7 @@ security:
                 target: /admin/login
                 
         institution.signup:
-            pattern: ^/institution/sign-up$
+            pattern: ^/institution/register.html$
             security: false
                 
         institution_login:

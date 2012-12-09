@@ -34,7 +34,7 @@ institution_gallery:
         _method: GET
 
 institution_signUp:
-    pattern:  /institution/sign-up
+    pattern:  /institution/register.html
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
     requirements:
         _method: GET|POST
