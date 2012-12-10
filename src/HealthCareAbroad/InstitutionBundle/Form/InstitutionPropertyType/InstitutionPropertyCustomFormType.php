@@ -30,12 +30,6 @@ class InstitutionPropertyCustomFormType extends AbstractType
         
         $institutionPropertyType = $institutionProperty->getInstitutionPropertyType();
         $formOptions = \json_decode($institutionPropertyType->getFormConfiguration(), true);
-        $array = array(
-                        'type' => '\HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType',
-                        'multiple' => 'true',
-                        'expanded' => 'true'
-                        );
-        
         if (\is_array($formOptions) && \array_key_exists('type', $formOptions)) {
             $fieldType = new $formOptions['type'];
             

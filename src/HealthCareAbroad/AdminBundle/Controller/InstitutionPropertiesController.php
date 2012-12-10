@@ -40,8 +40,7 @@ class InstitutionPropertiesController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                  $this->get('services.institution_property')->save($form->getData());
-
-                 return $this->redirect($formActionUrl);
+                 //return $this->redirect($formActionUrl);
             }
         }
         
