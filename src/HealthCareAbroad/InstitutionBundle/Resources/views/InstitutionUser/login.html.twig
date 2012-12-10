@@ -99,8 +99,8 @@
 
 			       <div class="aside">
             <div class="aside box">
-                <h4>Some Text here that urge medical institution to sign up for Health Care Abroad Medical Listing!</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            {% set helptext = get_help_text_by_route('institution_login')%}
+            {{ helptext | raw }}
                 <a href="{{ path('institution_signUp') }}"><input type="submit" name="Submit" value="JOIN NOW!" class="span3 btn-large btn-primary" /></a>
             </div>
           </div>
