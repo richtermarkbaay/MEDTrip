@@ -139,8 +139,15 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
-        if ($this->institution->getType()) {
-            $template = 'InstitutionBundle';   
+        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+            $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
         }
+        else {
+            $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
+        }
+        
+        return $this->render($template, array(
+            'institution' => $this->institution
+        ));
     }
 }

@@ -30,12 +30,9 @@
                 </div>
                 
                 <div class="clear"></div>
-                <div class="maincontent">
-                    <div class="heading2">
-                        <div class="heading_text2">List of Clinics</div>
-                    </div>
-                    <p>Some TExt that there is no clinic has been added. <a href="add-new-clinic-for-institution-with-centers.html">Click here</a> to add clinic.</p>
-                </div>
+                
+                {% include 'InstitutionBundle:Widgets:medicalCenter.tabbedDetails.html.twig' %}
+                
             </div>
             <div class="span3">
                 {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}

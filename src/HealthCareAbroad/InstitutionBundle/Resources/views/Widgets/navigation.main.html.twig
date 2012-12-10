@@ -12,9 +12,12 @@
                     <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="{{ path('institution_account_profile') }}">Institutional Profile</a> 
                     </li>
+                    {#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
+                    {% if (institution.type != 3) %}
                     <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="medical-listing.html">Medical Listing</a>
                     </li>
+                    {% endif %}
                     <li class="{{ 'logs' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="site-logs.html">Events</a>
                     </li>
