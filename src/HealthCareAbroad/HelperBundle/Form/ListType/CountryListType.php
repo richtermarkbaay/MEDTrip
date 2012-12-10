@@ -29,28 +29,20 @@ class CountryListType extends AbstractType
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-	    $builder->prependNormTransformer(new CountryTransformer($this->locationService));
+	    //$builder->prependNormTransformer(new CountryTransformer($this->locationService));
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {	
-        
-        $countries = $this->locationService->getGlobalCountryList();
-        $choices = array();
-        foreach ($countries as $countryArray){
-            $choices[$countryArray['id']] = $countryArray['name'];
-        }
-        
+    {
         $resolver->setDefaults(array(
-            'choices' => $choices
-        	//'property' => 'name',
-			//'query_builder' => function(EntityRepository $er){ return $er->getQueryBuilderForCountries(); }
+            'property' => 'name',
+            'class' => 'HealthCareAbroad\HelperBundle\Entity\Country'
         ));
     }
 
     public function getParent()
     {
-        return 'choice';
+        return 'entity';
     }
 
     public function getName()

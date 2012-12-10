@@ -59,10 +59,10 @@ services:
         tags:
             - { name: form.type, alias: doctor_list }
             
-    form.treatment_list:
+    form.institutionTreatment_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
         tags:
-            - { name: form.type, alias: treatment_list }
+            - { name: form.type, alias: institutionTreatment_list }
 
     form.institution_affiliation_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType

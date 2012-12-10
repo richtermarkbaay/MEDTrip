@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdvertisementBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\Collection;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -29,29 +31,30 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
      * Transforms AdvertisementPrortyValues value entity/collection IDs to objects
      *
      */
-    public function transform($data)
+    public function transform($advertisement)
     {
-        $advertisementProperties = $data->getAdvertisementPropertyValues();
-        
+        $advertisementPropertyValues = $advertisement->getAdvertisementPropertyValues();
+        $advertisementProperties = $advertisement->getAdvertisementType()->getAdvertisementTypeConfigurations();
+
         if(!$this->em) {
             throw new \Exception('EntityManager is required in ' . get_class($this) . ' when editing Advertisement!');
         }
 
-        $collectionPropertyValues = $collectionProperties = array();
+        $currentProperties = $collectionPropertyValues = $collectionProperties = array();
 
-        foreach($advertisementProperties as $each) {
+        foreach($advertisementPropertyValues as $each) {
+            $property = $each->getAdvertisementPropertyName();
+            $currentProperties[] = $property->getId();
 
             if(!$each->getValue()) {
                 continue;
             }
 
-            $property = $each->getAdvertisementPropertyName();
-        
             if($property->getDataType()->getFormField() == 'entity') {
         
                 $newValue = $this->em->getRepository($property->getDataClass())->find($each->getValue());
         
-                if($property->getDataType()->getColumnType() == 'entity') {
+                if($property->getDataType()->getColumnType() != 'collection') {
                     $each->setValue($newValue);
                     continue;
                 }
@@ -70,19 +73,33 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             $each->setValue($collectionPropertyValues[$propertyId]);
         }
 
-        return $data;
+        foreach($advertisementProperties as $each) {
+            if(!in_array($each->getId(), $currentProperties)) {
+                $newObj = new AdvertisementPropertyValue();
+                $newObj->setAdvertisementPropertyName($each);
+                $newObj->setAdvertisement($advertisement);
+                if($each->getDataType()->getColumnType() == 'collection') {
+                    $newObj->setValue(new ArrayCollection());
+                }
+
+                $advertisement->addAdvertisementPropertyValue($newObj);
+            }
+        }
+
+        return $advertisement;
     }
 
     /**
      * Transforms AdvertisementPrortyValues value string entity/collection objects to IDs
      *
      */
-    public function reverseTransform($data)
+    public function reverseTransform($advertisement)
     {
-        $advertisementProperties = $data->getAdvertisementPropertyValues();
+        $advertisementPropertyValues = $advertisement->getAdvertisementPropertyValues();
         $existingCollectionValues = $collectionValues = array();
+        
+        foreach($advertisementPropertyValues as $each) {   
 
-        foreach($advertisementProperties as $each) {   
             $property = $each->getAdvertisementPropertyName();
 
             if($property->getDataType()->getColumnType() == 'collection') {
@@ -99,44 +116,56 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             }
         }
 
-        foreach($advertisementProperties as $i => $each) {
+        foreach($advertisementPropertyValues as $i => $each) {
             $property = $each->getAdvertisementPropertyName();
-            $dataType = $property->getDataType();
+            $advertisementType = $property->getDataType();
+            $config = json_decode($property->getPropertyConfig(), true);
 
-            if($dataType->getFormField() == 'entity') {
+            if($config['type'] == 'file' && is_null($each->getValue())) {
+                $advertisementPropertyValues->remove($i);
+                continue;
+            }
 
-                if($dataType->getColumnType() == 'collection') {
+            if($advertisementType->getFormField() == 'entity') {
 
-                    if(is_object($each->getValue())) {
+                if($advertisementType->getColumnType() != 'collection') {
+                    $each->setValue($each->getValue()->getId());
+                } else { 
+
+                    if(is_string($each->getValue())) {
+                        $advertisementPropertyValues->remove($i);
+                        continue;
+                    }
+
+                    elseif(is_object($each->getValue())) {
+
+                        if(!count($each->getValue())) {
+                            $advertisementPropertyValues->remove($i);
+                            continue;
+                        }
+
                         $isFirst = true;
                         foreach($each->getValue() as $value) {
                             if($isFirst) {
-                                $each->setValue($each->getValue()->first()->getId());
+                                $each->setValue($value->getId());
                                 $isFirst = false;
                             } else {
                                 if(isset($existingCollectionValueObj[$property->getId().'-'.$value->getId()])) {
-                                    $advertisementProperties->add($existingCollectionValueObj[$property->getId().'-'.$value->getId()]);
+                                    $advertisementPropertyValues->add($existingCollectionValueObj[$property->getId().'-'.$value->getId()]);
                                 } else {
                                     $newObj = new AdvertisementPropertyValue();
                                     $newObj->setValue($value->getId());
                                     $newObj->setAdvertisementPropertyName($property);
-                                    $newObj->setAdvertisement($data);
-                                    $advertisementProperties->add($newObj);
+                                    $newObj->setAdvertisement($advertisement);
+                                    $advertisementPropertyValues->add($newObj);
                                 }
                             }
                         }
                     }
-
-                    elseif(is_string($each->getValue())) {
-                        $advertisementProperties->remove($i);
-                    }
- 
-                } else {
-                   $each->setValue($each->getValue()->getId());
                 }
             }
         }
 
-       return $data;
+       return $advertisement;
     }
 }
