@@ -1,10 +1,14 @@
 <?php
 /**
  * 
+ * @author Adelbert D. Silla
  * @author Allejo Chris G. Velarde
- *
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
+
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyValue;
 
@@ -93,7 +97,6 @@ class AdvertisementController extends Controller
     }
 
     /**
-     * This is the first step when adding an advertisement
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      */
@@ -101,7 +104,6 @@ class AdvertisementController extends Controller
     {
         $advertisement = new Advertisement();
         $advertisementTypeId = $request->get('advertisementTypeId', 1);
-
         $advertisement->setInstitution($this->institution);
 
         if($advertisementTypeId) {
@@ -109,15 +111,9 @@ class AdvertisementController extends Controller
             $advertisement->setAdvertisementType($advertisementType);
         }
 
-        foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
-            $propertyValue = new AdvertisementPropertyValue();
-            $propertyValue->setAdvertisementPropertyName($each);
-            $advertisement->addAdvertisementPropertyValue($propertyValue);            
-        }
-
         $em = $this->getDoctrine()->getEntityManager();
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
-    
+
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $this->generateUrl('admin_advertisement_create'),
             'form' => $form->createView()
@@ -148,7 +144,7 @@ class AdvertisementController extends Controller
         if(!$request->getMethod() == 'POST') {
             return new Response("Save requires POST method!", 405);
         }
-        
+
         if(!$this->advertisement) {
             $advertisement = new Advertisement();
             $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
@@ -157,34 +153,48 @@ class AdvertisementController extends Controller
             $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($advertisementData['institution']);
             $advertisement->setInstitution($institution);
 
-            foreach($advertisementType->getAdvertisementTypeConfigurations() as $each) {
-                $propertyValue = new AdvertisementPropertyValue();
-                $propertyValue->setAdvertisementPropertyName($each);
-                $propertyValue->setAdvertisement($advertisement);
-                $advertisement->addAdvertisementPropertyValue($propertyValue);
-            }
-
             $formAction = $this->generateUrl('admin_advertisement_create');
         } else {
             $advertisement = $this->advertisement;
             $formAction = $this->generateUrl('admin_advertisement_update', array('advertisementId'=>$advertisement->getId()));
         }
-
+        
         $em = $this->getDoctrine()->getEntityManager();
-        $form = $this->createForm(new AdvertisementFormType($em), $advertisement); 
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
 
         $form->bind($request);
 
         if ($form->isValid()) {
-            
+
+            $adFiles = $request->files->get('advertisement');
+            if(count($adFiles['advertisementPropertyValues']) && $adValuesFile['value']) {
+                $adValuesFile = array_shift($adFiles['advertisementPropertyValues']);
+                $media = $this->get('services.media')->uploadAds($adValuesFile['value'], $this->institution->getId());
+
+                if($media && $media->getId()) {
+                    foreach($advertisement->getAdvertisementPropertyValues() as $each) {
+                        $property = $each->getAdvertisementPropertyName();
+                        $config = json_decode($property->getPropertyConfig(), true);
+
+                        if($config['type'] == 'file') {
+                            $each->setValue($media->getId());
+                            break;
+                        }
+                    }
+                }
+            }
+
             if($advertisement->getId()) {
                 foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
                     $em->remove($value);
                 }
             }
-
+            
             $em->persist($advertisement);
-            $em->flush();
+            $em->flush($advertisement);
+
+            // Update Denormalized Advertisement Data
+            $this->updateAdvertisementDenormalizedData($advertisement);
 
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
@@ -195,6 +205,59 @@ class AdvertisementController extends Controller
             'formAction' => $formAction,
             'form' => $form->createView()
         ));
+    }
+    
+    private function updateAdvertisementDenormalizedData(Advertisement $advertisement)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $denormalizedAdvertisement = $em->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find($advertisement->getId());
+
+        if(!$denormalizedAdvertisement) {
+            $denormalizedAdvertisement = new AdvertisementDenormalizedProperty();
+        }
+
+        $advertisementMethods = get_class_methods($advertisement);        
+        $propertyValues = $advertisement->getAdvertisementPropertyValues();
+
+        $arrPropertyValues = array();
+        foreach($propertyValues as $each) {
+            $name = $each->getAdvertisementPropertyName()->getName();
+            $name = str_replace('_', '', $name);
+
+            if($each->getAdvertisementPropertyName()->getDataType()->getColumnType() == 'collection') {
+                $arrPropertyValues[$name][] = (int)$each->getValue();
+            } else {
+                $arrPropertyValues[$name] = $each->getValue();                
+            }
+        }
+
+        foreach(get_class_methods($denormalizedAdvertisement) as $method) {
+
+            if(substr($method, 0, 3) == 'set') {
+                $propertyName = substr($method, 3);
+                
+                $getMethod = 'get' . $propertyName;
+
+                if(in_array($getMethod, $advertisementMethods)) {
+                    $value = $advertisement->{$getMethod}();
+                    $denormalizedAdvertisement->{$method}($value);                    
+                } else {
+                    if(isset($arrPropertyValues[strtolower($propertyName)])) {
+                        $value = $arrPropertyValues[strtolower($propertyName)];
+                        if(is_array($value)) {
+                            $value = json_encode($value);
+                        }
+                    } 
+
+                    else $value = '';
+                }
+
+                $denormalizedAdvertisement->{$method}($value);
+            }
+        }
+
+        $em->persist($denormalizedAdvertisement);
+        $em->flush($denormalizedAdvertisement);
     }
 
     /**

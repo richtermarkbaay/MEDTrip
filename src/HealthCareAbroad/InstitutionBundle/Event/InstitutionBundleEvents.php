@@ -36,4 +36,8 @@ final class InstitutionBundleEvents
     const ON_ADD_INSTITUTION_USER_TYPE= 'event.institution_user_type.add';
     const ON_EDIT_INSTITUTION_USER_TYPE = 'event.institution_user_type.edit';
     const ON_DELETE_INSTITUTION_USER_TYPE = 'event.institution_user_type.delete';
+    
+    const ON_ADD_INSTITUTION_FEEDBACK= 'event.institution_feedback.add';
+    const ON_EDIT_INSTITUTION_FEEDBACK = 'event.institution_feedback.edit';
+    const ON_DELETE_INSTITUTION_FEEDBACK = 'event.institution_feedback.delete';
 }

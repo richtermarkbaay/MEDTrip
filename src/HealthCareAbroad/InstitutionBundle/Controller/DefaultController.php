@@ -54,8 +54,6 @@ class DefaultController extends InstitutionAwareController
         ));
     }
 
-    
-    
     public function error403Action()
     {
         return $this->render('InstitutionBundle:Exception:error403.html.twig');
@@ -63,7 +61,6 @@ class DefaultController extends InstitutionAwareController
     
     /**
      * Add Error Report
-     *
      * @author Chaztine Blance
      */
     public function errorReportAction()
