@@ -26,6 +26,10 @@ InstitutionBundle_userRole:
 InstitutionBundle_account:
     resource: "@InstitutionBundle/Resources/config/routing_account.yml"
     prefix: /
+    
+InstitutionBundle_feedback:
+    resource: "@InstitutionBundle/Resources/config/routing_feedback.yml"
+    prefix: /
 
 institution_gallery:
     pattern: /institution/gallery

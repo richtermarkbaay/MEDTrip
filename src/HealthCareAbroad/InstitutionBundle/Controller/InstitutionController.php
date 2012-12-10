@@ -1,7 +1,7 @@
 <?php
 
-/*
- * author Alnie Jacobe
+/**
+ * @author Alnie Jacobe
  * @author Chaztine Blance
  */
 
@@ -27,11 +27,8 @@ use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-	
 class InstitutionController extends InstitutionAwareController
 {
-    
-    
     
 	/**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
@@ -79,6 +76,5 @@ class InstitutionController extends InstitutionAwareController
 			'languagesJSON' => \json_encode($languageArr),
 			'institutionLanguage' => $institutionLanguage
 		));
-		
 	}
 }
