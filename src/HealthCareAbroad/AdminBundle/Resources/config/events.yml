@@ -112,3 +112,10 @@ parameters:
     event.doctor.add: HealthCareAbroad\AdminBundle\Event\DoctorEvent
     event.doctor.edit: HealthCareAbroad\AdminBundle\Event\DoctorEvent
     event.doctor.delete: HealthCareAbroad\AdminBundle\Event\DoctorEvent
+    
+    #
+    # Helper text related events
+    #
+    event.helper_text.add: HealthCareAbroad\AdminBundle\Event\HelperTextEvent
+    event.helper_text.edit: HealthCareAbroad\AdminBundle\Event\HelperTextEvent
+    event.helper_text.delete: HealthCareAbroad\AdminBundle\Event\HelperTextEvent

@@ -1,6 +1,8 @@
 var Location = {
         
     loadCitiesUrl: '',
+    
+    citiesDropdownElement: null,
 	
     /**
      * @param jQuery DOM object
@@ -8,11 +10,11 @@ var Location = {
     loadCities : function(elem, selectedCityId)
     {
         var countryId = elem.val();
+        citiesElem = Location.citiesDropdownElement;
+        if (!citiesElem) {
+            citiesElem = elem.parents('form').find('select.city_dropdown').first();
+        }
         
-        var citiesElem = elem.parent().next().find('select');
-		if (citiesElem.length == 0) {
-			citiesElem = elem.parent().parent().next().find('select');
-		}
 		citiesElem.attr("disabled", true).html('<option value="0">Loading...</option>');
 		
 		$.ajax({

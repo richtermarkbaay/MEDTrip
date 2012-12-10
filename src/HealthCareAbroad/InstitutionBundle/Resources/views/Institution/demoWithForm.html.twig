@@ -1,0 +1,55 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set disableMainNavigation = true %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
+        {% block wrappedContent %}
+            
+            <div class="aside">
+                <h4>Welcome, {{ app.user.username }}</h4>
+                <p>
+                    You're 1 step away to appear in our medical listing. Please tell us more about your Medical Institution.
+                </p>
+            </div>
+            
+            <h2>This is a demo for churva ness </h2>
+            <br />
+            
+            {% include 'InstitutionBundle:Embed:form.common.html.twig'
+                with {
+                    'form': form,
+                    'formProperties': {'action': path('institution_after_registration_landing'), 'submitValue' : 'Save' },
+                    'orderedFields': [
+                        {object: form.name, options: {attr: {class: 'span7'}}  }, 
+                        {object: form.description, options: {label: 'Short Description about the Clinic', attr: {class: 'span8', rows: 5} }  },
+                        {object: form.contactEmail },
+                        {object: form.contactNumber, options: {label: 'Institution Phone Number'} },
+                        {object: form.address1, widget_only: true}
+                    ]
+                } 
+            %}
+            
+        
+        {% endblock %}
+        
+        {% block sidebar %}
+            <div class="span3">
+                {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+            </div>
+        {% endblock %}
+        
+    {% endembed %}
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+<!--
+Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+$(function(){
+    $('#institution_profile_form_country').change();
+});
+//-->
+</script>
+{% endblock %}

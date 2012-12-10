@@ -41,7 +41,7 @@
 				'css/bootstrap-editable.css'
 				'css/bootstrap-responsive.min.css'
 				'css/institution/style.css'
-
+				'css/institution/jquery.stepy.css'
             %}
                 <link href="{{ asset_url }}" rel="stylesheet"/>
             {% endstylesheets %}
@@ -49,7 +49,9 @@
          <link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
          <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     </head>
+    <body>
     {% block body %}{% endblock %}
+    </body>
 
     {{ tinymce_init() }}
 </html>

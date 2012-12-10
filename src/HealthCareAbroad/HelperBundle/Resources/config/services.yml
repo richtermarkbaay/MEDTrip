@@ -96,6 +96,10 @@ services:
             - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
+            
+    services.helper_route:
+        class: "HealthCareAbroad\HelperBundle\Services\HelperTextRouteService"
+        arguments: [@doctrine]
 
     form.country_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType

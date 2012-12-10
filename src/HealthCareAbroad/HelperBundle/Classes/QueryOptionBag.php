@@ -12,6 +12,11 @@ use \Exception;
 class QueryOptionBag
 {
     private $bag = array();
+    
+    public function __construct(array $data=array())
+    {
+        $this->bag = $data;
+    }
 
     /**
      * Add a value to this bag

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * HealthCareAbroad\HelperBundle\Entity\HelpText
  */
-class HelpText
+class HelperText
 {
     const STATUS_ACTIVE = 1;
     
@@ -19,7 +19,7 @@ class HelpText
     private $id;
 
     /**
-     * @var string $route
+     * @var smallint $route
      */
     private $route;
 
@@ -59,7 +59,7 @@ class HelpText
     /**
      * Set route
      *
-     * @param string $route
+     * @param smallint $route
      * @return HelpText
      */
     public function setRoute($route)
@@ -71,7 +71,7 @@ class HelpText
     /**
      * Get route
      *
-     * @return string 
+     * @return smallint 
      */
     public function getRoute()
     {

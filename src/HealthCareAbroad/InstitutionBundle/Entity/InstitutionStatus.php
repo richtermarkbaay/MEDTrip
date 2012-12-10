@@ -15,6 +15,8 @@ final class InstitutionStatus {
     
     const SUSPENDED = 16;
     
+    const BLOCKED = 32;
+    
     const USER_TYPE = "SUPER_ADMIN";
     
     private static $bits; 
@@ -25,7 +27,7 @@ final class InstitutionStatus {
     {
         return array(
             self::ACTIVE => 'Active',
-            self::INACTIVE => 'Inactive',
+            self::INACTIVE => 'New Account',
             self::APPROVED => 'Approved',
             self::UNAPPROVED => 'Unapproved',
             self::SUSPENDED => 'Suspended'
@@ -71,6 +73,11 @@ final class InstitutionStatus {
     public static function getBitValueForInactiveStatus()
     {
         return self::INACTIVE;
+    }
+    
+    public static function getBitValueForBlockedStatus()
+    {
+        return self::BLOCKED;
     }
     
     /**

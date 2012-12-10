@@ -25,24 +25,25 @@
 								<div class="tab-content">
 									<div id="tabs1-pane1" class="tab-pane active">
 									      {% include '::notice.admin.html.twig' %}
-								
-											<h2 style="margin-top: 15px; ;">{{ institution.description ? 'Edit' : 'Add' }} Institution Details</h2>
-									
-											<h3>{{ institution.name() }} </h3>
-										
-										 <form novalidate="novalidate" action="{{ path('admin_institution_add_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
-											{{ form_errors(form) }}
-													{{ form_row( form.description ) }}
-									  				{{ form_row( form.contactEmail ) }}
-								  		   		    {{ form_row( form.country ) }}
-									                {{ form_row( form.city ) }}
-									  		   		{{ form_row( form.address1 ) }}   
-									  		   		{{ form_row( form.state ) }}               
-									  			    {{ form_row( form.zipCode ) }}
-									 
-							
+									      
+									      <h5 >{{ institution.name }} Information</h5>
+									      
+									      <form novalidate="novalidate" action="{{ path('admin_institution_add_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
+                                                {{ form_errors(form) }}
+                                                {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
+                                                {{ form_row( form.contactEmail ) }}
+                                                {{ form_row( form.contactNumber) }}
+                                                <hr />
+                                                <h4 style="margin-bottom: 10px;"> Institution Address </h4>
+                                                
+                                                {{ form_widget( form.address1 ) }}
+                                                {{ form_row( form.country ) }}
+                                                {{ form_row( form.city ) }}
+                                                {{ form_row( form.state ) }}               
+                                                {{ form_row( form.zipCode ) }}
+									  			    
+									  			{{ form_rest(form) }}    
 									  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
-									  		 			{{ form_rest(form) }}
 									  		</form>	
 							  			</div>
 									</div>
@@ -56,3 +57,16 @@
             {% endblock %}
         {% endembed %}
   {% endblock %}
+  
+  
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+<!--
+    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+    $(function(){
+        $('#institution_profile_form_country').change();
+    });
+//-->
+</script>
+{% endblock %}

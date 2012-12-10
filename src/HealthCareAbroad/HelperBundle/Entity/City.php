@@ -147,4 +147,9 @@ class City
     {
         return $this->country;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
