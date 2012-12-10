@@ -113,9 +113,10 @@ class HelperTextController extends Controller
     {
         $result = false;
         $em = $this->getDoctrine()->getEntityManager();
-        $helperData = $em->getRepository('HelperBundle:Helper')->find($id);
-    
+        $helperData = $em->getRepository('HelperBundle:HelperText')->find($id);
+
         if ($helperData) {
+            
             $helperData->setStatus($helperData->getStatus() ? $helperData::STATUS_INACTIVE : $helperData::STATUS_ACTIVE);
             $em->persist($helperData);
             $em->flush($helperData);
