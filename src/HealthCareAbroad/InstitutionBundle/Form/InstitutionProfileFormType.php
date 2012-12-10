@@ -60,6 +60,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'address1', 'detailed_street_address');
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number'));
+        $this->_add($builder, 'websites', 'websites_custom_field');
         
     }
     

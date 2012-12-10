@@ -34,6 +34,12 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:
             - [setDoctrine, [@doctrine]]
+    
+    services.institution_signup:
+        class: HealthCareAbroad\InstitutionBundle\Services\SignUpService
+        calls:
+            - [setInstitutionFactory, [@services.institution.factory]]
+            - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
         
     services.institution_list_transformer:
         class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer

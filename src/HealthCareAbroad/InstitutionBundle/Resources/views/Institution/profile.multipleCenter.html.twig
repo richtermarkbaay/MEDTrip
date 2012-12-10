@@ -1,0 +1,11 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'dashboard'} %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+        
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}
