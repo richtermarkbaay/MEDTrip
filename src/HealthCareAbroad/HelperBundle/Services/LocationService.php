@@ -110,6 +110,8 @@ class LocationService
 	    $country->setId($data['id']);
 	    $country->setName($data['name']);
 	    $country->setSlug($data['slug']);
+	    $country->setAbbr($data['abbr']);
+	    $country->setCode($data['code']);
 	    $country->setStatus(Country::STATUS_ACTIVE);
 	    
 	    return $country;

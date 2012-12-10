@@ -26,6 +26,10 @@ InstitutionBundle_userRole:
 InstitutionBundle_account:
     resource: "@InstitutionBundle/Resources/config/routing_account.yml"
     prefix: /
+    
+InstitutionBundle_feedback:
+    resource: "@InstitutionBundle/Resources/config/routing_feedback.yml"
+    prefix: /
 
 institution_gallery:
     pattern: /institution/gallery
@@ -34,7 +38,7 @@ institution_gallery:
         _method: GET
 
 institution_signUp:
-    pattern:  /institution/sign-up
+    pattern:  /institution/register.html
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
     requirements:
         _method: GET|POST
@@ -63,7 +67,7 @@ institution_error403:
 
 
 institution_homepage:
-    pattern:  /institution
+    pattern:  /institution/dashboard
     defaults: { _controller: InstitutionBundle:Default:index }
 
 institution_accept_user_invitation:

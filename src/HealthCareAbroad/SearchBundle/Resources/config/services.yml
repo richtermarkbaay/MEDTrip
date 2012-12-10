@@ -1,14 +1,21 @@
 parameters:
     services.search.class: HealthCareAbroad\SearchBundle\Services\SearchService
-    
     services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
-
 services:
     services.search:
         class: "%services.search.class%"
         arguments:
             - @doctrine.orm.entity_manager
             
+    services.search_builder_factory:
+        class: HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory
+        arguments: [@doctrine]
+        calls:
+            - [setRouter, [@router]]
+    services.admin_search:
+        class: HealthCareAbroad\SearchBundle\Services\AdminSearchService
+        calls:
+            - [setSearchBuilderFactory, [@services.search_builder_factory]]
 #    services.filesystemfactory:
 #        class: HealthCareAbroad\MediaBundle\Classes\FilesystemFactory
 #        arguments:

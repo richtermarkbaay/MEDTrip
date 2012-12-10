@@ -3,6 +3,12 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
+use HealthCareAbroad\HelperBundle\Classes\QueryOption;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
 
 use HealthCareAbroad\AdminBundle\Entity\Language;
@@ -33,7 +39,7 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionLanguageSpokenFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServicesFormType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
@@ -96,7 +102,7 @@ class InstitutionController extends Controller
     
     	$institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);   
     	$factory = $this->get('services.institution.factory');
-    	$institution = $factory->createByType($institutionType);  	
+    	$institution = $factory->createInstance($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
 		
 	    	if ($request->isMethod('POST')) {
@@ -115,7 +121,7 @@ class InstitutionController extends Controller
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
 	    			$institution->setWebsites('');
-	    			$institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
 	    			$factory->save($institution);
 	    			 
@@ -139,38 +145,39 @@ class InstitutionController extends Controller
 	    	
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
-    					'institutionTypes' => InstitutionTypes::getList(),
+    					'institutionTypes' => InstitutionTypes::getFormChoices(),
     					'selectedInstitutionType' => $institutionType,
     	));
     }
     
     /**
-     * Add Institution Details
+     * Add Institution Details, step 2 when creating new institution
+     * 
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addDetailsAction(Request $request){
+       
+	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
 
-	    $form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false));
-
-	    //redirect to edit institution field if not newly added institution
+	    // redirect to edit institution if status is already active
 	    
-	    if($this->institution->getContactEmail()){
-	    	
-	    	return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+	    if($this->get('services.institution')->isActive($this->institution)){
+	        
+	        return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
 	    }
 	    
 	    if ($request->isMethod('POST')) {
-	    		
-	    	$form->bindRequest($request);
-	    
-	    	if ($form->isValid()) {
-
-	    		$institution = $this->get('services.institution.factory')->save($form->getData());
-	    		$this->get('session')->setFlash('notice', "Successfully updated account");
-	    
-	    		//create event on editInstitution and dispatch
-	    		$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+	        
+	        $form->bindRequest($request);
+	        
+	        if ($form->isValid()) {
+	            $institution = $form->getData();
+	            
+	            // update to active status
+	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	            $this->get('services.institution.factory')->save($institution);
+	    		$this->get('session')->setFlash('notice', "Successfully completed details of {$institution->getName()}.");
 	    
 	    		return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
 	    	}
@@ -189,59 +196,27 @@ class InstitutionController extends Controller
      */
     public function editDetailsAction(Request $request){
     
-    	$form = $this->createForm(new InstitutionDetailType(), $this->institution);
+    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
     
     	if ($request->isMethod('POST')) {
-    	    
-    		
-    	    $contactNumber = json_encode($request->get('contactNumber'));
-    		$websites = json_encode($request->get('websites'));
     		 
     		$form->bindRequest($request);
-    		
     		if ($form->isValid()) {
     			
-    			$this->institution = $form->getData();
-    			
-    			$this->institution->getCity()->setCountry($this->institution->getCountry());
-    			
-    				
-    			$this->institution->setWebsites($websites);
-    			$this->institution->setContactNumber($contactNumber);
-    
+    			$this->institution = $form->getData();    
     			$institution = $this->get('services.institution.factory')->save($this->institution);
     			$this->get('session')->setFlash('notice', "Successfully updated account");
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     			
-    			return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
+    			return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
     		}
-    		else {
-    		    //var_dump($form->getErrors());
-    		    //echo "invalid form"; exit;
-    		}
-    	}
-    	
-    	//Check if there is an area code in Contact Number values
-    	$json = '[{"area":"","number":"","type":"phone"}]';
-    	$a1 = json_decode( $this->institution->getContactNumber(), true );
-    	$contactNumbers = array();
-    	if ($a1){
-    	    $keys = array_keys($a1[0]);
-    	     
-    	    if ($keys[0] == 'area'){
-    	        $contactNumbers = $a1;
-    	    }
-    	    else{
-    	        $contactNumbers = json_decode( $json, true );
-    	    }    
     	}
    
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
 			'form' => $form->createView(),
 			'institution' => $this->institution,
-			'arrContactNumber' => $contactNumbers,
 			'id' => $this->institution->getId()
     	));
     }
@@ -251,7 +226,12 @@ class InstitutionController extends Controller
      */
     public function viewAction(Request $request)
     {   
-        return $this->render('AdminBundle:Institution:view.html.twig', array('institution' => $this->institution));
+        $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
+        
+        return $this->render('AdminBundle:Institution:view.html.twig', array(
+            'recentMedicalCenters' => $recentMedicalCenters,
+            'institution' => $this->institution
+        ));
     }
     
     /**
@@ -327,27 +307,44 @@ class InstitutionController extends Controller
    	 */
    	public function addInstitutionOfferedServicesAction(Request $request)
    	{
-   		$form = $this->createForm(new InstitutionOfferedServicesFormType(),$this->institution);
+   	    
+    		$form = $this->createForm(new InstitutionOfferedServicesFormType(),$this->institution);
    	
-   		if ($request->isMethod('POST')) {
+//    		if ($request->isMethod('POST')) {
    	
-   			$form->bind($request);
-   			if ($form->isValid()) {
+//    			$form->bind($request);
+//    			if ($form->isValid()) {
    	
-   				$institution = $this->get('services.institution.factory')->save($form->getData());
-   				$this->get('session')->setFlash('notice', "Successfully updated Offered Services");
+//    				$institution = $this->get('services.institution.factory')->save($form->getData());
+//    				$this->get('session')->setFlash('notice', "Successfully updated Offered Services");
    	
-   				//create event on editInstitution and dispatch
-   				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+//    				//create event on editInstitution and dispatch
+//    				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
    				
-   				return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
-   			}
-   		}
-   		
-   		return $this->render('AdminBundle:Institution:addOfferedServices.html.twig', array(
-   						'form' => $form->createView(),
-   						'institution' => $this->institution,
-   						'newObject' => true
-   		));
+//    				return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+//    			}
+//    		}
+//    		var_dump($form);exit;
+//    		return $this->render('AdminBundle:Institution:addOfferedServices.html.twig', array(
+//    						'form' => $form->createView(),
+//    						'institution' => $this->institution,
+//    						'newObject' => true
+//    		));
+   	    $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
+   	    $formActionUrl = $this->generateUrl('admin_institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
+   	    if ($request->isMethod('POST')) {
+   	        $form->bind($request);
+   	        if ($form->isValid()) {
+   	            $this->get('services.institution_property')->save($form->getData());
+   	    
+   	            return $this->redirect($formActionUrl);
+   	        }
+   	    }
+   	    
+   	    $params = array(
+   	                    'formAction' => $formActionUrl,
+   	                    'form' => $form->createView()
+   	    );
+   	    return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
    	}
 }

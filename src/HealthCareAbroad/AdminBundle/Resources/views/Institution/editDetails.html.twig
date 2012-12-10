@@ -17,109 +17,89 @@
 			      {% include '::notice.admin.html.twig' %}
 				<h5>{# institution.typeLabel() #}</h5>
 				
-					 <form novalidate="novalidate" action="{{ path('admin_institution_edit', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
-						{{ form_errors(form) }}
-								{{ form_row( form.name ) }}
-								{{ form_row( form.description ) }}
-				  				{{ form_row( form.contactEmail ) }}
-			  		   		    {{ form_row( form.country ) }}
-				                {{ form_row( form.city ) }}
-				  		   		{{ form_row( form.address1 ) }}   
-				  		   		{{ form_row( form.state ) }}               
-				  			    {{ form_row( form.zipCode ) }}
-				  		        {% set defaulContactValues = {type: "Phone", area: "", number: ""} %}
-                                {% for i, contact in arrContactNumber %}
-							        {% set contact =  defaulContactValues | merge(contact) %}
-					 				<label for="institution name">Institution {{ contact.type == 'phone' ? 'Phone' : 'Fax' }} Number</label>
-									<div class="input-prepend">
-										<div id="phone">
-											<input type="text" maxlength="3" class="span1" name="contactNumber[{{i}}][{{contact.area}}]" value="{{contact.area}}">
-											<input type="text" maxlength="6" name="contactNumber[{{i}}][{{contact.number}}]" value="{{contact.number}}">
-											<input type="hidden" name="contactNumber[{{i}}][{{contact.type}}]" value="phone">
-										</div>
-									</div>
-									
-						 		{% endfor %}
-						 		
- 				  		        {% set arrWebsite = json_decode(institution.websites) %}
-				  		        {% set defaultWebsiteValues = {url: "", type: ""} %}
-                                {% for i, website in arrWebsite %}
-                                        {% set website =  defaultWebsiteValues | merge(website) %}
-							            
-						 				<label for="{{ website.type }} name">{{ website.type |capitalize}} Site</label>
-										<div class="input-prepend">
-											<div id="{{website.type}}">
-												<input type="text" name="websites[{{i}}][{{website.url}}]" value="{{website.url}}">					
-												<input type="hidden" name="websites[{{i}}][{{website.type}}]" value="{{website.type}}">
-											</div>
-										</div>
-									
-						 		{% endfor %}
-									
-				  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
-				  		 			{{ form_rest(form) }}
-				  		</form>	
-		  		 {% endblock %}
-	  		   {% endembed %}
-		</div>
-  {% endblock %}
-  {% block inlineJavascriptCode %}
-    <script type="text/javascript">
-        $(function(){
-        	$('#dialog-container').dialog({
-                position: ['center', 100],
-                autoOpen: false,
-                width: 750,
-                modal: true,
-                resizable: false,
-                close: function() {}
-            });
+				<form novalidate="novalidate" action="{{ path('admin_institution_edit', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
+				    {{ form_errors(form) }}
+		            {{ form_row( form.name ) }}
+                    {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
+                    {{ form_row( form.contactEmail ) }}
+                    {{ form_row( form.contactNumber) }}
+                    <hr />
+                    <h5 style="margin-bottom: 10px;"> Institution Address </h5>
+                    
+                    {{ form_widget( form.address1 ) }}
+                    {{ form_row( form.country ) }}
+                    {{ form_row( form.city ) }}
+                    {{ form_row( form.state ) }}               
+                    {{ form_row( form.zipCode ) }}
+		  			    
+		  			{{ form_rest(form) }}
+	  			    <input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
+	  			</form>
+  			{% endblock %}
+		{% endembed %}
+	</div>
+{% endblock %}
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+<!--
+    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+    $(function(){
+        $('#institution_profile_form_country').change();
 
-            $('#institutionDetail_country').change();
-
-            $('a.addLanguageButton').click(function(){
-            	var elem = $(this);
-				var _url = elem.attr('href');
-
-				$("#dialog-container").empty();
-				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
-                $('#dialog-container').dialog({
-                	title: 'Add Languages',
-                    open: function() {
-                        $.ajax(_url)
-                            .done(function (data) {                        
-                            	$('#dialog-container').html(data);
-                            }
-                        );
-                    },
-                });
-
-            	$('#dialog-container').dialog("open");
-
-                 	return false;           
-            });
-
-            $('a.addofferedServices').click(function(){
-            	var elem = $(this);
-				var _url = elem.attr('href');
-
-				$("#dialog-container").empty();
-				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
-                $('#dialog-container').dialog({
-                	title: 'Add Offered Services',
-                    open: function() {
-                        $.ajax(_url)
-                            .done(function (data) {                        
-                            	$('#dialog-container').html(data);
-                            }
-                        );
-                    },
-                });
-
-            	$('#dialog-container').dialog("open");
-
-                 	return false;           
-            });
+        $('#dialog-container').dialog({
+            position: ['center', 100],
+            autoOpen: false,
+            width: 750,
+            modal: true,
+            resizable: false,
+            close: function() {}
         });
-    </script>
+
+        $('a.addLanguageButton').click(function(){
+        	var elem = $(this);
+			var _url = elem.attr('href');
+
+			$("#dialog-container").empty();
+			//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+            $('#dialog-container').dialog({
+            	title: 'Add Languages',
+                open: function() {
+                    $.ajax(_url)
+                        .done(function (data) {                        
+                        	$('#dialog-container').html(data);
+                        }
+                    );
+                },
+            });
+
+        	$('#dialog-container').dialog("open");
+
+             	return false;           
+        });
+
+        $('a.addofferedServices').click(function(){
+        	var elem = $(this);
+			var _url = elem.attr('href');
+
+			$("#dialog-container").empty();
+			//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+            $('#dialog-container').dialog({
+            	title: 'Add Offered Services',
+                open: function() {
+                    $.ajax(_url)
+                        .done(function (data) {        
+                        	$('#dialog-container').html(data);
+                        }
+                    );
+                },
+            });
+
+        	$('#dialog-container').dialog("open");
+
+             	return false;           
+        });
+    });
+//-->
+</script>
 {% endblock %}

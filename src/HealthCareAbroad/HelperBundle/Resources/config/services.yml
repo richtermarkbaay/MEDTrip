@@ -70,6 +70,13 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.helpetext.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\HelpTextTwigExtension
+        arguments: [@doctrine]   
+        public: false
+        tags:
+            - { name: twig.extension }
 
     services.inline_javascript.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension

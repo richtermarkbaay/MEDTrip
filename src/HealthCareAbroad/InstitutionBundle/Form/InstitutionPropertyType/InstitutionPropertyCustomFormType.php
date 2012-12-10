@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form\InstitutionPropertyType;
 
+use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServicesFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -25,14 +29,24 @@ class InstitutionPropertyCustomFormType extends AbstractType
         }
         
         $institutionPropertyType = $institutionProperty->getInstitutionPropertyType();
-        
-        $fieldType = new InstitutionPropertyValueCustomFieldType($institutionProperty);
-        
         $formOptions = \json_decode($institutionPropertyType->getFormConfiguration(), true);
+        if (\is_array($formOptions) && \array_key_exists('type', $formOptions)) {
+            $fieldType = new $formOptions['type'];
+            
+            if (!$fieldType instanceof AbstractType) {
+                throw new \Exception (\sprintf('Form option type must be a class of type Abstract type, %s given.', \get_class($fieldType))); 
+            }
+            
+            unset($formOptions['type']);
+        }
+        else {
+            $fieldType = new InstitutionPropertyValueCustomFieldType($institutionProperty);
+        }
         if (\is_null($formOptions) || !\is_array($formOptions)) {
             $formOptions = array();
         }
         $formOptions['label'] = $institutionPropertyType->getLabel();
+        
         
         $builder->add('value', $fieldType, $formOptions);
     }

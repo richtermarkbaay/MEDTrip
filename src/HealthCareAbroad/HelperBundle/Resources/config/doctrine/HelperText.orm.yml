@@ -1,0 +1,24 @@
+HealthCareAbroad\HelperBundle\Entity\HelperText:
+    type: entity
+    table: helper_text
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\HelperTextRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        route:
+            type: string
+            length: 50
+            nullable: false
+        details:
+            type: string
+            length: 100
+            nullable: false
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

@@ -54,6 +54,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: string
             length: 50
             column: state
+        coordinates:
+            type: string
+            length: 100
+            column: coordinates
         dateModified:
             type: datetime
             nullable: false
@@ -84,6 +88,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             mappedBy: institution
+            cascade:
+                - "persist"
         institutionUsers:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser
             mappedBy: institution

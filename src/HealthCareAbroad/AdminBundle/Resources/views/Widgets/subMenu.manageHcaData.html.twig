@@ -1,4 +1,4 @@
-{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country' , 'city', 'doctor', 'awardingBody', 'affiliation', 'ancilliary_service', 'language']) %}
+{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country' , 'city', 'doctor', 'awardingBody', 'affiliation', 'ancilliary_service', 'language', 'helper_text']) %}
 {% include 'HelperBundle:Widgets:subMenu.html.twig' 
     with { 
         links: [
@@ -12,7 +12,8 @@
             {name: 'awardingBodies', url: path('admin_awardingBody_index'), label: hcaDataClassLabels.awardingBody.plural|title, icon: 'icon-list'},
             {name: 'affiliations', url: path('admin_affiliation_index'), label: hcaDataClassLabels.affiliation.plural|title, icon: 'icon-list'},
             {name: 'ancilliary_services', url: path('admin_offered_service_index'), label: hcaDataClassLabels.ancilliary_service.plural|title, icon: 'icon-list'},
-            {name: 'languages', url: path('admin_language_index'), label: hcaDataClassLabels.language.plural|title, icon: 'icon-list'}
+            {name: 'languages', url: path('admin_language_index'), label: hcaDataClassLabels.language.plural|title, icon: 'icon-list'},
+            {name: 'helper_text', url: path('admin_helper_text_index'), label: hcaDataClassLabels.helper_text.plural|title, icon: 'icon-list'}
         ] 
     }  
 %} 

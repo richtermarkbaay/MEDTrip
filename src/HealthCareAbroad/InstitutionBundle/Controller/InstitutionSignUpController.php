@@ -73,7 +73,6 @@ class InstitutionSignUpController  extends Controller
 	 */
 	public function signUpAction(Request $request)
 	{
-		
 	    $institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();

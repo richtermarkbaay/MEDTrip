@@ -63,6 +63,9 @@
             <li class="{{ selectedSubTab == 'manage_languages' ? 'active' : '' }}">
                 <a href="{{ path('admin_language_index') }}">Manage Languages</a>
             </li>
+             <li class="{{ selectedSubTab == 'manage_helperText' ? 'active' : '' }}">
+                <a href="{{ path('admin_helper_text_index') }}">Manage Helper Text</a>
+            </li>
         </ul>
     </li>
     {% endif %}
@@ -84,7 +87,7 @@
         </ul>
     </li>
     {% endif %}
-
+    {# ---
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
     <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Inquiries <b class="caret"></b></a>
@@ -95,6 +98,7 @@
         </ul>
     </li>
     {% endif %}
+    --- #}
 
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
     <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
@@ -111,5 +115,12 @@
                 <a href="{{ path('admin_userRole_index') }}">User permissions</a>
             </li>
         </ul>
+    </li>
     {% endif %}
+    
+    <li>
+        {% block searchBox %}
+            {% render "SearchBundle:Default:showWidget" with { 'context' : 'admin' } %}
+        {% endblock %}
+    </li>
 </ul>

@@ -40,15 +40,14 @@ class InstitutionPropertiesController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                  $this->get('services.institution_property')->save($form->getData());
-
-                 return $this->redirect($formActionUrl);
+                 //return $this->redirect($formActionUrl);
             }
         }
         
         $params = array(
             'formAction' => $formActionUrl, 
             'form' => $form->createView()
-        );
+        );    
         return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
     }
     

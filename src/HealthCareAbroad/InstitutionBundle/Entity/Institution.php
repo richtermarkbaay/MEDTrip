@@ -58,6 +58,11 @@ class Institution
      * @var string $state
      */
     private $state;
+    
+    /**
+     * @var string $coordinates
+     */
+    private $coordinates;
 
     /**
      * @var datetime $dateModified
@@ -338,6 +343,28 @@ class Institution
     public function getState()
     {
         return $this->state;
+    }
+    
+    /**
+     * Set coordinates
+     *
+     * @param string $coordinates
+     * @return Institution
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+        return $this;
+    }
+    
+    /**
+     * Get coordinates
+     *
+     * @return string
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
     }
 
     /**

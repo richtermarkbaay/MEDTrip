@@ -1,0 +1,12 @@
+institution_feedback_add:
+    pattern:  /institution/feedback/add
+    defaults: { _controller: InstitutionBundle:Feedback:add }
+    requirements:    
+        _method:  GET
+        
+institution_feedback_create:
+    pattern:  /institution/feedback/add
+    defaults: { _controller: InstitutionBundle:Feedback:save }
+    requirements:
+         _method: POST
+

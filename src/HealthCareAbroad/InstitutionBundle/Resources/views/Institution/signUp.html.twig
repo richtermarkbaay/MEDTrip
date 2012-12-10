@@ -68,7 +68,8 @@
         <div class="span4">
             <div class="aside">
                 <div class="aside box">
-                    <p>Please provide the correct information below, and we will create an exclusive medical account listing for you.</p>
+                        {% set helptext = get_help_text_by_route('institution_signUp')%}
+                        <p>{{ helptext | raw }}</p>
                 </div>
             </div>
             <!-- End of aside-->

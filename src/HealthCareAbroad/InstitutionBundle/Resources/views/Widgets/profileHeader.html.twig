@@ -1,5 +1,5 @@
 {##
-Note: This widget is shared in other bundles e.g. AdminBundle
+Note: This widget is only for AdminBundle
 ##}
 
 <div class="container">
@@ -28,11 +28,12 @@ Note: This widget is shared in other bundles e.g. AdminBundle
                 </div>
             </div>
             <div class="span6">
-                <a href="#"><h5>Manage Your Institution Profile</h5></a>
+                <a href="{{ path('admin_institution_edit', {'institutionId': institution.id } ) }}"><h5>Manage Your Institution Profile</h5></a>
 
-                <p>+6332-2555555 (contact number)</p>
-                <p>{{ institution.address1 }} {{ institution.state }}, {{ institution.zipCode }}</p>
-                <p>www.site.com (address)</p>
+                <p>{{ json_decode(institution.contactNumber) | join('-') }}</p>
+                <p>{{ json_decode(institution.address1) | join(' ') }} </p>
+                <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
+                {# -- sites here <p></p> #}
             </div>
         </div>
     </div>

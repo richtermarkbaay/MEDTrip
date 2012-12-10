@@ -19,21 +19,34 @@ namespace HealthCareAbroad\SearchBundle\Tests;
  * @author harold
  *
  */
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+
 class ContainerAwareUnitTestCase extends \PHPUnit_Framework_TestCase
 {
     protected static $kernel;
     protected static $container;
-
+    protected static $router;
     public static function setUpBeforeClass()
     {
         self::$kernel = new \AppKernel('test', true);
         self::$kernel->boot();
 
         self::$container = self::$kernel->getContainer();
+        self::$router = self::$container->get('router');
     }
 
     public function get($serviceId)
     {
         return self::$kernel->getContainer()->get($serviceId);
+    }
+    
+    public function getServiceContainer()
+    {
+        return self::$container;
+    }
+    
+    public function getRouter()
+    {
+        return self::$router;
     }
 }
