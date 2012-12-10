@@ -48,12 +48,16 @@
                     <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                 {% endfor %}
                 </table>
-
+    
      
             </div>
             
             {% endblock %}
         {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_institution_index', app.request.query.all) }}
+        {% endif %}
     </div>
 
     <div id="update-status-container" title="Edit Institution Status" style="display:none">

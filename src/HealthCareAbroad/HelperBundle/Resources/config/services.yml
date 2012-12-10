@@ -70,6 +70,13 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.helpetext.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\HelpTextTwigExtension
+        arguments: [@doctrine]   
+        public: false
+        tags:
+            - { name: twig.extension }
 
     services.inline_javascript.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension
@@ -96,10 +103,6 @@ services:
             - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
-            
-    services.helper_route:
-        class: "HealthCareAbroad\HelperBundle\Services\HelperTextRouteService"
-        arguments: [@doctrine]
 
     form.country_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType

@@ -1,10 +1,10 @@
 <?php
-
-/*
+/**
  * @author Chaztine Blance
- * Add Helper Data
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
+
+use Symfony\Component\Templating\Tests\Helper\HelperTest;
 
 use HealthCareAbroad\HelperBundle\Entity\RouteType;
 
@@ -14,10 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\HelperBundle\Entity\HelperText;
 use HealthCareAbroad\HelperBundle\Form\HelperTextFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
-
+use Symfony\Component\HttpFoundation\Request;
 class HelperTextController extends Controller
 {
     /**
+     * Display Helper Text
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_HELPER_TEXT')")
      */
     public function indexAction()
@@ -25,57 +26,56 @@ class HelperTextController extends Controller
         $helperData = $this->getDoctrine()->getRepository('HelperBundle:HelperText')->findAll();
         
         return $this->render('AdminBundle:Helper:index.html.twig', array(
-                        'helperText' => $helperData,
-                        'routeLabel' => RouteType::getFormChoicesLabel()
+                        'helperText' => $helperData
         ));
     }
     
     /**
+     * Add New Helper Text by Route
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_HELPER_TEXT')")
      */
-//     public function addAction()
-//     {
- 
-//         $helperData = $this->getDoctrine()->getEntityManager()
-//         ->getRepository('HelperBundle:HelperText')->find($id);
-        
-//         $form = $this->createForm(New HelperTextFormType(), $helperData);
-    
-//         return $this->render('AdminBundle:Helper:form.html.twig', array(
-//                         'id' => null,
-//                         'form' => $form->createView(),
-//                         'formAction' => $this->generateUrl('admin_helper_text_create'),
-//                         'newObject' => true
-//         ));
-//     }
+    public function addAction()
+    {
+          $form = $this->createForm(New HelperTextFormType(), new HelperText());
+
+        return $this->render('AdminBundle:Helper:form.html.twig', array(
+            'form' => $form->createView(),
+            'formAction' => $this->generateUrl('admin_helper_text_create'),
+            'newObject' => true
+        ));
+    }
     
     /**
+     * Edit Helper Text
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_HELPER_TEXT')")
      */
     public function editAction($id)
     {
         $helperData = $this->getDoctrine()->getEntityManager()
         ->getRepository('HelperBundle:HelperText')->find($id);
-    
+        
         $form = $this->createForm(New HelperTextFormType(), $helperData);
     
         return $this->render('AdminBundle:Helper:form.html.twig', array(
                         'id' => $id,
                         'form' => $form->createView(),
                         'formAction' => $this->generateUrl('admin_helper_text_update', array('id' => $id)),
+                        'newObject' => false
         ));
     }
     
     /**
+     * Save Helper Text
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_HELPER_TEXT')")
      */
     public function saveAction()
     {
         $request = $this->getRequest();
+        
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
-    
+        
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();
     
@@ -107,15 +107,17 @@ class HelperTextController extends Controller
     }
     
     /**
+     * Update Helper Text Status
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_HELPER_TEXT')")
      */
     public function updateStatusAction($id)
     {
         $result = false;
         $em = $this->getDoctrine()->getEntityManager();
-        $helperData = $em->getRepository('HelperBundle:Helper')->find($id);
-    
+        $helperData = $em->getRepository('HelperBundle:HelperText')->find($id);
+
         if ($helperData) {
+            
             $helperData->setStatus($helperData->getStatus() ? $helperData::STATUS_INACTIVE : $helperData::STATUS_ACTIVE);
             $em->persist($helperData);
             $em->flush($helperData);
