@@ -1,0 +1,23 @@
+{% set _defaultFormProperties = {id: '','action': '#', 'method': 'POST', 'submitValue' : 'Submit', class: 'span12' } %}
+{% set formProperties = formProperties is defined ? _defaultFormProperties | merge(formProperties) : _defaultFormProperties %}
+<form novalidate id="{{ formProperties.id }}" class="{{ formProperties.class }}" action="{{ formProperties.action }}" method="{{ formProperties.method }}" {{ form_enctype(form) }} >
+    
+    {{ form_errors(form) }}
+
+    <fieldset>
+        {% if orderedFields is defined %}
+            {% for field in orderedFields %}
+                {% if field.widget_only is defined and field.widget_only %}
+                    {{ form_widget(field.object, field.options is defined ? field.options : {} ) }}
+                {% else %}
+                    {{ form_row(field.object, field.options is defined ? field.options : {} ) }}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        {{ form_rest(form) }}
+        
+        <input type="submit" class="finish btn-primary btn-large" value="{{ formProperties.submitValue }}">
+        
+    </fieldset>
+</form>

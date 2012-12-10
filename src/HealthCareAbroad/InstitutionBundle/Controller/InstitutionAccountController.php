@@ -5,6 +5,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -39,22 +43,11 @@ class InstitutionAccountController extends InstitutionAwareController
 	{
 	    $this->institutionService = $this->get('services.institution');
 	    $this->request = $this->getRequest();
-	    
-// 		$request = $this->getRequest();
-// 		$session = $this->getRequest()->getSession();
-		 
-// 		// Check Institution
-// 		if ($session->get('institutionId')) {
-	
-// 			$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
-			
-// 			if(!$this->institution) {
-// 				throw $this->createNotFoundException('Invalid Institution');
-// 			}
-// 		}
 	}
 	
 	/**
+	 * Landing page after signing up as an Institution. Logic will differ depending on the type of institution
+	 * 
 	 * @param Request $request
 	 */
     public function afterRegistrationLandingAction(Request $request)
@@ -76,11 +69,49 @@ class InstitutionAccountController extends InstitutionAwareController
     }
     
     /**
+     * This is the action handler after signing up as an Institution with Single Center.
+     * User will be directed immediately to create clinic page.
+     * 
+     * TODO:
+     *     This has a crappy rule where institution name and description will internally be the name and description of the clinic.
+     *     
+     * @author acgvelarde    
      * @return
      */
     protected function completeRegistrationSingleCenter()
     {
-        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig');
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        $institutionMedicalCenter = new InstitutionMedicalCenter();
+        
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+            
+            if ($form->isValid()) {
+                
+                $this->institution = $form->getData();
+                
+                // save institution
+                $this->get('services.institution.factory')->save($form->getData());
+                
+                // also set the name and description of the medical center
+                $institutionMedicalCenter->setName($this->institution->getName());
+                $institutionMedicalCenter->setDescription($this->institution->getDescription());
+                $institutionMedicalCenter->setInstitution($this->institution);
+                
+                // TODO: do logic for saving the business hours
+                $institutionMedicalCenter->setBusinessHours('');
+                
+                // save institution medical center as draft
+                $this->get('services.institution_medical_center')->saveAsDraft($institutionMedicalCenter);
+                
+                return $this->redirect($this->generateUrl('institution_homepage'));
+            }
+        }
+        
+        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
+            'form' => $form->createView(),
+            'institutionMedicalCenter' => $institutionMedicalCenter
+        ));
     }
     
     /**
