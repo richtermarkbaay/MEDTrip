@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdvertisementBundle\Form\EventListener;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\DataEvent;
@@ -41,28 +43,24 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
         if (null === $data) {
             return;
         }
-
-        // Removes duplicate advertisementPropertyName form/field 
-        foreach($data as $i => $each) {
-
-            $property = $each->getAdvertisementPropertyName();
-            if($property->getDataType()->getColumnType() == 'collection' && is_string($each->getValue())) {
-                unset($form[$i]);
-            }
-        }
-
-        $properties = $this->advertisement->getAdvertisementType()->getAdvertisementTypeConfigurations();
+        
         $param = $this->advertisement->getInstitution(); // TODO - This param should be dynamic
+ 
+        foreach($data as $i => $each) {
+            $property = $each->getAdvertisementPropertyName();
 
-        // Transform advertisementPropertyValues form/field type based on advertisementPropertyName
-        foreach($properties as $i => $each) {
+            if($property->getDataType()->getColumnType() == 'collection' && is_string($each->getValue())) {
+                // Remove duplicate advertisementPropertyName form/field
+                unset($form[$i]);
+            } else {
 
-            $config = json_decode($each->getPropertyConfig(), true);
-            $config['config']['label'] = $each->getLabel();
+                // Transform advertisementPropertyValues form/field type based on advertisementPropertyName
+                $config = json_decode($property->getPropertyConfig(), true);
+                $config['config']['label'] = $property->getLabel();
+                $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
 
-            $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
-
-            $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));                
+                $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));
+            }
         }
     }
 }
