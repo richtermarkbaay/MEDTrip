@@ -51,6 +51,6 @@ class GlobalCountryListType extends AbstractType
 
     public function getName()
     {
-        return 'country_list';
+        return 'globalCountry_list';
     }
 }
