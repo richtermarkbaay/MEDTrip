@@ -57,16 +57,17 @@ class InstitutionPropertyService
     {
         $institution = $institutionProperty->getInstitution();
         $ipType = $institutionProperty->getInstitutionPropertyType();
-        $ipArray = $institutionProperty->getValue();
-        $em = $this->doctrine->getEntityManager();
-        if(\is_object($ipArray)) {
-            foreach($ipArray as $key => $value)
+        $ipObject = $institutionProperty->getValue();
+        
+        
+        if(\is_object($ipObject)) {
+            foreach($ipObject as $key => $value)
             {
                 $institutionProperty = new InstitutionProperty();
                 $institutionProperty->setInstitution($institution);
                 $institutionProperty->setInstitutionPropertyType($ipType);
                 $institutionProperty->setValue($value->getId());
-                $this->createInstitutionProperty($instituionProperty);
+                $this->createInstitutionProperty($institutionProperty);
             }
         }
         else {
@@ -74,8 +75,9 @@ class InstitutionPropertyService
         }
     }
     
-    public function createInstitutionProperty($instituionProperty)
+    public function createInstitutionProperty(InstitutionProperty $institutionProperty)
     {
+        $em = $this->doctrine->getEntityManager();
         $em->persist($institutionProperty);
         $em->flush();
     }

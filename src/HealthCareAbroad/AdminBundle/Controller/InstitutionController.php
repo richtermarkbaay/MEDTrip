@@ -85,7 +85,7 @@ class InstitutionController extends Controller
     {
         $params = array(
             'pager' => $this->pager,
-            'institutions' => $this->filteredResult, 
+            'institutions' => $this->filteredResult,
             //'statusList' => InstitutionStatus::getStatusList(),
             'statusList' => InstitutionStatus::getBitValueLabels(),
             'updateStatusOptions' => InstitutionStatus::getUpdateStatusOptions()
