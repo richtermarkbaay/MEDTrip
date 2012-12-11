@@ -50,3 +50,8 @@ parameters:
     event.institution_user_type.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
     event.institution_user_type.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
     event.institution_user_type.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionUserTypeEvent
+    
+    # institution feedback events
+    event.institution_feedback.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent
+    event.institution_feedback.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent
+    event.institution_feedback.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent

@@ -28,6 +28,18 @@ class FilesystemManager
 
         return new Filesystem($adapter);
     }
+    
+    public function getAd($institutionId, $adapterType = 'local')
+    {
+        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir . '/ads', $institutionId);
+    
+        switch ($adapterType) {
+            default:
+                $adapter = new LocalAdapter($this->uploadRootDir, true);
+        }
+    
+        return new Filesystem($adapter);
+    }
 
     /**
      * Convenience functions
@@ -37,11 +49,6 @@ class FilesystemManager
     public function getUploadRootDir()
     {
         return $this->uploadRootDir;
-    }
-
-    public function getAdsUploadRootDir()
-    {
-        return $this->uploadRootDir . "/ads";
     }
 
     public function getWebRootPath()

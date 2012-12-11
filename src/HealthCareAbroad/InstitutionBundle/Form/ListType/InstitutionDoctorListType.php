@@ -49,6 +49,6 @@ class InstitutionDoctorListType extends AbstractType
 
     public function getName()
     {
-        return 'institutionSpecialization_list';
+        return 'institutionDoctor_list';
     }
 }

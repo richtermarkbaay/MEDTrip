@@ -1,11 +1,14 @@
-#institution_accountProfile:
-#    pattern:  /institution/account
-#    defaults: {_controller: InstitutionBundle:InstitutionAccount:account }
-#    requirements:
-#        _method:  GET|POST
+institution_account_profile:
+    pattern:  /institution/profile.html
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:profile }
+    requirements:
+        _method:  GET|POST
 
-institution_after_registration_landing:
+
+institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:afterRegistrationLanding }
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
     requirements:
         _method: GET|POST
+        
+#institution_signup_add_specializations:

@@ -69,6 +69,17 @@ class InstitutionService
         
     }
     
+    public function getTreatmentQueryBuilderByInstitution($institution)
+    {
+        $qry = "SELECT treatment_id FROM institution_treatments WHERE treatment_id = :treatmentId";
+        $param = array('treatmentId' => $treatmentId);
+        $treatmentIds = $this->_em->getConnection()->executeQuery($qry, $param)->fetchAll();
+
+        var_dump($treatmentIds);
+        
+        return $count;
+    }
+
     public function getRecentlyAddedMedicalCenters(Institution $institution, QueryOptionBag $options=null)
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();

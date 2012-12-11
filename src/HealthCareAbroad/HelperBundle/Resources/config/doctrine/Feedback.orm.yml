@@ -1,0 +1,39 @@
+HealthCareAbroad\HelperBundle\Entity\Feedback:
+    type: entity
+    table: feedbacks
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\FeedbackRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        accountId:
+            type: bigint
+            nullable: false
+            column: account_id
+        subject:
+            type: string
+            length: 50
+            fixed: false
+            nullable: false
+        message:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

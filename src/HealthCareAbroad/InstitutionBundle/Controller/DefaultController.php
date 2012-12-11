@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\HelperBundle\Services\AlertRecipient;
@@ -35,22 +37,23 @@ class DefaultController extends InstitutionAwareController
     public function indexAction()
     {
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-//         $draftAlerts = isset($institutionAlerts[AlertTypes::DRAFT_LISTING]) ? $institutionAlerts[AlertTypes::DRAFT_LISTING] : array();
-//         $expiredListingAlerts = isset($institutionAlerts[AlertTypes::EXPIRED_LISTING]) ? $institutionAlerts[AlertTypes::EXPIRED_LISTING] : array();
-//         $approvedListingAlerts = isset($institutionAlerts[AlertTypes::APPROVED_LISTING]) ? $institutionAlerts[AlertTypes::APPROVED_LISTING] : array();
-
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
         
-        return $this->render('InstitutionBundle:Default:index.html.twig', array(
+        if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
+            $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
+        }
+        else {
+            $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
+        }
+        
+        return $this->render($template, array(
             'alerts' => $institutionAlerts,
     		'news' => $news,
             'institution' => $this->institution,
         ));
     }
 
-    
-    
     public function error403Action()
     {
         return $this->render('InstitutionBundle:Exception:error403.html.twig');
@@ -58,7 +61,6 @@ class DefaultController extends InstitutionAwareController
     
     /**
      * Add Error Report
-     *
      * @author Chaztine Blance
      */
     public function errorReportAction()

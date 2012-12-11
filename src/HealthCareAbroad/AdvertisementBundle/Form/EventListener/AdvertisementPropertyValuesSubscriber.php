@@ -6,11 +6,11 @@
  */
 namespace HealthCareAbroad\AdvertisementBundle\Form\EventListener;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Event\DataEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 
 class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
 {
@@ -37,13 +37,14 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
         $form = $event->getForm(); 
-        
+
         if (null === $data) {
             return;
         }
 
         // Removes duplicate advertisementPropertyName form/field 
         foreach($data as $i => $each) {
+
             $property = $each->getAdvertisementPropertyName();
             if($property->getDataType()->getColumnType() == 'collection' && is_string($each->getValue())) {
                 unset($form[$i]);
@@ -57,11 +58,11 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
         foreach($properties as $i => $each) {
 
             $config = json_decode($each->getPropertyConfig(), true);
+            $config['config']['label'] = $each->getLabel();
+
             $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
 
-            $fiedConfig = array_merge($config['config'], array('label' => $each->getLabel()));
-
-            $form->get($i)->add($this->factory->createNamed('value', $type, null, $fiedConfig));
+            $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));                
         }
     }
 }

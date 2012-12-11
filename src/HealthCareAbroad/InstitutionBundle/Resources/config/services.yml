@@ -34,6 +34,12 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:
             - [setDoctrine, [@doctrine]]
+    
+    services.institution_signup:
+        class: HealthCareAbroad\InstitutionBundle\Services\SignUpService
+        calls:
+            - [setInstitutionFactory, [@services.institution.factory]]
+            - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
         
     services.institution_list_transformer:
         class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer
@@ -59,10 +65,10 @@ services:
         tags:
             - { name: form.type, alias: doctor_list }
             
-    form.treatment_list:
+    form.institutionTreatment_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
         tags:
-            - { name: form.type, alias: treatment_list }
+            - { name: form.type, alias: institutionTreatment_list }
 
     form.institution_affiliation_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType

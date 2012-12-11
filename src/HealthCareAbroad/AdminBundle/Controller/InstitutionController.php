@@ -158,7 +158,7 @@ class InstitutionController extends Controller
      */
     public function addDetailsAction(Request $request){
        
-	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
+	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name', 'websites')));
 
 	    // redirect to edit institution if status is already active
 	    
@@ -196,7 +196,7 @@ class InstitutionController extends Controller
      */
     public function editDetailsAction(Request $request){
     
-    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
+    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('websites')));
     
     	if ($request->isMethod('POST')) {
     		 

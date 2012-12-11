@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
@@ -50,7 +52,7 @@ class InstitutionAccountController extends InstitutionAwareController
 	 * 
 	 * @param Request $request
 	 */
-    public function afterRegistrationLandingAction(Request $request)
+    public function completeProfileAfterRegistrationAction(Request $request)
     {
         switch ($this->institution->getType())
         {
@@ -58,7 +60,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 $response = $this->completeRegistrationSingleCenter();
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
-                break;
             case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
             default:
                 $response = $this->completeRegistrationMultipleCenter();
@@ -82,28 +83,16 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         $institutionMedicalCenter = new InstitutionMedicalCenter();
-        
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             
             if ($form->isValid()) {
+                    
+                // save institution and create an institution medical center
+                $this->get('services.institution_signup')
+                    ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
                 
-                $this->institution = $form->getData();
-                
-                // save institution
-                $this->get('services.institution.factory')->save($form->getData());
-                
-                // also set the name and description of the medical center
-                $institutionMedicalCenter->setName($this->institution->getName());
-                $institutionMedicalCenter->setDescription($this->institution->getDescription());
-                $institutionMedicalCenter->setInstitution($this->institution);
-                
-                // TODO: do logic for saving the business hours
-                $institutionMedicalCenter->setBusinessHours('');
-                
-                // save institution medical center as draft
-                $this->get('services.institution_medical_center')->saveAsDraft($institutionMedicalCenter);
-                
+                // this should redirect to 2nd step
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
         }
@@ -119,51 +108,46 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationMultipleCenter()
     {
-        return $this->render($view);
+        $hiddenFields = array('name', 'description');
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => $hiddenFields));
+        $institutionTypeLabels = InstitutionTypes::getLabelList();
+        
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+            
+            if ($form->isValid()) {
+                
+                $this->get('services.institution_signup')
+                    ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
+                
+                return $this->redirect($this->generateUrl('institution_homepage'));
+            }
+        }
+        
+        return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'hiddenFields' => $hiddenFields,
+            'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()]
+        ));
     }
     
-    
-	 
-	 public function accountAction(Request $request){
-	
-	 	if ($this->institution->getStatus() != InstitutionStatus::getBitValueForInactiveStatus()) {
-	 		 
-	 		return $this->redirect($this->generateUrl('institution_homepage'));
-	 	}
-	
-	 	$form = $this->createForm(new InstitutionDetailType(), $this->institution, array('profile_type' => false, 'hidden_field' => false));
-	 	 
-	 	//update institution details
-	 	if ($request->isMethod('POST')) {
-	 	
-	 		// Get contactNumbers and convert to json format
-	 		$contactNumber = json_encode($request->get('contactNumber'));
-	 		$websites = json_encode($request->get('websites'));
-	 		
-	 		$form->bindRequest($request);
-	
-	 		if ($form->isValid()) {
-
-	 			$this->institution = $form->getData();
-	 			
-	 			$this->institution->setWebsites($websites);
-	 			$this->institution->setContactNumber($contactNumber);
-	 			$this->institution->setStatus(InstitutionStatus::getBitValueForUnapprovedStatus());
-
-	 			$institution = $this->get('services.institution.factory')->save($this->institution);
-	 			$this->get('session')->setFlash('notice', "Successfully updated account");
-	 	
-	 			//create event on editInstitution and dispatch
-	 			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->institution));
-	 			
-	 			return $this->redirect($this->generateUrl('institution_homepage'));
-	 		}
-	 	}
-	 	
-
-	 	return $this->render('InstitutionBundle:Institution:accountProfileForm.html.twig', array(
-	 					'form' => $form->createView(),
-	 					'institution' => $this->institution
-	 	));
-	 }
+    /**
+     * Action page for Institution Profile Page
+     * 
+     * @param Request $request
+     */
+    public function profileAction(Request $request)
+    {
+        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+            $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
+        }
+        else {
+            $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
+        }
+        
+        return $this->render($template, array(
+            'institution' => $this->institution
+        ));
+    }
 }
