@@ -32,6 +32,8 @@ class MemcacheService
             static::$setupMemcacheComplete = true;
         }
         
+        // TEMPORARY only
+        $this->hasMemcache = false;
     }
     
     /**
