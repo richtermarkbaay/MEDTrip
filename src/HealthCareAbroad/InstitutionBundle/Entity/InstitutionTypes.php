@@ -9,6 +9,15 @@ final class InstitutionTypes
     
     const SINGLE_CENTER = 3;
     
+    static public function getLabelList()
+    {
+        return array(
+            self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
+            self::SINGLE_CENTER => 'A single clinic or an Independent healthcare provider',
+            self::MEDICAL_TOURISM_FACILITATOR => 'A Medical Tourism Facilitator / Agent',
+        );
+    }
+    
     static public function getFormChoices()
     {
         return array(

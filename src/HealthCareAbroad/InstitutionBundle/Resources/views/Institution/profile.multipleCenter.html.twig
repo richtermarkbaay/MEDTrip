@@ -1,0 +1,48 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'profile'} %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+        <div class="span12">
+            <div class="span9 marginleft0">
+                <div class="span2 marginleft0">
+                    <a data-toggle="modal" role="button" title="" class="gallerypic" href="#upload"> 
+                        <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
+                        <span class="image-icon"><img width="32" height="32" title="Change Profile Photo" alt="Zoom" src="{{ asset('images/institution/image-icon.png') }}"></span> 
+                    </a>
+                </div>
+                
+                <div class="span7 marginleft0">
+                    <h2 class="pull-left">{{ institution.name }}</h2>
+                    <div class="editname">
+                        <i title="Edit" class="icon-pencil"></i>
+                        <a data-toggle="modal" role="button" href="#editinstitutionname">
+                            <small>Edit</small>
+                        </a>
+                    </div>
+                    <div class="clearfix"></div>
+                    <p>
+                        {{ institution.description }}
+                        <i title="Edit" class="icon-pencil"></i>
+                        <a data-toggle="modal" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
+                    </p>
+                </div>
+                
+                <div class="clear"></div>
+                <div class="maincontent">
+                    <div class="heading2">
+                        <div class="heading_text2">List of Clinics</div>
+                    </div>
+                    <p>Some TExt that there is no clinic has been added. <a href="add-new-clinic-for-institution-with-centers.html">Click here</a> to add clinic.</p>
+                </div>
+            </div>
+            <div class="span3">
+                {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+            </div>
+            <div class="clear"></div>
+        </div>
+        {% endblock %}
+    {% endembed %}
+
+{% endblock %}

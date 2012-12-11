@@ -2,12 +2,8 @@
 <div id="content_wrap">
     <div class="container content">
         <div class="row">
-            <div class="{{ contentSpanClass }}">
-                
-                {% block wrappedContent %}{% endblock %}
-                
-                {% block sidebar %}{% endblock %}
-            </div>
+            {% block wrappedContent %}{% endblock %}
+            {% block sidebar %}{% endblock %}
         </div>
     </div>
 </div><!--End of container-->

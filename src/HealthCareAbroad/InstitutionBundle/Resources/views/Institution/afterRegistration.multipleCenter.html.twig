@@ -1,0 +1,154 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set disableMainNavigation = true %}
+{% block content %}
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
+        {% block wrappedContent %}
+            <div class="span12">
+                <div class="aside">
+                    <h4>Welcome!</h4>
+                    <p>
+                        Please tell us more about your clinic.
+                    </p>
+                </div>
+                <div class="welcome">
+                    <h3>{{ institution.name }}</h3>
+                    {% if institutionTypeLabel is defined %}
+                    <label class="pull-left">Type of Institution:</label>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {# ---- TODO: UI team: FIXME! very divful ---- #}
+            
+            <form class="form" method="post" action="#" id="ContactForm">
+            
+                <div class="span6">
+                    <div class="aside_wrap">
+                        <div class="heading">
+                            <div class="heading_text"> This is how your patient can contact you. </div>
+                        </div>
+                        
+                        <div class="maincontent_wrap">
+                            <div class="maincontent_item">
+                                <div class="row">
+                                    <div class="brief_description">
+                                        <div class="row-fluid">
+                                            
+                                                {{ form_errors(form) }}
+                                                <fieldset>
+                                                    <div>
+                                                        <label for="institution_website">Institution website</label>
+                                                        <input type="text" class="institution_website span11" value="{{ form.websites.vars.value.main }}" name="{{ form.websites.vars.full_name ~ '[main]' }}">
+                                                    </div>
+                                                    {{ form_row(form.contactEmail, {attr: {class:'span9'} } ) }}
+                                                    {{ form_row(form.contactNumber) }}
+                                                    
+                                                    <div>
+                                                        <label for="twitter_account">FACEBOOK Account</label>
+                                                        <input type="text" class="span8" value="{{ form.websites.vars.value.facebook }}" name="{{ form.websites.vars.full_name ~ '[facebook]' }}">
+                                                    </div>
+                                                    <div>
+                                                        <label for="twitter_account">Twitter Account</label>
+                                                        <input type="text" class="span8" value="{{ form.websites.vars.value.twitter }}" name="{{ form.websites.vars.full_name ~ '[twitter]' }}">
+                                                    </div>
+                                                </fieldset>
+                                                {# form_rest(form) #}
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of maincontent_item-->
+                        </div>
+                        <!--End of maincontent_wrap-->
+                    </div>
+                    <!-- End of maincontent -->
+                </div>
+                <!-- end span6 -->
+                
+                <div class="span6">
+                    <div class="aside_wrap">
+                        <div class="heading">
+                            <div class="heading_text">  This is how your patient can locate you.  </div>
+                        </div>
+                        
+                        <div class="maincontent_wrap">
+                            <div class="maincontent_item">
+                                <div class="row">
+                                    <div class="brief_description">
+                                        <div class="row-fluid">
+                                            <fieldset>
+                                                <div class="span12">
+                                                    <div class="mapbox">Map Here</div>
+                                                </div>
+                                                
+                                                {{ form_row(form.country, {attr: {class:'country_dropdown span12'}} )}}
+                                                {{ form_row(form.state, {attr: {class:'span12'}} )}}
+                                                
+                                                <div class="addresscity">
+                                                    <span class="span6">
+                                                        {{ form_label(form.city)}}
+                                                        {{ form_widget(form.city, {label: 'City', attr: {class: 'city_dropdown span12'} } )}}
+                                                        {{ form_errors(form.city) }}
+                                                    </span>
+                                                    
+                                                    <span class="span6">
+                                                        {{ form_label(form.zipCode)}}
+                                                        {{ form_widget(form.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span12'} } )}}
+                                                        {{ form_errors(form.zipCode) }}
+                                                    </span>
+                                                </div>
+                                                
+                                                {{ form_widget(form.address1) }}
+                                                
+                                                <div class="pull-right span8">
+                                                    <input type="submit" class="btn btn-large btn-primary" value="Submit" />
+                                                </div>
+                                                
+                                            </fieldset>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of maincontent_item-->
+                        </div>
+                        <!--End of maincontent_wrap-->
+                    </div>
+                    <!-- End of maincontent -->
+                </div>
+                <!-- end span6 -->
+                
+                {#-- render hidden fields and CSRF token --- #}
+                {{ form_widget(form.name) }}
+                {{ form_widget(form.description) }}
+                {{ form_widget(form._token) }}
+            </form>
+        {% endblock %}
+        
+    {% endembed %}
+
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    
+    $(function(){        
+        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+        $('select.country_dropdown').change();
+        $('a#submit_button_link').click(function(){
+
+            $('#form_save_institution').submit();
+            
+            return false;
+        });
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

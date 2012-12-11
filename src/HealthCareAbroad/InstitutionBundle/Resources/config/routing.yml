@@ -54,13 +54,6 @@ institution_showEditHistory:
         _method: GET
         objectId: \d+
 
-institution_edit_information:
-    pattern:  /institution/edit-information/{institutionId}
-    defaults:  { _controller: InstitutionBundle:Institution:editInstitution, institutionId: ~ }
-    requirements:
-        _method:  GET|POST
-        institutionId:  \d+
-
 institution_error403:
     pattern: /institution/access-denied
     defaults: { _controller: InstitutionBundle:Default:error403 }
