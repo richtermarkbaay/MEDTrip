@@ -1,0 +1,37 @@
+admin_medical_provider_group_index:
+    pattern:  /admin/medical-provider-groups
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:index }
+    requirements:    
+        _method:  GET
+
+admin_medical_provider_group_add:
+    pattern:  /admin/medical-provider-group/add
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:add }
+    requirements:    
+        _method:  GET
+        
+admin_medical_provider_group_create:
+    pattern:  /admin/medical-provider-group/add
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:save }
+    requirements:
+         _method: POST
+         
+admin_medical_provider_group_edit:
+    pattern:  /admin/medical-provider-group/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_medical_provider_group_update:
+    pattern:  /admin/medical-provider-group/edit/{id}
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_medical_provider_group_updateStatus:
+    pattern:  /admin/medical-provider-group/update-status/{id}
+    defaults: { _controller: AdminBundle:MedicalProviderGroup:updateStatus, id: ~ }
+    requirements:
+        id: \d+

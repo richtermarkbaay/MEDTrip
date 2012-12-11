@@ -1,4 +1,7 @@
-
+/**
+ * @author Chaztine Blance
+ * Auto Complete for Institution Language
+ */
 var LanguageAuto = {
 
 	availableTags : 0,

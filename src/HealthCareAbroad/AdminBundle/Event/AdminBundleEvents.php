@@ -70,4 +70,8 @@ final class AdminBundleEvents
     const ON_ADD_HELPER_TEXT = 'event.helper_text.add';
     const ON_EDIT_HELPER_TEXT = 'event.helper_text.edit';
     const ON_DELETE_HELPER_TEXT = 'event.helper_text.delete';
+    
+    const ON_ADD_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.add';
+    const ON_EDIT_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.edit';
+    const ON_DELETE_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.delete';
 }

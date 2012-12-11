@@ -66,6 +66,9 @@
              <li class="{{ selectedSubTab == 'manage_helperText' ? 'active' : '' }}">
                 <a href="{{ path('admin_helper_text_index') }}">Manage Helper Text</a>
             </li>
+             <li class="{{ selectedSubTab == 'manage_medical_provider_group' ? 'active' : '' }}">
+                <a href="{{ path('admin_medical_provider_group_index') }}">Manage Medical Provider Group</a>
+            </li>
         </ul>
     </li>
     {% endif %}
