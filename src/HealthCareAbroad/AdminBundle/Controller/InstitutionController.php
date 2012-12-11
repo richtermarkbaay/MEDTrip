@@ -302,6 +302,8 @@ class InstitutionController extends Controller
     	));
    	}
    	
+   	
+   	
    	/*
    	 * Add Instiution Offered Services
    	 */
