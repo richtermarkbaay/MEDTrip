@@ -91,14 +91,14 @@
 					                            
 					                        </div>
 					                       <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
-					                       <label for="medical-group">I belong to a group / Network</label>
-    									    {{ form_row(form.medicalProviderGroups)}}
-					                        
+					                      <span>I belong to a group / Network</span>
+    					                       <div id="medicalProviderGroupsInput">
+    					                                {{ form_row(form.medicalProviderGroups) }}
+    					                        </div>
 					                        <label for="password">Types of Institution</label>
 					                        
 					                            {{ form_widget(form.type) }}
 					               
-					                    
 					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />
 					                    {{ form_rest(form) }}
 					                </form>
@@ -118,15 +118,15 @@
 {% block inlineJavascriptCode %}
 	<script language="javascript" type="text/javascript">
 
-    $('#institutionSignUp_medicalProviderGroups').hide();
+    $('#medicalProviderGroupsInput').hide();
     	$('#medicalGroupBox').click(function(){
         	
     	    if ($('#medicalGroupBox').attr('checked')) {
 
-    	    	$('#institutionSignUp_medicalProviderGroups').show();
+    	    	$('#medicalProviderGroupsInput').show();
     	    	
     	    }else{
-        	    $('#institutionSignUp_medicalProviderGroups').hide();
+        	    $('#medicalProviderGroupsInput').hide();
         	}
     	}) 
 	

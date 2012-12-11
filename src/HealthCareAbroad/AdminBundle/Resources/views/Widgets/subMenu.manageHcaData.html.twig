@@ -1,4 +1,4 @@
-{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country' , 'city', 'doctor', 'awardingBody', 'affiliation', 'ancilliary_service', 'language', 'helper_text']) %}
+{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country' , 'city', 'doctor', 'awardingBody', 'affiliation', 'ancilliary_service', 'language', 'helper_text', 'medical_provider_group']) %}
 {% include 'HelperBundle:Widgets:subMenu.html.twig' 
     with { 
         links: [
@@ -6,6 +6,7 @@
             {name: 'specializations',url: path('admin_specialization_index'), label: hcaDataClassLabels.specialization.plural|title, icon: 'icon-list'},
             {name: 'sub_specializations', url: path('admin_subSpecialization_index'), label: hcaDataClassLabels.sub_specialization.plural|title, icon: 'icon-list'},
             {name: 'treatments', url: path('admin_treatment_index'), label: hcaDataClassLabels.treatment.plural|title, icon: 'icon-list'},
+            {name: 'medical_provider_groups', url: path('admin_medical_provider_group_index'), label: hcaDataClassLabels.medical_provider_group.plural|title, icon: 'icon-list'},
             {name: 'countries', url: path('admin_country_index'), label: hcaDataClassLabels.country.plural|title, icon: 'icon-list'},
             {name: 'cities', url: path('admin_city_index'), label: hcaDataClassLabels.city.plural|title, icon: 'icon-list'},
             {name: 'doctors', url: path('admin_doctor_index'), label: hcaDataClassLabels.doctor.plural|title, icon: 'icon-list'},
@@ -14,6 +15,7 @@
             {name: 'ancilliary_services', url: path('admin_offered_service_index'), label: hcaDataClassLabels.ancilliary_service.plural|title, icon: 'icon-list'},
             {name: 'languages', url: path('admin_language_index'), label: hcaDataClassLabels.language.plural|title, icon: 'icon-list'},
             {name: 'helper_text', url: path('admin_helper_text_index'), label: hcaDataClassLabels.helper_text.plural|title, icon: 'icon-list'}
+            
         ] 
     }  
 %} 
