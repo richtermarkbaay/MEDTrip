@@ -69,7 +69,9 @@
                         <div class="clearfix"></div>
                     
                         <hr />
-                        <div>
+                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
+                       <span>I have no business hours</span> 
+                        <div id="clinicHours">
                             <label for="Timezone">Clinic Hours</label>
                             {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                         </div>
@@ -95,12 +97,26 @@
     {% endembed %}
 
 {% endblock %}
-
+ 
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
 <!--
 (function($){
+
+  	$('#businessHourCheckBox').click(function(){
+    	
+	    if ($('#businessHourCheckBox').attr('checked')) {
+
+	    	$('#clinicHours').hide();
+		    	$(this).parent().parent().find('.hour').val("");
+		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+	    }else{
+    	    $('#clinicHours').show();
+    	    $(this).parent().parent().find('.hour').val("8:00 AM");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	}
+	}) 
     
     $(function(){        
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';

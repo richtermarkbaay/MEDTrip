@@ -41,6 +41,9 @@
                 <a href="{{ path('admin_treatment_index') }}">Treatments</a>
             </li>
             {% endif %}
+             <li class="{{ selectedSubTab == 'manage_medical_provider_group' ? 'active' : '' }}">
+                <a href="{{ path('admin_medical_provider_group_index') }}"> Medical Provider Group</a>
+            </li>
             <li class="divider"></li>
             <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
                 <a href="{{ path('admin_country_index') }}">Manage Countries</a>
@@ -66,9 +69,7 @@
              <li class="{{ selectedSubTab == 'manage_helperText' ? 'active' : '' }}">
                 <a href="{{ path('admin_helper_text_index') }}">Manage Helper Text</a>
             </li>
-             <li class="{{ selectedSubTab == 'manage_medical_provider_group' ? 'active' : '' }}">
-                <a href="{{ path('admin_medical_provider_group_index') }}">Manage Medical Provider Group</a>
-            </li>
+        
         </ul>
     </li>
     {% endif %}
