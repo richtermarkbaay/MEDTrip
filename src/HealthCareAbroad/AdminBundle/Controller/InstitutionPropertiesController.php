@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
@@ -34,21 +36,12 @@ class InstitutionPropertiesController extends Controller
     
     public function addAncilliaryServiceAction(Request $request)
     {
-        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-        $formActionUrl = $this->generateUrl('admin_institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                 $this->get('services.institution_property')->save($form->getData());
-                 //return $this->redirect($formActionUrl);
-            }
-        }
+        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
+        $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
+        $institutionProperty->setValue($offeredServicesArray);
+        $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
         
-        $params = array(
-            'formAction' => $formActionUrl, 
-            'form' => $form->createView()
-        );    
-        return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
+        return $this->_jsonResponse(array('success' => 1));
     }
     
     public function addLanguageSpokenAction(Request $request)

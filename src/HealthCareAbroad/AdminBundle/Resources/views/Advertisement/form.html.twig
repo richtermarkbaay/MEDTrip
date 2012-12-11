@@ -80,12 +80,8 @@
 <script type="text/javascript">
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
-
             var institutionId = $('#advertisement_institution').val();
             var advertisementTypeId = $('#advertisement_advertisementType').val();
-
-alert(institutionId);
-            
             if(institutionId != '' && advertisementTypeId != '') {
                 window.location = "{{ path('admin_advertisement_add') }}?institutionId="+institutionId+"&advertisementTypeId="+advertisementTypeId;
             }
