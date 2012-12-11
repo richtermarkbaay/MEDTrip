@@ -29,7 +29,7 @@ class CountryListType extends AbstractType
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-	    //$builder->prependNormTransformer(new CountryTransformer($this->locationService));
+
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)

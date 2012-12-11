@@ -27,11 +27,15 @@ class CityTransformer implements DataTransformerInterface
     
     public function reverseTransform($data)
     {
+        if(!$data)
+            return $data;
+
         $city = $this->service->getCityById($data);
         if (!$city) {
             $cityGlobalData = $this->service->getGlobalCityById($data);
             $city = $this->service->createCityFromArray($cityGlobalData); 
-        }   
+        }
+
         return $city;
     }
 }

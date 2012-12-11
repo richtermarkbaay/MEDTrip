@@ -27,9 +27,7 @@ class InstitutionTreatmentListType extends AbstractType
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        var_dump($this->institutionService); exit;
-        
+    {        
         $qb = $this->institutionService->getTreatmentQueryBuilderByInstitution($this->institution);
         
     	$institution = $this->institution;
