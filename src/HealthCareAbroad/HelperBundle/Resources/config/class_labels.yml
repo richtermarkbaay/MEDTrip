@@ -30,3 +30,4 @@ parameters:
         admin_setting: {singular: "admin setting", plural: "admin settings"}
         user_permission: {singular: "user permission", plural: "user permissions"}
         institution_detail: {singular: "instiution detail", plural: "instiution details"}
+        medical_provider_group: {singular: "medical provider group", plural: "medical providers group"}

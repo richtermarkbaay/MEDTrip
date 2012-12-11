@@ -74,3 +74,10 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType
         tags:
           - { name: form.type, alias: institution_affiliation_list }
+    
+    form.medical_provider_group_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType
+        calls:
+            - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: form.type, alias: medicalProviderGroup_autocomplete }

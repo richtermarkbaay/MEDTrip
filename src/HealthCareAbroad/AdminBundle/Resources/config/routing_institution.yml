@@ -29,6 +29,13 @@ admin_institution_addAncilliaryService:
     defaults: { _controller: AdminBundle:InstitutionProperties:addAncilliaryService }
     requirements:
         institutionId: \d+
+
+admin_institution_viewAncilliaryService:
+    pattern:  /admin/institution/{institutionId}/ancilliary-services
+    defaults: { _controller: AdminBundle:InstitutionProperties:index }
+    requirements:  
+        institutionId: \d+  
+        _method:  GET
         
 admin_institution_addLanguageSpoken:
     pattern:  /admin/institution/{institutionId}/add-language-spoken

@@ -3,6 +3,8 @@
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
+
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
@@ -74,7 +76,6 @@ class InstitutionController extends Controller
                 throw $this->createNotFoundException('Invalid Institution');                
             }
         }
-
         $this->service = $this->get('services.institution_medical_center');
     }
 
@@ -85,7 +86,7 @@ class InstitutionController extends Controller
     {
         $params = array(
             'pager' => $this->pager,
-            'institutions' => $this->filteredResult,
+            'institutions' => $this->filteredResult, 
             //'statusList' => InstitutionStatus::getStatusList(),
             'statusList' => InstitutionStatus::getBitValueLabels(),
             'updateStatusOptions' => InstitutionStatus::getUpdateStatusOptions()
@@ -100,17 +101,20 @@ class InstitutionController extends Controller
      */
     public function addAction(Request $request){
     
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+    
     	$institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);   
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createInstance($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
 		
 	    	if ($request->isMethod('POST')) {
+
 	    		$form->bind($request);
 	    		 
 	    		if ($form->isValid()) {
-	    	
-	    			$institution = $form->getData();
+
+	    		    $institution = $form->getData();
 	    	
 	    			// initialize required database fields
 	    			$institution->setAddress1('');
@@ -123,6 +127,7 @@ class InstitutionController extends Controller
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
+	    			
 	    			$factory->save($institution);
 	    			 
 	    			// create Institution user
@@ -143,10 +148,17 @@ class InstitutionController extends Controller
 	    		}
 	    	}
 	    	
+	    	$medicalProviderGroupArr = array();
+	    	
+	    	foreach ($medicalProviderGroup as $e) {
+	    	    $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+	    	}
+
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
     					'institutionTypes' => InstitutionTypes::getFormChoices(),
     					'selectedInstitutionType' => $institutionType,
+    	                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
     	));
     }
     
@@ -158,7 +170,7 @@ class InstitutionController extends Controller
      */
     public function addDetailsAction(Request $request){
        
-	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name', 'websites')));
+	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
 
 	    // redirect to edit institution if status is already active
 	    
@@ -191,12 +203,12 @@ class InstitutionController extends Controller
 	    ));
     }
     
-    /*
+    /**
      * Edit Institution Details
      */
     public function editDetailsAction(Request $request){
     
-    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('websites')));
+    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
     
     	if ($request->isMethod('POST')) {
     		 
@@ -262,7 +274,7 @@ class InstitutionController extends Controller
         return $this->redirect($this->generateUrl('admin_institution_index'));
     }
     
-    /*
+    /**
      * @author Chaztine Blance
      * Add Institution Language Spoken
      */
@@ -302,9 +314,6 @@ class InstitutionController extends Controller
     	));
    	}
    	
-   	/*
-   	 * Add Instiution Offered Services
-   	 */
    	public function addInstitutionOfferedServicesAction(Request $request)
    	{
    	    $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
@@ -313,6 +322,8 @@ class InstitutionController extends Controller
    	        $form->bind($request);
    	        if ($form->isValid()) {
    	            $this->get('services.institution_property')->save($form->getData());
+   	    
+   	            return $this->redirect($formActionUrl);
    	        }
    	    }
    	    
