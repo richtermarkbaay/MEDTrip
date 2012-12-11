@@ -55,31 +55,30 @@ class InstitutionPropertyService
     
     public function save(InstitutionProperty $institutionProperty)
     {
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionProperty);
+        $em->flush();
+    }
+    
+    public function createInstitutionPropertyByServices(InstitutionProperty $institutionProperty)
+    {
         $institution = $institutionProperty->getInstitution();
         $ipType = $institutionProperty->getInstitutionPropertyType();
-        $ipObject = $institutionProperty->getValue();
+        $ipArray = $institutionProperty->getValue();
         
-        
-        if(\is_object($ipObject)) {
-            foreach($ipObject as $key => $value)
+        if(\is_array($ipArray)) {
+            foreach($ipArray as $key => $value)
             {
                 $institutionProperty = new InstitutionProperty();
                 $institutionProperty->setInstitution($institution);
                 $institutionProperty->setInstitutionPropertyType($ipType);
-                $institutionProperty->setValue($value->getId());
-                $this->createInstitutionProperty($institutionProperty);
+                $institutionProperty->setValue($value);
+                $this->save($institutionProperty);
             }
         }
         else {
             $this->createInstitutionProperty($instituionProperty);
         }
-    }
-    
-    public function createInstitutionProperty(InstitutionProperty $institutionProperty)
-    {
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($institutionProperty);
-        $em->flush();
     }
     /**
      * @param string $propertyTypeName

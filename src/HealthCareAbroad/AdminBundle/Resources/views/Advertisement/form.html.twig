@@ -59,8 +59,15 @@
     				    {{ form_row(form.title) }}
     				    
     				    {{ form_row(form.description) }}
-    				    
+
     				    {% for propertyValue in form.advertisementPropertyValues %}
+
+    				        {% if (propertyValue.get('value').advertisementPropertyName.name == 'media_id') and propertyValue.get('value').value %}
+    				            <div style="position: absolute; left: 470px;">
+    				                <img src="/media/ads/1/thumbnail-{{ propertyValue.get('value').value }}" style="border: 1px solid #ddd; height: 80px">
+    				            </div>
+    				        {% endif %}
+
     				        {{ form_row(propertyValue.advertisementPropertyName) }}
     				        {{ form_row(propertyValue.value) }}
     				    {% endfor %}

@@ -27,6 +27,7 @@
                                 <a href="{{ app.request.uri }}" class="{{ sortBy == 'advertisementType' ? 'sort-' ~ sortOrder : default }}">Type</a>
                             </th>
                             <th>Status</th>
+                            <th>Actions</th>
                         </tr>
 
   						{% for each in advertisements %}
@@ -35,9 +36,12 @@
 	                        <td>{{ each.description(30) }}</td>
 	                        <td>{{ each.advertisementType.name }}</td>  
 	                        <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
+	                        <td width="60">
+	                            <a href="{{ path('admin_advertisement_edit', {advertisementId: each.id}) }}"><i class="icon-pencil"></i> Edit</a>
+	                        </td>
                    		</tr>
                    		{% else %}
-	                    <tr><td>{{ each.title }}</td></tr>
+	                    <tr class="error"><td colspan="5">No ads found!</td></tr>
                         {% endfor %}
                 </table>
             {% endblock %}

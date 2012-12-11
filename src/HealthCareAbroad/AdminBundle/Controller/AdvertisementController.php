@@ -177,10 +177,12 @@ class AdvertisementController extends Controller
 
             if($advertisement->getId()) {
                 foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
-                    $em->remove($value);
+                    if($value->getAdvertisementPropertyName()->getName() != 'media_id') {
+                        $em->remove($value);
+                    }
                 }
             }
-            
+
             $em->persist($advertisement);
             $em->flush($advertisement);
 
@@ -213,6 +215,14 @@ class AdvertisementController extends Controller
         
                         if($config['type'] == 'file') {
                             $each->setValue($media->getId());
+
+                            // TODO - Temporary fixed for ads Image
+                            if($each->getId()) {
+                                $em = $this->getDoctrine()->getEntityManager();
+                                $em->persist($each);
+                                $em->flush($each);
+                            }
+
                             break;
                         }
                     }
