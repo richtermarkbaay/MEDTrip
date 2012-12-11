@@ -84,13 +84,78 @@ class FrontendController extends Controller
                 break;
 
             case SearchParameterBag::SEARCH_TYPE_COMBINATION:
-                //TODO
+
+                return $this->processCombinationSearch($request, $searchParams);
+        }
+
+        $parameters = array();
+        $request->getSession()->set('search_terms', json_encode($sessionParams));
+
+        return $this->redirect($this->generateUrl($route, $parameters));
+    }
+
+    private function processCombinationSearch(Request $request, SearchParameterBag $searchParams)
+    {
+        $sessionParams['countryId'] = $searchParams->get('countryId');
+        $combinationPrefix = 'country';
+
+        if ($searchParams->has('cityId')) {
+            $sessionParams['cityId'] = $searchParams->get('cityId');
+            $combinationPrefix = 'city';
+        }
+
+        $sessionParams['destinationLabel'] = $request->get('sb_destination');
+        $sessionParams['destinationId'] = $request->get('destination_id');
+
+        $locationSlugs = $slugify($sessionParams['destinationLabel'], 'destination');
+
+        $sessionParams['specializationId'] = $searchParams->get('specializationId');
+        $combinationSuffix = '_specialization';
+
+        if ($searchParams->has('subSpecializationId')) {
+            $sessionParams['subSpecializationId'] = $searchParams->get('subSpecializationId');
+            $combinationSuffix = '_subSpecialization';
+        } else if ($searchParams->has('treatmentId')) {
+            $sessionParams['treatmentId'] = $searchParams->get('treatmentId');
+            $combinationSuffix = '_treatment';
+        }
+
+        $sessionParams['treatmentType'] = $searchParams->get('treatmentType');
+        $sessionParams['treatmentLabel'] = $request->get('sb_treatment');
+        $sessionParams['treatmentId'] = $request->get('treatment_id');
+
+        $slugify = function($label) {
+            return strtolower(trim(preg_replace('/\W+/', '-', $label)));
+        };
+
+        $route = null;
+        switch ($combinationPrefix . $combinationSuffix) {
+            case 'country_specialization':
+
+                break;
+            case 'country_subSpecialization':
+
+                break;
+            case 'country_treatment':
+
+                break;
+            case 'city_specialization':
+
+                break;
+            case 'city_subSpecialization':
+
+                break;
+            case 'city_treatment':
+
                 break;
         }
 
-        $request->getSession()->set('search_terms', json_encode($sessionParams));
+        $route = 'search_frontend_results_treatments';
+        $route = 'search_frontend_results_destinations';
 
-        return $this->redirect($this->generateUrl($route));
+        $session->set(md5($request->getPathInfo()), json_encode($variables));
+
+        return $this->redirect($url);
     }
 
     public function searchResultsDestinationsAction(Request $request)
@@ -156,7 +221,7 @@ class FrontendController extends Controller
             $parameters['subSpecialization'] = $subSpecialization;
         }
 
-        return $this->render('SearchBundle:Frontend:medicalCentersTreatment.html.twig', $parameters);
+        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
     }
 
     public function searchResultsCombinationAction(Request $request)

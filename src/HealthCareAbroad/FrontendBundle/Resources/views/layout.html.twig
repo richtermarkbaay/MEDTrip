@@ -3,40 +3,39 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
-    <body>
-        <div class="fixed">
+    <div class="fixed">
 
-        {% block header %}
-            {% include 'FrontendBundle:Default:header.html.twig' %}
-        {% endblock %}
+    {% block header %}
+        {% include 'FrontendBundle:Default:header.html.twig' %}
+    {% endblock %}
 
-        <div id="content_wrap">
-            <div class="container content">
-                {% block content %}
-                    {# These are here for reference only. #}
-                    <div class="row">
+    <div id="content_wrap">
+        <div class="container content">
+            {% block content %}
+                {# These are here for reference only. #}
+                <div class="row">
 
-                        <div class="span8">
-                            {% include 'FrontendBundle:Default:content.html.twig' %}
-                        </div> <!--End of span8-->
+                    <div class="span8">
+                        {% include 'FrontendBundle:Default:content.html.twig' %}
+                    </div> <!--End of span8-->
 
-                        <div class="span4">
-                            {% include 'FrontendBundle:Default:sidebar.html.twig' %}
-                        </div> <!--End of span4-->
+                    <div class="span4">
+                        {% include 'FrontendBundle:Default:sidebar.html.twig' %}
+                    </div> <!--End of span4-->
 
-                    </div> <!--End of row-->
-                {% endblock %}
-            </div> <!--End of container-->
-        </div> <!-- End of content_wrap -->
+                </div> <!--End of row-->
+            {% endblock %}
+        </div> <!--End of container-->
+    </div> <!-- End of content_wrap -->
 
-        {% block footer %}
-            {% include 'FrontendBundle:Default:footer.html.twig' %}
-        {% endblock %}
+    {% block footer %}
+        {% include 'FrontendBundle:Default:footer.html.twig' %}
+    {% endblock %}
 
-        </div>
+    </div>
 
-        {{ outputInlineJavascript() | raw }}
-    </body>
+    {{ outputInlineJavascript() | raw }}
+
 {% endblock %}
 
 
