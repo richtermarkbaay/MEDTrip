@@ -36,17 +36,12 @@ class InstitutionPropertiesController extends Controller
     
     public function addAncilliaryServiceAction(Request $request)
     {
-//         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-//         var_dump($form->getData());exit;
-//         $property = new InstitutionProperty();
-//         $property->setInstitution($this->institution);
-//         $property->
-//         $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
+        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
+        $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
+        $institutionProperty->setValue($offeredServicesArray);
+        $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
         
-        $property = new InstitutionProperty();
-        $property = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
-        $property->setValue($this->getRequest()->get('offeredServicesData'));
-        var_dump($property);exit;
+        return $this->_jsonResponse(array('success' => 1));
     }
     
     public function addLanguageSpokenAction(Request $request)

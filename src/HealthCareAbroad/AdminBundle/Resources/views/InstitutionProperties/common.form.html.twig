@@ -6,12 +6,9 @@
 </form>
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
-<!--
     
     $(function(){
-
         $('#addServices').click(function(){
-
         	var offeredServicesData = getOfferedServicesChecked()
             var urlData = '{{ formAction|raw }}';
         	$.ajax({
@@ -19,12 +16,11 @@
 		        data: { 'offeredServicesData': offeredServicesData },
 		        type: 'post',
 		        success: function(){
+		        	$('#dialog-container').dialog("close");
 		        }
 	        });
 
-        	
 	        return false;
-        	
         });
     });
 
@@ -34,10 +30,10 @@
     	$('#institution_property_type_custom_form_value input:checked').each(function() {
     	    selected.push($(this).attr('value'));
     	});
+    	
     	return selected;
     }
     
-//-->
 </script>
 {% endblock %}
 
