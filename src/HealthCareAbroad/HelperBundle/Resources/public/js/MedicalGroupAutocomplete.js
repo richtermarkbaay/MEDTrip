@@ -1,8 +1,8 @@
 /**
  * @author Chaztine Blance
- * Auto Complete for Institution Language
+ * Auto Complete for Medical Groups
  */
-var LanguageAuto = {
+var MedicalGroupAuto = {
 
 	availableTags : 0,
 	selectedTags : 0,
@@ -11,7 +11,6 @@ var LanguageAuto = {
 	{
 		this.availableTags = params.availableTags;
 		this.selectedTags = params.selectedTags;
-		this.inputHiddenField = params.inputHiddenField;	
 		this.inputAutoLanguage = params.inputAutoLanguage;
 		
 		$('.click').click(LanguageAuto.clickRemove);

@@ -74,9 +74,8 @@
 						                                </li>
 									  				</ul>
 						  						{% endif %}
-					                            
-					                 
-					                        <label for="institution name"><b>Name of the Institution</b></label>
+
+					  						<label for="institution name"><b>Name of the Institution</b></label>
 					                        <div>
 					                            <div class="input-prepend">
 					                                {{ form_widget(form.name) }}
@@ -91,7 +90,10 @@
 					  							{% endif %}
 					                            
 					                        </div>
-					                
+					                       <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
+					                       <label for="medical-group">I belong to a group / Network</label>
+    									    {{ form_row(form.medicalProviderGroups)}}
+					                        
 					                        <label for="password">Types of Institution</label>
 					                        
 					                            {{ form_widget(form.type) }}
@@ -116,6 +118,28 @@
 {% block inlineJavascriptCode %}
 	<script language="javascript" type="text/javascript">
 
+    $('#institutionSignUp_medicalProviderGroups').hide();
+    	$('#medicalGroupBox').click(function(){
+        	
+    	    if ($('#medicalGroupBox').attr('checked')) {
+
+    	    	$('#institutionSignUp_medicalProviderGroups').show();
+    	    	
+    	    }else{
+        	    $('#institutionSignUp_medicalProviderGroups').hide();
+        	}
+    	}) 
+	
+    <!-- AutoComplete for Institution Medical Group Input Field -->
+    
+        $(function() {
+        	var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+        	
+            $( "#institutionSignUp_medicalProviderGroups" ).autocomplete({
+                source: availableTags
+            });
+        });    
+	
 		function randomString() {
 			var chars = "abcdefghiklmnopqrstuvwxyz";
 			var string_length = 8;

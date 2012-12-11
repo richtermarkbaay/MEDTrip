@@ -15,6 +15,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+use Doctrine\ORM\EntityRepository;
+use HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType;
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\MedicalProviderGroupTransformer;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -80,6 +84,11 @@ class InstitutionSignUpFormType extends AbstractType
                 'multiple' => false,
                 'choices' => InstitutionTypes::getFormChoices(),
             ));
+        
+        $builder ->add('medicalProviderGroups', 'medicalProviderGroup_autocomplete', array(
+                        'label' => 'Medical Provider Group / Network'
+                         
+        ));
         
         if ($options['include_terms_agreement']) {
         	$builder->add('agree_to_terms', 'checkbox', array(
