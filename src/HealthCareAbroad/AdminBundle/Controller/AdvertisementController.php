@@ -172,7 +172,6 @@ class AdvertisementController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-
             $this->saveMedia($request->files->get('advertisement'), $advertisement);
 
             if($advertisement->getId()) {

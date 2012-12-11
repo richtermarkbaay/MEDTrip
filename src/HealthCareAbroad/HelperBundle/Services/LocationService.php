@@ -105,13 +105,13 @@ class LocationService
 	            throw LocationServiceException::missingRequiredCountryDataKey($key);
 	        }
 	    }
-	    
+
 	    $country = new Country();
 	    $country->setId($data['id']);
 	    $country->setName($data['name']);
 	    $country->setSlug($data['slug']);
-	    $country->setAbbr($data['abbr']);
-	    $country->setCode($data['code']);
+	    $country->setAbbr(isset($data['abbr']) ? $data['abbr'] : '');
+	    $country->setCode(isset($data['code']) ? $data['code'] : '');
 	    $country->setStatus(Country::STATUS_ACTIVE);
 	    
 	    return $country;

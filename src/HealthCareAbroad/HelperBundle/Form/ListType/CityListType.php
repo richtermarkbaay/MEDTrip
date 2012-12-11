@@ -38,10 +38,10 @@ class CityListType extends AbstractType
     
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        
-    	$resolver->setDefaults(array(
-        	//'choices' => array(1=> 'city 1', 2 => 'city 2')
-    	    'choices' => array()
+        $resolver->setDefaults(array(
+            'empty_value' => '<- select city ->',
+            'attr' => array('class' => 'city_dropdown'),
+            'choices' => array()
         ));
     }
    

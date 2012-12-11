@@ -45,7 +45,7 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
         }
         
         $param = $this->advertisement->getInstitution(); // TODO - This param should be dynamic
- 
+
         foreach($data as $i => $each) {
             $property = $each->getAdvertisementPropertyName();
 

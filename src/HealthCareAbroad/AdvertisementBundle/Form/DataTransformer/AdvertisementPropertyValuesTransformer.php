@@ -49,7 +49,7 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             }
 
             if($property->getDataType()->getFormField() == 'entity') {
-        
+
                 $newValue = $this->em->getRepository($property->getDataClass())->find($each->getValue());
 
                 if($property->getDataType()->getColumnType() != 'collection') {                    
@@ -95,7 +95,7 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
     {
         $advertisementPropertyValues = $advertisement->getAdvertisementPropertyValues();
         $existingCollectionValues = $collectionValues = array();
-        
+
         foreach($advertisementPropertyValues as $each) {   
 
             $property = $each->getAdvertisementPropertyName();
@@ -119,7 +119,7 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             $advertisementType = $property->getDataType();
             $config = json_decode($property->getPropertyConfig(), true);
 
-            if($config['type'] == 'file' && is_null($each->getValue())) {
+            if(is_null($each->getValue())) {
                 $advertisementPropertyValues->remove($i);
                 continue;
             }
@@ -166,6 +166,6 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             }
         }
 
-       return $advertisement;
+        return $advertisement;
     }
 }

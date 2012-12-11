@@ -116,7 +116,13 @@ class InstitutionTreatmentsController extends Controller
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
+            'routes' => array(
+                            'gallery' => 'admin_institution_gallery', 
+                            'media_edit_caption' => 'institution_media_edit_caption',
+                            'media_delete' => 'institution_media_delete'
+            )
         );
+        
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
 

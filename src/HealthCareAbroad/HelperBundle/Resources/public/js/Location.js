@@ -14,24 +14,22 @@ var Location = {
         if (!citiesElem) {
             citiesElem = elem.parents('form').find('select.city_dropdown').first();
         }
-        
+		var emptyValue = citiesElem.children(':first');
+
 		citiesElem.attr("disabled", true).html('<option value="0">Loading...</option>');
-		
+
 		$.ajax({
 		   url:  Location.loadCitiesUrl,
 		   data: {'countryId': countryId, 'selectedCityId': selectedCityId },
 		   dataType: 'json',
 		   type: 'get',
 		   success: function(cities){
-		       citiesElem.empty();
-	            $.each(cities, function(e){
-	                citiesElem.append('<option value="'+ this.id +'" '+(this.id==selectedCityId ? 'selected': '')+' >' + this.name + '</option>')
-	            });
+			   citiesElem.empty().append(emptyValue);
+	           $.each(cities, function(e){
+	               citiesElem.append('<option value="'+ this.id +'" '+(this.id==selectedCityId ? 'selected': '')+' >' + this.name + '</option>')
+	           });
 	            citiesElem.attr('disabled', false);
 		   }
 		});
-	
-	}
-	
-	
+	}	
 }

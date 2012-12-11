@@ -10,8 +10,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             - NotBlank: {message: 'Institution name is required.', groups: [institutionRegistration, editInstitutionInformation]}
         country:
             - NotBlank: {message: 'Country is required.', groups: [editInstitutionInformation]}
-        city:
-            - NotBlank: {message: 'City is required.', groups: [editInstitutionInformation]}
         address1:
             - NotBlank: {message: 'Address is required.', groups: [editInstitutionInformation] }
         contactEmail:

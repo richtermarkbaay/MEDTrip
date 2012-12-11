@@ -70,6 +70,9 @@
 
     				        {{ form_row(propertyValue.advertisementPropertyName) }}
     				        {{ form_row(propertyValue.value) }}
+    				        
+    				    {% else %}
+    				        <div style="display:none">{{ form_row(form.advertisementPropertyValues) }}</div>    
     				    {% endfor %}
     				    
     				    {{ form_row(form.dateExpiry) }}
@@ -84,7 +87,9 @@
         {% endembed %}
     </div>
 
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
+    Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
             var institutionId = $('#advertisement_institution').val();
