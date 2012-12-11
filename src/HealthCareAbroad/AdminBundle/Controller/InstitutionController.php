@@ -2,7 +2,6 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
