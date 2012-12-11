@@ -34,6 +34,18 @@ class InstitutionPropertiesController extends Controller
         }
     }
     
+    public function indexAction()
+    {
+        $offeredServiceRepository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty');
+         
+        $offeredServices = $offeredServiceRepository->getAllServicesByInstitution($this->institution);
+        //var_dump($offeredServices);exit;
+        return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
+                        'offeredServices' => $offeredServices,
+                        'institution' => $this->institution
+        ));
+    }
+     
     public function addAncilliaryServiceAction(Request $request)
     {
         $offeredServicesArray = $this->getRequest()->get('offeredServicesData');

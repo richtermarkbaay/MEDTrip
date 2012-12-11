@@ -77,7 +77,7 @@ class InstitutionPropertyService
             }
         }
         else {
-            $this->createInstitutionProperty($instituionProperty);
+            $this->save($institutionProperty);
         }
     }
     /**

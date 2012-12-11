@@ -314,34 +314,8 @@ class InstitutionController extends Controller
     	));
    	}
    	
-   	/**
-   	 * Add Instiution Offered Services
-   	 */
    	public function addInstitutionOfferedServicesAction(Request $request)
    	{
-   	    
-    		$form = $this->createForm(new InstitutionOfferedServicesFormType(),$this->institution);
-   	
-//    		if ($request->isMethod('POST')) {
-   	
-//    			$form->bind($request);
-//    			if ($form->isValid()) {
-   	
-//    				$institution = $this->get('services.institution.factory')->save($form->getData());
-//    				$this->get('session')->setFlash('notice', "Successfully updated Offered Services");
-   	
-//    				//create event on editInstitution and dispatch
-//    				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-   				
-//    				return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
-//    			}
-//    		}
-//    		var_dump($form);exit;
-//    		return $this->render('AdminBundle:Institution:addOfferedServices.html.twig', array(
-//    						'form' => $form->createView(),
-//    						'institution' => $this->institution,
-//    						'newObject' => true
-//    		));
    	    $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
    	    $formActionUrl = $this->generateUrl('admin_institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
    	    if ($request->isMethod('POST')) {
