@@ -20,6 +20,25 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block websites_custom_field_widget %}
+    {% spaceless %}
+    
+        <div>
+                <label >Institution Website</label>
+                <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" />
+       
+                <label >Facebook Account</label>
+                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}"  />
+         
+                <label >Twitter Account</label>
+                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}"  />
+            
+        </div>
+        <div class="clearfix"></div>
+    
+    {% endspaceless %}
+{% endblock %}
+
 {% block detailed_street_address_widget %}
     {% spaceless %}
     

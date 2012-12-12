@@ -166,6 +166,7 @@ class InstitutionController extends Controller
      * 
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author Chaztine Blance
      */
     public function addDetailsAction(Request $request){
        
@@ -210,7 +211,6 @@ class InstitutionController extends Controller
     	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
     
     	if ($request->isMethod('POST')) {
-    		 
     		$form->bindRequest($request);
     		if ($form->isValid()) {
     			
