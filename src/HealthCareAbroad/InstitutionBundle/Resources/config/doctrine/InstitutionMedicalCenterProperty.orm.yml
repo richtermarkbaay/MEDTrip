@@ -1,0 +1,31 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty:
+    type: entity
+    table: institution_medical_center_properties
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterPropertyRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        value:
+            type: text
+            nullable: false
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            joinColumn:
+                name: institution_medical_center_id
+                referencedColumnName: id
+        institutionPropertyType:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType
+            joinColumn:
+                name: institution_property_type_id
+                referencedColumnName: id

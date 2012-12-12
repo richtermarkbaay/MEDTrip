@@ -18,7 +18,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-class InstitutionPropertyService
+class InstitutionMedicalCenterPropertyService
 {
     /**
      * @var Registry
@@ -47,15 +47,6 @@ class InstitutionPropertyService
      * @param Institution $institution
      * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty
      */
-    public function createInstitutionPropertyByName($propertyTypeName, Institution $institution=null)
-    {
-        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
-        $property = new InstitutionProperty();
-        $property->setInstitution($institution);
-        $property->setInstitutionPropertyType($propertyType);
-        
-        return $property;
-    }
     
     public function createInstitutionMedicalCenterPropertyByName($propertyTypeName, Institution $institution=null, InstitutionMedicalCenter $center)
     {
@@ -68,14 +59,14 @@ class InstitutionPropertyService
         return $property;
     }
     
-    public function save(InstitutionProperty $institutionProperty)
+    public function save(InstitutionMedicalCenterProperty $imcProperty)
     {
         $em = $this->doctrine->getEntityManager();
-        $em->persist($institutionProperty);
+        $em->persist($imcProperty);
         $em->flush();
     }
     
-    public function createInstitutionPropertyByServices(InstitutionProperty $institutionProperty)
+    public function createInstitutionMedicalCenterPropertyByServices(InstitutionProperty $institutionProperty)
     {
         $institution = $institutionProperty->getInstitution();
         $ipType = $institutionProperty->getInstitutionPropertyType();
