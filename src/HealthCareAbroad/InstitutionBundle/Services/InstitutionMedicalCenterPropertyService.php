@@ -18,7 +18,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-class InstitutionPropertyService
+class InstitutionMedicalCenterPropertyService
 {
     /**
      * @var Registry
@@ -47,15 +47,6 @@ class InstitutionPropertyService
      * @param Institution $institution
      * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty
      */
-    public function createInstitutionPropertyByName($propertyTypeName, Institution $institution=null)
-    {
-        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
-        $property = new InstitutionProperty();
-        $property->setInstitution($institution);
-        $property->setInstitutionPropertyType($propertyType);
-        
-        return $property;
-    }
     
     public function createInstitutionMedicalCenterPropertyByName($propertyTypeName, Institution $institution=null, InstitutionMedicalCenter $center)
     {
@@ -68,31 +59,32 @@ class InstitutionPropertyService
         return $property;
     }
     
-    public function save(InstitutionProperty $institutionProperty)
+    public function save(InstitutionMedicalCenterProperty $imcProperty)
     {
         $em = $this->doctrine->getEntityManager();
-        $em->persist($institutionProperty);
+        $em->persist($imcProperty);
         $em->flush();
     }
     
-    public function createInstitutionPropertyByServices(InstitutionProperty $institutionProperty)
+    public function createInstitutionMedicalCenterPropertyByServices(InstitutionMedicalCenterProperty $imcProperty)
     {
-        $institution = $institutionProperty->getInstitution();
-        $ipType = $institutionProperty->getInstitutionPropertyType();
-        $ipArray = $institutionProperty->getValue();
-        
-        if(\is_array($ipArray)) {
-            foreach($ipArray as $key => $value)
+        $institution = $imcProperty->getInstitution();
+        $center = $imcProperty->getInstitutionMedicalCenter();
+        $imcType = $imcProperty->getInstitutionPropertyType();
+        $imcArray = $imcProperty->getValue();
+        if(\is_array($imcArray)) {
+            foreach($imcArray as $key => $value)
             {
-                $institutionProperty = new InstitutionProperty();
-                $institutionProperty->setInstitution($institution);
-                $institutionProperty->setInstitutionPropertyType($ipType);
-                $institutionProperty->setValue($value);
-                $this->save($institutionProperty);
+                $imcProperty = new InstitutionMedicalCenterProperty();
+                $imcProperty->setInstitution($institution);
+                $imcProperty->setInstitutionPropertyType($imcType);
+                $imcProperty->setInstitutionMedicalCenter($center);
+                $imcProperty->setValue($value);
+                $this->save($imcProperty);
             }
         }
         else {
-            $this->save($institutionProperty);
+            $this->save($imcProperty);
         }
     }
     /**
