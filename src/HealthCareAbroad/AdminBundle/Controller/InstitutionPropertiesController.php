@@ -47,13 +47,14 @@ class InstitutionPropertiesController extends Controller
      
     public function addAncilliaryServiceAction(Request $request)
     {
+        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
         if($request->get('imcId')) {
             $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
             $imcProperty = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id')->getData();
             $imcProperty->setValue($offeredServicesArray);
+            $this->get('services.institution_medical_center_property')->createInstitutionMedicalCenterPropertyByServices($imcProperty);
         }
         else {
-            $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
             $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
             $institutionProperty->setValue($offeredServicesArray);
             $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
@@ -79,5 +80,12 @@ class InstitutionPropertiesController extends Controller
             'form' => $form->createView()
         );
         return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
+    }
+    private function _jsonResponse($data=array(), $code=200)
+    {
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
     }
 }

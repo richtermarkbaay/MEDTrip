@@ -66,24 +66,25 @@ class InstitutionMedicalCenterPropertyService
         $em->flush();
     }
     
-    public function createInstitutionMedicalCenterPropertyByServices(InstitutionProperty $institutionProperty)
+    public function createInstitutionMedicalCenterPropertyByServices(InstitutionMedicalCenterProperty $imcProperty)
     {
-        $institution = $institutionProperty->getInstitution();
-        $ipType = $institutionProperty->getInstitutionPropertyType();
-        $ipArray = $institutionProperty->getValue();
-        
-        if(\is_array($ipArray)) {
-            foreach($ipArray as $key => $value)
+        $institution = $imcProperty->getInstitution();
+        $center = $imcProperty->getInstitutionMedicalCenter();
+        $imcType = $imcProperty->getInstitutionPropertyType();
+        $imcArray = $imcProperty->getValue();
+        if(\is_array($imcArray)) {
+            foreach($imcArray as $key => $value)
             {
-                $institutionProperty = new InstitutionProperty();
-                $institutionProperty->setInstitution($institution);
-                $institutionProperty->setInstitutionPropertyType($ipType);
-                $institutionProperty->setValue($value);
-                $this->save($institutionProperty);
+                $imcProperty = new InstitutionMedicalCenterProperty();
+                $imcProperty->setInstitution($institution);
+                $imcProperty->setInstitutionPropertyType($imcType);
+                $imcProperty->setInstitutionMedicalCenter($center);
+                $imcProperty->setValue($value);
+                $this->save($imcProperty);
             }
         }
         else {
-            $this->save($institutionProperty);
+            $this->save($imcProperty);
         }
     }
     /**
