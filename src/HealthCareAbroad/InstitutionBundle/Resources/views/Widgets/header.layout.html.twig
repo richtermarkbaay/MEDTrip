@@ -1,21 +1,17 @@
-
-<div id="header">
-    <div class="top_line"></div>
-    
-    <div class="container">
-        <div class="row">
-            <div class="span4">
-                <div class="logo"> 
-                    <a href="{{ path('main_homepage') }}"><img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad"></a> 
-                </div>
-            </div>
-            
-            <div class="pull-right">
-                <form class="navbar-search pull-left">
-                    <input type="text" class="search-query" placeholder="Search">
-                </form>
-                
-                <div class="pull-left">
+<header id="banner">
+	<div class="container">
+		<div class="row">
+			<div class="span4">
+				<div class="logo">
+					<a href="{{ path('main_homepage') }}"><img alt="healthcareabroad" src="{{ asset('images/institution/logo.png') }}"></a>
+				</div>
+			</div>
+			<div class="pull-right">
+				<form class="navbar-search pull-left">
+					<input type="text" placeholder="Search" class="search-query">
+				</form>
+				
+				<div class="pull-left">
                     <div class="dropdown"> 
                         <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#help"> Help <b class="caret"></b> </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -24,11 +20,11 @@
                         </ul>
                     </div>
                 </div>
-                <span class="pull-left">
-                    <p style="margin-left:10px;">you are logged in as</p>
-                </span>
                 
-                <div class="pull-right">
+				<div class="pull-left">
+					<p>you are logged in as</p>
+				</div>
+				<div class="pull-right">
                     <div class="dropdown"> 
                         <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="{{ path('institution_editAccount') }}"> {{ app.user.username }} <b class="caret"></b> </a>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -38,9 +34,13 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!--End of container -->
-</div>
-<!--End of header -->
+			</div>
+		</div>
+	</div>
+	<!--End of container -->
+	
+	{% set disableMainNavigation = disableMainNavigation is defined and disableMainNavigation %}
+    {% if not disableMainNavigation %}
+        {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
+    {% endif %}
+</header>

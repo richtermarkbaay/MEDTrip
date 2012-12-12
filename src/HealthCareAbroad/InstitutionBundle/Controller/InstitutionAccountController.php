@@ -150,4 +150,22 @@ class InstitutionAccountController extends InstitutionAwareController
             'institution' => $this->institution
         ));
     }
+    
+    /**
+     * Ajax handler for loading tabbed contents in institution profile page
+     * 
+     * @param Request $request
+     */
+    public function loadTabbedContentsAction(Request $request)
+    {
+        /*
+         'loadActiveMedicalCenters': '', 
+        'loadInstitutionServices':'',
+        'loadInstitutionAwards': ''
+         */
+        $output = array();
+        $output['loadActiveMedicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+        
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
 }

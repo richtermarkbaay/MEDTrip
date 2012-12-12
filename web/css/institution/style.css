@@ -26,21 +26,6 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-.hidden {
-    display: none;
-    visibility: hidden;
-}
-
-.invisible {
-    visibility: hidden;
-}
-
-
-.clear {
-    clear: both;
-    padding-top:6px;
-}
-
 /*-------------------------
     Nav Bar
  --------------------------*/
@@ -54,29 +39,24 @@ h1, h2, h3, h4, h5, h6 {
 /*******************************************************************
  *      Header
  *******************************************************************/
-#header {
+#banner {
     background:#f5f5f5;
     padding: 0;
     padding-top:0;
     position:relative;
     clear:both;
+    border-top: #cccccc 1px solid;
 }
-
-#header .top_line {
-       position:absolute;
-       top:1px;
-       left:0;
-       width:100%;
-       height:1px;
-       background:#e0e0e0;
+#banner .nav
+{
+    margin-bottom:0;
 }
-
-#header .logo {
+#banner .logo {
     margin-top: 8px;
     float:left;
 }
 
-#header p 
+#banner p 
 {
     padding-top: 10px;
     padding-left: 8px;
@@ -85,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
     
 }
 
-#header .links {
+#banner .links {
     float: right;
     margin-top: 15px;
 }
@@ -108,199 +88,402 @@ h1, h2, h3, h4, h5, h6 {
 /*******************************************************************
  *      Header2
  *******************************************************************/
-#header2 {
-    padding:20px 0 0 0;
+#banner2 {
+    padding:10px 0 0 0;
     position:relative;
     clear:both;
     background-color: #bcd9e4;
 }
-#header2 a:link, a:visited, a:active, a:focus {
+#banner2 a:link, a:visited, a:active, a:focus {
     color: #40454d;
 }
-#header2 .top_line2 {
-       position:absolute;
-       top:1px;
-       left:0;
-       width:100%;
-       height:1px;
-       background:#e0e0e0;
-}
 
-#header2 .logo2 {
-    margin-top: 8px;
-    float:left;
-}
-
-#header2 p 
+#banner2 p 
 {
     padding-top: 10px;
     
 }
 
 
+/*dropdownmenu*/
 
+.dropdown
+{
+  margin-top:10px;
+}
+.dropdown a
+{
+  margin-left:5px;
+}
+.dropdown-menu
+{
+  margin-top:10px;
+  border-radius:3px;
+  padding-left:5px;
+  padding-right:10px;
+}
+.dropdown-menu li > a:hover,
+.dropdown-menu li > a:focus,
+.dropdown-submenu:hover > a
+{
+  background-image:none;
+  background-color:#BCD9E4;
+}
 
+/*-----------------------------
+       FEATURED
+-------------------------------*/
+#featured
+{
+  margin: 20px 20px 10px 20px;
+}
+#featured .container
+{
+   border: #d0d0d0 solid 1px;
+   padding: 20px 0;
+}
+#featured .container h4
+{
+  margin: 0 20px;
+}
+#featured .container p
+{
+  margin: 0 20px;
+}
 
 /*-----------------------------
        CONTENT
 -------------------------------*/
 
-#content_wrap {
-    padding-top: 20px;
+#content {
     margin-bottom: 50px;
 }
+#content h1 {
 
-.span12 .aside 
-{
-    padding: 20px 20px 20px 20px;
-}
-.span12 .aside h4
-{
-    margin-bottom: 5px;
-}
-.span12 .welcome h3
-{
-    margin-bottom: 5px;
-}
-.bread_crumbs {
-    padding-bottom: 20px;
-}
-.bread_crumbs span
-{
-    line-height: 20px;
-}
-
-.bread_crumbs img {
-    margin-top: -6px;
-}
-.bread_crumbs a:link, a:visited, a:active, a:focus {
-    color: #40454d;
-}
-.maincontent
-{
-    padding-top: 20px;
-}
-.maincontent .content
-{
-    margin-left: -30px;
-}
-
-.maincontent h1 {
-
-    font-size: 30px;
-    background: #fff url(/images/institution/heading_marking.png) left repeat-x;
-}
-
-.maincontent h1 span {
-    background: #fff;
-    padding-right: 10px;
-
-}
-.maincontent h4 {
-
-    background: #fff url(/images/institution/heading_marking.png) left repeat-x;
-}
-
-.maincontent h4 span {
-    background: #fff;
-    padding-right: 10px;
-
-}
-
-.maincontent .heading2 {
-    padding-bottom: 20px;
     font-size: 24px;
     background: #fff url(/images/institution/heading_marking.png) left repeat-x;
-    margin-bottom: 20px;
-
 }
 
-.maincontent .heading_text2 {
-    background: #fff;
-    /*padding-left: 25px;*/
+#content h1 span {
+    background: #ffffff;
     padding-right: 10px;
-    float: left;
+}
+#content h6 {
+    font-size: 16px;
+    background: #fff url(/images/institution/heading_marking.png) left repeat-x;
 }
 
-
-
-.maincontent_item {
-    position: relative;
-    margin-left: 25px;
-    margin-bottom: 30px;
-}
-.brief_description .btn
-{
-    padding: 20px 100px;
-    font-size: 30px;
-    float: right;
-
+#content h6 span {
+    background: #ffffff;
+    padding-right: 10px;
 }
 
-
-.upper_part {
-    padding-top: 25px;
-    padding-left: 30px !important;
-    padding-right: 40px;
-    padding-bottom: 20px;
-}
-    
-    
 
 /*-----------------------------
-       FORMS
+       content nav wizard
 -------------------------------*/
-#formwizard
-{
-    min-height: 500px;
+
+.navstep {
+    margin-left:0;
+    list-style:none;
+    margin-top: 10px;
 }
-.phonenumber input[type="text"]
+.navstep h2
 {
-    margin-bottom: 0px;
+  float: left;
+  margin: -10px 30px 0px 15px;
+
+}
+.navstep span
+{
+  font-size: 14px;
+  font-weight: normal;
+  top: 20px;
+
+}
+.navstep > li > a {
+  display:block;
+  float: left;
+  background-image: url("/images/institution/step2.png");
+  background-repeat: no-repeat;
+  color: #cccccc;
+  width: 20%;
+  line-height:15px;
+  padding-top: 10px;
+  font-weight: normal;
+  margin-bottom: 30px;
+}
+
+.navstep > li > a:hover {
+text-decoration:none;
+}
+
+.nav-steps > .active > a,.nav-steps > .active > a:hover {
+    color:#336699;
+    border-bottom-color:transparent;
+    cursor:default;
+    background-image: url("/images/institution/step.png");
+    background-repeat: no-repeat;
+}
+
+.addnewclinic
+{
+  clear: both;
+}
+.addnewclinic input
+{
+    width: 60%;
+}
+.addnewclinic textarea
+{
+    width: 80%;
+    display: block;
+    margin-bottom: 0;
+}
+.addnewclinic label
+{
+    margin-bottom: 2px;
+}
+.addnewclinic h4
+{
+    clear: both;
+}
+.addnewclinic table
+{
+    width: 70%;
+}
+.addnewclinic table input
+{
+    width: 10%;
+}
+.phonenumber span
+{
+    width:15%;
+    float: left;
+}
+.address span
+{
+    width:30%;
+    float: left;
+}
+.address label
+{
+    clear: both;
+}
+.address input
+{
+    width: 80%;
+    clear: both;
+}
+.address2
+{
+    clear: both;
+}
+.address2 span
+{
+    width:40%;
+    float: left;
+}
+.address2 label
+{
+    clear: both;
+}
+.address2 input
+{
+    width: 80%;
+    clear: both;
+}
+.address3 span
+{
+    width:50%;
+    float: left;
+}
+.address3 label
+{
+    clear: both;
+}
+.address3 input
+{
+    width: 80%;
+    clear: both;
+}
+.timezone
+{
+    clear: both;
 }
 .mapbox
 {
-    height:300px;
-    background-color: #e4e4e4;
-    margin-bottom: 10px;
+  height: 280px;
+  border: 1px solid #cccccc;
+  width: 60%;
+  margin-bottom: 10px;
 }
-.formbox
+#clinicdetails
 {
-    min-height: 500px;
+    clear: both;
+}
+#clinicdetails input[type="radio"], input[type="checkbox"] 
+{
+  cursor:pointer;
+  line-height:normal;
+  margin:-4px 3px 0 0;
+}
+#services input[type="radio"], input[type="checkbox"] 
+{
+  cursor:pointer;
+  line-height:normal;
+  margin:-4px 3px 0 0;
+}
+#services ul
+{
+  margin-left: 0;
+
+}
+#services li
+{
+  list-style: none;
+  float: left;
+  width: 30%;
+}
+#services input
+{
+  width: 10%;
+}
+#awards
+{
+    clear: both;
+}
+#awards table
+{
+    width: 100%;
+}
+#specialist table
+{
+    width: 100%;
 }
 /*-----------------------------
-       SIDE ITEMS
+       maincontent
 -------------------------------*/
+.maincontent input
+{
+  width: 60%;
+}
+.maincontent input[type="radio"], input[type="checkbox"] 
+{
+  cursor:pointer;
+  line-height:normal;
+  margin:2px 3px 0 0;
+  width: 3%;
+  float: left;
+}
+.maincontent .btn-large
+{
+  padding-left: 50px;
+  padding-right: 50px;
 
-.aside_wrap {
-   margin-top: 20px;
+}
+.maincontentblock
+{
+    clear: both;
+}
+.maincontentblock2
+{
+    clear: both;
+    margin-top: 30px;
+}
+.maincontent .box
+{
+    border: 1px solid #cccccc;
+    padding: 10px 20px 20px 20px;
+    background-color: #ffffff;
+    margin-top: -40px;
+}
+.maincontent .box2
+{
+    border: 1px solid #cccccc;
+    padding: 10px 20px 20px 20px;
+    background-color: #ffffff;
+    height: 300px;
+}
+.maincontent .box p
+{
+    margin-top:10px;
 }
 
-.aside_wrap .heading {
-    padding-bottom: 20px;
-    font-size: 20px;
-    background: #fff url(/images/institution/heading_marking.png) left repeat-x;
-    margin-bottom: 20px;
+/*-----------------------------
+       maincontent2
+-------------------------------*/
+.maincontent2 input
+{
+  width: 90%;
 }
+.maincontent2 input[type="radio"], input[type="checkbox"] 
+{
+  cursor:pointer;
+  line-height:normal;
+  margin:2px 3px 0 0;
+  width: 3%;
+  float: left;
+}
+.maincontent2 .btn-large
+{
+  padding-left: 50px;
+  padding-right: 50px;
 
-.aside_wrap .heading_text {
-    background: #fff;
-    padding-right: 10px;
+}
+.maincontent2 .box
+{
+    border: 1px solid #cccccc;
+    padding: 10px 20px 20px 20px;
+    background-color: #ffffff;
+    margin-top: -40px;
+}
+.maincontent2 .box2
+{
+    border: 1px solid #cccccc;
+    padding: 10px 20px 20px 20px;
+    background-color: #ffffff;
+    height: 300px;
+}
+.maincontent2 .box p
+{
+    margin-top:10px;
+}
+.phonenumber2 span
+{
+    width: 30%;
     float: left;
 }
-
-.aside {
-    border: #d0d0d0 solid 1px;
-    margin-bottom: 20px;
-    padding: 15px 15px 0 15px;
-}
-.aside .box
+.phonenumber2 input
 {
-    padding: 10px 20px 5px 15px;
-    border: none;
+    width: 80%;
+}
+.span6 .mapbox
+{
+    width: 100%;
+}
+.span6 .btn-large
+{
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 24px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 
+/*-----------------------------
+       SIDEBAR
+-------------------------------*/
+
+.sidebar
+{
+  margin:0;
+}
+.sidebar h4
+{
+  text-transform: uppercase;
+}
 /*-----------------------------
        FOOTER
 -------------------------------*/
@@ -321,55 +504,27 @@ h1, h2, h3, h4, h5, h6 {
     background-color:#3e424b;
 }
 
-/*******************************************************************
- * drop down
- *******************************************************************/
- 
-.nav {
-    margin-bottom:0;
-}
-.nav-tabs
-{
-    /*border-bottom:none;*/
-}
-/*******************************************************************
- *form wizard
- *******************************************************************/
- 
-.step {
-    width:100%;
-}
-.nav-tabs
-{
-    /*border-bottom:none;*/
-}
+
+
+
+/*-----------------------------
+       TABLE FORM
+-------------------------------*/
 
 .table th, .table td
 {
     vertical-align: middle;
+    padding: 4px 8px;
+
 }
-.table th, .table td input[type="radio"], input[type="checkbox"] {
-  cursor:pointer;
-  line-height:normal;
-  margin:-4px 3px 0 0;
-}
+
 .table th, .table td h5
 {
     margin-bottom: 0;
 
-
 }
 
-.span3 input[type="radio"], input[type="checkbox"] {
-  cursor:pointer;
-  line-height:normal;
-  margin:-4px 3px 0 0;
-}
 
-.qnumber
-{
-    width: 30px;
-}
 /* Dashboard  */
 
 ul.dashboard-statistics, ul.dashboard-member-activity {
@@ -378,10 +533,8 @@ ul.dashboard-statistics, ul.dashboard-member-activity {
 ul.dashboard-statistics h4, ul.dashboard-member-activity h4 {
     margin-bottom:0;
 }
-.box ul.dashboard-statistics li, ul.dashboard-member-activity li {
+ul.dashboard-statistics li, ul.dashboard-member-activity li {
     list-style: none;
-    padding-bottom:10px;
-    padding-top:10px;
 }
 ul.dashboard-statistics li:first-child, ul.dashboard-member-activity li:first-child {
     border-top: none;
@@ -419,7 +572,6 @@ ul.dashboard-statistics i[class*=icon] {
     margin-left: 15px;
 }
 
-
 img.dashboard-member-activity-avatar {
     height:30px;
     width:30px;
@@ -427,11 +579,6 @@ img.dashboard-member-activity-avatar {
     float:left;
     margin-left:0px;
     margin-right:15px;
-}
-
-.box ul.dashboard-statistics li, ul.dashboard-member-activity li {
-    border-bottom: 1px solid #ebebeb;
-    border-top: 1px solid #fff;
 }
 .error {
     color:#B94A48;
@@ -467,33 +614,7 @@ img.dashboard-member-activity-avatar {
     background-color: #f5f5f5;
     margin-bottom: 20px;
 }
-.box-content2 {
-    padding:10px;
-    background-color: #fdfdfd;
-    margin-bottom: 20px;
-}
-/*accordion*/
-.accordion-inner .span12, .span6
-{
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
-.accordion-inner hr
-{
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
-.accordion-inner h5, h6
-{
-    margin-bottom: 0px;
-    margin-top: 10px;
-}
-.accordion-heading
-{
-    font-size: 18px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
+
 /*institutionprofile*/
 img.dashboard-institution-activity-avatar {
     height:150px;
@@ -508,51 +629,9 @@ img.dashboard-institution-activity-avatar {
     border-radius: 3px;
     margin-bottom: 10px;
 }
-.marginleft0
-{
-    margin-left: 0;
-}
-.dropdown
-{
-    margin-top:10px;
-}
-.dropdown a
-{
-    margin-left:5px;
-}
-.dropdown-menu
-{
-    margin-top:10px;
-    border-radius:3px;
-    padding-left:5px;
-    padding-right:10px;
-}
-.dropdown-menu li > a:hover,
-.dropdown-menu li > a:focus,
-.dropdown-submenu:hover > a
-{
-    background-image:none;
-    background-color:#BCD9E4;
-}
-/*accordion account settings*/
-.accountsettings .accordion-heading, .accordion-toggle
-{
-    padding-top:2px;
-    padding-bottom:2px;
-    font-size: 14px;
-    padding-left: 10px;
-}
-.accountsettings .pull-left
-{
-    margin-top: 10px;
-}
-.accountsettings label
-{
-    font-size: 12px;
-    margin: 0 10px 0 0;
-    text-align: right;
 
-}
+
+
 input:focus:required:invalid:focus, textarea:focus:required:invalid:focus, select:focus:required:invalid:first-child
 {
     border-color: #BCD9E4;
@@ -563,13 +642,9 @@ dt
     line-height: 30px;
     margin-top: 5px;
 }
-.accountsettings .accordion-inner
-{
-    border-top:none;
-}
 /*change profile photo*/
 a.gallerypic{
-  width:140px;
+  width:170px;
   text-decoration:none;
   position:relative;
   display:block;
@@ -603,54 +678,55 @@ a.gallerypic:hover span.image-icon{
     margin-top:15px; 
     margin-left:15px;
 }
-/*creating an account */
-#popupmsg .modal-header
-{
-    border-bottom: none;
-}
-#popupmsg .modal-footer
-{
-    background-color: #FFFFFF;
-    border-top: none;
-}
-#popupmsg .modal-body
-{
-    text-align: center;
-    font-size: 18px;
-    padding-bottom: 0;
-}
-#popupmsg h3
-{
-    margin-top: 10px;
-}
-#signupForm .btn-large
-{
-    padding: 10px 80px;
-    font-size: 24px
-}
-#signupForm input[type="radio"], input[type="checkbox"] 
-{
-    margin-top: 0;
-    margin-right: 5px;
-}
-.message input[type="radio"], input[type="checkbox"] 
-{
-     margin-right: 5px;
-}
-.serviceslist
-{
-    margin-left: 10px;
-}
-.serviceslist li
-{
-    line-height: 20px;
-    width: 280px;
-    float: left;
-}
-/*end creating an account */
+
 /*doctors profile institutionprofile*/
 .editname
 {
-    margin-top:8px;
-    margin-left:5px;
+    margin-top:25px;
+    margin-left:15px;
+}
+.editname2
+{
+  margin-top:10px;
+  margin-left:10px;
+}
+/*nabage an account */
+.accountsettings .accordion-heading
+{
+    display:block;
+    padding-left:20px;
+    clear:both;
+}
+.accountsettings .accordion-heading h5
+{
+    float:left;
+    margin:10px 0 0 0;
+    clear:both;
+}
+.accountsettings .accordion-inner
+{
+    border-top:none;
+    clear:both;
+}
+.accountsettings span
+{
+    clear:both;
+}
+.accountsettings .btn-medium
+{
+  margin-right: 10px;
+}
+
+.tab-content .table
+{
+    width:100%;
+
+}
+.tabbable
+{
+    margin-top:20px;
+}
+.tabbable .btn-medium
+{
+  margin-bottom: 30px;
 }
