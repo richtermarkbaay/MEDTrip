@@ -9,6 +9,10 @@ use Symfony\Component\Form\AbstractType;
 
 class WebSitesFieldType extends AbstractType
 {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addModelTransformer(new WebsitesDataTransformer());
+    }
     public function getName()
     {
         return 'websites_custom_field';
@@ -18,9 +22,5 @@ class WebSitesFieldType extends AbstractType
     {
         return 'text';
     }
-    
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addModelTransformer(new WebsitesDataTransformer());
-    }
+
 }

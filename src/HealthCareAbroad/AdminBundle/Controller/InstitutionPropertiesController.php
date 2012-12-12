@@ -39,7 +39,6 @@ class InstitutionPropertiesController extends Controller
         $offeredServiceRepository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty');
          
         $offeredServices = $offeredServiceRepository->getAllServicesByInstitution($this->institution);
-        //var_dump($offeredServices);exit;
         return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
                         'offeredServices' => $offeredServices,
                         'institution' => $this->institution
@@ -48,11 +47,17 @@ class InstitutionPropertiesController extends Controller
      
     public function addAncilliaryServiceAction(Request $request)
     {
-        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
-        $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
-        $institutionProperty->setValue($offeredServicesArray);
-        $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
-        
+        if($request->get('imcId')) {
+            $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+            $imcProperty = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id')->getData();
+            $imcProperty->setValue($offeredServicesArray);
+        }
+        else {
+            $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
+            $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
+            $institutionProperty->setValue($offeredServicesArray);
+            $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
+        }
         return $this->_jsonResponse(array('success' => 1));
     }
     
