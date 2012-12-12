@@ -12,11 +12,7 @@ class WebsitesDataTransformer implements  DataTransformerInterface
         
         if (!$jsonValue) {
             
-            $jsonValue = array(
-                'main' => '',
-                'facebook' => '',
-                'twitter' => ''
-            );
+            $jsonValue = array('main' => '', 'facebook' => '','twitter' => '');
         }
         
         return $jsonValue;
