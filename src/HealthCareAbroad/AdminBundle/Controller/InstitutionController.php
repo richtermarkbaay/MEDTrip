@@ -207,9 +207,10 @@ class InstitutionController extends Controller
      * Edit Institution Details
      */
     public function editDetailsAction(Request $request){
-    
-    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
-    
+
+        // TODO - Need to verify? Temporarily removed OPTION_HIDDEN_FIELDS 'name'
+    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
+
     	if ($request->isMethod('POST')) {
     		$form->bindRequest($request);
     		if ($form->isValid()) {
