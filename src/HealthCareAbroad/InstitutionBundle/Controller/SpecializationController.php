@@ -43,7 +43,8 @@ class SpecializationController extends InstitutionAwareController
 
         return $this->render('InstitutionBundle:Specialization:index.html.twig', array(
             'institutionSpecializations' => $this->filteredResult,
-            'pager' => $this->pager
+            'pager' => $this->pager,
+            'institution' => $this->institution
         ));
     }
 
