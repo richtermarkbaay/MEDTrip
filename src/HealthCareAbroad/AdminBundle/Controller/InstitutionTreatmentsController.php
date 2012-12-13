@@ -107,8 +107,7 @@ class InstitutionTreatmentsController extends Controller
 
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
-    
-        //if$this->institutionMedicalCenter->getBusinessHours()
+        $ancilliaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), $this->institution->getId());
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -116,6 +115,7 @@ class InstitutionTreatmentsController extends Controller
             'selectedSubMenu' => 'centers',
             'form' => $form->createView(),
             'affiliations' => $affiliations,
+            'services' => $ancilliaryServices,
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
@@ -186,6 +186,7 @@ class InstitutionTreatmentsController extends Controller
 
                 $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
+                
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
