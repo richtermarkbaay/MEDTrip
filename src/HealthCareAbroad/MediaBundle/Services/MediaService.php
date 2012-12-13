@@ -41,6 +41,35 @@ class MediaService
         $this->filesystemManager = $filesystemManager;
     }
 
+    /**
+     * @param string $pathInfo
+     */
+    public static function getRoutes($pathInfo)    {
+        $routes = array();
+
+        if (strpos($pathInfo, 'admin') === 1) {
+            $routes['gallery'] = 'admin_institution_gallery';
+            $routes['gallery_add'] = 'admin_institution_gallery_add';
+            $routes['gallery_selection'] = 'admin_gallery_selection';
+            $routes['media_attach'] = 'admin_media_attach';
+            $routes['media_upload'] = 'admin_media_upload';
+            $routes['media_edit_caption'] = 'admin_media_edit_caption';
+            $routes['media_delete'] = 'admin_media_delete';
+        } else if (strpos($pathInfo, 'institution') === 1) {
+            $routes['gallery'] = 'institution_gallery';
+            $routes['gallery_add'] = 'institution_gallery_add';
+            $routes['gallery_selection'] = 'institution_gallery_selection';
+            $routes['media_attach'] = 'institution_media_attach';
+            $routes['media_upload'] = 'institution_media_upload';
+            $routes['media_edit_caption'] = 'institution_media_edit_caption';
+            $routes['media_delete'] = 'institution_media_delete';
+        } else {
+            throw new \Exception('Invalid pathinfo: '. $pathInfo);
+        }
+
+        return $routes;
+    }
+
     public function setResizer(Resizer $resizer)
     {
         $this->resizer = $resizer;
@@ -309,14 +338,14 @@ class MediaService
 
         return $success;
     }
-    
+
     public function uploadAds($file, $institutionId)
     {
         if (!$file->isValid()) {
             return $file->getError();
         }
         $filesystem = $this->filesystemManager->getAd($institutionId, 'local');
-        
+
         //TODO: rename/sanitize filename
         $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $caption = $file->getClientOriginalName();
@@ -330,7 +359,7 @@ class MediaService
 
         if ($proceed) {
             $imageAttributes = getimagesize($this->filesystemManager->getUploadRootDir().'/'.$filename);
-        
+
             $media = new Media();
             $media->setName($filename);
             $media->setContentType($imageAttributes['mime']);
@@ -343,14 +372,14 @@ class MediaService
 
             $in = new File($filename, $filesystem);
             $out = new File('thumbnail-'.$filename, $filesystem);
-        
+
             $format = image_type_to_extension($imageAttributes[2], false);
 
             //TODO: inject this dynamically selecting the optimal ImagineInterface available
             //$resizer = new SquareResizer(new \Imagine\Gd\Imagine());
             //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
-            $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));   
-            
+            $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
+
             $em = $this->entityManager;
             $em->persist($media);
             $em->flush($media);

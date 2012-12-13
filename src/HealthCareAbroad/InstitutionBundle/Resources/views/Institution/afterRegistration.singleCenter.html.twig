@@ -36,6 +36,7 @@
                         
                         {{ form_row(form.contactEmail, {label: 'Email', attr: {'class': 'span6'}} ) }}
                         {{ form_row(form.contactNumber) }}
+                        {{ form_row(form.websites) }}
                         
                         <div class="clearfix"></div>
                         <hr />
@@ -70,7 +71,7 @@
                     
                         <hr />
                         <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
-                       <span>I have no business hours</span> 
+                       <span>I have no business hours</span>
                         <div id="clinicHours">
                             <label for="Timezone">Clinic Hours</label>
                             {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}

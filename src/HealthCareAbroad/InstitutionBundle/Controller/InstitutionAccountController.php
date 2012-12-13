@@ -1,5 +1,5 @@
 <?php 
-/*
+/**
  * @author Chaztine Blance
  * Create Profile after Sign up
  */
@@ -148,6 +148,48 @@ class InstitutionAccountController extends InstitutionAwareController
         
         return $this->render($template, array(
             'institution' => $this->institution
+        ));
+    }
+    
+    /**
+     * Action page for Institution Profile Page Service Tab
+     *
+     * @param Request $request
+     */
+    public function profileServiceAction(Request $request)
+    {
+            $template = 'InstitutionBundle:Institution:profile.singleCenterServices.html.twig';
+    
+        return $this->render($template, array(
+                        'institution' => $this->institution
+        ));
+    }
+    
+    /**
+     * Action page for Institution Profile Page Awards Tab
+     *
+     * @param Request $request
+     */
+    public function profileAwardsAction(Request $request)
+    {
+        $template = 'InstitutionBundle:Institution:profile.singleCenterAwards.html.twig';
+    
+        return $this->render($template, array(
+                        'institution' => $this->institution
+        ));
+    }
+    
+    /**
+     * Action page for Institution Profile Page Specialist Tab
+     *
+     * @param Request $request
+     */
+    public function profileSpecialistAction(Request $request)
+    {
+        $template = 'InstitutionBundle:Institution:profile.singleCenterSpecialist.html.twig';
+    
+        return $this->render($template, array(
+                        'institution' => $this->institution
         ));
     }
 }

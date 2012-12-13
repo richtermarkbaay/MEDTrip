@@ -1,0 +1,26 @@
+<h1>
+	<span>Manage Clinic</span>
+</h1>
+<div class="row">
+	<div class="span2">
+		<a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal">
+			<img src="{{ asset('images/institution/image_ph.png') }}" alt="[Gallery Photo]" class="pic" />
+			<span class="image-icon"><img src="{{ asset('images/institution/image-icon.png') }}" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
+		</a>
+	</div>
+    <div class="span7">
+    	<h2 class="pull-left">{{ institution.name }}</h2>
+    	<div class="editname">
+    		<i class="icon-pencil" title="Edit"></i>
+    		<a href="#editinstitutionname" role="button" data-toggle="modal">
+    
+    		<small>Edit</small></a>
+    	</div>
+    	<div class="maincontentblock">
+    		<p>{{ institution.description }}
+    			<i class="icon-pencil" title="Edit"></i>
+    			<a href="#editinstitutiondescription" role="button" data-toggle="modal"><small>Edit</small></a>
+    		</p>
+    	</div>
+    </div>
+</div>
