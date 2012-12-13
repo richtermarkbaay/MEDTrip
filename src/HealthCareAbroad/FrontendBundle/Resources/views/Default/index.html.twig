@@ -1,34 +1,29 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+
 {% block content %}
-	{% block wrappedContent %}
-	
-		<div class="main">
-			<div class="box_outer" id="feature_outer">
-		    	<div class="Feature_news">
-					<div class="slider_wrap">
-						<div class="slider_items">
-							<div class="slider">
-									{% include 'FrontendBundle:Main:featuredSlider.html.twig' %}
-								</div> <!--Slider-->
-							</div> <!--Slider Items-->
-						<div class="clear"></div>
-					</div> <!--Slider_wrap-->
-				</div> <!--End Feature news-->
-			</div> <!--End Feature Outer-->	
-			
-			<!-- featured institution advertisement Slider Post -->
-			{% render 'FrontendBundle:Advertisement:showFeaturedInstitutionAdvertisement' %}
-			
-			<!-- featured listings -->
-			{% render 'FrontendBundle:Advertisement:showFeaturedListingAdvertisement' %} 
-			
-		</div> <!--End Main-->
-		<!-- Sidebar Navigation -->
-		{% block right_navigation %}
-			{% include 'FrontendBundle:Default:sidebar.html.twig' %}
-		{% endblock %}
-		
-	{% endblock %}
+
+    	<div id="main_content" class="row">
+    	
+    	    <!-- Main Content -->
+    		<div class="span8">
+                {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}
+                
+                {% include 'FrontendBundle:Widgets/Ads:featuredClinics.html.twig' %}
+
+                {% include 'FrontendBundle:Widgets:destinations.html.twig' %}
+    		</div> <!--End Main Content -->
+
+    		
+    		<!--Sidebar Content -->
+    		<div  id="aside_content" class="span4">
+                {% include 'FrontendBundle:Widgets:sidebarNews.html.twig' %}
+
+                {% include 'FrontendBundle:Widgets:sidebarTreatments.html.twig' %}
+
+                {% include 'FrontendBundle:Widgets/Ads:sidebarAds.html.twig' %}
+    		</div> <!--End of Sidebar Content -->
+
+    	</div>
 	
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
 

@@ -1,36 +1,33 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'feedback'%}
 {% block content %}
-     
-<div class="span12 marginleft0">
-    {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
-    
-    <div class="span9 marginleft0">
-        <div id="maincontent">
-            <div class="heading2">
-                <div class="heading_text2">
-                    Feedback
-                </div>
-            </div>
-        </div>
-        <div class="row-fluid">
-        	{% include '::notice.admin.html.twig' %}
-             <form novalidate="novalidate" action="{{ path('institution_feedback_create')}}" method="POST" {{ form_enctype(form) }} class="basic-form">
-		                    <!-- start id-form -->
-                {{ form_row(form.subject) }}
-                {{ form_row(form.message) }}
-                {{ form_rest(form) }} 
+    <section id="content">
+		<div class="container">
+			<div class="row">
+				<div class="maincontent">
+					<div class="span9">
+						<h1>
+							<span>Feedback</span>
+						</h1>
+						{% include '::notice.admin.html.twig' %}
+                         <form novalidate="novalidate" action="{{ path('institution_feedback_create')}}" method="POST" {{ form_enctype(form) }} class="form" id="signinForm" >
+            		                    <!-- start id-form -->
+                            {{ form_row(form.subject) }}
+                            {{ form_row(form.message) }}
+                            {{ form_rest(form) }} 
+            		
+            				<input class="btn btn-info" type="button" value="Send Feedback">
+							<input class="btn" type="button" value="Cancel">
+                        </form>
+					</div>
+					<!--End of span9-->
 		
-				<input type="reset" value="Reset" class="btn-medium btn"  />
-				<input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />
-            </form>
-        </div>
-    </div>
-  
-    <!-- dashboard sidebar -->
-    <div class="span3">
-        {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-    </div>
-</div>
-
+		            {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+				</div>
+				<!--End of addnewclinic-->
+			</div>
+			<!--End of row-->
+		</div>
+		<!--End of container-->
+    </section>
 {% endblock %}

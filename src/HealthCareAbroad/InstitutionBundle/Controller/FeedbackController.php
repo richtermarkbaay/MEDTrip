@@ -22,7 +22,8 @@ class FeedbackController extends InstitutionAwareController
         return $this->render('InstitutionBundle:Feedback:form.html.twig', array(
             'id' => null,
             'form' => $form->createView(),
-            'formAction' => $this->generateUrl('institution_feedback_create')
+            'formAction' => $this->generateUrl('institution_feedback_create'),
+            'institution' => $this->institution,
         ));
     }
 

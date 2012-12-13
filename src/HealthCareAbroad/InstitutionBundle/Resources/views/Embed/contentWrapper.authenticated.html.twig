@@ -1,10 +1,22 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
-<div id="content_wrap">
-    <div class="container content">
+{% set asideContent = asideContent is defined ? asideContent : {title: 'Welcome!', 'content': 'Please tell us more about your clinic.'}%}
+
+{% block aside %}
+<aside id="featured">
+	<div class="container">
+		<h4>{{ asideContent.title }}</h4>
+		<p>{{ asideContent.content }}</p>
+	</div>
+</aside>
+{% endblock %}
+
+<section id="content">
+    <div class="container">
         <div class="row">
-            {% block wrappedContent %}{% endblock %}
-            {% block sidebar %}{% endblock %}
+            <div class="maincontent">
+                {% block wrappedContent %}{% endblock %}
+                {% block sidebar %}{% endblock %}
+            </div>
         </div>
     </div>
-</div><!--End of container-->
-        
+</section>        

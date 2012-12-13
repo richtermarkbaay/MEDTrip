@@ -1,0 +1,23 @@
+{% set _tabbedContentPropertiesDefault = { id: '', hasButton: false, button: {id: '', label: 'Do Action', 'href': '#'} } %}
+{% set tabbedContentProperties = tabbedContentProperties is defined ? _tabbedContentPropertiesDefault | merge(tabbedContentProperties) : _tabbedContentPropertiesDefault %}
+{% spaceless %}
+<div class="tab-pane active" id="{{ tabbedContentProperties.id }}">
+    
+    <div class="row-fluid">
+        <div>
+            <div class="maincontentblock">
+                {% block tabbedContent %}{% endblock %}
+            </div>
+        </div>
+        
+        {% if  tabbedContentProperties.hasButton %}
+        <div class="pull-right">
+            <a class="btn btn-success btn-medium" id="{{ tabbedContentProperties.button.id }}" data-toggle="modal" role="button" title="" href="{{ tabbedContentProperties.button.href }}">
+                {{ tabbedContentProperties.button.label }}
+            </a>
+        </div>
+        {% endif %}
+        
+    </div>
+</div>
+{% endspaceless %}

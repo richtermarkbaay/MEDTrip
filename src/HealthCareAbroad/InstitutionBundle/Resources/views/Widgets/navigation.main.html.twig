@@ -1,30 +1,27 @@
 {% set _mainNavDefaults = {'selected' : 'dashboard'} %}
 {% set mainNavigation = mainNavigation is defined ? _mainNavDefaults | merge(mainNavigation) : _mainNavDefaults %}
-<div id="header2">
-    <div class="top_line2"></div>
-    <div class="container">
-        <div class="row">
-            <div class="pull-right">
-                <ul class="nav nav-tabs">
-                    <li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
+<nav id="banner2">
+	<div class="container">
+		<div class="row">
+			<div class="pull-right">
+				<ul class="nav nav-tabs">
+					<li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="{{ path('institution_homepage')}}">Dashboard</a>
                     </li>
-                    <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
+					<li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="{{ path('institution_account_profile') }}">Institutional Profile</a> 
                     </li>
-                    {#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
+    				{#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
                     {% if (institution.type != 3) %}
                     <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
-                        <a href="medical-listing.html">Medical Listing</a>
+                        <a href="{{ path('institution_medicalCenter_index') }}">Medical Listing</a>
                     </li>
                     {% endif %}
                     <li class="{{ 'logs' == mainNavigation.selected  ? 'active' : '' }}">
                         <a href="site-logs.html">Events</a>
                     </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!--End of container -->
-</div>
-<!--End of header2 -->
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>

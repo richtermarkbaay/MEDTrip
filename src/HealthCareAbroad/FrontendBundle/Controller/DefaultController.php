@@ -27,11 +27,7 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
-        $form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
-
-            return $this->render('::splash.frontend.html.twig', array(
-                            'form' => $form->createView(),
-            ));
+        return $this->render('FrontendBundle:Default:index.html.twig', array('searchParams' => array()));
     }
 
     /**
@@ -40,7 +36,7 @@ class DefaultController extends Controller
      */
     public function indexTempAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.temp.html.twig');
+        return $this->render('FrontendBundle:Default:index.html.twig');
     }
 
     /*
@@ -51,7 +47,7 @@ class DefaultController extends Controller
     {
         if($this->getRequest()->attributes->get('_route_params')){
 
-            return $this->redirect($this->generateUrl('main_homepage'));
+            return $this->redirect($this->generateUrl('main_homepage_index_html'));
         }
 
         //get IP Address
@@ -78,7 +74,7 @@ class DefaultController extends Controller
                 catch (\Exception $e) {
 
                     $request->getSession()->setFlash("error", "Failed. Please try again.");
-                    $redirectUrl = $this->generateUrl("main_homepage");
+                    $redirectUrl = $this->generateUrl("main_homepage_index_html");
                 }
             }
         }
