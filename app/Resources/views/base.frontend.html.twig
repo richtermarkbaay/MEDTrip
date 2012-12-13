@@ -29,7 +29,7 @@
 
     </head>
 
-    <body class="{{ app.request.attributes.get('_route') == 'main_homepage_index_html' ? 'home_page' : '' }}">
+    <body class="{{ app.request.attributes.get('_route') == 'main_homepage' ? 'home_page' : '' }}">
         
         {% block body %}{% endblock %}
     </body>
