@@ -59,6 +59,6 @@ splash_page:
     requirements:
          url: ".*"
 
-main_homepage:
-    pattern:  /
-    defaults: { _controller: FrontendBundle:Default:index}
+#main_homepage:
+#    pattern:  /
+#    defaults: { _controller: FrontendBundle:Default:index}
