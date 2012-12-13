@@ -3,61 +3,53 @@
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-        <section id="content">
-			<div class="container">
-				<div class="row">
-					<div class="maincontent">
-						<div class="span9">
-							<h1>
-								<span>Getting Started with HEALTH CARE ABROAD</span>
-							</h1>
-							 <ul class="dashboard-member-activity">
-                                <li>
-                                    <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/phone_ph.png') }}"><a href="#"> <span class="blue"><strong class="stepsdone">Add Contact Details</strong></span></a>
-                                    <p>
-                                        Some text explaining the important of adding contact details.
-                                    </p>
-                                </li>
-                                <li>
-                                   <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/location_ph.png') }}"><a href="#"> <span class="blue"><strong class="stepsdone">Add Location Details</strong></span></a>
-                                    <p>
-                                        Some text explaining the important of adding Location details.
-                                    </p>
-                                </li>
-                                <li>
-                                   <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/logo_ph.png') }}"><a href="#"> <span class="blue"><strong>Add Institution Logo</strong></span></a>
-                                    <p>
-                                        Some text explaining the important of adding profile logo.
-                                    </p>
-                                </li>
-                                 <li>
-                                   <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/awards_ph.png') }}"><a href="#"> <span class="blue"><strong>Manage Institution Awards and Certifications</strong></span></a>
-                                    <p>
-                                        Some text explaining the important of adding awards.
-                                    </p>
-                                </li>
-                                <li>
-									<img src="{{ asset('images/institution/institution_ph.png') }}" class="dashboard-member-activity-avatar" alt=""> <a href="{{ path('institution_account_profile') }}"><h4>Manage your Institution Profile</h4></a>
-									<p>Some text explaining the important of adding profile logo.</p>
-								</li>
-								<li>
-									<img src="{{ asset('images/institution/clinic_ph.png') }}" class="dashboard-member-activity-avatar" alt=""><a href="add-new-clinic-for-institution-with-centers.html"> <h4>Add Clinic</h4></a>
-									<p>Some text explaining the important of adding profile logo.</p>
-								</li>
-                                
-                            </ul>
-						</div>
-						<!--End of span9-->
-					    
-					    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-						<!--End of span3-->
-					</div>
-					<!--End of addnewclinic-->
+			<div class="maincontent">
+				<div class="span9">
+					<h1>
+						<span>Getting Started with HEALTH CARE ABROAD</span>
+					</h1>
+					 <ul class="dashboard-member-activity">
+                        <li>
+                            <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/phone_ph.png') }}"><a href="#"> <span class="blue"><strong class="stepsdone">Add Contact Details</strong></span></a>
+                            <p>
+                                Some text explaining the important of adding contact details.
+                            </p>
+                        </li>
+                        <li>
+                           <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/location_ph.png') }}"><a href="#"> <span class="blue"><strong class="stepsdone">Add Location Details</strong></span></a>
+                            <p>
+                                Some text explaining the important of adding Location details.
+                            </p>
+                        </li>
+                        <li>
+                           <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/logo_ph.png') }}"><a href="#"> <span class="blue"><strong>Add Institution Logo</strong></span></a>
+                            <p>
+                                Some text explaining the important of adding profile logo.
+                            </p>
+                        </li>
+                         <li>
+                           <img alt="" class="dashboard-member-activity-avatar" src="{{ asset('images/institution/awards_ph.png') }}"><a href="#"> <span class="blue"><strong>Manage Institution Awards and Certifications</strong></span></a>
+                            <p>
+                                Some text explaining the important of adding awards.
+                            </p>
+                        </li>
+                        <li>
+							<img src="{{ asset('images/institution/institution_ph.png') }}" class="dashboard-member-activity-avatar" alt=""> <a href="{{ path('institution_account_profile') }}"><h4>Manage your Institution Profile</h4></a>
+							<p>Some text explaining the important of adding profile logo.</p>
+						</li>
+						<li>
+							<img src="{{ asset('images/institution/clinic_ph.png') }}" class="dashboard-member-activity-avatar" alt=""><a href="add-new-clinic-for-institution-with-centers.html"> <h4>Add Clinic</h4></a>
+							<p>Some text explaining the important of adding profile logo.</p>
+						</li>
+                        
+                    </ul>
 				</div>
-				<!--End of row-->
+				<!--End of span9-->
+			    
+			    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+				<!--End of span3-->
 			</div>
-			<!--End of container-->
-		</section>
+			<!--End of addnewclinic-->
         {% endblock %}
         
     {% endembed %}
