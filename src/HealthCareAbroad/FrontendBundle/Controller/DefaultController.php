@@ -27,11 +27,7 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
-        $form = $this->createForm(New NewsletterSubscriberFormType(), new NewsletterSubscriber());
-
-            return $this->render('::splash.frontend.html.twig', array(
-                            'form' => $form->createView(),
-            ));
+        return $this->render('FrontendBundle:Default:index.html.twig', array('searchParams' => array()));
     }
 
     /**
@@ -40,7 +36,7 @@ class DefaultController extends Controller
      */
     public function indexTempAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.temp.html.twig');
+        return $this->render('FrontendBundle:Default:index.html.twig');
     }
 
     /*

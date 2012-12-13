@@ -9,8 +9,9 @@
 
         {% block stylesheets %}
             <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
-            <link href="{{ asset('css/frontend/style.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.9.1.custom.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/frontend/hca.css') }}" rel="stylesheet"/>
             <!--
             <link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>
              -->
@@ -20,9 +21,7 @@
         {% javascripts
             'js/jquery/jquery-1.8.2.js'
             'js/jquery/jquery-ui-1.9.0.custom.min.js'
-            'js/main/jquery.cycle.all.min.js'
-            'js/main/jquery.qtip-1.0.0-rc3.min.js'
-            'js/main/jquery.tinyscrollbar.min.js'
+            'js/bootstrap.min.js'
             output='js/compiled-frontend.js'
         %}
         <script src="{{ asset_url }}"></script>
@@ -30,7 +29,8 @@
 
     </head>
 
-    <body>
+    <body class="{{ app.request.attributes.get('_route') == 'main_homepage_index_html' ? 'home_page' : '' }}">
+        
         {% block body %}{% endblock %}
     </body>
 </html>

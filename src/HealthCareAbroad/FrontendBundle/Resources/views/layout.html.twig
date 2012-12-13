@@ -3,34 +3,29 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
-    <div class="fixed">
+    <div id="fixed_container">
 
-    {% block header %}
-        {% include 'FrontendBundle:Default:header.html.twig' %}
-    {% endblock %}
+        {% block header %}
+            {% include 'FrontendBundle:Widgets:header.html.twig' %} <!-- Prev Code: {# include 'FrontendBundle:Default:header.html.twig' #} -->
+        {% endblock %}
 
-    <div id="content_wrap">
-        <div class="container content">
-            {% block content %}
-                {# These are here for reference only. #}
-                <div class="row">
+        <div class="border_pattern">&nbsp;</div>    
+        <div id="content_wrapper">
+            <div class="container">
+            
+                {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
 
-                    <div class="span8">
-                        {% include 'FrontendBundle:Default:content.html.twig' %}
-                    </div> <!--End of span8-->
+                {% block content %}
+                    {# include 'FrontendBundle:Default:content.html.twig' #}    
+                {% endblock %}
+            </div>
 
-                    <div class="span4">
-                        {% include 'FrontendBundle:Default:sidebar.html.twig' %}
-                    </div> <!--End of span4-->
+        </div>
+        <div class="border_pattern_footer">&nbsp;</div>
 
-                </div> <!--End of row-->
-            {% endblock %}
-        </div> <!--End of container-->
-    </div> <!-- End of content_wrap -->
-
-    {% block footer %}
-        {% include 'FrontendBundle:Default:footer.html.twig' %}
-    {% endblock %}
+        {% block footer %}
+            {% include 'FrontendBundle:Widgets:footer.html.twig' %}
+        {% endblock %}
 
     </div>
 
