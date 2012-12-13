@@ -44,21 +44,20 @@
     
     
     <div>
-        <span class="span3 marginleft0">
+        <span >
             <label>Unit or Room #</label>
             <input class="" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" />
         </span>
-        <span class="span3 marginleft0">
+       </div>
+    <div class="address3">
+        <span >
             <label>Building</label>
             <input  class="" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" />
         </span>
     </div>
-    <div class="clearfix"></div>
-    <div>
-        <span class="">
+   	<div class="address">
             <label>Street</label>
             <input class="" style="width: 556px;" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}"  />
-        </span>
     </div>
     <div class="clearfix"></div>
     {% endspaceless %}
