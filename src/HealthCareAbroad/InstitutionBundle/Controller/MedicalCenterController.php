@@ -72,9 +72,11 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function indexAction(Request $request)
     {
-
-//         var_dump(count($this->filteredResult)); exit;
-        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array('medicalCenters' => $this->filteredResult , 'institution' => $this->institution));
+        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
+            'institution' => $this->institution,
+            'medicalCenters' => $this->filteredResult
+        ));
+        
     }
     
     /**

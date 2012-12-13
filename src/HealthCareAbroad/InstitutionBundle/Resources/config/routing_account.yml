@@ -11,6 +11,12 @@ institution_signup_complete_profile:
     requirements:
         _method: GET|POST
         
+institution_load_tabbed_contents_profile:
+    pattern: /institution/load-tabbed-contents-profile
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:loadTabbedContents }
+    requirements:
+        _method: GET
+    
 institution_account_profile_service:
     pattern:  /institution/profile.html/services
     defaults: {_controller: InstitutionBundle:InstitutionAccount:profileService }
@@ -28,5 +34,6 @@ institution_account_profile_specialist:
     defaults: {_controller: InstitutionBundle:InstitutionAccount:profileSpecialist }
     requirements:
         _method:  GET|POST
+
         
 #institution_signup_add_specializations:

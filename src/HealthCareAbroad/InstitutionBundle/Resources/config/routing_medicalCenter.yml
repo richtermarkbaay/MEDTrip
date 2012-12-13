@@ -83,7 +83,7 @@ institution_medicalCenter_removeDoctor:
         imcId: \d+
 
 institution_medicalCenter_index:
-    pattern: /medical-centers
+    pattern: /listings.html
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
     requirements:
         _method: GET

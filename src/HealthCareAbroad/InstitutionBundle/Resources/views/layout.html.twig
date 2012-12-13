@@ -5,22 +5,11 @@
 {% block body %}
 
     <!-- header -->
-    <header id="banner">
-        {% include 'InstitutionBundle:Widgets:header.layout.html.twig' %}
-        
-        {% set disableMainNavigation = disableMainNavigation is defined and disableMainNavigation %}
-        {% if not disableMainNavigation %}
-            {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
-        {% endif %}
-    </header>
-      {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
+    {% include 'InstitutionBundle:Widgets:header.layout.html.twig' %}
+    
     {% block content %}{% endblock %}
     
-    <div class="footer_wrap">
-      {% include 'InstitutionBundle:Default:footer.html.twig' %}
-    </div>
-
-    
+    {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
     
     {% block inlineJavascriptCode %}{% endblock %}
 
