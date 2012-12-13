@@ -188,7 +188,13 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-    
+        $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
+        return $this->render($template, array(
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institutionSpecializations' => $institutionSpecializations,
+                        'institution' => $this->institution
+        ));
     }
     
     public function viewAction(Request $request)
