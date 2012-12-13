@@ -3,7 +3,7 @@ temp_homepage_index.html:
     defaults: { _controller: FrontendBundle:Default:indexTemp }
 
 main_homepage_index_html:
-    pattern:  /index.html
+    pattern:  /frontend/index.html
     defaults: { _controller: FrontendBundle:Default:index}
 
 newsletter_new:
@@ -59,6 +59,6 @@ splash_page:
     requirements:
          url: ".*"
 
-#main_homepage:
-#    pattern:  /
-#    defaults: { _controller: FrontendBundle:Default:index}
+main_homepage:
+    pattern:  /
+    defaults: { _controller: FrontendBundle:Default:index}
