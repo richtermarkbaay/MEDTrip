@@ -16,10 +16,11 @@
                     {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
                     {{ form_row(form.description) }}
                     
+                    </br>
                     {{ form_label(form.businessHours) }}
                         <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
                         <span>I have no business hours</span> 
-                        {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+                        {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     
                     {{ form_rest(form) }}
                                         	                        	

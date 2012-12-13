@@ -45,7 +45,32 @@
                     </a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                
+                    <div id="centersAccordion" class="hca-accordion">
+                        {% for service in services %}
+                            <h5 class="medical-centers">
+                                <a href="{{ path('admin_institution_medicalCenter_view', {imcId: service.id, institutionId: institution.id}) }}" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
+                                    <i class="icon-share"></i><span>view</span>
+                                </a>
+                                <a href="{{ path('admin_institution_medicalCenter_update', {imcId: service.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
+                                    <i class="icon-edit"></i><span>edit</span>
+                                </a>
+                                <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: service.id, institutionId: institution.id}) }}">{{ service.name }}</a>
+                                <input type="text" value="{{ service.name }}" style="margin:0;display:none" onclick="return false"/>
+                            </h5>
+                            <div class="content">
+                                <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
+                                    <a href="{{ path('admin_institution_medicalCenter_update', {imcId: service.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                                        <i class="icon-edit"></i> <span>edit</span>
+                                    </a>
+                                    <div class="center-description">{{ service.name | raw }}</div>
+                                    <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ service.name }}</textarea>
+                                </div>
+                                <div class="specializations"></div>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-block"> </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
@@ -107,6 +132,7 @@
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+        	$('#centersAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
             $(".hour").timepicker({ seconds: false  });
             $('input.is_closed_checkbox').each(function(){
                 if(this.checked) {
@@ -170,8 +196,69 @@
 
                  	return false;           
             });
-        });
+            $('.medical-centers').click(function(){
+                var url = $(this).find('.url').attr('href');
+                var specializationElem = $(this).next().find('.specializations:first');
 
+                if($.trim(specializationElem.html()) == '') {
+                	specializationElem.html('<div class="ajax-loading">loading...</div>');
+                    $.get(url, function(result) {
+                    	specializationElem.html(result);
+                    });
+                }
+            });
+
+            $('.view-center').click(function(){
+                window.location = $(this).attr('href');
+                return false;
+            });
+
+            $('.edit-center-description').click(function(){
+                if($(this).next().is(':visible')) {
+                	$(this).find('i').attr('class', 'icon-ok');
+                	$(this).find('span').html('save')
+                    $(this).next().hide().siblings('.mceEditor').show();
+
+                } else {
+                    var url = $(this).attr('href');
+                    var param = { description: $(this).siblings('textarea').val() };
+
+                	$.post(url, param, function(result){}, 'json');
+
+                	$(this).find('i').attr('class', 'icon-edit');
+                	$(this).find('span').html('edit')
+                    $(this).next().html(param.description).show().siblings('.mceEditor').hide();                
+                }
+
+                return false;
+            });
+
+            $('.edit-center-name').click(function(){
+                if($(this).next().is(':visible')) {
+                	$(this).find('i').attr('class', 'icon-ok');
+                	$(this).find('span').html('save')
+                    $(this).next().hide().siblings('input').show();
+            
+                } else {
+                    var url = $(this).attr('href');
+                    var param = { name: $(this).siblings('input').val() };
+
+                	$.post(url, param, function(result){}, 'json');
+
+                	$(this).find('i').attr('class', 'icon-edit');
+                	$(this).find('span').html('edit')
+                    $(this).next().html(param.name).show().siblings('input').hide();
+
+                	$("#centersAccordion").accordion("enable");
+                }
+
+                return false;
+            }).siblings('input').click(function(){
+    			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
+    			$(this).parent().removeClass('ui-state-disabled'); 
+    		});
+        });
+        
         $('input.is_closed_checkbox').change(function(){
             if(this.checked) {
                 $(this).parent().parent().find('.hour').val("");
