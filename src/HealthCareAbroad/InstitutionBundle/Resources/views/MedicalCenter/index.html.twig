@@ -1,66 +1,46 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-
+{% set mainNavigation = {selected: 'medical_centers'} %}
 {% block content %}
-<!-- start content -->
-<div class="container">
-	<div class="maincontent">
-		<!--sidebar start-->
-			<div class="span3">
-			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
-			</div>
-	
-			<div class="span9">
-			<h2>
-			    {{ app.session.get('institutionName') }} List of Medcal Centers	
-			</h2>
-			 <div class="addcenterbox">
-			 	<div class="row-fluid">
-				    <div class="span12">
-				            <div class="tabbable">
-								<!-- /.menu - tab start -->
-								        {% include '::notice.admin.html.twig' %}
-								<!-- /.tab-content start -->
-								<div class="tab-content">
-									<div id="tabs1-pane1" class="tab-pane active">
-													
-									{% if app.session.hasFlash('notice') %}
-                                		{% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-                           			{% endif %}
-			
-                			   			<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
-		                    				<tr>
-		                    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Name</a></th>
-		                    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Description</a></th>
-		                    					<th class="table-header-repeat line-left"><a href="#">Date Created</a></th>
-		                    					<th class="table-header-repeat line-left"><a href="#">Actions</a></th>
-		                    				</tr>
-	                    				
-		                    				{% set even = false %}
-		                    				{% for medicalCenter in medicalCenters %}
-	                    				    <tr class="{{ even ? 'alternate-row' : ''}}">
-	                        					<td> <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View">{{ medicalCenter.name | title }}</a></td>
-	                        					<td>{{ medicalCenter.description(30) | raw }}</td>
-	                        					<td>{{ medicalCenter.dateCreated|date("m/d/Y") }}</td>
-	                        					<td class="options-width">
-	                            					<a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip">Edit</a>
-	                        					</td>
-	                        				</tr>
-	                        				{% set even = even ? false : true %}    
-	                    					{% endfor %}
-                    					</table>	
-									</div>
+
+<section id="content">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="pull-right">
+							<a href="add-new-clinic-for-institution-with-centers.html" class="btn btn-success btn-large">Create New Listing</a>
+						</div>
+						<h1><span>Medical Listing</span></h1>
 								
-								</div><!-- /.tab-content end -->
-							</div>
-					    </div><!--/span 12 end-->
-					 </div><!--/row-fluid end-->
-				 </div>
-			</div>
-			<!--main tab start-->
-		
-			<div class="clear"></div>
-	</div>
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+						{% if app.session.hasFlash('notice') %}
+                    		{% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
+               			{% endif %}
+						<table class="table table-striped table-bordered bootstrap-datatable">
+							<thead>
+								<tr>
+									<th class="span3">Clinic</th>
+									<th>Clinic Info Details</th>
+									<th class="span3">Posting Details</th>
+									<th class="span3">Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+							
+							    {% set even = false %}
+                				{% for medicalCenter in medicalCenters %}
+            				    <tr class="{{ even ? 'alternate-row' : ''}}">
+                					<td> <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a></td>
+                					<td>{{ medicalCenter.description(30) | raw }}</td>
+                					<td>Created on {{ medicalCenter.dateCreated|date("m/d/Y") }}</td>
+                					<td class="options-width">
+                    					<a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip">Edit</a>
+                					</td>
+                				</tr>
+                				{% set even = even ? false : true %}    
+            					{% endfor %}
+							</tbody>
+						</table>
+					</div><!--End of addnewclinic-->
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</section>
 {% endblock %}
