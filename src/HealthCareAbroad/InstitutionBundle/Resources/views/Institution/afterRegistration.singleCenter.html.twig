@@ -70,10 +70,10 @@
                     
                         <hr />
                         <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
-                       <span>I have no business hours</span>
+                        <span>I have no business hours</span>
                         <div id="clinicHours">
                             <label for="Timezone">Clinic Hours</label>
-                            {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+                            {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                         </div>
                     </div>
                     
@@ -103,7 +103,7 @@
 <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
-<script type="text/javascript">
+<script type="text/javascript">    
 <!--
 (function($){
 	
