@@ -4,10 +4,15 @@ institution_account_profile:
     requirements:
         _method:  GET|POST
 
-
 institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
+    requirements:
+        _method: GET|POST
+
+institution_add_service_for_clinic:
+    pattern: /institution/add-service-for-clinic.html
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:addService }
     requirements:
         _method: GET|POST
         

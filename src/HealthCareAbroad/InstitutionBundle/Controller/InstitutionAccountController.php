@@ -69,6 +69,25 @@ class InstitutionAccountController extends InstitutionAwareController
         return $response;
     }
     
+    public function addServiceAction(Request $request)
+    {
+        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
+   	    $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
+   	    if ($request->isMethod('POST')) {
+   	        $form->bind($request);
+   	        if ($form->isValid()) {
+   	            $this->get('services.institution_property')->save($form->getData());
+   	    
+   	            return $this->redirect($formActionUrl);
+   	        }
+   	    }
+   	    
+   	    $params = array(
+   	                    'formAction' => $formActionUrl,
+   	                    'form' => $form->createView()
+   	    );
+        return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
+    }
     /**
      * This is the action handler after signing up as an Institution with Single Center.
      * User will be directed immediately to create clinic page.

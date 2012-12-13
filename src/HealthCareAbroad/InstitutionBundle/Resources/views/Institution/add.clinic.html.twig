@@ -1,148 +1,162 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% set disableMainNavigation = true %}
 {% block content %}
 
-    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
         {% block wrappedContent %}
-        <div class="span9 marginleft0">
+        <div class="span12">    
+            <div class="aside">
+                <h4>Welcome!</h4>
+                <p>
+                    Please tell us more about your clinic.
+                </p>
+            </div>
+            
             <h2>Create New Medical Listing</h2>
-            <form id="formwizard" class="span12" action="{{ path('admin_institution_medicalCenter_add', { 'institutionId':institution.id, 'imcgId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-                {{ form_errors(form) }}   
-                <fieldset title="1">
+            {% include 'InstitutionBundle:Institution:steps.afterRegistration.singleCenter.html.twig' %}
+            
+            <form id="form_save_institution" class="span12" action="{{ path('institution_signup_complete_profile') }}" method="post">
+                
+                {{ form_errors(form) }}
+            
+                <fieldset title="1" class="step" id="formwizard-step-0">
                     <legend>Clinic Details</legend>
                     <div class="span9 marginleft0" style="min-height:500px">
+                        {{ form_row(form.name, {label: 'Clinic Name', attr: {'class': 'span7'}} ) }}
+                        
                         <div>
-                            <label for="clinic_name">Clinic Name</label> 
-                            <input name="clinic_name" type="text" id="clinic_name" value="" class="span7" required>
+                            {{ form_label(form.description) }}
+                            {{ form_widget(form.description, {label:'Short Description about the Clinic', attr: {'class': 'span8', rows: 5, cols: 60} } ) }}
+                            <small class="pull-left">Having difficulties in writing your Clinic Description. <a href="#">CLICK HERE</a> for some sample to look at.</small>
+                            {{ form_errors(form.description) }}
                         </div>
-                        <div>
-                            <label for="Clinic_Description">Short Description about the Clinic</label>
-                            <textarea name="Clinic_Description" class="span8" rows="5" cols="60" required></textarea>
-                            <small class="pull-left" style="line-height:0px">Having difficulties in writing your Clinic Description. <a href="#">CLICK HERE</a> for some sample to look at.</small>
-                        </div>
-                        <div class="clearfix"></div></br>
-                        <div>
-                            <label for="username">Email</label>
-                            {{ form_widget(form.email, { 'attr': {'class': 'span6'} }) }}
-                        </div>
-                        <div>
-                            <label for="institution_website">Institution Phone Number</label>
-                            <div class="phonenumber" required="">
-                                <span class="span1 marginleft0">
-                                    <small>Country Code</small> 
-                                    <input name="institution_countrycode" type="text" id="institution_countrycode" value="+63" class="institution_website span1">
-                                </span> 
-                                <span class="span1">
-                                    <small>Area Code</small> 
-                                    <input name="institution_areacode" type="text" id="institution_areacode" value="" class="institution_website span1">
-                                </span> 
-                                <span class="span2">
-                                    <small>Phone Number</small>
-                                    <input name="institution_phonenumber" type="text" id="institution_phonenumber" value="" class="institution_website span2">
-                                </span> 
-                            </div>
-                        </div>
-                        <div class="clearfix"><br></div>
-                        <div>
-                            <label for="facebook_account">FACEBOOK Account</label> 
-                            <input name="facebook" type="text" id="facebook_account" value="" class="span4">
-                        </div>
-                        <div>
-                            <label for="twitter_account">Twitter Account</label> <input name="twitter" type="text" id="twitter_account" value="" class="span4">
+                        
+                        <div class="clearfix"></div>
+                        
+                        {{ form_row(form.contactEmail, {label: 'Email', attr: {'class': 'span6'}} ) }}
+                        {{ form_row(form.contactNumber) }}
+                        {{ form_widget(form.websites) }}
+                        
+                        <div class="clearfix"></div>
+                        <hr />
+                        <h4>Clinic Address</h4>
+                        
+                        {{ form_row(form.address1) }}
+                        
+                        <div class="addresscity">
+                            <span class="span3 marginleft0">
+                                {{ form_label(form.country) }}
+                                {{ form_widget(form.country, {attr: {class: 'country_dropdown span3'} } )}}
+                                {{ form_errors(form.country) }}
+                            </span> 
+                            <span class="span3">
+                                {{ form_label(form.city)}}
+                                {{ form_widget(form.city, {label: 'City', attr: {class: 'city_dropdown span3'} } )}}
+                                {{ form_errors(form.city) }}
+                            </span>
                         </div>
                         <div class="clearfix"></div>
-                        {{ form_row(form.country) }}
-<!--                         <div> -->
-<!--                             <label for="Country">Country</label>    -->
-<!--                             <input name="twitter" type="text" id="twitter_account" value="Philippines" class="span4"> -->
-<!--                         </div> -->
-                        <div>
-                            <label for="State">State / Province</label> 
-                            <input name="twitter" type="text" id="twitter_account" value="Cebu" class="span4">
+                        <div class="span3 marginleft0">
+                            {{ form_label(form.state) }}
+                            {{ form_widget(form.state, { attr: {class: 'span3'} } )}}
+                            {{ form_errors(form.state) }}
                         </div>
-                        <div>
-                            <div class="addresscity">
-                                <span class="span3 marginleft0">
-                                    <label>City</label> 
-                                    {{ form_widget(form.city, { 'attr': {'class': 'institution_cityaddress span3'} }) }}
-<!--                                     <input name="institution_cityaddress" type="text" id="institution_cityaddress" value="Cebu" class="institution_cityaddress span3"> -->
-                                </span> 
-                                <span class="span3">
-                                    <label>Zip/Mail Code</label> 
-                                    <input name="institution_mailcode" type="text" id="institution_mailcode" value="6000" class="institution_mailcode span3">
-                                </span>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div class="addressdetails">
-                                <span class="span3 marginleft0">
-                                    <label>Unit or Room #</label> 
-                                    <input name="institution_roomnumber" type="text" id="institution_roomnumber" value="" class="institution_roomnumber span3">
-                                </span> 
-                                <span class="span3">
-                                    <label>Building</label> 
-                                    <input name="institution_building" type="text" id="institution_building" value="" class="institution_building span3">
-                                </span>
-                            </div>
-                            <div class="clearfix"></div> 
-                            <div class="Streetdetails">
-                                <span class="span6 marginleft0">
-                                    <label>Street</label> 
-                                    <input name="institution_streetaddress" type="text" id="institution_streetaddress" value="" class="institution_streetaddress span6">
-                                </span>
-                            </div>
-                            <div class="clearfix"></div>
-                            <div>
-                                <label for="Timezone">Timezone</label> <select name="Timezone" class="span4">
-                                    <option value="">
-                                        Select your Timezone
-                                    </option>
-                                </select>
-                            </div>
-                            <br>
-                                {{ form_label(form.businessHours) }}
-                                {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
-                            <div class="clearfix"><br></div>
+                        <div class="span3">
+                            {{ form_label(form.zipCode)}}
+                            {{ form_widget(form.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span3'} } )}}
+                            {{ form_errors(form.zipCode) }}
+                        </div>
+                        <div class="clearfix"></div>
+                    
+                        <hr />
+                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
+                        <span>I have no business hours</span>
+                        <div id="clinicHours">
+                            <label for="Timezone">Clinic Hours</label>
+                            {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                         </div>
                     </div>
+                    
+                    <!-- TODO: this sidebar should not be part of the form. Let the ui-team fix this -->
+                    <div class="span3">
+                        {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    
+                    
+                    <p id="formwizard-buttons-0" class="formwizard-buttons">
+                        <a id="submit_button_link" class="button-next btn-medium btn btn-info" href="#">Next</a>
+                    </p>
                 </fieldset>
+                {{ form_rest(form) }}
             </form>
         </div>
         {% endblock %}
         
-        {% block sidebar %}
-        <div class="span3">
-            {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
-        </div>
-        {% endblock %}
-        
     {% endembed %}
-    {% block inlineJavascriptCode %}
-        <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-    	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
-    	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
-        <script>
-        	$(function() {
-    	    	$(".hour").timepicker({ seconds: false});
-    	    	$('input.is_closed_checkbox').each(function(){
-    			    if(this.checked) {
-    			    	$(this).parent().parent().find('.hour').val("");
-    			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    				}
-    			});
-    	    });
-           
-    	    $('input.is_closed_checkbox').change(function(){
-    		    if(this.checked) {
-    		    	$(this).parent().parent().find('.hour').val("");
-    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    			}
-    		    else 
-    		    {
-    		    	$(this).parent().parent().find('.hour').val("8:00 AM");
-    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-    		    }
-    		   
-    		});
-        </script>
-    {% endblock %}
+
+{% endblock %}
+ 
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script type="text/javascript">    
+<!--
+(function($){
+	
+	$(".hour").timepicker({ seconds: false});
+    	$('input.is_closed_checkbox').each(function(){
+    	    if(this.checked) {
+    	    	$(this).parent().parent().find('.hour').val("");
+    	        var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    		}
+    	});
+    
+    $('input.is_closed_checkbox').change(function(){
+        if(this.checked) {
+            $(this).parent().parent().find('.hour').val("");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	}
+        else 
+        {
+        	$(this).parent().parent().find('.hour').val("8:00 AM");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+        }
+       
+    });
+	
+  	$('#businessHourCheckBox').click(function(){
+    	
+	    if ($('#businessHourCheckBox').attr('checked')) {
+
+	    	$(this).parent().parent().find('.hour').val("");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+	    	$('#clinicHours').hide();
+	    	
+	    }else{
+    	    $('#clinicHours').show();
+    	    $(this).parent().parent().find('.hour').val("8:00 AM");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	}
+	}) 
+	
+    $(function(){        
+        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+        $('select.country_dropdown').change();
+        $('a#submit_button_link').click(function(){
+
+            $('#form_save_institution').submit();
+            
+            return false;
+        });
+    });
+
+})(jQuery);
+//-->
+       
+</script>
 {% endblock %}
