@@ -11,7 +11,7 @@
 .large-btn-disabled,
 .large-btn-hover,
 .large-btn-normal {
-  background: url(/img/sprites.png) no-repeat;
+  background: url(/../images/frontend/sprites.png) no-repeat;
 }
 .hca-logo {
   background-position: 0 0;
@@ -96,7 +96,7 @@ body.home_page div#fixed_container {
 body.home_page h1#logo {
   margin-top: 15px;
   text-indent: -100000px;
-  background: url(/img/sprites.png) no-repeat;
+  background: url(/../images/frontend/sprites.png) no-repeat;
   background-position: 0 0;
   width: 348px;
   height: 31px;
@@ -299,7 +299,6 @@ body.home_page div.border_pattern {
   background-position: top;
   background-attachment: scroll;
   position: relative;
-  z-index: 10;
 }
 body.home_page div.border_pattern_footer {
   margin-top: -5px;
@@ -315,10 +314,9 @@ body.home_page div#content_wrapper {
   margin-top: -15px;
 }
 ul.breadcrumb {
-  background-color: #eef5ed;
-  margin: 30px 10px 10px;
   padding: 0;
-  border: 0;
+  margin: 30px 10px;
+  background-color: #eef5ed;
 }
 ul.breadcrumb li {
   margin: 0;
@@ -348,7 +346,6 @@ ul.breadcrumb li:first-child {
 ul.breadcrumb li:last-child {
   border: none;
   background-color: transparent;
-  background-image: url('/../images/frontend/breadcrumb-edge.png');
   background-position: 10px -2px;
   background-repeat: no-repeat;
 }
@@ -361,7 +358,7 @@ body.home_page div#main_content {
 }
 body.home_page div#main_content div#highlight {
   background-color: #FFF;
-  margin: 25px 0px;
+  margin-bottom: 25px;
   box-shadow: 0 0 0px 1px #c0c6c0, 0 0 0 4px rgba(0, 37, 85, 0.09);
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
@@ -1040,7 +1037,7 @@ body.full_listing div#fixed_container {
 body.full_listing h1#logo {
   margin-top: 15px;
   text-indent: -100000px;
-  background: url(/img/sprites.png) no-repeat;
+  background: url(/../images/frontend/sprites.png) no-repeat;
   background-position: 0 0;
   width: 348px;
   height: 31px;
@@ -1256,85 +1253,6 @@ body.full_listing div.border_pattern_footer {
 body.full_listing div#content_wrapper {
   background-color: #eef5ed;
   margin-top: -15px;
-}
-body.full_listing div.breadcrumb_bar {
-  margin-top: 25px;
-  margin-left: 15px;
-  margin-bottom: 20px;
-  color: #468199;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb {
-  background-color: #eef5ed;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  -moz-transition: none;
-  -webkit-transition: none;
-  -o-transition: color 0 ease-in;
-  transition: none;
-  margin-left: -15px;
-  font-size: 14px;
-  font-weight: bold;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div {
-  float: left;
-  padding: 5px 15px 5px 30px;
-  border-top: #bec4be solid 1px;
-  border-bottom: #bec4be solid 1px;
-  background-color: #fff;
-  color: #fff !important;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div a {
-  color: #468199;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div.home {
-  padding: 5px 12px 5px 10px;
-  border-left: #bec4be solid 1px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div.active a {
-  color: #b0d3e1 !important;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div.home_divider {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  margin-top: -1px;
-  margin-bottom: -8px;
-  margin-left: -3px;
-  width: 10px;
-  height: 37px;
-  background-color: #eef5ed;
-  background-image: url('/../images/frontend/breadcrumb-edge.png');
-  background-repeat: no-repeat;
-  background-position: top left;
-  background-color: rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 9;
-}
-body.full_listing div.breadcrumb_bar ul.breadcrumb li div.divider {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  margin-top: -1px;
-  margin-bottom: -8px;
-  margin-left: -1px;
-  width: 10px;
-  height: 37px;
-  background-color: #eef5ed;
-  background-image: url('/../images/frontend/breadcrumb-edge.png');
-  background-repeat: no-repeat;
-  background-position: top left;
-  background-color: rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 9;
 }
 body.full_listing div.institution_wrapper {
   margin: 0;
