@@ -92,6 +92,11 @@ AdminBundle_AdminUser:
 AdminBundle_helper_text:
     resource: "@AdminBundle/Resources/config/routing_helper_text.yml"
     prefix:   /
+    
+# Routes for medical provider group section #
+AdminBundle_medical_provider_group.yml_text:
+    resource: "@AdminBundle/Resources/config/routing_medical_provider_group.yml"
+    prefix:   /
 
 # vier edit
 admin_showEditHistory:

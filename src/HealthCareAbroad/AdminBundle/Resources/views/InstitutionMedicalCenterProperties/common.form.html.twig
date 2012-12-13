@@ -1,0 +1,41 @@
+<h1>List of Ancilliary Services </h1>
+<form method="POST" class="basic-form">
+    {{ form_row(form.value) }}
+    {{ form_rest(form) }}
+    <input type="submit" id="addServices" value="Save" class="btn-large btn-primary"/>
+</form>
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    
+    $(function(){
+        $('#addServices').click(function(){
+        	var offeredServicesData = getOfferedServicesChecked();
+        	console.log(offeredServicesData);
+            var urlData = '{{ formAction|raw }}';
+        	$.ajax({
+		        url: urlData,
+		        data: { 'offeredServicesData': offeredServicesData },
+		        type: 'post',
+		        success: function(){
+		        	$('#dialog-container').dialog("close");
+		        }
+	        });
+
+	        return false;
+        });
+    });
+
+    function getOfferedServicesChecked()
+    {
+    	var selected = new Array();
+    	$('#institution_medical_center_property_type_custom_form_value input:checked').each(function() {
+    	    selected.push($(this).attr('value'));
+    	});
+    	
+    	return selected;
+    }
+    
+</script>
+{% endblock %}
+
+

@@ -34,19 +34,32 @@ class InstitutionPropertiesController extends Controller
         }
     }
     
+    public function indexAction()
+    {
+        $offeredServiceRepository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty');
+         
+        $offeredServices = $offeredServiceRepository->getAllServicesByInstitution($this->institution);
+        return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
+                        'offeredServices' => $offeredServices,
+                        'institution' => $this->institution
+        ));
+    }
+     
     public function addAncilliaryServiceAction(Request $request)
     {
-//         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-//         var_dump($form->getData());exit;
-//         $property = new InstitutionProperty();
-//         $property->setInstitution($this->institution);
-//         $property->
-//         $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
-        
-        $property = new InstitutionProperty();
-        $property = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
-        $property->setValue($this->getRequest()->get('offeredServicesData'));
-        var_dump($property);exit;
+        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
+        if($request->get('imcId')) {
+            $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+            $imcProperty = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id')->getData();
+            $imcProperty->setValue($offeredServicesArray);
+            $this->get('services.institution_medical_center_property')->createInstitutionMedicalCenterPropertyByServices($imcProperty);
+        }
+        else {
+            $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
+            $institutionProperty->setValue($offeredServicesArray);
+            $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
+        }
+        return $this->_jsonResponse(array('success' => 1));
     }
     
     public function addLanguageSpokenAction(Request $request)
@@ -67,5 +80,12 @@ class InstitutionPropertiesController extends Controller
             'form' => $form->createView()
         );
         return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
+    }
+    private function _jsonResponse($data=array(), $code=200)
+    {
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
     }
 }

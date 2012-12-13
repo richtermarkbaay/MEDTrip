@@ -2,17 +2,17 @@
 {% set selectedTab = 'dashboard'%}
 {% block content %}
      
-<div class="span12 marginleft0">
-    {% include 'InstitutionBundle:Widgets:dashboard.welcome.html.twig' %}
-    
-    <div class="span9 marginleft0">
-       {% include 'InstitutionBundle:Widgets:dashboard.statistics.html.twig' %}
-       {% include 'InstitutionBundle:Widgets:dashboard.recentComments.html.twig' %}
+<section id="content">
+	<div class="container">
+		<div class="row">
+			<div class="maincontent">
+                   {% include 'InstitutionBundle:Widgets:dashboard.statistics.html.twig' %}
+                   {% include 'InstitutionBundle:Widgets:dashboard.recentComments.html.twig' %}
+                <!-- dashboard sidebar -->
+                    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+            </div>
+        </div>
     </div>
-    <!-- dashboard sidebar -->
-    <div class="span3">
-        {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-    </div>
-</div>
+</section>
 
 {% endblock %}

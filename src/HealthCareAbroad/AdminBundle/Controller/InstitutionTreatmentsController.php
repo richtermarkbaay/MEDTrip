@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\MediaService;
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -105,7 +107,8 @@ class InstitutionTreatmentsController extends Controller
 
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
-
+    
+        //if$this->institutionMedicalCenter->getBusinessHours()
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -116,10 +119,37 @@ class InstitutionTreatmentsController extends Controller
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
+//             'routes' => array(
+//                             'gallery' => 'admin_institution_gallery',
+//                             'media_edit_caption' => 'institution_media_edit_caption',
+//                             'media_delete' => 'institution_media_delete'
+
+            'routes' => MediaService::getRoutes($this->request->getPathInfo())
         );
+
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
 
+    public function addMedicalCenterOfferedServiceAction(Request $request)
+    {
+        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+        $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id');
+   	    $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addAncilliaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
+   	    if ($request->isMethod('POST')) {
+   	        $form->bind($request);
+   	        if ($form->isValid()) {
+   	            $this->get('services.institution_property')->save($form->getData());
+   	    
+   	            return $this->redirect($formActionUrl);
+   	        }
+   	    }
+   	    
+   	    $params = array(
+   	                    'formAction' => $formActionUrl,
+   	                    'form' => $form->createView()
+   	    );
+   	    return $this->render('AdminBundle:InstitutionMedicalCenterProperties:common.form.html.twig', $params);
+    }
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response

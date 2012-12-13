@@ -125,6 +125,21 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     -
                        name: language_id
                        referencedColumnName: id
+        medicalProviderGroups:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup
+            cascade: {}
+            mappedBy: null
+            joinTable:
+                name:  institution_groups
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: medical_provider_group_id
+                        referencedColumnName: id
+            orderBy: null
 
     manyToOne:
         country:

@@ -36,6 +36,7 @@
                         
                         {{ form_row(form.contactEmail, {label: 'Email', attr: {'class': 'span6'}} ) }}
                         {{ form_row(form.contactNumber) }}
+                        {{ form_row(form.websites) }}
                         
                         <div class="clearfix"></div>
                         <hr />
@@ -69,7 +70,9 @@
                         <div class="clearfix"></div>
                     
                         <hr />
-                        <div>
+                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
+                       <span>I have no business hours</span>
+                        <div id="clinicHours">
                             <label for="Timezone">Clinic Hours</label>
                             {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                         </div>
@@ -95,13 +98,52 @@
     {% endembed %}
 
 {% endblock %}
-
+ 
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script type="text/javascript">
 <!--
 (function($){
+	
+	$(".hour").timepicker({ seconds: false});
+    	$('input.is_closed_checkbox').each(function(){
+    	    if(this.checked) {
+    	    	$(this).parent().parent().find('.hour').val("");
+    	        var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    		}
+    	});
     
+    $('input.is_closed_checkbox').change(function(){
+        if(this.checked) {
+            $(this).parent().parent().find('.hour').val("");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	}
+        else 
+        {
+        	$(this).parent().parent().find('.hour').val("8:00 AM");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+        }
+       
+    });
+	
+  	$('#businessHourCheckBox').click(function(){
+    	
+	    if ($('#businessHourCheckBox').attr('checked')) {
+
+	    	$(this).parent().parent().find('.hour').val("");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+	    	$('#clinicHours').hide();
+	    	
+	    }else{
+    	    $('#clinicHours').show();
+    	    $(this).parent().parent().find('.hour').val("8:00 AM");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	}
+	}) 
+	
     $(function(){        
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('select.country_dropdown').change();
@@ -112,7 +154,9 @@
             return false;
         });
     });
+
 })(jQuery);
 //-->
+       
 </script>
 {% endblock %}

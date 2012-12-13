@@ -74,9 +74,8 @@
 						                                </li>
 									  				</ul>
 						  						{% endif %}
-					                            
-					                 
-					                        <label for="institution name"><b>Name of the Institution</b></label>
+
+					  						<label for="institution name"><b>Name of the Institution</b></label>
 					                        <div>
 					                            <div class="input-prepend">
 					                                {{ form_widget(form.name) }}
@@ -91,12 +90,15 @@
 					  							{% endif %}
 					                            
 					                        </div>
-					                
+					                       <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
+					                      <span>I belong to a group / Network</span>
+    					                       <div id="medicalProviderGroupsInput">
+    					                                {{ form_row(form.medicalProviderGroups) }}
+    					                        </div>
 					                        <label for="password">Types of Institution</label>
 					                        
 					                            {{ form_widget(form.type) }}
 					               
-					                    
 					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />
 					                    {{ form_rest(form) }}
 					                </form>
@@ -116,6 +118,28 @@
 {% block inlineJavascriptCode %}
 	<script language="javascript" type="text/javascript">
 
+    $('#medicalProviderGroupsInput').hide();
+    	$('#medicalGroupBox').click(function(){
+        	
+    	    if ($('#medicalGroupBox').attr('checked')) {
+
+    	    	$('#medicalProviderGroupsInput').show();
+    	    	
+    	    }else{
+        	    $('#medicalProviderGroupsInput').hide();
+        	}
+    	}) 
+	
+    <!-- AutoComplete for Institution Medical Group Input Field -->
+    
+        $(function() {
+        	var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+        	
+            $( "#institutionSignUp_medicalProviderGroups" ).autocomplete({
+                source: availableTags
+            });
+        });    
+	
 		function randomString() {
 			var chars = "abcdefghiklmnopqrstuvwxyz";
 			var string_length = 8;

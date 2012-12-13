@@ -104,6 +104,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    form.globalCountry_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\GlobalCountryListType
+        calls:
+            - [setLocationService, [@services.location]]
+        tags:
+            - { name: form.type, alias: globalCountry_list }
+
     form.country_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
         calls:

@@ -128,6 +128,11 @@ class Institution
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionLanguagesSpoken;
+    
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $medicalProviderGroups;
 
     public function __construct()
     {
@@ -135,6 +140,7 @@ class Institution
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medicalProviderGroups = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -691,5 +697,37 @@ class Institution
     public function getInstitutionLanguagesSpoken()
     {
         return $this->institutionLanguagesSpoken;
+    }
+    
+    /**
+     * Add medicalProviderGroup
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup $medicalProviderGroups
+     * @return Institution
+     */
+    public function addMedicalProviderGroup(\HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup $medicalProviderGroups)
+    {
+        $this->medicalProviderGroups[] = $medicalProviderGroups;
+        return $this;
+    }
+    
+    /**
+     * Remove medicalProviderGroups
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup $medicalProviderGroups
+     */
+    public function removeMedicalProviderGroup(\HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup $medicalProviderGroups)
+    {
+        $this->medicalProviderGroups->removeElement($medicalProviderGroups);
+    }
+    
+    /**
+     * Get medicalProviderGroups
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getMedicalProviderGroups()
+    {
+        return $this->medicalProviderGroups;
     }
 }

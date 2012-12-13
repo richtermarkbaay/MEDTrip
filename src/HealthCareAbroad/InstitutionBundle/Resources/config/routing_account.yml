@@ -17,5 +17,23 @@ institution_load_tabbed_contents_profile:
     requirements:
         _method: GET
     
+institution_account_profile_service:
+    pattern:  /institution/profile.html/services
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileService }
+    requirements:
+        _method:  GET|POST
+
+institution_account_profile_awards:
+    pattern:  /institution/profile.html/awards
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileAwards }
+    requirements:
+        _method:  GET|POST
+
+institution_account_profile_specialist:
+    pattern:  /institution/profile.html/specialist
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileSpecialist }
+    requirements:
+        _method:  GET|POST
+
         
 #institution_signup_add_specializations:

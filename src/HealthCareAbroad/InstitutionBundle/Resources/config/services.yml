@@ -29,7 +29,17 @@ services:
         arguments: [@form.factory]
         calls:
             - [setInstitutionPropertyService, [@services.institution_property]]
-        
+
+    services.institution_medical_center_property:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterPropertyService
+        arguments: [@doctrine, @services.memcache]   
+
+    services.institution_medical_center_property.form_factory:
+        class: HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterPropertyType\Factory\InstitutionMedicalCenterPropertyTypeFormFactory
+        arguments: [@form.factory]
+        calls:
+            - [setInstitutionMedicalCenterPropertyService, [@services.institution_medical_center_property]]
+
     services.institution_medical_center:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:
@@ -74,3 +84,10 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType
         tags:
           - { name: form.type, alias: institution_affiliation_list }
+    
+    form.medical_provider_group_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType
+        calls:
+            - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: form.type, alias: medicalProviderGroup_autocomplete }

@@ -120,6 +120,13 @@ class AdvertisementController extends Controller
         ));
     }
 
+    /**
+     * This is the edit advertisement page
+     *
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function editAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
@@ -132,7 +139,7 @@ class AdvertisementController extends Controller
     }
 
     /**
-     * This is the first step when adding an advertisement
+     * This is the step when adding an advertisement
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
      * @param Request $request
      */
@@ -165,31 +172,16 @@ class AdvertisementController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $this->saveMedia($request->files->get('advertisement'), $advertisement);
 
-            $adFiles = $request->files->get('advertisement');
-            if(count($adFiles['advertisementPropertyValues']) && $adValuesFile['value']) {
-                $adValuesFile = array_shift($adFiles['advertisementPropertyValues']);
-                $media = $this->get('services.media')->uploadAds($adValuesFile['value'], $this->institution->getId());
-
-                if($media && $media->getId()) {
-                    foreach($advertisement->getAdvertisementPropertyValues() as $each) {
-                        $property = $each->getAdvertisementPropertyName();
-                        $config = json_decode($property->getPropertyConfig(), true);
-
-                        if($config['type'] == 'file') {
-                            $each->setValue($media->getId());
-                            break;
-                        }
+            if($advertisement->getId()) {
+                foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+                    if($value->getAdvertisementPropertyName()->getName() != 'media_id') {
+                        $em->remove($value);
                     }
                 }
             }
 
-            if($advertisement->getId()) {
-                foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
-                    $em->remove($value);
-                }
-            }
-            
             $em->persist($advertisement);
             $em->flush($advertisement);
 
@@ -205,6 +197,37 @@ class AdvertisementController extends Controller
             'formAction' => $formAction,
             'form' => $form->createView()
         ));
+    }
+
+    private function saveMedia($fileBag, $advertisement)
+    {
+        if($fileBag && count($fileBag['advertisementPropertyValues'])) {
+            $adValuesFile = array_shift($fileBag['advertisementPropertyValues']);
+
+            if($adValuesFile['value']) {
+                $media = $this->get('services.media')->uploadAds($adValuesFile['value'], $this->institution->getId());
+
+                if($media && $media->getId()) {
+                    foreach($advertisement->getAdvertisementPropertyValues() as $each) {
+                        $property = $each->getAdvertisementPropertyName();
+                        $config = json_decode($property->getPropertyConfig(), true);
+        
+                        if($config['type'] == 'file') {
+                            $each->setValue($media->getId());
+
+                            // TODO - Temporary fixed for ads Image
+                            if($each->getId()) {
+                                $em = $this->getDoctrine()->getEntityManager();
+                                $em->persist($each);
+                                $em->flush($each);
+                            }
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
     
     private function updateAdvertisementDenormalizedData(Advertisement $advertisement)
@@ -258,110 +281,7 @@ class AdvertisementController extends Controller
 
         $em->persist($denormalizedAdvertisement);
         $em->flush($denormalizedAdvertisement);
-    }
-
-    /**
-     * This is the first step when adding an advertisement
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
-     * @param Request $request
-     */
-    public function addBasicDetailAction(Request $request)
-    {
-        $form = $this->createForm(new AdvertisementFormType(), null, 
-            array(
-                AdvertisementFormType::OPTION_IS_NEW => true, 
-                AdvertisementFormType::OPTION_FORCED_HIDDEN_FIELDS => array(AdvertisementFormType::FIELD_OBJECT, AdvertisementFormType::FIELD_TITLE, AdvertisementFormType::FIELD_DESCRIPTION
-        )));
-
-        if ($request->isMethod('POST')) {
-            
-            $form->bind($request);
-                //var_dump($form->getData());exit;
-            // set session data for this draft advertisement
-            $data = array(
-                AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE => $form->get(AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE)->getData(),
-                AdvertisementFormType::FIELD_INSTITUTION => $form->get(AdvertisementFormType::FIELD_INSTITUTION)->getData()->getId()
-            );
-            $draftAdvertisements = $request->getSession()->get('draftAdvertisements', array());
-            $uid = \uniqid();
-            $draftAdvertisements[$uid] = $data;
-            // update draftAdvertisements session data
-            $request->getSession()->set('draftAdvertisements', $draftAdvertisements);
-            
-            return $this->redirect($this->generateUrl('admin_advertisement_addSpecificDetail', array('uid'=>$uid)));
-        }
-        
-        return $this->render('AdminBundle:Advertisement:add.html.twig', array(
-            'form' => $form->createView()
-        ));
-    }
-    
-    /**
-     * This is the second step in creating an advertisement
-     * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
-     * @param Request $request
-     */
-    public function addSpecificDetailAction(Request $request)
-    {
-        $uid = $request->get('uid', null);
-        $draftAdvertisements = $request->getSession()->get('draftAdvertisements', array());
-        
-        if (!\array_key_exists($uid, $draftAdvertisements)) {
-            $request->getSession()->setFlash('notice', "No data was recovered from draft advertisement {$uid}. Please create a new one again.");
-            
-            return $this->redirect($this->generateUrl('admin_advertisement_addBasicDetail'));
-        }
-        $draftData = $draftAdvertisements[$uid];
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($draftData[AdvertisementFormType::FIELD_INSTITUTION]);
-        $advertisement = $this->get('services.advertisement.factory')->createInstanceByType($draftData[AdvertisementFormType::FIELD_ADVERTISEMENT_TYPE]);
-        $advertisement->setInstitution($institution);
-        $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($advertisement), $advertisement);
-        
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            
-            if ($form->isValid()) {
-                if($request->files->get('advertisement')) {
-                    
-                    $adsArray = $request->files->get('advertisement');
-                    $media = $adsArray['media'];
-                    
-                    if ($media) {
-                        $media = $this->get('services.media')->addMedia($media, $institution->getId());
-                        $media = $this->get('services.media')->addAdvertisementMedia($advertisement, $media);
-                    }
-                }
-                try {
-                    
-                    $advertisement = $this->factory->save($form->getData());
-                       
-                    // dispatch event
-                    $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_ADD_ADVERTISEMENT, $advertisement));
-                    $redirectUrl = $this->generateUrl('admin_advertisement_addInvoice', array('advertisementId' => $advertisement->getId()));
-                    
-                    $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
-                }
-                catch (\Exception $e) {
-                    $request->getSession()->setFlash("error", "Failed to save advertisement due to unexpected error.");
-                    $redirectUrl = $this->generateUrl("admin_advertisement_index");
-                }
-                // unset this draft in session
-                unset($draftAdvertisements[$uid]); 
-                $request->getSession()->get('draftAdvertisements', $draftAdvertisements);
-                
-                return $this->redirect($redirectUrl);
-            }
-        }
-        
-        
-        return $this->render('AdminBundle:Advertisement:add.html.twig', array(
-            'form' => $form->createView(),
-            'selectedStep' => 'step2',
-            'nextButtonLabel' => 'Save and Go to Invoice',
-            'formAction' => $this->generateUrl('admin_advertisement_addSpecificDetail', array('uid' => $uid))
-        ));
-    }
+    }    
     
     /**
      * This page will be the third step when creating a new advertisement.
@@ -390,41 +310,4 @@ class AdvertisementController extends Controller
             'advertisement' => $this->advertisement
         ));
     }
-    
-    /**
-     * This is the edit advertisement page
-     * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-//     public function editAction(Request $request)
-//     {
-//         $form = $this->createForm($this->factory->createAdvertisementTypeSpecificForm($this->advertisement), $this->advertisement);
-        
-//         if ($request->isMethod('POST')) {
-//             $form->bind($request);
-            
-//             if ($form->isValid()) {
-//                 try {
-//                     $advertisement = $this->factory->save($form->getData());
-                
-//                     // dispatch event
-//                     $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_ADVERTISEMENT, $advertisement));
-                    
-//                     $request->getSession()->setFlash("success", "Successfully updated advertisement.");
-//                 }
-//                 catch (\Exception $e) {
-//                     $request->getSession()->setFlash("error", "Failed to updated advertisement due to unexpected error.");
-//                 }
-                
-//                 return $this->redirect($this->generateUrl("admin_advertisement_index"));
-//             }
-//         }
-        
-//         return $this->render('AdminBundle:Advertisement:edit.html.twig', array(
-//             'form' => $form->createView(),
-//             'advertisement' => $this->advertisement
-//         ));
-//     }
 }

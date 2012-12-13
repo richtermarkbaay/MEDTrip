@@ -59,10 +59,20 @@
     				    {{ form_row(form.title) }}
     				    
     				    {{ form_row(form.description) }}
-    				    
+
     				    {% for propertyValue in form.advertisementPropertyValues %}
+
+    				        {% if (propertyValue.get('value').advertisementPropertyName.name == 'media_id') and propertyValue.get('value').value %}
+    				            <div style="position: absolute; left: 470px;">
+    				                <img src="/media/ads/1/thumbnail-{{ propertyValue.get('value').value }}" style="border: 1px solid #ddd; height: 80px">
+    				            </div>
+    				        {% endif %}
+
     				        {{ form_row(propertyValue.advertisementPropertyName) }}
     				        {{ form_row(propertyValue.value) }}
+    				        
+    				    {% else %}
+    				        <div style="display:none">{{ form_row(form.advertisementPropertyValues) }}</div>    
     				    {% endfor %}
     				    
     				    {{ form_row(form.dateExpiry) }}
@@ -77,15 +87,13 @@
         {% endembed %}
     </div>
 
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
+    Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
-
             var institutionId = $('#advertisement_institution').val();
             var advertisementTypeId = $('#advertisement_advertisementType').val();
-
-alert(institutionId);
-            
             if(institutionId != '' && advertisementTypeId != '') {
                 window.location = "{{ path('admin_advertisement_add') }}?institutionId="+institutionId+"&advertisementTypeId="+advertisementTypeId;
             }

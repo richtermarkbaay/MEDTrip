@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form\InstitutionPropertyType\Factory;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionPropertyType\InstitutionPropertyCustomFormType;
 
 use Symfony\Component\Form\FormFactoryInterface;

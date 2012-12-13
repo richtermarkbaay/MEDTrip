@@ -17,7 +17,8 @@
                     {{ form_row(form.description) }}
                     
                     {{ form_label(form.businessHours) }}
-                    
+                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
+                        <span>I have no business hours</span> 
                         {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                     
                     {{ form_rest(form) }}
@@ -46,7 +47,20 @@
     				}
     			});
     	    });
-           
+        	$('#businessHourCheckBox').click(function(){
+            	
+        	    if ($('#businessHourCheckBox').attr('checked')) {
+
+        	    	$(this).parent().parent().find('.hour').val("");
+        	    	$(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	    	$('#clinicHoursTable').hide();
+        	    	
+        	    }else{
+            	    $('#clinicHoursTable').show();
+            	    $(this).parent().parent().find('.hour').val("8:00 AM");
+        	    	$(this).parent().parent().find('.hour').spinner({ disabled: false });
+            	}
+        	}) 
     	    $('input.is_closed_checkbox').change(function(){
     		    if(this.checked) {
     		    	$(this).parent().parent().find('.hour').val("");

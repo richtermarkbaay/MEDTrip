@@ -1,0 +1,28 @@
+HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup:
+    type: entity
+    table: medical_provider_groups
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\MedicalProviderGroupRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    lifecycleCallbacks: {  }

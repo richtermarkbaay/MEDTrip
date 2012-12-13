@@ -29,7 +29,34 @@ admin_institution_addAncilliaryService:
     defaults: { _controller: AdminBundle:InstitutionProperties:addAncilliaryService }
     requirements:
         institutionId: \d+
+
+admin_institution_viewAncilliaryService:
+    pattern:  /admin/institution/{institutionId}/ancilliary-services
+    defaults: { _controller: AdminBundle:InstitutionProperties:index }
+    requirements:  
+        institutionId: \d+  
+        _method:  GET
+
+admin_addMedicalCenterOfferedServices:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/add-offered-services
+    defaults: { _controller: AdminBundle:InstitutionTreatments:addMedicalCenterOfferedService}
+    requirements:
+         institutionId: \d+
+         _method: GET|POST 
+
+admin_institution_medicalCenter_addAncilliaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/add-ancilliary-service
+    defaults: { _controller: AdminBundle:InstitutionProperties:addAncilliaryService }
+    requirements:
+        institutionId: \d+
         
+admin_addInstitutionOfferedServices:
+    pattern:  /admin/institution/{institutionId}/add-offered-services
+    defaults: { _controller: AdminBundle:Institution:addInstitutionOfferedServices}
+    requirements:
+         institutionId: \d+
+         _method: GET|POST 
+
 admin_institution_addLanguageSpoken:
     pattern:  /admin/institution/{institutionId}/add-language-spoken
     defaults: { _controller: AdminBundle:InstitutionProperties:addLanguageSpoken }
@@ -72,10 +99,3 @@ admin_addInstitutionLanguages:
     requirements:
          institutionId: \d+
          _method: GET|POST   
-
-admin_addInstitutionOfferedServices:
-    pattern:  /admin/institution/{institutionId}/add-offered-services
-    defaults: { _controller: AdminBundle:Institution:addInstitutionOfferedServices}
-    requirements:
-         institutionId: \d+
-         _method: GET|POST  

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
@@ -53,33 +57,43 @@ class InstitutionPropertyService
         return $property;
     }
     
-    public function save(InstitutionProperty $institutionProperty)
+    public function createInstitutionMedicalCenterPropertyByName($propertyTypeName, Institution $institution=null, InstitutionMedicalCenter $center)
     {
-        $institution = $institutionProperty->getInstitution();
-        $ipType = $institutionProperty->getInstitutionPropertyType();
-        $ipObject = $institutionProperty->getValue();
-        
-        
-        if(\is_object($ipObject)) {
-            foreach($ipObject as $key => $value)
-            {
-                $institutionProperty = new InstitutionProperty();
-                $institutionProperty->setInstitution($institution);
-                $institutionProperty->setInstitutionPropertyType($ipType);
-                $institutionProperty->setValue($value->getId());
-                $this->createInstitutionProperty($institutionProperty);
-            }
-        }
-        else {
-            $this->createInstitutionProperty($instituionProperty);
-        }
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        $property = new InstitutionMedicalCenterProperty();
+        $property->setInstitution($institution);
+        $property->setInstitutionMedicalCenter($center);
+        $property->setInstitutionPropertyType($propertyType);
+    
+        return $property;
     }
     
-    public function createInstitutionProperty(InstitutionProperty $institutionProperty)
+    public function save(InstitutionProperty $institutionProperty)
     {
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionProperty);
         $em->flush();
+    }
+    
+    public function createInstitutionPropertyByServices(InstitutionProperty $institutionProperty)
+    {
+        $institution = $institutionProperty->getInstitution();
+        $ipType = $institutionProperty->getInstitutionPropertyType();
+        $ipArray = $institutionProperty->getValue();
+        
+        if(\is_array($ipArray)) {
+            foreach($ipArray as $key => $value)
+            {
+                $institutionProperty = new InstitutionProperty();
+                $institutionProperty->setInstitution($institution);
+                $institutionProperty->setInstitutionPropertyType($ipType);
+                $institutionProperty->setValue($value);
+                $this->save($institutionProperty);
+            }
+        }
+        else {
+            $this->save($institutionProperty);
+        }
     }
     /**
      * @param string $propertyTypeName

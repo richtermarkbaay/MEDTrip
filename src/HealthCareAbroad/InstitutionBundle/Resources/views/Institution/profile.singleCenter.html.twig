@@ -1,44 +1,74 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'profile'} %}
 {% block content %}
-
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-        <div class="span12">
-            <div class="span9 marginleft0">
-                <div class="span2 marginleft0">
-                    <a data-toggle="modal" role="button" title="" class="gallerypic" href="#upload"> 
-                        <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
-                        <span class="image-icon"><img width="32" height="32" title="Change Profile Photo" alt="Zoom" src="{{ asset('images/institution/image-icon.png') }}"></span> 
-                    </a>
-                </div>
-                
-                <div class="span7 marginleft0">
-                    <h2 class="pull-left">{{ institution.name }}</h2>
-                    <div class="editname">
-                        <i title="Edit" class="icon-pencil"></i>
-                        <a data-toggle="modal" role="button" href="#editinstitutionname">
-                            <small>Edit</small>
-                        </a>
+           <section id="content">
+            	<div class="container">
+            		<div class="row">
+            			<div class="span9">
+            				 {% include 'InstitutionBundle:Widgets:medicalCenter.profileHeader.html.twig' %}
+                            
+                            <div class="tabbable">
+                                {% include '::stepHolderClient.base.admin.html.twig' with {
+                                    steps: [
+                                        {title: 'Specializations', 'selected': true, path: 'institution_account_profile'},
+                                        {title: 'Services', 'selected': false, path: 'institution_account_profile_service'},
+                                        {title: 'Awards','selected': false, path: 'institution_account_profile_awards'},
+                                        {title: 'Medical Specialist', 'selected': false, path: 'institution_account_profile_specialist'},
+                                    ] }
+                                %}
+                            <div class="tab-content">
+                                <div id="pane1" class="tab-pane active">
+                        			<div class="row-fluid">
+                        				<div id="Specializationdetails">
+                        					<div class="maincontentblock">
+                        						<h4 class="pull-left">Specialization Name</h4>
+                        						<div class="editname2 pull-left">
+                        							<i class="icon-trash" title="Delete"></i>
+                        							<a href="#deletespecializationname" title="" role="button" data-toggle="modal"><small>Delete</small></a>
+                        						</div>
+                            					</div>
+                            					<div class="maincontentblock">
+                            						<table class="table table-striped table-bordered bootstrap-datatable" id="specializationList">
+                            							<tbody>
+                            								<tr>
+                            									<td>Treatment1</td>
+                            									<td>
+                            										<div class="post-toolbar">
+                            											<i class="icon-trash" title="Delete"></i>
+                            											<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+                            										</div>
+                            									</td>
+                            								</tr>
+                            								<tr>
+                            									<td>Treatment1</td>
+                            									<td>
+                            										<i class="icon-trash" title="Delete"></i>
+                            										<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+                            									</td>
+                            								</tr>
+                            							</tbody>
+                            						</table>
+                            					</div>
+                            				</div>
+                            				<div class="pull-right">
+                            					<a href="#addspecializations" title="" role="button" data-toggle="modal" id="addAnotherSpecialization" class="btn btn-success btn-medium">Add Another Specialization</a>
+                            				</div>
+                            			</div>
+                            		</div>
+                                </div><!-- /.tab-content -->
+                            </div>
+                        </div>
+                        <div class="span3">
+						    <div class="sidebar">
+                                    {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                                 {% include 'InstitutionBundle:Widgets:sidebar.mediaGallery.html.twig' %}
+                            </div>
+                        </div>
                     </div>
-                    <div class="clearfix"></div>
-                    <p>
-                        {{ institution.description }}
-                        <i title="Edit" class="icon-pencil"></i>
-                        <a data-toggle="modal" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
-                    </p>
                 </div>
-                
-                <div class="clear"></div>
-                
-                {% include 'InstitutionBundle:Widgets:medicalCenter.tabbedDetails.html.twig' %}
-                
-            </div>
-            <div class="span3">
-                {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
-            </div>
-            <div class="clear"></div>
-        </div>
+            </section>
         {% endblock %}
     {% endembed %}
 
