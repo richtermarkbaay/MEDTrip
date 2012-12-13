@@ -15,19 +15,17 @@
     </div>
 </div>
 
-<div class="hero_unit_wrapper"> <!--Hero Unit-->
+<!-- div class="hero_unit_wrapper"--> <!--Hero Unit-->
 	<div id="hero_unit" class="container">
 		<div class="row banner">
-			<div class="span8 offset2">
-				<h1 class="welcome">welcome to <b>healthcare</b> abroad!</h1>
-				<h2 class="caption">the resource for global <b>healthcare</b><br>a comprehensive, <b>unbiased</b> directory</h2>
-			</div>
+			<h1 class="welcome">welcome to <b>healthcare</b> abroad!</h1>
+			<h2 class="caption">the resource for global <b>healthcare</b><br>a comprehensive, <b>unbiased</b> directory</h2>
 		</div>
 
         {% block searchBox %}
             {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #} 
             {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
         {% endblock %}
-		
+
 	</div>
-</div> <!--End of hero unit-->
+<!-- /div  --> <!--End of hero unit-->
