@@ -58,17 +58,29 @@
         
         {% endblock %}
     {% endembed %}
-
+<div id="medical_centers_tab_content" style="display:none;"></div>
+<div id="services_tab_content" style="display:none;"></div>
+<div id="awards_tab_content" style="display:none;"></div>
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/institutionProfile.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
 <script type="text/javascript">
 <!--
 (function($){
-    InstitutionProfile.setAjaxUrls({})
+    _url_base = '{{ path("institution_load_tabbed_contents_profile") }}';
+    
+    InstitutionProfile.setAjaxUrls({
+            'loadActiveMedicalCenters': _url_base+'?content=medical_centers',
+            'loadInstitutionServices': _url_base+'?content=services',
+            'loadInstitutionAwards': _url_base+'?content=awards'
+        })
         .setTabbedContentElement($('#tabbed_content'))
-        .loadTabbedContents();
+        .setMedicalCentersTabbedContentElement($("div#medical_centers_tab_content"))
+        .setServicesTabbedContentElement($("div#services_tab_content"))
+        .setAwardsTabbedContentElement($("div#awards_tab_content"))
+        .loadTabbedContentsOfMultipleCenterInstitution()
+        .switchTab('medical_centers');
 })(jQuery);
 
 //-->

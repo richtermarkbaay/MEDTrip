@@ -159,13 +159,19 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
-        /*
-         'loadActiveMedicalCenters': '', 
-        'loadInstitutionServices':'',
-        'loadInstitutionAwards': ''
-         */
+        $content = $request->get('content');
         $output = array();
-        $output['loadActiveMedicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+        switch ($content) {
+            case 'medical_centers':
+                $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+                break;
+            case 'services':
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.services.html.twig'));
+                break;
+            case 'awards':
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.awards.html.twig'));
+                break;
+        }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
