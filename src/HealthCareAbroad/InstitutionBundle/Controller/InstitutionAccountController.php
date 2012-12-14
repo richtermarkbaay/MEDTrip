@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
-
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
 class InstitutionAccountController extends InstitutionAwareController
 {
@@ -66,6 +66,57 @@ class InstitutionAccountController extends InstitutionAwareController
                 break;
         }
 
+        return $response;
+    }
+    
+    public function addMedicalSpecialistAction(Request $request)
+    {
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
+        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        if ($request->isMethod('POST')) {
+        
+            $form->bind($request);
+            if ($form->isValid()) {
+        
+                $institution = $this->get('services.institution.factory')->save($form->getData());
+                $this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
+        
+                //create event on editInstitution and dispatch
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+                return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+            }
+        }
+        $doctorArr = array();
+        foreach ($doctors as $e) {
+        
+            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId());
+        }
+        
+        return $this->render('InstitutionBundle:Institution:add.medicalSpecialist.html.twig', array(
+                        'form' => $form->createView(),
+                        'institution' => $this->institution,
+                        'doctorsJSON' => \json_encode($doctorArr)
+        ));
+    }
+    
+    /*
+     * Get doctors list that is not assigned to Institution
+    */
+    public function searchMedicalSpecialistAction(Request $request)
+    {
+        $searchTerm = $request->get('name_startsWith');
+        $data = array();
+        $doctors = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getDoctorsBySearchTerm($searchTerm, $this->institution->getId());
+    
+        foreach($doctors as $each) {
+            $data[] = array('id' => $each->getId(),
+                            'firstName' => $each->getFirstName(),
+                            'middleName' => $each->getMiddleName(),
+                            'lastName' => $each->getLastName());
+        }
+    
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
     

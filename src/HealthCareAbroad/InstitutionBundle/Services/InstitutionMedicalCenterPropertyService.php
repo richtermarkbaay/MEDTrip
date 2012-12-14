@@ -39,7 +39,7 @@ class InstitutionMedicalCenterPropertyService
         
         $this->_setupAvailablePropertyTypes();
     }
-    
+  
     /**
      * Create an instance of InstitutionProperty by property type name
      * 
