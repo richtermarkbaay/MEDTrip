@@ -67,18 +67,17 @@ var InstitutionProfile = {
     
     loadTabbedContentsOfMultipleCenterInstitution: function() {
         // medical centers content
-        InstitutionProfile.medicalCenterTabbedContentElement.html('<span>Loading...</span>');
         $.ajax({
             url: InstitutionProfile.ajaxUrls.loadActiveMedicalCenters,
             type: 'get',
             dataType: 'json',
             success: function(response){
                 InstitutionProfile.medicalCenterTabbedContentElement.html(response.medicalCenters.html);
+                InstitutionProfile.switchTab('medical_centers');
             }
         });
         
         // institution services content
-        /*InstitutionProfile.medicalCenterTabbedContentElement.html('<span>Loading...</span>');
         $.ajax({
             url: InstitutionProfile.ajaxUrls.loadInstitutionServices,
             type: 'get',
@@ -96,6 +95,8 @@ var InstitutionProfile = {
             success: function(response){
                 InstitutionProfile.awardsTabbedContentElement.html(response.awards.html);
             }
-        });*/
+        });
+        
+        return this;
     }
 }

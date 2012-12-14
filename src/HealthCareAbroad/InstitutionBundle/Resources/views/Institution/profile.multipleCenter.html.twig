@@ -36,15 +36,15 @@
             <!-- end row -->
             
             <div class="tabbable">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs profile_tabs">
                     <li class="active">
-                        <a data-toggle="tab" href="#pane1">Clinics</a>
+                        <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">Clinics</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#pane2">Services</a>
+                        <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" href="#pane3">Awards, Certifications and Affiliations</a>
+                        <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and Affiliations</a>
                     </li>
                     
                 </ul>
@@ -58,9 +58,9 @@
         
         {% endblock %}
     {% endembed %}
-<div id="medical_centers_tab_content" style="display:none;"></div>
-<div id="services_tab_content" style="display:none;"></div>
-<div id="awards_tab_content" style="display:none;"></div>
+<div id="medical_centers_tab_content" style="display:none;"><span>Loading...</span></div>
+<div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
+<div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
 {% endblock %}
 
 {% block inlineJavascriptCode %}
@@ -79,8 +79,17 @@
         .setMedicalCentersTabbedContentElement($("div#medical_centers_tab_content"))
         .setServicesTabbedContentElement($("div#services_tab_content"))
         .setAwardsTabbedContentElement($("div#awards_tab_content"))
-        .loadTabbedContentsOfMultipleCenterInstitution()
-        .switchTab('medical_centers');
+        .loadTabbedContentsOfMultipleCenterInstitution();
+
+    $('a.profile_tab_links').click(function(){
+        $(this).parents('ul.profile_tabs').find('li.active').removeClass('active');
+        $(this).parents('ul li').addClass('active');
+        _tab_type = $(this).attr('href').replace("#", "");
+        InstitutionProfile.switchTab(_tab_type);
+
+        return false;
+    });
+        
 })(jQuery);
 
 //-->

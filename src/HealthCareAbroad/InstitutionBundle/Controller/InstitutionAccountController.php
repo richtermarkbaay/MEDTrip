@@ -166,10 +166,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
                 break;
             case 'services':
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.services.html.twig'));
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig'));
                 break;
             case 'awards':
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.awards.html.twig'));
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionAwards.html.twig'));
                 break;
         }
         
