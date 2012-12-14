@@ -172,7 +172,7 @@ class InstitutionTreatmentsController extends Controller
             }
         }
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter, array('is_hidden' => false));
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
 

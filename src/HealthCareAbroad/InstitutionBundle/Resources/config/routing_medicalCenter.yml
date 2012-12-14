@@ -4,7 +4,15 @@ institution_medicalCenter_addDetails:
     requirements:
         _method: GET|POST
         imcId: \d+
-
+        
+institution_medicalCenter_add:
+    pattern: /{institutionId}/medical-center/add-new
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
+    requirements:
+        _method: GET
+        institutionId: \d+
+        _method: GET|POST
+        
 institution_medicalCenter_addSpecializations:
     pattern: /medical-center/{imcId}/specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addSpecializations }
