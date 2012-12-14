@@ -6,7 +6,7 @@ institution_medicalCenter_addDetails:
         imcId: \d+
         
 institution_medicalCenter_add:
-    pattern: /medical-center/{institutionId}/add-new
+    pattern: /{institutionId}/medical-center/add-new
     defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
     requirements:
         _method: GET
