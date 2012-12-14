@@ -1,0 +1,81 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% block content %}
+
+<div class="span12">
+	<h1><span>Create New Clinic Listing</span></h1>
+	<ul class="navstep nav-steps">
+		<li class="active"><a href="#"><h2>1</h2><span>Clinic Details</span></a></li>
+		<li><a href="#"><h2>2</h2><span>Specializations and Treatments</span></a></li>
+		<li><a href="#"><h2>3</h2><span>Services</span></a></li>
+		<li><a href="#"><h2>4</h2><span>Awards, Certifications and Affiliations</span></a></li>
+		<li><a href="#"><h2>5</h2><span>Medical Specialist</span></a></li>
+	</ul>
+</div><!--End of span12-->
+<div class="addnewclinic">
+	<div class="span9">
+		<form novalidate="novalidate" action="{{ path('institution_medicalCenter_add', { 'institutionId':institution.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
+            {{ form_errors(form) }}   
+
+            {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
+            {{ form_row(form.description) }}
+            
+            </br>
+            {{ form_label(form.businessHours) }}
+                <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
+                <span>I have no business hours</span> 
+                {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
+            
+            {{ form_rest(form) }}
+                                	                        	
+        	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
+        	<div class="clear"><br></div>
+        	<input type="submit" name="submit" value="Submit" class="btn btn-large btn-primary" />
+        </form>
+	</div>
+</div>
+		
+						
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+    <script>
+    	$(function() {
+	    	$(".hour").timepicker({ seconds: false});
+	    	$('input.is_closed_checkbox').each(function(){
+			    if(this.checked) {
+			    	$(this).parent().parent().find('.hour').val("");
+			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+				}
+			});
+	    });
+    	$('#businessHourCheckBox').click(function(){
+        	
+    	    if ($('#businessHourCheckBox').attr('checked')) {
+
+    	    	$(this).parent().parent().find('.hour').val("");
+    	    	$(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	    	$('#clinicHoursTable').hide();
+    	    	
+    	    }else{
+        	    $('#clinicHoursTable').show();
+        	    $(this).parent().parent().find('.hour').val("8:00 AM");
+    	    	$(this).parent().parent().find('.hour').spinner({ disabled: false });
+        	}
+    	}) 
+	    $('input.is_closed_checkbox').change(function(){
+		    if(this.checked) {
+		    	$(this).parent().parent().find('.hour').val("");
+		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+			}
+		    else 
+		    {
+		    	$(this).parent().parent().find('.hour').val("8:00 AM");
+		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+		    }
+		   
+		});
+    </script>
+    {% endblock %}
+{% endblock %}
+					

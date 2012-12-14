@@ -1,6 +1,6 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
-
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
@@ -78,6 +78,68 @@ class MedicalCenterController extends InstitutionAwareController
         ));
         
     }
+    
+    /**
+     * @author Chaztine Blance
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function addMedicalCenterAction(Request $request)
+    {
+        $service = $this->get('services.institution_medical_center');
+        
+        if (is_null($this->institutionMedicalCenter)) {
+            $this->institutionMedicalCenter = new institutionMedicalCenter();
+            $this->institutionMedicalCenter->setInstitution($this->institution);
+        }
+    
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter);
+         if ($request->isMethod('POST')) {
+            $form->bind($request);
+       
+            // Get contactNumbers and convert to json format
+            $businessHours = json_encode($request->get('businessHours'));
+    
+            if ($form->isValid()) {
+           
+                // Set BusinessHours before saving
+                $form->getData()->setBusinessHours($businessHours);
+                $form->getData()->setDescription($form->get('description')->getData());
+                $form->getData()->setName($form->get('name')->getData());
+                $form->getData()->setAddress($form->get('address')->getData());
+                $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
+                
+                $this->institution->setContactNumber($form->get('contactNumber')->getData());
+                $this->institution->setContactEmail($form->get('contactEmail')->getData());
+                $institution = $this->get('services.institution.factory')->save($this->institution);
+                
+                
+                //create event on editInstitution and dispatch
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+                
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
+                                $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                                ));
+    
+                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
+
+//                 return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array(
+//                                 'institutionId' => $this->institution->getId(),
+//                                 'imcId' => $this->institutionMedicalCenter->getId()
+//                 )));
+            }
+        }
+    
+        $params = array(
+                        'form' => $form->createView(),
+                        'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'selectedSubMenu' => 'centers'
+        );
+    
+        return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', $params);
+    }
+    
     
     /**
      * This is the first step when creating a new InstitutionMedicalCenter. Add details of a InstitutionMedicalCenter

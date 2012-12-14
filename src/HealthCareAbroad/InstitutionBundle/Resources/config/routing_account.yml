@@ -21,6 +21,18 @@ institution_add_service_for_clinic:
     defaults: {_controller: InstitutionBundle:InstitutionAccount:addService }
     requirements:
         _method: GET|POST
+
+institution_add_medical_specialist:
+    pattern: /institution/add-specialist.html
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:addMedicalSpecialist}
+    requirements:
+        _method: GET|POST
+
+institution_search_medical_specialist:
+    pattern: /institution/search-specialist
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialist}
+    requirements:
+        _method: GET|POST
         
 institution_load_tabbed_contents_profile:
     pattern: /institution/load-tabbed-contents-profile
