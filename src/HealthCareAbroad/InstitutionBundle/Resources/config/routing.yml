@@ -85,6 +85,12 @@ InstitutionBundle_confirmed_token:
     requirements:
        _method: GET
 
+institution_addAncilliaryService:
+    pattern:  /institution/{institutionId}/add-ancilliary-service
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:addAncilliaryService }
+    requirements:
+        institutionId: \d+
+       
 institution_exception_report_create:
     pattern: /institution/error
     defaults: { _controller: InstitutionBundle:Default:errorReport }
