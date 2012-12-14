@@ -53,7 +53,20 @@ class DefaultController extends InstitutionAwareController
             'institution' => $this->institution,
         ));
     }
-
+    public function addClinicAction()
+    {
+        $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
+        $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
+        $news = $newsRepository->getLatestNews();
+         
+        $template = 'InstitutionBundle:Default:add.clinic.html.twig';
+         
+        return $this->render($template, array(
+                        'alerts' => $institutionAlerts,
+                        'news' => $news,
+                        'institution' => $this->institution,
+        ));
+    }
     public function error403Action()
     {
         return $this->render('InstitutionBundle:Exception:error403.html.twig');

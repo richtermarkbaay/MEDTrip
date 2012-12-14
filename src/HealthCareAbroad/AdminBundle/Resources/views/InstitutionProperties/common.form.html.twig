@@ -10,7 +10,6 @@
     $(function(){
         $('#addServices').click(function(){
         	var offeredServicesData = getOfferedServicesChecked();
-        	console.log(offeredServicesData);
             var urlData = '{{ formAction|raw }}';
         	$.ajax({
 		        url: urlData,

@@ -1,16 +1,21 @@
+newsletter_new:
+    pattern:  /
+    defaults: { _controller: FrontendBundle:Default:new}
+    requirements:
+        _method: GET|POST
+
 temp_homepage_index.html:
     pattern: /temp.html
     defaults: { _controller: FrontendBundle:Default:indexTemp }
 
 main_homepage_index_html:
     pattern:  /index.html
+    defaults: { _controller: FrontendBundle:Default:new}
+        
+main_homepage:
+    pattern:  /frontend/index.html
     defaults: { _controller: FrontendBundle:Default:index}
 
-newsletter_new:
-    pattern:  /
-    defaults: { _controller: FrontendBundle:Default:new}
-    requirements:
-        _method: GET|POST
 page_inquire:
     pattern:  /inquire
     defaults: { _controller: FrontendBundle:Inquiry:index }
@@ -58,7 +63,3 @@ splash_page:
     defaults: { _controller: FrontendBundle:Default:new, url: /}
     requirements:
          url: ".*"
-
-#main_homepage:
-#    pattern:  /
-#    defaults: { _controller: FrontendBundle:Default:index}

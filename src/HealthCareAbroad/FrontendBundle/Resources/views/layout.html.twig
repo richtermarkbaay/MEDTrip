@@ -6,18 +6,14 @@
     <div id="fixed_container">
 
         {% block header %}
-            {% include 'FrontendBundle:Widgets:header.html.twig' %} <!-- Prev Code: {# include 'FrontendBundle:Default:header.html.twig' #} -->
+            {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
 
         <div class="border_pattern">&nbsp;</div>    
         <div id="content_wrapper">
             <div class="container">
-            
                 {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
-
-                {% block content %}
-                    {# include 'FrontendBundle:Default:content.html.twig' #}    
-                {% endblock %}
+                {% block content %}{% endblock %}
             </div>
 
         </div>
