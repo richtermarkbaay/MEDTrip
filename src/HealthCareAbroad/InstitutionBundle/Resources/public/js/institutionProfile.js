@@ -17,6 +17,10 @@ var InstitutionProfile = {
     // jQuery DOM element for the tabbed content
     tabbedContentElement: null,
     
+    institutionNameDialogElement: null,
+    
+    institutionDescriptionDialogElement: null,
+    
     setAjaxUrls: function(_val){
         this.ajaxUrls = _val;
         
@@ -98,5 +102,53 @@ var InstitutionProfile = {
         });
         
         return this;
+    },
+    
+    /**
+     * set up dialog box for edit instituion name
+     * 
+     * @parameter jQuery DOM element
+     */
+    setUpInstitutionNameDialog: function (_dialogContentElement) {
+        this.institutionNameDialogElement = _dialogContentElement;
+        this.institutionNameDialogElement.dialog({
+            position: ['center', 100],
+            autoOpen: false,
+            width: 'auto',
+            modal: true,
+            resizable: false,
+            close: function() {}
+        });
+        
+        return this;
+    },
+    
+    setUpInstitutionDescriptionDialog: function(_dialogContentElement) {
+        this.institutionDescriptionDialogElement = _dialogContentElement;
+        this.institutionDescriptionDialogElement.dialog({
+            position: ['center', 100],
+            autoOpen: false,
+            width: 'auto',
+            modal: true,
+            resizable: false,
+            close: function() {}
+        });
+        
+        return this;
+    },
+    
+    submitModalForm: function(_formElement, _successCallback) {
+        $.ajax({
+           url: _formElement.attr('action'),
+           data: _formElement.serialize(),
+           type: 'POST',
+           success: _successCallback
+        });
     }
-}
+};
+
+var InstitutionProfileEvents = {
+    UPDATE_INSTITUTION_NAME_EVENT : $.Event('update_institution_name'),
+    
+    UPDATE_INSTITUTION_DESCRIPTION_EVENT : $.Event('update_institution_description')
+};

@@ -158,6 +158,7 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
             $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
         }
@@ -166,6 +167,7 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return $this->render($template, array(
+            'form' => $form->createView(),
             'institution' => $this->institution
         ));
     }
@@ -190,6 +192,24 @@ class InstitutionAccountController extends InstitutionAwareController
             case 'awards':
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionAwards.html.twig'));
                 break;
+        }
+        
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    public function ajaxUpdateProfileByFieldAction(Request $request)
+    {
+        $output = array();
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $output['form_error'] = 0;
+            }
+            else {
+                $output['form_error'] = 1;
+            }
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
