@@ -99,6 +99,7 @@ class InstitutionAccountController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
+            'institutionSpecializations' => $institutionSpecializations,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
@@ -145,6 +146,13 @@ class InstitutionAccountController extends InstitutionAwareController
         else {
             $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
         }
+        
+//         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
+        
+        echo "<pre>";
+        print_r($this->institution);
+        echo "</pre>";
+        exit;
         
         return $this->render($template, array(
             'institution' => $this->institution
