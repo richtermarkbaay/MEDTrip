@@ -50,7 +50,7 @@ class Institution
     private $address1;
 
     /**
-     * @var integer $zipCode
+     * @var string $zipCode
      */
     private $zipCode;
 
@@ -310,7 +310,7 @@ class Institution
     /**
      * Set zipCode
      *
-     * @param integer $zipCode
+     * @param string $zipCode
      * @return Institution
      */
     public function setZipCode($zipCode)
@@ -322,7 +322,7 @@ class Institution
     /**
      * Get zipCode
      *
-     * @return integer 
+     * @return string
      */
     public function getZipCode()
     {
