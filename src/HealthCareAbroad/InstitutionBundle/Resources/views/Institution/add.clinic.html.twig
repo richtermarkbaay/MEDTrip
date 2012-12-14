@@ -1,9 +1,11 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% set disableMainNavigation = true %}
 {% block content %}
 
-    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
         {% block wrappedContent %}
+
        <div class="span12">
         	<h1><span>Create New Clinic Listing</span></h1>
         	<ul class="navstep nav-steps">
@@ -38,16 +40,12 @@
                 	<input type="submit" name="submit" value="Submit" class="btn btn-large btn-primary" />
                 </form>
         	</div>
-        </div>
-        {% endblock %}
-        
-        {% block sidebar %}
-        <div class="span3">
-            {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+
         </div>
         {% endblock %}
         
     {% endembed %}
+
  {% block inlineJavascriptCode %}
         <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     	<script src="{{ asset('js/jquery/globalize.js') }}"></script>

@@ -69,6 +69,25 @@ class InstitutionAccountController extends InstitutionAwareController
         return $response;
     }
     
+    public function addServiceAction(Request $request)
+    {
+        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
+   	    $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
+   	    if ($request->isMethod('POST')) {
+   	        $form->bind($request);
+   	        if ($form->isValid()) {
+   	            $this->get('services.institution_property')->save($form->getData());
+   	    
+   	            return $this->redirect($formActionUrl);
+   	        }
+   	    }
+   	    
+   	    $params = array(
+   	                    'formAction' => $formActionUrl,
+   	                    'form' => $form->createView()
+   	    );
+        return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
+    }
     /**
      * This is the action handler after signing up as an Institution with Single Center.
      * User will be directed immediately to create clinic page.
@@ -167,13 +186,19 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
-        /*
-         'loadActiveMedicalCenters': '', 
-        'loadInstitutionServices':'',
-        'loadInstitutionAwards': ''
-         */
+        $content = $request->get('content');
         $output = array();
-        $output['loadActiveMedicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+        switch ($content) {
+            case 'medical_centers':
+                $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+                break;
+            case 'services':
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig'));
+                break;
+            case 'awards':
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionAwards.html.twig'));
+                break;
+        }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }

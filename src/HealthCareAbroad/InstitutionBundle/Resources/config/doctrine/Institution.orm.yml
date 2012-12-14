@@ -45,9 +45,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: text
             nullable: false
         zipCode:
-            type: integer
+            type: string
             length: 10
-            unsigned: false
             nullable: false
             column: zip_code
         state:
