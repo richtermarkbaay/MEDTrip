@@ -220,11 +220,6 @@ class InstitutionAccountController extends InstitutionAwareController
         
 //         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
         
-        echo "<pre>";
-        print_r($this->institution);
-        echo "</pre>";
-        exit;
-        
         return $this->render($template, array(
             'form' => $form->createView(),
             'institution' => $this->institution
@@ -259,18 +254,34 @@ class InstitutionAccountController extends InstitutionAwareController
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
         $output = array();
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $output['form_error'] = 0;
+        //if ($request->isMethod('POST')) {
+        if (true) {
+            
+            try {
+                // set all other fields except those passed as hidden
+                $formVariables = $request->get(InstitutionProfileFormType::NAME);
+                unset($formVariables['_token']);
+                $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
+                
+                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+                
+                $form->bind($request);
+                if ($form->isValid()) {
+                    $this->get('services.institution.factory')->save($form->getData());
+                    $output['form_error'] = 0;
+                }
+                else {
+                    
+                    $output['form_error'] = 1;
+                }    
             }
-            else {
-                $output['form_error'] = 1;
+            catch (\Exception $e) {
+                return new Response($e->getMessage(),500);
             }
+            
         }
-        
+        //return $this->render('InstitutionBundle:Institution:demoWithForm.html.twig', array('form' => $form->createView()));
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 
