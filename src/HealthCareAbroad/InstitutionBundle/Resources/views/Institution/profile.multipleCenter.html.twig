@@ -16,7 +16,7 @@
                 </div>
                 
                 <div class="span7">
-                    <h2 class="pull-left">{{ institution.name }}</h2>
+                    <h2 class="pull-left institution_name">{{ institution.name }}</h2>
                     <div class="editname">
                         <i title="Edit" class="icon-pencil"></i>
                         <a data-toggle="modal" id="edit_institution_name_link" role="button" href="#editinstitutionname">
@@ -24,11 +24,11 @@
                         </a>
                     </div>
                     <div class="maincontentblock">
-                        <p>
+                        <p style="display: inline-block;" class="institution_description">
                             {{ institution.description }}
-                            <i title="Edit" class="icon-pencil"></i>
-                            <a data-toggle="modal" id="edit_institution_description_link" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
                         </p>
+                        <i title="Edit" class="icon-pencil"></i>
+                        <a data-toggle="modal" id="edit_institution_description_link" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
                     </div>
                     
                 </div>
@@ -111,7 +111,8 @@
         .setMedicalCentersTabbedContentElement($("div#medical_centers_tab_content"))
         .setServicesTabbedContentElement($("div#services_tab_content"))
         .setAwardsTabbedContentElement($("div#awards_tab_content"))
-        .loadTabbedContentsOfMultipleCenterInstitution();
+        .loadTabbedContentsOfMultipleCenterInstitution()
+        .switchTab('medical_centers');
 
     // initialize dialog boxes
     InstitutionProfile
@@ -141,8 +142,19 @@
 
     // submit button for edit institution name
     $('button#submit_button_institution_name').click(function(){
+        $(this).attr('disabled',true);
+        $('form#form_institution_name').append('<span class="loader">Loading...</span>');
         InstitutionProfile.submitModalForm($('form#form_institution_name'), function(response){
-            var a = 'a';
+            if (response.form_error) {
+                $('form#form_institution_name').prepend(response.form_error_html);
+            }
+            else {
+                InstitutionProfile.institutionNameDialogElement.dialog("close");
+                $('h2.institution_name').html(response.institution.name);
+            }
+
+            $(this).attr('disabled',true);
+            $('form#form_institution_name').find('span.loader').remove();
         });
 
         return false;
@@ -150,8 +162,19 @@
 
     // submit button for edit description
     $('button#submit_button_institution_description').click(function(){
+        $(this).attr('disabled',true);
+        $('form#form_institution_description').append('<span class="loader">Loading...</span>');
         InstitutionProfile.submitModalForm($('form#form_institution_description'), function(response){
-            var a = 'b';
+            if (response.form_error) {
+                $('form#form_institution_description').prepend(response.form_error_html);
+            }
+            else {
+                InstitutionProfile.institutionDescriptionDialogElement.dialog("close");
+                $('p.institution_description').html(response.institution.description);
+            }
+
+            $(this).attr('disabled',true);
+            $('form#form_institution_description').find('span.loader').remove();
         });
 
         return false;

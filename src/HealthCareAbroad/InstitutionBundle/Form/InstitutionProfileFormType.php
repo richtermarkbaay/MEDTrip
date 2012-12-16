@@ -35,6 +35,8 @@ class InstitutionProfileFormType extends AbstractType
     
     const OPTION_REMOVED_FIELDS = 'removed_fields';
     
+    const OPTION_BUBBLE_ALL_ERRORS = 'bubble_all_errors';
+    
     private $options;
     
     private $institution;
@@ -62,6 +64,7 @@ class InstitutionProfileFormType extends AbstractType
         $resolver->setDefaults(array(
             self::OPTION_HIDDEN_FIELDS => array(),
             self::OPTION_REMOVED_FIELDS => array(),
+            self::OPTION_BUBBLE_ALL_ERRORS => false,
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
@@ -126,6 +129,9 @@ class InstitutionProfileFormType extends AbstractType
             
         }
         else {
+            if ($this->options[self::OPTION_BUBBLE_ALL_ERRORS]) {
+                $options['error_bubbling'] = true;
+            }
             $builder->add($fieldName, $fieldType, $options);
         }
     }

@@ -251,6 +251,12 @@ class InstitutionAccountController extends InstitutionAwareController
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
+    /**
+     * Ajax handler for updating institution profile fields.
+     * 
+     * @param Request $request
+     * @author acgvelarde
+     */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
         $output = array();
@@ -264,24 +270,39 @@ class InstitutionAccountController extends InstitutionAwareController
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
                 
-                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
                 $form->bind($request);
                 if ($form->isValid()) {
-                    $this->get('services.institution.factory')->save($form->getData());
+                    $this->institution = $form->getData();
+                    $this->get('services.institution.factory')->save($this->institution);
+                    
+                    $output['institution'] = array();
+                    foreach ($formVariables as $key => $v){
+                        $output['institution'][$key] = $this->institution->{'get'.$key}();
+                    }
                     $output['form_error'] = 0;
                 }
                 else {
-                    
+                    // construct the error message
+                    $html ="<ul class='errors'>";
+                    foreach ($form->getErrors() as $err){
+                         $html .= '<li>'.$err->getMessage().'</li>';
+                    }
+                    $html .= '</ul>';
+                     
+                    //var_dump($form->get('name')->getErrors()); exit;
                     $output['form_error'] = 1;
+                    $output['form_error_html'] = $html;
                 }    
             }
             catch (\Exception $e) {
+                
                 return new Response($e->getMessage(),500);
             }
             
         }
-        //return $this->render('InstitutionBundle:Institution:demoWithForm.html.twig', array('form' => $form->createView()));
+        
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 
