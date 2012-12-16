@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
@@ -86,7 +88,7 @@ class InstitutionService
         $qb->select('i')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
             ->where('i.institution = :institutionId')
-            ->orderBy('i.dateCreated','asc')
+            ->orderBy('i.dateCreated','desc')
             ->setParameter('institutionId', $institution->getId());
         
         if ($limit = $options->get(QueryOption::LIMIT, null)) {
@@ -94,6 +96,25 @@ class InstitutionService
         }
         
         return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Get the first added medical center of an institution
+     * 
+     * @param Institution $institution
+     * @return InstitutionMedicalCenter
+     */
+    public function getFirstMedicalCenter(Institution $institution)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('i')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
+            ->where('i.institution = :institutionId')
+            ->orderBy('i.dateCreated','asc')
+            ->setParameter('institutionId', $institution->getId())
+            ->setMaxResults(1);
+        
+        return $qb->getQuery()->getOneOrNullResult(); 
     }
     
 }

@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+
 use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -211,7 +213,17 @@ class InstitutionAccountController extends InstitutionAwareController
     public function profileAction(Request $request)
     {
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        $templateVariables = array(
+            'institutionForm' => $form->createView(),
+            'institution' => $this->institution
+        );
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+            
+            // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
+            // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
+            $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+            $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
+                ->createView();
             $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
         }
         else {
@@ -220,10 +232,7 @@ class InstitutionAccountController extends InstitutionAwareController
         
 //         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
         
-        return $this->render($template, array(
-            'form' => $form->createView(),
-            'institution' => $this->institution
-        ));
+        return $this->render($template, $templateVariables);
     }
     
 
@@ -236,9 +245,10 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $content = $request->get('content');
         $output = array();
+        $parameters = array('institution' => $this->institution);
         switch ($content) {
             case 'medical_centers':
-                $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig'));
+                $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig', $parameters));
                 break;
             case 'services':
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig'));

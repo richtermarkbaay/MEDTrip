@@ -1,6 +1,3 @@
-<h1>
-	<span>Manage Clinic</span>
-</h1>
 <div class="row">
 	<div class="span2">
 		<a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal">
@@ -9,18 +6,73 @@
 		</a>
 	</div>
     <div class="span7">
-    	<h2 class="pull-left">{{ institution.name }}</h2>
+    	<h2 class="pull-left">{{ institutionMedicalCenter.name }}</h2>
     	<div class="editname">
     		<i class="icon-pencil" title="Edit"></i>
-    		<a href="#editinstitutionname" role="button" data-toggle="modal">
+    		<a href="#name" class="modal_openers" role="button" data-toggle="modal">
     
     		<small>Edit</small></a>
     	</div>
     	<div class="maincontentblock">
-    		<p>{{ institution.description }}
-    			<i class="icon-pencil" title="Edit"></i>
-    			<a href="#editinstitutiondescription" role="button" data-toggle="modal"><small>Edit</small></a>
-    		</p>
+    		<p style="display:inline-block;">{{ institutionMedicalCenter.description | raw}}</p>
+			<i class="icon-pencil" title="Edit"></i>
+			<a href="#description" class="modal_openers" role="button" data-toggle="modal"><small>Edit</small></a>
+    		
     	</div>
     </div>
 </div>
+
+{# --- modal boxes --- #}
+{% set _csrf_token_widget = form_widget(institutionMedicalCenterForm._token) %}
+<div id="modal_institutionMedicalCenter_name" title="Edit Clinic Name" style="display:none;">
+    
+	<div class="modal-body">
+		<form id="modal_institutionMedicalCenter_name_form" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+		    <div>
+    			{{ form_widget(institutionMedicalCenterForm.name, {attr: {class:'span6'} } ) }}
+    			{{ _csrf_token_widget | raw}}
+    		</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button id="modal_institutionMedicalCenter_name_submit" class="btn btn-primary submit-button">Submit</button>
+	</div>
+</div>
+
+<div id="modal_institutionMedicalCenter_description" title="Edit Clinic Description" style="display:none;">
+    
+	<div class="modal-body">
+		<form id="modal_institutionMedicalCenter_description_form" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+		    <div>
+    			{{ form_widget(institutionMedicalCenterForm.description, { attr:{rows: 5, class: 'span6'} } ) }}
+    			{{ _csrf_token_widget | raw}}
+    		</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button id="modal_institutionMedicalCenter_description_submit" class="btn btn-primary submit-button">Submit</button>
+	</div>
+</div>
+
+
+{% block inlineJavascriptCode %}
+
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        InstitutionMedicalCenter.initializeModals({name: $('#modal_institutionMedicalCenter_name'), description: $('#modal_institutionMedicalCenter_description') } );
+
+        $('a.modal_openers').click(function(){
+            InstitutionMedicalCenter.openModal($(this).attr('href').replace("#", ""));
+
+            return false;
+        });
+        
+        
+    });
+})(jQuery);
+
+//-->
+</script>
+{% endblock %}

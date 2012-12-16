@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'profile'} %}
+{% set mainNavigation = {selected: 'medical_centers'} %}
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
@@ -7,8 +7,8 @@
             	<div class="container">
             		<div class="row">
             			<div class="span9">
-            				 {% include 'InstitutionBundle:Widgets:medicalCenter.profileHeader.html.twig' %}
-                            
+            			    <h1><span>Manage Clinic</span></h1>
+                            {% include 'InstitutionBundle:Widgets:medicalCenter.profileHeader.html.twig' %}
                             <div class="tabbable">
                                 {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
                                     tabNavigation: { links: [
@@ -30,12 +30,4 @@
         {% endblock %}
     {% endembed %}
 
-{% endblock %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript">
-<!--
-
-//-->
-</script>
 {% endblock %}

@@ -61,14 +61,14 @@
 <div id="medical_centers_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
-{% set _csrf_token_widget = form_widget(form._token) %}
+{% set _csrf_token_widget = form_widget(institutionForm._token) %}
 
 <div id="edit_institution_name_dialog" title="Edit Institution Name" style="display:none;">
     
 	<div class="modal-body">
 		<form id="form_institution_name" action="{{ path('institution_ajaxUpdateProfileByField') }}">
 		    <div>
-    			{{ form_widget(form.name, {attr: {class:'span6'} } ) }}
+    			{{ form_widget(institutionForm.name, {attr: {class:'span6'} } ) }}
     			{{ _csrf_token_widget | raw}}
     		</div>
 		</form>
@@ -83,7 +83,7 @@
 	<div class="modal-body">
 		<form id="form_institution_description" action="{{ path('institution_ajaxUpdateProfileByField') }}">
 		    <div>
-    			{{ form_widget(form.description, { attr:{rows: 5, class: 'span6'} } ) }}
+    			{{ form_widget(institutionForm.description, { attr:{rows: 5, class: 'span6'} } ) }}
     			{{ _csrf_token_widget | raw}}
     		</div>
 		</form>
