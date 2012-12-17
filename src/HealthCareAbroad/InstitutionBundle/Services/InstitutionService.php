@@ -110,7 +110,7 @@ class InstitutionService
         $qb->select('i')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
             ->where('i.institution = :institutionId')
-            ->orderBy('i.dateCreated','asc')
+            ->orderBy('i.id','asc')
             ->setParameter('institutionId', $institution->getId())
             ->setMaxResults(1);
         

@@ -271,8 +271,7 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $output = array();
         
-        //if ($request->isMethod('POST')) {
-        if (true) {
+        if ($request->isMethod('POST')) {
             
             try {
                 // set all other fields except those passed as hidden

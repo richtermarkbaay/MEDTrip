@@ -24,9 +24,9 @@
                         </a>
                     </div>
                     <div class="maincontentblock">
-                        <p style="display: inline-block;" class="institution_description">
-                            {{ institution.description }}
-                        </p>
+                        <div style="display: inline-block;" class="institution_description">
+                            {{ institution.description | raw }}
+                        </div>
                         <i title="Edit" class="icon-pencil"></i>
                         <a data-toggle="modal" id="edit_institution_description_link" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
                     </div>
