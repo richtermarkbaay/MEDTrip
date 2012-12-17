@@ -4,6 +4,12 @@ institution_account_profile:
     requirements:
         _method:  GET|POST
 
+institution_ajaxUpdateProfileByField:
+    pattern: /institution/ajax/update-profile-by-field
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:ajaxUpdateProfileByField }
+    requirements:
+        _method:  GET|POST
+
 institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
@@ -13,6 +19,18 @@ institution_signup_complete_profile:
 institution_add_service_for_clinic:
     pattern: /institution/add-service-for-clinic.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:addService }
+    requirements:
+        _method: GET|POST
+
+institution_add_medical_specialist:
+    pattern: /institution/add-specialist.html
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:addMedicalSpecialist}
+    requirements:
+        _method: GET|POST
+
+institution_search_medical_specialist:
+    pattern: /institution/search-specialist
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialist}
     requirements:
         _method: GET|POST
         

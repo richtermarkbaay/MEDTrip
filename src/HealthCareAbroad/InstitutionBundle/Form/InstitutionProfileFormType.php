@@ -16,41 +16,78 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
 
+/**
+ * Use this form when dealing with forms involving the Institution entity
+ * 
+ * @author Allejo Chris G. Velarde
+ */
 class InstitutionProfileFormType extends AbstractType
 {
+    /**
+     * @var the name of this form
+     */
+    const NAME = 'institution_profile_form';
+    
+    /**
+     * @var unknown_type
+     */
     const OPTION_HIDDEN_FIELDS = 'hidden_fields';
+    
+    const OPTION_REMOVED_FIELDS = 'removed_fields';
+    
+    const OPTION_BUBBLE_ALL_ERRORS = 'bubble_all_errors';
     
     private $options;
     
+    private $institution;
+    
+    private static $fieldNames = array(
+        'name', 
+        'description',
+        'country',
+        'city',
+        'zipCode',
+        'state',
+        'contactEmail',
+        'address1',
+        'contactNumber',
+        'websites'
+    );
+    
     public function getName()
     {
-        return 'institution_profile_form';
+        return self::NAME;
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             self::OPTION_HIDDEN_FIELDS => array(),
+            self::OPTION_REMOVED_FIELDS => array(),
+            self::OPTION_BUBBLE_ALL_ERRORS => false,
             'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $institution = $builder->getData();
-        if (!$institution instanceof Institution ) {
-            throw InstitutionFormException::nonInstitutionFormData(__CLASS__, $institution);
+        $this->options = $options;
+        $this->institution = $builder->getData();
+        if (!$this->institution instanceof Institution ) {
+            throw InstitutionFormException::nonInstitutionFormData(__CLASS__, $this->institution);
         }
         
         $cityId = 0;
-        if ($city = $builder->getData()->getCity()) {
+        if ($city = $this->institution->getCity()) {
             $cityId = $city->getId();
         }
         
-        $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
-        $builder->addEventSubscriber($subscriber);
+        // only add load cities subscriber if country is not hidden
+        if (!$this->_isRemoved('country')) {
+            $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
+            $builder->addEventSubscriber($subscriber);
+        }
         
-        $this->options = $options;
         $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea');
         $this->_add($builder, 'country', 'globalCountry_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
@@ -69,13 +106,41 @@ class InstitutionProfileFormType extends AbstractType
         return \in_array($fieldName, $this->options[self::OPTION_HIDDEN_FIELDS]);
     }
     
+    private function _isRemoved($fieldName)
+    {
+        return \in_array($fieldName, $this->options[self::OPTION_REMOVED_FIELDS]);
+    }
+    
     private function _add(FormBuilderInterface $builder, $fieldName, $fieldType, array $options=array())
     {
+        if ($this->_isRemoved($fieldName)) {
+
+            // this field is flagged as removed, don't add this to builder
+            return;
+        }
+        
         if ($this->_isHidden($fieldName)) {
-            $builder->add($fieldName, 'hidden');
+            
+            // check if this field is an object, default to get id as value
+            if (\is_object($_currObject = $this->institution->{'get'.$fieldName}())) {
+                
+                $builder->add($fieldName, 'hidden', array('data' => $_currObject->getId()));
+            }
+            
         }
         else {
+            if ($this->options[self::OPTION_BUBBLE_ALL_ERRORS]) {
+                $options['error_bubbling'] = true;
+            }
             $builder->add($fieldName, $fieldType, $options);
         }
+    }
+    
+    /**
+     * Helper function to get all possible fields of this form
+     */
+    static public function getFieldNames()
+    {
+        return static::$fieldNames;
     }
 }

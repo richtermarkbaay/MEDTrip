@@ -1,0 +1,8 @@
+{% set tabNavigation = tabNavigation is defined ? tabNavigation : {'links': []}%}
+<ul class="nav nav-tabs tab_navigation">
+    {% for _link in tabNavigation.links %}
+    <li class="{{ _link.active is defined and _link.active ? 'active':'' }}">
+        <a data-toggle="tab" class="profile_tab_links" href="{{ _link.href }}">{{ _link.label }}</a>
+    </li>
+    {% endfor %}
+</ul>

@@ -39,4 +39,12 @@
 		    </tbody>
 	    </table>
     {% endblock %}
+    
+    {% block tabbedContentActionButtons %}
+    <div class="pull-right">
+        <a class="btn btn-success btn-medium" data-toggle="modal" role="button" title="" href="{{ path('institution_medicalCenter_add', { 'institutionId': institution.id } ) }}">
+            Add Another Clinic
+        </a>
+    </div>
+    {% endblock %}
 {% endembed %}

@@ -30,6 +30,11 @@ class InstitutionMedicalCenter
      * @var text $description
      */
     private $description;
+    
+    /**
+     * @var text $address
+     */
+    private $address;
 
     /**
      * @var datetime $dateCreated
@@ -160,6 +165,28 @@ class InstitutionMedicalCenter
         return $this->description;
     }
 
+    /**
+     * Set address
+     *
+     * @param text $address
+     * @return InstitutionMedicalCenter
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+    
+    /**
+     * Get address
+     *
+     * @return text
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+    
     /**
      * Set dateCreated
      *

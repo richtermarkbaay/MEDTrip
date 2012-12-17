@@ -1,10 +1,32 @@
+institution_medicalCenter_ajaxUpdateProfileByField:
+    pattern: /medical-center/{imcId}/ajax/update-by-field
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateByField }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        
+institution_medicalCenter_loadTabbedContents:
+    pattern: /medical-center/{imcId}/ajax/loadTabbedContents
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadTabbedContents }
+    requirements:
+        _method: GET
+        imcId: \d+
+
 institution_medicalCenter_addDetails:
     pattern: /medical-center/add/details/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
     requirements:
         _method: GET|POST
         imcId: \d+
-
+        
+institution_medicalCenter_add:
+    pattern: /{institutionId}/medical-center/add-new
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
+    requirements:
+        _method: GET
+        institutionId: \d+
+        _method: GET|POST
+        
 institution_medicalCenter_addSpecializations:
     pattern: /medical-center/{imcId}/specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addSpecializations }
