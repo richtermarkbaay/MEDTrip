@@ -711,7 +711,6 @@ body.home_page div#main_content div.travel_section_wrapper div#destination_carou
 body.home_page div#aside_content div.aside_scrollbar {
   box-shadow: 0 0 0px 1px #c0c6c0, 0 0 0 4px rgba(0, 37, 85, 0.09);
   background-color: #FFF;
-  margin-top: 25px;
   padding: 5px;
 }
 body.home_page div#aside_content div.aside_scrollbar div.viewport div.overview div.media {

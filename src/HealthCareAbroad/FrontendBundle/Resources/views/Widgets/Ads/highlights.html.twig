@@ -1,71 +1,62 @@
-<div id="highlight"> <!--Highighted Institution-->
-	<div class="upper_box row">
-		<div class="heading span6">
-			<h3>Some Awesome Hospital</h3><br>
-			<h5>Cebu, Philippines</h5>
-		</div>
-		<div class="clinic span2">
-			<a href="#"><img src="/images/frontend/clinic1.png" alt="clinic logo"/></a>
-		</div>
+<div id="highlight" class="carousel slide"> <!--Highighted Institution-->
+    <div class="carousel-inner">
+        {% for i, each in highlightAds %}
+        <div class="{{ i == 0 ? 'active ' : ''}}item">
+        	<div class="upper_box row">
+        		<div class="heading span6">
+        			<h3>{{ each.institution.name }}</h3><br/>
+        			<h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
+        		</div>
+        		<div class="clinic span2">
+        		    {% set logo = each.institution.media ? '/media/' ~ each.institution.id ~ '/' ~ each.institution.media.name : '' %}
+        			<a href="#"><img src="{{ logo }}" alt="clinic logo"/></a>
+        		</div>
+        	</div>
+        
+        	<div class="row">
+        		<div class="span8">
+        			<div id="feature_carousel">
+        				<div><img src="/images/frontend/featured_image3.png" alt=""/></div>
+        				<a class="btn" href="{{ path('page_institution_profile', {institutionSlug: each.institution.slug}) }}">Learn More</a>
+        			</div> <!--End of carousel slide-->
+        		</div>
+        	</div> <!--End of carousel row-->
+        
+        	<div class="lower_box row">
+        		<div class="span4">
+        			<div class="media">
+        				<div class="image_preview">
+        					<a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/about_icon.png" alt="clinic logo"/></a>
+        				</div>
+        				<div class="media-body">
+        					<p><a href="#">{{ each.description }}</a></p>
+        				</div>
+        			</div>
+        		</div>
+        
+        		<div class="span4">
+        			<div class="media">
+        				<div class="image_preview">
+        					<a href="" class="pull-left"><img class="media-object img-circle" src="/images/frontend/featured_doctor1.png" alt="clinic logo"/></a>
+        				</div>
+        				<div class="media-body">
+        					<a href="#"><h5 class="media-heading">Dr. Alex Ponakotanapoulis</h5></a>
+        					<p>Some awesome specialties of Dr. Alexander Ponakotanapoulis</p>
+        				</div>
+        			</div>
+        		</div>
+        	</div>
+    	</div>
+    	{% endfor %}
 	</div>
-
-	<div class="row"> <!--Bootstrap carousel-->
-		<div class="span8">
-			<div id="feature_carousel" class="carousel slide">
-				<div class="carousel-inner">
-					<div class="active item">
-						<div class="row">
-							<div class="span8">
-								<img src="/images/frontend/featured_image3.png" alt=""/>
-							</div>
-						</div>
-					</div> <!--End of slider_item 1-->
-
-					<div class="item">
-						<div class="row">
-							<div class="span8">
-								<img src="/images/frontend/featured_image2.png" alt=""/>
-							</div>
-						</div>
-					</div> <!--End of slider_item 2-->
-				</div>
-				<a class="carousel-pills" href="#feature_carousel" data-slide="prev">&lsaquo;</a>
-				<a class="carousel-pills" href="#feature_carousel" data-slide="next">&rsaquo;</a>
-				<button class="btn">Learn More</button>
-			</div> <!--End of carousel slide-->
-		</div>
-	</div> <!--End of carousel row-->
-
-	<div class="lower_box row">
-		<div class="span4">
-			<div class="media">
-				<div class="image_preview">
-					<a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/about_icon.png" alt="clinic logo"/></a>
-				</div>
-				<div class="media-body">
-					<a href="#"><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor in. And another group of text to make it longer.</p></a>
-				</div>
-			</div>
-		</div>
-
-		<div class="span4">
-			<div class="media">
-				<div class="image_preview">
-					<a href="" class="pull-left"><img class="media-object img-circle" src="/images/frontend/featured_doctor1.png" alt="clinic logo"/></a>
-				</div>
-				<div class="media-body">
-					<a href="#"><h5 class="media-heading">Dr. Alex Ponakotanapoulis</h5></a>
-					<p>Some awesome specialties of Dr. Alexander Ponakotanapoulis</p>
-				</div>
-			</div>
-		</div>
-	</div>
+	<a class="carousel-pills" href="#feature_carousel" data-slide="prev">&lsaquo;</a>
+	<a class="carousel-pills" href="#feature_carousel" data-slide="next">&rsaquo;</a>
 </div> <!--End of highlighted institution-->
 
 <!--This is for the javascript-->
 <script type="text/javascript">
 	$(document).ready(function () {
-		$('#feature_carousel').carousel({
+		$('#highlight').carousel({
 			interval: 5000,
 			pause: "hover"
 		});
