@@ -15,7 +15,7 @@
                                         { label: 'Specializations', 'active': true, 'href' : '#specializations' },
                                         { label: 'Services', 'href' : '#services' },
                                         { label: 'Awards', 'href' : '#awards' },
-                                        { label: 'Medical Specialists', 'href' : '#medical-specialists' },
+                                        { label: 'Medical Specialists', 'href' : '#medical_specialists' },
                                     ]}
                                 } %}
                                 
@@ -52,6 +52,14 @@
         .initializeTabbedContentContainerElement($('div#tabbed_content'))
         .loadTabbedContents()
         .switchTab('specializations');
+
+        $('a.profile_tab_links').click(function(){
+            $(this).parents('ul.tab_navigation').find('li.active').removeClass('active');
+            $(this).parents('ul li').addClass('active');
+            InstitutionMedicalCenter.switchTab($(this).attr('href').replace("#", ""));
+    
+            return false;
+        });
     });
 })(jQuery);
 //-->
