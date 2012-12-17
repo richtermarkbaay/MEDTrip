@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
+
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,10 +26,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-
     public function indexAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.html.twig', array('searchParams' => array()));
+        $criteria = array('status' => Advertisement::STATUS_ACTIVE, 'advertisementType' => 1);
+        $highlightAds = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->findBy($criteria);
+
+        $featuredClinicAds = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getActiveFeaturedClinic();
+
+        $news = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getActiveNews();
+        
+        $params = array(
+            'highlightAds' => $highlightAds,
+            'featuredClinicAds' => $featuredClinicAds,
+            'destinationAds' => array(),
+            'news' => $news,
+            'searchParams' => array()
+        );
+
+        return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
 
     /**
@@ -35,7 +51,7 @@ class DefaultController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexTempAction(Request $request)
-    {
+    {        
         return $this->render('FrontendBundle:Default:index.html.twig');
     }
 
