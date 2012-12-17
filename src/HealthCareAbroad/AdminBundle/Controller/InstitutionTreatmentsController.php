@@ -172,7 +172,8 @@ class InstitutionTreatmentsController extends Controller
             }
         }
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter, array('is_hidden' => false));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false));
+ 
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
 
@@ -183,7 +184,7 @@ class InstitutionTreatmentsController extends Controller
 
                 // Set BusinessHours before saving
                 $form->getData()->setBusinessHours($businessHours);
-
+                $form->getData()->setAddress('');
                 $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
                 
@@ -219,6 +220,7 @@ class InstitutionTreatmentsController extends Controller
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
+   
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
@@ -348,10 +350,11 @@ class InstitutionTreatmentsController extends Controller
 
         $institutionSpecializationForm = new InstitutionSpecializationFormType($this->institution);
 
-        $form = $this->createForm($institutionSpecializationForm, new InstitutionSpecialization());
+        $form = $this->createForm($institutionSpecializationForm, new InstitutionSpecialization(), array('is_clientAdmin' => false));
         if ($this->request->isMethod('POST')) {
+        
             $form->bind($this->request);
-
+       
             if ($form->isValid()) {
 
                 $institutionSpecialization = $form->getData();

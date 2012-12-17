@@ -91,3 +91,10 @@ services:
             - [setDoctrine, [@doctrine]]
         tags:
             - { name: form.type, alias: medicalProviderGroup_autocomplete }
+     
+    form.specializations_autocomplete:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\SpecializationListType
+        calls:
+            - [setDoctrine, [@doctrine]]
+        tags:
+            - { name: form.type, alias: specializations_autocomplete }
