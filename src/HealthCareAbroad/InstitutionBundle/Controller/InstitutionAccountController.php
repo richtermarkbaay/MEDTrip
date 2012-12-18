@@ -77,7 +77,7 @@ class InstitutionAccountController extends InstitutionAwareController
         
             $form->bind($request);
             if ($form->isValid()) {
-        
+                var_dump($form->getData());exit;
                 $institution = $this->get('services.institution.factory')->save($form->getData());
                 $this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
         
