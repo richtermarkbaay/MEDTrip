@@ -144,11 +144,13 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
+   
         $content = $request->get('content');
         $output = array();
         $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
         switch ($content) {
             case 'specializations':
+                $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
@@ -311,10 +313,9 @@ class MedicalCenterController extends InstitutionAwareController
 
                                 ));
 //                 // redirect to step 2;
-//                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
-//                                 'institutionId' => $this->institution->getId(),
-//                                 'imcId' => $this-    >institutionMedicalCenter->getId()
-//                 )));
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array(
+                                'imcId' => $this->institutionMedicalCenter->getId()
+                )));
             }
         }
         $specializationArr = array();

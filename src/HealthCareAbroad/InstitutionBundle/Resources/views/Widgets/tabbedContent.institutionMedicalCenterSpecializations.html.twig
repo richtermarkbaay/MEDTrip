@@ -1,25 +1,34 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <table class="table table-striped table-bordered bootstrap-datatable">
-		<thead>
-			<tr>
-				<th>Specializations</th>
-				<th>Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<strong>Lastname, Firstname</strong>
-				</td>
-				<td>
-					<strong>Specializations 1</strong>
-				</td>
-				<td>
-					
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		 
+		 {% for specialization in specializations %}
+		 	<div class="maincontentblock">
+		        <h4 class="pull-left">{{specialization.specialization.name}}</h4>
+			</div>
+			<div class="maincontentblock">
+			    <table class="table table-striped table-bordered bootstrap-datatable">
+			        <tbody>
+			            {% for _treatment in specialization.treatments %}
+        				<tr>
+        					<td>{{ _treatment.name }}</td>
+        					<td>
+        						<div class="post-toolbar">
+        							<i class="icon-trash" title="Delete"></i>
+        							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+        						</div>
+        					</td>
+        				</tr>
+        				{% endfor %}
+        			</tbody>
+    			</table>
+            </div>
+            
+            {% else %}
+                
+			<div class="maincontentblock">
+			No specializations yet.
+			</div>
+			{% endfor %}
+		
     {% endblock %}
 {% endembed %}
