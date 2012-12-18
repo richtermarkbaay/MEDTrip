@@ -8,77 +8,80 @@
     %}
         
         {% block wrappedContent %}
-            <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
-                <fieldset>
-                    <div>
-                        <label for="institution_name"><b>Hospital / Clinic / Company Name:</b></label>
-                        {{ form_errors(form.name) }}
-                        {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
-                    </div>
-                    
-                    <div>
-                        <label for="password">Please select which best describes the healthcare provider you are adding:</label>
-                        {{ form_errors(form.type) }}
-                        {# for key, type in institutionTypes %}
-                            <label>
-                                <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
-                            </label>    
-                        {% endfor #}
-                        {{ form_widget(form.type) }}
-                    </div>
-                    
-                    <hr>
-                    <h4>Create USER account.</h4>
-                    <div>
-                    <label for="username">Your email address 
-                        <span>
-                            <br/><small>&nbsp;(Please indicate YOUR own email address, you will be asked to add your clinic/company's email address later.)</small>
-                        </span>
-                    </label>
-                        {{ form_widget(form.email, { 'attr': {'class': 'span9'} }) }}
-                    </div>
-                    
-                    
-                    {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
-                            
-                    {{ form_row(form.confirm_password, { 'attr': {'class': 'span8'} }) }}
-                    
-                    <br/>
-                    
-                    <label>
-                        {{ form_errors(form.agree_to_terms) }}
-                        {{ form_widget(form.agree_to_terms) }} I read and agree the <a href="#">Terms and Conditions</a>.
-                    </label>
-                    
-                    <input type="submit" name="Submit" value="SIGN-UP" class="span6 btn-large btn-primary" />
-                </fieldset>
-                
-                {{ form_rest(form) }}
-            </form>
             
-            <div id="modal">
-                <a href="#" title="" class="close">X</a>
-                <div class="span12">
-                    <h4>Thank you for creating an account in Health Care Abroad</h4>
-                </div>
-            </div>
+        <div class="span12">
+			<h6 style="">
+				<span>Thank you for your interest in being a part of HealthcareAbroad.com!</span>
+			</h6>
+		</div>
+		
+		<div class="maincontent2">
+		    <div class="span6">
+		        <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
+                    <fieldset>
+                        <div>
+                            <label for="institution_name"><b>Hospital / Clinic / Company Name:</b></label>
+                            {{ form_errors(form.name) }}
+                            {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
+                        </div>
+                        
+                        <div>
+                            <label for="password">Please select which best describes the healthcare provider you are adding:</label>
+                            {{ form_errors(form.type) }}
+                            {# for key, type in institutionTypes %}
+                                <label>
+                                    <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
+                                </label>    
+                            {% endfor #}
+                            {{ form_widget(form.type) }}
+                        </div>
+                        
+                        <hr>
+                        <h5>Now, please tell us a bit about you:</h5>
+                        <div>
+                        <label for="username">Your email address 
+                            <span>
+                                <br/><small>&nbsp;(Please indicate YOUR own email address, you will be asked to add your clinic/company's email address later.)</small>
+                            </span>
+                        </label>
+                            {{ form_widget(form.email, { 'attr': {'class': 'span9'} }) }}
+                        </div>
+                        
+                        
+                        {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
+                                
+                        {{ form_row(form.confirm_password, { 'label': 'Verify Password', 'attr': {'class': 'span8'} }) }}
+                        
+                        <br/>
+                        
+                        <label>
+                            {{ form_errors(form.agree_to_terms) }}
+                            {{ form_widget(form.agree_to_terms) }} I have read and agree with the <a href="#">Terms and Conditions</a>.
+                        </label>
+                        {{ form_rest(form) }}
+                            
+                        <button type="submit" class="btn-large btn-primary">Submit</button>
+                    </fieldset>
+                    
+                    
+                </form>
+		    </div> <!-- end .span6 -->
+		    <div class="span5 box pull-right">
+            
+                {% set helptext = get_help_text_by_route('institution_signUp')%}
+                {{ helptext | raw }}
+                    
+            </div><!--End of span5-->
+		</div>
+        
         {% endblock %}
         
-        {% block sideBox %}
-        <div class="span4">
-            <div class="aside">
-                <div class="aside box">
-                        {% set helptext = get_help_text_by_route('institution_signUp')%}
-                        <p>{{ helptext | raw }}</p>
-                </div>
-            </div>
-            <!-- End of aside-->
-        </div>
-        <!--End of span4-->
-    {% endblock %}
         
     {% endembed %}
-                                            
-    
-    
+    <div id="modal">
+        <a href="#" title="" class="close">X</a>
+        <div class="span12">
+            <h4>Thank you for creating an account in Health Care Abroad</h4>
+        </div>
+    </div>
 {% endblock %}

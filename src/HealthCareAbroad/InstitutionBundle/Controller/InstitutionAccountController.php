@@ -171,7 +171,6 @@ class InstitutionAccountController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
-            'institutionSpecializations' => $institutionSpecializations,
             'institutionMedicalCenter' => $institutionMedicalCenter
         ));
     }
