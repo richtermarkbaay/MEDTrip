@@ -3,6 +3,10 @@
 namespace HealthCareAbroad\HelperBundle\Controller;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
@@ -36,26 +40,39 @@ class DefaultController extends Controller
 		return $response;
     }
     
-    public function getSpecializationAccordionEntryAction($specializationId)
+    /**
+     * Get accordion form for specialization
+     * 
+     * @param unknown_type $specializationId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getSpecializationAccordionEntryAction(Request $request)
     {
+        $specializationId = $request->get('specializationId', 0);
+        
         $criteria = array('status' => Specialization::STATUS_ACTIVE, 'id' => $specializationId);
 
         $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
 
         if(!$params['specialization']) {
             $result = array('error' => 'Invalid Specialization');
-    		$response = new Response(json_encode($result));
-    		$response->headers->set('Content-Type', 'application/json');
 
-    		return $response;
+    		return new Response('Invalid Specialization', 404);
         }
 
         $groupBySubSpecialization = true;
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        $params['formName'] = InstitutionSpecializationFormType::NAME;
+        $params['form'] = $form->createView();
         $params['subSpecializations'] = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getBySpecializationId($specializationId, $groupBySubSpecialization);
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
 
-        return $this->render('HelperBundle:Widgets:specializationAccordionEntry.html.twig', $params);
+        $html = $this->renderView('HelperBundle:Widgets:specializationAccordionEntry.html.twig', $params);
+//         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
+        //echo $html; exit;
+        
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
 
 
