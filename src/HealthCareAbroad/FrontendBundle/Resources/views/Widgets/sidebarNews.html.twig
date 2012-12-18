@@ -1,15 +1,20 @@
 <div class="aside_scrollbar">
 	<div class="viewport">
 		<div class="overview">
+		    {% for each in news %}
 			<div class="media">
 				<div class="image_preview">
-					<a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/latest1.png" alt="image_preview" /></a>
+					<a class="pull-left" href="#">
+					    {% set image = each.media ? '/media/ads/' ~ each.institution.id ~ '/' ~ each.media.name : '' %}
+					    <img class="media-object img-circle" src="{{image}}" alt="image_preview" />
+					</a>
 				</div>
 				<div class="media-body">
-					<a href="#"><h4 class="media-heading">Some Awesome news and cool article</h4></a>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut</p>
+					<a href="#"><h4 class="media-heading">{{ each.title }}</h4></a>
+					<p>{{ each.description }}</p>
 				</div>
 			</div>
+			{% endfor %}
 		</div>
 	</div>
 </div> <!--End of aside_scrollbar-->

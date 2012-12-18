@@ -105,6 +105,30 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $result;
     }
+    
+    public function getActiveSpecializations($institution)
+    {
+//           $qb1 = $this->createQueryBuilder('a');
+                
+                $qb = $this->_em->createQueryBuilder();
+                $qb->select('b')
+                    ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+                    ->leftJoin('b.institutionMedicalCenter', 'c')
+                    ->leftJoin('b.specialization', 'd')
+                    ->where('c.institution = :institution')
+                    ->setParameter('institution', $institution)
+                    ->groupBy('b.specialization');
+    
+                return $qb->getQuery()->getResult();
+    
+//         if (false === is_null($limit))
+//             $qb->setMaxResults($limit);
+    
+//         return $qb->getQuery()
+//         ->getResult();
+        
+    }
+    
 
 //    TODO - Current data structure cannot support this function already!
 //     public function getMedicalCentersByTreatment(Treatment $procedureType, MedicalProcedure $procedure = null)
@@ -164,4 +188,5 @@ class InstitutionSpecializationRepository extends EntityRepository
 
 //         return $qb->getQuery()->getResult();
 //     }
+
 }

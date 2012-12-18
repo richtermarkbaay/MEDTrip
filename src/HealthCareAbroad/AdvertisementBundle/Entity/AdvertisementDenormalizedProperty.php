@@ -40,6 +40,11 @@ class AdvertisementDenormalizedProperty
     private $specializationId;
 
     /**
+     * @var integer $institutionMedicalCenterId
+     */
+    private $institutionMedicalCenterId;
+
+    /**
      * @var integer $countryId
      */
     private $countryId;
@@ -90,14 +95,49 @@ class AdvertisementDenormalizedProperty
     private $status;
 
     /**
-     * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
      */
-    private $advertisementType;
+    private $institutionMedicalCenter;
+
+    /**
+     * @var HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+     */
+    private $subSpecialization;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
+
+    /**
+     * @var HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+     */
+    private $advertisementType;
+
+    /**
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
+     */
+    private $media;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\City
+     */
+    private $city;
+
+    /**
+     * @var HealthCareAbroad\TreatmentBundle\Entity\Treatment
+     */
+    private $treatment;
+
+    /**
+     * @var HealthCareAbroad\TreatmentBundle\Entity\Specialization
+     */
+    private $specialization;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
 
 
     /**
@@ -230,6 +270,28 @@ class AdvertisementDenormalizedProperty
     public function getSpecializationId()
     {
         return $this->specializationId;
+    }
+
+    /**
+     * Set institutionMedicalCenterId
+     *
+     * @param integer $institutionMedicalCenterId
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setInstitutionMedicalCenterId($institutionMedicalCenterId)
+    {
+        $this->institutionMedicalCenterId = $institutionMedicalCenterId;
+        return $this;
+    }
+
+    /**
+     * Get institutionMedicalCenterId
+     *
+     * @return integer 
+     */
+    public function getInstitutionMedicalCenterId()
+    {
+        return $this->institutionMedicalCenterId;
     }
 
     /**
@@ -453,25 +515,47 @@ class AdvertisementDenormalizedProperty
     }
 
     /**
-     * Set advertisementType
+     * Set institutionMedicalCenter
      *
-     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
      * @return AdvertisementDenormalizedProperty
      */
-    public function setAdvertisementType(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType = null)
+    public function setInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter = null)
     {
-        $this->advertisementType = $advertisementType;
+        $this->institutionMedicalCenter = $institutionMedicalCenter;
         return $this;
     }
 
     /**
-     * Get advertisementType
+     * Get institutionMedicalCenter
      *
-     * @return HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
      */
-    public function getAdvertisementType()
+    public function getInstitutionMedicalCenter()
     {
-        return $this->advertisementType;
+        return $this->institutionMedicalCenter;
+    }
+
+    /**
+     * Set subSpecialization
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setSubSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization $subSpecialization = null)
+    {
+        $this->subSpecialization = $subSpecialization;
+        return $this;
+    }
+
+    /**
+     * Get subSpecialization
+     *
+     * @return HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization 
+     */
+    public function getSubSpecialization()
+    {
+        return $this->subSpecialization;
     }
 
     /**
@@ -494,5 +578,137 @@ class AdvertisementDenormalizedProperty
     public function getInstitution()
     {
         return $this->institution;
+    }
+
+    /**
+     * Set advertisementType
+     *
+     * @param HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setAdvertisementType(\HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType $advertisementType = null)
+    {
+        $this->advertisementType = $advertisementType;
+        return $this;
+    }
+
+    /**
+     * Get advertisementType
+     *
+     * @return HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType 
+     */
+    public function getAdvertisementType()
+    {
+        return $this->advertisementType;
+    }
+
+    /**
+     * Set media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media = null)
+    {
+        $this->media = $media;
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * Set city
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\City $city
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setCity(\HealthCareAbroad\HelperBundle\Entity\City $city = null)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\City 
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set treatment
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment = null)
+    {
+        $this->treatment = $treatment;
+        return $this;
+    }
+
+    /**
+     * Get treatment
+     *
+     * @return HealthCareAbroad\TreatmentBundle\Entity\Treatment 
+     */
+    public function getTreatment()
+    {
+        return $this->treatment;
+    }
+
+    /**
+     * Set specialization
+     *
+     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization = null)
+    {
+        $this->specialization = $specialization;
+        return $this;
+    }
+
+    /**
+     * Get specialization
+     *
+     * @return HealthCareAbroad\TreatmentBundle\Entity\Specialization 
+     */
+    public function getSpecialization()
+    {
+        return $this->specialization;
+    }
+
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }

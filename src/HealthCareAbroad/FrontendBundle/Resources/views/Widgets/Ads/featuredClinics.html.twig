@@ -5,9 +5,11 @@
 	<div id="featured_content">
 
 		<div class="featured_item">
+		    {% for each in featuredClinicAds %}
 			<div class="general row">
 				<div class="clinic-box span2">
-					<a href="#"><img class="clinic-logo" src="/images/frontend/clinic2.png" alt="clinic logo"/></a>
+					{% set logo = each.institution.media ? '/media/' ~ each.institution.id ~ '/' ~ each.institution.media.name : '' %}
+					<a href="#"><img class="clinic-logo" src="{{ logo }}" alt="clinic logo"/></a>
 				    <div class="rating">
 				    	<p>USER RATINGS</p>
 				    	<ul>
@@ -20,13 +22,14 @@
 				    </div>
 				</div>
 				<div class="description-box span4">
-					<a href="#"><h3>Mayo Clinic</h3></a>
-					<h5>Cebu, Philippines</h5>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p><p>Tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+					<a href="#link-to-clinic-page"><h3>{{ each.institutionMedicalCenter.name }}</h3></a>
+					<h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
+					<div>{{ each.institutionMedicalCenter.description | raw }}</div>
 				</div>
 				<div class="thumb-box span2">
 					<div class="img-background">
-						<img class="img-polaroid" src="/images/frontend/featured1.png" alt="featured_pic" />
+					    {% set image = each.media ? '/media/ads/' ~ each.institution.id ~ '/thumbnail-' ~ each.media.name : '' %}
+						<img class="img-polaroid" src="{{ image }}" alt="featured_pic" />
 					</div>
 					<button class="btn">Learn More</button>
 				</div>
@@ -54,6 +57,7 @@
 					</div>
 				</div>
 			</div>
+	        {% endfor%}
 		</div><!--End of featured_item 1-->
 
 	</div><!--End of featured_content-->

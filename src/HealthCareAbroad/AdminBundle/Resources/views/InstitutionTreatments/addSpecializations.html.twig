@@ -42,12 +42,15 @@
 
     function loadSpecializationEntry(elem)
     {
+    
+        
         var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + elem.val().toString();
+      
         $('#specializationLoading').fadeIn();
         $.get(url, function(specializationEntry){
             $('#specializationLoading').hide();
             $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion({heightStyle: "content"});
-
+            console.log(specializationEntry);
             $('#institutionSpecialization_specialization').find('option[value='+elem.val()+']').hide();
         });
     }
