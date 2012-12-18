@@ -1,33 +1,37 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <table class="table table-striped table-bordered bootstrap-datatable">
-		<thead>
-			<tr>
+	<div class="maincontentblock">
+	    <table class="table table-striped table-bordered bootstrap-datatable">
+	      <thead>
+            <tr>
 				<th>Awards Name</th>
 				<th>Award Giving Body</th>
 				<th>Year Given</th>
 				<th>Actions</th>
 			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<strong>Awards name</strong>
-				</td>
-				<td>
-					<strong>Award Given Body Org.</strong>
-				</td>
-				<td>
-					<div>
-						<p>2012</p>
-					</div>
-				</td>
-				<td>
-					<i class="icon-trash" title="Delete"></i>
-					<a href="#deleteawards" title="" role="button" data-toggle="modal">Delete</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+        </thead>
+	        <tbody>
+             {% for award in awards %}
+				<tr>
+					<td>{{ award.name }}</td>
+					<td>{{ award.awardingBody.name }}</td>
+					<td>No field fot Year yet</td>
+					<td>
+						<div class="post-toolbar">
+							<i class="icon-trash" title="Delete"></i>
+							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+						</div>
+					</td>
+				</tr>
+		      {% else %}
+    		  	<tr>
+    			   <td> No Affiliations yet. </td>
+    			   <td></td>
+    			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+    </div>
+	
     {% endblock %}
 {% endembed %}

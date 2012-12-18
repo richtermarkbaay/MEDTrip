@@ -1,23 +1,34 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-        <table class="table table-striped table-bordered bootstrap-datatable">
-            <thead>
-                <tr>
-    				<th>Services</th>
-    				<th>Actions</th>
-    			</tr>
-            </thead>
-			<tbody>
-    			<tr>
-    				<td>Service 1</td>
-    				<td>
-    						<i title="Edit" class="icon-pencil"></i>
-    						<a href="single-clinic-profile-tab-form.html"><small>Edit</small></a>
-    						<i title="Delete" class="icon-trash"></i>
-    						<a data-toggle="modal" role="button" title="" href="#deletetreatment">Delete</a>
-    					</td>
-    			</tr>
-		    </tbody>
-	    </table>
+	    
+			<div class="maincontentblock">
+			    <table class="table table-striped table-bordered bootstrap-datatable">
+			      <thead>
+                    <tr>
+        				<th>Services</th>
+        				<th>Actions</th>
+        			</tr>
+                </thead>
+			        <tbody>
+		             {% for service in services %}
+        				<tr>
+        					<td>{{ service.name }}</td>
+        					<td>
+        						<div class="post-toolbar">
+        							<i class="icon-trash" title="Delete"></i>
+        							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+        						</div>
+        					</td>
+        				</tr>
+        		      {% else %}
+            		  	<tr>
+            			   <td> No Services yet. </td>
+            			   <td></td>
+            			</tr>
+        			{% endfor %}
+        			</tbody>
+    			</table>
+            </div>
+                
     {% endblock %}
 {% endembed %}

@@ -8,6 +8,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
@@ -74,5 +76,18 @@ class InstitutionMedicalCenterService
     public function isDraft(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
+    }
+    
+    /**
+     * Check if InstitutionMedicalCenter is of DRAFT status
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return boolean
+     */
+    public function getMedicalCenterServices(InstitutionMedicalCenter $institutionMedicalCenter,Institution $institution)
+    {
+        $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter->getId(), $institution->getId());
+   
+        return $ancilliaryServices;
     }
 }

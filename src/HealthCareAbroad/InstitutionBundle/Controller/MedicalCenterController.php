@@ -156,13 +156,21 @@ class MedicalCenterController extends InstitutionAwareController
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig'));
+                $parameters['services'] = $this->get('services.institutionMedicalCenter')->getMedicalCenterServices($this->institutionMedicalCenter, $this->institution);
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
                 break;
             case 'awards':
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig'));
+                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionAffiliations();
+//                 echo "<pre>";
+//                    print_r($parameters['awards']);
+//                 echo "</pre>";
+//                 exit;
+                
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
-                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig'));
+//                 $parameters['medical_specialists'] = $this->institutionMedicalCenter();
+                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
         
