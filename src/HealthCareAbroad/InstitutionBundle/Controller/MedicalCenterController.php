@@ -146,11 +146,13 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
+   
         $content = $request->get('content');
         $output = array();
         $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
         switch ($content) {
             case 'specializations':
+                $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
