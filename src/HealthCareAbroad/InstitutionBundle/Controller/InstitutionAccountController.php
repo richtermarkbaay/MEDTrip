@@ -95,9 +95,10 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return $this->render('InstitutionBundle:Institution:add.medicalSpecialist.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'doctorsJSON' => \json_encode($doctorArr)
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'doctorsJSON' => \json_encode($doctorArr)
         ));
     }
     

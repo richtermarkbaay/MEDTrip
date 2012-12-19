@@ -7,7 +7,7 @@
         {% block wrappedContent %}
         <div class="span12">    
             <h2></h2>
-            {% include 'InstitutionBundle:Institution:steps.afterCertifications.singleCenter.html.twig' %}
+            {% include 'InstitutionBundle:Widgets:steps.addClinic.html.twig' with {activeStep: 'medical_specialists'} %}
             <form method="POST" class="span12" >
                 {{ form_errors(form) }}
             
@@ -28,7 +28,7 @@
                     
                     <!-- TODO: this sidebar should not be part of the form. Let the ui-team fix this -->
                     <div class="span3">
-                        {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                        {# include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' #}
                     </div>
                     
                     <div class="clearfix"></div>

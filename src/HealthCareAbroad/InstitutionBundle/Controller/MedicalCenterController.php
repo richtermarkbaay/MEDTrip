@@ -314,21 +314,27 @@ class MedicalCenterController extends InstitutionAwareController
         $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
         $em = $this->getDoctrine()->getEntityManager();
         $errors = array();
-        foreach ($submittedSpecializations as $specializationId => $_data) {
-            $_institutionSpecialization = new InstitutionSpecialization();
-            $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-            $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
-            $_institutionSpecialization->setDescription('');
-            $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
-            $form->bind($_data);
-            if ($form->isValid()) {
-                $em->persist($form->getData());
-                $em->flush();
-            }
-            else {
-                
-            }
+        if (\count($submittedSpecializations) > 0) {
+            foreach ($submittedSpecializations as $specializationId => $_data) {
+                $_institutionSpecialization = new InstitutionSpecialization();
+                $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+                $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+                $_institutionSpecialization->setDescription('');
+                $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
+                $form->bind($_data);
+                if ($form->isValid()) {
+                    $em->persist($form->getData());
+                    $em->flush();
+                }
+                else {
+            
+                }
+            }    
         }
+        else {
+            $errors[] = 'Please provide at least one specialization.';
+        }
+        
         
         if (\count($errors) > 0) {
             $request->getSession()->setFlash('notice', '<ul><li>'.\implode('</li><li>', $errors).'</li></ul>');
@@ -389,9 +395,19 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addDoctorsAction()
     {
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
+        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        $doctorArr = array();
+        foreach ($doctors as $e) {
+        
+            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId());
+        }
+        
         return $this->render('InstitutionBundle:MedicalCenter:addDoctors.html.twig', array(
+            'form' => $form->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'doctorsJSON' => \json_encode($doctorArr),
             'currentDoctors' => $this->institutionMedicalCenter->getDoctors()
         ));
     }

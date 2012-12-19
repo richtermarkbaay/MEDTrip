@@ -1,0 +1,97 @@
+<div class="span3">
+    <div class="sidebar">
+        <div class="box-content">
+        {% set daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+        {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
+                
+        	<h4 class="pull-left">CLINIC HOURS</h4>
+        	<div class="pull-right editname4">
+        			<i class="icon-pencil" title="Edit"></i>
+        			<a href="#hours" class="businessHoursModal" role="button" id="businessHoursModal-{{institutionMedicalCenter.id}}"><small class="pull-right">Edit</small></a>
+        	</div>
+        	<table class="table table-striped">
+        	 {% for i, day in daysArr %}
+                <tr>
+                    <td > {{ day }} </td>
+                    <td > {{ arrBusinessHours[day].from}} </td>
+                    <td > - </td>
+                    <td > {{ arrBusinessHours[day].to }} </td>
+                </tr>
+             {% endfor %}
+        		
+        	</table>
+        </div>
+    </div>
+</div>
+
+<div id="modal_institutionMedicalCenter_businessHours" title="Edit Clinic Description" style="display:none;">
+    
+	<div class="modal-body">
+		<form id="modal_institutionMedicalCenter_description_form" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}">
+		    <div>
+    			{% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+    		</div>
+		</form>
+	</div>
+</div>
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script type="text/javascript">
+$(function(){
+
+    $("#modal_institutionMedicalCenter_businessHours").dialog({autoOpen:false, height:450, width:600, modal:true, resizable:false, close:function(){}});
+
+    $("a.businessHoursModal").click(function() {
+
+        var url = $(this).attr('href');
+        var institutionMedicalCenterId = $(this).attr('id').split('-').pop();
+        var institutionName = $('#institution-'+institutionMedicalCenterId+' td > a.name').html();
+
+        $('#current-institution').html(institutionName);
+
+        
+        $("#modal_institutionMedicalCenter_businessHours").dialog("open");
+        return false;
+    });
+
+	$(".hour").timepicker({ seconds: false});
+	$('input.is_closed_checkbox').each(function(){
+	    if(this.checked) {
+	    	$(this).parent().parent().find('.hour').val("");
+	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+		}
+	});
+        
+});
+
+    $('#businessHourCheckBox').click(function(){
+    	
+        if ($('#businessHourCheckBox').attr('checked')) {
+    
+        	$(this).parent().parent().find('.hour').val("");
+        	$(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	$('#clinicHoursTable').hide();
+        	
+        }else{
+    	    $('#clinicHoursTable').show();
+    	    $(this).parent().parent().find('.hour').val("8:00 AM");
+        	$(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	}
+    }) 
+    $('input.is_closed_checkbox').change(function(){
+        if(this.checked) {
+        	$(this).parent().parent().find('.hour').val("");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	}
+        else 
+        {
+        	$(this).parent().parent().find('.hour').val("8:00 AM");
+        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+        }
+       
+    });
+</script>
+{% endblock %}

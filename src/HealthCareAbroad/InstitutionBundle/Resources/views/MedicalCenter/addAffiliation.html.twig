@@ -1,4 +1,5 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
+{# if institution is of type single center, use unauthenticated layout as base, since this is part of the signup process #}
+{% extends  isSingleCenter ?  'InstitutionBundle::unauthenticated.layout.html.twig' : 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'medical_centers'} %}
 
 {# disable the navigation for single center type institution since this is part of the sign up process #}

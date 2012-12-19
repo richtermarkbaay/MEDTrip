@@ -1,4 +1,5 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
+{# if institution is of type single center, use unauthenticated layout as base, since this is part of the signup process #}
+{% extends  isSingleCenter ?  'InstitutionBundle::unauthenticated.layout.html.twig' : 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'medical_centers'} %}
 
 {# disable the navigation for single center type institution since this is part of the sign up process #}
@@ -23,10 +24,18 @@
                     
                     <div>
                         <label for="username">Search and Add your Medical Specialist</label>
-                        <input id="search_doctor" class="input-xxlarge" type="text" value="" name="searchDoctor">
+                        {{ form_row(form.firstName) }}
+                        <div><div id="institutionSearch" ></div></div>
+                        {{ form_row(form.id) }}
+                        {{ form_rest(form) }}
+                        <div>             			
+             				<div id="tags">
+             				
+                			</div>
+                		</div>
                     </div>
                     
-                    <div id="ajax_loader" style="display: none;">Please wait...</div>
+                    
                     
                     <div class="clearfix"></div>
         		    
@@ -49,73 +58,24 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
-<script type="text/javascript">
-    (function($){
+    <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
+	<script type="text/javascript">
 
-        function onClickRemoveDoctor(el) {
-            _el = $(el);
-            $('div#ajax_loader').show();
-            $.ajax({
-                url: _el.attr('href'),
-                type: 'post',
-                dataType: 'json',
-                success: function(json){
-                    _el.parents('ul.doctor_list_item').remove();
-                    $('div#ajax_loader').hide();   
-                }
-            });
-            return false;
-        }
-        
-        $(function(){
-            $('a.remove_doctor_link').click(function(event){
-                return onClickRemoveDoctor(event.target);
-            });
-            
-            $('input#search_doctor').autocomplete({
-                source: function(request, response) {
-                    $('div#ajax_loader').show();
-                    $.ajax({
-                        url: '{{ path("institution_medicalCenter_searchAvailableDoctor", {"imcId": institutionMedicalCenter.id }) }}',
-                        data: {'searchKey': request.term},
-                        type: 'get',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('div#ajax_loader').hide();
-                            response( $.map( data, function( item ) {
-                                return {
-                                    label: item.name,
-                                    value: item.name,
-                                    html: item.html,
-                                    id: item.id
-                                }
-                            }));
-                        }
-                    });
-                },
-                select: function(event, ui) {
-                    $('div#ajax_loader').show();
-                    $.ajax({
-                        url: '{{ path("institution_medicalCenter_addExistingDoctor", {"imcId": institutionMedicalCenter.id } ) }}',
-                        data: {'doctorId':ui.item.id},
-                        dataType: 'json',
-                        type: 'post',
-                        success: function(json){
-                            _div = $(ui.item.html);
-                            _div.find('a.remove_doctor_link').bind('click', function(event){
-                                return onClickRemoveDoctor(event.target);
-                            });
-                            _div.appendTo($('ul.doctor_list_item'));
-                            $('input#search_doctor').val('');
-                            $('div#ajax_loader').hide();
-                        }
-                    });
-                    
-                    return false;
-                }
-            });
-        });
-    })(jQuery);
-</script>
+		$(function() {
+			var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
+			var inputHiddenField = "#institutionDoctorSearch_id";
+			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
+			var selectedTags = [];
+	
+        	var params = {
+                	availableTags: availableDoctors,
+                	selectedTags : selectedTags,
+                	inputHiddenField :inputHiddenField,
+                	inputAutoDoctor :inputAutoDoctor
+        		};
+        	DoctorAuto.init(params);
+
+		});
+
+		</script>	
 {% endblock %}
