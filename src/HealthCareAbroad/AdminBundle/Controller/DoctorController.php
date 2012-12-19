@@ -36,6 +36,8 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
+        
+        $doctor->setMedia(null);
         $form = $this->createForm(new DoctorFormType(), $doctor);
     
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -52,6 +54,9 @@ class DoctorController extends Controller
     {
         if ($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
+            $media = $doctor->getMedia();
+            $doctor->setMedia(null);
+            
             if (!$doctor) {
                 throw $this->createNotFoundException("Invalid doctor.");
             }
@@ -66,11 +71,16 @@ class DoctorController extends Controller
         }
         
         $form = $this->createForm(new DoctorFormType(), $doctor);
+        
         if ($this->getRequest()->isMethod('POST')) {
             $doctorData = $request->get('doctor');
-
-            if($media = $this->saveMedia($request->files->get('doctor'))) {
-                $doctorData['media'] = $media;                
+            
+            if($newMedia = $this->saveMedia($request->files->get('doctor'))) {
+                $doctorData['media'] = $newMedia;                
+            } else {
+                if($doctor->getId()) {
+                    $doctorData['media'] = $media;
+                }
             }
 
             $form->bind($doctorData);
