@@ -1,0 +1,20 @@
+{% set activeStep = activeStep is defined ? activeStep : 'details'%}
+<ul class="navstep nav-steps">
+    <li class="{{ activeStep == 'details' ? 'active' : '' }}">
+        <a href="{{ isSingleCenter ? path('institution_signup_complete_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}">
+            <h2>1</h2><span>Clinic Details</span>
+        </a>
+    </li>
+    <li class="{{ activeStep == 'specializations' ? 'active' : '' }}">
+        <a href="#"><h2>2</h2><span>Specializations and Treatments</span></a>
+    </li>
+    <li class="{{ activeStep == 'services' ? 'active' : '' }}">
+        <a href="#"><h2>3</h2><span>Services</span></a>
+    </li>
+    <li class="{{ activeStep == 'awards' ? 'active' : '' }}">
+        <a href="#"><h2>4</h2><span>Awards, Certifications and Affiliations</span></a>
+    </li>
+    <li class="{{ activeStep == 'medical_specialists' ? 'active' : '' }}">
+        <a href="#"><h2>5</h2><span>Add Medical Specialist</span></a>
+    </li>
+</ul>

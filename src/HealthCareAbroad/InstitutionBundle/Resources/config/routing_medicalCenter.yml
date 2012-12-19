@@ -13,7 +13,7 @@ institution_medicalCenter_loadTabbedContents:
         imcId: \d+
 
 institution_medicalCenter_addDetails:
-    pattern: /medical-center/add/details/{imcId}
+    pattern: /medical-center/{imcId}/add/details
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
     requirements:
         _method: GET|POST
@@ -41,13 +41,13 @@ institution_medicalCenter_addSpecializations_save:
         _method: POST
         imcId: \d+
 
-institution_medicalCenter_addTreatments:
-    pattern: /medical-center/{imcId}/treatments/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addTreatments, imcId: ~ }
+institution_medicalCenter_addAncilliaryServices:
+    pattern: /medical-center/{imcId}/ancilliary-services/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addAncilliaryServices }
     requirements:
         _method: GET|POST
         imcId: \d+
-
+        
 institution_medicalCenter_addDoctors:
     pattern: /medical-center/{imcId}/doctors/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDoctors }

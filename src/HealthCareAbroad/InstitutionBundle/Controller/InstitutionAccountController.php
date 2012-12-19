@@ -154,7 +154,17 @@ class InstitutionAccountController extends InstitutionAwareController
     protected function completeRegistrationSingleCenter()
     {
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        $institutionMedicalCenter = new InstitutionMedicalCenter();
+        $institutionService = $this->get('services.institution');
+        if (!$institutionService->isSingleCenter($this->institution)) {
+            // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
+            
+            return $this->redirect($this->generateUrl('institution_homepage'));
+        }
+        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+        if (\is_null($institutionMedicalCenter)) {
+            $institutionMedicalCenter = new InstitutionMedicalCenter();
+        }
+        
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             
@@ -165,13 +175,14 @@ class InstitutionAccountController extends InstitutionAwareController
                     ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
                 
                 // this should redirect to 2nd step
-                return $this->redirect($this->generateUrl('institution_homepage'));
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $institutionMedicalCenter->getId())));
             }
         }
         
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
-            'institutionMedicalCenter' => $institutionMedicalCenter
+            'institutionMedicalCenter' => $institutionMedicalCenter,
+            'isSingleCenter' => true
         ));
     }
     
@@ -312,47 +323,5 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-    }
-
-    /**
-     * Action page for Institution Profile Page Service Tab
-     *
-     * @param Request $request
-     */
-    public function profileServiceAction(Request $request)
-    {
-            $template = 'InstitutionBundle:Institution:profile.singleCenterServices.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
-    }
-    
-    /**
-     * Action page for Institution Profile Page Awards Tab
-     *
-     * @param Request $request
-     */
-    public function profileAwardsAction(Request $request)
-    {
-        $template = 'InstitutionBundle:Institution:profile.singleCenterAwards.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
-    }
-    
-    /**
-     * Action page for Institution Profile Page Specialist Tab
-     *
-     * @param Request $request
-     */
-    public function profileSpecialistAction(Request $request)
-    {
-        $template = 'InstitutionBundle:Institution:profile.singleCenterSpecialist.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
     }
 }

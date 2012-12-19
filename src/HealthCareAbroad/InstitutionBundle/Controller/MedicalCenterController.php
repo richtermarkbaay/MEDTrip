@@ -298,7 +298,8 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institution' => $this->institution,
             'specializationsJSON' => \json_encode($specializationArr),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
         ));
     }
     
@@ -328,31 +329,40 @@ class MedicalCenterController extends InstitutionAwareController
             $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
         }
         else {
-            $response = $this->redirect($this->generateUrl('institution_medicalCenter_edit',  array('imcId' => $this->institutionMedicalCenter->getId())));
+            // redirect to next step
+            $response = $this->redirect($this->generateUrl('institution_medicalCenter_addAncilliaryServices',  array('imcId' => $this->institutionMedicalCenter->getId())));
         }
         
         return $response;
     }
     
-    
-    public function addTreatmentsAction()
+    public function addAncilliaryServicesAction(Request $request)
     {
-        $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
-        foreach($institutionSpecializations as $each) {
-            var_dump($each); exit;
-//             $treatments = $each->getTreatments();
-//              foreach($treatments as $treatment) {
-//                  echo $treatment->getName() . ', ';                
-//              }
-             echo '<br/>';
+        $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $this->institutionMedicalCenter, 'ancilliary_service_id');
+        
+        if ($request->isMethod('POST')) {
+            
+            $form->bind($request);
+            if ($form->isValid()) {
+                var_dump($form->getData());
+                exit;
+                $this->get('services.institution_medical_center_property')->save($form->getData());
+                
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addAffiliations', array('imcId' => $this->institutionMedicalCenter->getId())));
+            }
+            else {
+                $request->getSession()->setFlash('notice', 'Please fill up form properly.');
+            }
         }
-//exit;
-       //$treatments = $this->get('services.treatment_bundle')->getSpecializationTreatments($institutionSpecialization->getSpecialization());
-
-        $params = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
-        return $this->render('InstitutionBundle:MedicalCenter:addTreatments.html.twig', $params);
+        
+        return $this->render('InstitutionBundle:MedicalCenter:addAncilliaryService.html.twig', array(
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'form' => $form->createView()
+        ));
     }
+    
+    
     
     public function addDoctorsAction()
     {
