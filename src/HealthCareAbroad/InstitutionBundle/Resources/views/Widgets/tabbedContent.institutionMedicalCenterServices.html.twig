@@ -12,7 +12,7 @@
 			        <tbody>
 		             {% for service in services %}
         				<tr>
-        					<td>{{ service.name }}</td>
+        					<td>{{ service.name |title}}</td>
         					<td>
         						<div class="post-toolbar">
         							<i class="icon-trash" title="Delete"></i>

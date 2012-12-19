@@ -13,8 +13,8 @@
 	        <tbody>
              {% for award in awards %}
 				<tr>
-					<td>{{ award.name }}</td>
-					<td>{{ award.awardingBody.name }}</td>
+					<td>{{ award.name |title }}</td>
+					<td>{{ award.awardingBody.name |title }}</td>
 					<td>No field fot Year yet</td>
 					<td>
 						<div class="post-toolbar">

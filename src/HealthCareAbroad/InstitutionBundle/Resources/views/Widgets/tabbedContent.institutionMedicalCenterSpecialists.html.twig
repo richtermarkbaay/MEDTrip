@@ -10,20 +10,28 @@
 			</tr>
         </thead>
 	        <tbody>
-             {% for doctor in doctors %}
+             {% for doctor in medical_specialists %}
 				<tr>
-					<td>{{ doctor.name }}</td>
-					<td>{{ doctor.specialization.name }}</td>
+					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+					<td>
+					{% for specialization in doctor.specializations %}
+					    {{ specialization.name |title }} 
+					    {% if loop.last == false %},{% endif %} 
+				    
+				    {% else %}
+					    No Specializations yet
+					{% endfor %}
+					</td>
 					<td>
 						<div class="post-toolbar">
 							<i class="icon-trash" title="Delete"></i>
-							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+							<a href="#deleteMedicalSpecialist" title="" role="button" data-toggle="modal">Delete</a>
 						</div>
 					</td>
 				</tr>
 		      {% else %}
     		  	<tr>
-    			   <td> No Affiliations yet. </td>
+    			   <td> No Medical Specialist yet. </td>
     			   <td></td>
     			</tr>
 			{% endfor %}

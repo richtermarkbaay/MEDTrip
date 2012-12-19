@@ -146,7 +146,6 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
-   
         $content = $request->get('content');
         $output = array();
         $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
@@ -161,19 +160,14 @@ class MedicalCenterController extends InstitutionAwareController
                 break;
             case 'awards':
                 $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionAffiliations();
-//                 echo "<pre>";
-//                    print_r($parameters['awards']);
-//                 echo "</pre>";
-//                 exit;
-                
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
-//                 $parameters['medical_specialists'] = $this->institutionMedicalCenter();
+                $parameters['medical_specialists'] = $this->institutionMedicalCenter->getDoctors();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
-        
+
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
