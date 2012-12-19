@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -89,5 +91,12 @@ class InstitutionMedicalCenterService
         $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter->getId(), $institution->getId());
    
         return $ancilliaryServices;
+    }
+    
+    public function getActiveMedicalCenters(Institution $institution){
+        
+         $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
+
+         return $result;
     }
 }
