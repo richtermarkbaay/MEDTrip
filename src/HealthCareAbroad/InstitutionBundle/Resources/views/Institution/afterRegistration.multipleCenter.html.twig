@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
 {% set disableMainNavigation = true %}
 {% block content %}
 
@@ -7,16 +7,13 @@
     {% block wrappedContent %}
 
 		<div class="span12">
-			<h2>Institution Name</h3>
-				<p>Type of Institution:
-					<strong>Hospital with many Clinic / Centers</strong>
-				</p>
-				  <h2>{{ institution.name }}</h3>
-                {% if institutionTypeLabel is defined %}
-                <p>Type of Institution:
-					<strong>{{ institutionTypeLabel }}</strong>
-				</p>
-                {% endif %}
+			<h2>{{ institution.name }}</h2>
+				  
+            {% if institutionTypeLabel is defined %}
+            <p>Type of Institution:
+				<strong>{{ institutionTypeLabel }}</strong>
+			</p>
+            {% endif %}
 				
 		</div><!--End of span12-->
 		<div class="maincontent2">
@@ -54,7 +51,7 @@
                             {{ form_widget(form.address1) }}
                         </div>
                        <div class="pull-right">
-                            <input type="submit" class="btn btn-large btn-primary" value="Submit" />
+                            <button type="submit" class="btn btn-large btn-primary">Submit</button>
                         </div>
                         
 				</div><!--End of span6-->
