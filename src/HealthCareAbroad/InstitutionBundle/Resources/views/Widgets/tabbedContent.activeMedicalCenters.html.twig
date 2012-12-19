@@ -9,33 +9,17 @@
     			</tr>
             </thead>
 			<tbody>
-    			<tr>
-    				<td>Name of Clinic</td>
-    				<td>
-    					<a href="#">Nov 26, 2012 15:42:50</a>
-    					
-    					</td><td>
-    						<i title="Edit" class="icon-pencil"></i>
-    						<a href="single-clinic-profile-tab-form.html"><small>Edit</small></a>
-    						<i title="Delete" class="icon-trash"></i>
-    						<a data-toggle="modal" role="button" title="" href="#deletetreatment">Delete</a>
+    			  {% set even = false %}
+    				{% for medicalCenter in medical_centers %}
+    			    <tr class="{{ even ? 'alternate-row' : ''}}">
+    					<td> <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a></td>
+    					<td>Created on {{ medicalCenter.dateCreated|date("m/d/Y") }}</td>
+    					<td class="options-width">
+        					<a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip">Edit</a>
     					</td>
-    			</tr>
-    			<tr>
-    				<td>Treatment1</td>
-    				<td>
-    					<a href="#">Nov 26, 2012 15:42:50</a>
-    				</td>
-    				<td>
-    					<div class="post-toolbar">
-    						<i title="Edit" class="icon-pencil"></i>
-    						<a href="single-clinic-profile-tab-form.html"><small>Edit</small></a>
-    						<i title="Delete" class="icon-trash"></i>
-    						<a data-toggle="modal" role="button" title="" href="#deleteclinic">Delete</a>
-    						
-    					</div>
-    				</td>
-    			</tr>
+    				</tr>
+    				{% set even = even ? false : true %}    
+    				{% endfor %}
 		    </tbody>
 	    </table>
     {% endblock %}
