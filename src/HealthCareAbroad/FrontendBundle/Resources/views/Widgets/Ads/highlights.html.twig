@@ -26,7 +26,7 @@
         	</div> <!--End of carousel row-->
         
         	<div class="lower_box row">
-        		<div class="span4">
+<!--         		<div class="span4">
         			<div class="media">
         				<div class="image_preview">
         					<a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/about_icon.png" alt="clinic logo"/></a>
@@ -36,18 +36,26 @@
         				</div>
         			</div>
         		</div>
-        
-        		<div class="span4">
-        			<div class="media">
-        				<div class="image_preview">
-        					<a href="" class="pull-left"><img class="media-object img-circle" src="/images/frontend/featured_doctor1.png" alt="clinic logo"/></a>
-        				</div>
-        				<div class="media-body">
-        					<a href="#"><h5 class="media-heading">Dr. Alex Ponakotanapoulis</h5></a>
-        					<p>Some awesome specialties of Dr. Alexander Ponakotanapoulis</p>
-        				</div>
-        			</div>
-        		</div>
+ -->
+                {% set doctors = json_decode(each.getHighlightDoctors) %}
+                {% for doctor in doctors %}
+                    <div class="span4">
+                    	<div class="media">
+                    		<div class="image_preview">
+                    		    {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
+                    			<a href="" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
+                    		</div>
+                    		<div class="media-body">
+                    			<a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
+                    			<p>
+                    			    {% for i, specialization in doctor.specializations %}
+                    			        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
+                    			    {% endfor %}
+                    			</p>
+                    		</div>
+                    	</div>
+                    </div>
+        		{% endfor %}
         	</div>
     	</div>
     	{% endfor %}

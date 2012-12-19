@@ -34,8 +34,8 @@
 					<button class="btn">Learn More</button>
 				</div>
 			</div>
-			<div class="details row">
-				<div class="span4">
+ 			<div class="details row">
+<!--				<div class="span4">
 					<div class="media">
 						<div class="image_preview">
 							<a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/about_icon_green.png" alt="clinic logo"/></a>
@@ -45,17 +45,27 @@
 						</div>
 					</div>
 				</div>
+-->
+                {% set doctors = json_decode(each.getHighlightDoctors) %}
+                {% for doctor in doctors %}
 				<div class="span4">
 					<div class="media">
 						<div class="image_preview">
-							<a href="#" class="pull-left"><img class="media-object img-circle" src="/images/frontend/featured_doctor1.png" alt="clinic logo"/></a>
+						    {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
+							<a href="#" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
 						</div>
 						<div class="media-body">
-							<a href="#"><h5 class="media-heading">Dr. John Doe</h5></a>
-							<p>Some awesome specialties of Dr. John Doe</p>
+						    {% set doctors = json_decode(each.getHighlightDoctors) %}
+							<a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
+                			<p>
+                			    {% for i, specialization in doctor.specializations %}
+                			        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
+                			    {% endfor %}
+                			</p>
 						</div>
 					</div>
 				</div>
+				{% endfor %}
 			</div>
 	        {% endfor%}
 		</div><!--End of featured_item 1-->

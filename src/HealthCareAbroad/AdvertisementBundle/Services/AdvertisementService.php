@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Services;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty;
 
 use Doctrine\ORM\EntityManager;
@@ -71,11 +73,13 @@ class AdvertisementService
         $data['status'] = $advertisement->getStatus();
 
 
+        $collectionClasses = array();
         foreach($advertisement->getAdvertisementPropertyValues() as $each) {
             $property = $each->getAdvertisementPropertyName();
             
             if($property->getDataType()->getColumnType() == 'collection') {
                 $data[$property->getName()][] = (int)$each->getValue();
+                $collectionClasses[$property->getName()] = $property->getDataClass(); 
             } else {
                 $data[$property->getName()] = $each->getValue();
             }
@@ -85,7 +89,23 @@ class AdvertisementService
         
         foreach($data as $key => $value) {
             if(is_array($value)) {
-                $data[$key] = json_encode($value);
+                if(empty($value)) {
+                    $data[$key] = ''; continue;
+                }
+
+                $qb = $this->em->createQueryBuilder();
+                
+                if($key == 'highlight_doctors') {
+                    $query = $qb->select('a,b','c')
+                                ->from($collectionClasses[$key], 'a')
+                                ->leftJoin('a.specializations', 'b')
+                                ->leftJoin('a.media', 'c')
+                                ->where($qb->expr()->in('a.id', $value));
+                } else {
+                    $query = $qb->select('a')->from($collectionClasses[$key], 'a')->where($qb->expr()->in('a.id', $value));
+                }
+
+                $data[$key] = json_encode($query->getQuery()->getResult(Query::HYDRATE_ARRAY));
             }
 
             $columns .= ",$key";
@@ -96,7 +116,7 @@ class AdvertisementService
         $columns = substr($columns, 1);
         $valuesPlaceholder = substr($valuesPlaceholder, 1);
         $onDuplicatePlaceholder = substr($onDuplicatePlaceholder, 1);
-        
+
         $query = "INSERT INTO advertisement_denormalized_properties ($columns) VALUES($valuesPlaceholder) ON DUPLICATE KEY UPDATE $onDuplicatePlaceholder";
         $result = $this->em->getConnection()->executeQuery($query, $data);
 
