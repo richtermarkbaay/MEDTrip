@@ -1,6 +1,12 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\TreatmentBundle\Form\DataTransformer\TreatmentIdentityTransformer;
+
+use HealthCareAbroad\InstitutionBundle\Form\FieldType\InstitutionTreatmentChoiceType;
+
+use HealthCareAbroad\TreatmentBundle\Form\DataTransformer\SpecializationIdentityTransformer;
+
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionSpecializationListType;
 use HealthCareAbroad\InstitutionBundle\Form\ListType\SpecializationListType;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -16,15 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class InstitutionSpecializationFormType extends AbstractType
 {
-    function __construct($institution)
-    {
-        $this->institution = $institution;
-    }
+    const NAME = 'institutionSpecialization';
+    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-                        'is_clientAdmin' => true,
-                        'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization'
+            'em' => null,
+            'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization'
         ));
     }
     
@@ -34,27 +38,23 @@ class InstitutionSpecializationFormType extends AbstractType
         
         if (!$institutionSpecialization instanceof InstitutionSpecialization) {
             throw new \Exception('Expected InstitutionSpecialization as data.');
-        }
-
-        if ($options['is_clientAdmin']) {
+        }        
             
-            $builder->add('specialization','specializations_autocomplete');
-        }else{
+        /**$builder->add('description', 'textarea', array(
+            'label' => 'Details',
+            'constraints' => array(new NotBlank())
+        ));**/
 
-            if (!$institutionSpecialization->getId()) {
-                 
-                $builder->add('specialization', new InstitutionSpecializationListType($this->institution, InstitutionSpecializationListType::SHOW_UNSELECTED), array('virtual'=>false));
-            }
-            
-            $builder->add('description', 'textarea', array(
-                            'label' => 'Details',
-                            'constraints' => array(new NotBlank()),
-                            'attr' => array('class'=>'tinymce')
-            ));
-        }
+        $builder->add($builder->create('specialization', 'hidden', array('error_bubbling' => true))
+            ->addModelTransformer(new SpecializationIdentityTransformer($options['em']))
+        );
+        
+        $builder->add($builder->create('treatments', new InstitutionTreatmentChoiceType(), array('error_bubbling' => true, 'virtual' => false))
+            //->addModelTransformer(new TreatmentIdentityTransformer($options['em']))
+        );
     }
     
     public function getName(){
-        return 'institutionSpecialization';
+        return self::NAME;
     }
 }

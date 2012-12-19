@@ -1,3 +1,5 @@
+
+{% spaceless %}
 <h5 id="specialization-{{ specialization.id }}">
     {{ specialization.name }}
     
@@ -7,21 +9,30 @@
 </h5>
 <div>
     <div class="boxcontent">
+        
+        
         {% for subSpecializationName, treatments in subSpecializations %}
             <h6 class="sub-specialization-title">{{ subSpecializationName }}</h6>
 
             <div class="treatments" style="border: 1px dashed #EEEEEE;margin-bottom: 20px;border-top:none;padding:5px">
                 {% for treatment in treatments %}
-                    <label>
-                        <input type="checkbox" name="treatments[]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>                    
-                        {{ treatment.name }}
-                    </label>
+                    <div>
+                        <input style="float:none; width: auto;!important" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
+                        <span>{{ treatment.name }}</span>
+                    </div>
+                    
                 {% endfor %}
             </div>
 
         {% endfor %}
+            <input type="hidden" name="{{ formName }}[{{ specialization.id }}][specialization]" value="{{ specialization.id }}" />
+            <input type="hidden" name="{{ formName }}[{{ specialization.id }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+            
+        </form>
     </div>
 </div>
+
+{% endspaceless %}
 
 <script type="text/javascript">
 $(function(){

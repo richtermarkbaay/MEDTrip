@@ -18,61 +18,39 @@
         </div><!--End of span12-->
         <div class="addnewclinic">
         	<div class="span9">
-        	 {% include '::notice.admin.html.twig' %}
-        		<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addSpecializations', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
-                    {{ form_errors(form) }}   
-        
-                    {{ form_row(form.specialization) }}
-                    <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
-            		<div id="specializationAccordion"></div>
-            		
-                    {{ form_rest(form) }}
-                	<div class="clear"><br></div>
-                	<input type="submit" name="submit" value="NEXT" class="btn btn-large btn-primary" />
-                </form>
+        	{% include '::notice.admin.html.twig' %}
+        	    
+                {{ form_row(form.specialization_selector) }}
+                <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
+                
+                <form class="specialization_form" action="{{ path('institution_medicalCenter_addSpecializations_save', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+        		    <div id="specializationAccordion"></div>
+        		    <div class="clear"><br></div>
+            	    <input type="submit" value="NEXT" class="btn btn-large btn-primary" />
+    		    </form>
         	</div>
 
         </div>
         {% endblock %}
         
     {% endembed %}
-    
-    {% block inlineJavascriptCode %}
-        <script language="javascript" type="text/javascript">
-    
-        <!-- AutoComplete for Institution Medical Group Input Field -->
-        
-            $(function() {
-            	 var availableTags = $.parseJSON('{{ specializationsJSON | raw}}');
+{% endblock %}
 
-            	 $('#specializationAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
-
-            	 function loadSpecializationEntry(val)
-                 {
-                     var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + val;
-                    
-                     $('#specializationLoading').fadeIn();
-                     $.get(url, function(specializationEntry){
-                         $('#specializationLoading').hide();
-                         $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion({heightStyle: "content"});
-
-                         $('#institutionSpecialization_specialization').find('option[value='+val+']').hide();
-                     });
-                 }
-                 
-            	 $( "#institutionSpecialization_specialization" ).autocomplete({
-                     minLength: 0,
-                     source: availableTags,
-                     select: function( event, ui) {
-                    	
-                    	 loadSpecializationEntry(ui.item.id);
-                    	 console.log(this.value);
-                         return false;
-                     }
-                 })
-                
-            });    
-
-    	</script>	
-    {% endblock %}
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    InstitutionSpecializationAutocomplete
+        .setAutocompleteOptions({
+            source : $.parseJSON('{{ specializationsJSON | raw}}'),
+            target: $('input.autocomplete_specialization_selector'),
+            selectedDataContainer: $('#specializationAccordion') 
+        })
+        .setLoaderElement($('#specializationLoading'))
+        .setLoadSpecializationFormUri('{{ path("helper_specializationAccordionEntry") }}')
+        .autocomplete();
+})(jQuery);
+//-->
+</script>
 {% endblock %}
