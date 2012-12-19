@@ -1,6 +1,7 @@
 HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementPropertyName:
     type: entity
     table: advertisement_property_names
+    repositoryClass: HealthCareAbroad\AdvertisementBundle\Repository\AdvertisementPropertyNameRepository
     fields:
         id:
             id: true

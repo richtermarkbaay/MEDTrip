@@ -1,6 +1,7 @@
 HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypeConfiguration:
     type: entity
     table: advertisement_type_configurations
+    repositoryClass: HealthCareAbroad\AdvertisementBundle\Repository\AdvertisementTypeConfigurationRepository
     fields:
         id:
             id: true
