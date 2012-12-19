@@ -1,77 +1,51 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% block title %}{{ parent() }} Add Center {% endblock %}
+{% set mainNavigation = {selected: 'medical_centers'} %}
+
+{# disable the navigation for single center type institution since this is part of the sign up process #}
+{% set disableMainNavigation = isSingleCenter is defined and isSingleCenter %}
+
 
 {% block content %}
-<!-- start content -->
-<div class="container">
-	<div class="maincontent">
-		<!--sidebar start-->
-			<div class="span3">
-			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
-			</div>
-	
-			<div class="span9">
-			<h2>
-		      {% set hasDraft = hasDraft is defined and hasDraft %}
-	            Add Medical Center		
-			</h2>
-			 <div class="addcenterbox">
-			 	<div class="row-fluid">
-				    <div class="span12">
-				            <div class="tabbable">
-								<!-- /.menu - tab start -->
-								        {% include '::notice.admin.html.twig' %}
-						
-								    {% include '::stepHolder.base.admin.html.twig' with {
-						                    steps: [
-						                        {title: '- Center Details'},
-						                        {title: '- Specialization'},
-						                        {title: '- Select Treatments'},
-						                        {title: '- Assigned Doctors', 'selected': true},
-						                        {title: '- Preview', 'selected': false},
-						                 ]}
-						              %}							
-								<!-- /.menu - tab end -->
-								<!-- /.tab-content start -->
-								<div class="tab-content">
-									<div id="tabs1-pane1" class="tab-pane active">
-													
-										<form novalidate="novalidate" action="{{ path('institution_medicalCenter_addSpecializations', {'imcgId': institutionMedicalCenter.id } ) }}" method="POST" class="basic-form">
-											<h3>Medical Specialist Assigned in this Medical Center</h3>	
-																
-											<label for="username"></label>
-											<div >										
-												<div class="input-prepend">
-													<input id="search_doctor" class="input-xxlarge" type="text" value="" name="searchDoctor">
-												</div>
-											</div>
-											    
-											<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>											
-										</form>
-										
-										<div id="ajax_loader" style="display: none;">Please wait...</div>
-							                 <h4>List of All Doctors</h4>
-							                 <ul class="nav nav-tabs nav-stacked doctor_list_item">
-							                    {% for currentDoctor in currentDoctors %}
-							                        <li>{% include 'InstitutionBundle:MedicalCenterGroup:doctorListItem.html.twig' with {'imcgId':institutionMedicalCenter.id, 'doctor': currentDoctor } %}</li>
-							                    {% endfor %}
-							                 </ul>
-						                
-									</div>
-								
-								</div><!-- /.tab-content end -->
-							</div>
-				    </div><!--/span 12 end-->
-				 </div><!--/row-fluid end-->
-			 </div>
-		</div>
-			<!--main tab start-->
-		
-			<div class="clear"></div>
-	</div>
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
+        {% block wrappedContent %}
+
+       <div class="span12">
+            
+            <h1><span>Create New Clinic Listing</span></h1>
+            {% include 'InstitutionBundle:Widgets:steps.addClinic.html.twig' with {activeStep: 'medical_specialists'} %}
+        </div>
+        <div class="addnewclinic">
+        	<div class="span9">
+                
+                <form  action="{{ path('institution_medicalCenter_addAffiliations', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+                    
+                    <div>
+                        <label for="username">Search and Add your Medical Specialist</label>
+                        <input id="search_doctor" class="input-xxlarge" type="text" value="" name="searchDoctor">
+                    </div>
+                    
+                    <div id="ajax_loader" style="display: none;">Please wait...</div>
+                    
+                    <div class="clearfix"></div>
+        		    
+        		    <div class="pull-left">
+                        <button class="btn btn-info previous_button" type="button">Previous</button>
+                    </div>
+        		    
+        		    <div class="pull-right">
+                        <button class="btn btn-primary btn-large" type="button">Submit</button>
+                    </div>
+    		    </form>
+        	</div>
+        	
+        	{% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+
+        </div>
+        {% endblock %}
+        
+    {% endembed %}
 {% endblock %}
 
 {% block inlineJavascriptCode %}
@@ -103,7 +77,7 @@
                 source: function(request, response) {
                     $('div#ajax_loader').show();
                     $.ajax({
-                        url: '{{ path("institution_medicalCenter_searchAvailableDoctor", {"imcgId": institutionMedicalCenter.id }) }}',
+                        url: '{{ path("institution_medicalCenter_searchAvailableDoctor", {"imcId": institutionMedicalCenter.id }) }}',
                         data: {'searchKey': request.term},
                         type: 'get',
                         dataType: 'json',
@@ -123,7 +97,7 @@
                 select: function(event, ui) {
                     $('div#ajax_loader').show();
                     $.ajax({
-                        url: '{{ path("institution_medicalCenter_addExistingDoctor", {"imcgId": institutionMedicalCenter.id } ) }}',
+                        url: '{{ path("institution_medicalCenter_addExistingDoctor", {"imcId": institutionMedicalCenter.id } ) }}',
                         data: {'doctorId':ui.item.id},
                         dataType: 'json',
                         type: 'post',

@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationsSelectorFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType;
@@ -341,17 +343,18 @@ class MedicalCenterController extends InstitutionAwareController
     public function addAncilliaryServicesAction(Request $request)
     {
         $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $this->institutionMedicalCenter, 'ancilliary_service_id');
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $medicalCenterService = $this->get('services.institution_medical_center');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
         
         if ($request->isMethod('POST')) {
             
             $form->bind($request);
             if ($form->isValid()) {
                 $data = $form->getData();
-                $propertyService = $this->get('services.institution_medical_center_property');
-                $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
                 
                 // clear first the existing ancilliary services of this medical center
-                $this->get('services.institution_medical_center')->clearProperty($this->institutionMedicalCenter, $propertyType);
+                $medicalCenterService->clearPropertyValues($this->institutionMedicalCenter, $propertyType);
                 
                 // value is a doctrine collection of OfferService entity
                 foreach ($data->getValue() as $_value) {
@@ -367,11 +370,16 @@ class MedicalCenterController extends InstitutionAwareController
                 $request->getSession()->setFlash('notice', 'Please fill up form properly.');
             }
         }
+        $selectedServices = array();
+        foreach ($medicalCenterService->getPropertyValues($this->institutionMedicalCenter, $propertyType) as $_prop) {
+            $selectedServices[] = $_prop->getValue();
+        }
         
         return $this->render('InstitutionBundle:MedicalCenter:addAncilliaryService.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'selectedServices' => $selectedServices
         ));
     }
     
@@ -381,6 +389,7 @@ class MedicalCenterController extends InstitutionAwareController
     {
         return $this->render('InstitutionBundle:MedicalCenter:addDoctors.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
             'currentDoctors' => $this->institutionMedicalCenter->getDoctors()
         ));
     }
@@ -563,28 +572,13 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addAffiliationsAction(Request $request)
     {
-	    	$form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
-	    
-	    	if ($request->isMethod('POST')) {
-	    	
-	    		$form->bind($request);
-	    		
-	    		if ($form->isValid()) {
-	    
-	    			$this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-	    			->saveAsDraft($form->getData());
-	    			$request->getSession()->setFlash('success', 'Affiliations has been saved!');
-	    			return $this->redirect($this->generateUrl('institution_medicalCenter_addDetails',array('imcId' => $this->institutionMedicalCenter->getId())));
-	    		}
-	    	}
-	    	
-	    	return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
-	    					'form' => $form->createView(), 
-	    					'institutionMedicalCenter' => $this->institutionMedicalCenter,
-	    					'formAction' => $this->generateUrl('institution_medicalCenter_addAffiliations',
-	    									array('imcId:' => $this->institutionMedicalCenter->getId())),
-	    					'newObject' => true
-	    					));
+        $form = $this->createForm(new InstitutionAffiliationsSelectorFormType());
+        
+        return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
+            'form' => $form->createView(),
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
+        ));
     }
 
 }
