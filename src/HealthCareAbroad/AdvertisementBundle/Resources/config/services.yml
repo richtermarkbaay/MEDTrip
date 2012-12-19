@@ -1,7 +1,7 @@
 services:
     services.advertisement:
         class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementService
-        arguments: [@service_container]
+        arguments: [@doctrine]
 
     services.advertisement.factory:
         class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory

@@ -2,8 +2,6 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
-use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
-
 use Symfony\Component\HttpFoundation\Cookie;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,12 +26,11 @@ class DefaultController extends Controller
 {
     public function indexAction(Request $request)
     {
-        $criteria = array('status' => Advertisement::STATUS_ACTIVE, 'advertisementType' => 1);
-        $highlightAds = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->findBy($criteria);
+        $advertisementRepo = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty');
 
-        $featuredClinicAds = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getActiveFeaturedClinic();
-
-        $news = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getActiveNews();
+        $highlightAds = $advertisementRepo->getActiveHomepagePremier();
+        $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
+        $news = $advertisementRepo->getActiveNews();
         
         $params = array(
             'highlightAds' => $highlightAds,
