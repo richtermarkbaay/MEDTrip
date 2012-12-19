@@ -22,20 +22,17 @@
                 <form  action="{{ path('institution_medicalCenter_addAncilliaryServices', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
         		    <p>Please check services offered by your Medical Institution</p>
         		    
-        		    {{ form_row(form.value) }}
-        		    
-        		    {# --
         		    <div id="services">
         		        <ul>
         		        {% for _choice in form.value.vars.choices %}
         		        <li>
-        		            <input type="checkbox" value="{{ _choice.value }}" name="{{ form.value.vars.full_name }}[]" />
+        		            <input type="checkbox" value="{{ _choice.value }}" name="{{ form.value.vars.full_name }}[]" {{ _choice.value in selectedServices ? 'checked' : ''  }} />
         		            {{ _choice.label }}
         		        </li>
         		        {% endfor %}
         		        </ul>
         		    </div> 
-        		    #}
+        		    
                     {{ form_widget(form._token) }}
                     
                     <div class="clearfix"></div>

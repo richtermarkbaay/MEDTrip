@@ -7,6 +7,10 @@ class InstitutionPropertyType
     
     const STATUS_INACTIVE = 0;
     
+    const TYPE_ANCILLIARY_SERVICE = 'ancilliary_service_id';
+    
+    const TYPE_LANGUAGE = 'language_id';
+    
     /**
      * @var bigint $id
      */

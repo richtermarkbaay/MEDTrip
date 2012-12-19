@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -25,6 +27,41 @@ class InstitutionMedicalCenterService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    /**
+     * Get values of medical center $institutionMedicalCenter for property type $propertyType 
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     * @return array InstitutionMedicalCenterProperty
+     */
+    public function getPropertyValues(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->doctrine->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+            ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+            ->getResult();
+        
+        return $result;
+    }
+    
+    /**
+     * Delete the values for $propertyType of $institutionMedicalCenter
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     */
+    public function clearPropertyValues(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType)
+    {
+        $dql = "DELETE FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $this->doctrine->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+            ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+            ->execute();
     }
     
     /**

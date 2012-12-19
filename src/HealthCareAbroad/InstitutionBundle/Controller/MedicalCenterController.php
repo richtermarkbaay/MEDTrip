@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
@@ -344,9 +346,20 @@ class MedicalCenterController extends InstitutionAwareController
             
             $form->bind($request);
             if ($form->isValid()) {
-                var_dump($form->getData());
-                exit;
-                $this->get('services.institution_medical_center_property')->save($form->getData());
+                $data = $form->getData();
+                $propertyService = $this->get('services.institution_medical_center_property');
+                $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+                
+                // clear first the existing ancilliary services of this medical center
+                $this->get('services.institution_medical_center')->clearProperty($this->institutionMedicalCenter, $propertyType);
+                
+                // value is a doctrine collection of OfferService entity
+                foreach ($data->getValue() as $_value) {
+                    $_new = clone($data);
+                    $_new->setValue($_value->getId());
+                    $propertyService->save($_new);
+                }
+                
                 
                 return $this->redirect($this->generateUrl('institution_medicalCenter_addAffiliations', array('imcId' => $this->institutionMedicalCenter->getId())));
             }
