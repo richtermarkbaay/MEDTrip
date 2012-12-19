@@ -150,7 +150,6 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
-   
         $content = $request->get('content');
         $output = array();
         $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
@@ -160,16 +159,19 @@ class MedicalCenterController extends InstitutionAwareController
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig'));
+                $parameters['services'] = $this->get('services.institutionMedicalCenter')->getMedicalCenterServices($this->institutionMedicalCenter, $this->institution);
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
                 break;
             case 'awards':
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig'));
+                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionAffiliations();
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
-                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig'));
+                $parameters['medical_specialists'] = $this->institutionMedicalCenter->getDoctors();
+                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
-        
+
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     

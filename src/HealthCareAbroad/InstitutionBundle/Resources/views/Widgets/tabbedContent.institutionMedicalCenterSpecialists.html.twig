@@ -1,31 +1,43 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <table class="table table-striped table-bordered bootstrap-datatable">
-		<thead>
-			<tr>
+    	<div class="maincontentblock">
+	    <table class="table table-striped table-bordered bootstrap-datatable">
+	      <thead>
+            <tr>
 				<th>Medical Specialist</th>
 				<th>Specializations</th>
 				<th>Actions</th>
 			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>
-					<strong>Lastname, Firstname</strong>
-				</td>
-				<td>
-					<div>
-						<p>Specializations1, Specializations2</p>
-					</div>
-				</td>
-				<td>
-					<i class="icon-pencil" title="Edit"></i>
-					<a href="manage-doctor-profile.html">Edit Doctor's Profile</a>|
-					<i class="icon-trash" title="Delete"></i>
-					<a href="#deletespecialist" title="" role="button" data-toggle="modal">Delete</a>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+        </thead>
+	        <tbody>
+             {% for doctor in medical_specialists %}
+				<tr>
+					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+					<td>
+					{% for specialization in doctor.specializations %}
+					    {{ specialization.name |title }} 
+					    {% if loop.last == false %},{% endif %} 
+				    
+				    {% else %}
+					    No Specializations yet
+					{% endfor %}
+					</td>
+					<td>
+						<div class="post-toolbar">
+							<i class="icon-trash" title="Delete"></i>
+							<a href="#deleteMedicalSpecialist" title="" role="button" data-toggle="modal">Delete</a>
+						</div>
+					</td>
+				</tr>
+		      {% else %}
+    		  	<tr>
+    			   <td> No Medical Specialist yet. </td>
+    			   <td></td>
+    			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+    </div>
+    
     {% endblock %}
 {% endembed %}

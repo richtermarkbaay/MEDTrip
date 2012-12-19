@@ -36,6 +36,8 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
+        
+        $doctor->setMedia(null);
         $form = $this->createForm(new DoctorFormType(), $doctor);
     
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -52,6 +54,9 @@ class DoctorController extends Controller
     {
         if ($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
+            $media = $doctor->getMedia();
+            $doctor->setMedia(null);
+            
             if (!$doctor) {
                 throw $this->createNotFoundException("Invalid doctor.");
             }
@@ -66,16 +71,27 @@ class DoctorController extends Controller
         }
         
         $form = $this->createForm(new DoctorFormType(), $doctor);
+        
         if ($this->getRequest()->isMethod('POST')) {
-            $form->bindRequest($this->getRequest());
+            $doctorData = $request->get('doctor');
+            
+            if($newMedia = $this->saveMedia($request->files->get('doctor'))) {
+                $doctorData['media'] = $newMedia;                
+            } else {
+                if($doctor->getId()) {
+                    $doctorData['media'] = $media;
+                }
+            }
+
+            $form->bind($doctorData);
 
             if($form->isValid()) {
                 // Get contactNumbers and convert to json format
                 $contactNumber = json_encode($request->get('contactNumber'));
-                
+
                 $doctor->setContactNumber($contactNumber);
                 $em = $this->getDoctrine()->getEntityManager();
-//                 var_dump($doctor);exit;
+
                 $em->persist($doctor);
                 $em->flush();
 
@@ -92,7 +108,6 @@ class DoctorController extends Controller
                         'form' => $form->createView(),
                         'title' => $title
         ));
-
     }
     
     /**
@@ -118,5 +133,15 @@ class DoctorController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;
+    }
+    
+    private function saveMedia($fileBag)
+    {
+        if($fileBag['media']) {
+            $media = $this->get('services.media')->uploadDoctorImage($fileBag['media']);
+            return $media;
+        }
+
+        return null;
     }
 }
