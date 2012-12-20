@@ -89,36 +89,6 @@ class InstitutionUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('institution_login'));
     }
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
-     */
-    public function changePasswordAction()
-    {
-        //get user account in chromedia global accounts by accountID
-        $session = $this->getRequest()->getSession();
-        $institutionUserService = $this->get('services.institution_user');
-        $institutionUser = $institutionUserService->findById($session->get('accountId'));
-
-        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
-
-        if ($this->getRequest()->isMethod('POST')) {
-
-            $form->bindRequest($this->getRequest());
-
-            if ($form->isValid()) {
-                $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
-                $institutionUserService->update($institutionUser);
-
-                // dispatch event
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
-
-                $this->get('session')->setFlash('success', "Password changed!");
-            }
-            
-        }
-        
-        return $this->redirect($this->generateUrl('institution_editAccount', array('accountId' => $session->get('accountId'))));
-    }
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
