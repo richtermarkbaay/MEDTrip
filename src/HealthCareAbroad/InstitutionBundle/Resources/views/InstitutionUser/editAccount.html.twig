@@ -11,91 +11,78 @@
 				<h1>
 					<span>Manage Account Profile</span>
 				</h1>
-				<!-- accordion start -->
-				<div class="accountsettings">
-					<div class="accordion" id="accordion2">
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<h5>Personal Information</h5>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
-							</div>
-							<div id="collapseOne" class="accordion-body collapse">
-								<div class="accordion-inner">
-									{% include '::notice.admin.html.twig' %}
-                            
-                                    <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-                                            			    <!-- start id-form -->
-                                        <table class="offset2">
-                                            
-                                            {{ form_row(form.firstName) }}
-                                            {{ form_row(form.middleName) }}
-                                            {{ form_row(form.lastName) }}
-                                            
-                                            <tr>
-                                                <th>&nbsp;</th>
-                                                <td valign="top">
-                                                    <input type="reset" value="Reset" class="btn-medium btn"  />
-                                                    <input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />   
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            {{ form_rest(form) }}
-                                        </table>
-                                    <!-- end id-form  -->
-                                    </form>
-								</div>
-							</div>
-						</div>
-						<div class="accordion-group">
-							<div class="accordion-heading">
-								<h5>Login Information</h5>
-								<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
-							</div>
-							<div id="collapseTwo" class="accordion-body collapse">
-								<div class="accordion-inner">
-									<strong>Password</strong>
-									<p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>
-									<table class="offset2">
-										<tbody>
-											<tr>
-												<th>
-													<label>Current Password</label>
-												</th>
-												<td class="data">
-													<input type="password" value="" name="password">
-													<a href="#">Forgot Password?</a>
-												</td>
-											</tr>
-											<tr>
-												<th>
-													<label>New Password</label>
-												</th>
-												<td class="data">
-													<input type="password" value="" name="password">
-												</td>
-											</tr>
-											<tr>
-												<th>
-													<label>Repeat Password</label>
-												</th>
-												<td class="data">
-													<input type="password" value="" name="password">
-												</td>
-											</tr>
-											<tr>
-												<td colspan="2">
-													<a id="3" class="btn-medium btn btn-info" href="#">Save Changes</a>
-													<a id="4" class="btn-medium btn" href="#">Cancel</a>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- accordion end -->
+    		<div class="accountsettings">
+    			<div id="accordion2">
+    				<div class="accordion-group">
+    					<div class="accordion-heading">
+    						<h5>Personal Information</h5>
+    						<a href="#"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+    					</div>
+    					<div id="collapseOne" class="accordion-body">
+    						<div class="accordion-inner">
+                                <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                                    <table class="offset2">
+                                        {{ form_errors(form) }} 
+                                        {{ form_row(form.firstName) }}
+                                        {{ form_row(form.middleName) }}
+                                        {{ form_row(form.lastName) }}
+                                        
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <td valign="top">
+                                                <input type="reset" value="Reset" class="btn-medium btn"  />
+                                                <input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />   
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        {{ form_rest(form) }}
+                                    </table>
+                                <!-- end id-form  -->
+                                </form>
+    						</div>
+    					</div>
+    				</div>
+    				<div class="accordion-group">
+    					<div class="accordion-heading">
+    						<h5>Login Information</h5>
+    						<a href="#"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
+    					</div>
+    					 
+    					<div id="collapseTwo" class="accordion-body ">
+    						<div class="accordion-inner">
+                                <strong>Password</strong>
+                                <p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>  
+                                {% include '::notice.admin.html.twig' %}  
+                                <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                                 
+                            	    <!-- start id-form -->
+                            		<table class="offset2">
+                            		
+                                        <tr>
+                                            <td>{{ form_row( formChangePassword.current_password ) }} </td>
+                                        </tr>
+                                        <tr>
+                                             <td>{{ form_row( formChangePassword.new_password ) }} </td>
+                                        </tr>
+                                        <tr>
+                                             <td> {{ form_row( formChangePassword.confirm_password ) }} </td>
+                                        </tr>
+                                        <tr>
+                                        	<td valign="top">
+                                        		<input type="reset" value="Reset" class="btn-medium btn"/>
+                                        		<input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />
+                                        	</td>
+                                        </tr>
+                                         {{ form_rest(formChangePassword) }}
+                                	</table>
+                                	<!-- end id-form  -->
+                            	</form>
+    						</div>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+                
 			</div>
 			<!--End of span9-->
 			     {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
@@ -105,24 +92,4 @@
 	<!--End of container-->
 </section>
 
-
-{% endblock %}
-{% block inlineJavascriptCode %}
-    <script type="text/javascript">
-
-        $(function() {
-                //DDSLICk
-                $('#social-select-a').ddslick();
-                $('#social-select-b').ddslick();
-                
-                $('#formwizard').stepy({
-                        backLabel:  'Backward',
-                        block:    true,
-                        errorImage: true,
-                        nextLabel:  'Forward',
-                        titleClick: true,
-                        validate: true
-                }); 
-        });
-    </script>
 {% endblock %}

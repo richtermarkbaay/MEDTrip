@@ -86,6 +86,7 @@
                         <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
                         {% endif %}
                         <span>I have no business hours</span> 
+                         <div id="ajax_loader" style="display:none;"><span>Loading...</span></div>
                         {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                     </div>
 
@@ -93,17 +94,17 @@
             </div>
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
-                  Affiliations / Certifications
-                    <a href="{{ path('admin_institution_medicalCenter_addAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-affiliation btn btn-mini pull-right">
+                  GlobalAwards / Certifications
+                    <a href="{{ path('admin_institution_medicalCenter_addGlobalAwards', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-global_award btn btn-mini pull-right">
                             <i class="icon-plus"></i>
-                               Add Affiliations
+                               Add GlobalAwards
                     </a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                {% for affiliation in affiliations %}
+                {% for global_award in global_awards %}
                         <div style="margin-top: 10px">
-                       {{ affiliation.name | title }}
-                        <a href="{{ path('admin_institution_medicalCenter_updateAffiliations', {institutionId: institution.id, imcId: institutionMedicalCenter.id , affiliationId: affiliation.id}) }}" style="float:right"><i class="icon-remove"></i></a>
+                       {{ global_award.name | title }}
+                        <a href="{{ path('admin_institution_medicalCenter_updateGlobalAwards', {institutionId: institution.id, imcId: institutionMedicalCenter.id , global_awardId: global_award.id}) }}" style="float:right"><i class="icon-remove"></i></a>
                     </div>
 
                 {% endfor %}
@@ -122,6 +123,17 @@
                 </div>
             </div>
 
+            <div id="medicalCenterDetailsAccordion" class="treatmentbox">
+                <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                    Doctors
+                    <a href="{{ path('admin_institution_medicalCenter_addMedicalSpecialist', {institutionId: institution.id,imcId: institutionMedicalCenter.id } )}}" class="btn btn-mini pull-right">
+                        <i class="icon-plus"></i>Add Doctors
+                    </a>
+                </h5>
+                <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                    {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                </div>
+            </div>
         {% endblock %}
 
     {% endembed %}
@@ -143,7 +155,7 @@
             if ($('#businessHourCheckBox').attr('checked')) {
             	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#table-businessHours').hide();
             }
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -154,13 +166,13 @@
                 close: function() {}
             });
 
-            $('a.add-affiliation').click(function(){
+            $('a.add-global_award').click(function(){
                 var elem = $(this);
                 var _url = elem.attr('href');
 
                 $("#dialog-container").empty();
                 $('#dialog-container').dialog({
-                    title: 'Affiliations / Certifications',
+                    title: 'GlobalAwards / Certifications',
                     open: function() {
                         $.ajax(_url)
                             .done(function (data) {
@@ -180,7 +192,7 @@
     			var _url = elem.attr('href');
 
     			$("#dialog-container").empty();
-    			//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+    			//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' GlobalAwards');
                 $('#dialog-container').dialog({
                 	title: 'Add Offered Services',
                     open: function() {
@@ -278,10 +290,10 @@
 
     	    	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#table-businessHours').hide();
     	    	
     	    }else{
-        	    $('#clinicHoursTable').show();
+        	    $('#table-businessHours').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
         	}

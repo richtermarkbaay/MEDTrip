@@ -100,11 +100,11 @@ parameters:
     event.awarding_body.delete: HealthCareAbroad\AdminBundle\Event\AwardingBodyEvent
     
     #
-    # Affiliation related events
+    # GlobalAward related events
     #
-    event.affiliation.add: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
-    event.affiliation.edit: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
-    event.affiliation.delete: HealthCareAbroad\AdminBundle\Event\AffiliationEvent
+    event.global_award.add: HealthCareAbroad\AdminBundle\Event\GlobalAwardEvent
+    event.global_award.edit: HealthCareAbroad\AdminBundle\Event\GlobalAwardEvent
+    event.global_award.delete: HealthCareAbroad\AdminBundle\Event\GlobalAwardEvent
     
     #
     # doctor related events

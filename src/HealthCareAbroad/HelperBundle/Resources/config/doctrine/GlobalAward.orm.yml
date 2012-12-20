@@ -1,15 +1,20 @@
-HealthCareAbroad\HelperBundle\Entity\Affiliation:
+HealthCareAbroad\HelperBundle\Entity\GlobalAward:
     type: entity
-    table: affiliations
-    repositoryClass: HealthCareAbroad\HelperBundle\Repository\AffiliationRepository
+    table: global_awards
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\GlobalAwardRepository
     fields:
         id:
             id: true
             type: integer
-            unsigned: false
+            unsigned: true
             nullable: false
             generator:
                 strategy: IDENTITY
+        type:
+            type: integer
+            length: 3
+            unsigned: true,
+            nullable: false
         name:
             type: string
             length: 50
@@ -45,5 +50,5 @@ HealthCareAbroad\HelperBundle\Entity\Affiliation:
     manyToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            mappedBy: institutionAffiliations
+            mappedBy: institutionGlobalAwards
     lifecycleCallbacks: {  }

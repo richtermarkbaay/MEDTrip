@@ -1,25 +1,25 @@
 <div class="box-content">
-    <h4 class="pull-left">Basic Profile</h4>
-            
+    <h4 class="pull-left">Basic Profile</h4>            
     <div class="clear"></div>
     <table class="table table-striped">
         <tr>
             <td>
-                <p>
-                    {{ json_decode(institution.address1) | join(' ') }}
-                    <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
-                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                    </a>
-                </p>
+                <span id="profileAddressText">{{ json_decode(institution.address1) | join(', ') }}</span>, 
+                <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
+                <span id="profileZipcodeText">{% if institution.zipCode %} {{ institution.zipCode }}, {% endif %}</span>
+                <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
+                <span id="profileCountryText">{{ institution.country.name }}</span>
+                <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+
             </td>
         </tr>
         
         <tr>
             <td>
-                <p>
-                    {{ json_decode(institution.contactNumber) | join('-') }}
-                </p>
-                <a href="#clinicnumber" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                <span id="profileNumberText">{{ json_decode(institution.contactNumber) | join('-') }}</span>
+                <a href="#contact_number" class="basic-profile-modal-openers" role="button" data-toggle="modal">
                     <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                 </a>
             </td>
@@ -27,153 +27,171 @@
         
         <tr>
             <td>
-                <p>{{ institution.contactEmail }}<a href="#clinicemail" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
+                <p>
+                    <span id="profileEmailText">{{ institution.contactEmail }}</span>
+                    <a href="#contact_email" role="button" data-toggle="modal" class="basic-profile-modal-openers">
+                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    </a>
+                </p>
             </td>
         </tr>
     
         <tr>
             <td>
-                <p>http://gleneagleskl.com.my<a href="#clinicwebsite" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
+                <div id="profileWebsitesText">
+                    {% for type, site in json_decode(institution.websites) %}
+                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% endfor %}
+                </div>
+                <a href="#websites" role="button" data-toggle="modal" class="basic-profile-modal-openers">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
             </td>
         </tr>
     </table>
 </div>
-                            
-<!-- #####  
-    start modal boxes 
--->
-                            
-<!-- Modal Clinic Address -->
-<div id="clinicaddress" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-        <h3 id="myModalLabel">Edit Clinic Address</h3>
-    </div>
-    
-    <div class="modal-body">
-        
-        <div class="mapbox">map here</div>
-    
-        <div>
-            <label for="Country">Country</label> 
-            <input name="institution_country" type="text" id="institution_country" value="Malaysia" class="institution_country">
+
+
+{% set _csrf_token_widget = form_widget(institutionForm._token) %}
+
+<!-- Modal Institution Address -->
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'clinicaddressModal', 'title': 'Edit Clinic Address'}} %}
+    {% block modalBody %}
+        <!-- div class="mapbox">map here</div -->
+		<form id="addressModalForm" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+			{{ form_widget(institutionForm.address1, {attr: {class: 'span3'}}) }}
+			{{ form_row(institutionForm.country, {attr: {class: 'country_dropdown span3'}}) }}
+			{{ form_row(institutionForm.city,{attr: {class: 'city_dropdown span3'}}) }}
+			{{ form_row(institutionForm.state) }}
+			{{ form_row(institutionForm.zipCode) }}
+			{{ _csrf_token_widget | raw }}
+		</form>
+        <div class="button-wrapper">
+            <button class="btn btn-primary submit-button">Submit</button>
         </div>
-        
-        <div>
-            <label for="State">State / Province</label> 
-            <input name="institution_State" type="text" id="institution_State" value="Kuala Lumpur" class="institution_state">
-        </div>
-        
-        <div>
-            <div class="addresscity">
-                <span class="span2 marginleft0">
-                    <label>City</label> 
-                    <input name="institution_cityaddress" type="text" id="institution_cityaddress" value="Kuala Lumpur " class="institution_cityaddress span2">
-                </span> 
-                
-                <span class="span3">
-                    <label>Zip/Mail Code</label> 
-                    <input name="institution_mailcode" type="text" id="institution_mailcode" value="50450 " class="institution_mailcode span3">
-                </span>
-            </div>
-            
-            <div class="clearfix"></div>
-            <div class="addressdetails">
-                <span class="span2 marginleft0">
-                    <label>Unit or Room #</label> 
-                    <input name="institution_roomnumber" type="text" id="institution_roomnumber" value="282" class="institution_roomnumber span2">
-                </span> 
-                <span class="span2">
-                    <label>Building</label> 
-                    <input name="institution_building" type="text" id="institution_building" value="Jalan Ampang" class="institution_building span3">
-                </span>
-            </div>
-        </div>
-        
-        <div class="clearfix"></div>
-        <div class="Streetdetails">
-            <span class="span5 marginleft0">
-                <label>Street</label>
-                <input name="institution_streetaddress" type="text" id="institution_streetaddress" value="" class="institution_streetaddress span5">
-            </span>
-        </div>
-        
-        <div class="clearfix"></div>
-    </div>
     <!-- end modal-body -->
-    
-    <div class="modal-footer">
-        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-        <button class="btn btn-primary">Submit</button>
-    </div>
-</div>
+    {% endblock %}
+{% endembed %}
  <!-- End Modal Clinic Address -->
 
 
-
 <!-- Modal Clinic Number -->
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' 
-    with {'modal': {'id' : 'clinicnumber', 'title': 'Edit Clinic Number'}}
-%}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'clinicnumberModal', 'title': 'Edit Clinic Number'}} %}
     {% block modalBody %}
-        <div class="phonenumber" required="required">
-            <span class="span1 marginleft0">
-                <small>Country Code</small> 
-                <input name="institution_countrycode" type="text" id="institution_countrycode" value="" class="institution_website span1">
-            </span> 
-            <span class="span1">
-                <small>Area Code</small> 
-                <input name="institution_areacode" type="text" id="institution_areacode" value="" class="institution_website span1">
-            </span>
-            <span class="span2">
-                <small>Phone Number</small>
-                <input name="institution_phonenumber" type="text" id="institution_phonenumber" value="" class="institution_website span2">
-            </span>
+		<form id="numberModalForm" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+			{{ form_row(institutionForm.contactNumber) }}
+			{{ _csrf_token_widget | raw}}
+		</form>
+        <div class="button-wrapper">
+            <button class="btn btn-primary submit-button">Submit</button>
         </div>
     {% endblock %}
-
 {% endembed %}
 <!-- end Modal Clinic Number -->
 
 <!-- Modal Clinic email -->
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' 
-    with {'modal': {'id' : 'clinicemail', 'title': 'Edit Clinic Email'}}
-%}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'clinicemailModal', 'title': 'Edit Clinic Email'}} %}
     {% block modalBody %}
-        <input type="email" required value="inquiry@gleneagleskl.com.my" id="email" name="email">
+		<form id="emailModalForm" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+			{{ form_row(institutionForm.contactEmail) }}
+			{{ _csrf_token_widget | raw}}
+		</form>
+        <div class="button-wrapper">
+            <button class="btn btn-primary submit-button">Submit</button>
+        </div>
     {% endblock %}
-    
 {% endembed %}
 <!-- end Modal Clinic email -->
 
 
 <!-- Modal Clinic website -->
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' 
-    with {'modal': {'id' : 'clinicwebsite', 'title': 'Edit Clinic Website'}}
-%}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'clinicwebsitesModal', 'title': 'Edit Clinic Websites'}} %}
     {% block modalBody %}
-        <input type="text" required value="gleneagleskl.com.my" id="website" name="website"> <
-    {% endblock %}
-    
+		<form id="websitesModalForm" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+			{{ form_row(institutionForm.websites) }}
+			{{ _csrf_token_widget | raw}}
+		</form>
+        <div class="button-wrapper">
+            <button class="btn btn-primary submit-button">Submit</button>
+        </div>
+    {% endblock %}    
 {% endembed %}
 
 {% block inlineJavascriptCode %}
+
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
 <script type="text/javascript">
 <!--
-(function($){
-    $(function(){
+    (function($){
+    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+    	$('#institution_profile_form_country').change();
+
+    	InstitutionProfile.initializeModals({
+        	address: $('#clinicaddressModal'), 
+        	contact_number: $('#clinicnumberModal'), 
+        	contact_email: $('#clinicemailModal'), 
+        	websites: $('#clinicwebsitesModal')
+        });
+        
         $('a.basic-profile-modal-openers').click(function(){
-            $(this).parents('ul.tab_navigation').find('li.active').removeClass('active');
-            $(this).parents('ul li').addClass('active');
-            InstitutionMedicalCenter.switchTab($(this).attr('href').replace("#", ""));
-    
+        	$('.modal-content .button-wrapper .submit-button').removeAttr('disabled');
+        	InstitutionProfile.openModal($(this).attr('href').replace("#", ""));
+
             return false;
         });
-    });
-})(jQuery);
+    
+        $('.button-wrapper .submit-button').click(function(){
+
+            $(this).attr('disabled', true);
+            _form = $(this).parents('.modal-content').find('form');
+            _form.append('<span class="loader">Loading...</span>');
+
+            InstitutionProfile.submitModalForm(_form, function(response){
+                if (response.form_error) {
+                    _form.prepend(response.form_error_html);
+                }
+                else {
+
+                	switch(_form.attr('id')){
+                        case 'addressModalForm':
+                            var address = response.institution.address1; 
+                            $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
+                            $('#profileCityText').html(response.institution.city ? response.institution.city + ', ' : '');
+                            $('#profileZipcodeText').html(response.institution.zipCode ? response.institution.zipCode + ', ' : '');
+                            $('#profileStateText').html(response.institution.state ? response.institution.state + ', ' : '');
+                            $('#profileCountryText').html(response.institution.country);
+                            InstitutionProfile.closeModal('address');
+                            break;
+
+                        case 'numberModalForm':
+                            var number = response.institution.contactNumber;
+                            $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                            InstitutionProfile.closeModal('contact_number');
+                            break;
+
+                        case 'emailModalForm':
+                            $('#profileEmailText').html(response.institution.contactEmail);
+                            InstitutionProfile.closeModal('contact_email');
+                            break;
+
+                        case 'websitesModalForm':
+                            var websites = response.institution.websites, websitesString = ''; 
+                            for(name in websites) {
+                            	websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
+                            }
+                            $('#profileWebsitesText').html(websitesString);
+                            InstitutionProfile.closeModal('websites');
+                            break;
+                	}                    
+                }
+
+                $(this).attr('disabled', false);
+                _form.find('span.loader').remove();
+            });
+
+        });
+    })(jQuery);
 //-->
 </script>
 {% endblock %}
-                    
-                            
-                            

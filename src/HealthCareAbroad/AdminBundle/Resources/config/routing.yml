@@ -53,9 +53,9 @@ AdminBundle_doctor:
     resource: "@AdminBundle/Resources/config/routing_doctor.yml"
     prefix:   /
     
-# Routes for Admin Affiliations #
-AdminBundle_affiliation:
-    resource: "@AdminBundle/Resources/config/routing_affiliation.yml"
+# Routes for Admin GlobalAwards #
+AdminBundle_global_award:
+    resource: "@AdminBundle/Resources/config/routing_global_award.yml"
     prefix:   /
 
 # Routes for Admin Awarding Body #

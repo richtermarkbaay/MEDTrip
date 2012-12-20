@@ -59,9 +59,9 @@ final class AdminBundleEvents
     const ON_EDIT_AWARDING_BODY = 'event.awarding_body.edit';
     const ON_DELETE_AWARDING_BODY = 'event.awarding_body.delete';
     
-    const ON_ADD_AFFILIATION = 'event.affiliation.add';
-    const ON_EDIT_AFFILIATION = 'event.affiliation.edit';
-    const ON_DELETE_AFFILIATION = 'event.affiliation.delete';
+    const ON_ADD_AFFILIATION = 'event.global_award.add';
+    const ON_EDIT_AFFILIATION = 'event.global_award.edit';
+    const ON_DELETE_AFFILIATION = 'event.global_award.delete';
     
     const ON_ADD_DOCTOR = 'event.doctor.add';
     const ON_EDIT_DOCTOR = 'event.doctor.edit';

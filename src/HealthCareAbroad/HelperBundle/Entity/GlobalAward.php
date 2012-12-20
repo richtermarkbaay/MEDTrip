@@ -5,17 +5,24 @@ namespace HealthCareAbroad\HelperBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * HealthCareAbroad\HelperBundle\Entity\Affiliation
+ * HealthCareAbroad\HelperBundle\Entity\GlobalAward
  */
-class Affiliation
+class GlobalAward
 {
 	const STATUS_ACTIVE = 1;
 	
 	const STATUS_INACTIVE = 0;
+    
+	
     /**
      * @var integer $id
      */
     private $id;
+
+    /**
+     * @var integer $type
+     */
+    private $type;
 
     /**
      * @var string $name
@@ -63,10 +70,32 @@ class Affiliation
     }
 
     /**
+     * Set type
+     *
+     * @param integer $type
+     * @return GlobalAward
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return integer 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set name
      *
      * @param string $name
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function setName($name)
     {
@@ -88,7 +117,7 @@ class Affiliation
      * Set details
      *
      * @param string $details
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function setDetails($details)
     {
@@ -110,7 +139,7 @@ class Affiliation
      * Set status
      *
      * @param smallint $status
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function setStatus($status)
     {
@@ -132,7 +161,7 @@ class Affiliation
      * Set country
      *
      * @param HealthCareAbroad\HelperBundle\Entity\Country $country
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
     {
@@ -154,7 +183,7 @@ class Affiliation
      * Set awardingBody
      *
      * @param HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function setAwardingBody(\HealthCareAbroad\HelperBundle\Entity\AwardingBody $awardingBody = null)
     {
@@ -176,7 +205,7 @@ class Affiliation
      * Add institutionMedicalCenters
      *
      * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
-     * @return Affiliation
+     * @return GlobalAward
      */
     public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
     {

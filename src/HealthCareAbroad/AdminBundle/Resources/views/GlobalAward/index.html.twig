@@ -1,7 +1,7 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubMenu = 'affiliations' %}
-{% set affiliationLabel = getClassLabel('affiliation') %}
+{% set selectedSubMenu = 'global_awards' %}
+{% set global_awardLabel = getClassLabel('global_award') %}
 
 {% block content %}
  	<div class="span3">
@@ -11,8 +11,8 @@
 
 		{% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
-                title: affiliationLabel.plural | title,
-                actions: [{link: path('admin_affiliation_add'), label: 'Add '~ affiliationLabel.singular | title, 'icon' : 'icon-ok' }] 
+                title: global_awardLabel.plural | title,
+                actions: [{link: path('admin_global_award_add'), label: 'Add '~ global_awardLabel.singular | title, 'icon' : 'icon-ok' }] 
             }  
         %}
         
@@ -23,29 +23,31 @@
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
                 
-                <table id="affiliation-list" class="table table-bordered sortable-list">
+                <table id="global_award-list" class="table table-bordered sortable-list">
                         <tr>
                             <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                             <th id="column-details"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : '' }}">Details</a></th>
+                            <th id="column-details">Type</th>
                             <th id="column-awardingBody"><a href="{{ app.request.uri }}" class="{{ sortBy == 'awardingBody' ? 'sort-' ~ sortOrder : '' }}">Awarding Body</a></th>
                             <th id="column-country"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
                             <th class="actions" width="100">Action</th>
                         </tr>
             
-                {% for each in affiliations %}
+                {% for each in global_awards %}
                      
                     <tr>
                         <td>{{ each.name }}</td>
                         <td>{{ each.details }}</td>
+                        <td>{{ types[each.type] }}</td>
                         <td>{{ each.awardingBody.name }}</td>
                         <td>{{ each.country.name }}</td>
                         <td>
                             <ul style="list-style: none;">
-                                <li><a href="{{ path('admin_affiliation_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
+                                <li><a href="{{ path('admin_global_award_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
                                 
                                 <li>
                                     {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
-                                    <a href="{{ path('admin_affiliation_updateStatus', {id: each.id} ) }}" title="" class="update-status">
+                                    <a href="{{ path('admin_global_award_updateStatus', {id: each.id} ) }}" title="" class="update-status">
                                         <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
                                     </a>
                                 </li>
@@ -59,7 +61,7 @@
         {% endembed %}
         
         {% if pager.isPaginable %}
-           {{ paginate(pager, 'admin_affiliation_index', app.request.query.all) }}
+           {{ paginate(pager, 'admin_global_award_index', app.request.query.all) }}
         {% endif %}
         
     </div>

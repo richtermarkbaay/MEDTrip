@@ -9,6 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
+    const ACTIVE = 1;
+    
+    const INACTIVE = 2;
     /**
      * @var integer $id
      */
