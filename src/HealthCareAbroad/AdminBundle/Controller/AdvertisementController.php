@@ -172,6 +172,7 @@ class AdvertisementController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $advertisement->setStatus(Advertisement::STATUS_ACTIVE);
             $this->saveMedia($request->files->get('advertisement'), $advertisement);
 
             if($advertisement->getId()) {
@@ -275,7 +276,8 @@ class AdvertisementController extends Controller
                     else $value = '';
                 }
 
-                $denormalizedAdvertisement->{$method}($value);
+                try { $denormalizedAdvertisement->{$method}($value);} 
+                catch(\Exception $e){}
             }
         }
 

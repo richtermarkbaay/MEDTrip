@@ -16,19 +16,19 @@
                 </div>
                 
                 <div class="span7">
-                    <h2 class="pull-left">{{ institution.name }}</h2>
+                    <h2 class="pull-left institution_name">{{ institution.name }}</h2>
                     <div class="editname">
                         <i title="Edit" class="icon-pencil"></i>
-                        <a data-toggle="modal" role="button" href="#editinstitutionname">
+                        <a data-toggle="modal" id="edit_institution_name_link" role="button" href="#editinstitutionname">
                             <small>Edit</small>
                         </a>
                     </div>
                     <div class="maincontentblock">
-                        <p>
-                            {{ institution.description }}
-                            <i title="Edit" class="icon-pencil"></i>
-                            <a data-toggle="modal" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
-                        </p>
+                        <div style="display: inline-block;" class="institution_description">
+                            {{ institution.description | raw }}
+                        </div>
+                        <i title="Edit" class="icon-pencil"></i>
+                        <a data-toggle="modal" id="edit_institution_description_link" role="button" href="#editinstitutiondescription"><small>Edit</small></a>
                     </div>
                     
                 </div>
@@ -54,13 +54,44 @@
             </div>
         </div>
         <!-- end span9 -->
-        {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+        {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
         
         {% endblock %}
     {% endembed %}
 <div id="medical_centers_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
+{% set _csrf_token_widget = form_widget(institutionForm._token) %}
+
+<div id="edit_institution_name_dialog" title="Edit Institution Name" style="display:none;">
+    
+	<div class="modal-body">
+		<form id="form_institution_name" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+		    <div>
+    			{{ form_widget(institutionForm.name, {attr: {class:'span6'} } ) }}
+    			{{ _csrf_token_widget | raw}}
+    		</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button id="submit_button_institution_name" class="btn btn-primary submit-button">Submit</button>
+	</div>
+</div>
+
+<div id="edit_institution_description_dialog" title="Edit Institution Description" style="display:none;">
+    
+	<div class="modal-body">
+		<form id="form_institution_description" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+		    <div>
+    			{{ form_widget(institutionForm.description, { attr:{rows: 5, class: 'span6'} } ) }}
+    			{{ _csrf_token_widget | raw}}
+    		</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button id="submit_button_institution_description" class="btn btn-primary submit-button">Submit</button>
+	</div>
+</div>
 {% endblock %}
 
 {% block inlineJavascriptCode %}
@@ -69,7 +100,8 @@
 <!--
 (function($){
     _url_base = '{{ path("institution_load_tabbed_contents_profile") }}';
-    
+
+    // initialize the tabbed contents
     InstitutionProfile.setAjaxUrls({
             'loadActiveMedicalCenters': _url_base+'?content=medical_centers',
             'loadInstitutionServices': _url_base+'?content=services',
@@ -79,13 +111,71 @@
         .setMedicalCentersTabbedContentElement($("div#medical_centers_tab_content"))
         .setServicesTabbedContentElement($("div#services_tab_content"))
         .setAwardsTabbedContentElement($("div#awards_tab_content"))
-        .loadTabbedContentsOfMultipleCenterInstitution();
+        .loadTabbedContentsOfMultipleCenterInstitution()
+        .switchTab('medical_centers');
+
+    // initialize dialog boxes
+    InstitutionProfile
+        .setUpInstitutionNameDialog($('#edit_institution_name_dialog'))
+        .setUpInstitutionDescriptionDialog($('#edit_institution_description_dialog'));
 
     $('a.profile_tab_links').click(function(){
         $(this).parents('ul.profile_tabs').find('li.active').removeClass('active');
         $(this).parents('ul li').addClass('active');
         _tab_type = $(this).attr('href').replace("#", "");
         InstitutionProfile.switchTab(_tab_type);
+
+        return false;
+    });
+
+    $("a#edit_institution_name_link").click(function(){
+        InstitutionProfile.institutionNameDialogElement.dialog("open");
+        
+        return false;
+    });
+
+    $('a#edit_institution_description_link').click(function(){
+        InstitutionProfile.institutionDescriptionDialogElement.dialog("open");
+        
+        return false;
+    });
+
+    // submit button for edit institution name
+    $('button#submit_button_institution_name').click(function(){
+        $(this).attr('disabled',true);
+        $('form#form_institution_name').append('<span class="loader">Loading...</span>');
+        InstitutionProfile.submitModalForm($('form#form_institution_name'), function(response){
+            if (response.form_error) {
+                $('form#form_institution_name').prepend(response.form_error_html);
+            }
+            else {
+                InstitutionProfile.institutionNameDialogElement.dialog("close");
+                $('h2.institution_name').html(response.institution.name);
+            }
+
+            $(this).attr('disabled',true);
+            $('form#form_institution_name').find('span.loader').remove();
+        });
+
+        return false;
+    });
+
+    // submit button for edit description
+    $('button#submit_button_institution_description').click(function(){
+        $(this).attr('disabled',true);
+        $('form#form_institution_description').append('<span class="loader">Loading...</span>');
+        InstitutionProfile.submitModalForm($('form#form_institution_description'), function(response){
+            if (response.form_error) {
+                $('form#form_institution_description').prepend(response.form_error_html);
+            }
+            else {
+                InstitutionProfile.institutionDescriptionDialogElement.dialog("close");
+                $('p.institution_description').html(response.institution.description);
+            }
+
+            $(this).attr('disabled',true);
+            $('form#form_institution_description').find('span.loader').remove();
+        });
 
         return false;
     });

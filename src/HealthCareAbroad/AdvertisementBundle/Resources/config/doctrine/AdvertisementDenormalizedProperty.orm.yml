@@ -1,6 +1,7 @@
 HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
     type: entity
     table: advertisement_denormalized_properties
+    repositoryClass: HealthCareAbroad\AdvertisementBundle\Repository\AdvertisementDenormalizedPropertyRepository
     fields:
         id:
             id: true
@@ -31,6 +32,11 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             unsigned: true
             nullable: false
             column: specialization_id
+        institutionMedicalCenterId:
+            type: integer
+            unsigned: true
+            nullable: true
+            column: institution_medical_center_id
         countryId:
             type: integer
             unsigned: true
@@ -73,13 +79,22 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             type: smallint
             nullable: true
     manyToOne:
-        advertisementType:
-            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:
-                advertisement_type_id:
+                institution_medical_center_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        subSpecialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                sub_specialization_id:
                     referencedColumnName: id
             orphanRemoval: false
         institution:
@@ -89,6 +104,60 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             inversedBy: null
             joinColumns:
                 institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        advertisementType:
+            targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                advertisement_type_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        city:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\City
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                city_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        treatment:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                treatment_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                specialization_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
                     referencedColumnName: id
             orphanRemoval: false
     lifecycleCallbacks: {  }
