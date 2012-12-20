@@ -66,7 +66,6 @@ var DoctorAuto = {
 	
 	assignAutocomplete : function(elem)
 	{
-		//$(this).data('autocomplete');
 		elem.autocomplete({
 			minLength: 1,
 				create: function(event, ui) {
