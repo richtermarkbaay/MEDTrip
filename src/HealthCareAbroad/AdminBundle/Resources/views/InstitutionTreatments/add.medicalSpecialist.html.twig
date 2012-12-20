@@ -1,0 +1,60 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+{% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
+
+{% block title %}{{ parent() }} Add {{ centerLabel }} {% endblock %}
+
+
+{% block content %}
+    <div class="span9">
+
+        <form novalidate="novalidate" method="POST" class="span12" >
+                {{ form_errors(form) }}
+                    <legend>Search and Add your Medical Specialist</legend>
+                    <div class="span9 marginleft0" style="min-height:500px">
+                    
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.id) }}
+                        {{ form_rest(form) }}
+                        <br><br>
+                        <div style="margin-top:15px;">
+                            <table id="medicalSpecialistTable" class="table table-striped table-bordered">
+    							<tr>
+    								<th>Medical Specialist</th>
+    								<th>Actions</th>
+    							</tr>
+                			</table>
+            			</div>
+                    </div>
+                    
+                    <!-- TODO: this sidebar should not be part of the form. Let the ui-team fix this -->
+                    <div class="span3">
+                        {# include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' #}
+                    </div>
+                    
+                    <div class="clearfix"></div>
+                    <input type="submit" name="submit" value="Submit" class="button-next btn-medium btn btn-info" />
+            </form>
+    </div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
+	<script type="text/javascript">
+
+		$(function() {
+			var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
+			var inputHiddenField = "#institutionDoctorSearch_id";
+			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
+			var selectedTags = [];
+		    
+        	var params = {
+                	availableTags: availableDoctors,
+                	selectedTags : selectedTags,
+                	inputHiddenField :inputHiddenField,
+                	inputAutoDoctor :inputAutoDoctor
+        		};
+        	DoctorAuto.init(params);
+		});
+
+		</script>	
+{% endblock %}
