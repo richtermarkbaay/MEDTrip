@@ -47,13 +47,12 @@ institution_medicalCenter_addAncilliaryServices:
     requirements:
         _method: GET|POST
         imcId: \d+
-        
-institution_medicalCenter_addDoctors:
-    pattern: /medical-center/{imcId}/doctors/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addDoctors }
+
+institution_add_medical_specialist:
+    pattern: /medical-center/{imcId}/medical-specialists/add
+    defaults: {_controller: InstitutionBundle:MedicalCenter:addMedicalSpecialist}
     requirements:
         _method: GET|POST
-        imcId: \d+
         
 institution_medicalCenter_addAffiliations:
     pattern: /medical-center/{imcId}/affiliations/add
@@ -75,6 +74,12 @@ institution_medicalCenter_view:
     requirements:
         imcId: \d+
         _method: GET
+
+institution_load_doctor_specializations:
+    pattern: /search-doctor-specializations/{doctorId}
+    defaults: {_controller: InstitutionBundle:MedicalCenter:searchMedicalSpecialistSpecialization}
+    requirements:
+        _method: GET|POST
 
 institution_medicalCenter_loadAvailableSpecializations:
     pattern: /medical-center/load-available-specializations/{imcId}
