@@ -44,7 +44,7 @@
                     </div>
         		    
         		    <div class="pull-right">
-                        <button class="btn btn-primary btn-large" type="button">Submit</button>
+                        <button class="btn btn-primary btn-large submit_button" type="button">Submit</button>
                     </div>
     		    </form>
         	</div>
@@ -58,24 +58,27 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
-	<script type="text/javascript">
+<script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
+<script type="text/javascript">
+(function($){
+    $(function() {
+		var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
+		var inputHiddenField = "#institutionDoctorSearch_id";
+		var inputAutoDoctor = "#institutionDoctorSearch_firstName";
+		var selectedTags = [];
 
-		$(function() {
-			var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
-			var inputHiddenField = "#institutionDoctorSearch_id";
-			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
-			var selectedTags = [];
-	
-        	var params = {
-                	availableTags: availableDoctors,
-                	selectedTags : selectedTags,
-                	inputHiddenField :inputHiddenField,
-                	inputAutoDoctor :inputAutoDoctor
-        		};
-        	DoctorAuto.init(params);
-
-		});
-
-		</script>	
+    	var params = {
+            	availableTags: availableDoctors,
+            	selectedTags : selectedTags,
+            	inputHiddenField :inputHiddenField,
+            	inputAutoDoctor :inputAutoDoctor
+    		};
+    	DoctorAuto.init(params);
+    	
+        $('button.submit_button').click(function(){
+            window.location = "{{ isSingleCenter ? path('institution_homepage') : path('institution_medicalCenter_index')}}";
+        });
+	});
+})(jQuery);
+</script>	
 {% endblock %}
