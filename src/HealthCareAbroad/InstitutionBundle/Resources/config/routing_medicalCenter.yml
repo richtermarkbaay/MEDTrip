@@ -63,12 +63,19 @@ institution_medicalCenter_addDoctors:
         imcId: \d+
         
 institution_medicalCenter_addGlobalAwards:
-    pattern: /medical-center/{imcId}/global_awards/add
+    pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addGlobalAwards, imcId: ~}
     requirements:
         _method: GET|POST
         imcId: \d+
 
+institution_medicalCenter_ajaxAddGlobalAward:
+    pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddGlobalAward, imcId: ~}
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        
 institution_medicalCenter_edit:
     pattern: /medical-center/{imcId}/edit
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }

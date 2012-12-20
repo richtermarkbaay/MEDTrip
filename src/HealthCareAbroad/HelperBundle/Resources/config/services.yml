@@ -104,55 +104,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    form.globalCountry_list:
-        class: HealthCareAbroad\HelperBundle\Form\ListType\GlobalCountryListType
-        calls:
-            - [setLocationService, [@services.location]]
-        tags:
-            - { name: form.type, alias: globalCountry_list }
-
-    form.country_list:
-        class: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
-        calls:
-            - [setLocationService, [@services.location]]
-        tags:
-            - { name: form.type, alias: country_list }
-
-    form.city_list:
-        class: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
-        arguments: [@services.location]
-        tags:
-            - { name: form.type, alias: city_list }
-
-    form.tagtype_list:
-        class: "%services.tagtype_list%"
-        tags:
-        - { name: form.type, alias: tagtype_list }
-    form.language_list:
-        class: "%services.language_list%"
-        calls:
-            - [setDoctrine, [@doctrine]]
-        tags:
-            - { name: form.type, alias: language_autocomplete }
-
-    form.news_list:
-        class: "%services.news_list%"
-        calls:
-            - [setContainer, [@service_container]]
-        tags:
-            - { name: form.type, alias: news_list }
-
-    form.advertisement_list:
-        class: "%services.advertisement_list%"
-        calls:
-           - [setContainer, [@service_container]]
-        tags:
-           - { name: form.type, alias: advertisement_list }
-           
-    form.awarding_body_list:
-        class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType
-        tags:
-            - { name: form.type, alias: awarding_body_list }
+    
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

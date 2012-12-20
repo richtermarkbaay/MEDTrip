@@ -22,7 +22,7 @@ helper_specializationAccordionEntry:
     defaults: { _controller: HelperBundle:Default:getSpecializationAccordionEntry}
     requirements:
         _method: GET
-
+        
 helper_searchTags:
     pattern:  /tags/search/{term}
     defaults: { _controller: HelperBundle:Default:searchTags }

@@ -52,6 +52,19 @@ class InstitutionMedicalCenterService
         return $result;
     }
     
+    public function hasPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->setParameter('value', $value)
+        ->getOneOrNullResult();
+        
+        return !\is_null($result) ;
+    }
+    
     /**
      * Delete the values for $propertyType of $institutionMedicalCenter
      * 
