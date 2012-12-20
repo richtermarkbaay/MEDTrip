@@ -79,10 +79,10 @@ class InstitutionAccountController extends InstitutionAwareController
         
             $form->bind($request);
             if ($form->isValid()) {
-        
+                var_dump($form->getData());
                 $institution = $this->get('services.institution.factory')->save($form->getData());
                 $this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
-        
+
                 //create event on editInstitution and dispatch
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
                 return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
@@ -90,8 +90,7 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         $doctorArr = array();
         foreach ($doctors as $e) {
-        
-            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId());
+            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId(), 'path' => $this->generateUrl('institution_load_doctor_specializations', array('doctorId' =>  $e->getId())));
         }
         
         return $this->render('InstitutionBundle:Institution:add.medicalSpecialist.html.twig', array(
@@ -105,17 +104,15 @@ class InstitutionAccountController extends InstitutionAwareController
     /*
      * Get doctors list that is not assigned to Institution
     */
-    public function searchMedicalSpecialistAction(Request $request)
+    public function searchMedicalSpecialistSpecializationAction(Request $request)
     {
-        $searchTerm = $request->get('name_startsWith');
+        $doctorId = $request->get('doctorId');
         $data = array();
-        $doctors = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getDoctorsBySearchTerm($searchTerm, $this->institution->getId());
-    
-        foreach($doctors as $each) {
-            $data[] = array('id' => $each->getId(),
-                            'firstName' => $each->getFirstName(),
-                            'middleName' => $each->getMiddleName(),
-                            'lastName' => $each->getLastName());
+        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
+        
+        foreach($specializations as $each) {
+            $data[] = array('id' => $each['id'],
+                            'name' => $each['name']);
         }
     
         $response = new Response(json_encode($data));

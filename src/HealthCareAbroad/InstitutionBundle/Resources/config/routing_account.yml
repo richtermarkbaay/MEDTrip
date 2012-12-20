@@ -28,9 +28,9 @@ institution_add_medical_specialist:
     requirements:
         _method: GET|POST
 
-institution_search_medical_specialist:
-    pattern: /institution/search-specialist
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialist}
+institution_load_doctor_specializations:
+    pattern: /institution/search-doctor-specializations/{doctorId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialistSpecialization}
     requirements:
         _method: GET|POST
         

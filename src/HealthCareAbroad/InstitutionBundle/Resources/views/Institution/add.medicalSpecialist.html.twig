@@ -7,8 +7,8 @@
         {% block wrappedContent %}
         <div class="span12">    
             <h2></h2>
-            {% include 'InstitutionBundle:Widgets:steps.addClinic.html.twig' with {activeStep: 'medical_specialists'} %}
-            <form method="POST" class="span12" >
+            {% include 'InstitutionBundle:Institution:steps.afterCertifications.singleCenter.html.twig' %}
+            <form novalidate="novalidate" method="POST" class="span12" >
                 {{ form_errors(form) }}
             
                 <fieldset title="4" class="step" id="formwizard-step-4">
@@ -19,11 +19,15 @@
                         <div><div id="institutionSearch" ></div></div>
                         {{ form_row(form.id) }}
                         {{ form_rest(form) }}
-                        <div>             			
-             				<div id="tags">
-             				
-                			</div>
-                		</div>
+                        </br>
+                        <div>
+                            <table id="medicalSpecialistTable" class="table table-striped table-bordered">
+    							<tr>
+    								<th>Medical Specialist</th>
+    								<th>Actions</th>
+    							</tr>
+                			</table>
+            			</div>
                     </div>
                     
                     <!-- TODO: this sidebar should not be part of the form. Let the ui-team fix this -->
@@ -32,11 +36,11 @@
                     </div>
                     
                     <div class="clearfix"></div>
+                    <input type="submit" name="submit" value="Next" class="button-next btn-medium btn btn-info" />
                     
-                    
-                    <p id="formwizard-buttons-0" class="formwizard-buttons">
-                        <a id="submit_button_link" class="button-next btn-medium btn btn-info" href="#">Next</a>
-                    </p>
+<!--                     <p id="formwizard-buttons-0" class="formwizard-buttons"> -->
+<!--                         <a id="submit_button_link" class="button-next btn-medium btn btn-info" href="#">Next</a> -->
+<!--                     </p> -->
                 </fieldset>
             </form>
             
@@ -56,7 +60,7 @@
 			var inputHiddenField = "#institutionDoctorSearch_id";
 			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
 			var selectedTags = [];
-	
+		    
         	var params = {
                 	availableTags: availableDoctors,
                 	selectedTags : selectedTags,
@@ -64,7 +68,6 @@
                 	inputAutoDoctor :inputAutoDoctor
         		};
         	DoctorAuto.init(params);
-
 		});
 
 		</script>	
