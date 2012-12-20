@@ -11,11 +11,7 @@ class InstitutionPropertyType
     
     const TYPE_LANGUAGE = 'language_id';
     
-    const TYPE_AWARD = 'award_id';
-    
-    const TYPE_CERTIFICATE = 'certificate_id';
-    
-    const TYPE_AFFILIATION = 'affiliation_id';
+    const TYPE_GLOBAL_AWARD = 'global_award_id';
     
     /**
      * @var bigint $id

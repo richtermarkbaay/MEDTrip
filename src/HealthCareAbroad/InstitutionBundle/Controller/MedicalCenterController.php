@@ -632,8 +632,21 @@ class MedicalCenterController extends InstitutionAwareController
         $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
         $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
         
-        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $awardTypes = GlobalAwardTypes::getTypes();
+        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        
+        // get the current property values
+        $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
+        foreach ($currentAwardPropertyValues as $_prop) {
+            $_global_award = $repo->find($_prop->getValue());
+            if ($_global_award) {
+                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = $_global_award;
+            }
+        }
+        
         foreach ($globalAwards as $_award) {
             $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
             //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
@@ -647,7 +660,8 @@ class MedicalCenterController extends InstitutionAwareController
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
-            'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation'])
+            'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
+            'currentGlobalAwards' => $currentGlobalAwards
         ));
     }
     
@@ -660,13 +674,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         $propertyService = $this->get('services.institution_medical_center_property');
-        
-        $globalAwardsPropertyTypes = array(
-            GlobalAwardTypes::AWARD => InstitutionPropertyType::TYPE_AWARD,
-            GlobalAwardTypes::CERTIFICATE => InstitutionPropertyType::TYPE_CERTIFICATE,
-            GlobalAwardTypes::AFFILIATION => InstitutionPropertyType::TYPE_AFFILIATION
-        );
-        $propertyType = $propertyService->getAvailablePropertyType($globalAwardsPropertyTypes[$award->getType()]);
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         
         // check if this medical center already have this property
         if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {

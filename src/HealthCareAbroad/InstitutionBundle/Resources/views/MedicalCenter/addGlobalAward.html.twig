@@ -35,6 +35,9 @@
                             </thead>
 							<tbody>
     							<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
+    							{% for _award in currentGlobalAwards.award %}
+    							    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award} %}
+    							{% endfor %}
     						</tbody>
     					</table>
                     </div>
