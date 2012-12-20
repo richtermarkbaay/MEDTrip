@@ -57,7 +57,7 @@
 												<div><input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" /></div>										
 										</form>
 										
-											    <a href="{{ path('institution_medicalCenter_addAffiliations', {imcId:institutionMedicalCenter.id }) }}" title="Edit" class="add-affiliation icon-1 info-tooltip">Add Affiliation</a>
+											    <a href="{{ path('institution_medicalCenter_addGlobalAwards', {imcId:institutionMedicalCenter.id }) }}" title="Edit" class="add-global_award icon-1 info-tooltip">Add GlobalAward</a>
 											<div id="dialog-container"></div>
 									</div>
 								
@@ -88,14 +88,14 @@
                 close: function() {}
             });
 
-            $('a.add-affiliation').click(function(){
+            $('a.add-global_award').click(function(){
             	var elem = $(this);
 				var _url = elem.attr('href');
 
 				$("#dialog-container").empty();
-				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' Affiliations');
+				//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' GlobalAwards');
                 $('#dialog-container').dialog({
-                	title: 'Add Affiliations',
+                	title: 'Add GlobalAwards',
                     open: function() {
                         $.ajax(_url)
                             .done(function (data) {                        

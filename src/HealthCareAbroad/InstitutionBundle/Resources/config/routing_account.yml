@@ -22,20 +22,15 @@ institution_add_service_for_clinic:
     requirements:
         _method: GET|POST
 
-institution_add_medical_specialist:
-    pattern: /institution/add-specialist.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:addMedicalSpecialist}
-    requirements:
-        _method: GET|POST
-
-institution_load_doctor_specializations:
-    pattern: /institution/search-doctor-specializations/{doctorId}
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialistSpecialization}
-    requirements:
-        _method: GET|POST
-        
 institution_load_tabbed_contents_profile:
     pattern: /institution/load-tabbed-contents-profile
     defaults: { _controller: InstitutionBundle:InstitutionAccount:loadTabbedContents }
     requirements:
         _method: GET
+        
+institution_load_tabbed_contents_singleProfile:
+    pattern: /institution/load-tabbed-contents-single-profile
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:loadSingleTabbedContents }
+    requirements:
+        _method: GET|POST
+        imcId: \d+

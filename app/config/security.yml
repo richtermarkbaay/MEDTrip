@@ -87,7 +87,7 @@ security:
                 login_path: /institution/login
                 check_path: /institution/login-check
                 always_use_default_target_path: false
-                default_target_path: /institution
+                default_target_path: /institution/dashboard
                 remember_me: true
                 failure_path: /institution/login
 

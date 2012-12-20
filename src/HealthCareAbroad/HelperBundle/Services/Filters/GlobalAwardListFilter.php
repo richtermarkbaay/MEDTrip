@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class AffiliationListFilter extends ListFilter
+class GlobalAwardListFilter extends ListFilter
 {
 
     function __construct($doctrine)
@@ -60,7 +60,7 @@ class AffiliationListFilter extends ListFilter
 
     function buildQueryBuilder()
     {   
-        $this->queryBuilder->select('a')->from('HelperBundle:Affiliation', 'a');
+        $this->queryBuilder->select('a')->from('HelperBundle:GlobalAward', 'a');
 
         if ($this->queryParams['awardingBody'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('a.awardingBody = :awardingBody');

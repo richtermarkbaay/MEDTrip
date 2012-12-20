@@ -39,6 +39,11 @@ class InstitutionAccountController extends InstitutionAwareController
     protected $institutionService;
     
     /**
+     * @var InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter = null;
+    
+    /**
      * @var Request
      */
     protected $request;
@@ -47,6 +52,7 @@ class InstitutionAccountController extends InstitutionAwareController
 	{
 	    $this->institutionService = $this->get('services.institution');
 	    $this->request = $this->getRequest();
+	    
 	}
 	
 	/**
@@ -68,55 +74,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 break;
         }
 
-        return $response;
-    }
-    
-    public function addMedicalSpecialistAction(Request $request)
-    {
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
-        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
-        if ($request->isMethod('POST')) {
-        
-            $form->bind($request);
-            if ($form->isValid()) {
-                var_dump($form->getData());
-                $institution = $this->get('services.institution.factory')->save($form->getData());
-                $this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
-
-                //create event on editInstitution and dispatch
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-                return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
-            }
-        }
-        $doctorArr = array();
-        foreach ($doctors as $e) {
-            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId(), 'path' => $this->generateUrl('institution_load_doctor_specializations', array('doctorId' =>  $e->getId())));
-        }
-        
-        return $this->render('InstitutionBundle:Institution:add.medicalSpecialist.html.twig', array(
-            'form' => $form->createView(),
-            'institution' => $this->institution,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'doctorsJSON' => \json_encode($doctorArr)
-        ));
-    }
-    
-    /*
-     * Get doctors list that is not assigned to Institution
-    */
-    public function searchMedicalSpecialistSpecializationAction(Request $request)
-    {
-        $doctorId = $request->get('doctorId');
-        $data = array();
-        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
-        
-        foreach($specializations as $each) {
-            $data[] = array('id' => $each['id'],
-                            'name' => $each['name']);
-        }
-    
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
     
@@ -269,6 +226,44 @@ class InstitutionAccountController extends InstitutionAwareController
                 break;
         }
         
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Ajax handler for loading tabbed contents in institution profile page
+     *
+     * @param Request $request
+     */
+    public function loadSingleTabbedContentsAction(Request $request)
+    {
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->repository->find($imcId);
+        }else {
+            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+        }
+        
+        $content = $request->get('content');
+        $output = array();
+        $parameters = array('institution' => $this->institution);
+        switch ($content) {
+            case 'specializations':
+                $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
+                $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
+                break;
+            case 'services':
+                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
+                break;
+           case 'awards':
+                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
+                break;
+            case 'medical_specialists':
+                $parameters['medical_specialists'] = $this->institutionMedicalCenter->getDoctors();
+                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
+                break;
+        }
+    
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     

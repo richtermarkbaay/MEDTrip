@@ -1,7 +1,7 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubMenu = 'affiliations' %}
-{% set affiliationsLabel = getClassLabel('affiliation') %}
+{% set selectedSubMenu = 'global_awards' %}
+{% set global_awardsLabel = getClassLabel('global_award') %}
 
 {% block content %}
  	<div class="span3">
@@ -10,8 +10,8 @@
 	<div class="span9">
 
 		{% embed 'HelperBundle:Widgets:section.html.twig' with { 
-                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ affiliationsLabel.singular | title ,
-                actions: [{link: path('admin_affiliation_index'), label: 'View all '~ affiliationsLabel.plural | title, 'icon' : 'icon-list' }]
+                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ global_awardsLabel.singular | title ,
+                actions: [{link: path('admin_global_award_index'), label: 'View all '~ global_awardsLabel.plural | title, 'icon' : 'icon-list' }]
             }
         %}
 	
@@ -20,6 +20,7 @@
                 {% include '::notice.admin.html.twig' %}
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
 
+			    {{ form_row(form.type) }}
 				{{ form_row(form.name) }}
 				{{ form_row(form.details) }}
 				{{ form_row(form.awardingBody) }}

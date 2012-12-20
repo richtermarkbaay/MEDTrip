@@ -30,7 +30,9 @@
 
                 {% for institution in institutions %}
                     <tr id="institution-{{institution.id}}">
-                        <td><a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> </td>
+                        <td>
+                            <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> 
+                        s</td>
                         <td>{{ institution.description }}</td>
                         <td>{{ institution.country ? institution.country.name : '' }}</td>
                         <td class="status">{{ statusList[institution.status] }}</td>

@@ -67,7 +67,7 @@ class InstitutionMedicalCenter
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionAffiliations;
+    private $institutionGlobalAwards;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
@@ -87,7 +87,7 @@ class InstitutionMedicalCenter
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionAffiliations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionGlobalAwards = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -355,35 +355,35 @@ class InstitutionMedicalCenter
     }
 
     /**
-     * Add institutionAffiliations
+     * Add institutionGlobalAwards
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
-     * @return InstitutionAffiliation
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
+     * @return InstitutionGlobalAward
      */
-    public function addInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations)
+    public function addInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards)
     {
-        $this->institutionAffiliations[] = $institutionAffiliations;
+        $this->institutionGlobalAwards[] = $institutionGlobalAwards;
         return $this;
     }
 
     /**
-     * Remove institutionAffiliations
+     * Remove institutionGlobalAwards
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliations
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
      */
-    public function removeInstitutionAffiliation(\HealthCareAbroad\HelperBundle\Entity\Affiliation $institutionAffiliation)
+    public function removeInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAward)
     {
-        $this->institutionAffiliations->removeElement($institutionAffiliations);
+        $this->institutionGlobalAwards->removeElement($institutionGlobalAwards);
     }
 
     /**
-     * Get institutionAffiliations
+     * Get institutionGlobalAwards
      *
      * @return Doctrine\Common\Collections\Collection
      */
-    public function getInstitutionAffiliations()
+    public function getInstitutionGlobalAwards()
     {
-        return $this->institutionAffiliations;
+        return $this->institutionGlobalAwards;
     }
 
     /**

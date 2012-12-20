@@ -1,60 +1,56 @@
-<div class="span3">
-    <div class="sidebar">
-        <div class="box-content">
-            <h4 class="pull-left">Basic Profile</h4>
-            
-            <div class="clear"></div>
-            <table class="table table-striped">
-                <tr>
-                    <td>
-                        <span id="profileAddressText">{{ json_decode(institution.address1) | join(', ') }}</span>, 
-                        <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
-                        <span id="profileZipcodeText">{% if institution.zipCode %} {{ institution.zipCode }}, {% endif %}</span>
-                        <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
-                        <span id="profileCountryText">{{ institution.country.name }}</span>
-                        <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
-                            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                        </a>
+<div class="box-content">
+    <h4 class="pull-left">Basic Profile</h4>            
+    <div class="clear"></div>
+    <table class="table table-striped">
+        <tr>
+            <td>
+                <span id="profileAddressText">{{ json_decode(institution.address1) | join(', ') }}</span>, 
+                <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
+                <span id="profileZipcodeText">{% if institution.zipCode %} {{ institution.zipCode }}, {% endif %}</span>
+                <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
+                <span id="profileCountryText">{{ institution.country.name }}</span>
+                <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
 
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        <span id="profileNumberText">{{ json_decode(institution.contactNumber) | join('-') }}</span>
-                        <a href="#contact_number" class="basic-profile-modal-openers" role="button" data-toggle="modal">
-                            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                        </a>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        <p>
-                            <span id="profileEmailText">{{ institution.contactEmail }}</span>
-                            <a href="#contact_email" role="button" data-toggle="modal" class="basic-profile-modal-openers">
-                                <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                            </a>
-                        </p>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <div id="profileWebsitesText">
-                            {% for type, site in json_decode(institution.websites) %}
-                                {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
-                            {% endfor %}
-                        </div>
-                        <a href="#websites" role="button" data-toggle="modal" class="basic-profile-modal-openers">
-                            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                        </a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <span id="profileNumberText">{{ json_decode(institution.contactNumber) | join('-') }}</span>
+                <a href="#contact_number" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p>
+                    <span id="profileEmailText">{{ institution.contactEmail }}</span>
+                    <a href="#contact_email" role="button" data-toggle="modal" class="basic-profile-modal-openers">
+                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    </a>
+                </p>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+                <div id="profileWebsitesText">
+                    {% for type, site in json_decode(institution.websites) %}
+                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% endfor %}
+                </div>
+                <a href="#websites" role="button" data-toggle="modal" class="basic-profile-modal-openers">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+            </td>
+        </tr>
+    </table>
 </div>
+
 
 {% set _csrf_token_widget = form_widget(institutionForm._token) %}
 
