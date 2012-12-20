@@ -1,49 +1,43 @@
-<div class="span3">
-    <div class="sidebar">
-        <div class="box-content">
-            <h4 class="pull-left">Basic Profile</h4>
+<div class="box-content">
+    <h4 class="pull-left">Basic Profile</h4>
             
-            <div class="clear"></div>
-            <table class="table table-striped">
-                <tr>
-                    <td>
-                        <p>
-                            {{ json_decode(institution.address1) | join(' ') }}
-                            <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
-                                <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                            </a>
-                        </p>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        <p>
-                            {{ json_decode(institution.contactNumber) | join('-') }}
-                        </p>
-                        <a href="#clinicnumber" class="basic-profile-modal-openers" role="button" data-toggle="modal">
-                            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                        </a>
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td>
-                        <p>{{ institution.contactEmail }}<a href="#clinicemail" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td>
-                        <p>http://gleneagleskl.com.my<a href="#clinicwebsite" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <div class="clear"></div>
+    <table class="table table-striped">
+        <tr>
+            <td>
+                <p>
+                    {{ json_decode(institution.address1) | join(' ') }}
+                    <a href="#address" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    </a>
+                </p>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p>
+                    {{ json_decode(institution.contactNumber) | join('-') }}
+                </p>
+                <a href="#clinicnumber" class="basic-profile-modal-openers" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p>{{ institution.contactEmail }}<a href="#clinicemail" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+                <p>http://gleneagleskl.com.my<a href="#clinicwebsite" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a></p>
+            </td>
+        </tr>
+    </table>
 </div>
-
-                            
                             
 <!-- #####  
     start modal boxes 

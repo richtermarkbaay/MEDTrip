@@ -14,12 +14,16 @@
                 </div>
 
                 <div class="treatmentbox">
-                	<h5>Add Specialization</h5>
+                	<h5>Add Specialization2</h5>
+                	
+                	<label>Search and Add your SPECIALIZATIONS</label>
+                    {{ form_widget(form.specialization_selector) }}
+                    <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
+                	
                 	<div class="boxcontent">
                         <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_addSpecialization', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}" method="POST" {{ form_enctype(form) }}>                	
-                            {{ form_row(form.specialization, { 'attr': {'class': 'input-xxlarge', 'onChange': 'loadSpecializationEntry($(this))' } }) }}
-                            {{ form_row(form.description) }}
-                            {{ form_rest(form) }}
+                            
+                            <div id="specializationAccordion"></div>
 
                             <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
                     		<div id="specializationAccordion"></div>
@@ -36,23 +40,23 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
-
-    $('#specializationAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
-
-    function loadSpecializationEntry(elem)
-    {
-    
+<!--
+(function($){
+    $(function(){
         
-        var url = '{{ path("helper_specializationAccordionEntry") }}' + '/' + elem.val().toString();
-      
-        $('#specializationLoading').fadeIn();
-        $.get(url, function(specializationEntry){
-            $('#specializationLoading').hide();
-            $('#specializationAccordion').prepend(specializationEntry).accordion('destroy').accordion({heightStyle: "content"});
-            console.log(specializationEntry);
-            $('#institutionSpecialization_specialization').find('option[value='+elem.val()+']').hide();
-        });
-    }
+        InstitutionSpecializationAutocomplete
+        .setAutocompleteOptions({
+            source : $.parseJSON('{{ specializationsJSON | raw}}'),
+            target: $('input.autocomplete_specialization_selector'),
+            selectedDataContainer: $('#specializationAccordion') 
+        })
+        .setLoaderElement($('#specializationLoading'))
+        .setLoadSpecializationFormUri('{{ path("helper_specializationAccordionEntry") }}')
+        .autocomplete();
+    });
+})(jQuery);
+//-->
 </script>
 {% endblock %}
