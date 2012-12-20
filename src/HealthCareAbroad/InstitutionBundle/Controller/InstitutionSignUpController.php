@@ -73,6 +73,7 @@ class InstitutionSignUpController  extends Controller
 	 */
 	public function signUpAction(Request $request)
 	{
+	    $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
 	    $institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
@@ -123,11 +124,18 @@ class InstitutionSignUpController  extends Controller
                 return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
 	        }
 	    }
+
+	    $medicalProviderGroupArr = array();
+	    
+	    foreach ($medicalProviderGroup as $e) {
+	        $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+	    }
 	    
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
             'selectedInstitutionType' => $institutionType,
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)    
         ));
 	}
 	
