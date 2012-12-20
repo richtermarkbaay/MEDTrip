@@ -19,7 +19,7 @@ parameters:
         city: {singular: "city", plural: "cities"}
         doctor: {singular: "doctor", plural: "doctors"}
         awardingBody: {singular: "awarding body", plural: "awarding bodies"}
-        affiliation: {singular: "affiliation", plural: "affiliations"}
+        global_award: {singular: "award, certificate or affiliation", plural: "awards, certificates or affiliations"}
         ancilliary_service: {singular: "ancilliary service", plural: "ancilliary services"}
         language: {singular: "language", plural: "languages"}
         advertisement: {singular: "advertisement", plural: "advertisements"}

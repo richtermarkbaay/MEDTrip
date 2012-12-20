@@ -17,7 +17,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHourFormType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -109,7 +109,7 @@ class InstitutionTreatmentsController extends Controller
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
-        $affiliations = $this->getDoctrine()->getRepository('HelperBundle:Affiliation')->getInstitutionAffiliations($this->institutionMedicalCenter->getId());
+        $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
         $ancilliaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), $this->institution->getId());
         $params = array(
             'institution' => $this->institution,
@@ -117,7 +117,7 @@ class InstitutionTreatmentsController extends Controller
             'specializations' => $specializations,
             'selectedSubMenu' => 'centers',
             'form' => $form->createView(),
-            'affiliations' => $affiliations,
+            'global_awards' => $global_awards,
             'services' => $ancilliaryServices,
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
@@ -414,9 +414,9 @@ class InstitutionTreatmentsController extends Controller
      * @param unknown_type $institutionId
      * @param unknown_type $imcId
      */
-    public function addAffiliationsAction()
+    public function addGlobalAwardsAction()
     {
-        $form = $this->createForm(new InstitutionAffiliationFormType(),$this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institutionMedicalCenter);
 
          if ($this->request->isMethod('POST')) {
              $form->bind($this->request);
@@ -426,13 +426,13 @@ class InstitutionTreatmentsController extends Controller
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
                 ->saveAsDraft($form->getData());
 
-                $this->request->getSession()->setFlash('success', "Affiliation has been saved!");
+                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
 
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
                                 array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
             }
         }
-        return $this->render('AdminBundle:InstitutionTreatments:addAffiliation.html.twig', array(
+        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
                         'form' => $form->createView(),
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution
@@ -444,7 +444,7 @@ class InstitutionTreatmentsController extends Controller
      * @param unknown_type $institutionId
      * @param unknown_type $imcId
      */
-    public function updateAffiliationsAction()
+    public function updateGlobalAwardsAction()
     {
         $request = $this->getRequest();
 
@@ -452,10 +452,10 @@ class InstitutionTreatmentsController extends Controller
             throw $this->createNotFoundException('Invalid institutionMedicalCenter');
         }
 
-           $institutionAffiliationRepo = $this->getDoctrine()->getRepository('HelperBundle:Affiliation');
-        $institutionAffiliationRepo->updateAffiliations($request->get('affiliationId'), $this->institutionMedicalCenter->getId());
+           $institutionGlobalAwardRepo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
+        $institutionGlobalAwardRepo->updateGlobalAwards($request->get('global_awardId'), $this->institutionMedicalCenter->getId());
 
-        $this->request->getSession()->setFlash('success', "Affiliation has been removed!");
+        $this->request->getSession()->setFlash('success', "GlobalAward has been removed!");
 
         return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
                array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));

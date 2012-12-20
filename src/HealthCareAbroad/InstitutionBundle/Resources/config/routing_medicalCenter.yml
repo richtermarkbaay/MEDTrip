@@ -62,9 +62,9 @@ institution_medicalCenter_addDoctors:
         _method: GET|POST
         imcId: \d+
         
-institution_medicalCenter_addAffiliations:
-    pattern: /medical-center/{imcId}/affiliations/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addAffiliations, imcId: ~}
+institution_medicalCenter_addGlobalAwards:
+    pattern: /medical-center/{imcId}/global_awards/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addGlobalAwards, imcId: ~}
     requirements:
         _method: GET|POST
         imcId: \d+

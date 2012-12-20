@@ -1,0 +1,37 @@
+admin_global_award_index:
+    pattern:  /admin/global_award
+    defaults: { _controller: AdminBundle:GlobalAward:index }
+    requirements:    
+        _method:  GET
+
+admin_global_award_add:
+    pattern:  /admin/global_award/add
+    defaults: { _controller: AdminBundle:GlobalAward:add }
+    requirements:    
+        _method:  GET
+        
+admin_global_award_create:
+    pattern:  /admin/global_award/add
+    defaults: { _controller: AdminBundle:GlobalAward:save }
+    requirements:
+         _method: POST
+         
+admin_global_award_edit:
+    pattern:  /admin/global_award/edit/{id}
+    defaults: { _controller: AdminBundle:GlobalAward:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+
+admin_global_award_update:
+    pattern:  /admin/global_award/edit/{id}
+    defaults: { _controller: AdminBundle:GlobalAward:save}
+    requirements:
+         id: \d+
+         _method: POST
+
+admin_global_award_updateStatus:
+    pattern:  /admin/global_award/update-status/{id}
+    defaults: { _controller: AdminBundle:GlobalAward:updateStatus, id: ~ }
+    requirements:
+        id: \d+

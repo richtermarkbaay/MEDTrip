@@ -8,46 +8,46 @@ namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
-class AffiliationControllerTest extends AdminBundleWebTestCase
+class GlobalAwardControllerTest extends AdminBundleWebTestCase
 {
     public function testIndex()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/affiliation');
+        $crawler = $client->request('GET', '/admin/global_award');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Affiliation")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of GlobalAward")')->count(), 'No Output!');
     }
     
     public function testAdd()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/add');
+    	$crawler = $client->request('GET', '/admin/global_award/add');
     
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Add Affiliation")')->count(), '"Add Affiliation" string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Add GlobalAward")')->count(), '"Add GlobalAward" string not found!');
     }
     
     public function testEdit()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/edit/1');
+    	$crawler = $client->request('GET', '/admin/global_award/edit/1');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Affiliation")')->count(), '"Edit Affiliation" string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit GlobalAward")')->count(), '"Edit GlobalAward" string not found!');
     }
     
     public function testAddSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/add');
+    	$crawler = $client->request('GET', '/admin/global_award/add');
 
     	$formData = array(
-    		'affiliation[name]' => 'TestAffiliation1',
-    		'affiliation[details]' => 'test Details',
-    		'affiliation[awardingBody]' => 2,
-			'affiliation[country]' => 1,
-    		'affiliation[status]' => 1
+    		'global_award[name]' => 'TestGlobalAward1',
+    		'global_award[details]' => 'test Details',
+    		'global_award[awardingBody]' => 2,
+			'global_award[country]' => 1,
+    		'global_award[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->form();
@@ -56,28 +56,28 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     	 
-    	// check if redirect url /admin/affiliation
-    	$this->assertEquals('/admin/affiliation', $client->getResponse()->headers->get('location'));
+    	// check if redirect url /admin/global_award
+    	$this->assertEquals('/admin/global_award', $client->getResponse()->headers->get('location'));
     	 
     	// redirect request
     	$crawler = $client->followRedirect(true);
 
-    	// check if the redirected response content has the newly added affiliation
-    	$isAdded = $crawler->filter('#affiliation-list > tr > td:contains("'.$formData['affiliation[name]'].'")')->count() > 0;
+    	// check if the redirected response content has the newly added global_award
+    	$isAdded = $crawler->filter('#global_award-list > tr > td:contains("'.$formData['global_award[name]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
     
     public function testEditSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/edit/2');
+    	$crawler = $client->request('GET', '/admin/global_award/edit/2');
     
     	$formData = array(
-    			'affiliation[name]' => 'TestAffiliation1 Updated',
-    			'affiliation[details]' => 'test Details',
-    			'affiliation[awardingBody]' => 1,
-    			'affiliation[country]' => 1,
-    			'affiliation[status]' => 1
+    			'global_award[name]' => 'TestGlobalAward1 Updated',
+    			'global_award[details]' => 'test Details',
+    			'global_award[awardingBody]' => 1,
+    			'global_award[country]' => 1,
+    			'global_award[status]' => 1
     	);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -86,20 +86,20 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
     
-    	// check of redirect url /admin/affiliation
-    	$this->assertEquals('/admin/affiliation', $client->getResponse()->headers->get('location'));
+    	// check of redirect url /admin/global_award
+    	$this->assertEquals('/admin/global_award', $client->getResponse()->headers->get('location'));
     
     	// redirect request
     	$crawler = $client->followRedirect(true);
     
-    	// check if the redirected response content has the newly added affiliation name
-    	$isAdded = $crawler->filter('#affiliation-list > tr > td:contains("'.$formData['affiliation[name]'].'")')->count() > 0;
+    	// check if the redirected response content has the newly added global_award name
+    	$isAdded = $crawler->filter('#global_award-list > tr > td:contains("'.$formData['global_award[name]'].'")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
     public function testUpdateStatusAction(){
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/update-status/1');
+    	$crawler = $client->request('GET', '/admin/global_award/update-status/1');
 
     	$response = $client->getResponse();
     	$this->assertEquals("Response code: 200", "Response code: " . $response->getStatusCode());
@@ -108,14 +108,14 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     public function testSaveInvalidData()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/affiliation/add');
+    	$crawler = $client->request('GET', '/admin/global_award/add');
     
     	$formData = array(
-    			'affiliation[name]' => '',
-    			'affiliation[details]' => '',
-    			'affiliation[awardingBody]' => 2,
-    			'affiliation[country]' => 1,
-    			'affiliation[status]' => 1
+    			'global_award[name]' => '',
+    			'global_award[details]' => '',
+    			'global_award[awardingBody]' => 2,
+    			'global_award[country]' => 1,
+    			'global_award[status]' => 1
     	);
     
     	$form = $crawler->selectButton('submit')->form();
@@ -130,13 +130,13 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
     	$client = $this->getBrowserWithActualLoggedInUser();
     
     	$formData = array(
-    			'affiliation[name]' => 'saveUsingGet',
-    			'affiliation[details]' => 'test Details',
-    			'affiliation[awardingBody]' => 1,
-    			'affiliation[country]' => 1,
-    			'affiliation[status]' => 1
+    			'global_award[name]' => 'saveUsingGet',
+    			'global_award[details]' => 'test Details',
+    			'global_award[awardingBody]' => 1,
+    			'global_award[country]' => 1,
+    			'global_award[status]' => 1
     	);
-    	$crawler = $client->request('GET', '/admin/affiliation/test-save', $formData);
+    	$crawler = $client->request('GET', '/admin/global_award/test-save', $formData);
     	$this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
     }
     
@@ -145,23 +145,23 @@ class AffiliationControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
     
         // Test Filter Active Status
-        $crawler = $client->request('GET', '/admin/affiliation?status=1');
+        $crawler = $client->request('GET', '/admin/global_award?status=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $isAllActive = $crawler->filter('#affiliation-list tr a.icon-5')->count() == 0;
+        $isAllActive = $crawler->filter('#global_award-list tr a.icon-5')->count() == 0;
         $this->assertEquals(true, $isAllActive, 'ListFilter is not working properly!');
 
         // Test Filter Inactive Status
-        $crawler = $client->request('GET', '/admin/affiliation?status=0');
+        $crawler = $client->request('GET', '/admin/global_award?status=0');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $isAllInactive = $crawler->filter('#affiliation-list tr a.icon-2')->count() == 0;
+        $isAllInactive = $crawler->filter('#global_award-list tr a.icon-2')->count() == 0;
         $this->assertEquals(true, $isAllInactive, 'ListFilter is not working properly!');
 
         // Test Filter country and status
-        $crawler = $client->request('GET', '/admin/affiliation?country1=&status=1');
+        $crawler = $client->request('GET', '/admin/global_award?country1=&status=1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
-        $isFiltered = $crawler->filter('#affiliation-list tr > td.country:not(:contains("Philippine"))')->count() == 0;
-        $isAllActive = $crawler->filter('#affiliation-list tr a.icon-5')->count() == 0;
+        $isFiltered = $crawler->filter('#global_award-list tr > td.country:not(:contains("Philippine"))')->count() == 0;
+        $isAllActive = $crawler->filter('#global_award-list tr a.icon-5')->count() == 0;
         $this->assertEquals(true, $isFiltered && $isAllActive, 'Filter contry and status is not working properly!');
     }
 }

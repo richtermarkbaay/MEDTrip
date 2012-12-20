@@ -1,6 +1,6 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationsSelectorFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
@@ -11,7 +11,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionAffiliationFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
@@ -196,7 +196,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
                 break;
             case 'awards':
-                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionAffiliations();
+                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
@@ -405,7 +405,7 @@ class MedicalCenterController extends InstitutionAwareController
                 }
                 
                 
-                return $this->redirect($this->generateUrl('institution_medicalCenter_addAffiliations', array('imcId' => $this->institutionMedicalCenter->getId())));
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addGlobalAwards', array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             else {
                 $request->getSession()->setFlash('notice', 'Please fill up form properly.');
@@ -619,13 +619,13 @@ class MedicalCenterController extends InstitutionAwareController
      * @author Chaztine Blance
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * Adding of Insitution Affiliations
+     * Adding of Insitution GlobalAwards
      */
-    public function addAffiliationsAction(Request $request)
+    public function addGlobalAwardsAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionAffiliationsSelectorFormType());
+        $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         
-        return $this->render('InstitutionBundle:MedicalCenter:addAffiliation.html.twig', array(
+        return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)

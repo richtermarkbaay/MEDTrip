@@ -23,10 +23,10 @@ services:
         tags:
             - { name: form.type, alias: institutionTreatment_list }
 
-    form.institution_affiliation_list:
-        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionAffiliationListType
+    form.institution_global_award_list:
+        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionGlobalAwardListType
         tags:
-          - { name: form.type, alias: institution_affiliation_list }
+          - { name: form.type, alias: institution_global_award_list }
     
     form.medical_provider_group_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType

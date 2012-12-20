@@ -304,7 +304,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':
-                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionAffiliations();
+                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':

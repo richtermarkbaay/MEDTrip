@@ -20,7 +20,7 @@
         <div class="addnewclinic">
         	<div class="span9">
                 
-                <form  action="{{ path('institution_medicalCenter_addAffiliations', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+                <form  action="{{ path('institution_medicalCenter_addGlobalAwards', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
                     
                     <div id="awards">
                         {{ form_label(form.awards_selector) }}
@@ -63,8 +63,8 @@
                     </div>
                     
                     <div id="certifications">
-                        {{ form_label(form.affiliations_selector) }}
-                        {{ form_widget(form.affiliations_selector) }}
+                        {{ form_label(form.global_awards_selector) }}
+                        {{ form_widget(form.global_awards_selector) }}
                         
                         <table class="table table-striped table-bordered">
                             <thead>
