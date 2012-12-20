@@ -52,11 +52,11 @@ class AppKernel extends Kernel
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-            //new Chromedia\Bundle\MediaBundle\ChromediaMediaBundle(),
+            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            new FOQ\ElasticaBundle\FOQElasticaBundle(),
             new HealthCareAbroad\PagerBundle\PagerBundle(),
             new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
-            //new HealthCareAbroad\ProcedureBundle\ProviderBundle(),
             new HealthCareAbroad\HelperBundle\HelperBundle(),
             new HealthCareAbroad\FrontendBundle\FrontendBundle(),
             new HealthCareAbroad\MediaBundle\MediaBundle(),
@@ -65,10 +65,9 @@ class AppKernel extends Kernel
             new HealthCareAbroad\TreatmentBundle\TreatmentBundle(),
             new HealthCareAbroad\SearchBundle\SearchBundle(),
             new HealthCareAbroad\LogBundle\LogBundle(),
-            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             new HealthCareAbroad\AdvertisementBundle\AdvertisementBundle(),
             new HealthCareAbroad\MemcacheBundle\MemcacheBundle(),
-            new HealthCareAbroad\DoctorBundle\DoctorBundle(),
+            new HealthCareAbroad\DoctorBundle\DoctorBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
