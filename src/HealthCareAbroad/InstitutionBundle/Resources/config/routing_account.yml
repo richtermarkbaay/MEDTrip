@@ -39,3 +39,10 @@ institution_load_tabbed_contents_profile:
     defaults: { _controller: InstitutionBundle:InstitutionAccount:loadTabbedContents }
     requirements:
         _method: GET
+        
+institution_load_tabbed_contents_singleProfile:
+    pattern: /institution/load-tabbed-contents-single-profile
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:loadSingleTabbedContents }
+    requirements:
+        _method: GET|POST
+        imcId: \d+

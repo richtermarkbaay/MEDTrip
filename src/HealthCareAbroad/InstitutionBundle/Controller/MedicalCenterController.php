@@ -186,7 +186,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $parameters['services'] = $this->get('services.institutionMedicalCenter')->getMedicalCenterServices($this->institutionMedicalCenter, $this->institution);
+                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
                 break;
             case 'awards':

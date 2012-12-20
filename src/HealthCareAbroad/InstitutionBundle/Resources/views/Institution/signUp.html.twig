@@ -51,7 +51,13 @@
                         {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
                                 
                         {{ form_row(form.confirm_password, { 'label': 'Verify Password', 'attr': {'class': 'span8'} }) }}
-                        
+                        <div>
+                            <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
+                            <label for="medicalGroupBox">I belong to a group / Network</label>
+                         </div>
+                       <div id="medicalProviderGroupsInput">
+                            {{ form_row(form.medicalProviderGroups) }}
+                        </div>
                         <br/>
                         
                         <label>
@@ -84,4 +90,31 @@
             <h4>Thank you for creating an account in Health Care Abroad</h4>
         </div>
     </div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+	<script language="javascript" type="text/javascript">
+
+    $('#medicalProviderGroupsInput').hide();
+    	$('#medicalGroupBox').click(function(){
+        	
+    	    if ($('#medicalGroupBox').attr('checked')) {
+
+    	    	$('#medicalProviderGroupsInput').show();
+    	    	
+    	    }else{
+        	    $('#medicalProviderGroupsInput').hide();
+        	}
+    	}) 
+	
+    <!-- AutoComplete for Institution Medical Group Input Field -->
+        $(function() {
+        	var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+        	
+            $( "#institutionSignUp_medicalProviderGroups" ).autocomplete({
+                source: availableTags
+            });
+        });    
+
+	</script>	
 {% endblock %}
