@@ -23,12 +23,13 @@
                                </div><!-- /.tab-content -->
                             </div>
                         </div><!-- end .span9 -->
-                        <div class="span3">
-                            <div class="sidebar">
+                        
+                        {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
+                            {% block sidebarWrappedContent %}
                                 {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowCase.html.twig' %}
                                 {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
-                            </div>
-                        </div>
+                            {% endblock %}
+                        {% endembed %}
                     </div><!-- end .row -->
                 </div>
             </section>

@@ -81,7 +81,11 @@
                 </form>
             </div><!-- end .span9 -->
             
-            {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+            {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
+                {% block sidebarWrappedContent %}
+                    {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                {% endblock %}
+            {% endembed %}
             
         </div><!-- end .addnewclinic -->
         {% endblock %}

@@ -54,11 +54,12 @@
             </div>
         </div>
         <!-- end span9 -->
-        <div class="span3">
-            <div class="sidebar">
+        {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
+            {% block sidebarWrappedContent %}
                 {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
-            </div>
-        </div>
+            {% endblock %}
+        {% endembed %}
+        
         {% endblock %}
     {% endembed %}
 <div id="medical_centers_tab_content" style="display:none;"><span>Loading...</span></div>
