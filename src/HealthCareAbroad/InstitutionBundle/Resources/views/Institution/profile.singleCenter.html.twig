@@ -30,7 +30,12 @@
                                     </div><!-- /.tab-content -->
                                 </div>
                         </div><!-- end .span9 -->
-                        {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+                        <div class="span3">
+                            <div class="sidebar">
+                                {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+                                {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
+                            </div>
+                        </div>
                     </div><!-- end .row -->
                 </div>
             </section>

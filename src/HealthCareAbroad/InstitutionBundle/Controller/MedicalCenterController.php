@@ -167,8 +167,14 @@ class MedicalCenterController extends InstitutionAwareController
 
             return $this->_errorResponse(500, $e->getMessage());
         }
-
-        return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
+        
+        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+             return $this->redirect($this->generateUrl('institution_account_profile'));
+        }
+        else {
+             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
+        }
+       
     }
     
     /**
