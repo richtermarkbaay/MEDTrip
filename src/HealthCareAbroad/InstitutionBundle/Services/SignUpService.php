@@ -49,12 +49,10 @@ class SignUpService
         $this->institutionFactory->save($institution);
         
         // set medical center name and description to institution.name and institution.description
-        $institutionMedicalCenter->setName($this->institution->getName());
-        $institutionMedicalCenter->setDescription($this->institution->getDescription());
-        $institutionMedicalCenter->setInstitution($this->institution);
-        
-        // TODO: do logic for saving the business hours
-        $institutionMedicalCenter->setBusinessHours('');
+        $institutionMedicalCenter->setName($institution->getName());
+        $institutionMedicalCenter->setDescription($institution->getDescription());
+        $institutionMedicalCenter->setInstitution($institution);
+        $institutionMedicalCenter->setAddress($institution->getAddress1());
         
         // save institution medical center as draft
         $this->institutionMedicalCenterService->saveAsDraft($institutionMedicalCenter);

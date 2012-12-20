@@ -30,54 +30,55 @@ var DoctorAuto = {
 	{
 		return DoctorAuto.split( term ).pop();			
 	},
-	
-	log : function( message , id) 
+	deleteRow: function(elem)
 	{
-		console.log(message);
-		console.log(id);
+		elem.parents('tr').remove();
+	},
+	
+	log : function( doctors, specifications, id) 
+	{																								 
+		$('#medicalSpecialistTable tr:last').after('<tr id="doctor"'+ id +'"><td><h5>'+doctors+'</h5><br>'+specifications+'</td><td><input type="button" onclick="DoctorAuto.deleteRow($(this))">Delete first row</button></td></tr>');
 //		$( "<a/ href='#' id='Doctor"+id+"' class='click btn btn-mini' onclick=''>" ).bind('click btn btn-mini', DoctorAuto.clickRemove).text( message ).prependTo( "#tags" );
-		$("<a href='#' id='doctor"+id+"' class='click btn btn-mini' onclick=''><i class='icon-trash'></i> "+message+" </a> ").bind('click btn btn-mini', DoctorAuto.clickRemove).text( message ).prependTo( "#tags" );
+		//$("<a href='#' id='doctor"+id+"' class='click btn btn-mini' onclick=''><i class='icon-trash'></i> "+message+" </a> ").bind('click btn btn-mini', DoctorAuto.clickRemove).text( message ).prependTo( "#medicalSpecialistTable" );
 		$("<i class='icon-trash'></i>").prependTo( "#doctor"+id+"" );
-		$( "#tags" ).scrollTop( 0 );
+		$( "#medicalSpecialistTable" ).scrollTop( 0 );
 	},	
 	
 	hidden : function ( message ) 
 	{
-	
 		$( message ).append( DoctorAuto.inputHiddenField );
 	},
 	
-	mergeTags : function ()
-	{	
-	
-		var currentTerms = $(DoctorAuto.inputHiddenField).val().split(',');
-	    $.each(currentTerms, function(c, cval){
-	        currentTerms[c] = $.trim(cval);
-	    });
-	    var temp = [];
-	    
-	    var removedSelectedTags = [];
-	    $.each(DoctorAuto.selectedTags, function(i, val){
-		    temp.push(val);
-	    });
-
-	    tempLength = temp.length;
-				    
-	    for (i=0; i<tempLength; i++) {
-	        
-	        if ($.inArray(temp[i].value, currentTerms) < 0) {
-	            
-	            $.each(DoctorAuto.selectedTags, function(x, val){
-		            if (val && val.value == temp[i].value) {
-		            	DoctorAuto.selectedTags.splice(x,1);
-		                removedSelectedTags.push(temp[i]);
-		                return;
-		            }
-	            });
-	        }
-	    }
-	    $.merge(DoctorAuto.availableTags, removedSelectedTags);
-	},
+//	mergeTags : function ()
+//	{	
+//		var currentTerms = $(DoctorAuto.inputHiddenField).val().split(',');
+//	    $.each(currentTerms, function(c, cval){
+//	        currentTerms[c] = $.trim(cval);
+//	    });
+//	    var temp = [];
+//	    
+//	    var removedSelectedTags = [];
+//	    $.each(DoctorAuto.selectedTags, function(i, val){
+//		    temp.push(val);
+//	    });
+//
+//	    tempLength = temp.length;
+//				    
+//	    for (i=0; i<tempLength; i++) {
+//	        
+//	        if ($.inArray(temp[i].value, currentTerms) < 0) {
+//	            
+//	            $.each(DoctorAuto.selectedTags, function(x, val){
+//		            if (val && val.value == temp[i].value) {
+//		            	DoctorAuto.selectedTags.splice(x,1);
+//		                removedSelectedTags.push(temp[i]);
+//		                return;
+//		            }
+//	            });
+//	        }
+//	    }
+//	    $.merge(DoctorAuto.availableTags, removedSelectedTags);
+//	},
 	
 	clickRemove : function (event)
 	{
@@ -111,21 +112,8 @@ var DoctorAuto = {
 	
 	assignAutocomplete : function(elem)
 	{
-		elem.bind("keyup", function(event){
-		
-			if ( $(this).data('autocomplete').term){
-				DoctorAuto.mergeTags();
-			}
-		})
-		.bind( "keydown", function( event ) {
-
-			if ( event.keyCode === $.ui.keyCode.TAB &&						
-	
-					$( this ).data( "autocomplete" ).menu.active ) {
-				event.preventDefault();					
-			}			
-		})
-		.autocomplete({
+		//$(this).data('autocomplete');
+		elem.autocomplete({
 			minLength: 1,
 				create: function(event, ui) {
 		            currentTerms = $(DoctorAuto.inputHiddenField).val().split(',');
@@ -154,15 +142,29 @@ var DoctorAuto = {
 			},
 			select: function( event, ui ) {
 				var terms = DoctorAuto.split( this.value );
-				console.log(terms);
 				terms.pop();
 				// add the selected item					
 				terms.push( ui.item.value );
-				DoctorAuto.log( ui.item.value , ui.item.id );
-	
+				var link = ui.item.path;
+				var specifications = '';
+				console.log(link);
+				$.ajax({
+					  type: "GET",
+					  dataType: 'JSON',
+					  url: link,
+					  success: function(data){
+						  for (var i=0;i<data.length;i++)
+						  { 
+							  specifications += data[i]['name'] + "<br>";
+						  }
+						  DoctorAuto.log( ui.item.value , specifications , ui.item.id );
+					   }
+					 });
+				
+				
 				this.value = terms.join( "" );					
 				add_field = $(DoctorAuto.inputHiddenField);
-	
+				alert(add_field);
 				 if (!add_field.val()){
 					 add_field.val( add_field.val() + this.value);
 					 }else{

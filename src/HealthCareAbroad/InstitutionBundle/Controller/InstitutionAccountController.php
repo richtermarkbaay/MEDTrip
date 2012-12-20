@@ -79,10 +79,10 @@ class InstitutionAccountController extends InstitutionAwareController
         
             $form->bind($request);
             if ($form->isValid()) {
-        
+                var_dump($form->getData());
                 $institution = $this->get('services.institution.factory')->save($form->getData());
                 $this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
-        
+
                 //create event on editInstitution and dispatch
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
                 return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
@@ -90,31 +90,29 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         $doctorArr = array();
         foreach ($doctors as $e) {
-        
-            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId());
+            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId(), 'path' => $this->generateUrl('institution_load_doctor_specializations', array('doctorId' =>  $e->getId())));
         }
         
         return $this->render('InstitutionBundle:Institution:add.medicalSpecialist.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'doctorsJSON' => \json_encode($doctorArr)
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'doctorsJSON' => \json_encode($doctorArr)
         ));
     }
     
     /*
      * Get doctors list that is not assigned to Institution
     */
-    public function searchMedicalSpecialistAction(Request $request)
+    public function searchMedicalSpecialistSpecializationAction(Request $request)
     {
-        $searchTerm = $request->get('name_startsWith');
+        $doctorId = $request->get('doctorId');
         $data = array();
-        $doctors = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getDoctorsBySearchTerm($searchTerm, $this->institution->getId());
-    
-        foreach($doctors as $each) {
-            $data[] = array('id' => $each->getId(),
-                            'firstName' => $each->getFirstName(),
-                            'middleName' => $each->getMiddleName(),
-                            'lastName' => $each->getLastName());
+        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
+        
+        foreach($specializations as $each) {
+            $data[] = array('id' => $each['id'],
+                            'name' => $each['name']);
         }
     
         $response = new Response(json_encode($data));
@@ -154,7 +152,17 @@ class InstitutionAccountController extends InstitutionAwareController
     protected function completeRegistrationSingleCenter()
     {
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        $institutionMedicalCenter = new InstitutionMedicalCenter();
+        $institutionService = $this->get('services.institution');
+        if (!$institutionService->isSingleCenter($this->institution)) {
+            // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
+            
+            return $this->redirect($this->generateUrl('institution_homepage'));
+        }
+        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+        if (\is_null($institutionMedicalCenter)) {
+            $institutionMedicalCenter = new InstitutionMedicalCenter();
+        }
+        
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             
@@ -165,14 +173,14 @@ class InstitutionAccountController extends InstitutionAwareController
                     ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
                 
                 // this should redirect to 2nd step
-                return $this->redirect($this->generateUrl('institution_homepage'));
+                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $institutionMedicalCenter->getId())));
             }
         }
         
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
-            'institutionSpecializations' => $institutionSpecializations,
-            'institutionMedicalCenter' => $institutionMedicalCenter
+            'institutionMedicalCenter' => $institutionMedicalCenter,
+            'isSingleCenter' => true
         ));
     }
     
@@ -243,18 +251,21 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
+  
         $content = $request->get('content');
         $output = array();
         $parameters = array('institution' => $this->institution);
         switch ($content) {
             case 'medical_centers':
+                $parameters['medical_centers'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
                 $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig', $parameters));
                 break;
             case 'services':
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig'));
+                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
+                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', $parameters));
                 break;
             case 'awards':
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionAwards.html.twig'));
+                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionAwards.html.twig', $parameters));
                 break;
         }
         
@@ -313,47 +324,5 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-    }
-
-    /**
-     * Action page for Institution Profile Page Service Tab
-     *
-     * @param Request $request
-     */
-    public function profileServiceAction(Request $request)
-    {
-            $template = 'InstitutionBundle:Institution:profile.singleCenterServices.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
-    }
-    
-    /**
-     * Action page for Institution Profile Page Awards Tab
-     *
-     * @param Request $request
-     */
-    public function profileAwardsAction(Request $request)
-    {
-        $template = 'InstitutionBundle:Institution:profile.singleCenterAwards.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
-    }
-    
-    /**
-     * Action page for Institution Profile Page Specialist Tab
-     *
-     * @param Request $request
-     */
-    public function profileSpecialistAction(Request $request)
-    {
-        $template = 'InstitutionBundle:Institution:profile.singleCenterSpecialist.html.twig';
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution
-        ));
     }
 }

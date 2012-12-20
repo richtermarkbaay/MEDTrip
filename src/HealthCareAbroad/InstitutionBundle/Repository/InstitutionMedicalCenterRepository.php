@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -29,12 +31,12 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 {
 
     /** TODO - Verify Method! - Moved from medicalCenterGroupRepo
-     * Find Doctors that has specializations matching $institutionMedicalCenterGroup by search keyword $searchKey
+     * Find Doctors that has specializations matching $institutionMedicalCenter by search keyword $searchKey
      *
-     * @param InstitutionMedicalCenterGroup $institutionMedicalCenterGroup
+     * @param InstitutionMedicalCenterGroup $institutionMedicalCenter
      * @param string $searchKey
      */
-    public function findAvailableDoctorBySearchKey(InstitutionMedicalCenterGroup $institutionMedicalCenterGroup, $searchKey='')
+    public function findAvailableDoctorBySearchKey(InstitutionMedicalCenter $institutionMedicalCenter, $searchKey='')
     {
         /**
          SELECT d.*
@@ -62,7 +64,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         ->where('d.status = :activeStatus')
         ->andWhere('imcg.id IS NULL')
         ->andWhere('d.firstName LIKE :searchKey OR d.middleName LIKE :searchKey OR d.lastName LIKE :searchKey')
-        ->setParameter('imcgId', $institutionMedicalCenterGroup->getId())
+        ->setParameter('imcgId', $institutionMedicalCenter->getId())
         ->setParameter('activeStatus', 1)
         ->setParameter('searchKey', '%'.$searchKey.'%');
 

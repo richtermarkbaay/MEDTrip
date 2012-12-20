@@ -28,9 +28,9 @@ institution_add_medical_specialist:
     requirements:
         _method: GET|POST
 
-institution_search_medical_specialist:
-    pattern: /institution/search-specialist
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialist}
+institution_load_doctor_specializations:
+    pattern: /institution/search-doctor-specializations/{doctorId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:searchMedicalSpecialistSpecialization}
     requirements:
         _method: GET|POST
         
@@ -39,24 +39,3 @@ institution_load_tabbed_contents_profile:
     defaults: { _controller: InstitutionBundle:InstitutionAccount:loadTabbedContents }
     requirements:
         _method: GET
-    
-institution_account_profile_service:
-    pattern:  /institution/profile.html/services
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileService }
-    requirements:
-        _method:  GET|POST
-
-institution_account_profile_awards:
-    pattern:  /institution/profile.html/awards
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileAwards }
-    requirements:
-        _method:  GET|POST
-
-institution_account_profile_specialist:
-    pattern:  /institution/profile.html/specialist
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:profileSpecialist }
-    requirements:
-        _method:  GET|POST
-
-        
-#institution_signup_add_specializations:

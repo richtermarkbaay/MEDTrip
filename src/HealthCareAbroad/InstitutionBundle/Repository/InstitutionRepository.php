@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
@@ -47,10 +49,10 @@ class InstitutionRepository extends EntityRepository
      */
     public function getActiveInstitutionMedicalCenters(Institution $institution, QueryOptionBag $queryOptions=null)
     {
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status = :active ";
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status != :inActive ";
         $query = $this->_em->createQuery($dql)
             ->setParameter('institutionId', $institution->getId())
-            ->setParameter('active', InstitutionMedicalCenterGroupStatus::APPROVED);
+            ->setParameter('inActive', InstitutionMedicalCenterStatus::INACTIVE);
         
         return $query->getResult();
     }

@@ -24,10 +24,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-
     public function indexAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.html.twig', array('searchParams' => array()));
+        $advertisementRepo = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty');
+
+        $highlightAds = $advertisementRepo->getActiveHomepagePremier();
+        $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
+        $news = $advertisementRepo->getActiveNews();
+        
+        $params = array(
+            'highlightAds' => $highlightAds,
+            'featuredClinicAds' => $featuredClinicAds,
+            'destinationAds' => array(),
+            'news' => $news,
+            'searchParams' => array()
+        );
+
+        return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
 
     /*

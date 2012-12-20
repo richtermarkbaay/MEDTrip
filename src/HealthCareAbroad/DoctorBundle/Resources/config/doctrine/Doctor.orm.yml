@@ -76,4 +76,7 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
                         name: institution_medical_center_id
                         referencedColumnName: id
             orderBy: null
+    oneToOne:
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
     lifecycleCallbacks: {}

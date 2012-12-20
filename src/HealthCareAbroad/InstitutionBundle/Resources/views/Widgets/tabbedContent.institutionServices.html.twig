@@ -8,15 +8,22 @@
     			</tr>
             </thead>
 			<tbody>
-    			<tr>
-    				<td>Service 1</td>
-    				<td>
-    						<i title="Edit" class="icon-pencil"></i>
-    						<a href="single-clinic-profile-tab-form.html"><small>Edit</small></a>
-    						<i title="Delete" class="icon-trash"></i>
-    						<a data-toggle="modal" role="button" title="" href="#deletetreatment">Delete</a>
+    			{% for service in services %}
+    				<tr>
+    					<td>{{ service.name |title}}</td>
+    					<td>
+    						<div class="post-toolbar">
+    							<i class="icon-trash" title="Delete"></i>
+    							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+    						</div>
     					</td>
-    			</tr>
+    				</tr>
+    		      {% else %}
+        		  	<tr>
+        			   <td> No Services yet. </td>
+        			   <td></td>
+        			</tr>
+    			{% endfor %}
 		    </tbody>
 	    </table>
     {% endblock %}

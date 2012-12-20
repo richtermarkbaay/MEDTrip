@@ -1,8 +1,14 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionSpecializationListType;
+use HealthCareAbroad\TreatmentBundle\Form\DataTransformer\TreatmentIdentityTransformer;
 
+use HealthCareAbroad\InstitutionBundle\Form\FieldType\InstitutionTreatmentChoiceType;
+
+use HealthCareAbroad\TreatmentBundle\Form\DataTransformer\SpecializationIdentityTransformer;
+
+use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionSpecializationListType;
+use HealthCareAbroad\InstitutionBundle\Form\ListType\SpecializationListType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Doctrine\ORM\EntityRepository;
@@ -12,12 +18,18 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class InstitutionSpecializationFormType extends AbstractType
 {
-    function __construct($institution)
+    const NAME = 'institutionSpecialization';
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $this->institution = $institution;
+        $resolver->setDefaults(array(
+            'em' => null,
+            'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization'
+        ));
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -26,27 +38,23 @@ class InstitutionSpecializationFormType extends AbstractType
         
         if (!$institutionSpecialization instanceof InstitutionSpecialization) {
             throw new \Exception('Expected InstitutionSpecialization as data.');
-        }
-
-        if (!$institutionSpecialization->getId()) {
-            $builder->add('specialization', new InstitutionSpecializationListType($this->institution, InstitutionSpecializationListType::SHOW_UNSELECTED), array('virtual'=>false));
-        }
-        
-//         $builder->add('treatment', 'entity', array(
-//             'label' => 'Treatments',
-//             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Treatment',
-//             'multiple' => true,
-//             'attr' => array('class' => 'institutionTreatments')
-//         ));
-
-        $builder->add('description', 'textarea', array(
+        }        
+            
+        /**$builder->add('description', 'textarea', array(
             'label' => 'Details',
-            'constraints' => array(new NotBlank()),
-            'attr' => array('class'=>'tinymce')
-        ));
+            'constraints' => array(new NotBlank())
+        ));**/
+
+        $builder->add($builder->create('specialization', 'hidden', array('error_bubbling' => true))
+            ->addModelTransformer(new SpecializationIdentityTransformer($options['em']))
+        );
+        
+        $builder->add($builder->create('treatments', new InstitutionTreatmentChoiceType(), array('error_bubbling' => true, 'virtual' => false))
+            //->addModelTransformer(new TreatmentIdentityTransformer($options['em']))
+        );
     }
     
     public function getName(){
-        return 'institutionSpecialization';
+        return self::NAME;
     }
 }

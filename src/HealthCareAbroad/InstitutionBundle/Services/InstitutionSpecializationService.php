@@ -69,11 +69,5 @@ class InstitutionSpecializationService
 
         return $center;
     }
-    
-    public function getByInstitutionMedicalCenter($institutionMedicalCenter)
-    {
-        $result = $this->repository->getByInstitutionMedicalCenter($institutionMedicalCenter);
-
-        return $result;
-    }
+   
 }

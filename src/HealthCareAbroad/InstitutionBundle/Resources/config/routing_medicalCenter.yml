@@ -4,7 +4,14 @@ institution_medicalCenter_ajaxUpdateProfileByField:
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
+institution_medicalCenter_ajaxUpdateBusinessHours:
+    pattern: /medical-center/{imcId}/ajax/update-by-business-hours
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+
 institution_medicalCenter_loadTabbedContents:
     pattern: /medical-center/{imcId}/ajax/loadTabbedContents
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadTabbedContents }
@@ -13,7 +20,7 @@ institution_medicalCenter_loadTabbedContents:
         imcId: \d+
 
 institution_medicalCenter_addDetails:
-    pattern: /medical-center/add/details/{imcId}
+    pattern: /medical-center/{imcId}/add/details
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
     requirements:
         _method: GET|POST
@@ -31,16 +38,23 @@ institution_medicalCenter_addSpecializations:
     pattern: /medical-center/{imcId}/specializations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addSpecializations }
     requirements:
-        _method: GET|POST
+        _method: GET
+        imcId: \d+
+        
+institution_medicalCenter_addSpecializations_save:
+    pattern: /medical-center/{imcId}/specializations/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:saveSpecializations }
+    requirements:
+        _method: POST
         imcId: \d+
 
-institution_medicalCenter_addTreatments:
-    pattern: /medical-center/{imcId}/treatments/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addTreatments, imcId: ~ }
+institution_medicalCenter_addAncilliaryServices:
+    pattern: /medical-center/{imcId}/ancilliary-services/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addAncilliaryServices }
     requirements:
         _method: GET|POST
         imcId: \d+
-
+        
 institution_medicalCenter_addDoctors:
     pattern: /medical-center/{imcId}/doctors/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addDoctors }
@@ -56,7 +70,7 @@ institution_medicalCenter_addAffiliations:
         imcId: \d+
 
 institution_medicalCenter_edit:
-    pattern: /medical-center/edit/{imcId}
+    pattern: /medical-center/{imcId}/edit
     defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
     requirements:
         _method: GET|POST

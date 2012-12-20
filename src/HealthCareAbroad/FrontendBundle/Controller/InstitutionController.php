@@ -1,6 +1,5 @@
 <?php
 /**
- * Add Error Report
  *
  * @author Adelbert Silla
  */

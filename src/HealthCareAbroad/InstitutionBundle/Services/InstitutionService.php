@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
@@ -35,6 +37,28 @@ class InstitutionService
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    /**
+     * Check if $institution is of type SINGLE_CENTER
+     * 
+     * @param Institution $institution
+     * @return boolean
+     */
+    public function isSingleCenter(Institution $institution)
+    {
+        return InstitutionTypes::SINGLE_CENTER == $institution->getType();
+    }
+    
+    /**
+     * Check if $institution is of type MULTIPLE_CENTER
+     * 
+     * @param Institution $institution
+     * @return boolean
+     */
+    public function isMultipleCenter(Institution $institution)
+    {
+        return InstitutionTypes::MULTIPLE_CENTER == $institution->getType();
     }
     
     /**

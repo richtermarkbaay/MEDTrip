@@ -24,7 +24,7 @@ class AdvertisementTypeListType extends AbstractType
             'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('a')->add('where', 'a.status = :status')
                           ->setParameter('status', AdvertisementType::STATUS_ACTIVE)
-                          ->orderBy('a.name', 'ASC');
+                          ->orderBy('a.id', 'ASC');
             }
         ));
     }

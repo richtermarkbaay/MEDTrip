@@ -73,6 +73,23 @@ class SpecializationRepository extends EntityRepository
 
         return $query->getResult();
     }
+    
+    /**
+     * Get Active Specializations
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getActiveSpecializations()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a')
+        ->from('TreatmentBundle:Specialization', 'a')
+        ->add('where', 'a.status = :status')
+        ->orderBy('a.name')
+        ->setParameter('status', Specialization::STATUS_ACTIVE);
+    
+        return $qb->getQuery()->getResult();
+    }
 
 
     /////////////////////////////////////////////////////

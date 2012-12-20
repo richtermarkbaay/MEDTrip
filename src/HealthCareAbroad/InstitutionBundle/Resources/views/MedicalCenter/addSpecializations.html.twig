@@ -1,106 +1,74 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
-{% block title %}{{ parent() }} Add Center {% endblock %}
+{# if institution is of type single center, use unauthenticated layout as base, since this is part of the signup process #}
+{% extends  isSingleCenter ?  'InstitutionBundle::unauthenticated.layout.html.twig' : 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'medical_centers'} %}
+
+{# disable the navigation for single center type institution since this is part of the sign up process #}
+{% set disableMainNavigation = isSingleCenter is defined and isSingleCenter %}
 
 
 {% block content %}
 
-<!-- start content -->
-<div class="container">
-	<div class="maincontent">
-		<!--sidebar start-->
-			<div class="span3">
-			 	{% include 'InstitutionBundle:Default:leftNavigation.html.twig'  %}
-			</div>
-		<div class="span9">
-			<h2 style="padding:7px 20px 5px 15px">
-	            {% set hasDraft = hasDraft is defined and hasDraft %}
-	            {% if hasDraft %}
-	                Edit draft: {{ institutionMedicalCenter.name }}
-	            {% else %}
-	                Add Medical Center
-	            {% endif %}
-			</h2>
-			 <div class="addcenterbox">
-				 <div class="row-fluid">
-				    <div class="span12">
-				            <div class="tabbable">
-				            {% include '::notice.admin.html.twig' %}
-						
-								    {% include '::stepHolderClient.base.admin.html.twig' with {
-						                    steps: [
-						                        {title: '- Center Details'},
-						                        {title: '- Specialization', 'selected': true},
-					                           {title: '- Select Treatments'},
-						                        {title: '- Assigned Doctors'},
-						                        {title: '- Preview', 'selected': false},
-						                 ]}
-						              %}
-				
-								<div class="tab-content">
-					                           <form novalidate="novalidate" action="{{ path('institution_medicalCenter_addSpecializations', {'imcId': institutionMedicalCenter.id } ) }}" method="POST" class="basic-form">
-	                                        		<h3>Specialization and its Description</h3>
-													<p>please add all specialization under the center name</p>
-	                                        {{ form_errors(form) }}
-	                                        
-						                    {{ form_row(form.specialization) }}
-						            
-						                    {{ form_row(form.description) }}
-						                    
-						                    {{ form_rest(form) }}
-					
-					                    
-											<input type="submit" name="Submit" value="Add Specialization" class="btn btn-success" />
-												
-												<div class="clear">&nbsp;</div>											
-												<hr>
-		
-															<h4>specialization 1</h4>
-															<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut 
-															labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-															nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
-															esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-															culpa qui officia deserunt mollit anim id est laborum.</p>
-							
-												
-												<div class="span7">
-												
-													<span class="span4"><input type="submit" name="Submit" value="Edit Specialization" class="btn btn-info" /></span>
-													<span class="span6"><input type="submit" name="Submit" value="Add Another Specialization" class="btn btn-success" /></span>
-												
-												</div>
-												
-												<div class="clear">&nbsp;</div>											
-												<hr>
-										
-					                  	<input type="submit" name="Submit" value="next" class="btn btn-large btn-primary" />
-					
-					
-					                </form>
-									
-								</div><!-- /.tab-content -->
-							</div>
-				    	</div><!--/span-->
-				  </div><!--/row-->
-			  </div>
-		</div>
-		<div class="clear"></div>
- </div>
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
+        with {'contentSpanClass' : 'span12' } %}
+        {% block wrappedContent %}
+
+       <div class="span12">
+            
+            <h1><span>Create New Clinic Listing</span></h1>
+            {% include 'InstitutionBundle:Widgets:steps.addClinic.html.twig' with {activeStep: 'specializations'} %}
+        </div>
+        <div class="addnewclinic">
+        	<div class="span9">
+        	{% include '::notice.admin.html.twig' %}
+        	    
+        	    <label>Search and Add your SPECIALIZATIONS</label>
+                {{ form_widget(form.specialization_selector) }}
+                <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
+                
+                <form class="specialization_form" action="{{ path('institution_medicalCenter_addSpecializations_save', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+        		    <div id="specializationAccordion"></div>
+        		    
+        		    <div class="pull-left">
+                        <button class="btn btn-info previous_button" type="button">Previous</button>
+                    </div>
+        		    
+        		    <div class="pull-right">
+                        <button class="btn btn-info" type="submit">Next</button>
+                    </div>
+    		    </form>
+        	</div>
+        	
+        	{% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+
+        </div>
+        {% endblock %}
+        
+    {% endembed %}
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenterGroup.js') }}"></script>
-    <script type="text/javascript">
-        $(function(){
-            InstitutionMedicalCenterGroup.initSpecializationsForm({
-                'loadInstitutionMedicalCentersUri': '{{ path("institution_medicalCenter_loadAvailableSpecializations", {"imcId": institutionMedicalCenter.id} ) }}',
-                'loadInstitutionTreatmentProceduresUri' : '{{ path("institution_medicalCenter_loadAvailableTreatments", {"imcId": institutionMedicalCenter.id} ) }}',
-                'institutionMedicalCenterField': $('#institutionMedicalCenter_specialization'),
-                'institutionTreatmentField': $('#institutionMedicalCenter_treatment')
-            });
-            
+<script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        $('button.previous_button').click(function(){
+            window.location = "{{ isSingleCenter ? path('institution_signup_complete_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}";
+
+            return false;
         });
-    </script>
+
+        InstitutionSpecializationAutocomplete
+        .setAutocompleteOptions({
+            source : $.parseJSON('{{ specializationsJSON | raw}}'),
+            target: $('input.autocomplete_specialization_selector'),
+            selectedDataContainer: $('#specializationAccordion') 
+        })
+        .setLoaderElement($('#specializationLoading'))
+        .setLoadSpecializationFormUri('{{ path("helper_specializationAccordionEntry") }}')
+        .autocomplete();
+    });
+})(jQuery);
+//-->
+</script>
 {% endblock %}

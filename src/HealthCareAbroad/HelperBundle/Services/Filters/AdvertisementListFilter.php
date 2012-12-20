@@ -30,11 +30,11 @@ class AdvertisementListFilter extends ListFilter
     function setAdvertisementTypeFilterOption()
     {        
         // Set The Filter Option 
-        $advertisementTypes = AdvertisementTypes::getList();
+        $advertisementTypes = $this->doctrine->getRepository('AdvertisementBundle:AdvertisementType')->findByStatus(1);
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
      
-        foreach($advertisementTypes as $each => $m) {
-            $options[$each] = $m;
+        foreach($advertisementTypes as $each) {
+            $options[$each->getId()] = $each->getName();
         }
 
         $this->filterOptions['advertisementType'] = array(
