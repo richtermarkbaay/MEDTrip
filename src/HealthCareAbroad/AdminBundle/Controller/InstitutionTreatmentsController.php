@@ -257,8 +257,11 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($request);
 
             // Get contactNumbers and convert to json format
-            $businessHours = json_encode($request->get('businessHours'));
-
+            if($request->get('businessHours') == null){
+                $businessHours = '';
+            }else{
+               $businessHours = json_encode($request->get('businessHours'));
+            }
             // Set BusinessHours before saving
             $form->getData()->setBusinessHours($businessHours);
             $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());

@@ -86,6 +86,7 @@
                         <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
                         {% endif %}
                         <span>I have no business hours</span> 
+                         <div id="ajax_loader" style="display:none;"><span>Loading...</span></div>
                         {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                     </div>
 
@@ -154,7 +155,7 @@
             if ($('#businessHourCheckBox').attr('checked')) {
             	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#table-businessHours').hide();
             }
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -289,10 +290,10 @@
 
     	    	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#table-businessHours').hide();
     	    	
     	    }else{
-        	    $('#clinicHoursTable').show();
+        	    $('#table-businessHours').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
         	}
