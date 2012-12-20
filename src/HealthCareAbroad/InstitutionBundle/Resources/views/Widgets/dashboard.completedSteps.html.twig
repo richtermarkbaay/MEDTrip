@@ -1,0 +1,20 @@
+
+{% for _step in dashboardCompletedSteps %}
+    <div class="media">
+		<a class="pull-left" href="#">
+			<img alt="" class="media-object" src="{{ _step.image }}">
+		</a>
+		<div class="media-body">
+			<h5 class="media-heading">
+			    <a href="{{ _step.href is defined ? _step.href : '#' }}">
+			        {% if _step.done is defined and _step.done %}
+			            <span class="stepsdone">{{ _step.label }}</span>
+		            {% else %}
+		                {{ _step.label }}
+	                {% endif %}
+		        </a>
+		    </h5>
+			<p>{{ _step.description }}</p>
+		</div>
+	</div>
+{% endfor %}

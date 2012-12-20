@@ -44,7 +44,7 @@
                         <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
                     </li>
                     <li class="">
-                        <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and Affiliations</a>
+                        <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and GlobalAwards</a>
                     </li>
                     
                 </ul>
@@ -54,7 +54,11 @@
             </div>
         </div>
         <!-- end span9 -->
-        {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+        {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
+            {% block sidebarWrappedContent %}
+                {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+            {% endblock %}
+        {% endembed %}
         
         {% endblock %}
     {% endembed %}

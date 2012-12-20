@@ -1,20 +1,22 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use HealthCareAbroad\HelperBundle\Entity\Affiliation;
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 use HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AffiliationFormType extends AbstractType
+class GlobalAwardFormType extends AbstractType
 {	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$status = array(Affiliation::STATUS_ACTIVE => 'active', Affiliation::STATUS_INACTIVE => 'inactive');
-
+		$status = array(GlobalAward::STATUS_ACTIVE => 'active', GlobalAward::STATUS_INACTIVE => 'inactive');
+		$builder->add('type', 'choice', array('choices' => GlobalAwardTypes::getTypes(), 'expanded' => false, 'constraints'=>array(new NotBlank())));
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('awardingBody', new AwardingBodyListType());
 		$builder->add('country', 'country_list');
@@ -26,12 +28,12 @@ class AffiliationFormType extends AbstractType
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-			'data_class' => 'HealthCareAbroad\HelperBundle\Entity\Affiliation',
+			'data_class' => 'HealthCareAbroad\HelperBundle\Entity\GlobalAward',
 		));
 	}
 
 	public function getName()
 	{
-		return 'affiliation';
+		return 'global_award';
 	}
 }

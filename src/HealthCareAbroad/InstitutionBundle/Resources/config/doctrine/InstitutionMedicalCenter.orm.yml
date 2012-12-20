@@ -94,20 +94,20 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                     -
                         name: doctor_id
                         referencedColumnName: id
-        institutionAffiliations:
-             targetEntity: HealthCareAbroad\HelperBundle\Entity\Affiliation
+        institutionGlobalAwards:
+             targetEntity: HealthCareAbroad\HelperBundle\Entity\GlobalAward
              cascade: { }
              mappedBy: null
              inversedBy: institutionMedicalCenters
              joinTable:
-                name: institution_affiliations
+                name: institution_global_awards
                 joinColumns:
                     -
                         name: institution_medical_center_id
                         referencedColumnName: id
                 inverseJoinColumns:
                     -
-                        name: affiliation_id
+                        name: global_award_id
                         referencedColumnName: id
                         orderBy: null
                         lifecycleCallbacks: {}

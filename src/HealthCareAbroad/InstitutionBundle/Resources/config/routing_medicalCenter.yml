@@ -4,7 +4,14 @@ institution_medicalCenter_ajaxUpdateProfileByField:
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
+institution_medicalCenter_ajaxUpdateBusinessHours:
+    pattern: /medical-center/{imcId}/ajax/update-by-business-hours
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+
 institution_medicalCenter_loadTabbedContents:
     pattern: /medical-center/{imcId}/ajax/loadTabbedContents
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadTabbedContents }
@@ -54,9 +61,9 @@ institution_add_medical_specialist:
     requirements:
         _method: GET|POST
         
-institution_medicalCenter_addAffiliations:
-    pattern: /medical-center/{imcId}/affiliations/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addAffiliations, imcId: ~}
+institution_medicalCenter_addGlobalAwards:
+    pattern: /medical-center/{imcId}/global_awards/add
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addGlobalAwards, imcId: ~}
     requirements:
         _method: GET|POST
         imcId: \d+
