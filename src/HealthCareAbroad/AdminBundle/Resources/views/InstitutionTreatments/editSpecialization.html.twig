@@ -29,8 +29,8 @@
 
             <div class="treatmentbox">
             	<div class="boxcontent">
-                    {{ form_row(form.description) }}
-                    {{ form_rest(form) }}
+                    {# form_row(form.description) #}
+                    {{ form_widget(form._token) }}
 
             		<div>
             		    {% render 'HelperBundle:Default:getSpecializationAccordionEntry' 
