@@ -359,6 +359,7 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
                         'doctorsJSON' => \json_encode($doctorArr)
         ));
@@ -694,7 +695,10 @@ class MedicalCenterController extends InstitutionAwareController
         foreach ($currentAwardPropertyValues as $_prop) {
             $_global_award = $repo->find($_prop->getValue());
             if ($_global_award) {
-                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = $_global_award;
+                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
+                    'global_award' => $_global_award,
+                    'medical_center_property' => $_prop
+                );
             }
         }
         
@@ -739,7 +743,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $em->persist($property);
                 $em->flush();
                 
-                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award));
+                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
                 
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
@@ -749,6 +753,21 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         return $response;
+    }
+    
+    public function ajaxRemovePropertyValueAction(Request $request)
+    {
+        $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid medical center property.');
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+        
+        return new Response("Property removed", 200);
     }
 
 }

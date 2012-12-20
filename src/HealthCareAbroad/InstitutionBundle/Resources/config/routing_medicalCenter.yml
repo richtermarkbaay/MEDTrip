@@ -72,6 +72,13 @@ institution_medicalCenter_ajaxAddGlobalAward:
     pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddGlobalAward, imcId: ~}
     requirements:
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_ajaxRemovePropertyValue:
+    pattern: /medical-center/{imcId}/ajaxRemovePropertyValue
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxRemovePropertyValue, imcId: ~}
+    requirements:
         _method: GET|POST
         imcId: \d+
         

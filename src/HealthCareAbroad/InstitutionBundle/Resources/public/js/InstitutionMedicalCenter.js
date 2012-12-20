@@ -2,6 +2,9 @@
  * @author Allejo Chris G. Velarde
  */
 var InstitutionMedicalCenter = {
+        
+    removePropertyUri: '',
+        
     _modals: {
         'name': null,
         'description': null
@@ -107,6 +110,19 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             success: _successCallback
          });
+    },
+    
+    removeProperty: function(_propertyId, _container) {
+        _container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: InstitutionMedicalCenter.removePropertyUri,
+            data: {'id': _propertyId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
     }
 }
 

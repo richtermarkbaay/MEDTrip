@@ -18,6 +18,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
+/**
+ * Accessible by service id services.institution_medical_center_property
+ * 
+ */
 class InstitutionMedicalCenterPropertyService
 {
     /**
@@ -38,6 +42,11 @@ class InstitutionMedicalCenterPropertyService
         $this->memcache = $memcache;
         
         $this->_setupAvailablePropertyTypes();
+    }
+    
+    public  function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($id);
     }
   
     /**
