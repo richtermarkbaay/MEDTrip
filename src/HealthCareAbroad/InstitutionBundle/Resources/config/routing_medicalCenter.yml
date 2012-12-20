@@ -4,7 +4,14 @@ institution_medicalCenter_ajaxUpdateProfileByField:
     requirements:
         _method: GET|POST
         imcId: \d+
-        
+
+institution_medicalCenter_ajaxUpdateBusinessHours:
+    pattern: /medical-center/{imcId}/ajax/update-by-business-hours
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+
 institution_medicalCenter_loadTabbedContents:
     pattern: /medical-center/{imcId}/ajax/loadTabbedContents
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadTabbedContents }
