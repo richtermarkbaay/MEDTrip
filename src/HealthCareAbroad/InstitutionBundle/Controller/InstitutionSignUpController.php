@@ -91,7 +91,7 @@ class InstitutionSignUpController  extends Controller
     			$institution->setContactNumber('');
     			$institution->setDescription('');
     			$institution->setLogo('');
-    			//$institution->setCoordinates('');
+    			$institution->setCoordinates('');
     			$institution->setState('');
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -120,7 +120,7 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                return $this->redirect($this->generateUrl('institution_after_registration_landing'));
+                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
 	        }
 	    }
 	    

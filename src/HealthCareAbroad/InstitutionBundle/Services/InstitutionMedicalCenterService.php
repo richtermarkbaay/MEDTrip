@@ -2,11 +2,17 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
@@ -25,6 +31,41 @@ class InstitutionMedicalCenterService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    /**
+     * Get values of medical center $institutionMedicalCenter for property type $propertyType 
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     * @return array InstitutionMedicalCenterProperty
+     */
+    public function getPropertyValues(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->doctrine->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+            ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+            ->getResult();
+        
+        return $result;
+    }
+    
+    /**
+     * Delete the values for $propertyType of $institutionMedicalCenter
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     */
+    public function clearPropertyValues(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType)
+    {
+        $dql = "DELETE FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $this->doctrine->getEntityManager()
+            ->createQuery($dql)
+            ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+            ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+            ->execute();
     }
     
     /**
@@ -74,5 +115,25 @@ class InstitutionMedicalCenterService
     public function isDraft(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
+    }
+    
+    /**
+     * Check if InstitutionMedicalCenter is of DRAFT status
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return boolean
+     */
+    public function getMedicalCenterServices(InstitutionMedicalCenter $institutionMedicalCenter,Institution $institution)
+    {
+        $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter->getId(), $institution->getId());
+   
+        return $ancilliaryServices;
+    }
+    
+    public function getActiveMedicalCenters(Institution $institution){
+        
+         $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
+
+         return $result;
     }
 }

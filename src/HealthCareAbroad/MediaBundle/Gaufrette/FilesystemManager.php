@@ -40,6 +40,18 @@ class FilesystemManager
     
         return new Filesystem($adapter);
     }
+    
+    public function getDoctor($adapterType = 'local')
+    {
+        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, 'doctors');
+    
+        switch ($adapterType) {
+            default:
+                $adapter = new LocalAdapter($this->uploadRootDir, true);
+        }
+
+        return new Filesystem($adapter);
+    }
 
     /**
      * Convenience functions

@@ -9,5 +9,3 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
         contactEmail:
             - NotBlank: ~
             - Email: ~
-        contactNumber:
-            - NotBlank: ~

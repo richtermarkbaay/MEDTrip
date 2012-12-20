@@ -4,7 +4,7 @@ class Doctor
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-    
+
     /**
      * @var bigint $id
      */
@@ -44,6 +44,11 @@ class Doctor
      * @var boolean $status
      */
     private $status;
+
+    /**
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
+     */
+    private $media;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -223,6 +228,28 @@ class Doctor
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return Doctor
+     */
+    public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media = null)
+    {
+        $this->media = $media;
+        return $this;
+    }
+
+    /**
+     * Get media
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     */
+    public function getMedia()
+    {
+        return $this->media;
     }
 
     /**

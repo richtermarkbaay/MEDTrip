@@ -1,121 +1,63 @@
-{% extends '::base.institution.html.twig' %}
-{% block body %}
-  <div id="header">
-    <div class="top_line"></div>
-    <div class="container">
-      <div class="row">
-        <div class="span4">
-          <div class="logo"> <a href="index.html"> <img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad" /> </a> </div>
-        </div>
-        <div class="span5 offset3">
-          <nav class="links">
-            <ul>
-              <li> <img src="{{ asset('images/institution/about.png') }}" alt="about" /> <a href="#">ABOUT</a> </li>
-              <li> <img src="{{ asset('images/institution/blog.png') }}" alt="blog" /> <a href="#">BLOG</a> </li>
-              <li> <img src="{{ asset('images/institution/contact.png') }}" alt="contact" /> <a href="#">CONTACT US</a> </li>
-  
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-    <!--End of container --> 
-  </div>
-  <!--End of header -->
-  
-  <div id="content_wrap">
-    <div class="container content">
-      <div class="row">
-        <div class="span7 marginleft0">
-<!--          <div class="bread_crumbs"> <a href="#"><img src="img/home_icon.png" />Home</a> </div>
- -->          <div id="slider">
-           
-          </div>
-          <!--End of slider-->
-          
-        <div id="maincontent">
-            <div class="heading">
-              <div class="heading_text"> Sign In </div>
-            </div>
-            <div class="maincontent_wrap">
-              
-              <div class="maincontent_item">
-                <div class="row upper_part">
-                 
-                  <div class="brief_description">
-                   
-                    <div class="row-fluid">
-                        <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
-                            {#{ form_errors(form) }#}
-                            {#% if app.session.hasFlash('notice') %#}
-                        
-                           <fieldset>
-                                <label for="username">Email</label>
-                                
-                                <div class="input-prepend">
-  									<span class="add-on"><i class="icon-envelope"></i></span>
-  									<input name="_username" type="text" id="username" value="{{ last_username }}"  class="username span8" />
-  								</div>
-  								
-  								{% if error %}
-	  								<ul class="alert-error">
-		                                <li>
-		                                    {# app.session.flash('notice') #}
-		                                    {{ error.message }}
-		                                </li>
-					  				</ul>
-  							 	 {% endif %}
-  							 	 
-                                <label for="password">Password</label>
-                                
-                                <div class="input-prepend">
-  									<span class="add-on"><i class="icon-lock"></i></span>
-  									<input name="_password" type="password" id="password" class="password span8" />
-  								</div>
-                                <label><a href="#">Forogt Password</a>.</label>
-  								    <!-- <div class="span11"><input name="_institution_remember_me"  checked type="checkbox" type="checkbox" id="login-check" value="forever" />&nbsp;<small>Remember me</small> -->
-  								    <input type="submit" name="Submit" value="SIGN-IN" class="span6 btn-large btn-primary" />
-                                      <!--  <div>New User?&nbsp;<a href="{{ path('institution_signUp') }}">Click here to register</a></div> -->
-                         </fieldset>
-                                {#{ form_rest(form) }#}
-        			    </form> 
-                    </div>
-                   
-                  </div>
-                 
-                </div>
-                
-              </div>
-              <!-- End of maincontent 2-->
-      
-            </div>
-            <!--End of maincontent_wrap--> 
-          </div>
-          <!-- End of maincontent --> 
-        </div>
-        <!--End of span8-->
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+{% block title %} Healthcareabroad Client Login {% endblock %}
+
+{% block content %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
+        with {'pageTitle': 'Sign-in', 'contentSpanClass': 'span8 marginleft0'} 
+    %}
         
-        <div class="span5">
-
-			       <div class="aside">
-            <div class="aside box">
-            {% set helptext = get_help_text_by_route('institution_login')%}
-            {{ helptext | raw }}
-                <a href="{{ path('institution_signUp') }}"><input type="submit" name="Submit" value="JOIN NOW!" class="span3 btn-large btn-primary" /></a>
-            </div>
-          </div>
-          <!-- End of aside--> 
-          
+        {% block wrappedContent %}
+        
+        <div class="span12">
+            <h1>Sign-in</h1>
         </div>
-        <!--End of span6--> 
-      </div>
-      <!--End of row--> 
-    </div>
-    <!--End of container--> 
+        
+        <div class="maincontent">
+            <div class="span6">
+                <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
+                
+                   <fieldset>
+                        <label for="username">Email</label>
+                        
+                        <div class="input-prepend">
+    						<span class="add-on"><i class="icon-envelope"></i></span>
+    						<input name="_username" type="text" id="username" value="{{ last_username }}"  class="username span8" />
+    					</div>
+    					
+    					{% if error %}
+    						<ul class="alert-error">
+                                <li>
+                                    {{ error.message }}
+                                </li>
+    		  				</ul>
+    				 	 {% endif %}
+    				 	 
+                        <label for="password">Password</label>
+                        
+                        <div class="input-prepend">
+    						<span class="add-on"><i class="icon-lock"></i></span>
+    						<input name="_password" type="password" id="password" class="password span8" />
+    					</div>
+                        <label><a href="#">Forogt Password</a>.</label>
+					    <button type="submit" class="btn-large btn-primary" >Login</button>
+                              
+                     </fieldset>
+    		    </form>
+            </div><!-- end .span6 -->
+            
+            <div class="span5 box pull-right">
+            
+                {% set helptext = get_help_text_by_route('institution_login')%}
+                {{ helptext | raw }}
+                
+                <a class="btn btn-large btn-primary" href="{{ path('institution_signUp') }}">Join Now!</a>
+                    
+            </div><!--End of span5-->
+        </div>
+             
+        {% endblock %}
+        
+    {% endembed %}
     
-  </div>
-  
-  {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
-
 {% endblock %}
 

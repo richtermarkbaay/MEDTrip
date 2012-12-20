@@ -26,5 +26,6 @@ class InstitutionExtension extends Extension
         $loader->load('services.yml');
         $loader->load('events.yml');
         $loader->load('listeners.yml');
+        $loader->load('forms.yml');
     }
 }

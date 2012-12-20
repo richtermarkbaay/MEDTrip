@@ -8,6 +8,22 @@ var InstitutionProfile = {
         'loadInstitutionAwards': ''
     },
     
+    modals: {
+        'address': null,
+        'contact_number': null,
+        'contact_email': null,
+        'websites': null
+    },
+    
+    _commonDialogOptions: {
+        position: ['center', 100],
+        autoOpen: false,
+        width: 'auto',
+        modal: true,
+        resizable: false,
+        close: function() {}
+    },
+    
     medicalCenterTabbedContentElement: null,
     
     servicesTabbedContentElement: null,
@@ -20,6 +36,27 @@ var InstitutionProfile = {
     institutionNameDialogElement: null,
     
     institutionDescriptionDialogElement: null,
+    
+    initializeModals: function(_options) {
+        $.each(this.modals, function(_key, _val){    
+            InstitutionProfile.modals[_key] = _val;
+            InstitutionProfile.modals[_key].dialog(InstitutionProfile._commonDialogOptions);
+        });
+        
+        return this;
+    },
+    
+    openModal: function(_name) {
+        InstitutionProfile.modals[_name].dialog("open");
+        
+        return this;
+    },
+    
+    closeModal: function(_name) {
+        InstitutionProfile.modals[_name].dialog('close');
+        
+        return this;
+    },
     
     setAjaxUrls: function(_val){
         this.ajaxUrls = _val;
