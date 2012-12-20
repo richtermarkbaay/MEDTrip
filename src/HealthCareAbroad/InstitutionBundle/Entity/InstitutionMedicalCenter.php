@@ -427,4 +427,85 @@ class InstitutionMedicalCenter
     {
         return $this->media;
     }
+    /**
+     * @var string $contactNumber
+     */
+    private $contactNumber;
+
+    /**
+     * @var string $contactEmail
+     */
+    private $contactEmail;
+
+    /**
+     * @var string $websites
+     */
+    private $websites;
+
+
+    /**
+     * Set contactNumber
+     *
+     * @param string $contactNumber
+     * @return InstitutionMedicalCenter
+     */
+    public function setContactNumber($contactNumber)
+    {
+        $this->contactNumber = $contactNumber;
+        return $this;
+    }
+
+    /**
+     * Get contactNumber
+     *
+     * @return string 
+     */
+    public function getContactNumber()
+    {
+        return $this->contactNumber;
+    }
+
+    /**
+     * Set contactEmail
+     *
+     * @param string $contactEmail
+     * @return InstitutionMedicalCenter
+     */
+    public function setContactEmail($contactEmail)
+    {
+        $this->contactEmail = $contactEmail;
+        return $this;
+    }
+
+    /**
+     * Get contactEmail
+     *
+     * @return string 
+     */
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
+    }
+
+    /**
+     * Set websites
+     *
+     * @param string $websites
+     * @return InstitutionMedicalCenter
+     */
+    public function setWebsites($websites)
+    {
+        $this->websites = $websites;
+        return $this;
+    }
+
+    /**
+     * Get websites
+     *
+     * @return string 
+     */
+    public function getWebsites()
+    {
+        return $this->websites;
+    }
 }

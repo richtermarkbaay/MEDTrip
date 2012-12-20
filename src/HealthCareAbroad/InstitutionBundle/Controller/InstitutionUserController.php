@@ -89,37 +89,6 @@ class InstitutionUserController extends Controller
         $this->getRequest()->getSession()->invalidate();
         return $this->redirect($this->generateUrl('institution_login'));
     }
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
-     */
-    public function changePasswordAction()
-    {
-        //get user account in chromedia global accounts by accountID
-        $session = $this->getRequest()->getSession();
-        $institutionUserService = $this->get('services.institution_user');
-        $institutionUser = $institutionUserService->findById($session->get('accountId'));
-
-        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
-
-        if ($this->getRequest()->isMethod('POST')) {
-
-            $form->bindRequest($this->getRequest());
-
-            if ($form->isValid()) {
-                $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
-                $institutionUserService->update($institutionUser);
-
-                // dispatch event
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
-
-                $this->get('session')->setFlash('success', "Password changed!");
-            }
-        }
-
-        return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
-            'form' => $form->createView()));
-    }
-
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
@@ -130,7 +99,6 @@ class InstitutionUserController extends Controller
         $session = $this->getRequest()->getSession();
         if (!$accountId){
             // no account id in parameter, editing currently logged in account
-
             $accountId = $session->get('accountId');
         }
 
@@ -144,29 +112,46 @@ class InstitutionUserController extends Controller
         if (!$institutionUser) {
             throw $this->createNotFoundException('Cannot update invalid account.');
         }
-
+        
+        $formChangePassword = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
+        
         $form = $this->createForm(new UserAccountDetailType(), $institutionUser);
 
         if ($this->getRequest()->isMethod('GET')) {
             $this->get('session')->set('referer', $this->getRequest()->headers->get('referer', $this->generateUrl('institution_homepage')));
         }
-        elseif ($this->getRequest()->isMethod('POST')) {
-            $form->bindRequest($this->getRequest());
-            if ($form->isValid()) {
-                $institutionUser = $this->get('services.institution_user')->update($institutionUser);
-
-                // create event on editAccount and dispatch
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
-
-                $this->get('session')->setFlash('success', "Successfully updated account");
-                $refer = $this->get('session')->get('referer');
-                $this->getRequest()->getSession()->remove('referer');
-                return $this->redirect($refer);
+        elseif($this->getRequest()->isMethod('POST')){
+            if ( array_key_exists("institutionUserChangePasswordType",$_POST)) {
+                $formChangePassword->bindRequest($this->getRequest());
+                if ($formChangePassword->isValid()) {
+                    $institutionUser->setPassword(SecurityHelper::hash_sha256($formChangePassword->get('new_password')->getData()));
+                    $this->get('services.institution_user')->update($institutionUser);
+    
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
+    
+                    $this->get('session')->setFlash('success', "Password changed!");
+                }
+            }
+            else {
+                $form->bindRequest($this->getRequest());
+                if ($form->isValid()) {
+                    $institutionUser = $this->get('services.institution_user')->update($institutionUser);
+    
+                    // create event on editAccount and dispatch
+                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
+    
+                    $this->get('session')->setFlash('success', "Successfully updated account");
+                    $refer = $this->get('session')->get('referer');
+                    $this->getRequest()->getSession()->remove('referer');
+                    return $this->redirect($refer);
+                }
             }
         }
 
         return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
             'form' => $form->createView(),
+            'formChangePassword' => $formChangePassword->createView(),
             'institutionUser' => $institutionUser ));
     }
     public function inviteAction()

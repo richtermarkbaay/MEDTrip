@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -17,7 +19,7 @@ class DoctorRepository extends EntityRepository
         ->setParameter('searchTerm', '%'.$searchTerm.'%')
         ->setParameter('active', Doctor::STATUS_ACTIVE)
         ->getQuery();
-    
+        
         return $query->getResult();
     }
     
@@ -28,6 +30,17 @@ class DoctorRepository extends EntityRepository
         $stmt = $connection->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll();
+    }
+    public function getDoctorsByInstitutionMedicalCenter($imcId)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND b.specialization_id 
+                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId)";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('imcId', $imcId);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        
     }
     public function getSpecializationByMedicalSpecialist($doctorId)
     {

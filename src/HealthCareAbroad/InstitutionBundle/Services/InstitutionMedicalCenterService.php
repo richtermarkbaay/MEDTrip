@@ -107,6 +107,31 @@ class InstitutionMedicalCenterService
         return $institutionMedicalCenter;
     }
     
+    public function saveInstitutionMedicalCenterDoctor($doctorIdArray, InstitutionMedicalCenter $center)
+    {
+        $center->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
+        $doctorIdArr = explode(",", $doctorIdArray['id']);
+         if(\is_array($doctorIdArr)) {
+            foreach($doctorIdArr as $doctorId)
+            {
+                $doctor = $this->doctrine->getRepository("DoctorBundle:Doctor")->find($doctorId);
+                $center->addDoctor($doctor);
+                $this->save($center);
+            }
+        }
+        
+        $this->setInstitutionStatusActive($center->getInstitution());
+        
+        return $center;
+    }
+    
+    public function setInstitutionStatusActive(Institution $institution)
+    {
+        $institution->setStatus(Institution::ACTIVE);
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institution);
+        $em->flush();
+    }
     /**
      * Save an InstitutionMedicalCenter as DRAFT
      * 
@@ -129,6 +154,7 @@ class InstitutionMedicalCenterService
     {
         return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
     }
+    
     
     /**
      * Check if InstitutionMedicalCenter is of DRAFT status

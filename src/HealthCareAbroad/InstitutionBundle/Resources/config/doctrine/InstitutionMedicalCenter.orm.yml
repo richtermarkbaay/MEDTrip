@@ -34,7 +34,24 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             type: string
             length: 100
             nullable: false
-            column: address       
+            column: address
+        contactNumber:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: contact_number
+        contactEmail:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: contact_email
+        websites:
+            type: string
+            length: 200
+            fixed: false
+            nullable: false
         dateCreated:
             type: datetime
             nullable: false

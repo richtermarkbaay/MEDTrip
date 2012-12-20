@@ -133,6 +133,35 @@ class InstitutionTreatmentsController extends Controller
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
 
+    /*
+     *
+    * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter
+    */
+    public function addMedicalSpecialistAction(Request $request)
+    {
+        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
+        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        if ($request->isMethod('POST')) {
+    
+            $form->bind($request);
+            if ($form->isValid() && $form->get('id')->getData()) {
+    
+                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
+                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+            }
+        }
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('institution_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+        }
+        return $this->render('AdminBundle:InstitutionTreatments:add.medicalSpecialist.html.twig', array(
+                        'form' => $form->createView(),
+                        'institution' => $this->institution,
+                        'doctorsJSON' => \json_encode($doctorArr)
+        ));
+    }
+    
     public function addMedicalCenterOfferedServiceAction(Request $request)
     {
         $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
@@ -228,8 +257,11 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($request);
 
             // Get contactNumbers and convert to json format
-            $businessHours = json_encode($request->get('businessHours'));
-
+            if($request->get('businessHours') == null){
+                $businessHours = '';
+            }else{
+               $businessHours = json_encode($request->get('businessHours'));
+            }
             // Set BusinessHours before saving
             $form->getData()->setBusinessHours($businessHours);
             $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
