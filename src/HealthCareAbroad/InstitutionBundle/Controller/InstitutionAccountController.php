@@ -299,7 +299,17 @@ class InstitutionAccountController extends InstitutionAwareController
                     
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
-                        $output['institution'][$key] = $this->institution->{'get'.$key}();
+                        $value = $this->institution->{'get'.$key}();
+
+                        if(is_object($value)) {
+                            $value = $value->__toString();
+                        }
+
+                        if($key == 'address1' || $key == 'contactNumber' || $key == 'websites') {
+                            $value = json_decode($value, true);
+                        }
+
+                        $output['institution'][$key] = $value;
                     }
                     $output['form_error'] = 0;
                 }
@@ -316,13 +326,11 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['form_error_html'] = $html;
                 }    
             }
-            catch (\Exception $e) {
-                
+            catch (\Exception $e) {   
                 return new Response($e->getMessage(),500);
-            }
-            
+            }            
         }
-        
+
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 }

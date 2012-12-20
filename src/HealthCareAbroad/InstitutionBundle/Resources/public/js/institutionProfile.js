@@ -19,6 +19,7 @@ var InstitutionProfile = {
         position: ['center', 100],
         autoOpen: false,
         width: 'auto',
+        height: 'auto',
         modal: true,
         resizable: false,
         close: function() {}
@@ -38,7 +39,7 @@ var InstitutionProfile = {
     institutionDescriptionDialogElement: null,
     
     initializeModals: function(_options) {
-        $.each(this.modals, function(_key, _val){    
+        $.each(_options, function(_key, _val){    
             InstitutionProfile.modals[_key] = _val;
             InstitutionProfile.modals[_key].dialog(InstitutionProfile._commonDialogOptions);
         });
