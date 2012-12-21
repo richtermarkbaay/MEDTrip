@@ -334,7 +334,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         // construct the row for a medical specialist
-        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Delete first row"></td></tr>';
+        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
         return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
     }
     
