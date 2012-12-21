@@ -183,21 +183,24 @@ class InstitutionAccountController extends InstitutionAwareController
             'institution' => $this->institution
         );
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+
+            $templateVariables['isSingleCenter'] = true;
             
             // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+            if(!$templateVariables['institutionMedicalCenter']) {
+                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+            }
+
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
-            $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
-        }
-        else {
-            $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
         }
         
 //         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
         
-        return $this->render($template, $templateVariables);
+        return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
     
 
