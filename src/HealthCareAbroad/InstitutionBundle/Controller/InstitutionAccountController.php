@@ -294,6 +294,22 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     $this->get('services.institution.factory')->save($this->institution);
+
+
+                    // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
+                    if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
+                        $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+                        $center->setName($this->institution->getName());
+                        $center->setDescription($this->institution->getDescription());
+                        $center->setAddress($this->institution->getAddress1());
+                        $center->setContactNumber($this->institution->getContactNumber());
+                        $center->setContactEmail($this->institution->getContactEmail());
+                        $center->setWebsites($this->institution->getWebsites());
+                        $center->setDateUpdated($this->institution->getDateModified());
+
+                        $this->get('services.institution_medical_center')->save($center);
+                    }
                     
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
