@@ -106,6 +106,11 @@ class InstitutionMedicalCenterService
                 $this->save($center);
             }
         }
+        else {
+            $doctor = $this->doctrine->getRepository("DoctorBundle:Doctor")->find($doctorIdArr);
+            $center->addDoctor($doctor);
+            $this->save($center);
+        }
         
         $this->setInstitutionStatusActive($center->getInstitution());
         
