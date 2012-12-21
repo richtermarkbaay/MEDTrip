@@ -139,7 +139,42 @@
                     </a>
                 </h5>
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                    {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                    <table class="table table-striped table-bordered bootstrap-datatable">
+            	      <thead>
+                        <tr>
+            				<th>Medical Specialist</th>
+            				<th>Specializations</th>
+            				<th>Actions</th>
+            			</tr>
+                    </thead>
+            	        <tbody>
+                         {% for doctor in institutionMedicalCenter.doctors %}
+            				<tr>
+            					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+            					<td>
+            					{% for specialization in doctor.specializations %}
+            					    {{ specialization.name |title }} 
+            					    {% if loop.last == false %},{% endif %} 
+            				    
+            				    {% else %}
+            					    No Specializations yet
+            					{% endfor %}
+            					</td>
+            					<td>
+            						<div class="post-toolbar">
+            							<i class="icon-trash" title="Delete"></i>
+            							<a href="#deleteMedicalSpecialist" title="" role="button" data-toggle="modal">Delete</a>
+            						</div>
+            					</td>
+            				</tr>
+            		      {% else %}
+                		  	<tr>
+                			   <td> No Medical Specialist yet. </td>
+                			   <td></td>
+                			</tr>
+            			{% endfor %}
+            			</tbody>
+            		</table>
                 </div>
             </div>
         {% endblock %}
