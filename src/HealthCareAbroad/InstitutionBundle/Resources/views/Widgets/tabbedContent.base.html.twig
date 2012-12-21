@@ -1,15 +1,10 @@
 {% set _tabbedContentPropertiesDefault = { id: '' } %}
 {% set tabbedContentProperties = tabbedContentProperties is defined ? _tabbedContentPropertiesDefault | merge(tabbedContentProperties) : _tabbedContentPropertiesDefault %}
 {% spaceless %}
-<div class="tab-pane active" id="{{ tabbedContentProperties.id }}">
+<div class="tab-pane" id="{{ tabbedContentProperties.id }}">
     
     <div class="row-fluid">
-        <div>
-            <div class="maincontentblock">
-                {% block tabbedContent %}{% endblock %}
-            </div>
-        </div>
-        
+        {% block tabbedContent %}{% endblock %}
         {% block tabbedContentActionButtons %}{% endblock %}
         
     </div>

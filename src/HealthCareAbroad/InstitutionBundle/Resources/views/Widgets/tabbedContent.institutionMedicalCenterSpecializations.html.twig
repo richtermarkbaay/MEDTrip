@@ -2,10 +2,15 @@
     {% block tabbedContent %}
 		 
 		 {% for specialization in specializations %}
+		 <div id="specialization_block_{{ specialization.id }}">
 		 	<div class="maincontentblock">
 		        <h4 class="pull-left">{{specialization.specialization.name |title}}</h4>
+		        <div class="editname2 pull-left">
+					<i title="Delete" class="icon-trash"></i>
+					<a onclick="return InstitutionMedicalCenter.openAjaxBootstrapModal($(this));" role="button" title="" href="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': specialization.institutionMedicalCenter.id, 'isId': specialization.id } ) }}" data-target="#deletespecializationname"><small>Delete</small></a>
+				</div>
 			</div>
-			<div class="maincontentblock">
+		    <div class="maincontentblock">
 			    <table class="table table-striped table-bordered bootstrap-datatable">
 			        <tbody>
 			            {% for _treatment in specialization.treatments %}
@@ -22,13 +27,22 @@
         			</tbody>
     			</table>
             </div>
-            
-            {% else %}
-                
-			<div class="maincontentblock">
-			No specializations yet.
-			</div>
-			{% endfor %}
+        </div>
+        {% else %}                
+		<div class="maincontentblock">
+		No specializations yet.
+		</div>
+		{% endfor %}
+			
+		
+        <div id="deletespecializationname" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">Loading...</div>
+        
 		
     {% endblock %}
+    {% block tabbedContentActionButtons %}
+    <div class="pull-right">
+		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addspecializations">Add Another Specialization</a>
+	</div>
+    {% endblock %}
+    
 {% endembed %}

@@ -64,7 +64,7 @@ var InstitutionMedicalCenter = {
                success: function(response){
                    _val.container.html(response[_key].html);
                    if (_key == 'specializations') {
-                       InstitutionMedicalCenter.switchTab(_key);
+                       //InstitutionMedicalCenter.switchTab(_key);
                    }
                    
                }
@@ -103,12 +103,50 @@ var InstitutionMedicalCenter = {
         this._modals[_name].dialog("close");
     },
     
+    // jQuery element for link opener
+    openAjaxBootstrapModal: function(_opener) {
+        _modal = $(_opener.attr('data-target'));
+        _modal.modal();
+        if (_modal.length > 0) {
+            $.ajax({
+                url: _opener.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    _modal.html(response.html);
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        
+        return false;
+    },
+    
     submitModalForm: function(_formElement, _successCallback){
         $.ajax({
             url: _formElement.attr('action'),
             data: _formElement.serialize(),
             type: 'POST',
             success: _successCallback
+         });
+    },
+    
+    // this function is closely coupled to element structure in client admin
+    //
+    submitRemoveSpecializationForm: function(_formElement) {
+        _button = _formElement.find('button.delete-button');
+        _button.attr('disabled', true)
+            .html('Processing...');
+        $.ajax({
+            url: _formElement.attr('action'),
+            data: _formElement.serialize(),
+            type: 'POST',
+            success: function(response){
+                _formElement.parents('div.modal').modal('hide');
+                $('#specialization_block_'+response.id).remove();
+            }
          });
     },
     

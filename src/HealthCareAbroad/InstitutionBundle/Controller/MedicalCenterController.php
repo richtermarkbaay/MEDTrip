@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
@@ -768,6 +770,53 @@ class MedicalCenterController extends InstitutionAwareController
         $em->flush();
         
         return new Response("Property removed", 200);
+    }
+    
+    /**
+     * Remove institution specialization
+     * 
+     * @param Request $request
+     */
+    public function ajaxRemoveSpecializationAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+            ->find($request->get('isId', 0));
+        
+        if (!$institutionSpecialization) {
+            throw $this->createNotFoundException('Invalid instituiton specialization');
+        }
+        
+        if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
+            return new Response("Cannot remove specialization that does not belong to this institution", 401);
+        }
+        
+        $form = $this->createForm(new CommonDeleteFormType(), $institutionSpecialization);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $institutionSpecialization->getId();
+//                 $em = $this->getDoctrine()->getEntityManager();
+//                 $em->remove($institutionSpecialization);
+//                 $em->flush();
+                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
+        }
+        else {
+            
+            $html = $this->renderView('InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig', array(
+                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                'institutionSpecialization' => $institutionSpecialization,
+                'form' => $form->createView()
+            ));
+            
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        
+        return $response;
     }
 
 }

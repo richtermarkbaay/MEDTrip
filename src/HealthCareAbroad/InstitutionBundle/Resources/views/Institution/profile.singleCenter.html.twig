@@ -12,21 +12,24 @@
                                 <div class="tabbable">
                                     <ul class="nav nav-tabs profile_tabs">
                                         <li class="active">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#specializations">Specializations</a>
+                                            <a data-toggle="tab" class="profile_tab_links" href="#specializations_tab_content">Specializations</a>
                                         </li>
                                         <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
+                                            <a data-toggle="tab" class="profile_tab_links" href="#services_tab_content">Services</a>
                                         </li>
                                         <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
+                                            <a data-toggle="tab" class="profile_tab_links" href="#awards_tab_content">Awards</a>
                                         </li>
                                        <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#medical_specialists">Medical Specialist</a>
+                                            <a data-toggle="tab" class="profile_tab_links" href="#medical_specialists_tab_content">Medical Specialist</a>
                                         </li>
                                         
                                     </ul>
                                     <div class="tab-content" id="tabbed_content">
-                                        
+                                        <div id="specializations_tab_content" class="tab-pane active"><span>Loading sp...</span></div>
+                                        <div id="services_tab_content" class="tab-pane"><span>Loading se ...</span></div>
+                                        <div id="awards_tab_content" class="tab-pane"><span>Loading aw...</span></div>
+                                        <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading d...</span></div>
                                     </div><!-- /.tab-content -->
                                 </div>
                         </div><!-- end .span9 -->
@@ -43,10 +46,7 @@
         {% endblock %}
     {% endembed %}
 
-<div id="specializations_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="medical_specialists_tab_content" style="display:none;"><span>Loading...</span></div>
+
     
 {% endblock %}
 
@@ -63,16 +63,9 @@
             'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
         })
         .initializeTabbedContentContainerElement($('div#tabbed_content'))
-        .loadTabbedContents()
-        .switchTab('specializations');
+        .loadTabbedContents();
 
-        $('a.profile_tab_links').click(function(){
-            $(this).parents('ul.tab_navigation').find('li.active').removeClass('active');
-            $(this).parents('ul li').addClass('active');
-            InstitutionMedicalCenter.switchTab($(this).attr('href').replace("#", ""));
-    
-            return false;
-        });
+        
     });
 })(jQuery);
 //-->
