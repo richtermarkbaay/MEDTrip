@@ -107,15 +107,43 @@ class InstitutionTreatmentsController extends Controller
     {
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
+        
+        $formSpecialization = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        $groupBySubSpecialization = true;
+        $result = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getByTreatmentBySpecializationId($specializations, $groupBySubSpecialization);
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
         $ancilliaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), $this->institution->getId());
+        
+        //Save Specializations
+        $submittedSpecializations = $this->request->get(InstitutionSpecializationFormType::NAME);
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        if (\count($submittedSpecializations) > 0) {
+            foreach ($submittedSpecializations as $specializationId => $_data) {
+                $_institutionSpecialization = new InstitutionSpecialization();
+                $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+                $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+                $_institutionSpecialization->setDescription('');
+                $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
+                $form->bind($_data);
+                if ($form->isValid()) {
+                    $em->persist($form->getData());
+                    $em->flush();
+                    
+                    $this->request->getSession()->setFlash('success', "Updated Specializations");
+                }
+            }
+        }
+        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'specializations' => $specializations,
+            'specializations' => $result['treatments'],
             'selectedSubMenu' => 'centers',
+            'selectedTreatments' => $result['selectedTreatments'],
+            'formSpecialization' => $formSpecialization->createView(),
+            'formName' => InstitutionSpecializationFormType::NAME,
             'form' => $form->createView(),
             'global_awards' => $global_awards,
             'services' => $ancilliaryServices,
@@ -132,7 +160,7 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
-
+    
     /*
      *
     * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter
