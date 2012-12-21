@@ -17,23 +17,31 @@
                 </h5>
                 
                 <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                {% for each in specializations %}
-                    <h5 style="padding: 5px;">
-                        {{ each.specialization.name | title }}
-                        <a href="#" style="float:right"><i class="icon-remove"></i></a>
-                    </h5>
-                    <div style="margin-top: 10px">
-                        <a href="#"  class="pull-right"><i class="icon-edit"></i> edit</a>
-                        {{ each.description | raw }}
-                    </div>
-
-                    <dl style="font-size: 13px; border-bottom: 1px dashed #EFEFEF; padding-bottom: 10px; margin-bottom: 10px;">
-                        <dt>Treatments</dt>
-                        {% for treatment in each.treatments %}
-                            <dd>{{ treatment.name }} <a href="#"><i class="icon-remove"></i></a></dd>
+                <form class="specialization_form" action="{{ path('admin_institution_medicalCenter_view', {institutionId: institution.id, 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+                  {% for each in specializations %}
+                        <h6 class="sub-specialization-title"> {{ each.specializationName | title }}</h6>
+                         <input type="hidden" name="{{ formName }}[{{ each.specializationId }}][specialization]" value="{{ each.specializationId }}" />
+                        {% for subSpecializationName, treatments in each.subSpecializations %}
+                                <p>
+                                   {{ subSpecializationName }}
+                                <div class="treatments" style="border: 1px dashed #EEEEEE;margin-bottom: 20px;border-top:none;padding:5px">
+                                    {% for treatment in treatments %}
+                                        <div>
+                                            <input style="float:none; width: auto;!important" type="checkbox" name="{{ formName }}[{{ each.specializationId }}][treatment.name][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
+                                            <span>{{ treatment.name }}</span>
+                                        </div>
+                                    
+                                    {% endfor %}
+                                </div>
+                            </p>
                         {% endfor %}
-                    </dl>
+                     <input type="hidden" name="{{ formName }}[{{ each.specializationId }}][{{formSpecialization.children._token.vars.name}}]" value="{{ formSpecialization.children._token.vars.value }}" />
                 {% endfor %}
+                   
+                   <div class="pull-right">
+                        <button class="btn btn-info" type="submit">Save</button>
+                    </div>
+    		    </form>
                 </div>
             </div>
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">

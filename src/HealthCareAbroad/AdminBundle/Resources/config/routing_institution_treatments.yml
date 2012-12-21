@@ -19,8 +19,8 @@ admin_institution_medicalCenter_view:
     requirements:
         institutionId: \d+
         imcId: \d+
-        _method: GET
-
+        _method: GET|POST
+      
 admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}
     defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
