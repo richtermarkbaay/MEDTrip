@@ -9,7 +9,7 @@ var InstitutionSpecializationAutocomplete = {
     autocompleteOptions: {
         source: '',
         target: null, // autocomplete target jQuery DOM element
-        selectedDataContainer: null, // jQuery DOM element container of selected data
+        selectedDataContainer: null // jQuery DOM element container of selected data
     },
     
     // set InstitutionSpecializationAutocomplete.autocompleteOptions

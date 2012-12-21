@@ -45,6 +45,19 @@
    
 }
 
+.doctors-specialiations {
+    width:725px;
+}
+.doctors-specialiations label {
+	display: block;
+	width:45%;
+	float:left;
+}
+.doctors-specialiations input[type="checkbox"] 
+{
+    width:5%;
+    float:left;
+}
 #spinner
 {
 	width: 70px;

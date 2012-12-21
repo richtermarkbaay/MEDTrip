@@ -6,6 +6,12 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
+use HealthCareAbroad\DoctorBundle\Form\DoctorFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType;
 
 use HealthCareAbroad\MediaBundle\Services\MediaService;
@@ -163,13 +169,14 @@ class InstitutionTreatmentsController extends Controller
     
     /*
      *
-    * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter
-    */
+     * This will add medicalSpecialist on InstitutionMedicalCenter
+     */
     public function addMedicalSpecialistAction(Request $request)
     {
-        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+        $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addAncilliaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
         if ($request->isMethod('POST')) {
     
             $form->bind($request);
@@ -186,15 +193,68 @@ class InstitutionTreatmentsController extends Controller
         return $this->render('AdminBundle:InstitutionTreatments:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'doctorsJSON' => \json_encode($doctorArr)
         ));
+    }
+    
+    public function addNewMedicalSpecialistAction(Request $request)
+    {
+        $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+        $doctor = new Doctor();
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findByStatus(Specialization::STATUS_ACTIVE);
+        $form = $this->createForm(new DoctorFormType(), $doctor);
+        
+        if ($this->getRequest()->isMethod('POST')) {
+            $doctorData = $request->get('doctor');
+            if($newMedia = $this->saveMedia($request->files->get('doctor'))) {
+                $doctorData['media'] = $newMedia;
+            } else {
+                if($doctor->getId()) {
+                    $doctorData['media'] = $media;
+                }
+            }
+        
+            $form->bind($doctorData);
+        
+            if($form->isValid()) {
+                // Get contactNumbers and convert to json format
+                $contactNumber = json_encode($request->get('contactNumber'));
+        
+                $doctor->setContactNumber($contactNumber);
+                $doctor->setStatus(Doctor::STATUS_ACTIVE);
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($doctor);
+                $em->flush();
+        
+                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor(array("firstName" => "", "id" => $doctor->getId()), $this->institutionMedicalCenter);
+                
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addMedicalSpecialist',array("institutionId" => $this->institution->getId(), "imcId" => $request->get('imcId'))));
+            }
+        }
+        return $this->render('AdminBundle:Doctor:common.form.html.twig', array(
+                        'form' => $form->createView(),
+                        'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'specializations' => $specializations
+        ));
+    }
+    
+    private function saveMedia($fileBag)
+    {
+        if($fileBag['media']) {
+            $media = $this->get('services.media')->uploadDoctorImage($fileBag['media']);
+            return $media;
+        }
+    
+        return null;
     }
     
     public function addMedicalCenterOfferedServiceAction(Request $request)
     {
         $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
         $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id');
-   	    $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addAncilliaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
+   	    $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addNewMedicalSpecialist', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
    	    if ($request->isMethod('POST')) {
    	        $form->bind($request);
    	        if ($form->isValid()) {

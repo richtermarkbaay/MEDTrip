@@ -9,6 +9,8 @@ var InstitutionProfile = {
     },
     
     modals: {
+    	'name': null,
+    	'description': null,
         'address': null,
         'contact_number': null,
         'contact_email': null,
@@ -33,13 +35,9 @@ var InstitutionProfile = {
     
     // jQuery DOM element for the tabbed content
     tabbedContentElement: null,
-    
-    institutionNameDialogElement: null,
-    
-    institutionDescriptionDialogElement: null,
-    
+
     initializeModals: function(_options) {
-        $.each(_options, function(_key, _val){    
+        $.each(_options, function(_key, _val){
             InstitutionProfile.modals[_key] = _val;
             InstitutionProfile.modals[_key].dialog(InstitutionProfile._commonDialogOptions);
         });
@@ -48,7 +46,7 @@ var InstitutionProfile = {
     },
     
     openModal: function(_name) {
-        InstitutionProfile.modals[_name].dialog("open");
+        //InstitutionProfile.modals[_name].dialog("open");
         
         return this;
     },
@@ -92,6 +90,7 @@ var InstitutionProfile = {
     
     switchTab: function(_tab_element_key)
     {
+    	
         switch (_tab_element_key) {
             case 'medical_centers':
                 InstitutionProfile.tabbedContentElement.html(InstitutionProfile.medicalCenterTabbedContentElement.html());

@@ -2,6 +2,9 @@
  * @author Allejo Chris G. Velarde
  */
 var InstitutionMedicalCenter = {
+        
+    removePropertyUri: '',
+        
     _modals: {
         'name': null,
         'description': null
@@ -61,7 +64,7 @@ var InstitutionMedicalCenter = {
                success: function(response){
                    _val.container.html(response[_key].html);
                    if (_key == 'specializations') {
-                       InstitutionMedicalCenter.switchTab(_key);
+                       //InstitutionMedicalCenter.switchTab(_key);
                    }
                    
                }
@@ -100,6 +103,27 @@ var InstitutionMedicalCenter = {
         this._modals[_name].dialog("close");
     },
     
+    // jQuery element for link opener
+    openAjaxBootstrapModal: function(_opener) {
+        _modal = $(_opener.attr('data-target'));
+        _modal.modal();
+        if (_modal.length > 0) {
+            $.ajax({
+                url: _opener.attr('href'),
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    _modal.html(response.html);
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        
+        return false;
+    },
+    
     submitModalForm: function(_formElement, _successCallback){
         $.ajax({
             url: _formElement.attr('action'),
@@ -107,6 +131,107 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             success: _successCallback
          });
+    },
+    
+    // this function is closely coupled to element structure in client admin
+    //
+    submitRemoveSpecializationForm: function(_formElement) {
+        _button = _formElement.find('button.delete-button');
+        _button.attr('disabled', true)
+            .html('Processing...');
+        $.ajax({
+            url: _formElement.attr('action'),
+            data: _formElement.serialize(),
+            type: 'POST',
+            success: function(response){
+                _formElement.parents('div.modal').modal('hide');
+                $('#specialization_block_'+response.id).remove();
+            }
+         });
+    },
+    
+    removeProperty: function(_propertyId, _container) {
+        _container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: InstitutionMedicalCenter.removePropertyUri,
+            data: {'id': _propertyId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
+    }
+}
+
+
+var InstitutionGlobalAwardAutocomplete = {
+    _loadHtmlContentUri: '',
+    
+    autocompleteOptions: {
+        'award':{
+            source: '',
+            target: null, // autocomplete target jQuery DOM element
+            selectedDataContainer: null, // jQuery DOM element container of selected data
+            loader: null
+        },
+        'certificate': {
+            source: '',
+            target: null, // autocomplete target jQuery DOM element
+            selectedDataContainer: null, // jQuery DOM element container of selected data
+            loader: null
+        },
+        'affiliation': {
+            source: '',
+            target: null, // autocomplete target jQuery DOM element
+            selectedDataContainer: null, // jQuery DOM element container of selected data
+            loader: null
+        }
+    },
+    
+    setAutocompleteOptions: function (_type, _options) {
+        this.autocompleteOptions[_type] = _options;
+        
+        return this;
+    },
+    
+    setLoadHtmlContentUri: function (_val) {
+        this._loadHtmlContentUri = _val;
+        
+        return this;
+    },
+    
+    autocomplete: function() {
+        $.each(InstitutionGlobalAwardAutocomplete.autocompleteOptions, function(_key, _val){
+            if (_val.target) {
+                _val.target.autocomplete({
+                    minLength: 0,
+                    source: _val.source,
+                    select: function( event, ui) {
+                        InstitutionGlobalAwardAutocomplete._loadContent(ui.item.id, _val);
+                        return false;
+                    }
+                });
+            }
+        });
+    },
+    
+    _loadContent: function(_val, _option) {
+        _option.loader.show();
+        $.ajax({
+            url: InstitutionGlobalAwardAutocomplete._loadHtmlContentUri,
+            data: {'id':_val},
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                _option.selectedDataContainer.append(response.html);
+                _option.target.find('option[value='+_val+']').hide();
+                _option.loader.hide();
+            },
+            error: function(response) {
+                _option.loader.hide();
+            }
+        });
     }
 }
 
