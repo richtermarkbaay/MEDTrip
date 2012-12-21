@@ -101,7 +101,7 @@ class SpecializationController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_MANAGE_SPECIALIZATION')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
      */
     public function updateStatusAction($id)
     {
