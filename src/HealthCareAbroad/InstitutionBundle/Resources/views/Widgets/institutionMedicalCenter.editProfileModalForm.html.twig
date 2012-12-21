@@ -1,0 +1,26 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
+    {% block modalBody %}
+
+        <form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" style="min-width: 400px;padding: 20px 20px 0;">
+        
+            {% for each in fields %}
+
+                {% if each == 'description' %}
+                    {{ form_row(institutionMedicalCenterForm[each], { 'attr': {class: 'tinymce', rows: 5} })  }}
+                {% elseif each == 'address' or each == 'contactNumber' or each == 'websites' %}
+                    {{ form_widget(institutionMedicalCenterForm[each]) }}
+                {% else %}
+                    {{ form_row(institutionMedicalCenterForm[each]) }}
+                {% endif %}
+
+            {% endfor %}
+            
+            {{ _csrf_token_widget | raw}}
+
+        </form>
+        <div class="modal-footer button-wrapper">
+			<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+			<button class="btn btn-primary submit-button">Submit</button>
+        </div>
+    {% endblock %}
+{% endembed %}

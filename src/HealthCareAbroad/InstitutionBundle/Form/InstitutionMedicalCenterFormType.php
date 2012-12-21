@@ -37,7 +37,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
         'contactEmail',
         'contactNumber',
         'address',
-        'timezone'
+        'timezone',
+        'websites'
     );
     
     function __construct($institution)
@@ -76,6 +77,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
             $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
             $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email', 'virtual' => true,'attr' => array('value' => $this->institution->getContactEmail())));
             $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number','virtual' => true,'attr' => array('value' => $this->institution)));
+            //$this->_add($builder, 'websites', 'websites', array('label' => 'Website','virtual' => true,'attr' => array('value' => $this->institution)));
+            $this->_add($builder, 'websites', 'websites_custom_field');
             $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Unit or Room #,  Building, Street Details', 'attr' => array('value' => $this->institution->getAddress1())));                
             $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
         }

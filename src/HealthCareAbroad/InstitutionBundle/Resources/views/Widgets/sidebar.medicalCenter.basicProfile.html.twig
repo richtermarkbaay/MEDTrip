@@ -1,0 +1,71 @@
+<div class="box-content">
+    <h4 class="pull-left">Basic Profile</h4>            
+    <div class="clear"></div>
+    <table class="table table-striped">
+        <tr>
+            <td>
+                <span id="profileAddressText">{{ json_decode(institutionMedicalCenter.address) | join(', ') }}</span>, 
+                <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
+                <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
+                <span id="profileCountryText">{{ institution.country.name }}</span>
+                <a href="#addressModal" data-toggle="modal" role="button">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <span id="profileNumberText">{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</span>
+                <a href="#numberModal" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <p>
+                    <span id="profileEmailText">{{ institutionMedicalCenter.contactEmail }}</span>
+                    <a href="#emailModal" role="button" data-toggle="modal">
+                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    </a>
+                </p>
+            </td>
+        </tr>
+    
+        <tr>
+            <td>
+                <div id="profileWebsitesText">
+                    {% for type, site in json_decode(institutionMedicalCenter.websites) %}
+                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% endfor %}
+                </div>
+                <a href="#websitesModal" role="button" data-toggle="modal">
+                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Modal Institution Address -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'addressModalForm', fields: ['address'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
+%}
+
+<!-- Modal Number -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'numberModalForm', fields: ['contactNumber'], modalId: 'numberModal', modalTitle: 'Edit Number'} 
+%}
+
+<!-- Modal Email -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'emailModalForm', fields: ['contactEmail'], modalId: 'emailModal', modalTitle: 'Edit Email'} 
+%}
+
+<!-- Modal Clinic Website -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'websitesModalForm', fields: ['websites'], modalId: 'websitesModal', modalTitle: 'Edit Websites'} 
+%}
