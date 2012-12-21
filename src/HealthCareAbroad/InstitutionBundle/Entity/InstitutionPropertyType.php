@@ -11,6 +11,8 @@ class InstitutionPropertyType
     
     const TYPE_LANGUAGE = 'language_id';
     
+    const TYPE_GLOBAL_AWARD = 'global_award_id';
+    
     /**
      * @var bigint $id
      */

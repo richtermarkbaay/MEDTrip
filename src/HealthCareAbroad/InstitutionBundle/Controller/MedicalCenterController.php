@@ -1,5 +1,9 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -355,6 +359,7 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
                         'doctorsJSON' => \json_encode($doctorArr)
         ));
@@ -676,11 +681,93 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         
+        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
+        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+        
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        
+        // get the current property values
+        $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
+        foreach ($currentAwardPropertyValues as $_prop) {
+            $_global_award = $repo->find($_prop->getValue());
+            if ($_global_award) {
+                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
+                    'global_award' => $_global_award,
+                    'medical_center_property' => $_prop
+                );
+            }
+        }
+        
+        foreach ($globalAwards as $_award) {
+            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
+            //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
+            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
+            $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
+        }
+        
         return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
+            'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
+            'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
+            'currentGlobalAwards' => $currentGlobalAwards
         ));
+    }
+    
+    public function ajaxAddGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+        
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+        
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+        // check if this medical center already have this property
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
+            $response = new Response("Property value {$award->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($award->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+                
+                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+                
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+        
+        return $response;
+    }
+    
+    public function ajaxRemovePropertyValueAction(Request $request)
+    {
+        $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid medical center property.');
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+        
+        return new Response("Property removed", 200);
     }
 
 }

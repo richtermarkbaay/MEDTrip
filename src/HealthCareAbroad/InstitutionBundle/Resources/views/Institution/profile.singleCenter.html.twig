@@ -1,54 +1,57 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'profile'} %}
-{% block content %}
-    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
-        {% block wrappedContent %}
-           <section id="content">
-            	<div class="container">
-            		<div class="row">
-            			<div class="span9">
-            				 {% include 'InstitutionBundle:Widgets:medicalCenter.profileHeader.html.twig' %}
-                            
-                                <div class="tabbable">
-                                    <ul class="nav nav-tabs profile_tabs">
-                                        <li class="active">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#specializations">Specializations</a>
-                                        </li>
-                                        <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
-                                        </li>
-                                        <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
-                                        </li>
-                                       <li class="">
-                                            <a data-toggle="tab" class="profile_tab_links" href="#medical_specialists">Medical Specialist</a>
-                                        </li>
-                                        
-                                    </ul>
-                                    <div class="tab-content" id="tabbed_content">
-                                        
-                                    </div><!-- /.tab-content -->
-                                </div>
-                        </div><!-- end .span9 -->
-                        {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
-                            {% block sidebarWrappedContent %}
-                                {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
-                                {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
-                            {% endblock %}
-                        {% endembed %}
-                        
-                    </div><!-- end .row -->
+<div class="span9">
+    <h1><span>Manage Clinic</span></h1>
+    <div class="row"> 
+        <div class="span2">
+            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#upload"> 
+                <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
+                <span class="image-icon"><img width="32" height="32" title="Change Profile Photo" alt="Zoom" src="{{ asset('images/institution/image-icon.png') }}"></span> 
+            </a>
+        </div>
+        
+        <div class="span7">
+            <h2 id="institutionNameText" class="pull-left">{{ institution.name }}</h2>
+            <div class="editname">
+                <i title="Edit" class="icon-pencil"></i>
+                <a href="#institutionNameModal" data-toggle="modal" role="button"><small>Edit</small></a>
+            </div>
+            <div class="maincontentblock">
+                <div style="display: inline-block;" id="institutionDescriptionText">
+                    {{ institution.description | raw }}
                 </div>
-            </section>
-        {% endblock %}
-    {% endembed %}
+                <i title="Edit" class="icon-pencil"></i>
+                <a href="#institutionDescriptionModal" data-toggle="modal" role="button"><small>Edit</small></a>
+            </div>
+            
+        </div>
+    </div>
+    <!-- end row -->
+    
+    <div class="tabbable">
+        <ul class="nav nav-tabs profile_tabs">
+            <li class="active">
+                <a data-toggle="tab" class="profile_tab_links" href="#specializations">Specializations</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
+            </li>
+            <li class="">
+                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
+            </li>
+           <li class="">
+                <a data-toggle="tab" class="profile_tab_links" href="#medical_specialists">Medical Specialist</a>
+            </li>
+            
+        </ul>
+        <div class="tab-content" id="tabbed_content">
+            
+        </div><!-- /.tab-content -->
+    </div>
+</div>
 
 <div id="specializations_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
 <div id="medical_specialists_tab_content" style="display:none;"><span>Loading...</span></div>
-    
-{% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>

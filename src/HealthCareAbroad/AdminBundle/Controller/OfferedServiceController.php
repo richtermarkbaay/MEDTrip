@@ -16,7 +16,7 @@ class OfferedServiceController extends Controller
 {
     /**
      * View All Offered Service
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_OFFERED_SERVICE')")
+     * @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
      */
     public function indexAction()
     {
@@ -31,7 +31,7 @@ class OfferedServiceController extends Controller
 
     /**
      * Add Offered Service
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_OFFERED_SERVICE')")
+     * @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
      */
     public function addAction()
     {
@@ -46,7 +46,7 @@ class OfferedServiceController extends Controller
     
     /**
      * Edit Offered Service
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_OFFERED_SERVICE')")
+     * @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
      */
     public function editAction($id)
     {
@@ -63,7 +63,7 @@ class OfferedServiceController extends Controller
     
     /**
      * Save added Offered Service
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_OFFERED_SERVICE')")
+     * @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
      */
     public function saveAction()
     {

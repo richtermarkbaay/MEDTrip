@@ -183,21 +183,24 @@ class InstitutionAccountController extends InstitutionAwareController
             'institution' => $this->institution
         );
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+
+            $templateVariables['isSingleCenter'] = true;
             
             // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+            if(!$templateVariables['institutionMedicalCenter']) {
+                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+            }
+
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
-            $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
-        }
-        else {
-            $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
         }
         
 //         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
         
-        return $this->render($template, $templateVariables);
+        return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
     
 
@@ -291,10 +294,36 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     $this->get('services.institution.factory')->save($this->institution);
+
+
+                    // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
+                    if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
+                        $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+                        $center->setName($this->institution->getName());
+                        $center->setDescription($this->institution->getDescription());
+                        $center->setAddress($this->institution->getAddress1());
+                        $center->setContactNumber($this->institution->getContactNumber());
+                        $center->setContactEmail($this->institution->getContactEmail());
+                        $center->setWebsites($this->institution->getWebsites());
+                        $center->setDateUpdated($this->institution->getDateModified());
+
+                        $this->get('services.institution_medical_center')->save($center);
+                    }
                     
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
-                        $output['institution'][$key] = $this->institution->{'get'.$key}();
+                        $value = $this->institution->{'get'.$key}();
+
+                        if(is_object($value)) {
+                            $value = $value->__toString();
+                        }
+
+                        if($key == 'address1' || $key == 'contactNumber' || $key == 'websites') {
+                            $value = json_decode($value, true);
+                        }
+
+                        $output['institution'][$key] = $value;
                     }
                     $output['form_error'] = 0;
                 }
@@ -311,13 +340,11 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['form_error_html'] = $html;
                 }    
             }
-            catch (\Exception $e) {
-                
+            catch (\Exception $e) {   
                 return new Response($e->getMessage(),500);
-            }
-            
+            }            
         }
-        
+
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 }

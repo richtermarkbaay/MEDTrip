@@ -4,6 +4,7 @@
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
 			<div class="maincontent">
+			{% include '::notice.admin.html.twig' %}
 				<div class="span9">
 					<h1>
 						<span>Getting Started with HEALTH CARE ABROAD</span>
@@ -11,12 +12,12 @@
 					
 					{% include 'InstitutionBundle:Widgets:dashboard.completedSteps.html.twig' with {
 					dashboardCompletedSteps: [
-					    {label: 'Add Contact Details', description: 'Some text explaining the important of adding contact details.', image: asset('images/institution/phone_ph.png'), done: true },
-					    {label: 'Add Location Details', description: 'Some text explaining the important of adding location details.', image: asset('images/institution/location_ph.png'), done: true },
-					    {label: 'Add Institution Logo', description: 'Some text explaining the important of adding institution logo.', image: asset('images/institution/logo_ph.png') },
-					    {label: 'Manage Institution Awards and Certifications', description: 'Some text explaining the important of adding institution awards.', image: asset('images/institution/awards_ph.png') },
-					    {label: 'Manage your Clinic Profile', description: 'Some text explaining the important of managing clinic profile.', image: asset('images/institution/institution_ph.png') },
-					    {label: 'Add Clinic', description: 'Some text explaining the important of adding a clinic.', image: asset('images/institution/clinic_ph.png') }
+					    {label: 'Add Contact Details', description: 'Some text explaining the importance of adding contact details.', image: asset('images/institution/phone_ph.png'), done: true },
+					    {label: 'Add Location Details', description: 'Some text explaining the importance of adding location details.', image: asset('images/institution/location_ph.png'), done: true },
+					    {label: 'Add Institution Logo', description: 'Some text explaining the importance of adding institution logo.', image: asset('images/institution/logo_ph.png') },
+					    {label: 'Manage Institution Awards and Certifications', description: 'Some text explaining the importance of adding institution awards.', image: asset('images/institution/awards_ph.png') },
+					    {label: 'Manage your Clinic Profile', description: 'Some text explaining the importance of managing clinic profile.', image: asset('images/institution/institution_ph.png') },
+					    {label: 'Add Clinic', description: 'Some text explaining the importance of adding a clinic.', image: asset('images/institution/clinic_ph.png') }
 					]} %}
 					
 				</div>
