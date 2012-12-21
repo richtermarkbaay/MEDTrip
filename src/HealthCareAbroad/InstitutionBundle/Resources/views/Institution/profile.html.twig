@@ -58,7 +58,7 @@
         $('.button-wrapper .submit-button').click(function(){
 
             $(this).attr('disabled', true);
-            _form = $(this).parents('.modal-body').find('form');
+            _form = $(this).parents('.modal-content').find('form');
             _form.append('<span class="loader">Loading...</span>');
 
             InstitutionProfile.submitModalForm(_form, function(response){

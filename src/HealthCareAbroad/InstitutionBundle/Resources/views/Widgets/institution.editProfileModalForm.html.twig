@@ -1,14 +1,16 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
     {% block modalBody %}
 
-        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" style="min-width: 500px">
+        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" style="min-width: 400px;padding: 20px 20px 0;">
         
             {% for each in fields %}
 
-                {% if each != 'description' %}
-                    {{ form_row(institutionForm[each]) }}
-                {% else %}
+                {% if each == 'description' %}
                     {{ form_row(institutionForm[each], { 'attr': {class: 'tinymce', rows: 5} })  }}
+                {% elseif each == 'address1' or each == 'contactNumber' or each == 'websites' %}
+                    {{ form_widget(institutionForm[each]) }}
+                {% else %}
+                    {{ form_row(institutionForm[each]) }}
                 {% endif %}
 
             {% endfor %}
