@@ -87,13 +87,31 @@ admin_institution_medicalCenter_addSpecialization:
         imcId: \d+
         _method: GET|POST
 
-admin_institution_medicalCenter_editSpecialization:
-    pattern:  /admin/institution/{institutionId}/specialization/edit/{isId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:editSpecialization }
+admin_institution_medicalCenter_ajaxSaveSpecializationTreatments:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxSaveSpecializationTreatments
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxSaveSpecializationTreatments }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+
+admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment:
+    pattern:  /admin/institution/{institutionId}/institutionSpecialization/{isId}/ajaxRemoveSpecializationTreatment/{tId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveSpecializationTreatment }
     requirements:
         institutionId: \d+
         isId: \d+
-        _method: GET|POST
+        tId: \d+
+        _method: POST
+        
+admin_institution_medicalCenter_ajaxAddSpecializationTreatment:
+    pattern:  /admin/institution/{institutionId}/institutionSpecialization/{isId}/ajaxAddSpecializationTreatment/{tId}
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddSpecializationTreatment }
+    requirements:
+        institutionId: \d+
+        isId: \d+
+        tId: \d+
+        _method: POST
 
 admin_institution_medicalCenter_updateStatus:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status

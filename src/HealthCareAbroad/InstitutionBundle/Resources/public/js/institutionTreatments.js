@@ -3,6 +3,44 @@
  * 
  * @author allejochrisvelarde
  */
+
+var InstitutionSpecialization = {
+    removeTreatment: function(_linkElement) {
+        return this._doCommonTreatmentAction(_linkElement)
+    },
+    
+    addTreatment: function(_linkElement) {
+        return this._doCommonTreatmentAction(_linkElement);
+    },
+    
+    _doCommonTreatmentAction: function(_linkElement) {
+        if (_linkElement.hasClass('disabled')) {
+            return false;
+        }
+        _href = _linkElement.attr('href');
+        _html = _linkElement.html();
+        _linkElement.html('Processing...').addClass('disabled');
+        
+        $.ajax({
+            url: _href,
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                _linkElement.removeClass('disabled')
+                    .html(response.link.html)
+                    .attr('href', response.link.href);
+                _linkElement.parents('div.treatment_action').find('i')
+                    .attr('class', response.icon);
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+        
+        return false;
+    }
+};
+
 var InstitutionSpecializationAutocomplete = {
     _loadSpecializationFormUri : '',
     _loaderElement: null, // jQuery DOM element loader
