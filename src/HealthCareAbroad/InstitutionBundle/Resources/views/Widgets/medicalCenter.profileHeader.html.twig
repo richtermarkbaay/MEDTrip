@@ -6,108 +6,28 @@
 		</a>
 	</div>
     <div class="span7 profile_header">
-    	<h2 class="pull-left editable_content" class="pull-left">{{ institutionMedicalCenter.name }}</h2>
+    	<h2 id="clinicNameText" class="pull-left">{{ institutionMedicalCenter.name }}</h2>
     	<div class="editname">
     		<i class="icon-pencil" title="Edit"></i>
-    		<a href="#name" class="modal_openers" role="button" data-toggle="modal">
-    
+    		<a href="#centerNameModal" class="modal_openers" role="button" data-toggle="modal">
     		<small>Edit</small></a>
     	</div>
     	<div class="maincontentblock">
-    		<div class="editable_content" style="display:inline-block;">{{ institutionMedicalCenter.description | raw}}</div>
+    		<div id="clinicDescriptionText" style="display:inline-block;">{{ institutionMedicalCenter.description | raw}}</div>
 			<i class="icon-pencil" title="Edit"></i>
-			<a href="#description" class="modal_openers" role="button" data-toggle="modal"><small>Edit</small></a>
+			<a href="#centerDescriptionModal" class="modal_openers" role="button" data-toggle="modal"><small>Edit</small></a>
     		
     	</div>
     </div>
 </div>
 
 {# --- modal boxes --- #}
-{% set _csrf_token_widget = form_widget(institutionMedicalCenterForm._token) %}
-<div id="modal_institutionMedicalCenter_name" class="modal-content" title="Edit Clinic Name" style="display:none;">
-    
-	<div class="modal-body">
-		<form id="modal_institutionMedicalCenter_name_form" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}">
-		    <div>
-    			{{ form_widget(institutionMedicalCenterForm.name, {attr: {class:'span6'} } ) }}
-    			{{ _csrf_token_widget | raw}}
-    		</div>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button id="modal_institutionMedicalCenter_name_submit" class="btn btn-primary submit-button">Submit</button>
-	</div>
-</div>
+<!-- Modal Institution name -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'nameModalForm', fields: ['name'], modalId: 'centerNameModal', modalTitle: 'Edit Name'} 
+%} <!-- end Modal Institution name -->
 
-<div id="modal_institutionMedicalCenter_description" class="modal-content" title="Edit Clinic Description" style="display:none;">
-    
-	<div class="modal-body">
-		<form id="modal_institutionMedicalCenter_description_form" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}">
-		    <div>
-    			{{ form_widget(institutionMedicalCenterForm.description, { attr:{rows: 5, class: 'tinymce span6'} } ) }}
-    			{{ _csrf_token_widget | raw}}
-    		</div>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<button id="modal_institutionMedicalCenter_description_submit" class="btn btn-primary submit-button">Submit</button>
-	</div>
-</div>
-
-
-{% block inlineJavascriptCode %}
-
-<script type="text/javascript">
-<!--
-(function($){
-    $(function(){
-        InstitutionMedicalCenter.initializeModals({name: $('#modal_institutionMedicalCenter_name'), description: $('#modal_institutionMedicalCenter_description') } );
-        
-        $('a.modal_openers').click(function(){
-            InstitutionMedicalCenter.openModal($(this).attr('href').replace("#", ""));
-
-            return false;
-        });
-
-        $('button#modal_institutionMedicalCenter_description_submit').click(function(){
-            $(this).attr('disabled', true);
-            _form = $(this).parents('div.modal-content').find('form');
-            _form.append('<span class="loader">Loading...</span>');
-            InstitutionMedicalCenter.submitModalForm(_form, function(response){
-                if (response.form_error) {
-                    _form.prepend(response.form_error_html);
-                }
-                else {
-                    $('div.profile_header div.editable_content').html(response.institutionMedicalCenter.description);
-                    InstitutionMedicalCenter.closeModal('description');
-                }
-
-                $(this).attr('disabled', false);
-                _form.find('span.loader').remove();
-            });
-        });
-
-        $('button#modal_institutionMedicalCenter_name_submit').click(function(){
-            $(this).attr('disabled', true);
-            _form = $(this).parents('div.modal-content').find('form');
-            _form.append('<span class="loader">Loading...</span>');
-            InstitutionMedicalCenter.submitModalForm(_form, function(response){
-                if (response.form_error) {
-                    _form.prepend(response.form_error_html);
-                }
-                else {
-                    $('div.profile_header h2.editable_content').html(response.institutionMedicalCenter.name);
-                    InstitutionMedicalCenter.closeModal('name');
-                }
-
-                $(this).attr('disabled', false);
-                _form.find('span.loader').remove();
-            });
-        });
-        
-    });
-})(jQuery);
-
-//-->
-</script>
-{% endblock %}
+<!-- Modal Institution Description -->
+{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+     with {formId: 'descriptionModalForm', fields: ['description'], modalId: 'centerDescriptionModal', modalTitle: 'Edit Description'} 
+%} <!-- end Modal Institution name -->

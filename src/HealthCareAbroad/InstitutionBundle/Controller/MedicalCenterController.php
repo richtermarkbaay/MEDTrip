@@ -124,7 +124,17 @@ class MedicalCenterController extends InstitutionAwareController
                     
                     $output['institutionMedicalCenter'] = array();
                     foreach ($formVariables as $key => $v){
-                        $output['institutionMedicalCenter'][$key] = $this->institutionMedicalCenter->{'get'.$key}();
+                        $value = $this->institutionMedicalCenter->{'get'.$key}();
+                        
+                        if(is_object($value)) {
+                            $value = $value->__toString();
+                        }
+                        
+                        if($key == 'address' || $key == 'contactNumber' || $key == 'websites') {
+                            $value = json_decode($value, true);
+                        }
+                        
+                        $output['institutionMedicalCenter'][$key] = $value;
                     }
                     
                     
