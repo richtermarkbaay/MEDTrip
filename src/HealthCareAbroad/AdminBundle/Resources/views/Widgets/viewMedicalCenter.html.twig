@@ -9,7 +9,7 @@
             {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig'%}
             
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
-                <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="clinic_services">
                   Ancilliary Services
                     <a id="addofferedServices" href="{{ path('admin_addMedicalCenterOfferedServices', {institutionId:institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-offered-services btn btn-mini pull-right">
                             <i class="icon-plus"></i>
@@ -94,7 +94,7 @@
                     {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
                 </div>
             </div>
-
+            
             <div id="medicalCenterDetailsAccordion" class="treatmentbox">
                 <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                     Doctors
