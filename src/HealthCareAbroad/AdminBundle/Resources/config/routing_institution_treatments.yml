@@ -112,6 +112,22 @@ admin_institution_medicalCenter_ajaxAddSpecializationTreatment:
         isId: \d+
         tId: \d+
         _method: POST
+        
+admin_institution_medicalCenter_ajaxAddAncillaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+        
+admin_institution_medicalCenter_ajaxRemoveAncillaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
 
 admin_institution_medicalCenter_updateStatus:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use Doctrine\ORM\EntityRepository;
@@ -15,16 +19,26 @@ use Doctrine\ORM\EntityRepository;
 class InstitutionMedicalCenterPropertyRepository extends EntityRepository
 {
     /**
-     * Get all ancilliary services
+     * Get all ancillary services by institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array OfferedService
      */
-    public function getAllServicesByInstitutionMedicalCenter($imcId, $institutionId)
+    public function getAllServicesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId";
-        $stmt = $connection->prepare($query);
-        $stmt->bindValue('id', $institutionId);
-        $stmt->bindValue('imcId', $imcId);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('AdminBundle:OfferedService', 'b');
+        $rsm->addFieldResult('b', 'id', 'id');
+        $rsm->addFieldResult('b', 'name', 'name');
+        $rsm->addFieldResult('b', 'status', 'status');
+        $rsm->addFieldResult('b', 'date_created', 'dateCreated');
+        
+        
+        $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId ORDER BY b.name ASC";
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
+            ->setParameter('id', $institutionMedicalCenter->getInstitution()->getId())
+            ->setParameter('imcId', $institutionMedicalCenter->getId());
+        
+        return $query->getResult();
     }
 }

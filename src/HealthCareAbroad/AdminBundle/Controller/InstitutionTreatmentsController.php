@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -111,6 +113,7 @@ class InstitutionTreatmentsController extends Controller
      */
     public function viewMedicalCenterAction()
     {
+        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $institutionSpecializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $specializationsData = array();
@@ -138,30 +141,19 @@ class InstitutionTreatmentsController extends Controller
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
         
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
-        $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
-        $ancilliaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), $this->institution->getId());
         
-        //Save Specializations
-        /**$submittedSpecializations = $this->request->get(InstitutionSpecializationFormType::NAME);
-        $em = $this->getDoctrine()->getEntityManager();
+        // get global ancillary services
+        $ancillaryServicesData = array(
+            'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+            'selectedAncillaryServices' => array()
+        );
         
-        if (\count($submittedSpecializations) > 0) {
-            foreach ($submittedSpecializations as $specializationId => $_data) {
-                $_institutionSpecialization = new InstitutionSpecialization();
-                $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-                $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
-                $_institutionSpecialization->setDescription('');
-                $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
-                $form->bind($_data);
-                if ($form->isValid()) {
-                    $em->persist($form->getData());
-                    $em->flush();
-                    
-                    $this->request->getSession()->setFlash('success', "Updated Specializations");
-                }
-            }
+        foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
+            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
-        **/
+        
+        $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
+        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -169,9 +161,8 @@ class InstitutionTreatmentsController extends Controller
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'selectedSubMenu' => 'centers',
-            //'form' => $form->createView(),
             'global_awards' => $global_awards,
-            'services' => $ancilliaryServices,
+            'ancillaryServicesData' => $ancillaryServicesData,
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
@@ -269,26 +260,6 @@ class InstitutionTreatmentsController extends Controller
         return null;
     }
     
-    public function addMedicalCenterOfferedServiceAction(Request $request)
-    {
-        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-        $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id');
-   	    $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addNewMedicalSpecialist', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
-   	    if ($request->isMethod('POST')) {
-   	        $form->bind($request);
-   	        if ($form->isValid()) {
-   	            $this->get('services.institution_property')->save($form->getData());
-   	    
-   	            return $this->redirect($formActionUrl);
-   	        }
-   	    }
-   	    
-   	    $params = array(
-   	                    'formAction' => $formActionUrl,
-   	                    'form' => $form->createView()
-   	    );
-   	    return $this->render('AdminBundle:InstitutionMedicalCenterProperties:common.form.html.twig', $params);
-    }
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -711,6 +682,110 @@ class InstitutionTreatmentsController extends Controller
         );
 
         return $this->render('AdminBundle:InstitutionTreatments:addInstitutionTreatments', $params);
+    }
+    
+    /**
+     * Remove an ancillary service to medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *     
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function ajaxRemoveAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+            ->find($request->get('asId', 0));
+        
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+        
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+
+        // get property value for this ancillary service
+        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId());
+        
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+        
+            $output = array(
+                'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
+                    'institution' => $this->institution,
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'ancillaryService' => $ancillaryService,
+                    '_isSelected' => false
+                )),
+                'error' => 0
+            );
+            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Add an ancillary service to medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function ajaxAddAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+            ->find($request->get('asId', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // check if this medical center already have this property value
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId())) {
+            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($ancillaryService->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+                
+                $output = array(
+                    'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
+                            'institution' => $this->institution,
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'ancillaryService' => $ancillaryService,
+                            '_isSelected' => true
+                        )),
+                    'error' => 0
+                );
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+            
+        }
+    
+        return $response;
     }
 
 }

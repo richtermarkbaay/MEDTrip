@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -52,17 +54,40 @@ class InstitutionMedicalCenterService
         return $result;
     }
     
+    /**
+     * Check if $institutionMedicalCenter has a property type value of $value
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return boolean
+     */
     public function hasPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value)
+    {
+        $result = $this->getPropertyValue($institutionMedicalCenter, $propertyType, $value);   
+        
+        return !\is_null($result) ;
+    }
+    
+    /**
+     * Get InstitutionMedicalCenterProperty by institution medical center, institution propertype and the value
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return InstitutionMedicalCenterProperty
+     */
+    public function getPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
         $result = $this->doctrine->getEntityManager()
-        ->createQuery($dql)
-        ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
-        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
-        ->setParameter('value', $value)
-        ->getOneOrNullResult();
+            ->createQuery($dql)
+            ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+            ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+            ->setParameter('value', $value)
+            ->getOneOrNullResult();
         
-        return !\is_null($result) ;
+        return $result;
     }
     
     /**
@@ -162,14 +187,14 @@ class InstitutionMedicalCenterService
     
     
     /**
-     * Check if InstitutionMedicalCenter is of DRAFT status
+     * Get ancillary services of a medical center
      *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return boolean
      */
-    public function getMedicalCenterServices(InstitutionMedicalCenter $institutionMedicalCenter,Institution $institution)
+    public function getMedicalCenterServices(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter->getId(), $institution->getId());
+        $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter);
    
         return $ancilliaryServices;
     }

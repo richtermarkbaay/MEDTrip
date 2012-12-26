@@ -1,0 +1,18 @@
+<div id="medicalCenterDetailsAccordion" class="treatmentbox">
+    <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+      GlobalAwards / Certifications
+        <a href="{{ path('admin_institution_medicalCenter_addGlobalAwards', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}" class="add-global_award btn btn-mini pull-right">
+                <i class="icon-plus"></i>
+                   Add GlobalAwards
+        </a>
+    </h5>
+    <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+    {% for global_award in global_awards %}
+            <div style="margin-top: 10px">
+           {{ global_award.name | title }}
+            <a href="{{ path('admin_institution_medicalCenter_updateGlobalAwards', {institutionId: institution.id, imcId: institutionMedicalCenter.id , global_awardId: global_award.id}) }}" style="float:right"><i class="icon-remove"></i></a>
+        </div>
+
+    {% endfor %}
+    </div>
+</div>
