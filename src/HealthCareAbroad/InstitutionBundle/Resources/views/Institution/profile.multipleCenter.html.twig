@@ -41,12 +41,37 @@
             
         </ul>
         <div class="tab-content" id="tabbed_content">
-            
+            <div id="medical_centers" class="tab-pane active">
+                {% include 'InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig' %}
+            </div>
+            <div id="services" class="tab-pane"><span>Loading... se</span></div>
+            <div id="awards" class="tab-pane"><span>Loading... aw</span></div>
         </div><!-- /.tab-content -->
     </div>
 </div>
 <!-- end span9 -->
 
-<div id="medical_centers_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        _url_base = '{{ path("institution_load_tabbed_contents_profile") }}';
+    	
+        // initialize the tabbed contents
+        InstitutionProfile.setAjaxUrls({
+                'loadInstitutionServices': _url_base+'?content=services',
+                'loadInstitutionAwards': _url_base+'?content=awards'
+            });
+        
+        InstitutionProfile.tabbedContentElement = $('#tabbed_content');
+        InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
+        InstitutionProfile.servicesTabbedContentElement = $('#services');
+        InstitutionProfile.awardsTabbedContentElement = $('#awards');
+        InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();        
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

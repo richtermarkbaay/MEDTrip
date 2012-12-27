@@ -41,7 +41,7 @@ class InstitutionRepository extends EntityRepository
     }
 
     /**
-     * Get active institution specializations
+     * Get active institution medical centers
      * 
      * @param Institution $institution
      * @param QueryOptionBag $queryOptions

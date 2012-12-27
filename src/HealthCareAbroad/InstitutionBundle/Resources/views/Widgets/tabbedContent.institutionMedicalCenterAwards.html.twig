@@ -1,37 +1,76 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-	<div class="maincontentblock">
-	    <table class="table table-striped table-bordered bootstrap-datatable">
-	      <thead>
-            <tr>
-				<th>Awards Name</th>
-				<th>Award Giving Body</th>
+    <table class="table table-striped table-bordered">
+		<tbody>
+		    <tr>
+				<th>Awards</th>
 				<th>Year Given</th>
 				<th>Actions</th>
 			</tr>
-        </thead>
-	        <tbody>
-             {% for award in awards %}
-				<tr>
-					<td>{{ award.name |title }}</td>
-					<td>{{ award.awardingBody.name |title }}</td>
-					<td>No field fot Year yet</td>
-					<td>
-						<div class="post-toolbar">
-							<i class="icon-trash" title="Delete"></i>
-							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
-						</div>
-					</td>
-				</tr>
-		      {% else %}
-    		  	<tr>
-    			   <td> No GlobalAwards yet. </td>
-    			   <td></td>
-    			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
-    </div>
+			<tr>												
+				<td>
+					<h5>Name of Awards</h5>
+					<small>Award Giving Body Organization</small>
+				</td>												
+				<td>2012</td>												
+				<td>
+					<i title="Delete" class="icon-trash"></i>
+					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="pull-right">
+		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addawards">Add Another Award</a>
+	</div>
 	
+	<table class="table table-striped table-bordered">
+		<tbody>
+			<tr>
+				<th>Certificates</th>
+				<th>Year Given</th>
+				<th>Actions</th>
+			</tr>
+			<tr>												
+				<td>
+					<h5>Name of Certificate</h5>
+					<small>Award Giving Body Organization</small>
+				</td>												
+				<td>2012</td>												
+				<td>
+					<i title="Delete" class="icon-trash"></i>
+					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="pull-right">
+		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addawards">Add Another Certificate</a>
+	</div>
+	
+	<table class="table table-striped table-bordered">
+		<tbody>
+			<tr>
+				<th>Affiliations</th>
+				<th>Year Given</th>
+				<th>Actions</th>
+			</tr>
+			<tr>												
+				<td>
+					<h5>Name of Affiliation</h5>
+					<small>Award Giving Body Organization</small>
+				</td>												
+				<td>2012</td>												
+				<td>
+					<i title="Delete" class="icon-trash"></i>
+					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="pull-right">
+		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addawards">Add Another Affiliation</a>
+	</div>
+    
     {% endblock %}
 {% endembed %}

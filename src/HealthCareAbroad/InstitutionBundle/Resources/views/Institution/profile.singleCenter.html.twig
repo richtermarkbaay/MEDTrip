@@ -43,7 +43,9 @@
             
         </ul>
         <div class="tab-content" id="tabbed_content">
-            <div id="specializations_tab_content" class="tab-pane active"><span>Loading sp...</span></div>
+            <div id="specializations_tab_content" class="tab-pane active">
+                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
+            </div>
             <div id="services_tab_content" class="tab-pane"><span>Loading se ...</span></div>
             <div id="awards_tab_content" class="tab-pane"><span>Loading aw...</span></div>
             <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading d...</span></div>
@@ -59,13 +61,12 @@
 (function($){
     $(function(){
         InstitutionMedicalCenter.initializeTabs({
-            'specializations' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "specializations", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#specializations_tab_content')},
             'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
             'awards' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
             'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
         })
         .initializeTabbedContentContainerElement($('div#tabbed_content'))
-        .loadTabbedContents();
+        .loadTabbedContents()
 
         
     });

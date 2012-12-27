@@ -1,7 +1,7 @@
 <?php 
 /**
  * @author Chaztine Blance
- * Create Profile after Sign up
+ * 
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
@@ -51,6 +51,9 @@ class InstitutionAccountController extends InstitutionAwareController
 	public function preExecute()
 	{
 	    $this->institutionService = $this->get('services.institution');
+	    if ($this->institutionService->isSingleCenter($this->institution)) {
+	        $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+	    }
 	    $this->request = $this->getRequest();
 	    
 	}
@@ -196,9 +199,14 @@ class InstitutionAccountController extends InstitutionAwareController
 
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
+            
+            // load medical center specializations
+            $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
         }
-        
-//         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
+        else {
+            // multiple center institution profile view
+            $templateVariables['medicalCenters'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
+        }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
@@ -239,22 +247,17 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadSingleTabbedContentsAction(Request $request)
     {
-        if ($imcId=$this->getRequest()->get('imcId',0)) {
-            $this->institutionMedicalCenter = $this->repository->find($imcId);
-        }else {
-            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-        }
-        
         $content = $request->get('content');
         $output = array();
         $parameters = array('institution' => $this->institution);
+        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         switch ($content) {
             case 'specializations':
                 $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
+                $parameters['services'] = $institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter);
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':

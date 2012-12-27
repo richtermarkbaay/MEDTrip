@@ -10,7 +10,7 @@
             </thead>
 			<tbody>
     			  {% set even = false %}
-    				{% for medicalCenter in medical_centers %}
+    				{% for medicalCenter in medicalCenters %}
     			    <tr class="{{ even ? 'alternate-row' : ''}}">
     					<td> <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a></td>
     					<td>Created on {{ medicalCenter.dateCreated|date("m/d/Y") }}</td>

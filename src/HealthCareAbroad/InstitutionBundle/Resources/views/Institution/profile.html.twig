@@ -50,10 +50,11 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
 <script type="text/javascript">
 <!--
-    (function($){
+(function($){
+    $(function(){
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('#institution_profile_form_country').change();
-    
+
         // Set Submit button of modal forms to save the specific property changes and update the text property.
         $('.button-wrapper .submit-button').click(function(){
 
@@ -110,28 +111,8 @@
                 _form.find('span.loader').remove();
             });
         });
-
-        /* TODO Moved this to proper location */ 
-        {% if (isSingleCenter is not defined) or isSingleCenter == false %}
-	        _url_base = '{{ path("institution_load_tabbed_contents_profile") }}';
-	
-	        // initialize the tabbed contents
-	        InstitutionProfile.setAjaxUrls({
-	                'loadActiveMedicalCenters': _url_base+'?content=medical_centers',
-	                'loadInstitutionServices': _url_base+'?content=services',
-	                'loadInstitutionAwards': _url_base+'?content=awards'
-	            });
-	        
-	        InstitutionProfile.tabbedContentElement = $('#tabbed_content');
-	        InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers_tab_content");
-	        InstitutionProfile.servicesTabbedContentElement = $('#services_tab_content');
-	        InstitutionProfile.awardsTabbedContentElement = $('#awards_tab_content');
-	        InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution().switchTab('medical_centers');
-        {% endif %}
-        /* end of TODO Moved this to proper location */
-        
-
-    })(jQuery);
+    });
+})(jQuery);
 //-->
 </script>
 {% endblock %}

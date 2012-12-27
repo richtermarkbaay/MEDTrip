@@ -108,7 +108,7 @@ var InstitutionProfile = {
     
     loadTabbedContentsOfMultipleCenterInstitution: function() {
         // medical centers content
-        $.ajax({
+        /**$.ajax({
             url: InstitutionProfile.ajaxUrls.loadActiveMedicalCenters,
             type: 'get',
             dataType: 'json',
@@ -116,7 +116,7 @@ var InstitutionProfile = {
                 InstitutionProfile.medicalCenterTabbedContentElement.html(response.medicalCenters.html);
                 InstitutionProfile.switchTab('medical_centers');
             }
-        });
+        });**/
         
         // institution services content
         $.ajax({
