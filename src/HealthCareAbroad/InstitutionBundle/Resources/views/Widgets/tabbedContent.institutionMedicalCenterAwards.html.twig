@@ -1,23 +1,28 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
+    
     <table class="table table-striped table-bordered">
 		<tbody>
 		    <tr>
 				<th>Awards</th>
-				<th>Year Given</th>
 				<th>Actions</th>
 			</tr>
+			{% for _award in currentGlobalAwards.award %}
 			<tr>												
 				<td>
-					<h5>Name of Awards</h5>
-					<small>Award Giving Body Organization</small>
+					<h5>{{ _award.name }}</h5>
+					<small>{{ _award.awardingBody.name }}</small>
 				</td>												
-				<td>2012</td>												
 				<td>
 					<i title="Delete" class="icon-trash"></i>
 					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
 				</td>
 			</tr>
+			{% else %}
+			<tr>
+			    <td colspan="2">No awards yet.</td>
+			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 	<div class="pull-right">
@@ -28,20 +33,24 @@
 		<tbody>
 			<tr>
 				<th>Certificates</th>
-				<th>Year Given</th>
 				<th>Actions</th>
 			</tr>
+			{% for _certificate in currentGlobalAwards.certificate %}
 			<tr>												
 				<td>
-					<h5>Name of Certificate</h5>
-					<small>Award Giving Body Organization</small>
+					<h5>{{ _certificate.name }}</h5>
+					<small>{{ _certificate.awardingBody.name }}</small>
 				</td>												
-				<td>2012</td>												
 				<td>
 					<i title="Delete" class="icon-trash"></i>
 					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
 				</td>
 			</tr>
+			{% else %}
+			<tr>
+			    <td colspan="2">No certificates yet.</td>
+			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 	<div class="pull-right">
@@ -55,17 +64,22 @@
 				<th>Year Given</th>
 				<th>Actions</th>
 			</tr>
+			{% for _affiliation in currentGlobalAwards.affiliation %}
 			<tr>												
 				<td>
-					<h5>Name of Affiliation</h5>
-					<small>Award Giving Body Organization</small>
+					<h5>{{ _affiliation.name }}</h5>
+					<small>{{ _affiliation.awardingBody.name }}</small>
 				</td>												
-				<td>2012</td>												
 				<td>
 					<i title="Delete" class="icon-trash"></i>
 					<a data-toggle="modal" role="button" title="" href="#deleteservices">Delete</a>
 				</td>
 			</tr>
+			{% else %}
+			<tr>
+			    <td colspan="2">No affiliations yet yet.</td>
+			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 	<div class="pull-right">

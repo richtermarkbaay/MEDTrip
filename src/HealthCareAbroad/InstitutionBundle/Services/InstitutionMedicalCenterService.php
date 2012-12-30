@@ -30,9 +30,19 @@ class InstitutionMedicalCenterService
      */
     private $doctrine;
     
+    /**
+     * @var InstitutionMedicalCenterPropertyService
+     */
+    private $institutionMedicalCenterPropertyService;
+    
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    public function setInstitutionMedicalCenterPropertyService(InstitutionMedicalCenterPropertyService $service)
+    {
+        $this->institutionMedicalCenterPropertyService = $service;
     }
     
     /**
@@ -197,6 +207,11 @@ class InstitutionMedicalCenterService
         $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter);
    
         return $ancilliaryServices;
+    }
+    
+    public function getMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter);
     }
     
     public function getActiveMedicalCenters(Institution $institution){

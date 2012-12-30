@@ -2,6 +2,16 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\HelperBundle\Entity\AwardingBody;
+
+use Doctrine\ORM\Query;
+
+use Doctrine\ORM\Mapping\ClassMetadata;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -40,5 +50,34 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
             ->setParameter('imcId', $institutionMedicalCenter->getId());
         
         return $query->getResult();
+    }
+    
+    /**
+     * Get global awards of an institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array GlobalAward
+     */
+    public function getAllGlobalAwardsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
+        
+        $sql = "SELECT a.value  FROM institution_medical_center_properties a ".
+            "WHERE a.institution_property_type_id = :propertyType AND a.institution_medical_center_id = :imcId";
+        $statement = $this->getEntityManager()
+            ->getConnection()->prepare($sql);
+        
+        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'imcId' => $institutionMedicalCenter->getId()));
+        $ids = array();
+        while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
+            $ids[] = $row['value'];    
+        }
+        
+        $dql = "SELECT a, b FROM HelperBundle:GlobalAward a INNER JOIN a.awardingBody as b WHERE a.id IN (?1)";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameter(1, $ids);
+        $result = $query->getResult();
+        
+        return $result;
     }
 }

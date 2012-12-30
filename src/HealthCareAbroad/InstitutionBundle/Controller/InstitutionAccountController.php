@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
@@ -251,6 +253,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $output = array();
         $parameters = array('institution' => $this->institution);
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+        $propertyService = $this->get('services.institution_medical_center_property');
         switch ($content) {
             case 'specializations':
                 $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
@@ -261,7 +264,20 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':
-                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
+                $awardTypeKeys = GlobalAwardTypes::getTypeKeys();
+                
+                $currentGlobalAwards = array(
+                    $awardTypeKeys[GlobalAwardTypes::AWARD] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::CERTIFICATE] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::AFFILIATION] => array(),
+                );
+                
+                // group current global awards by type
+                foreach ($institutionMedicalCenterService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter) as $_award) {
+                    $currentGlobalAwards[$awardTypeKeys[$_award->getType()]][] = $_award;
+                }
+                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
+                //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
