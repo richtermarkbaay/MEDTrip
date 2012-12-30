@@ -28,4 +28,8 @@ HealthCareAbroad\HelperBundle\Entity\AwardingBody:
         status:
             type: smallint
             nullable: false
+    oneToMany:
+        globalAwards:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\GlobalAward
+            mappedBy: awardingBody
     lifecycleCallbacks: {  }

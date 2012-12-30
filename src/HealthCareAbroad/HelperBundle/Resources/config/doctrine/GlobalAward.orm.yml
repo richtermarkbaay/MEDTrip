@@ -40,9 +40,7 @@ HealthCareAbroad\HelperBundle\Entity\GlobalAward:
             orphanRemoval: false
         awardingBody:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\AwardingBody
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
+            inversedBy: globalAwards
             joinColumns:
                 awarding_body_id:
                     referencedColumnName: id
