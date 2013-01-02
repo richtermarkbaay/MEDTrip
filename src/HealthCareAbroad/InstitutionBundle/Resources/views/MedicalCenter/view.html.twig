@@ -14,14 +14,20 @@
                             <div class="tabbable">
                                 {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
                                     tabNavigation: { links: [
-                                        { label: 'Specializations', 'active': true, 'href' : '#specializations' },
-                                        { label: 'Services', 'href' : '#services' },
-                                        { label: 'Awards', 'href' : '#awards' },
-                                        { label: 'Medical Specialists', 'href' : '#medical_specialists' },
+                                        { label: 'Specializations', 'active': true, 'href' : '#specializations_tab_content' },
+                                        { label: 'Services', 'href' : '#services_tab_content' },
+                                        { label: 'Awards', 'href' : '#awards_tab_content' },
+                                        { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content' },
                                     ]}
                                 } %}
                                 
                                <div class="tab-content" id="tabbed_content">
+                                   <div id="specializations_tab_content" class="tab-pane active">
+                                       {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
+                                   </div>
+                                   <div id="services_tab_content" class="tab-pane"><span>Loading ancillary services</span></div>
+                                   <div id="awards_tab_content" class="tab-pane"><span>Loading clinic awards, certificates and affiliations</span></div>
+                                   <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
                                </div><!-- /.tab-content -->
                             </div>
                         </div><!-- end .span9 -->
@@ -37,11 +43,6 @@
             </section>
         {% endblock %}
     {% endembed %}
-
-<div id="specializations_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="services_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="awards_tab_content" style="display:none;"><span>Loading...</span></div>
-<div id="medical_specialists_tab_content" style="display:none;"><span>Loading...</span></div>
     
 {% endblock %}
 
@@ -53,82 +54,15 @@
 <!--
     (function($){
 
-        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-        //$('#institution_profile_form_country').change();
-
-        InstitutionMedicalCenter.initializeTabs({
-            'specializations' : {'url': '{{ path("institution_medicalCenter_loadTabbedContents", {"content": "specializations", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#specializations_tab_content')},
-            'services' : {'url': '{{ path("institution_medicalCenter_loadTabbedContents", {"content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
-            'awards' : {'url': '{{ path("institution_medicalCenter_loadTabbedContents", {"content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
-            'medical_specialists' : {'url': '{{ path("institution_medicalCenter_loadTabbedContents", {"content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
-        })
-        .initializeTabbedContentContainerElement($('div#tabbed_content'))
-        .loadTabbedContents()
-        .switchTab('specializations');
-
-        $('a.profile_tab_links').click(function(){
-            $(this).parents('ul.tab_navigation').find('li.active').removeClass('active');
-            $(this).parents('ul li').addClass('active');
-            InstitutionMedicalCenter.switchTab($(this).attr('href').replace("#", ""));
-    
-            return false;
-        });
-    
-        // Set Submit button of modal forms to save the specific property changes and update the text property.
-        $('.button-wrapper .submit-button').click(function(){
-
-            $(this).attr('disabled', true);
-            _form = $(this).parents('.modal-content').find('form');
-            _form.append('<span class="loader">Loading...</span>');
-
-            InstitutionMedicalCenter.submitModalForm(_form, function(response){
-                if (response.form_error) {
-                    _form.prepend(response.form_error_html);
-                }
-                else {
-
-                    switch(_form.attr('id')){
-                        case 'nameModalForm':
-                            $('#clinicNameText').html(response.institutionMedicalCenter.name);
-                        	break;
-
-                        case 'descriptionModalForm':
-                            $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
-                            break;
-
-                        case 'addressModalForm':
-                            var address = response.institutionMedicalCenter.address; 
-                            $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
-                            $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
-                            $('#profileZipcodeText').html(response.institutionMedicalCenter.zipCode ? response.institutionMedicalCenter.zipCode + ', ' : '');
-                            //$('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
-                            //$('#profileCountryText').html(response.institutionMedicalCenter.country);
-                            break;
-
-                        case 'numberModalForm':
-                            var number = response.institutionMedicalCenter.contactNumber;
-                            $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
-                            break;
-
-                        case 'emailModalForm':
-                            $('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
-                            break;
-
-                        case 'websitesModalForm':
-                            var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
-                            for(name in websites) {
-                                websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
-                            }
-                            $('#profileWebsitesText').html(websitesString);
-                            break;
-                    }
-
-                    _form.parents('.modal').modal('hide');
-                }
-
-                $(this).attr('disabled', false);
-                _form.find('span.loader').remove();
-            });
+        $(function(){
+            Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+            InstitutionMedicalCenter.initializeTabs({
+                'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
+                'awards' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
+                'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
+            })
+            .initializeTabbedContentContainerElement($('div#tabbed_content'))
+            .loadTabbedContents();
         });
 
     })(jQuery);
