@@ -762,7 +762,8 @@ CREATE TABLE IF NOT EXISTS `institution_treatments` (
   KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
+INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES
+(1, 1);
 -- --------------------------------------------------------
 
 --
@@ -1124,7 +1125,7 @@ CREATE TABLE IF NOT EXISTS `treatment_sub_specializations` (
 --
 
 INSERT INTO `treatment_sub_specializations` (`treatment_id`, `sub_specialization_id`) VALUES
-(1, 2);
+(1, 1);
 
 
 
