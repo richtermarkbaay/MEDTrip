@@ -244,8 +244,12 @@ class MediaService
 
     public function retrieveAllMedia($institutionId)
     {
-        //$gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
-        $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findBy(array('institution_id'), $institutionId);
+        $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findOneBy(array('institution' => $institutionId));
+        if (!$gallery) {
+            $gallery = new Gallery();
+            $gallery->setInstitution($this->entityManager->getRepository('InstitutionBundle:Institution')->find($institutionId));
+            $this->entityManager->persist($gallery);
+        }
 
         return $gallery->getMedia();
     }
@@ -387,7 +391,7 @@ class MediaService
             return $media;
         }
     }
-    
+
     public function uploadDoctorImage($file)
     {
         if (!$file->isValid()) {
@@ -395,21 +399,21 @@ class MediaService
         }
 
         $filesystem = $this->filesystemManager->getDoctor('local');
-    
+
         //TODO: rename/sanitize filename
         $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $caption = $file->getClientOriginalName();
-    
+
         $proceed = true;
         try {
             $file->move($this->filesystemManager->getUploadRootDir(), $filename);
         } catch (FileException $e) {
             $proceed = false;
         }
-    
+
         if ($proceed) {
             $imageAttributes = getimagesize($this->filesystemManager->getUploadRootDir().'/'.$filename);
-    
+
             $media = new Media();
             $media->setName($filename);
             $media->setContentType($imageAttributes['mime']);
@@ -419,21 +423,21 @@ class MediaService
             $media->setWidth($imageAttributes[0]);
             $media->setHeight($imageAttributes[1]);
             //TODO: ignore the other attributes for now
-    
+
             $in = new File($filename, $filesystem);
             $out = new File('thumbnail-'.$filename, $filesystem);
-    
+
             $format = image_type_to_extension($imageAttributes[2], false);
-    
+
             //TODO: inject this dynamically selecting the optimal ImagineInterface available
             //$resizer = new SquareResizer(new \Imagine\Gd\Imagine());
             //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
             $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
-    
+
             $em = $this->entityManager;
             $em->persist($media);
             $em->flush($media);
-    
+
             return $media;
         }
     }
