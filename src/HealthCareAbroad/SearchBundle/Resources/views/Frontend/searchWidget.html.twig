@@ -31,7 +31,12 @@ $(function() {
             $.ajax({
                 url: "{{ path('search_frontend_ajaxLoadTreatments') }}",
                 dataType: "json",
-                data: { term: request.term, prevTerm: $('#destination_id').val() },
+                data: {
+                    term: request.term,
+                    destinationId: $('#destination_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
+                },
                 success: function(data) {
                     response($.each(data, function(item) {
                         return { label: item.label, value: item.value }
@@ -63,7 +68,9 @@ $(function() {
                 dataType: "json",
                 data: {
                     term: request.term,
-                    prevTerm: $('#treatment_id').val()
+                    treatmentId: $('#treatment_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
                 },
                 success: function(data) {
                     response( $.each(data, function(item) {

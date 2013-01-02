@@ -1,12 +1,39 @@
 parameters:
     services.search.class: HealthCareAbroad\SearchBundle\Services\SearchService
-    services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
+    services.search.strategy.class: HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy
+    services.search.default_strategy.class: HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy
+    services.search.elastic_strategy.class: HealthCareAbroad\SearchBundle\Services\SearchStrategy\ElasticSearchStrategy
+    enableElasticSearch: true
+
 services:
+    #services.search.provider.country:
+    #    class: HealthCareAbroad\SearchBundle\ElasticSearch\Providers\CountryProvider
+    #    tags: [foq_elastica.provider]
+    #    index: destinations
+    #    type: country
+    #    arguments: [@foq_elastica.index.destinations.country]
+
+    services.search.strategy:
+        class: %services.search.strategy.class%
+        abstract: true
+        calls:
+            - [setContainer, [@service_container]]
+
+    #Enable either one of these strategies and edit the argument for the
+    #services.search. Elastic strategy uses the elasticsearch search engine
+    #while default strategy (slower) is implemented using good old mysql
+    #services.search.elastic_strategy:
+    #    class: %services.search.elastic_strategy.class%
+    #    parent: services.search.strategy
+
+    services.search.default_strategy:
+        class: %services.search.default_strategy.class%
+        parent: services.search.strategy
+
     services.search:
-        class: "%services.search.class%"
-        arguments:
-            - @doctrine.orm.entity_manager
-            
+        class: %services.search.class%
+        arguments: [@services.search.default_strategy]
+
     services.search_builder_factory:
         class: HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory
         arguments: [@doctrine]
@@ -16,11 +43,3 @@ services:
         class: HealthCareAbroad\SearchBundle\Services\AdminSearchService
         calls:
             - [setSearchBuilderFactory, [@services.search_builder_factory]]
-#    services.filesystemfactory:
-#        class: HealthCareAbroad\MediaBundle\Classes\FilesystemFactory
-#        arguments:
-#            - %kernel.root_dir%/../web/media
-#    services.media:
-#        class: "%services.media.class%"
-#        arguments:
-#            - @services.filesystemfactory            

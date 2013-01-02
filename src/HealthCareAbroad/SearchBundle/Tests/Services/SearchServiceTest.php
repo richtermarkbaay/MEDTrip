@@ -1,308 +1,374 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Tests\Services;
 
-use HealthCareAbroad\SearchBundle\Constants;
 use HealthCareAbroad\SearchBundle\Tests\ContainerAwareUnitTestCase;
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\ProcedureType;
-use HealthCareAbroad\MedicalProcedureBundle\Entity\Procedure;
+use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 
 class SearchServiceTest extends ContainerAwareUnitTestCase
 {
     public function setUp()
     {
         $this->service = $this->get('services.search');
-        $this->time = \time();
     }
 
     public function tearDown()
     {
     }
 
-    public function testInitiateShouldReturnArrayOfInstitutionObjects()
+    public function testGetDestinationsByCountry()
     {
-        $term = 'Test Institution Medical Clinic';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_INSTITUTION
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'Phil',
+                        'destination' => '0-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Phil',
+                        'treatmentLabel' => ''
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-        $this->assertInstanceOf(
-                'HealthCareAbroad\\InstitutionBundle\\Entity\\Institution', $actual[0],
-                'Method initiate() should return an array of Institution objects');
 
-        $term = 'Test INSTItution mediCal Clinic';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_INSTITUTION
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
+        $results = $this->service->getDestinations($searchParams);
 
-        $term = 'nsti';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_INSTITUTION
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-
-        /*
-        $term = 'Test    Institution Medical      Clinic';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_INSTITUTION
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be whitespace-insensitive)");
-        */
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Philippines', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-0', $results[0]['value']);
     }
 
-    public function testInitiateSearchForInstitutionsShouldReturnAnEmptyArray()
+    public function testGetDestinationsByCity()
     {
-        $term ='A clinic that should not exist: '.$this->time;
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_INSTITUTION
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'eb',
+                        'destination' => '0-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'eb',
+                        'treatmentLabel' => ''
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertEmpty($actual, "Searched for \"$term\"");
+
+        $results = $this->service->getDestinations($searchParams);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('cebu, Philippines', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1', $results[0]['value']);
     }
 
-    public function testInitiateShouldReturnArrayOfMedicalCenterObjects()
+    public function testGetTreatmentsBySpecialization()
     {
-        $term = 'AddedFromTest Center';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_CENTER
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'specialization',
+                        'destination' => '0-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => '',
+                        'treatmentLabel' => 'specialization'
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-        $this->assertInstanceOf(
-                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\MedicalCenter', $actual[0],
-                'Method initiate() should return an array of MedicalCenter objects');
 
-        $term = 'aDDedfRomTEst Center';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_CENTER
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
+        $results = $this->service->getTreatments($searchParams);
 
-        $term = 'dedFromT';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_CENTER
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
+        $this->assertCount(2, $results);
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
 
-        /*
-        $term = 'AddedFromTest       Center';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_CENTER
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be whitespace-insensitive)");
-        */
+            if ($r['label'] === 'Specialization 1') {
+                $this->assertEquals('1-0-0-specialization', $r['value']);
+            } else {
+                $this->assertEquals('Treatment with sub specialization', $r['label']);
+                $this->assertEquals('1-1-1-treatment', $r['value']);
+            }
+        }
     }
 
-    public function testInitiateSearchForMedicalCentersShouldReturnAnEmptyArray()
+    public function testGetTreatmentsBySubSpecialization()
     {
-        $term = 'A center that should not exist: '.$this->time;
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_CENTER
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'ub with treatment',
+                        'destination' => '0-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => '',
+                        'treatmentLabel' => 'ub with treatment'
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertEmpty($actual, "Searched for \"$term\"");
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Sub with treatments', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-0-subSpecialization', $results[0]['value']);
     }
 
-    public function testInitiateShouldReturnArrayOfTreatmentObjects()
+    public function testGetTreatmentsByTreatment()
     {
-        $term = "Procedure Type1";
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'treatment with sub',
+                        'destination' => '0-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => '',
+                        'treatmentLabel' => 'treatment with sub'
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-        $this->assertInstanceOf(
-                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\Treatment', $actual[0],
-                'Method initiate() should return an array of ProcedureType objects');
 
-        $term = "ProCedure Type1";
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
-
-        $term = "dure Ty";
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-
-        //TODO: setup fixtures
-        /*
-        $term = '';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be whitespace-insensitive)");
-        */
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Treatment with sub specialization', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-1-treatment', $results[0]['value']);
     }
 
-    public function testInitiateSearchForTreatmentsShouldReturnAnEmptyArray()
+    public function testGetDestinationByCountryAndSpecialization()
     {
-        $term = 'A procedure type that should not exist: '.$this->time;
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE_TYPE
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'philippine',
+                        'destination' => '0-0',
+                        'treatment' => '1-0-0-specialization',
+                        'destinationLabel' => 'philippine',
+                        'treatmentLabel' => 'Specialization 1'
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertEmpty($actual, "Searched for \"$term\"");
+
+        $results = $this->service->getDestinations($searchParams);
+
+        $this->assertCount(2, $results);
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
+
+            if ($r['label'] === 'Philippines') {
+                $this->assertEquals('1-0', $r['value']);
+            } else {
+                $this->assertEquals('cebu, Philippines', $r['label']);
+                $this->assertEquals('1-1', $r['value']);
+            }
+        }
     }
 
-    public function testInitiateShouldReturnArrayOfTreatmentProcedureObjects()
+    public function testGetDestinationsByCityAndSpecialization()
     {
-        $term = 'Test Medical Procedure';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'Ceb',
+                        'destination' => '0-0',
+                        'treatment' => '1-0-0-specialization',
+                        'destinationLabel' => 'Ceb',
+                        'treatmentLabel' => 'Specialization 1'
         ));
 
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-        $this->assertInstanceOf(
-                'HealthCareAbroad\\MedicalProcedureBundle\\Entity\\TreatmentProcedure', $actual[0],
-                'Method initiate() should return an array of MedicalProcedure objects');
+        $results = $this->service->getDestinations($searchParams);
 
+        $this->assertCount(1, $results);
 
-
-        $term = "Test medicaL PrOcedure";
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be case-insensitive)");
-
-        $term = "cal Pr";
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\"");
-
-        //TODO: setup fixtures
-        /*
-            $term = '';
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE
-        ));
-        $this->assertNotEmpty($actual, "Searched for \"$term\" (search should be whitespace-insensitive)");
-        */
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('cebu, Philippines', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1', $results[0]['value']);
     }
 
-    public function testInitiateSearchForTreatmentProceduresShouldReturnAnEmptyArray()
+    public function testGetDestinationsByCountryAndSubSpecialization()
     {
-        $term = 'A procedure that should not exist: '.$this->time;
-        $actual = $this->service->initiate(array(
-                'term' => $term,
-                'category' => Constants::SEARCH_CATEGORY_PROCEDURE
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'philippine',
+                        'destination' => '0-0',
+                        'treatment' => '1-1-0-subSpecialization',
+                        'destinationLabel' => 'philippine',
+                        'treatmentLabel' => 'Sub with treatments'
         ));
-        $this->assertTrue(is_array($actual), 'Method initiate() should return an array');
-        $this->assertEmpty($actual, "Searched for \"$term\"");
+
+        $results = $this->service->getDestinations($searchParams);
+
+        $this->assertCount(2, $results);
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
+
+            if ($r['label'] === 'Philippines') {
+                $this->assertEquals('1-0', $r['value']);
+            } else {
+                $this->assertEquals('cebu, Philippines', $r['label']);
+                $this->assertEquals('1-1', $r['value']);
+            }
+        }
     }
 
-    public function testGetTreatmentsByName()
+    public function testGetDestinationsByCityAndSubSpecialization()
     {
-        //TODO: move some of the assertions to the searchTreatmentsByName tests
-        $treatmentName = "Type1";
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'Ceb',
+                        'destination' => '0-0',
+                        'treatment' => '1-1-0-subSpecialization',
+                        'destinationLabel' => 'Ceb',
+                        'treatmentLabel' => 'Sub with treatments'
+        ));
 
-        $actual = $this->service->getTreatmentsByName($treatmentName);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Procedure Type1', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-0', $actual[0]['value']);
+        $results = $this->service->getDestinations($searchParams);
 
-        $actual = $this->service->getTreatmentsByName($treatmentName, null);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Procedure Type1', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-0', $actual[0]['value']);
-
-        $actual = $this->service->getTreatmentsByName($treatmentName, 0);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Procedure Type1', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-0', $actual[0]['value']);
-
-        $treatmentName = 'non-existent-treatment';
-
-        $actual = $this->service->getTreatmentsByName($treatmentName);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
-
-        $actual = $this->service->getTreatmentsByName($treatmentName, null);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
-
-        $actual = $this->service->getTreatmentsByName($treatmentName, 0);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
-
-        $treatmentProcedureName = "Test Medical Procedure";
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-1', $actual[0]['value']);
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, null);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-1', $actual[0]['value']);
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, 0);
-        $this->assertTrue(is_array($actual));
-        $this->assertCount(1, $actual);
-        $this->assertArrayHasKey('label', $actual[0]);
-        $this->assertEquals('Test Medical Procedure', $actual[0]['label']);
-        $this->assertArrayHasKey('value', $actual[0]);
-        $this->assertEquals('1-1', $actual[0]['value']);
-
-        $treatmentProcedureName = 'non-existent-treatment-procedure';
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, null);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
-
-        $actual = $this->service->getTreatmentsByName($treatmentProcedureName, 0);
-        $this->assertTrue(is_array($actual));
-        $this->assertEmpty($actual);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('cebu, Philippines', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1', $results[0]['value']);
     }
 
-    public function testGetDestinationsByName()
+    public function testGetDestinationsByCountryAndTreatment()
     {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'Philippine',
+                        'destination' => '0-0',
+                        'treatment' => '1-1-1-treatment',
+                        'destinationLabel' => 'Philippine',
+                        'treatmentLabel' => 'Treatment with sub specialization'
+        ));
 
+        $results = $this->service->getTreatments($searchParams);
+
+        $this->assertCount(2, $results);
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
+
+            if ($r['label'] === 'Philippines') {
+                $this->assertEquals('1-0', $r['value']);
+            } else {
+                $this->assertEquals('cebu, Philippines', $r['label']);
+                $this->assertEquals('1-1', $r['value']);
+            }
+        }
     }
 
+    public function testGetDestinationsByCityAndTreatment()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'Ceb',
+                        'destination' => '0-0',
+                        'treatment' => '1-1-1-treatment',
+                        'destinationLabel' => 'Ceb',
+                        'treatmentLabel' => 'Treatment with sub specialization'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('cebu, Philippines', $results[0]['label']);
+        $this->assertEquals('1-1', $results[0]['value']);
+    }
+
+    public function testGetTreatmentsBySpecializationAndCountry()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'specialization',
+                        'destination' => '1-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Philippines',
+                        'treatmentLabel' => 'specialization'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(2, $results);
+
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
+
+            if ($r['label'] === 'Specialization 1') {
+                $this->assertEquals('1-0-0-specialization', $r['value']);
+            } else {
+                $this->assertEquals('Treatment with sub specialization', $r['label']);
+                $this->assertEquals('1-1-1-treatment', $r['value']);
+            }
+        }
+    }
+
+    public function testGetTreatmentsBySpecializationAndCity()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'specialization',
+                        'destination' => '1-1',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Cebu, Philippines',
+                        'treatmentLabel' => 'specialization'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(2, $results);
+
+        foreach ($results as $r) {
+            $this->assertArrayHasKey('label', $r);
+            $this->assertArrayHasKey('value', $r);
+
+            if ($r['label'] === 'Specialization 1') {
+                $this->assertEquals('1-0-0-specialization', $r['value']);
+            } else {
+                $this->assertEquals('Treatment with sub specialization', $r['label']);
+                $this->assertEquals('1-1-1-treatment', $r['value']);
+            }
+        }
+    }
+
+    public function testGetTreatmentsBySubSpecializationAndCountry()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'ub with treatment',
+                        'destination' => '1-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Philippines',
+                        'treatmentLabel' => 'ub with treatment'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Sub with treatments', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-0-subSpecialization', $results[0]['value']);
+    }
+
+    public function testGetTreatmentsBySubSpecializationAndCity()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'ub with treatment',
+                        'destination' => '1-1',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Cebu, Philippines',
+                        'treatmentLabel' => 'ub with treatment'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Sub with treatments', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-0-subSpecialization', $results[0]['value']);
+    }
+
+    public function testGetTreatmentsByTreatmentAndCountry()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'treatment with sub',
+                        'destination' => '1-0',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Philippines',
+                        'treatmentLabel' => 'treatment with sub'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Treatment with sub specialization', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-1-treatment', $results[0]['value']);
+    }
+
+    public function testGetTreatmentsByTreatmentAndCity()
+    {
+        $searchParams = new SearchParameterBag(array(
+                        'term' => 'treatment with sub',
+                        'destination' => '1-1',
+                        'treatment' => '0-0-0-0',
+                        'destinationLabel' => 'Cebu, Philippines',
+                        'treatmentLabel' => 'treatment with sub'
+        ));
+
+        $results = $this->service->getTreatments($searchParams);
+        $this->assertCount(1, $results);
+        $this->assertArrayHasKey('label', $results[0]);
+        $this->assertEquals('Treatment with sub specialization', $results[0]['label']);
+        $this->assertArrayHasKey('value', $results[0]);
+        $this->assertEquals('1-1-1-treatment', $results[0]['value']);
+    }
 }
