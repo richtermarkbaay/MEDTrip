@@ -93,11 +93,19 @@ class InstitutionTreatmentsController extends Controller
         $criteria = array('institution' => $this->institution);
         $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
 
+        // get global ancillary services
+        $ancillaryServicesData = array(
+                        'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                        'selectedAncillaryServices' => array()
+        );
+        
         $params = array(
             'institution' => $this->institution,
             'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
             'institutionMedicalCenters' => $institutionMedicalCenters,
+            'institutionSpecializationsData' => array(),
+            'ancillaryServicesData' => $ancillaryServicesData,
             'pager' => $this->pager,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
         );
