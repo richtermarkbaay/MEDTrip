@@ -9,7 +9,7 @@ Note: This widget is only for AdminBundle
                 <div class="span3">
                     <div class="photo-group">
 
-                        {% if institution.media %}
+                        {% if institution.media is not sameas(NULL) %}
                             {{ media(institution.media, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
                         {% else %}
                             <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
