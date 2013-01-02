@@ -53,7 +53,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
-            new FOQ\ElasticaBundle\FOQElasticaBundle(),
+            //new FOQ\ElasticaBundle\FOQElasticaBundle(),
             new HealthCareAbroad\PagerBundle\PagerBundle(),
             new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
