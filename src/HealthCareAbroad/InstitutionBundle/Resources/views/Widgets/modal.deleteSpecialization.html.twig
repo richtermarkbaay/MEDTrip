@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    <h3>Delete Specialization</h3>
+</div>
+<div class="modal-body">
+    <p>Are you sure you want to
+    	<strong>delete {{ institutionSpecialization.specialization.name }}?</strong>
+    </p>
+    <p>Note: Deleting this Specialization will also delete your Treatments...</p>
+</div>
+<div class="modal-footer">
+    <form action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': institutionSpecialization.id } ) }}">
+        {{ form_rest(form) }}
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this).parents('form')); return true;">Delete</button>
+    </form>
+</div>
+		
+	

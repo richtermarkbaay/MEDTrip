@@ -1,5 +1,11 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -118,7 +124,17 @@ class MedicalCenterController extends InstitutionAwareController
                     
                     $output['institutionMedicalCenter'] = array();
                     foreach ($formVariables as $key => $v){
-                        $output['institutionMedicalCenter'][$key] = $this->institutionMedicalCenter->{'get'.$key}();
+                        $value = $this->institutionMedicalCenter->{'get'.$key}();
+                        
+                        if(is_object($value)) {
+                            $value = $value->__toString();
+                        }
+                        
+                        if($key == 'address' || $key == 'contactNumber' || $key == 'websites') {
+                            $value = json_decode($value, true);
+                        }
+                        
+                        $output['institutionMedicalCenter'][$key] = $value;
                     }
                     
                     
@@ -318,7 +334,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         // construct the row for a medical specialist
-        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Delete first row"></td></tr>';
+        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
         return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
     }
     
@@ -355,6 +371,7 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
                         'doctorsJSON' => \json_encode($doctorArr)
         ));
@@ -498,20 +515,16 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-        $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        //$institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
+        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         return $this->render($template, array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'institutionSpecializations' => $institutionSpecializations,
+            'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
             'institutionMedicalCenterForm' => $form->createView()
         ));
-    }
-    
-    public function viewAction(Request $request)
-    {
-    
     }
     
     public function saveAction(Request $request)
@@ -676,11 +689,140 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         
+        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
+        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+        
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        
+        // get the current property values
+        $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
+        foreach ($currentAwardPropertyValues as $_prop) {
+            $_global_award = $repo->find($_prop->getValue());
+            if ($_global_award) {
+                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
+                    'global_award' => $_global_award,
+                    'medical_center_property' => $_prop
+                );
+            }
+        }
+        
+        foreach ($globalAwards as $_award) {
+            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
+            //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
+            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
+            $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
+        }
+        
         return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+            'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
+            'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
+            'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
+            'currentGlobalAwards' => $currentGlobalAwards
         ));
+    }
+    
+    public function ajaxAddGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+        
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+        
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+        // check if this medical center already have this property
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
+            $response = new Response("Property value {$award->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($award->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+                
+                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+                
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+        
+        return $response;
+    }
+    
+    public function ajaxRemovePropertyValueAction(Request $request)
+    {
+        $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid medical center property.');
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+        
+        return new Response("Property removed", 200);
+    }
+    
+    /**
+     * Remove institution specialization
+     * 
+     * @param Request $request
+     */
+    public function ajaxRemoveSpecializationAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+            ->find($request->get('isId', 0));
+        
+        if (!$institutionSpecialization) {
+            throw $this->createNotFoundException('Invalid instituiton specialization');
+        }
+        
+        if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
+            return new Response("Cannot remove specialization that does not belong to this institution", 401);
+        }
+        
+        $form = $this->createForm(new CommonDeleteFormType(), $institutionSpecialization);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $institutionSpecialization->getId();
+//                 $em = $this->getDoctrine()->getEntityManager();
+//                 $em->remove($institutionSpecialization);
+//                 $em->flush();
+                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
+        }
+        else {
+            
+            $html = $this->renderView('InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig', array(
+                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                'institutionSpecialization' => $institutionSpecialization,
+                'form' => $form->createView()
+            ));
+            
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        
+        return $response;
     }
 
 }

@@ -9,11 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AwardingBody
 {
-	
 	const STATUS_ACTIVE = 1;
+	
 	const STATUS_INACTIVE = 0;
-	
-	
     /**
      * @var integer $id
      */
@@ -39,7 +37,16 @@ class AwardingBody
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $globalAwards;
 
+    public function __construct()
+    {
+        $this->globalAwards = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -54,7 +61,7 @@ class AwardingBody
      * Set name
      *
      * @param string $name
-     * @return AwardingBodies
+     * @return AwardingBody
      */
     public function setName($name)
     {
@@ -76,7 +83,7 @@ class AwardingBody
      * Set details
      *
      * @param string $details
-     * @return AwardingBodies
+     * @return AwardingBody
      */
     public function setDetails($details)
     {
@@ -98,7 +105,7 @@ class AwardingBody
      * Set website
      *
      * @param string $website
-     * @return AwardingBodies
+     * @return AwardingBody
      */
     public function setWebsite($website)
     {
@@ -120,7 +127,7 @@ class AwardingBody
      * Set status
      *
      * @param smallint $status
-     * @return AwardingBodies
+     * @return AwardingBody
      */
     public function setStatus($status)
     {
@@ -136,5 +143,37 @@ class AwardingBody
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add globalAwards
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $globalAwards
+     * @return AwardingBody
+     */
+    public function addGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $globalAwards)
+    {
+        $this->globalAwards[] = $globalAwards;
+        return $this;
+    }
+
+    /**
+     * Remove globalAwards
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $globalAwards
+     */
+    public function removeGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $globalAwards)
+    {
+        $this->globalAwards->removeElement($globalAwards);
+    }
+
+    /**
+     * Get globalAwards
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getGlobalAwards()
+    {
+        return $this->globalAwards;
     }
 }

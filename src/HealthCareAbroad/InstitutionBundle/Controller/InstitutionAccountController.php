@@ -1,9 +1,11 @@
 <?php 
 /**
  * @author Chaztine Blance
- * Create Profile after Sign up
+ * 
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
@@ -51,6 +53,9 @@ class InstitutionAccountController extends InstitutionAwareController
 	public function preExecute()
 	{
 	    $this->institutionService = $this->get('services.institution');
+	    if ($this->institutionService->isSingleCenter($this->institution)) {
+	        $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+	    }
 	    $this->request = $this->getRequest();
 	    
 	}
@@ -183,21 +188,29 @@ class InstitutionAccountController extends InstitutionAwareController
             'institution' => $this->institution
         );
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
+
+            $templateVariables['isSingleCenter'] = true;
             
             // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+            if(!$templateVariables['institutionMedicalCenter']) {
+                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+            }
+
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
-            $template = 'InstitutionBundle:Institution:profile.singleCenter.html.twig';
+            
+            // load medical center specializations
+            $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
         }
         else {
-            $template = 'InstitutionBundle:Institution:profile.multipleCenter.html.twig';
+            // multiple center institution profile view
+            $templateVariables['medicalCenters'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
         }
         
-//         $institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($institutionMedicalCenter);
-        
-        return $this->render($template, $templateVariables);
+        return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
     
 
@@ -236,26 +249,35 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadSingleTabbedContentsAction(Request $request)
     {
-        if ($imcId=$this->getRequest()->get('imcId',0)) {
-            $this->institutionMedicalCenter = $this->repository->find($imcId);
-        }else {
-            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-        }
-        
         $content = $request->get('content');
         $output = array();
         $parameters = array('institution' => $this->institution);
+        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+        $propertyService = $this->get('services.institution_medical_center_property');
         switch ($content) {
             case 'specializations':
                 $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
+                $parameters['services'] = $institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter);
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':
-                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
+                $awardTypeKeys = GlobalAwardTypes::getTypeKeys();
+                
+                $currentGlobalAwards = array(
+                    $awardTypeKeys[GlobalAwardTypes::AWARD] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::CERTIFICATE] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::AFFILIATION] => array(),
+                );
+                
+                // group current global awards by type
+                foreach ($institutionMedicalCenterService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter) as $_award) {
+                    $currentGlobalAwards[$awardTypeKeys[$_award->getType()]][] = $_award;
+                }
+                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
+                //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
@@ -291,6 +313,22 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     $this->get('services.institution.factory')->save($this->institution);
+
+
+                    // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
+                    if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
+                        $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+
+                        $center->setName($this->institution->getName());
+                        $center->setDescription($this->institution->getDescription());
+                        $center->setAddress($this->institution->getAddress1());
+                        $center->setContactNumber($this->institution->getContactNumber());
+                        $center->setContactEmail($this->institution->getContactEmail());
+                        $center->setWebsites($this->institution->getWebsites());
+                        $center->setDateUpdated($this->institution->getDateModified());
+
+                        $this->get('services.institution_medical_center')->save($center);
+                    }
                     
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){

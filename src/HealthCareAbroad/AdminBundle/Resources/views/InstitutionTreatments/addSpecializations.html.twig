@@ -1,7 +1,7 @@
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 {% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
 
-{% block title %}{{ parent() }} Add {{ centerLabel }} {% endblock %}
+{% block title %}Add new clinic specialization for {{ institutionMedicalCenter.name }} {% endblock %}
 
 
 {% block content %}
@@ -14,7 +14,7 @@
                 </div>
 
                 <div class="treatmentbox">
-                	<h5>Add Specialization2</h5>
+                	<h5>Add Specialization</h5>
                 	
                 	<label>Search and Add your SPECIALIZATIONS</label>
                     {{ form_widget(form.specialization_selector) }}

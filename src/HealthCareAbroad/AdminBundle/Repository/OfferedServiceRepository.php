@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Repository;
 
+use HealthCareAbroad\AdminBundle\Entity\OfferedService;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -46,7 +48,8 @@ class OfferedServiceRepository extends EntityRepository
 	        $qb = $this->getEntityManager()->createQueryBuilder();
       		  $qb->select('a')
             ->from('AdminBundle:OfferedService', 'a')
-            ->add('where', 'b.status = :status')
+            ->add('where', 'a.status = :status')
+            ->orderBy('a.name')
             ->setParameter('status', OfferedService::STATUS_ACTIVE);
 
         return $qb;

@@ -1,0 +1,118 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'profile'} %}
+{% set _csrf_token_widget = form_widget(institutionForm._token) %}
+
+{% block content %}
+
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    
+        {% block wrappedContent %}
+
+            <!-- Main Content -->            
+			{% if (isSingleCenter is defined) and isSingleCenter %}
+			    {% include 'InstitutionBundle:Institution:profile.singleCenter.html.twig' %}
+			{% else %}
+			    {% include 'InstitutionBundle:Institution:profile.multipleCenter.html.twig' %}
+			{% endif %}
+
+
+            <!-- Sidebar Content -->
+			{% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
+			    {% block sidebarWrappedContent %}
+			        {% include 'InstitutionBundle:Widgets:sidebar.basicProfile.html.twig' %}
+			        {% if (isSingleCenter is defined) and isSingleCenter %}
+			            {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
+			        {% endif %}
+			    {% endblock %}
+			{% endembed %}
+
+
+			 <!-- Modal Institution name -->
+			{% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+			     with {formId: 'nameModalForm', fields: ['name'], modalId: 'institutionNameModal', modalTitle: 'Edit Name'} 
+			%} <!-- end Modal Institution name -->
+
+
+			<!-- Modal Institution description  -->
+            {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+                 with {formId: 'descriptionModalForm', fields: ['description'], modalId: 'institutionDescriptionModal', 'modalTitle': 'Edit Descrition'} 
+            %}<!-- end Modal Institution description -->
+
+        {% endblock %}
+        
+    {% endembed %}
+
+{% endblock %}
+
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+        $('#institution_profile_form_country').change();
+
+        // Set Submit button of modal forms to save the specific property changes and update the text property.
+        $('.button-wrapper .submit-button').click(function(){
+
+            $(this).attr('disabled', true);
+            _form = $(this).parents('.modal-content').find('form');
+            _form.append('<span class="loader">Loading...</span>');
+
+            InstitutionProfile.submitModalForm(_form, function(response){
+                if (response.form_error) {
+                    _form.prepend(response.form_error_html);
+                }
+                else {
+
+                    switch(_form.attr('id')){
+                        case 'nameModalForm':
+                            $('#institutionNameText').html(response.institution.name);
+                        	break;
+
+                        case 'descriptionModalForm':
+                            $('#institutionDescriptionText').html(response.institution.description);
+                            break;
+
+                        case 'addressModalForm':
+                            var address = response.institution.address1; 
+                            $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
+                            $('#profileCityText').html(response.institution.city ? response.institution.city + ', ' : '');
+                            $('#profileZipcodeText').html(response.institution.zipCode ? response.institution.zipCode + ', ' : '');
+                            $('#profileStateText').html(response.institution.state ? response.institution.state + ', ' : '');
+                            $('#profileCountryText').html(response.institution.country);
+                            break;
+
+                        case 'numberModalForm':
+                            var number = response.institution.contactNumber;
+                            $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                            break;
+
+                        case 'emailModalForm':
+                            $('#profileEmailText').html(response.institution.contactEmail);
+                            break;
+
+                        case 'websitesModalForm':
+                            var websites = response.institution.websites, websitesString = ''; 
+                            for(name in websites) {
+                                websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
+                            }
+                            $('#profileWebsitesText').html(websitesString);
+                            break;
+                    }
+
+                    _form.parents('.modal').modal('hide');
+                }
+
+                $(this).attr('disabled', false);
+                _form.find('span.loader').remove();
+            });
+        });
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

@@ -1,13 +1,10 @@
-<!-- div id="{{ modal.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
-<div id="{{ modal.id }}" style="display: none" title="{{ modal.title }}">
-    <!--<div class="modal-header">
-         button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> 
+<div id="{{ modal.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> 
         <h3 id="myModalLabel">{{ modal.title }}</h3> 
-    </div>-->
-    
+    </div>
+
     <div class="modal-content">{% block modalBody %}{% endblock %}</div>
     <!-- end modal-body -->
-    
-
 </div>
  <!-- End Modal Clinic Address -->

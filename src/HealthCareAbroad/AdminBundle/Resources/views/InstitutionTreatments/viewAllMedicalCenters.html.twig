@@ -17,33 +17,40 @@
         %}
             {% block sectionContent %}
                 {% if institutionMedicalCenters is not empty %}
-                <div id="centersAccordion" class="hca-accordion">
-                    {% for center in institutionMedicalCenters %}
-                        <h5 class="medical-centers">
-                            <a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
-                                <i class="icon-share"></i><span>view</span>
-                            </a>
-                            <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
-                                <i class="icon-edit"></i><span>edit</span>
-                            </a>
-                            <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center.name }}</a>
-                            <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
-                        </h5>
-                        <div class="content">
-                            <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
-                                <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
-                                    <i class="icon-edit"></i> <span>edit</span>
-                                </a>
-                                <div class="center-description">{{ center.description | raw }}</div>
-                                <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
-                            </div>
-                            <div class="specializations"></div>
+                    {% if isSingleCenter %}
+                        {% set institutionMedicalCenter = institutionMedicalCenters[0] %}
+                        <h5> {{ institutionMedicalCenter.name }} </h5>
+                        {% include 'AdminBundle:InstitutionTreatments:form.singleCenter.html.twig'%}
+                    {% else %}
+                        <div id="centersAccordion" class="hca-accordion">
+                             {% for center in institutionMedicalCenters %}
+                                <h5 class="medical-centers">
+                                    <a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
+                                        <i class="icon-share"></i><span>view</span>
+                                    </a>
+                                    <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
+                                        <i class="icon-edit"></i><span>edit</span>
+                                    </a>
+                                    <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center.name }}</a>
+                                    <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
+                                </h5>
+                                <div class="content">
+                                    <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
+                                        <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                                            <i class="icon-edit"></i> <span>edit</span>
+                                        </a>
+                                        <div class="center-description">{{ center.description | raw }}</div>
+                                        <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
+                                    </div>
+                                    <div class="specializations"></div>
+                                </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
-                </div>
+                    {% endif %}
                 {% else %}
                         <div class="alert alert-block"> {{ institution.name }} has no {{ centersLabel }} yet. </div>
                 {% endif %}
+                
             {% endblock %} 
 
         {% endembed %}

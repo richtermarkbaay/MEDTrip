@@ -33,6 +33,12 @@ admin_doctor_updateStatus:
     defaults: { _controller: AdminBundle:Doctor:updateStatus, idId: ~ }
     requirements:
         idId: \d+
+
+admin_doctor_load_doctor_specializations:
+    pattern:  /admin/doctor/loadSpecializations/{doctorId}
+    defaults: { _controller: AdminBundle:Doctor:searchMedicalSpecialistSpecialization, doctorId: ~ }
+    requirements:
+        doctorId: \d+
         
 admin_doctor_save:
     pattern: /admin/doctor/save/{idId}

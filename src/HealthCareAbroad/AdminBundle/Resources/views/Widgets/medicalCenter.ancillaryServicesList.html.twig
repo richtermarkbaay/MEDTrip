@@ -1,0 +1,23 @@
+{% set ancilliaryServiceLabel = getClassLabel('ancilliary_service') %}
+<div class="treatmentbox" >
+    <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="services">{{ ancilliaryServiceLabel.plural | title }}</h5>
+    
+    <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+        <table class="table table-striped table-bordered bootstrap-datatable">
+            <thead>
+                <tr>
+    				<th>Service Name</th>
+    				<th>Actions</th>
+    			</tr>
+            </thead>
+            <tbody>
+                {% for _service in ancillaryServicesData.globalList %}
+        			
+        			{% include 'AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in ancillaryServicesData.selectedAncillaryServices } %}
+                    
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+</div>

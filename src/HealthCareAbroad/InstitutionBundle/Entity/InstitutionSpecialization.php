@@ -219,7 +219,7 @@ class InstitutionSpecialization
      */
     public function removeTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment)
     {
-        $this->treatment->removeElement($treatment);
+        $this->treatments->removeElement($treatment);
     }
 
     /**

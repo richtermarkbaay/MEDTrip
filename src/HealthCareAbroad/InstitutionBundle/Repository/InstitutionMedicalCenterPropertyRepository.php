@@ -2,6 +2,20 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\HelperBundle\Entity\AwardingBody;
+
+use Doctrine\ORM\Query;
+
+use Doctrine\ORM\Mapping\ClassMetadata;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
+use Doctrine\ORM\Query\ResultSetMapping;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use Doctrine\ORM\EntityRepository;
@@ -15,16 +29,55 @@ use Doctrine\ORM\EntityRepository;
 class InstitutionMedicalCenterPropertyRepository extends EntityRepository
 {
     /**
-     * Get all ancilliary services
+     * Get all ancillary services by institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array OfferedService
      */
-    public function getAllServicesByInstitutionMedicalCenter($imcId, $institutionId)
+    public function getAllServicesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId";
-        $stmt = $connection->prepare($query);
-        $stmt->bindValue('id', $institutionId);
-        $stmt->bindValue('imcId', $imcId);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $rsm = new ResultSetMapping();
+        $rsm->addEntityResult('AdminBundle:OfferedService', 'b');
+        $rsm->addFieldResult('b', 'id', 'id');
+        $rsm->addFieldResult('b', 'name', 'name');
+        $rsm->addFieldResult('b', 'status', 'status');
+        $rsm->addFieldResult('b', 'date_created', 'dateCreated');
+        
+        
+        $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId ORDER BY b.name ASC";
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
+            ->setParameter('id', $institutionMedicalCenter->getInstitution()->getId())
+            ->setParameter('imcId', $institutionMedicalCenter->getId());
+        
+        return $query->getResult();
+    }
+    
+    /**
+     * Get global awards of an institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array GlobalAward
+     */
+    public function getAllGlobalAwardsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
+        
+        $sql = "SELECT a.value  FROM institution_medical_center_properties a ".
+            "WHERE a.institution_property_type_id = :propertyType AND a.institution_medical_center_id = :imcId";
+        $statement = $this->getEntityManager()
+            ->getConnection()->prepare($sql);
+        
+        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'imcId' => $institutionMedicalCenter->getId()));
+        $ids = array();
+        while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
+            $ids[] = $row['value'];    
+        }
+        
+        $dql = "SELECT a, b FROM HelperBundle:GlobalAward a INNER JOIN a.awardingBody as b WHERE a.id IN (?1)";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameter(1, $ids);
+        $result = $query->getResult();
+        
+        return $result;
     }
 }
