@@ -194,7 +194,7 @@ class InstitutionTreatmentsController extends Controller
         $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
-        $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_addAncilliaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
+        $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
         if ($request->isMethod('POST')) {
     
             $form->bind($request);
