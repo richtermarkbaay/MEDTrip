@@ -29,7 +29,7 @@ institution_load_tabbed_contents_profile:
         _method: GET
         
 institution_load_tabbed_contents_singleProfile:
-    pattern: /institution/load-tabbed-contents-single-profile
+    pattern: /institution/load-tabbed-contents-single-profile/{imcId}
     defaults: { _controller: InstitutionBundle:InstitutionAccount:loadSingleTabbedContents }
     requirements:
         _method: GET|POST

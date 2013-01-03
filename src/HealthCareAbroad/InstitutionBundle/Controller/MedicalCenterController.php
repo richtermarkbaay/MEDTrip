@@ -211,7 +211,20 @@ class MedicalCenterController extends InstitutionAwareController
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
                 break;
             case 'awards':
-                $parameters['awards'] = $this->institutionMedicalCenter->getInstitutionGlobalAwards();
+                 $awardTypeKeys = GlobalAwardTypes::getTypeKeys();
+                
+                $currentGlobalAwards = array(
+                    $awardTypeKeys[GlobalAwardTypes::AWARD] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::CERTIFICATE] => array(),
+                    $awardTypeKeys[GlobalAwardTypes::AFFILIATION] => array(),
+                );
+                
+                // group current global awards by type
+                foreach ($institutionMedicalCenterService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter) as $_award) {
+                    $currentGlobalAwards[$awardTypeKeys[$_award->getType()]][] = $_award;
+                }
+                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
+                //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
