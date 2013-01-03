@@ -21,9 +21,9 @@ class DoctorFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     	$builder
-     		->add('firstName', 'text', array('label' => 'First name', 'constraints' => array(new NotBlank())))
+     		->add('firstName', 'text', array('label' => 'First name'))
      		->add('middleName', 'text', array('label' => 'Middle name'))
-     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => array(new NotBlank())))
+     		->add('lastName', 'text', array('label' => 'Last name'))
      		->add('media', 'file', array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
