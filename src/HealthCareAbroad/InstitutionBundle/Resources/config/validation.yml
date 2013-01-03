@@ -29,13 +29,6 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
             - NotBlank: ~
             - Email: ~
             
-HealthCareAbroad\DoctorBundle\Entity\Doctor:
-    properties:
-        firstName:
-            - NotBlank: ~
-        lastName:
-            - NotBlank: ~
-            
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
     properties:
         firstName:

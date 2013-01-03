@@ -61,7 +61,7 @@
                 					<td>
                 						<div class="post-toolbar">
                 							<i class="icon-trash" title="Delete"></i>
-                							<a href="#deleteMedicalSpecialist" title="" role="button" data-toggle="modal">Delete</a>
+                							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" id="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
                 						</div>
                 					</td>
                 				</tr>
@@ -132,6 +132,28 @@
                      return false;
             });
 
+            $('#removeDoctor').click(function(){
+            	var elem = $(this);
+                var _url = elem.attr('href');
+                
+                $("#dialog-container").empty();
+                $('#dialog-container').dialog({
+                    title: 'Doctors',
+                    open: function() {
+                        $.ajax(_url)
+                            .done(function (data) {
+                                $('#dialog-container').html(data);
+                            }
+                        );
+                    },
+                });
+                
+
+                $('#dialog-container').dialog("open");
+
+                     return false;
+            });
+            
             $('a.add-offered-services').click(function(){
             	var elem = $(this);
     			var _url = elem.attr('href');

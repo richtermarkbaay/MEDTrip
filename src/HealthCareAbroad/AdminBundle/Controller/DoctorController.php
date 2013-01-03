@@ -40,6 +40,7 @@ class DoctorController extends Controller
     
     public function editAction(Request $request)
     {
+        
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findAll();
         
         if($doctorId = $request->get('idId', 0)) {

@@ -4,5 +4,3 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             - NotBlank: ~
         lastName:
             - NotBlank: ~
-        contactEmail:
-            - Email: ~
