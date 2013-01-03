@@ -81,6 +81,12 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+    
+    services.institutionTypeText.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InstitutionTypeTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
 
     services.inline_javascript.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension
@@ -107,8 +113,6 @@ services:
             - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
-
-    
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

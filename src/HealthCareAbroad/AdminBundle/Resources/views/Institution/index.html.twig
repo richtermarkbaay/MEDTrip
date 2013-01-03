@@ -23,6 +23,7 @@
                 <tr>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                     <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
+                     <th width="200">Insititution Type</th>
                     <th width="100">Country</th>
                     <th width="100">Status</th>
                     <th width="130">Actions</th>
@@ -34,6 +35,9 @@
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
                         <td>{{ institution.description }}</td>
+                         
+                         {% set institutionTypeLabel = get_institution_type()%}
+                        <td>{{ institutionTypeLabel[institution.type]}}</td>
                         <td>{{ institution.country ? institution.country.name : '' }}</td>
                         <td class="status">{{ statusList[institution.status] }}</td>
 
