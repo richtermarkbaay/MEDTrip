@@ -5,6 +5,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class WebsitesDataTransformer implements  DataTransformerInterface
 {
+    private $defaultValue = array('main' => '', 'facebook' => '','twitter' => '');
     public function transform($value)
     {
         
@@ -12,7 +13,7 @@ class WebsitesDataTransformer implements  DataTransformerInterface
         
         if (!$jsonValue) {
             
-            $jsonValue = array('main' => '', 'facebook' => '','twitter' => '');
+            $jsonValue = $this->defaultValue;
         }
         
         return $jsonValue;
@@ -20,6 +21,10 @@ class WebsitesDataTransformer implements  DataTransformerInterface
     
     public function reverseTransform($value)
     {
+        if (\is_null($value)) {
+            $value = $this->defaultValue;
+        }
+        
         if (!is_array($value)) {
             throw new \Exception(__CLASS__.' expects $value to be an array, '.\gettype($value).' given');
         }
