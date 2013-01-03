@@ -259,7 +259,8 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $content = $request->get('content');
         $output = array();
-        $parameters = array('institution' => $this->institution);
+        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+        $parameters = array('institution' => $this->institution, 'institutionMedicalCenter' => $this->institutionMedicalCenter);
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $propertyService = $this->get('services.institution_medical_center_property');
         switch ($content) {
@@ -269,7 +270,16 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
             case 'services':
-                $parameters['services'] = $institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter);
+//                 $parameters['services'] = $institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter);
+                $ancillaryServicesData = array(
+                                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                                'selectedAncillaryServices' => array()
+                );
+                
+                foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
+                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
+                }
+                $parameters['ancillaryServicesData'] = $ancillaryServicesData;
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':

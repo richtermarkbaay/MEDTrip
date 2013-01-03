@@ -74,12 +74,13 @@ class InstitutionSignUpController  extends Controller
 	public function signUpAction(Request $request)
 	{
 	    $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-	    $institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);
+	    $institutionType = $request->get('institution', InstitutionTypes::MULTIPLE_CENTER);
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
 	    
 	    if ($request->isMethod('POST')) {
+	        $type= $_POST['institution'];
 	        $form->bind($request);
 	        
 	        if ($form->isValid()) {
@@ -94,6 +95,7 @@ class InstitutionSignUpController  extends Controller
     			$institution->setLogo('');
     			$institution->setCoordinates('');
     			$institution->setState('');
+    			$institution->setType($type['type']);
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
