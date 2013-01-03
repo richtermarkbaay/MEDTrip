@@ -268,6 +268,46 @@ class InstitutionTreatmentsController extends Controller
         ));
     }
     
+    public function ajaxRemoveMedicalSpecialistAction(Request $request)
+    {
+        return $this->render('AdminBundle:InstitutionTreatments:modal.deleteMedicalSpecialist.html.twig');
+        
+        //         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+        //         ->find($request->get('asId', 0));
+    
+        //         if (!$ancillaryService) {
+        //             throw $this->createNotFoundException('Invalid ancillary service id');
+        //         }
+    
+        //         $propertyService = $this->get('services.institution_medical_center_property');
+        //         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        //         // get property value for this ancillary service
+        //         $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId());
+    
+        //         try {
+        //             $em = $this->getDoctrine()->getEntityManager();
+        //             $em->remove($property);
+        //             $em->flush();
+    
+        //             $output = array(
+        //                             'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
+                        //                                             'institution' => $this->institution,
+                        //                                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        //                                             'ancillaryService' => $ancillaryService,
+                        //                                             '_isSelected' => false
+                        //                             )),
+                        //                             'error' => 0
+                        //             );
+        //             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        //         }
+        //         catch (\Exception $e){
+        //             $response = new Response($e->getMessage(), 500);
+        //         }
+    
+        //         return $response;
+    }
+    
     private function saveMedia($fileBag)
     {
         if($fileBag['media']) {
@@ -812,5 +852,4 @@ class InstitutionTreatmentsController extends Controller
     
         return $response;
     }
-
 }
