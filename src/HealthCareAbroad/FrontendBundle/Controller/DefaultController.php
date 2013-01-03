@@ -43,15 +43,6 @@ class DefaultController extends Controller
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
 
-    /**
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexTempAction(Request $request)
-    {        
-        return $this->render('FrontendBundle:Default:index.html.twig');
-    }
-
     /*
      * Newsletter subscribe
      * @author Chaztine Blance

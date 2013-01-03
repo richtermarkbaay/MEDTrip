@@ -5,6 +5,7 @@ imports:
     - { resource: memcache_namespaces.yml }
     - { resource: security.yml }
     - { resource: doctrine_extensions.yml }
+    #- { resource: elastic_search.yml }
 
 framework:
     #esi:             ~
@@ -24,7 +25,7 @@ framework:
 # Twig Configuration
 twig:
     form:
-        resources: 
+        resources:
             - 'HelperBundle:Form:fields.custom.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
@@ -59,7 +60,7 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        connections: 
+        connections:
             default:
                 driver:   %database_driver%
                 host:     %database_host%

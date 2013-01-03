@@ -1,14 +1,12 @@
 <?php
-namespace HealthCareAbroad\SearchBundle;
-
-use JMS\SecurityExtraBundle\Security\Authorization\Expression\Compiler\Func\IsFullyAuthenticatedFunctionCompiler;
+namespace HealthCareAbroad\SearchBundle\Services;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * The behavior of this class differs from ParameterBag in that it
- * only allows a defined group of parameter names to be set. This
- * adds special processing and transformation of the passed in parameters.
+ * only allows a defined group of parameter names to be set.
+ * This adds special processing and transformation of the passed in parameters.
  *
  * It will also disable several inherited functions.
  */
@@ -18,12 +16,6 @@ class SearchParameterBag extends ParameterBag
     const SEARCH_TYPE_TREATMENTS = 2;
     const SEARCH_TYPE_COMBINATION = 3;
 
-    private $country = 1;
-    private $city = 2;
-    private $specialization = 4;
-    private $subSpecialization = 8;
-    private $treatment = 16;
-
     /**
      * Constructor.
      *
@@ -31,11 +23,17 @@ class SearchParameterBag extends ParameterBag
      *
      * @api
      */
-    public function __construct(array $parameters = array())
+    public function __construct(array $parameters)
     {
+        if (empty($parameters)) {
+            throw new Exception('Argument $parameters is empty.');
+        }
+
         $term = null;
         $treatment = null;
         $destination = null;
+        $treatmentLabel = '';
+        $destinationLabel = '';
 
         // Allow only these keys
         foreach ($parameters as $key => $value) {
@@ -45,18 +43,22 @@ class SearchParameterBag extends ParameterBag
                 $destination = $value;
             } else if ('term' === $key) {
                 $term = $value;
+            } else if ('treatmentLabel' === $key) {
+                $treatmentLabel = $parameters['treatmentLabel'];
+            } else if ('destinationLabel' === $key) {
+                $destinationLabel = $parameters['destinationLabel'];
             } else {
                 throw new \Exception('Invalid parameter: ' . $key);
             }
         }
 
-        $this->parameters = $this->processParameters($treatment, $destination, $term);
+        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term);
     }
 
-    private function processParameters($treatment, $destination, $term)
+    private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term)
     {
-        $context = 0;
         $treatmentType = '';
+        $context = '';
         $specializationId = 0;
         $subSpecializationId = 0;
         $treatmentId = 0;
@@ -78,14 +80,21 @@ class SearchParameterBag extends ParameterBag
             throw new \Exception('Invalid id');
         }
 
-        if ($countryId || $cityId) {
-            $context = $context | self::SEARCH_TYPE_DESTINATIONS;
-        }
-        if ($specializationId || $subSpecializationId || $treatmentId) {
-            $context = $context | self::SEARCH_TYPE_TREATMENTS;
-            //TODO: will we still need to set the treatment type in case this is
-            //not available? or will there be cases where it is not possible to
-            //know the type beforehand?
+        if ($term) {
+            if ($treatmentLabel && $destinationLabel) {
+                $context = self::SEARCH_TYPE_COMBINATION;
+            } elseif ($treatmentLabel === $term) {
+                $context = self::SEARCH_TYPE_TREATMENTS;
+            } elseif ($destinationLabel === $term) {
+                $context = self::SEARCH_TYPE_DESTINATIONS;
+            }
+        } else {
+            if ($countryId || $cityId) {
+                $context = $context | self::SEARCH_TYPE_DESTINATIONS;
+            }
+            if ($specializationId || $subSpecializationId || $treatmentId) {
+                $context = $context | self::SEARCH_TYPE_TREATMENTS;
+            }
         }
 
         return array(
@@ -98,7 +107,9 @@ class SearchParameterBag extends ParameterBag
                         'specializationId' => $specializationId,
                         'subSpecializationId' => $subSpecializationId,
                         'treatmentParameter' => $treatment,
-                        'destinationParameter' => $destination
+                        'destinationParameter' => $destination,
+                        'treatmentLabel' => $treatmentLabel,
+                        'destinationLabel' => $destinationLabel
         );
     }
 

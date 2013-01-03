@@ -52,6 +52,14 @@ class InstitutionAccountController extends InstitutionAwareController
     
 	public function preExecute()
 	{
+	    
+	    $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+
+	    if ($imcId=$this->getRequest()->get('imcId',0)) {
+	        $this->institutionMedicalCenter = $this->repository->find($imcId);
+	    }
+	    
+	    
 	    $this->institutionService = $this->get('services.institution');
 	    if ($this->institutionService->isSingleCenter($this->institution)) {
 	        $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
@@ -256,6 +264,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $propertyService = $this->get('services.institution_medical_center_property');
         switch ($content) {
             case 'specializations':
+             
                 $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
                 $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
                 break;
@@ -265,17 +274,19 @@ class InstitutionAccountController extends InstitutionAwareController
                 break;
            case 'awards':
                 $awardTypeKeys = GlobalAwardTypes::getTypeKeys();
-                
+               
                 $currentGlobalAwards = array(
                     $awardTypeKeys[GlobalAwardTypes::AWARD] => array(),
                     $awardTypeKeys[GlobalAwardTypes::CERTIFICATE] => array(),
                     $awardTypeKeys[GlobalAwardTypes::AFFILIATION] => array(),
                 );
-                
+          
                 // group current global awards by type
                 foreach ($institutionMedicalCenterService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter) as $_award) {
                     $currentGlobalAwards[$awardTypeKeys[$_award->getType()]][] = $_award;
                 }
+                
+              
                 $parameters['currentGlobalAwards'] = $currentGlobalAwards;
                 //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));

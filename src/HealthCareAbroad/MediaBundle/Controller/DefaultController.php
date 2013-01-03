@@ -40,7 +40,7 @@ class DefaultController extends Controller
     public function gallerySelectionAction(Request $request)
     {
         $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($request->get('id'))->toArray());
-        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 12));
 
         return $this->render('MediaBundle:Default:gallerySelection.html.twig', array(
                         'institution' => $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('id')),

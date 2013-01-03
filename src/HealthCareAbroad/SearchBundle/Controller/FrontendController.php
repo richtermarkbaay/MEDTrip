@@ -1,8 +1,9 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Controller;
 
-use HealthCareAbroad\SearchBundle\SearchParameterBag;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +57,7 @@ class FrontendController extends Controller
 
     public function searchAction(Request $request)
     {
-        $searchParams = new SearchParameterBag(array('treatment' => $request->get('treatment_id'), 'destination' => $request->get('destination_id')));
+        $searchParams = $this->getSearchParams($request);
 
         $sessionParams = array();
         switch ($searchParams->get('context')) {
@@ -86,6 +87,9 @@ class FrontendController extends Controller
             case SearchParameterBag::SEARCH_TYPE_COMBINATION:
 
                 return $this->processCombinationSearch($request, $searchParams);
+
+            default:
+                return new RedirectResponse($request->headers->get('referer'));
         }
 
         $parameters = array();
@@ -231,26 +235,32 @@ class FrontendController extends Controller
 
     public function ajaxLoadTreatmentsAction(Request $request)
     {
-        $result = array();
-        foreach($this->tokenizeSearchTerm($request->get('term', '')) as $treatmentTerm) {
-            $searchParams = new SearchParameterBag(array('term' => $treatmentTerm, 'destination' => $request->get('prevTerm')));
-            $result += $this->get('services.search')->getTreatmentsByName($searchParams);
-        }
-        $result = array_values(array_map("unserialize", array_unique(array_map("serialize", $result))));
+        $results = $this->get('services.search')->getTreatments($this->getSearchParams($request, true));
 
-        return new Response(json_encode($result), 200, array('Content-Type'=>'application/json'));
+        return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
     }
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
-        $result = array();
-        foreach($this->tokenizeSearchTerm($request->get('term', '')) as $destinationTerm) {
-            $searchParams = new SearchParameterBag(array('term' => $destinationTerm, 'treatment' => $request->get('prevTerm')));
-            $result = array_merge($result, $this->get('services.search')->getDestinationsByName($searchParams));
-        }
-        $result = array_values(array_map("unserialize", array_unique(array_map("serialize", $result))));
+        $results = $this->get('services.search')->getDestinations($this->getSearchParams($request, true));
 
-        return new Response(json_encode($result), 200, array('Content-Type'=>'application/json'));
+        return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
+    }
+
+    private function getSearchParams(Request $request, $isAutoComplete = false)
+    {
+        $parameters = array(
+                        'destination' => $request->get('destination_id'),
+                        'treatment' => $request->get('treatment_id'),
+                        'destinationLabel' => $request->get('sb_destination'),
+                        'treatmentLabel' => $request->get('sb_treatment')
+        );
+
+        if ($isAutoComplete) {
+            $parameters['term'] = $request->get('term');
+        }
+
+        return new SearchParameterBag($parameters);
     }
 
     /**
