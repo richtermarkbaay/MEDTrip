@@ -24,10 +24,14 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
+use HealthCareAbroad\AdminBundle\Controller\CommonDeleteFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHourFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -71,7 +75,6 @@ class InstitutionTreatmentsController extends Controller
     {
         $this->request = $this->getRequest();
         $this->institution = $this->get('services.institution.factory')->findById($this->request->get('institutionId', 0));
-
         // Check Institution
         if(!$this->institution) {
             throw $this->createNotFoundException('Invalid Institution');
@@ -184,7 +187,6 @@ class InstitutionTreatmentsController extends Controller
         }
         
         $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
-        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -280,47 +282,7 @@ class InstitutionTreatmentsController extends Controller
                         'specializations' => $specializations
         ));
     }
-    
-    public function ajaxRemoveMedicalSpecialistAction(Request $request)
-    {
-        return $this->render('AdminBundle:InstitutionTreatments:modal.deleteMedicalSpecialist.html.twig');
         
-        //         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        //         ->find($request->get('asId', 0));
-    
-        //         if (!$ancillaryService) {
-        //             throw $this->createNotFoundException('Invalid ancillary service id');
-        //         }
-    
-        //         $propertyService = $this->get('services.institution_medical_center_property');
-        //         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
-        //         // get property value for this ancillary service
-        //         $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId());
-    
-        //         try {
-        //             $em = $this->getDoctrine()->getEntityManager();
-        //             $em->remove($property);
-        //             $em->flush();
-    
-        //             $output = array(
-        //                             'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
-                        //                                             'institution' => $this->institution,
-                        //                                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        //                                             'ancillaryService' => $ancillaryService,
-                        //                                             '_isSelected' => false
-                        //                             )),
-                        //                             'error' => 0
-                        //             );
-        //             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-        //         }
-        //         catch (\Exception $e){
-        //             $response = new Response($e->getMessage(), 500);
-        //         }
-    
-        //         return $response;
-    }
-    
     private function saveMedia($fileBag)
     {
         if($fileBag['media']) {
@@ -329,6 +291,43 @@ class InstitutionTreatmentsController extends Controller
         }
     
         return null;
+    }
+    
+    public function ajaxRemoveMedicalSpecialistAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+        if (!$doctor) {
+            throw $this->createNotFoundException('Invalid doctor.');
+        }
+    
+        $form = $this->createForm(new \HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType(), $doctor);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $doctor->getId();
+                $this->institutionMedicalCenter->removeDoctor($doctor);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
+        }
+        else {
+    
+            return $this->render('InstitutionBundle:Widgets:modal.deleteMedicalSpecialist.html.twig', array(
+                            'institutionId' => $this->institution->getId(),
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'doctor' => $doctor,
+                            'form' => $form->createView()
+            ));
+    
+            //$response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+    
+        return $response;
+    
     }
     
     /**

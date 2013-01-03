@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3>Delete Medical Specialist</h3>
+</div>
+<div class="modal-body">
+    <p>Are you sure you want to
+    	<strong>delete {{ doctor.firstName }} {{ doctor.lastName }}?</strong>
+    </p>
+</div>
+<div class="modal-footer">
+    <form action="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {'institutionId': institutionId, 'imcId': institutionMedicalCenter.id, 'doctorId': doctor.id } ) }}">
+        {{ form_rest(form) }}
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveMedicalSpecialistForm($(this).parents('form')); return true;">Delete</button>
+    </form>
+</div>
+
