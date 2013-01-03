@@ -36,8 +36,8 @@
                         </td>
                         <td>{{ institution.description }}</td>
                          
-                         {% set institutionTypeLabel = get_institution_type()%}
-                        <td>{{ institutionTypeLabel[institution.type]}}</td>
+                         {% set institutionTypeLabel = get_institution_type(institution.type)%}
+                        <td>{{ institutionTypeLabel}}</td>
                         <td>{{ institution.country ? institution.country.name : '' }}</td>
                         <td class="status">{{ statusList[institution.status] }}</td>
 

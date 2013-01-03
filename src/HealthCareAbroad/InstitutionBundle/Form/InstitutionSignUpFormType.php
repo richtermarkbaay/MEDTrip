@@ -79,11 +79,11 @@ class InstitutionSignUpFormType extends AbstractType
                 'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))
             ));
         
-        $builder->add('type', 'choice', array(
-                'expanded' => true,
-                'multiple' => false,
-                'choices' => InstitutionTypes::getFormChoices(),
-            ));
+//         $builder->add('type', 'choice', array(
+//                 'expanded' => true,
+//                 'multiple' => false,
+//                 'choices' => InstitutionTypes::getFormChoices(),
+//             ));
         
         $builder ->add('medicalProviderGroups', 'medicalProviderGroup_autocomplete', array(
                         'label' => 'Medical Provider Group / Network'

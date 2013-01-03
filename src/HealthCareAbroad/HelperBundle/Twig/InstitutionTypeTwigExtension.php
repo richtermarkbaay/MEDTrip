@@ -20,11 +20,11 @@ class InstitutionTypeTwigExtension extends \Twig_Extension
         );
      }
      
-     public function getInstitutionType()
+     public function getInstitutionType($types)
      {
          $returnValue = InstitutionTypes::getLabelList();
 
-         return $returnValue;
+         return $returnValue[$types];
      }
      
      public function getName()
