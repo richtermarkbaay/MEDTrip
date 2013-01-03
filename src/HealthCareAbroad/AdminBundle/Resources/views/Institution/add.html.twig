@@ -29,7 +29,7 @@
 										<form novalidate="novalidate" name="account" action="{{ path('admin_institution_add') }}" method="POST" class="form">
 					
 					                    <h5>Create USER account.</h5>
-					                    
+					                     {{ form_errors(form) }}
 					                        <label for="username">Email 
 					                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
 					                        </label>
@@ -47,57 +47,28 @@
 									  				</ul>
 						  						{% endif %}
 					                        
-					                        <label for="password">Password</label>
-					                        
-					                        <div class="input-prepend">
-					                            {{ form_widget(form.password) }}
-					                        </div>
-					                        
-						                        {% if form_errors(form.password) %}
-					  								<ul class="alert-error">
-						                                <li>
-					                                         {{ form_errors(form.password) }}
-						                                </li>
-									  				</ul>
-						  						{% endif %}
-					                        
-					                        <label for="confirm_password">Re-type password</label>
-					                        
-					                        <div class="input-prepend">
-					                            {{ form_widget(form.confirm_password) }}
-					                        </div>
-					                               
-						                        {% if form_errors(form.confirm_password) %}
-					  								<ul class="alert-error">
-						                                <li>
-						                                         {{ form_errors(form.confirm_password) }}
-						                                </li>
-									  				</ul>
-						  						{% endif %}
-
-					  						<label for="institution name"><b>Name of the Institution</b></label>
-					                        <div>
-					                            <div class="input-prepend">
-					                                {{ form_widget(form.name) }}
-					                            </div>
-					                    
-					                          	{% if form_errors(form.name) %}
-					  								<ul class="alert-error">
-						                                <li>
-					                                     	{{ form_errors(form.name) }}
-						                                </li>
-									  				</ul>
-					  							{% endif %}
-					                            
-					                        </div>
+				                            {{ form_row(form.password) }}
+					                        {{ form_row(form.confirm_password) }}
+					                        {{ form_row(form.name) }}
+					               
 					                       <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
-					                      <span>I belong to a group / Network</span>
+					                       <span>I belong to a group / Network</span>
     					                       <div id="medicalProviderGroupsInput">
     					                                {{ form_row(form.medicalProviderGroups) }}
     					                        </div>
-					                        <label for="password">Types of Institution</label>
-					                        
-					                            {{ form_widget(form.type) }}
+					                        <label for="institutionTypes">Types of Institution</label>
+					                        <div>
+                                                <input id="institutionSignUp_type_0" type="radio" value="1" required="required" name="institution[type]" checked>
+                                                <span class="required" for="institutionSignUp_type_0">A Hospital with many clinics, centers or units</span>
+                                            </div>
+                                            <div>
+                                                <input id="institutionSignUp_type_1" type="radio" value="3" required="required" name="institution[type]">
+                                                <span class="required" for="institutionSignUp_type_1">A single clinic or an Independent healthcare provider</span>
+                                            </div>
+                                            <div>
+                                                <input id="institutionSignUp_type_2" type="radio" value="2" required="required" name="institution[type]">
+                                                <span class="required" for="institutionSignUp_type_2">I'm a Medical Tourism Facilitator / Agent</span>
+                                            </div>
 					               
 					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />
 					                    {{ form_rest(form) }}

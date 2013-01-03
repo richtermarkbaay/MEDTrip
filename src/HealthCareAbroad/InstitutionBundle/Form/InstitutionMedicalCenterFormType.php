@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterPropertyType\Factory\InstitutionMedicalCenterPropertyTypeFormFactory;
@@ -41,7 +43,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         'websites'
     );
     
-    function __construct($institution)
+    function __construct(Institution $institution = null)
     {
         $this->institution = $institution;
     }
@@ -64,24 +66,23 @@ class InstitutionMedicalCenterFormType extends AbstractType
         if (!$medicalCenter instanceof InstitutionMedicalCenter) {
             throw new \Exception(__CLASS__.' expects data to be instance of InstitutionMedicalCenter');
         }
+        $this->institution = $medicalCenter->getInstitution();
         
         $imcProperty = new InstitutionMedicalCenterProperty();
         $this->_add($builder, 'name','text', array('label' => 'Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Details','attr' => array('class' => 'tinymce')));
         //->add('ancilliaryServices','institution_property_type_custom_form',array('property_path' => false))
         $this->_add($builder, 'businessHours', 'hidden');
+        $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
+        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
+        $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
+        $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
+        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email', 'virtual' => true,'attr' => array('value' => $this->institution->getContactEmail())));
+        $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
+        $this->_add($builder, 'websites', 'websites_custom_field');
+        $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Unit or Room #,  Building, Street Details', 'attr' => array('value' => $this->institution->getAddress1())));                
+        $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
         
-        if ($options['is_hidden']) {
-            $this->_add($builder, 'city', 'city_list', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
-            $this->_add($builder, 'zipCode', 'integer', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
-            $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
-            $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email', 'virtual' => true,'attr' => array('value' => $this->institution->getContactEmail())));
-            $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number','virtual' => true,'attr' => array('value' => $this->institution)));
-            //$this->_add($builder, 'websites', 'websites', array('label' => 'Website','virtual' => true,'attr' => array('value' => $this->institution)));
-            $this->_add($builder, 'websites', 'websites_custom_field');
-            $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Unit or Room #,  Building, Street Details', 'attr' => array('value' => $this->institution->getAddress1())));                
-            $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
-        }
     }
     
     private function _isRemoved($fieldName)

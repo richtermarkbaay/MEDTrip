@@ -9,7 +9,7 @@ final class InstitutionTypes
     
     const SINGLE_CENTER = 3;
     
-    static public function getLabelList()
+    public static function getLabelList()
     {
         return array(
             self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
