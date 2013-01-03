@@ -90,22 +90,20 @@
         
     {% endembed %}
 
- {% block inlineJavascriptCode %}
+     {% block inlineJavascriptCode %}
         <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     	<script src="{{ asset('js/jquery/globalize.js') }}"></script>
     	<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
-        <script>
-        
-            $(function() {
-    	    	$(".hour").timepicker({ seconds: false});
-    	    	$('input.is_closed_checkbox').each(function(){
-    			    if(this.checked) {
-    			    	$(this).parent().parent().find('.hour').val("");
-    			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    				}
-    			});
-    	    });
-            $('input.is_closed_checkbox').change(function(){
+        <script type="text/javascript">
+        $(function() {
+        	$(".hour").timepicker({ seconds: false});
+        	$('input.is_closed_checkbox').each(function(){
+    		    if(this.checked) {
+    		    	$(this).parent().parent().find('.hour').val("");
+    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    			}
+    		});
+        	$('input.is_closed_checkbox').change(function(){
                 if(this.checked) {
                     $(this).parent().parent().find('.hour').val("");
                 	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
@@ -117,7 +115,7 @@
                 }
                
             });
-        	
+        });	
         </script>
     {% endblock %}
 {% endblock %}
