@@ -37,7 +37,7 @@
                     </div>
         		    
         		    <div class="pull-right">
-                        <button class="btn btn-primary btn-large submit_button" type="submit">Submit</button>
+                        <button class="btn btn-primary btn-large submit_button" type="button">Submit</button>
                     </div>
         	    </form>
         	</div>
@@ -75,6 +75,10 @@
 
         	$('button.previous_button').click(function(){
                 window.location = "{{ path('institution_medicalCenter_addGlobalAwards', {'imcId': institutionMedicalCenter.id} )}}";
+            });
+
+        	$('button.submit_button').click(function(){
+                window.location = "{{ isSingleCenter ? path('institution_homepage') : path('institution_medicalCenter_index')}}";
             });
 		});
 
