@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
@@ -253,54 +255,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addMedicalCenterAction(Request $request)
     {
-        $service = $this->get('services.institution_medical_center');
-        
-        if (is_null($this->institutionMedicalCenter)) {
-            $this->institutionMedicalCenter = new institutionMedicalCenter();
-            $this->institutionMedicalCenter->setInstitution($this->institution);
-        }
-    
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter);
-         if ($request->isMethod('POST')) {
-            $form->bind($request);
-       
-            // Get contactNumbers and convert to json format
-            $businessHours = json_encode($request->get('businessHours'));
-    
-            if ($form->isValid()) {
-           
-                // Set BusinessHours before saving
-                $form->getData()->setBusinessHours($businessHours);
-                $form->getData()->setDescription($form->get('description')->getData());
-                $form->getData()->setName($form->get('name')->getData());
-                $form->getData()->setAddress($form->get('address')->getData());
-                $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
-                
-                $this->institution->setContactNumber($form->get('contactNumber')->getData());
-                $this->institution->setContactEmail($form->get('contactEmail')->getData());
-                $institution = $this->get('services.institution.factory')->save($this->institution);
-                
-                
-                //create event on editInstitution and dispatch
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-                
-                // dispatch event
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
-                                $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-                                ));
-    
-                $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
-            }
-        }
-    
-        $params = array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'selectedSubMenu' => 'centers'
-        );
-    
-        return $this->render('InstitutionBundle:Institution:add.clinic.html.twig', $params);
+        return $this->addDetailsAction($request);
     }
     
     
@@ -328,6 +283,9 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             
             if ($form->isValid()) {
+                
+                $businessHours = json_encode($request->get('businessHours'));
+                $form->getData()->setBusinessHours($businessHours);
                 
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
                     ->saveAsDraft($form->getData());
@@ -949,6 +907,34 @@ class MedicalCenterController extends InstitutionAwareController
         }
     
         return $response;
+    }
+    public function ajaxLoadSpecializationAccordionEntryAction(Request $request)
+    {
+        $specializationId = $request->get('specializationId', 0);
+        
+        $criteria = array('status' => Specialization::STATUS_ACTIVE, 'id' => $specializationId);
+        
+        $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
+        
+        if(!$params['specialization']) {
+            $result = array('error' => 'Invalid Specialization');
+        
+            return new Response('Invalid Specialization', 404);
+        }
+        
+        $groupBySubSpecialization = true;
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        $params['formName'] = InstitutionSpecializationFormType::NAME;
+        $params['form'] = $form->createView();
+        $params['subSpecializations'] = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getBySpecializationId($specializationId, $groupBySubSpecialization);
+        $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
+        $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
+        
+        $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);
+        //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
+        
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+
     }
 
 }

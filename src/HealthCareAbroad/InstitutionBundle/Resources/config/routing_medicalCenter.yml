@@ -27,11 +27,9 @@ institution_medicalCenter_addDetails:
         imcId: \d+
         
 institution_medicalCenter_add:
-    pattern: /{institutionId}/medical-center/add-new
+    pattern: /medical-center/add-new
     defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
     requirements:
-        _method: GET
-        institutionId: \d+
         _method: GET|POST
         
 institution_medicalCenter_addSpecializations:
@@ -166,3 +164,9 @@ institution_medicalCenter_ajaxRemoveAncillaryService:
         institutionId: \d+
         imcId: \d+
         _method: POST
+
+institution_medical_center_ajaxLoadSpecializationAccordionEntry:
+    pattern: /medical-center/{imcId}/ajaxLoadSpecializationAccordionEntry
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
+    requirements:
+        _method: GET

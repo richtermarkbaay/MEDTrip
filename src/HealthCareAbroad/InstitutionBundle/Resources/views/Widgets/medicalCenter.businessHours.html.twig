@@ -21,13 +21,6 @@
     
     {% for i, day in daysArr %}
         <tr>
-            <td  align="center">
-                {% if arrBusinessHours[day] is not defined %}
-                    <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                {% else %}
-                    <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                {% endif %}
-            </td>
             <td  align="center">{{ day }}</td>
             <td  align="center">
                 {% if arrBusinessHours[day] is not defined %}
@@ -43,7 +36,14 @@
                      <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
                 {% endif %}
             </td>
-            
+            <td  align="center">
+                {% if arrBusinessHours[day] is not defined %}
+                    <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/>
+                {% else %}
+                    <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/>
+                {% endif %}
+                Close
+            </td>
         </tr>
      {% endfor %}
      </tbody>

@@ -149,6 +149,21 @@ var InstitutionMedicalCenter = {
             }
          });
     },
+
+    submitRemoveMedicalSpecialistForm: function(_formElement) {
+        _button = _formElement.find('button.delete-button');
+        _button.attr('disabled', true)
+            .html('Processing...');
+        $.ajax({
+            url: _formElement.attr('action'),
+            data: _formElement.serialize(),
+            type: 'POST',
+            success: function(response){
+            	$('#dialog-container').dialog("close");
+            	$('#doctor_block_'+response.id).remove();
+            }
+         });
+    },
     
     removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);

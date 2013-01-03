@@ -72,7 +72,7 @@ var InstitutionSpecializationAutocomplete = {
     autocomplete: function(){
         
         // initialize accordion for data container
-        InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer.accordion({active: false, collapsible: true, heightStyle: "content"});
+        //InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer.accordion({active: false, collapsible: true, heightStyle: "content"});
         
         InstitutionSpecializationAutocomplete.autocompleteOptions.target.autocomplete({
             minLength: 0,
@@ -97,9 +97,9 @@ var InstitutionSpecializationAutocomplete = {
             success: function(response) {
                 InstitutionSpecializationAutocomplete._loaderElement.hide();
                 InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer
-                    .prepend(response.html).
-                    accordion('destroy').
-                    accordion({heightStyle: "content"});
+                    .prepend(response.html);
+                    //accordion('destroy').
+                    //accordion({heightStyle: "content"});
                 InstitutionSpecializationAutocomplete.autocompleteOptions.target.find('option[value='+_val+']').hide();
             }
         });
