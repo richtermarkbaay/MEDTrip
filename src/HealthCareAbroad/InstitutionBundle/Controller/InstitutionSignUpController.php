@@ -74,13 +74,13 @@ class InstitutionSignUpController  extends Controller
 	public function signUpAction(Request $request)
 	{
 	    $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-	    $institutionType = $request->get('institution', InstitutionTypes::MULTIPLE_CENTER);
+	    
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
 	    
 	    if ($request->isMethod('POST')) {
-	        $type= $_POST['institution'];
+	        
 	        $form->bind($request);
 	        
 	        if ($form->isValid()) {
@@ -95,7 +95,6 @@ class InstitutionSignUpController  extends Controller
     			$institution->setLogo('');
     			$institution->setCoordinates('');
     			$institution->setState('');
-    			$institution->setType($type['type']);
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
@@ -136,7 +135,6 @@ class InstitutionSignUpController  extends Controller
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'selectedInstitutionType' => $institutionType,
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)    
         ));
 	}
