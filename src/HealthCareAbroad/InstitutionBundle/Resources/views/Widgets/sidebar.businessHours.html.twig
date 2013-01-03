@@ -3,8 +3,8 @@
         {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
                 
         	<h4 class="pull-left">CLINIC HOURS</h4>
-        	<div class="pull-right editname4">
-			   <a href="#hours" data-toggle="modal" role="button" id="businessHoursModal-{{institutionMedicalCenter.id}}">
+        	<div class="pull-right editname2">
+			   <a href="#" role="button" class="businessHoursModalLink" id="businessHoursModal-{{institutionMedicalCenter.id}}">
                     <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                 </a>
         	</div>
@@ -25,7 +25,7 @@
              {% endfor %}
         		
         	</table>
-        	<div id="hours" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        	<div id="business_hours_modal_form" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-header">
             		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
             		<h3 id="myModalLabel8">Change Clinic Hours</h3>
@@ -43,63 +43,57 @@
         </div>
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-<script src="{{ asset('js/jquery/globalize.js') }}"></script> 
-<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
-
+<script type="text/javascript" src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/jquery/globalize.js') }}"></script> 
+<script type="text/javascript" src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script type="text/javascript">
-$(function(){
+(function(){
+    $(function(){
 
-    //$("#modal_institutionMedicalCenter_businessHours").dialog({autoOpen:false, height:450, width:600, modal:true, resizable:false, close:function(){}});
+        $('a.businessHoursModalLink').click(function(){
+            $('div#business_hours_modal_form').modal('show');
 
-    $("a.businessHoursModal").click(function() {
+            // timepicker can only be attached to visible elements
+            $(".hour").timepicker({ seconds: false});
 
-        var url = $(this).attr('href');
-        var institutionMedicalCenterId = $(this).attr('id').split('-').pop();
-        var institutionName = $('#institution-'+institutionMedicalCenterId+' td > a.name').html();
+            return false;
+        });
+    	$('input.is_closed_checkbox').each(function(){
+    	    if(this.checked) {
+    	    	$(this).parent().parent().find('.hour').val("");
+    	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    		}
+    	});
 
-        $('#current-institution').html(institutionName);
-
-        
-        $("#modal_institutionMedicalCenter_businessHours").dialog("open");
-        return false;
-    });
-
-	$(".hour").timepicker({ seconds: false});
-	$('input.is_closed_checkbox').each(function(){
-	    if(this.checked) {
-	    	$(this).parent().parent().find('.hour').val("");
-	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-		}
-	});
-        
-});
-
-    $('#businessHourCheckBox').click(function(){
-    	
-        if ($('#businessHourCheckBox').attr('checked')) {
-    
-        	$(this).parent().parent().find('.hour').val("");
-        	$(this).parent().parent().find('.hour').spinner({ disabled: true });
-        	$('#clinicHoursTable').hide();
+        $('#businessHourCheckBox').click(function(){
         	
-        }else{
-    	    $('#clinicHoursTable').show();
-    	    $(this).parent().parent().find('.hour').val("8:00 AM");
-        	$(this).parent().parent().find('.hour').spinner({ disabled: false });
-    	}
-    }) 
-    $('input.is_closed_checkbox').change(function(){
-        if(this.checked) {
-        	$(this).parent().parent().find('.hour').val("");
-        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	}
-        else 
-        {
-        	$(this).parent().parent().find('.hour').val("8:00 AM");
-        	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-        }
-       
-    });
+            if ($('#businessHourCheckBox').attr('checked')) {
+        
+            	$(this).parent().parent().find('.hour').val("");
+            	$(this).parent().parent().find('.hour').spinner({ disabled: true });
+            	$('#clinicHoursTable').hide();
+            	
+            }else{
+        	    $('#clinicHoursTable').show();
+        	    $(this).parent().parent().find('.hour').val("8:00 AM");
+            	$(this).parent().parent().find('.hour').spinner({ disabled: false });
+        	}
+        }); 
+        
+        $('input.is_closed_checkbox').change(function(){
+            if(this.checked) {
+            	$(this).parent().parent().find('.hour').val("");
+            	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	}
+            else 
+            {
+            	$(this).parent().parent().find('.hour').val("8:00 AM");
+            	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+            }
+           
+        });
+            
+    });    
+})(jQuery);
 </script>
 {% endblock %}
