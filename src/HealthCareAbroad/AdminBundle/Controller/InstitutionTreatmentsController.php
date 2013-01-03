@@ -90,32 +90,44 @@ class InstitutionTreatmentsController extends Controller
 
     public function viewAllMedicalCentersAction()
     {
-        $criteria = array('institution' => $this->institution);
-        $institutionMedicalCenters = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
-        
-        if($this->get('services.institution')->isSingleCenter($this->institution)) {
-            $response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $institutionMedicalCenters[0]));
-            return $response;
+        $institutionService = $this->get('services.institution');
+        if($institutionService->isSingleCenter($this->institution)) {
+            $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+            
+            if ($firstMedicalCenter) {
+                // forward action to viewing a medical center
+                $response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $firstMedicalCenter));
+            }
+            else {
+                // no medical center yet, redirect to add medical center with 
+                $this->request->getSession()->setFlash('notice', 'No medical centers yet, add a clinic now.');
+                $response = $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId())));
+            }
+        }
+        else {
+            $institutionMedicalCenters = $institutionService->getActiveMedicalCenters($this->institution);
+            
+            // get global ancillary services
+            $ancillaryServicesData = array(
+                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                'selectedAncillaryServices' => array()
+            );
+            
+            $params = array(
+                'institution' => $this->institution,
+                'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+                'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
+                'institutionMedicalCenters' => $institutionMedicalCenters,
+                'institutionSpecializationsData' => array(),
+                'ancillaryServicesData' => $ancillaryServicesData,
+                'pager' => $this->pager,
+                'isSingleCenter' => false
+            );
+            
+            $response = $this->render('AdminBundle:InstitutionTreatments:viewAllMedicalCenters.html.twig', $params);
         }
         
-        // get global ancillary services
-        $ancillaryServicesData = array(
-                        'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                        'selectedAncillaryServices' => array()
-        );
-        
-        $params = array(
-            'institution' => $this->institution,
-            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-            'institutionMedicalCenters' => $institutionMedicalCenters,
-            'institutionSpecializationsData' => array(),
-            'ancillaryServicesData' => $ancillaryServicesData,
-            'pager' => $this->pager,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
-        );
-
-         return $this->render('AdminBundle:InstitutionTreatments:viewAllMedicalCenters.html.twig', $params);
+        return $response;
     }
 
     /**
@@ -131,6 +143,7 @@ class InstitutionTreatmentsController extends Controller
             $this->institutionMedicalCenter = $request->get('center');
             $this->request = $request;
         }
+        
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $institutionSpecializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -324,8 +337,11 @@ class InstitutionTreatmentsController extends Controller
      */
     public function addMedicalCenterAction()
     {
-        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        if($isSingleCenter) {
+        $institutionService = $this->get('services.institution');
+        $isSingleCenter = $institutionService->isSingleCenter($this->institution);
+        
+        // if this is a single center institution , we will not allow to add another medical center
+        if($isSingleCenter && $institutionService->getFirstMedicalCenter($this->institution)) {
             
             return $this->redirect($this->generateUrl('admin_institution_manageCenters',array('institutionId' => $this->institution->getId())));
         }

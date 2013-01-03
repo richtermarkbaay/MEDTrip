@@ -90,9 +90,9 @@ class InstitutionService
         return $returnValue;
     }
     
-    public function getAllActiveMedicalCenters()
+    public function getActiveMedicalCenters(Institution $institution)
     {
-        
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
     }
     
     public function getTreatmentQueryBuilderByInstitution($institution)
