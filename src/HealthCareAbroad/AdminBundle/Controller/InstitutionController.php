@@ -98,22 +98,20 @@ class InstitutionController extends Controller
      * @author Chaztine Blance
      */
     public function addAction(Request $request){
-    
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-    
-    	$institutionType = $request->get('institutionType', InstitutionTypes::MULTIPLE_CENTER);   
+    	$institutionType = $request->get('institution', InstitutionTypes::MULTIPLE_CENTER);   
+  
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createInstance($institutionType);  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
-		
+    
 	    	if ($request->isMethod('POST')) {
-
+	    	    $type= $_POST['institution'];
 	    		$form->bind($request);
 	    		 
 	    		if ($form->isValid()) {
 
 	    		    $institution = $form->getData();
-	    	
 	    			// initialize required database fields
 	    			$institution->setAddress1('');
 	    			$institution->setContactEmail('');
@@ -122,10 +120,11 @@ class InstitutionController extends Controller
 	    			$institution->setLogo('');
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
+	    			$institution->setType($type['type']);
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
-	    			
+
 	    			$factory->save($institution);
 	    			 
 	    			// create Institution user

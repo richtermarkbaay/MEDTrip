@@ -18,9 +18,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
 #            - NotBlank: {message: 'Zip code is required.', groups: [editInstitutionInformation] }
 #            - MinLength: { limit: 3, message: 'Zip Code must be atleast 3 digits.' }
 #            - MaxLength: { limit: 6, message: 'Maximum digits must be 6 only.' }
-        type:
-            - NotBlank: {message: 'Please select one.', groups: [institutionRegistration]}
-            
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
     properties:
         name:
