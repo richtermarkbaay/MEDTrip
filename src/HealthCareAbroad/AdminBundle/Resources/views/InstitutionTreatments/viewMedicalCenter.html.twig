@@ -47,7 +47,7 @@
                         </thead>
                 	        <tbody>
                              {% for doctor in institutionMedicalCenter.doctors %}
-                				<tr>
+                				<tr id="doctor_block_{{ doctor.id}}">
                 					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
                 					<td>
                 					{% for specialization in doctor.specializations %}
@@ -61,7 +61,7 @@
                 					<td>
                 						<div class="post-toolbar">
                 							<i class="icon-trash" title="Delete"></i>
-                							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" id="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
+                							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
                 						</div>
                 					</td>
                 				</tr>
@@ -84,7 +84,7 @@
 
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/institution/js/InstitutionMedicalCenter.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
@@ -132,7 +132,7 @@
                      return false;
             });
 
-            $('#removeDoctor').click(function(){
+            $('a.removeDoctor').click(function(){
             	var elem = $(this);
                 var _url = elem.attr('href');
                 

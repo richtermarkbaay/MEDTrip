@@ -66,7 +66,7 @@ admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist:
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveMedicalSpecialist}
     requirements:
         _method: GET|POST
-              
+
 admin_institution_medicalCenter_updateGlobalAwards:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/global_awards/{global_awardId}
     defaults: { _controller: AdminBundle:InstitutionTreatments:updateGlobalAwards }
