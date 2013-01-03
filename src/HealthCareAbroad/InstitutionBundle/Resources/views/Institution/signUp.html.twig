@@ -16,7 +16,7 @@
 		</div>
 		
 		<div class="maincontent2">
-		    <div class="span6">
+		    <div class="span7">
 		        <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
                     <fieldset>
                         <div>
@@ -27,13 +27,24 @@
                         
                         <div>
                             <label for="password">Please select which best describes the healthcare provider you are adding:</label>
-                            {{ form_errors(form.type) }}
                             {# for key, type in institutionTypes %}
                                 <label>
                                     <input {{ key == selectedInstitutionType ? 'checked' : '' }} type="radio" name="institutionType" value="{{ key }}" class="div1" /> {{ type }}
                                 </label>    
                             {% endfor #}
-                            {{ form_widget(form.type) }}
+                            <div>
+                                <input id="institutionSignUp_type_0" type="radio" value="1" required="required" name="institution[type]" checked >
+                                <span class="required" for="institutionSignUp_type_0">A Hospital with many clinics, centers or units</span>
+                            </div>
+                            <div>
+                                <input id="institutionSignUp_type_1" type="radio" value="3" required="required" name="institution[type]">
+                                <span class="required" for="institutionSignUp_type_1">A single clinic or an Independent healthcare provider</span>
+                            </div>
+                            <div>
+                                <input id="institutionSignUp_type_2" type="radio" value="2" required="required" name="institution[type]">
+                                <span class="required" for="institutionSignUp_type_2">I'm a Medical Tourism Facilitator / Agent</span>
+                            </div>
+                              
                         </div>
                         
                         <hr>
@@ -72,7 +83,7 @@
                     
                 </form>
 		    </div> <!-- end .span6 -->
-		    <div class="span5 box pull-right">
+		    <div class="span4 box pull-right">
             
                 {% set helptext = get_help_text_by_route('institution_signUp')%}
                 {{ helptext | raw }}
@@ -81,15 +92,8 @@
 		</div>
         
         {% endblock %}
-        
-        
     {% endembed %}
-    <div id="modal">
-        <a href="#" title="" class="close">X</a>
-        <div class="span12">
-            <h4>Thank you for creating an account in Health Care Abroad</h4>
-        </div>
-    </div>
+ 
 {% endblock %}
 
 {% block inlineJavascriptCode %}

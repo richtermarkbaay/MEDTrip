@@ -46,17 +46,21 @@
 }
 
 .doctors-specialiations {
-    width:725px;
+    width:100%;
 }
 .doctors-specialiations label {
 	display: block;
 	width:45%;
 	float:left;
+	margin-top: -0.5%;
 }
 .doctors-specialiations input[type="checkbox"] 
 {
-    width:5%;
+    width:4%;
     float:left;
+}
+.doctors-contactEmail label{
+    	margin-top:12px;
 }
 #spinner
 {
