@@ -20,12 +20,13 @@
         <div class="addnewclinic">
         	<div class="span9">
         	{% include '::notice.admin.html.twig' %}
-        	    
+        	    <legend>Specializations and Treatments</legend>
         	    <label>Search and Add your SPECIALIZATIONS</label>
                 {{ form_widget(form.specialization_selector) }}
                 <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
                 
                 <form class="specialization_form" action="{{ path('institution_medicalCenter_addSpecializations_save', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+                    <h4>List of All Added Specialization</h4>
         		    <div id="specializationAccordion"></div>
         		    
         		    <div class="pull-left">
@@ -69,7 +70,7 @@
             selectedDataContainer: $('#specializationAccordion') 
         })
         .setLoaderElement($('#specializationLoading'))
-        .setLoadSpecializationFormUri('{{ path("helper_specializationAccordionEntry") }}')
+        .setLoadSpecializationFormUri('{{ path("institution_medical_center_ajaxLoadSpecializationAccordionEntry", { "imcId": institutionMedicalCenter.id } ) }}')
         .autocomplete();
     });
 })(jQuery);
