@@ -148,3 +148,9 @@ institution_medicalCenter_index:
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
     requirements:
         _method: GET
+        
+institution_medical_center_ajaxLoadSpecializationAccordionEntry:
+    pattern: /medical-center/{imcId}/ajaxLoadSpecializationAccordionEntry
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
+    requirements:
+        _method: GET
