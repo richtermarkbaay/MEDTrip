@@ -17,7 +17,7 @@
                     <h6>{{ each.name }} </h6>
                     <p>{{ each.description | raw }}</p>
             
-                    <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+                    <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}" class="btn btn-info"><i class="icon-search"></i>View Details</a>
                 </div>
             {% endfor %}
             
@@ -45,7 +45,7 @@
                     <h6>{{ each.name }} </h6>
                     <p>{{ each.description | raw }}</p>
             
-                    <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+                    <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}" class="btn btn-info"><i class="icon-search"></i>View Details</a>
                 </div>
             {% endfor %}
             
