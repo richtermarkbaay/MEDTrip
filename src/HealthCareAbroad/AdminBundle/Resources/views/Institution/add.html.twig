@@ -56,22 +56,22 @@
     					                       <div id="medicalProviderGroupsInput">
     					                                {{ form_row(form.medicalProviderGroups) }}
     					                        </div>
-					                        <label for="institutionTypes">Types of Institution</label>
-					                        <div>
-                                                <input id="institutionSignUp_type_0" type="radio" value="1" required="required" name="institution[type]" checked>
-                                                <span class="required" for="institutionSignUp_type_0">A Hospital with many clinics, centers or units</span>
-                                            </div>
+					                        <hr>
                                             <div>
-                                                <input id="institutionSignUp_type_1" type="radio" value="3" required="required" name="institution[type]">
-                                                <span class="required" for="institutionSignUp_type_1">A single clinic or an Independent healthcare provider</span>
+                                                <label for="institutionTypes">Types of Institution</label>
+                                                {% for _key, _typeChoice in form.type.vars.choices %}
+                                                    <div>
+                                                        {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
+                                                        <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
+                                                        <span class="required" for="institutionSignUp_type_1">{{ _typeChoice.label }}</span>
+                                                    </div>
+                                                {% endfor %}
+                                                {{ form_errors(form.type) }}
                                             </div>
-                                            <div>
-                                                <input id="institutionSignUp_type_2" type="radio" value="2" required="required" name="institution[type]">
-                                                <span class="required" for="institutionSignUp_type_2">I'm a Medical Tourism Facilitator / Agent</span>
-                                            </div>
+                                            <hr>
 					               
 					                    <input type="submit" name="Submit" value="Next" class="btn-large btn-primary" />
-					                    {{ form_rest(form) }}
+					                      {{ form_widget(form._token) }}
 					                </form>
 									</div>
 								
