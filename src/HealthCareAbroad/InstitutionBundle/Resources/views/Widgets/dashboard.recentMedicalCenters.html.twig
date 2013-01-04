@@ -1,29 +1,59 @@
 {% set centerLabel = getClassLabel('institution_medical_center') %}
 
-{% embed 'HelperBundle:Widgets:section.html.twig' 
-    with { 
-        title: 'Recently Added ' ~ centerLabel.singular|title,  
-        actions: [{link: path('admin_institution_medicalCenter_add', { institutionId: institution.id }) , label: 'Add ' ~ centerLabel.singular|title, 'icon' : 'icon-edit' }] 
-    }  
-%}
+{% if isSingleCenter and medicalCenters|length %}
+    {% embed 'HelperBundle:Widgets:section.html.twig' 
+        with { 
+            title: 'Recently Added ' ~ centerLabel.singular|title,  
+        }  
+    %}
 
-    {% block sectionContent %}
-        {% for each in medicalCenters %}
-            <div class="boxcontent">
-                <span class="pull-left" style="margin-right: 20px;">
-                    <a href=""><img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/></a>
-                </span>
-        
-                <h6>{{ each.name }} </h6>
-                <p>{{ each.description | raw }}</p>
-        
-                <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+        {% block sectionContent %}
+            {% for each in medicalCenters %}
+                <div class="boxcontent">
+                    <span class="pull-left" style="margin-right: 20px;">
+                        <a href=""><img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/></a>
+                    </span>
+            
+                    <h6>{{ each.name }} </h6>
+                    <p>{{ each.description | raw }}</p>
+            
+                    <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+                </div>
+            {% endfor %}
+            
+            <div style="text-align:right">
+                <button class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</button>
             </div>
-        {% endfor %}
-        
-        <div style="text-align:right">
-            <button class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</button>
-        </div>
-    {% endblock  %}
+        {% endblock  %}
+    
+    {% endembed %}
+{% else %}
+    {% embed 'HelperBundle:Widgets:section.html.twig' 
+        with { 
+            title: 'Recently Added ' ~ centerLabel.singular|title,  
+            actions: [{link: path('admin_institution_medicalCenter_add', { institutionId: institution.id }) , label: 'Add ' ~ centerLabel.singular|title, 'icon' : 'icon-edit' }]
+        }  
+    %}
 
-{% endembed %}
+        {% block sectionContent %}
+            {% for each in medicalCenters %}
+                <div class="boxcontent">
+                    <span class="pull-left" style="margin-right: 20px;">
+                        <a href=""><img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/></a>
+                    </span>
+            
+                    <h6>{{ each.name }} </h6>
+                    <p>{{ each.description | raw }}</p>
+            
+                    <button class="btn btn-info"><i class="icon-search"></i>View Details</button>
+                </div>
+            {% endfor %}
+            
+            <div style="text-align:right">
+                <button class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</button>
+            </div>
+        {% endblock  %}
+    
+    {% endembed %}
+    
+{% endif %}

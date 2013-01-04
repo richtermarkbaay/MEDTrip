@@ -48,12 +48,13 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\HelperBundle\Services\LocationService;
-
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 
 class InstitutionController extends Controller
 {    
@@ -236,11 +237,13 @@ class InstitutionController extends Controller
      */
     public function viewAction(Request $request)
     {   
+        $institutionService = $this->get('services.institution');
         $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
         
         return $this->render('AdminBundle:Institution:view.html.twig', array(
             'recentMedicalCenters' => $recentMedicalCenters,
-            'institution' => $this->institution
+            'institution' => $this->institution,
+            'isSingleCenter' => $institutionService->isSingleCenter($this->institution)
         ));
     }
     
