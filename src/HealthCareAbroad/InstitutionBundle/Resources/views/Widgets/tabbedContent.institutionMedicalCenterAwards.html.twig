@@ -74,13 +74,13 @@
             source: $.parseJSON('{{ certificatesSourceJSON | raw }}'),
             target: $('input.certificate_selector'),
             selectedDataContainer: $('table.certificates_table tbody'),
-            loader: $('table.awards_table tbody tr.loader')
+            loader: $('table.certificates_table tbody tr.loader')
         })
         .setAutocompleteOptions('affiliation', {
             source: $.parseJSON('{{ affiliationsSourceJSON | raw }}'),
             target: $('input.affiliation_selector'),
             selectedDataContainer: $('table.affiliations_table tbody'),
-            loader: $('table.awards_table tbody tr.loader')
+            loader: $('table.affiliations_table tbody tr.loader')
         })
         .autocomplete();
     });
