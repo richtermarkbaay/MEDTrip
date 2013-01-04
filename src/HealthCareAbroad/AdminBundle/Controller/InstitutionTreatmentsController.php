@@ -157,20 +157,26 @@ class InstitutionTreatmentsController extends Controller
             $groupedTreatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')
                 ->getBySpecializationId($_specialization->getId(), true);
             if (empty($groupedTreatments)) {
-                // there are no  treatments for this medical center
-                continue;
+                // there are no  treatments for this specialization
+                $specializationsData[] = array(
+                    'institutionSpecialization' => $_institutionSpecialization,
+                    'groupedTreatments' => array(),
+                    'selectedTreatments' => array()
+                );
             }
-            $selectedTreatments = $_institutionSpecialization->getTreatments();
-            $_selectedTreamentIds = array();
-            foreach ($selectedTreatments as $_treatment) {
-                $_selectedTreamentIds[] = $_treatment->getId();
+            else {
+                $selectedTreatments = $_institutionSpecialization->getTreatments();
+                $_selectedTreamentIds = array();
+                foreach ($selectedTreatments as $_treatment) {
+                    $_selectedTreamentIds[] = $_treatment->getId();
+                }
+                
+                $specializationsData[] = array(
+                    'institutionSpecialization' => $_institutionSpecialization,
+                    'groupedTreatments' => $groupedTreatments,
+                    'selectedTreatments' => $_selectedTreamentIds
+                );
             }
-            
-            $specializationsData[] = array(
-                'institutionSpecialization' => $_institutionSpecialization,
-                'groupedTreatments' => $groupedTreatments,
-                'selectedTreatments' => $_selectedTreamentIds
-            );
         }
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
         
