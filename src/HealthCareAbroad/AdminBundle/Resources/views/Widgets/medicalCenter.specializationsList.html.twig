@@ -42,19 +42,12 @@
             				</td>
             			</tr>
                     {% endfor %}
+                {% else %}
+                    <tr>
+        				<td colspan="3">{{_specialization.name |title}} has no treatments yet.</td>
+        			</tr>
                 {% endfor %}
-                {# for _treatment in _each.institutionSpecialization.treatments %}
-    			<tr>
-    				<td>{{ _treatment.name |title }}</td>
-    				<td></td>
-    				<td>
-    					<div class="post-toolbar">
-    						<i class="icon-trash" title="Delete"></i>
-    						<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
-    					</div>
-    				</td>
-    			</tr>
-    			{% endfor #}
+                
             </tbody>
         </table>
         
