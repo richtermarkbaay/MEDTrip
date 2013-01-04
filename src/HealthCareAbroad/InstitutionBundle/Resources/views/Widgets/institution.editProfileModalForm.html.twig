@@ -7,6 +7,8 @@
 
                 {% if each == 'description' %}
                     {{ form_row(institutionForm[each], { 'attr': {class: 'tinymce', rows: 5} })  }}
+                {% elseif each == 'name' %}
+                    {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
                 {% elseif each == 'address1' or each == 'contactNumber' or each == 'websites' %}
                     {{ form_widget(institutionForm[each]) }}
                 {% else %}
