@@ -215,7 +215,7 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         else {
             // multiple center institution profile view
-            $templateVariables['medicalCenters'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
+            $templateVariables['medicalCenters'] = $this->get('services.institution')->getAllMedicalCenters($this->institution);
         }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);

@@ -33,19 +33,19 @@
                 <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">Clinics</a>
             </li>
             <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#services">Services</a>
+                <a data-toggle="tab" class="profile_tab_links" href="#services">{{ ancillaryServiceClassLabel.plural | title}}</a>
             </li>
             <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and GlobalAwards</a>
+                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and Affiliations</a>
             </li>
             
         </ul>
         <div class="tab-content" id="tabbed_content">
             <div id="medical_centers" class="tab-pane active">
-                {% include 'InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig' %}
+                {% include 'InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig' %}
             </div>
-            <div id="services" class="tab-pane"><span>Loading... se</span></div>
-            <div id="awards" class="tab-pane"><span>Loading... aw</span></div>
+            <div id="services" class="tab-pane"><span>Loading {{ ancillaryServiceClassLabel.plural }}...</span></div>
+            <div id="awards" class="tab-pane"><span>Loading {{ globalAwardClassLabel.plural }}...</span></div>
         </div><!-- /.tab-content -->
     </div>
 </div>
