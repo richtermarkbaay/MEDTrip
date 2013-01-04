@@ -84,7 +84,7 @@
 
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/admin/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
@@ -111,6 +111,28 @@
                 close: function() {}
             });
 
+            InstitutionGlobalAwardAutocomplete
+            .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
+            .setAutocompleteOptions('award', {
+                source: $.parseJSON('{{ awardsSourceJSON | raw }}'),
+                target: $('input.award_selector'),
+                selectedDataContainer: $('table.awards_table tbody'),
+                loader: $('table.awards_table tbody tr.loader')
+            })
+            .setAutocompleteOptions('certificate', {
+                source: $.parseJSON('{{ certificatesSourceJSON | raw }}'),
+                target: $('input.certificate_selector'),
+                selectedDataContainer: $('table.certificates_table tbody'),
+                loader: $('table.awards_table tbody tr.loader')
+            })
+            .setAutocompleteOptions('affiliation', {
+                source: $.parseJSON('{{ affiliationsSourceJSON | raw }}'),
+                target: $('input.affiliation_selector'),
+                selectedDataContainer: $('table.affiliations_table tbody'),
+                loader: $('table.awards_table tbody tr.loader')
+            })
+            .autocomplete();
+            
             $('a.add-global_award').click(function(){
                 var elem = $(this);
                 var _url = elem.attr('href');
@@ -280,5 +302,7 @@
 
             return false;
         });
+
+        
     </script>
 {% endblock %}

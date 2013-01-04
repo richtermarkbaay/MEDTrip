@@ -35,3 +35,11 @@ admin_global_award_updateStatus:
     defaults: { _controller: AdminBundle:GlobalAward:updateStatus, id: ~ }
     requirements:
         id: \d+
+
+admin_institution_medicalCenter_ajaxAddGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        imcId: \d+
+        institutionId: \d+
