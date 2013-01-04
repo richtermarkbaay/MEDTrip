@@ -99,14 +99,11 @@ class InstitutionController extends Controller
      */
     public function addAction(Request $request){
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-    	$institutionType = $request->get('institution', InstitutionTypes::MULTIPLE_CENTER);   
-  
     	$factory = $this->get('services.institution.factory');
-    	$institution = $factory->createInstance($institutionType);  	
+    	$institution = $factory->createInstance();  	
     	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
     
 	    	if ($request->isMethod('POST')) {
-	    	    $type= $_POST['institution'];
 	    		$form->bind($request);
 	    		 
 	    		if ($form->isValid()) {
@@ -120,7 +117,6 @@ class InstitutionController extends Controller
 	    			$institution->setLogo('');
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
-	    			$institution->setType($type['type']);
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
@@ -154,7 +150,6 @@ class InstitutionController extends Controller
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
     					'institutionTypes' => InstitutionTypes::getFormChoices(),
-    					'selectedInstitutionType' => $institutionType,
     	                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
     	));
     }

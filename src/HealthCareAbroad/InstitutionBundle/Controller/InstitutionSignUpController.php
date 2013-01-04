@@ -74,7 +74,6 @@ class InstitutionSignUpController  extends Controller
 	public function signUpAction(Request $request)
 	{
 	    $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-	    
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
