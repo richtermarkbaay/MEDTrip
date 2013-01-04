@@ -95,6 +95,12 @@ class InstitutionService
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
     }
     
+    public function getAllMedicalCenters(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+            ->findBy(array('institution' => $institution->getId()));
+    }
+    
     public function getTreatmentQueryBuilderByInstitution($institution)
     {
         $qry = "SELECT treatment_id FROM institution_treatments WHERE treatment_id = :treatmentId";

@@ -108,7 +108,7 @@ class InstitutionTreatmentsController extends Controller
             }
         }
         else {
-            $institutionMedicalCenters = $institutionService->getActiveMedicalCenters($this->institution);
+            $institutionMedicalCenters = $institutionService->getAllMedicalCenters($this->institution);
             
             // get global ancillary services
             $ancillaryServicesData = array(

@@ -35,8 +35,10 @@
                                     <i class="icon-edit"></i> <span>edit</span>
                                 </a>
                                 <div class="center-description">{{ center.description | raw }}</div>
+                                
                                 <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
                             </div>
+                            <div class="center-status">Status: {{ get_medical_center_status_label(center) }}</div>
                             <div class="specializations"></div>
                         </div>
                     {% endfor %}

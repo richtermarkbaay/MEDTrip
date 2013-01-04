@@ -1,0 +1,36 @@
+services:
+    services.miscellaneous.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\MiscellaneousTwigExtension
+        calls:
+            - [setClassLabels, [%class_labels%]]
+            - [setClassKeys, [%class_keys%]]
+        public: false
+        tags:
+            - { name: twig.extension }
+            
+    services.helpetext.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\HelpTextTwigExtension
+        arguments: [@doctrine]   
+        public: false
+        tags:
+            - { name: twig.extension }
+    
+    services.institutionTypeText.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InstitutionTypeTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+            
+    services.institutionMedicalCenter.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InstitutionMedicalCenterTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    services.inline_javascript.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InlineJavascriptTwigExtension
+        public: false
+        calls:
+            - [setTwig, [@twig]]
+        tags:
+            - { name: twig.extension }

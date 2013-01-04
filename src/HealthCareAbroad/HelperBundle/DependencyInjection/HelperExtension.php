@@ -25,6 +25,7 @@ class HelperExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('forms.yml');
+        $loader->load('twig_extensions.yml');
         $loader->load('class_labels.yml');
     }
 }
