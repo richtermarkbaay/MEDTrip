@@ -177,7 +177,7 @@ var InstitutionMedicalCenter = {
                     $('#profileWebsitesText').html(websitesString);
                     break;
                 } 
-                _form.modal('hide');
+                _form.parents('.modal').modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
