@@ -153,7 +153,7 @@ var InstitutionMedicalCenter = {
             	
                 switch(_form.attr('id')){
                 case 'addressModalForm':
-                    var address = response.institutionMedicalCenter.address1; 
+                    var address = response.institutionMedicalCenter.address; 
                     $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
                     $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
                     $('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
@@ -169,7 +169,6 @@ var InstitutionMedicalCenter = {
                 	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
                     break;
                    
-                
                 case 'websitesModalForm':
                     var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
                     for(name in websites) {
