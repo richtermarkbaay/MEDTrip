@@ -1,0 +1,30 @@
+<div class="specializations_block" id="specialization_block_{{ institutionSpecialization.id }}">
+     <div class="maincontentblock">
+        <h4 class="pull-left">{{ institutionSpecialization.specialization.name |title}}</h4>
+        <div class="editname2 pull-left">
+			<i title="Delete" class="icon-trash"></i>
+			<a onclick="return InstitutionMedicalCenter.openAjaxBootstrapModal($(this));" role="button" title="" href="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionSpecialization.institutionMedicalCenter.id, 'isId': institutionSpecialization.id } ) }}" data-target="#deletespecializationname"><small>Delete</small></a>
+		</div>
+	</div>
+    <div class="maincontentblock">
+	    <table class="table table-striped table-bordered bootstrap-datatable">
+	        <tbody>
+	            {% for _treatment in institutionSpecialization.treatments %}
+				<tr>
+					<td>{{ _treatment.name |title }}</td>
+					<td>
+						<div class="post-toolbar">
+							<i class="icon-trash" title="Delete"></i>
+							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+						</div>
+					</td>
+				</tr>
+				{% else %}
+				<tr>
+				    <td colspan="2">This specialty has no treatments yet</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+    </div>
+ </div>

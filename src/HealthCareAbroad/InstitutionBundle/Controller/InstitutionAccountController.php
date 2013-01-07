@@ -8,25 +8,23 @@ namespace HealthCareAbroad\InstitutionBundle\Controller;
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
-use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
-
-use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
+
+use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -34,7 +32,6 @@ use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
 class InstitutionAccountController extends InstitutionAwareController
 {
@@ -232,17 +229,25 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function loadTabbedContentsAction(Request $request)
     {
-  
         $content = $request->get('content');
         $output = array();
         $parameters = array('institution' => $this->institution);
+        
         switch ($content) {
             case 'medical_centers':
                 $parameters['medical_centers'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
                 $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig', $parameters));
                 break;
             case 'services':
-                $parameters['services'] = $this->institution->getInstitutionOfferedServices();
+                $ancillaryServicesData = array(
+                                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                                'selectedAncillaryServices' => array()
+                );
+                
+                foreach ($this->get('services.institution')->getInstitutionServices($this->institution) as $_selectedService) {
+                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService['id'];
+                }
+                $parameters['services'] = $ancillaryServicesData;
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', $parameters));
                 break;
             case 'awards':
@@ -409,5 +414,105 @@ class InstitutionAccountController extends InstitutionAwareController
         }
 
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Remove an ancillary service to institution
+     * Required parameters:
+     *     - institutionId
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author alniejacobe
+     */
+    public function ajaxRemoveAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+        ->find($request->get('asId', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // get property value for this ancillary service
+        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $ancillaryService->getId());
+    
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+    
+            $output = array(
+                            'html' => $this->renderView('InstitutionBundle:Institution:row.ancillaryService.html.twig', array(
+                                            'institution' => $this->institution,
+                                            'ancillaryService' => $ancillaryService,
+                                            '_isSelected' => false
+                            )),
+                            'error' => 0
+            );
+            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * Add an ancillary service to institution
+     * Required parameters:
+     *     - institutionId
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author alniejacobe
+     */
+    public function ajaxAddAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+        ->find($request->get('asId', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // check if this institution already have this property value
+        if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $ancillaryService->getId())) {
+            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
+            $property->setValue($ancillaryService->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $output = array(
+                                'html' => $this->renderView('InstitutionBundle:Institution:row.ancillaryService.html.twig', array(
+                                                'institution' => $this->institution,
+                                                'ancillaryService' => $ancillaryService,
+                                                '_isSelected' => true
+                                )),
+                                'error' => 0
+                );
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+    
+        }
+    
+        return $response;
     }
 }

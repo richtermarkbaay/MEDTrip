@@ -9,12 +9,11 @@
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
 
-        <div class="border_pattern">&nbsp;</div>    
-        <div id="content_wrapper">
-            <div class="container">
-                {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
-                {% block content %}{% endblock %}
-            </div>
+        <div id="content_wrapper" class="container">
+
+            {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
+
+            {% block content %}{% endblock %}
 
         </div>
         <div class="border_pattern_footer">&nbsp;</div>

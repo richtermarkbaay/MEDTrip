@@ -8,71 +8,72 @@
         {% embed 'HelperBundle:Widgets:section.html.twig' with {title: institutionMedicalCenter.name } %}
     
             {% block sectionContent %}
-            
-                {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig'%}
+                <div id="scroll-pane" data-spy="scroll" data-target="#navbar">
+                    {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig'%}
+                    
+                    {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
+                    
+                    {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig'%}
                 
-                {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
-                
-                {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig'%}
-            
-                {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
-    
-                <div id="medicalCenterDetailsAccordion" class="treatmentbox">
-                    <h5 style="padding: 10px; border: 1px solid #EEEEEE">
-                        Media
-                        <a href="{{ path('admin_media_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
-                            <i class="icon-plus"></i>Add
-                        </a>
-                    </h5>
-                    <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                        {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                    {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
+        
+                    <div id="mediaAccordion" class="treatmentbox">
+                        <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                            Media
+                            <a href="{{ path('admin_media_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                                <i class="icon-plus"></i>Add
+                            </a>
+                        </h5>
+                        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                            {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                        </div>
                     </div>
-                </div>
-                
-                <div id="medicalCenterDetailsAccordion" class="treatmentbox">
-                    <h5 style="padding: 10px; border: 1px solid #EEEEEE">
-                        Doctors
-                        <a href="{{ path('admin_institution_medicalCenter_addMedicalSpecialist', {institutionId: institution.id,imcId: institutionMedicalCenter.id } )}}" class="btn btn-mini pull-right">
-                            <i class="icon-plus"></i>Add Doctors
-                        </a>
-                    </h5>
-                    <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                        <table class="table table-striped table-bordered bootstrap-datatable">
-                	      <thead>
-                            <tr>
-                				<th>Medical Specialist</th>
-                				<th>Specializations</th>
-                				<th>Actions</th>
-                			</tr>
-                        </thead>
-                	        <tbody>
-                             {% for doctor in institutionMedicalCenter.doctors %}
-                				<tr id="doctor_block_{{ doctor.id}}">
-                					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
-                					<td>
-                					{% for specialization in doctor.specializations %}
-                					    {{ specialization.name |title }} 
-                					    {% if loop.last == false %},{% endif %} 
-                				    
-                				    {% else %}
-                					    No Specializations yet
-                					{% endfor %}
-                					</td>
-                					<td>
-                						<div class="post-toolbar">
-                							<i class="icon-trash" title="Delete"></i>
-                							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
-                						</div>
-                					</td>
-                				</tr>
-                		      {% else %}
-                    		  	<tr>
-                    			   <td> No Medical Specialist yet. </td>
-                    			   <td></td>
-                    			</tr>
-                			{% endfor %}
-                			</tbody>
-                		</table>
+                    
+                    <div id="doctorsAccordion" class="treatmentbox">
+                        <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                            Doctors
+                            <a href="{{ path('admin_institution_medicalCenter_addMedicalSpecialist', {institutionId: institution.id,imcId: institutionMedicalCenter.id } )}}" class="btn btn-mini pull-right">
+                                <i class="icon-plus"></i>Add Doctors
+                            </a>
+                        </h5>
+                        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                            <table class="table table-striped table-bordered bootstrap-datatable">
+                        	    <thead>
+                                    <tr>
+                        			    <th>Medical Specialist</th>
+                        				<th>Specializations</th>
+                        				<th>Actions</th>
+                        			</tr>
+                                </thead>
+                    	        <tbody>
+                                 {% for doctor in institutionMedicalCenter.doctors %}
+                    				<tr id="doctor_block_{{ doctor.id}}">
+                    					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+                    					<td>
+                    					{% for specialization in doctor.specializations %}
+                    					    {{ specialization.name |title }} 
+                    					    {% if loop.last == false %},{% endif %} 
+                    				    
+                    				    {% else %}
+                    					    No Specializations yet
+                    					{% endfor %}
+                    					</td>
+                    					<td>
+                    						<div class="post-toolbar">
+                    							<i class="icon-trash" title="Delete"></i>
+                    							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
+                    						</div>
+                    					</td>
+                    				</tr>
+                    		      {% else %}
+                        		  	<tr>
+                        			   <td> No Medical Specialist yet. </td>
+                        			   <td></td>
+                        			</tr>
+                    			{% endfor %}
+                    			</tbody>
+                    		</table>
+                        </div>
                     </div>
                 </div>
             {% endblock %}
@@ -90,6 +91,11 @@
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+        	/**$('#navbar').affix({
+        		offset: $('#navbar').position()
+        	});
+        	$('#scroll-pane').scrollspy({target: '#navbar'});
+        	**/
         	$(".hour").timepicker({ seconds: false  });
             $('input.is_closed_checkbox').each(function(){
                 if(this.checked) {
