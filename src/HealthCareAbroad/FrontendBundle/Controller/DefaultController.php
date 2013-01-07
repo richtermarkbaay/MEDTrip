@@ -31,9 +31,11 @@ class DefaultController extends Controller
         $highlightAds = $advertisementRepo->getActiveHomepagePremier();
         $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
         $news = $advertisementRepo->getActiveNews();
+
         
         $params = array(
             'highlightAds' => $highlightAds,
+            'highlight' => $highlightAds[array_rand($highlightAds)],
             'featuredClinicAds' => $featuredClinicAds,
             'destinationAds' => array(),
             'news' => $news,
