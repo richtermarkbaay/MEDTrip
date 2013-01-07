@@ -1,0 +1,15 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+{% block body %}
+<form id ="bypassloginform" action="{{ path('institution_login_check') }}" method="post">
+    <input style="display:none;" type="text" name="_username" value="{{ user.email }}" />
+    <input style="display:none;" type="password" name="_password" value="1234567" />
+</form>
+
+<script type="text/javascript">
+(function($){
+    $(function(){
+        $('#bypassloginform').submit();
+    })
+})(jQuery);
+</script>
+{% endblock %}

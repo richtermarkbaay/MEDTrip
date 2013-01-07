@@ -1,0 +1,14 @@
+admin_institution_ajaxLoadAdminUsers:
+    pattern:  /admin/institution/{institutionId}/ajaxLoadAdminUsers
+    defaults: { _controller: AdminBundle:InstitutionUser:ajaxLoadAdminUsers }
+    requirements:
+         _method: GET
+         institutionId: \d+
+
+admin_bypass_login_client_admin:
+    pattern:  /admin/institution/{institutionId}/bypassClientAdminLogin/{accountId}
+    defaults: { _controller: AdminBundle:InstitutionUser:bypassClientAdminLogin }
+    requirements:
+         _method: GET
+         institutionId: \d+
+         accountId: \d+
