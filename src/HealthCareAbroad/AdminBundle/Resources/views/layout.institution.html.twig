@@ -6,7 +6,7 @@
 {% block title %}{{ parent() }} &raquo; Admin Panel{% endblock %}
 
 {% block body %}
-
+{% set sideBarUsed = sideBarUsed is defined ? sideBarUsed : 'AdminBundle:Institution:sidebar.html.twig' %}
 <body>
 
     {% include 'AdminBundle:Embed:header.layout.html.twig' %}
@@ -19,8 +19,8 @@
     	<div class="container maincontent" style="margin-top:20px;">
     	    {% include '::notice.admin.html.twig' %}
     	    
-    	    <div class="span3">
-    	        {% include 'AdminBundle:Institution:sidebar.html.twig' %}
+    	    <div class="span3 bs-docs-sidebar">
+    	        {% include sideBarUsed %}
     	    </div>
 		    
 
