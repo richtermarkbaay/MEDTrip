@@ -232,4 +232,31 @@ class InstitutionService
     
         return !\is_null($result) ;
     }
+    
+    public function getAllGlobalAwards(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
+    }
+    
+    public function getAllDoctors(Institution $institution)
+    {
+        $institutionDoctors = array();
+        foreach($institution->getInstitutionMedicalCenters() as $each) {
+            $institutionDoctors = array_merge($institutionDoctors, $each->getDoctors()->toArray());
+        }
+
+        return $institutionDoctors;
+    }
+    
+//     public function getBranches(Institution $institution)
+//     {
+//         $groupCriteria = array('medicalProviderGroups' => $this->institution->getMedicalProviderGroups()->first());
+//         $institutionBranches = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($groupCriteria);
+        
+//         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        
+//         $qb->select('a')->from('InstitutionBundle:Institution')
+//            ->leftJoin('a.medicalProviderGroups', 'b')
+//            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
+//     }
 }

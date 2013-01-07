@@ -1,0 +1,16 @@
+{% embed 'FrontendBundle:Institution/Widgets:asideBox.html.twig' with {title: 'Info'} %}
+
+    {% block asideContent %}
+		<ul class="info">
+			<li class="row">
+				<p class="span2">Total Number of Doctors</p>
+				<p class="span1">{{ institutionDoctors | length }}</p>
+			</li>
+			<li class="row">
+				<p class="span2">Total Number of Clinics</p>
+				<p class="span1">{{ institution.institutionMedicalCenters | length }}</p>
+			</li>
+		</ul>
+	{% endblock %}
+	
+{% endembed %}
