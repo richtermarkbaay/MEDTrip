@@ -1,0 +1,14 @@
+     {% set daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
+     {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
+	 {% for i, day in daysArr %}
+	  {% if arrBusinessHours[day] is not defined %}
+
+	  {% else %}
+           <tr>
+            <td > {{ day }} </td>
+            <td > {{ arrBusinessHours[day].from}} </td>
+            <td > - </td>
+            <td > {{ arrBusinessHours[day].to }} </td>
+        </tr>
+         {% endif %}
+     {% endfor %}
