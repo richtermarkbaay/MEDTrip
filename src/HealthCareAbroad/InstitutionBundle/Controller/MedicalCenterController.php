@@ -420,18 +420,24 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
         $em = $this->getDoctrine()->getEntityManager();
+        $ajaxOutput = array('html' => '');
         $errors = array();
         if (\count($submittedSpecializations) > 0) {
             foreach ($submittedSpecializations as $specializationId => $_data) {
                 $_institutionSpecialization = new InstitutionSpecialization();
                 $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
                 $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+                
                 $_institutionSpecialization->setDescription('');
                 $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
                 $form->bind($_data);
                 if ($form->isValid()) {
-                    $em->persist($form->getData());
-                    $em->flush();
+//                     $em->persist($form->getData());
+//                     $em->flush();
+                    
+                    $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
+                        'institutionSpecialization' => $_institutionSpecialization
+                    ));
                 }
                 else {
             
@@ -442,14 +448,24 @@ class MedicalCenterController extends InstitutionAwareController
             $errors[] = 'Please provide at least one specialization.';
         }
         
-        
-        if (\count($errors) > 0) {
-            $request->getSession()->setFlash('notice', '<ul><li>'.\implode('</li><li>', $errors).'</li></ul>');
-            $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
+        // if AJAX request
+        if ($request->isXmlHttpRequest()) {
+            if (\count($errors) > 0) {
+                $response = new Response('<ul><li>'.\implode('</li><li>', $errors).'</li></ul>',400);
+            }
+            else {
+                $response = new Response(\json_encode($ajaxOutput),200, array('content-type' => 'application/json'));
+            }
         }
         else {
-            // redirect to next step
-            $response = $this->redirect($this->generateUrl('institution_medicalCenter_addAncilliaryServices',  array('imcId' => $this->institutionMedicalCenter->getId())));
+            if (\count($errors) > 0) {
+                $request->getSession()->setFlash('notice', '<ul><li>'.\implode('</li><li>', $errors).'</li></ul>');
+                $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
+            }
+            else {
+                // redirect to next step
+                $response = $this->redirect($this->generateUrl('institution_medicalCenter_addAncilliaryServices',  array('imcId' => $this->institutionMedicalCenter->getId())));
+            }   
         }
         
         return $response;
@@ -524,11 +540,20 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
+        
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+        $specializationArr = array();
+        
+        foreach ($specializations as $e) {
+            $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
+        
         return $this->render($template, array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
-            'institutionMedicalCenterForm' => $form->createView()
+            'institutionMedicalCenterForm' => $form->createView(),
+            'specializationsJSON' => \json_encode($specializationArr)
         ));
     }
     
@@ -952,6 +977,7 @@ class MedicalCenterController extends InstitutionAwareController
         $params['subSpecializations'] = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getBySpecializationId($specializationId, $groupBySubSpecialization);
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
+        $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
         
         $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);
         //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
