@@ -182,6 +182,24 @@ class InstitutionService
     }
     
     /**
+     * Get values of institution $institution for property type $propertyType
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @return array InstitutionProperty
+     */
+    public function getPropertyValues(Institution $institution, InstitutionPropertyType $propertyType)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->getResult();
+    
+        return $result;
+    }
+    /**
      * Check if $institution has a property type value of $value
      *
      * @param Institution $institution
