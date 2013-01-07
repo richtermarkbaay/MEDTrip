@@ -5,9 +5,9 @@
     	<div id="main_content" class="row">
 
     	    <!-- Main Content -->
-    		<div class="span8">
+    		<div id="content" class="span8">
                 {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}
-                
+
                 {% include 'FrontendBundle:Widgets/Ads:featuredClinics.html.twig' %}
 
                 {% include 'FrontendBundle:Widgets/Ads:destinations.html.twig' %}
@@ -15,13 +15,13 @@
 
     		
     		<!--Sidebar Content -->
-    		<div  id="aside_content" class="span4">
-                {% include 'FrontendBundle:Widgets:sidebarNews.html.twig' %}
+    		<aside id="aside_content" class="span4">
+                {% include 'FrontendBundle:Widgets/Ads:asideNews.html.twig' %}
 
-                {% include 'FrontendBundle:Widgets:sidebarTreatments.html.twig' %}
+                {% include 'FrontendBundle:Widgets/Ads:asideCommonTreatments.html.twig' %}
 
-                {% include 'FrontendBundle:Widgets/Ads:sidebarAds.html.twig' %}
-    		</div> <!--End of Sidebar Content -->
+                {% include 'FrontendBundle:Widgets/Ads:asideImageAds.html.twig' %}
+    		</aside> <!--End of Sidebar Content -->
 
     	</div>
 	

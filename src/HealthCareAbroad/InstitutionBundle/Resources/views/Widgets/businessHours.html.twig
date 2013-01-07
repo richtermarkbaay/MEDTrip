@@ -22,7 +22,7 @@
             <th class="minwidth-1"> <a href="#">From</a></th>
             <th class="minwidth-1"> <a href="#">To</a></th>
         </tr>
-        
+        <input class="imcId" name="imcId" id="imcId" value="{{ institutionMedicalCenter.id }}"  type="hidden"/>
         {% for i, day in daysArr %}
             <tr>
                 <td  align="center">
@@ -47,13 +47,12 @@
                          <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
                     {% endif %}
                 </td>
-                
             </tr>
          {% endfor %}
     </table>
-        <div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true" >Cancel</button>
-			<button class="btn btn-primary" id="saveBusinessHours" type="submit">Submit</button>
-		</div>
+      <div class="modal-footer button-wrapper">
+    		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+    		<button class="btn btn-primary submit-button">Submit</button>
+    </div>
     
 </div>

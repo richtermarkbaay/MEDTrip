@@ -1,37 +1,21 @@
         <div class="box-content">
-        {% set daysArr = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'] %}
-        {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
-                
         	<h4 class="pull-left">CLINIC HOURS</h4>
         	<div class="pull-right editname2">
 			   <a href="#" role="button" class="businessHoursModalLink" id="businessHoursModal-{{institutionMedicalCenter.id}}">
                     <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                 </a>
         	</div>
-        
         	
-        	<table class="table table-striped">
-        	 {% for i, day in daysArr %}
-        	  {% if arrBusinessHours[day] is not defined %}
-
-        	  {% else %}
-                   <tr>
-                    <td > {{ day }} </td>
-                    <td > {{ arrBusinessHours[day].from}} </td>
-                    <td > - </td>
-                    <td > {{ arrBusinessHours[day].to }} </td>
-                </tr>
-                 {% endif %}
-             {% endfor %}
-        		
-        	</table>
+        	<table class="table table-striped" id="institutionBusinessHoursText">
+        	    {% include 'InstitutionBundle:Widgets:businessHoursTable.html.twig' %}
+    	    </table>
         	<div id="business_hours_modal_form" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-header">
             		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
             		<h3 id="myModalLabel8">Change Clinic Hours</h3>
             	</div>
             	<div class="modal-body">
-            		<form id="modal_institutionMedicalCenter_description_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
+            		<form id="modal_institutionMedicalCenter_description_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours') }}">
             		    <div>
                 			{% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
                 		</div>
@@ -46,6 +30,7 @@
 <script type="text/javascript" src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/jquery/globalize.js') }}"></script> 
 <script type="text/javascript" src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+
 <script type="text/javascript">
 (function(){
     $(function(){
@@ -91,6 +76,27 @@
             	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
             }
            
+        });
+
+        // Set Submit button of modal forms to save the specific property changes and update the text property.
+        $('div#business_hours_modal_form .submit-button').click(function(){
+            _form = $(this).parents('.modal-body').find('form');
+            _form.append('<span class="loader">Loading...</span>');
+            $.ajax({  
+                 url: _form.attr('action'), 
+            	  type: "POST",  
+            	  data: _form.serialize(),
+            	  success: function(data) {  
+            		  $('#institutionBusinessHoursText').html(data.html);
+            		  _form.parents('.modal').modal('hide');
+                      _form.find('span.loader').remove();
+                },
+                error: function(response) {
+                	_form.find('span.loader').hide();
+                }
+        	}); 
+
+        	return false; 
         });
             
     });    

@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 use HealthCareAbroad\AdvertisementBundle\Form\AdvertisementFormType;
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
@@ -33,6 +35,8 @@ class AdvertisementController extends Controller
 
     public function preExecute()
     {
+        $ad = $this->getRequest()->get('advertisement');
+
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
             $this->advertisement = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($advertisementId);
 
@@ -41,9 +45,20 @@ class AdvertisementController extends Controller
             }
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', 1)) {
-            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+        if ($institutionId = $this->getRequest()->get('institutionId', $ad['institution'])) {
+            //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
+            $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+            $qb->select('a, b, c, d, e')->from('InstitutionBundle:Institution', 'a')
+               ->leftJoin('a.institutionMedicalCenters', 'b')
+               ->leftJoin('b.institutionSpecializations', 'c')
+               ->leftJoin('c.specialization', 'd')
+               ->leftJoin('c.treatments', 'e')
+               ->where('a.id = :institutionId')
+               ->setParameter('institutionId', $institutionId);
+            
+            $this->institution = $qb->getQuery()->getOneOrNullResult();
+            
             if (!$this->institution) {
                 throw $this->createNotFoundException("Invalid institution.");
             }

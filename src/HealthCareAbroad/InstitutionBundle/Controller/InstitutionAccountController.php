@@ -24,7 +24,6 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
-use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

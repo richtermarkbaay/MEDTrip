@@ -159,41 +159,37 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-        
     }
     
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
-        $businessHours = json_encode($request->get('businessHours'));
-        if (!$businessHours) {
-            throw $this->createNotFoundException();
+          if ($request->isMethod('POST')) {
+              
+            $businessHours = json_encode($request->get('businessHours'));
+            $this->institutionMedicalCenter->setBusinessHours($businessHours);
+            $em = $this->getDoctrine()->getEntityManager();
+            
+            try {
+                if ($businessHours) {
+                    $em->persist($this->institutionMedicalCenter);
+                    $em->flush();
+                    // TODO: Verify Event!
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
+                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                    ));
+                }
+            }
+          catch (\Exception $e) {
+               
+              return new Response($e->getMessage(),500);
+          }
         }
-        $this->institutionMedicalCenter->setBusinessHours($businessHours);
-        $em = $this->getDoctrine()->getEntityManager();
         
-        try {
-            $em->persist($this->institutionMedicalCenter);
-            $em->flush();
-            // TODO: Verify Event!
-            // dispatch event
-            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
-                            $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-                            ));
-        }
-        catch (\PDOException $e) {
-
-            return $this->_errorResponse(500, $e->getMessage());
-        }
+        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
         
-        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
-             return $this->redirect($this->generateUrl('institution_account_profile'));
-        }
-        else {
-             return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
-        }
-       
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
-    
     /**
      * Ajax handler for loading tabbed contents of an institution medical center
      * @param Request $request
