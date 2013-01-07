@@ -4,7 +4,7 @@ namespace HealthCareAbroad\AdminBundle\Controller;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
