@@ -178,9 +178,6 @@ var InstitutionMedicalCenter = {
                     $('#profileWebsitesText').html(websitesString);
                     break;
                 } 
-//                _lastSpecializationBlock = InstitutionSpecialization.specializationsListContainer.find('div.specializations_block').last();
-//                // insert new content after last specialization block
-//                _lastSpecializationBlock.after($(response.html));
                 _form.modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
             },
