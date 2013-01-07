@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -34,5 +36,21 @@ class InstitutionUserRepository extends EntityRepository
             $criteria['status'] = $status;
         }
         return $this->findBy($criteria); 
+    }
+    
+    public function findByTypeName(Institution $institution, $userTypeName)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder()
+            ->select('u')
+            ->from('UserBundle:InstitutionUser', 'u')
+            ->join('u.institutionUserType', 't', Join::WITH, 't.name LIKE :userTypeName')
+            ->where('u.institution = :institutionId')
+            ->andWhere('u.status = :status')
+            ->setParameter('userTypeName', '%'.$userTypeName.'%')
+            ->setParameter('institutionId', $institution->getId())
+            ->setParameter('status', SiteUser::STATUS_ACTIVE)
+            ->getQuery();
+        
+        return $query->getResult();
     }
 }

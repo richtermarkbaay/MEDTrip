@@ -1,7 +1,3 @@
-{##
-Note: This widget is only for AdminBundle
-##}
-
 <div class="container">
     <div class="institutionbox-inner">
         <div class="navbar-inner">
@@ -25,6 +21,7 @@ Note: This widget is only for AdminBundle
                 <div class="span9">
                     <h3>{{ institution.name }}</h3>
                     <a href="#"><h5>Manage Your Accreditations, GlobalAwards and Awards</h5></a>
+                    <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
                 </div>
             </div>
             <div class="span6">
@@ -40,12 +37,41 @@ Note: This widget is only for AdminBundle
 
 </div>
 
+
+<div id="view_admin_users_modal" class="modal hide fade modal_form_container" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header">
+        <h3>Admin Users</h3>
+    </div>
+    <div class="modal-body">
+        Loading admin users...
+    </div>
+</div>
 {% render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} %}
 
 <script type="text/javascript">
 $(function() {
+    
     $("#institution-logo-link").click(function() {
         $("#add-media-dialog").dialog("open");
+        return false;
+    });
+
+    $('a#view_admin_users_link').click(function(){
+        _link = $(this);
+        _modal = $('#view_admin_users_modal')
+        _modal.modal('show');
+        $.ajax({
+            url: _link.attr('href'),
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                _modal.find('div.modal-body').html(response.html);
+            },
+            error: function(response) {
+                
+            }
+        });
+        
         return false;
     });
 });

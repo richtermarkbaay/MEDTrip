@@ -86,6 +86,7 @@ class TreatmentBundleService
      *
      * @param Specialization $specialization
      */
+    
     public function getActiveSubSpecializationsBySpecialization(Specialization $specialization)
     {
         $key = 'TreatmentBundle:TreatmentService:getActiveSubSpecializationBySpecialization_'.$specialization->getId();
@@ -160,6 +161,12 @@ class TreatmentBundleService
         }
 
         return $result;
+    }
+    
+    public function getTreatmentsBySpecializationGroupedBySubSpecialization(Specialization $specialization)
+    {
+        return $this->doctrine->getRepository('TreatmentBundle:Treatment')
+                ->getBySpecializationId($specialization->getId(), true);
     }
     
     /** ----- End Treatment related functionalities ------ **/
