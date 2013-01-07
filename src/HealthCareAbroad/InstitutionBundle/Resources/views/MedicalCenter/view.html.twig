@@ -50,6 +50,7 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
 <script type="text/javascript">
 <!--
     (function($){
@@ -63,6 +64,21 @@
             })
             .initializeTabbedContentContainerElement($('div#tabbed_content'))
             .loadTabbedContents();
+
+            // setup autocomplete for add specialization
+            InstitutionSpecializationAutocomplete.singleSelectionOnly = true;
+            InstitutionSpecializationAutocomplete
+            .setAutocompleteOptions({
+                source : $.parseJSON('{{ specializationsJSON | raw}}'),
+                target: $('input.autocomplete_specialization_selector'),
+                selectedDataContainer: $('#specializationAccordion') 
+            })
+            .setLoaderElement($('#specializationLoading'))
+            .setLoadSpecializationFormUri('{{ path("institution_medical_center_ajaxLoadSpecializationAccordionEntry", { "treatmentsListOnly":1,"imcId": institutionMedicalCenter.id } ) }}')
+            .autocomplete();
+
+            InstitutionSpecialization.setSpecializationsListContainerElement($('div#specializations_tab_content div.row-fluid'));
+
         });
 
     })(jQuery);

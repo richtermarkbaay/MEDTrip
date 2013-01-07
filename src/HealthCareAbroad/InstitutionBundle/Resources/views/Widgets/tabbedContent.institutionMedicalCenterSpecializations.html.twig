@@ -1,47 +1,35 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-		 
-		 {% for specialization in specializations %}
-		 <div id="specialization_block_{{ specialization.id }}">
-		 	<div class="maincontentblock">
-		        <h4 class="pull-left">{{specialization.specialization.name |title}}</h4>
-		        <div class="editname2 pull-left">
-					<i title="Delete" class="icon-trash"></i>
-					<a onclick="return InstitutionMedicalCenter.openAjaxBootstrapModal($(this));" role="button" title="" href="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': specialization.institutionMedicalCenter.id, 'isId': specialization.id } ) }}" data-target="#deletespecializationname"><small>Delete</small></a>
-				</div>
-			</div>
-		    <div class="maincontentblock">
-			    <table class="table table-striped table-bordered bootstrap-datatable">
-			        <tbody>
-			            {% for _treatment in specialization.treatments %}
-        				<tr>
-        					<td>{{ _treatment.name |title }}</td>
-        					<td>
-        						<div class="post-toolbar">
-        							<i class="icon-trash" title="Delete"></i>
-        							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
-        						</div>
-        					</td>
-        				</tr>
-        				{% endfor %}
-        			</tbody>
-    			</table>
-            </div>
-        </div>
+        {% for institutionSpecialization in specializations %}
+            {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig' %}
         {% else %}                
-		<div class="maincontentblock">
-		No specializations yet.
-		</div>
+		    <div class="maincontentblock">No specializations yet.</div>
 		{% endfor %}
 			
 		
         <div id="deletespecializationname" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">Loading...</div>
         
-		
+        <!-- add specialization modal form -->
+		<div id="addspecialization" class="modal hide fade modal_form_container" tabindex="-1" role="dialog" aria-hidden="true">
+		    <div class="modal-body">
+	            <form class="modal_form" action="{{ path('institution_medicalCenter_ajaxSaveSpecializations', {'imcId': institutionMedicalCenter.id} ) }}">
+	                <label>Search and add a specialty </label>
+        	        <input type="text" name="" class="autocomplete_specialization_selector" />
+        	        <div id="specializationLoading" class="ajax-loading" style="display:none">loading...</div>
+        	        <div id="specializationAccordion"></div>
+	            </form>
+	        </div>
+	        <div class="modal-footer">
+	            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	            <button onclick="return InstitutionSpecialization.submitAddSpecialization(this);" class="btn btn-primary submit-button">Submit</button>
+            </div>
+	        
+		</div><!-- end #addspecialization -->
     {% endblock %}
+    
     {% block tabbedContentActionButtons %}
     <div class="pull-right">
-		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addspecializations">Add Another Specialization</a>
+		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addspecialization">Add Another Specialization</a>
 	</div>
     {% endblock %}
     

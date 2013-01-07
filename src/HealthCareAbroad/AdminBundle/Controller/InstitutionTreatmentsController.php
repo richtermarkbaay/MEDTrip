@@ -230,7 +230,6 @@ class InstitutionTreatmentsController extends Controller
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
         
-        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -245,6 +244,7 @@ class InstitutionTreatmentsController extends Controller
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
             'currentGlobalAwards' => $currentGlobalAwards,
             'ancillaryServicesData' => $ancillaryServicesData,
+            'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())

@@ -1,0 +1,21 @@
+<tr class="ancillaryancillaryServices_row">
+	<td>{{ ancillaryService.name |title }}</td>
+	<td>
+	    {% if (_isSelected is defined and _isSelected ) %}
+	        <div class="post-toolbar treatment_action">
+				<i class="icon-trash" title="Delete"></i>
+				<a href="{{ path('institution_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'asId': ancillaryService.id } ) }}" onclick="InstitutionMedicalCenter.removeAncillaryService($(this)); return false;" title="" >
+				    Delete Service
+			    </a>
+			</div>
+		{% else %}
+		    <div class="post-toolbar treatment_action">
+				<i class="icon-ok" title="Add"></i>
+				<a href="{{ path('institution_ajaxAddAncillaryService', {'institutionId' : institution.id, 'asId': ancillaryService.id } ) }}" onclick="InstitutionMedicalCenter.addAncillaryService($(this)); return false;" title="" >
+				    Add Service
+			    </a>
+			</div>
+	    {% endif %}
+		
+	</td>
+</tr>

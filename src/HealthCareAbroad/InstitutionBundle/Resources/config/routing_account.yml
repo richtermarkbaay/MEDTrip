@@ -34,3 +34,17 @@ institution_load_tabbed_contents_singleProfile:
     requirements:
         _method: GET|POST
         imcId: \d+
+        
+institution_ajaxRemoveAncillaryService:
+    pattern:  /institution/{institutionId}/ajaxRemoveAncillaryService
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemoveAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
+
+institution_ajaxAddAncillaryService:
+    pattern:  /institution/{institutionId}/ajaxAddAncillaryService
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
