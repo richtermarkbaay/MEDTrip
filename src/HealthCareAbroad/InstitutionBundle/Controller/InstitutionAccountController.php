@@ -20,7 +20,6 @@ use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDetailType;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
