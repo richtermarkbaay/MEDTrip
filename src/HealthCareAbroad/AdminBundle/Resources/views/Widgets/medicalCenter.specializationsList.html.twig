@@ -1,5 +1,5 @@
 {% set specializationLabel = getClassLabel('institution_specialization') %}
-<div id="medicalCenterDetailsAccordion" class="treatmentbox">
+<div id="specializationsAccordion" class="treatmentbox">
     <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="clinic_specializations">
         {{ specializationLabel.plural | title }}
         <a href="{{ path('admin_institution_medicalCenter_addSpecialization', {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}">

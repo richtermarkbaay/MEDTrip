@@ -8,17 +8,11 @@
     			</tr>
             </thead>
 			<tbody>
-    			{% for service in services %}
-    				<tr>
-    					<td>{{ service.name |title}}</td>
-    					<td>
-    						<div class="post-toolbar">
-    							<i class="icon-trash" title="Delete"></i>
-    							<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
-    						</div>
-    					</td>
-    				</tr>
-    		      {% else %}
+    			{% for _service in services.globalList %}
+        			
+        			{% include 'InstitutionBundle:Institution:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
+                    
+    		    {% else %}
         		  	<tr>
         			   <td> No Services yet. </td>
         			   <td></td>

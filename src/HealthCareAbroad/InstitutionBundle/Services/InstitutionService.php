@@ -20,7 +20,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\UserBundle\Services\InstitutionUserService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\HelperBundle\Entity\City;
 use HealthCareAbroad\HelperBundle\Entity\Country;
@@ -147,4 +147,52 @@ class InstitutionService
         return $qb->getQuery()->getOneOrNullResult(); 
     }
     
+    /**
+     * Get ancillary services of an institution
+     *
+     * @param Institution $institution
+     * @return boolean
+     */
+    public function getInstitutionServices(Institution $institution)
+    {
+        $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->getAllServicesByInstitution($institution);
+         
+        return $ancilliaryServices;
+    }
+    
+    /**
+     * Get InstitutionProperty by institution, institution propertype and the value
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return InstitutionProperty
+     */
+    public function getPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->setParameter('value', $value)
+        ->getOneOrNullResult();
+    
+        return $result;
+    }
+    
+    /**
+     * Check if $institution has a property type value of $value
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return boolean
+     */
+    public function hasPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
+    {
+        $result = $this->getPropertyValue($institution, $propertyType, $value);
+    
+        return !\is_null($result) ;
+    }
 }
