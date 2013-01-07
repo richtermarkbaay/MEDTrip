@@ -12,10 +12,16 @@
     			  {% set even = false %}
     				{% for medicalCenter in medicalCenters %}
     			    <tr class="{{ even ? 'alternate-row' : ''}}">
-    					<td> <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a></td>
-    					<td>Created on {{ medicalCenter.dateCreated|date("m/d/Y") }}</td>
+    					<td> 
+    					    <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a>
+    					    <div class="medical_center_status">
+    					        Status: {{ get_medical_center_status_label(medicalCenter) }}
+    					    </div>
+					    </td>
+    					<td>{{ medicalCenter.dateCreated|date("M d, Y h:i A") }}</td>
     					<td class="options-width">
-        					<a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip">Edit</a>
+    					    <i title="Edit" class="icon-pencil"></i>
+        					<a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit"><small>Edit</small></a>
     					</td>
     				</tr>
     				{% set even = even ? false : true %}    
@@ -26,7 +32,7 @@
     
     {% block tabbedContentActionButtons %}
     <div class="pull-right">
-        <a class="btn btn-success btn-medium" data-toggle="modal" role="button" title="" href="{{ path('institution_medicalCenter_add', { 'institutionId': institution.id } ) }}">
+        <a class="btn btn-success btn-medium" data-toggle="modal" role="button" title="" href="{{ path('institution_medicalCenter_add' ) }}">
             Add Another Clinic
         </a>
     </div>
