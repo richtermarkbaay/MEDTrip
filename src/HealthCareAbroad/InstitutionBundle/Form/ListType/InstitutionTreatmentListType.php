@@ -1,7 +1,8 @@
 <?php
-/*
+/**
  * 
- * @author Chaztine Blance
+ * @author Adelbert D. Silla
+ *
  */
 namespace HealthCareAbroad\InstitutionBundle\Form\ListType;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -13,58 +14,34 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class InstitutionTreatmentListType extends AbstractType
 {
 	private $institution;
-	private $institutionService;
-	
-	public function __construct($params) {
-	    foreach($params as $key => $val) {
-	        $this->{$key} = $value;	        
-	    }
-	}
 
-	public function setInstitutionService($service)
-	{
-	    $this->institutionService = $service;
+	public function __construct(Institution $institution) {
+	    $this->institution = $institution;
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {        
-        $qb = $this->institutionService->getTreatmentQueryBuilderByInstitution($this->institution);
-        
-    	$institution = $this->institution;
-        $resolver->setDefaults(array(
-            	'label' => 'Treatments',
-        		'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Treatment',
-                'query_builder' => function(EntityRepository $er) use ($institution) {
+    {
+    	$choices = array();
 
-                    //$qb = $er->createQueryBuilder();
-                    
-                    $qb1 = $qb->getEntityManager()->createQueryBuilder();
-                    $qb1->select('d.treatments')
-                    ->from('InstitutionBundle:InstitutionSpecialization', 'b')
-                    ->leftJoin('b.institutionMedicalCenter', 'c')
-                    ->leftJoin('b.specialization', 'd')
-                    ->where('c.institution = :institution')
-                    ->groupBy('b.specialization');
-                    
-                    if($params['filter'] == $params['unselected']) {
-                        $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
-                    
-                    } else if($params['filter'] == $params['selected']) {
-                        $qb->where($qb->expr()->in('a.id', $qb1->getDQL()));
-                    }
-                    
-                    $qb->setParameter('institution', $params['institution']->getId());
-                    
-                    return $qb;
-                    
-                return $er->getQueryBuilderForActiveTreatmentProceduresByMedicalCenter();
-        	}
+    	foreach($this->institution->getInstitutionMedicalCenters() as $center) {
+
+    	    foreach($center->getInstitutionSpecializations() as $institutionSpecialization) {
+
+    	        foreach($institutionSpecialization->getTreatments() as $treatment) {
+    	            $choices[$institutionSpecialization->getSpecialization()->getName()][$treatment->getId()] = $treatment->getName();
+    	        }
+    	    }
+    	}
+
+        $resolver->setDefaults(array(
+        	'label' => 'Treatments',
+            'choices' => $choices
         ));
     }
     
     public function getParent()
     {
-        return 'entity';
+        return 'choice';
     }
     
     public function getName()
