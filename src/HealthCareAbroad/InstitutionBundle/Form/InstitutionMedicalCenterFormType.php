@@ -77,7 +77,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
         $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
         $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
-        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email', 'virtual' => true,'attr' => array('value' => $this->institution->getContactEmail())));
+        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
         $this->_add($builder, 'websites', 'websites_custom_field');
         $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Unit or Room #,  Building, Street Details', 'attr' => array('value' => $this->institution->getAddress1())));                
