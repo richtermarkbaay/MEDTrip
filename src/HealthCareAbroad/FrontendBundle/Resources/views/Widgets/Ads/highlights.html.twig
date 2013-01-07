@@ -1,4 +1,4 @@
-<div id="highlight" class="carousel slide"> <!--Highighted Institution-->
+{#<div id="highlight" class="carousel slide"> <!--Highighted Institution-->
     <div class="carousel-inner">
         {% for i, each in highlightAds %}
         <div class="{{ i == 0 ? 'active ' : ''}}item">
@@ -63,6 +63,63 @@
 	<a class="carousel-pills" href="#highlight" data-slide="prev">&lsaquo;</a>
 	<a class="carousel-pills" href="#highlight" data-slide="next">&rsaquo;</a>
 </div> <!--End of highlighted institution-->
+#}
+
+
+<div id="highlight"> <!--Highighted Institution-->
+    {% set logo = highlight.institution.media ? '/media/' ~ highlight.institution.id ~ '/' ~ highlight.institution.media.name : '' %}
+	<a href="#" class="clinic span2 offset6"><img src="{{ logo }}" alt="clinic logo"/></a>
+	
+	<div class="upper_box row">
+		<h3 class="span6">{{ highlight.institution.name }}</h3><br>
+		<h5 class="span6">{{ highlight.institution.city.name }}, {{ highlight.institution.country.name }}</h5>
+	</div>
+
+	<div class="row"> <!--Bootstrap carousel-->
+		<div id="feature_carousel" class="carousel slide span8">
+			<div class="carousel-inner">
+				<div class="active item row">
+		            {% set image = highlight.media ? '/media/ads/' ~ highlight.institution.id ~ '/' ~ highlight.media.name : '' %}
+				    <img class="span8" src="{{ image }}" alt="" style="width:620px; height:256px"/>
+				</div> <!--End of slider_item 1-->
+
+				<div class="item row">
+				    <img class="span8" src="{{ image }}" alt="" style="width:620px; height:256px"/>
+				</div> <!--End of slider_item 2-->
+			</div>
+			<a class="carousel-pills" href="#feature_carousel" data-slide="prev"><span>&nbsp;</span></a>
+			<a class="carousel-pills" href="#feature_carousel" data-slide="next"><span>&nbsp;</span></a>
+			<button class="btn">Learn More</button>
+		</div> <!--End of carousel slide-->
+	</div> <!--End of carousel row-->
+
+	<div class="lower_box row">
+        {% set doctors = json_decode(highlight.getHighlightDoctors) %}
+        {% for doctor in doctors %}
+            <div class="span4">
+            	<div class="media">
+            		<div class="image_preview">
+            		    {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
+            			<a href="" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
+            		</div>
+            		<div class="media-body">
+            			<a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
+            			<p>
+            			    {% for i, specialization in doctor.specializations %}
+            			        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
+            			    {% endfor %}
+            			</p>
+            		</div>
+            	</div>
+            </div>
+		{% endfor %}
+	</div>
+</div> <!--End of highlighted institution-->
+
+
+
+
+
 
 <!--This is for the javascript-->
 <script type="text/javascript">
