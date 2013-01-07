@@ -77,7 +77,26 @@ class InstitutionService
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;
-    }    
+    }
+
+    public function getAdminUsers(Institution $institution)
+    {
+        $_users = $this->doctrine->getRepository('UserBundle:InstitutionUser')
+            ->findByTypeName($institution, 'ADMIN');
+        
+        $retVal = array();
+        foreach ($_users as $user) {
+            try {
+                $retVal[] = $this->institutionUserService->getAccountData($user);
+            }
+            catch (\Exception $e) {
+                $retVal[] = $user;
+            }
+                
+        }
+        
+        return $retVal;
+    }
     
     public function getAllStaffOfInstitution(Institution $institution)
     {

@@ -33,6 +33,12 @@ AdminBundle_institutuion:
     resource: "@AdminBundle/Resources/config/routing_institution.yml"
     prefix:   /
     
+# routes for InstituitonUserController
+AdminBundle_institutuion_user:
+    resource: "@AdminBundle/Resources/config/routing_institution_user.yml"
+    prefix:   /
+
+    
 # Routes for Admin InstitutionTreatmentsController #
 AdminBundle_institutuionTreatments:
     resource: "@AdminBundle/Resources/config/routing_institution_treatments.yml"
