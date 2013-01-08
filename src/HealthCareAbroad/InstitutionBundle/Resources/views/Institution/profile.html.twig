@@ -56,62 +56,6 @@
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('#institution_profile_form_country').change();
 
-        // Set Submit button of modal forms to save the specific property changes and update the text property.
-        $('.button-wrapper .submit-button').click(function(){
-
-            $(this).attr('disabled', true);
-            _form = $(this).parents('.modal-content').find('form');
-            _form.append('<span class="loader">Loading...</span>');
-
-            InstitutionProfile.submitModalForm(_form, function(response){
-                if (response.form_error) {
-                    _form.prepend(response.form_error_html);
-                }
-                else {
-
-                    switch(_form.attr('id')){
-                        case 'nameModalForm':
-                            $('#institutionNameText').html(response.institution.name);
-                        	break;
-
-                        case 'descriptionModalForm':
-                            $('#institutionDescriptionText').html(response.institution.description);
-                            break;
-
-                        case 'addressModalForm':
-                            var address = response.institution.address1; 
-                            $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
-                            $('#profileCityText').html(response.institution.city ? response.institution.city + ', ' : '');
-                            $('#profileZipcodeText').html(response.institution.zipCode ? response.institution.zipCode + ', ' : '');
-                            $('#profileStateText').html(response.institution.state ? response.institution.state + ', ' : '');
-                            $('#profileCountryText').html(response.institution.country);
-                            break;
-
-                        case 'numberModalForm':
-                            var number = response.institution.contactNumber;
-                            $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
-                            break;
-
-                        case 'emailModalForm':
-                            $('#profileEmailText').html(response.institution.contactEmail);
-                            break;
-
-                        case 'websitesModalForm':
-                            var websites = response.institution.websites, websitesString = ''; 
-                            for(name in websites) {
-                                websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
-                            }
-                            $('#profileWebsitesText').html(websitesString);
-                            break;
-                    }
-
-                    _form.parents('.modal').modal('hide');
-                }
-
-                $(this).attr('disabled', false);
-                _form.find('span.loader').remove();
-            });
-        });
     });
 })(jQuery);
 //-->
