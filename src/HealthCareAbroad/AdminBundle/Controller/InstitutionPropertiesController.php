@@ -38,15 +38,22 @@ class InstitutionPropertiesController extends Controller
         }
     }
     
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $offeredServiceRepository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty');
-         
-        $offeredServices = $offeredServiceRepository->getAllServicesByInstitution($this->institution);
+        $ancillaryServicesData = array(
+                        'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                        'selectedAncillaryServices' => array()
+        );
+        
+        foreach ($this->get('services.institution')->getInstitutionServices($this->institution) as $_selectedService) {
+            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService['id'];
+        }
+
         return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
-                        'offeredServices' => $offeredServices,
+                        'services' => $ancillaryServicesData,
                         'institution' => $this->institution
         ));
+        
     }
     
     public function viewGlobalAwardsAction(Request $request)
