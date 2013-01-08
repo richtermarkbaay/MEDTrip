@@ -51,7 +51,7 @@ institution_ajaxAddAncillaryService:
 
 institution_ajaxAddGlobalAward:
     pattern: /institution/{institutionId}/awards-certificates-and-affiliations/ajaxAdd
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddGlobalAward, imcId: ~}
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddGlobalAward, institutionId: ~}
     requirements:
         _method: POST
         institutionId: \d+
