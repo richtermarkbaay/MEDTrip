@@ -38,6 +38,9 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             fixed: false
             nullable: false
             column: contact_number
+        details:
+            type: text
+            nullable: false
         dateCreated:
             type: datetime
             nullable: false
@@ -76,6 +79,19 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
                         name: institution_medical_center_id
                         referencedColumnName: id
             orderBy: null
+            
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: 
+                - "persist"
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+            
     oneToOne:
         media:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media

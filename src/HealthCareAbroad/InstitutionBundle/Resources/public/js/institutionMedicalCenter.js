@@ -237,10 +237,12 @@ var InstitutionMedicalCenter = {
     },
     
     removeAncillaryService: function(_linkElement) {
+    	
         return this._doAncillaryServiceAction(_linkElement);
     },
     
     _doAncillaryServiceAction: function (_linkElement) {
+   
         if (_linkElement.hasClass('disabled')) {
             return false;
         }

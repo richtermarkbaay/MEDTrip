@@ -6,9 +6,6 @@ HealthCareAbroad\TreatmentBundle\Entity\Specialization:
     properties:
         name:
             - NotBlank: ~
-        description:
-            - NotBlank: ~
-
 
 HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
     constraints:
@@ -20,9 +17,6 @@ HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization:
             - NotBlank: ~
         specialization:
             - NotBlank: ~
-        description:
-            - NotBlank: ~
-
 
 HealthCareAbroad\TreatmentBundle\Entity\Treatment:
     constraints:

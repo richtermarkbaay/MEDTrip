@@ -2,6 +2,7 @@
 	<td>{{ ancillaryService.name |title }}</td>
 	<td>
 	    {% if (_isSelected is defined and _isSelected ) %}
+	
 	        <div class="post-toolbar treatment_action">
 				<i class="icon-trash" title="Delete"></i>
 				<a href="{{ path('institution_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'asId': ancillaryService.id } ) }}" onclick="InstitutionMedicalCenter.removeAncillaryService($(this)); return false;" title="" >
