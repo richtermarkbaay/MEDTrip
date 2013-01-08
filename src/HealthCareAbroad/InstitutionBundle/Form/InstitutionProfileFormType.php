@@ -95,7 +95,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
-        $this->_add($builder, 'address1', 'detailed_street_address');
+        $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Address'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number'));
         $this->_add($builder, 'websites', 'websites_custom_field');
         

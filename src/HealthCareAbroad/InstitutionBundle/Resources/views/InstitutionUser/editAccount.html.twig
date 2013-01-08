@@ -1,6 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set selectedTab = 'manage_account'%}
-{% form_theme form '::form.admin.html.twig' %}
 
 {% block content %}
 
@@ -12,13 +11,13 @@
 					<span>Manage Account Profile</span>
 				</h1>
     		<div class="accountsettings">
-    			<div id="accordion2">
+    			<div class="accordion" id="accordion2">
     				<div class="accordion-group">
     					<div class="accordion-heading">
     						<h5>Personal Information</h5>
-    						<a href="#"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+    						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
     					</div>
-    					<div id="collapseOne" class="accordion-body">
+    					<div id="collapseOne" class="accordion-body collapse">
     						<div class="accordion-inner">
                                 <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
                                     <table class="offset2">
@@ -26,7 +25,6 @@
                                         {{ form_row(form.firstName) }}
                                         {{ form_row(form.middleName) }}
                                         {{ form_row(form.lastName) }}
-                                        
                                         <tr>
                                             <th>&nbsp;</th>
                                             <td valign="top">
@@ -45,38 +43,37 @@
     				<div class="accordion-group">
     					<div class="accordion-heading">
     						<h5>Login Information</h5>
-    						<a href="#"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
+    						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
     					</div>
     					 
-    					<div id="collapseTwo" class="accordion-body ">
+    					<div id="collapseTwo" class="accordion-body collapse">
     						<div class="accordion-inner">
                                 <strong>Password</strong>
                                 <p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>  
                                 {% include '::notice.admin.html.twig' %}  
-                                <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-                                 
-                            	    <!-- start id-form -->
-                            		<table class="offset2">
-                            		
-                                        <tr>
-                                            <td>{{ form_row( formChangePassword.current_password ) }} </td>
-                                        </tr>
-                                        <tr>
-                                             <td>{{ form_row( formChangePassword.new_password ) }} </td>
-                                        </tr>
-                                        <tr>
-                                             <td> {{ form_row( formChangePassword.confirm_password ) }} </td>
-                                        </tr>
-                                        <tr>
-                                        	<td valign="top">
-                                        		<input type="reset" value="Reset" class="btn-medium btn"/>
-                                        		<input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />
-                                        	</td>
-                                        </tr>
-                                         {{ form_rest(formChangePassword) }}
-                                	</table>
-                                	<!-- end id-form  -->
-                            	</form>
+                                <table class="offset2">
+                                    <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                                     
+                                	    <!-- start id-form -->
+                                            <tr>
+                                                <td>{{ form_row( formChangePassword.current_password ) }} </td>
+                                            </tr>
+                                            <tr>
+                                                 <td>{{ form_row( formChangePassword.new_password ) }} </td>
+                                            </tr>
+                                            <tr>
+                                                 <td> {{ form_row( formChangePassword.confirm_password ) }} </td>
+                                            </tr>
+                                            <tr>
+                                            	<td valign="top">
+                                            		<input type="reset" value="Reset" class="btn-medium btn"/>
+                                            		<input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />
+                                            	</td>
+                                            </tr>
+                                             {{ form_rest(formChangePassword) }}
+                                    	<!-- end id-form  -->
+                                	</form>
+                        		</table>
     						</div>
     					</div>
     				</div>
