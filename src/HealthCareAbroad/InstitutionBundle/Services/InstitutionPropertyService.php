@@ -115,4 +115,15 @@ class InstitutionPropertyService
             $this->activePropertyTypes[$each->getName()] = $each;
         }
     }
+    
+    /**
+     * Layer to Doctrine find by id. Apply caching here.
+     *
+     * @param int $id
+     * @return InstitutionProperty
+     */
+    public function findById($id)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->find($id);
+    }
 }
