@@ -5,7 +5,7 @@
             {name: 'centers', url: path('admin_institution_manageCenters', {'institutionId': institution.id}), label: getClassLabel('institution_medical_center').plural | title, icon: 'icon-star'},
             {name: 'doctors', url: '#', label: 'Doctors', icon: 'icon-user'},
             {name: 'staff', url: '#', label: 'Staff', icon: 'icon-user'},
-            {name: 'global_awards', url: '#', label: 'GlobalAwards / Certifications', icon: 'icon-certificate'},
+            {name: 'global_awards', url: path('admin_institution_viewGlobalAwards', {'institutionId': institution.id}), label: 'GlobalAwards / Certifications', icon: 'icon-certificate'},
             {name: 'gallery', url: path('admin_institution_gallery', {institutionId: institution.id} ), label: 'Media Gallery', icon: 'icon-picture'},
             {name: 'staff', url: path('admin_institution_viewAncilliaryService', {institutionId: institution.id} ), label: 'Ancilliary Service', icon: 'icon-user'},
         ]
