@@ -1,0 +1,21 @@
+<div class="doctors content row">
+	<h5>Doctors</h5>
+	<ul class="thumbnails">
+	    {% for doctor in institutionDoctors %}
+		<li class="thumbnail">
+			<img class="pull-left img-polaroid" src="" alt="">
+			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
+			<p class="media-body">
+			    {% for i, each in doctor.specializations %}
+			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
+			    {% endfor %}
+			</p>
+			<ul class="contact">
+				<li class="email"><a href="">email</a></li>
+				<li class="call"><a href="">contact</a></li>
+				<li class="web"><a href="">website</a></li>	
+			</ul>
+		</li>
+		{% endfor %}
+	</ul>
+</div>

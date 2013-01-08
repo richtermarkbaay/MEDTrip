@@ -1,0 +1,27 @@
+<div id="main_content" class="tab-pane active">
+	<div>
+	    {{ institution.description | raw }}
+	</div>
+	
+	<div class="awards-services row">
+		<div class="services span4">
+			<h5>Services</h5>
+			<ul>
+			{% for each in institution.institutionOfferedServices %}
+				<li>{{ each.name }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+		<div class="awards span4">
+			<h5>Awards &amp; Accreditations</h5>
+			<ul>
+			    {% for each in institutionAwards %}
+				<li>{{ each.name }}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	{% include 'FrontendBundle:Institution/Widgets:doctors.html.twig' %}
+
+</div> <!--End of main_content-->
