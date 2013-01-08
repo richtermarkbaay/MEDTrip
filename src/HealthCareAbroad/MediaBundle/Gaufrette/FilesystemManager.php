@@ -51,9 +51,9 @@ class FilesystemManager
         return $this->uploadRootDir;
     }
 
-//     public function getWebRootPath()
-//     {
-//         //TODO: use path generator
-//         return '/media/';
-//     }
+    public function getWebRootPath()
+    {
+        //TODO: use path generator
+        return '/media/';
+    }
 }
