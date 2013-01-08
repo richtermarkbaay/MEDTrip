@@ -21,10 +21,7 @@
 				<div class="span6">
 				 {{ form_errors(form) }}
                     <fieldset>
-                        <div>
-                            <label for="institution_website">Institution website</label>
-                            <input type="text" class="institution_website span11" value="{{ form.websites.vars.value.main }}" name="{{ form.websites.vars.full_name ~ '[main]' }}">
-                        </div>
+                        
                         {{ form_row(form.contactEmail, {attr: {class:'span9'} } ) }}
                         {{ form_row(form.contactNumber) }}
                         {{ form_widget(form.websites) }}
