@@ -214,7 +214,7 @@ class AdvertisementController extends Controller
             $adValuesFile = array_shift($fileBag['advertisementPropertyValues']);
     
             if($adValuesFile['value']) {
-                $media = $this->get('services.media')->uploadAds($adValuesFile['value'], $this->institution->getId());
+                $media = $this->get('services.media')->upload($adValuesFile['value'], $advertisement);
     
                 if($media && $media->getId()) {
                     foreach($advertisement->getAdvertisementPropertyValues() as $each) {
