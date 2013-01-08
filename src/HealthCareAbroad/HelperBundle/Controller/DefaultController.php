@@ -33,10 +33,12 @@ class DefaultController extends Controller
         $countryId = $request->get('countryId', 0);
         $selectedCity = $request->get('selectedCityId', 0);
     	$data = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
-
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');
-
+    	$html = '<option value="0">Select a city</option>';
+    	foreach ($data as $each) {
+    	    $html .= '<option value="'.$each['id'].'" '. ($selectedCity == $each['id']?'selected':'')  . '>'.$each['name'].'</option>';
+    	}
+		$response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
+		
 		return $response;
     }
     
