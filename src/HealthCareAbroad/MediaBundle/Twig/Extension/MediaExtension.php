@@ -33,9 +33,9 @@ class MediaExtension extends \Twig_Extension
         );
     }
 
-    public function getMedia(Media $media, $format = null, array $options = array())
+    public function getMedia(Media $media, $mediaOwner, $format = null, array $options = array())
     {
-        return $this->helper->getMedia($media, $format, $options);
+        return $this->helper->getMedia($media, $mediaOwner, $format, $options);
     }
 
     /**

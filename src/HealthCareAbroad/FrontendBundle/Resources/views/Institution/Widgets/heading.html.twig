@@ -6,7 +6,7 @@
 
 		<img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
 		<a href="#">
-		    {{ media(institution.media, 'default', {'institutionId': institution.id, class: 'institution_logo'}) | raw }}
+		    {{ media(institution.media, institution, 'default', {class: 'institution_logo'}) | raw }}
 		</a>
 	</div>
 	<div class="bottom_box content span12">

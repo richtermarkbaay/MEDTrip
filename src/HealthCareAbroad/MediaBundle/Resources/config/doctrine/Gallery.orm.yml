@@ -16,8 +16,10 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
             column: date_created
     manyToMany:
         media:
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
-            cascade: {  }
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media 
+            cascade:
+                - "persist"
+                - "remove"
             inversedBy: gallery
             joinTable:
                 name: gallery_media
