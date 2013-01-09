@@ -107,4 +107,29 @@ class SearchService
 
         return $transformedResults;
     }
+
+    public function searchByCountry($country)
+    {
+        return $this->searchStrategy->searchForInstitutionsByCountry($country);
+    }
+
+    public function searchByCity($city)
+    {
+        return $this->searchStrategy->searchForInstitutionsByCity($city);
+    }
+
+    public function searchBySpecialization($specialization)
+    {
+        return $this->searchStrategy->searchMedicalCentersBySpecialization($specialization);
+    }
+
+    public function searchBySubSpecialization($subSpecialization)
+    {
+        return $this->searchStrategy->searchMedicalCentersBySubSpecialization($subSpecialization);
+    }
+
+    public function searchByTreatment($treatment)
+    {
+        return $this->searchStrategy->searchMedicalCentersByTreatment($treatment);
+    }
 }
