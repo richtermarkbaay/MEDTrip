@@ -1,23 +1,28 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
     {% block modalBody %}
 
-        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" style="min-width: 400px;padding: 20px 20px 0;">
+        <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id, 'isLogo': 'isLogo'}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
         
-            {% for each in fields %}
-                 {% if each == 'logo' %}
-                    {{ form_widget(institutionForm[each]) }}
-                 {% endif %}
-            {% endfor %}
-            
-            {{ _csrf_token_widget | raw}}
-    
-        </form>
-        <div class="clearfix"></div>
-        
-                    <div class="modal-footer button-wrapper">
-            		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-            		<button class="btn btn-primary submit-button" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
+            <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" />
+          
+            <div class="clearfix"></div>
+                <div class="modal-footer button-wrapper">
+        		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        		<input type="submit" class="btn btn-primary submit-button" value="Submit">
             </div>
+        </form>
   
     {% endblock %}
 {% endembed %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+function validate(form) {
+   if ((/.(gif|jpe?g|png)$/i.test(form['file'].value))==false) {
+
+       return (false);
+   }
+       return(true);
+}
+</script>
+{% endblock %}

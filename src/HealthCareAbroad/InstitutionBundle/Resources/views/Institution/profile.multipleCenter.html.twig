@@ -1,7 +1,7 @@
 <div class="span9">
     <div class="row"> 
         <div class="span2">
-            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#upload"> 
+            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
                 {% if institution.logo is not sameas(NULL) %}
                     {{ media(institution.logo, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
                 {% else %}
