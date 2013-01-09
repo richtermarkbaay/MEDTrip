@@ -43,3 +43,11 @@ admin_institution_medicalCenter_ajaxAddGlobalAward:
         _method: POST
         imcId: \d+
         institutionId: \d+
+
+admin_institution_medicalCenter_ajaxRemoveGlobalAward:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveGlobalAward }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST

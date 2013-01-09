@@ -141,7 +141,7 @@ var InstitutionMedicalCenter = {
     submitMedicalCenterSidebarForms: function(domButtonElement) {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
-        _button.html("Processing...").attr('disabled', true);
+        _button.html("Processing pa...").attr('disabled', true);
         _form = _button.parents('.modal-content').find('form');
         _data = _form.serialize();
         $.ajax({
@@ -150,32 +150,34 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-            	
-                switch(_form.attr('id')){
-                case 'addressModalForm':
-                    var address = response.institutionMedicalCenter.address; 
-                    $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
-                    $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
-                    $('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
-                    $('#profileCountryText').html(response.institutionMedicalCenter.country);
-                    break;
-
-                case 'numberModalForm':
-                	var number = response.institutionMedicalCenter.contactNumber;
-                    $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
-                    break;
-                    
-                case 'emailModalForm':
-                	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
-                    break;
-                   
-                case 'websitesModalForm':
-                    var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
-                    for(name in websites) {
-                        websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
-                    }
-                    $('#profileWebsitesText').html(websitesString);
-                    break;
+            	switch(_form.attr('id')){
+                    case 'descriptionModalForm':
+                        $('#clinicDescriptionText').html(response.institutionMedicalCenter.response);
+                        break;
+                    case 'addressModalForm':
+                        var address = response.institutionMedicalCenter.address; 
+                        $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
+                        $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
+                        $('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
+                        $('#profileCountryText').html(response.institutionMedicalCenter.country);
+                        break;
+    
+                    case 'numberModalForm':
+                    	var number = response.institutionMedicalCenter.contactNumber;
+                        $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                        break;
+                        
+                    case 'emailModalForm':
+                    	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                        break;
+                       
+                    case 'websitesModalForm':
+                        var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
+                        for(name in websites) {
+                            websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
+                        }
+                        $('#profileWebsitesText').html(websitesString);
+                        break;
                 } 
                 _form.parents('.modal').modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
@@ -269,7 +271,7 @@ var InstitutionMedicalCenter = {
 
 var InstitutionGlobalAwardAutocomplete = {
     _loadHtmlContentUri: '',
-    
+    _removePropertyUri: '',
     autocompleteOptions: {
         'award':{
             source: '',
@@ -290,16 +292,29 @@ var InstitutionGlobalAwardAutocomplete = {
             loader: null
         }
     },
-    
+    removeProperty: function(_awardId, _container) {
+        _container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: this._removePropertyUri,
+            data: {'id': _awardId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
+    },
     setAutocompleteOptions: function (_type, _options) {
         this.autocompleteOptions[_type] = _options;
         
         return this;
     },
-    
+    setRemovePropertyUri: function (_val) {
+    	this._removePropertyUri = _val;
+        return this;
+    },
     setLoadHtmlContentUri: function (_val) {
         this._loadHtmlContentUri = _val;
-        
         return this;
     },
     

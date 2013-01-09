@@ -3,7 +3,7 @@
       GlobalAwards / Certifications
     </h5>
     <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-    <form  action="{{ path('institution_medicalCenter_addGlobalAwards', { 'imcId':institutionMedicalCenter.id}) }}" method="POST" >
+    <form action="{{ path('admin_institution_medicalCenter_addGlobalAwards', { 'institutionId': institution.id,'imcId':institutionMedicalCenter.id}) }}" method="POST" >
                     
         <div id="awards">
             {{ form_label(form.awards_selector) }}
@@ -67,6 +67,15 @@
         
         {{ form_widget(form._token) }}
         
+        <div class="clearfix"></div>
+	    
+	    <div class="pull-left">
+            <button class="btn btn-info previous_button" type="button">Previous</button>
+        </div>
+	    
+	    <div class="pull-right">
+            <button class="btn btn-info next_button" type="button">Next</button>
+        </div>
     </form>
     {% for global_award in global_awards %}
             <div style="margin-top: 10px">
