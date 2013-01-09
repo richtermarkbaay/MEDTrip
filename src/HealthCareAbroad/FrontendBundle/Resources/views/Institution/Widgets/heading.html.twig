@@ -1,0 +1,44 @@
+<div id="highlight" class="row">
+	<div class="top_box span12">
+		<div class="description">
+			<p>{{ institution.name }}</p>
+		</div>
+
+		<img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
+		<a href="#">
+		    {{ media(institution.media, 'default', {'institutionId': institution.id, class: 'institution_logo'}) | raw }}
+		</a>
+	</div>
+	<div class="bottom_box content span12">
+		<div class="address media span4 offset2">
+			<img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
+			<p>
+				
+				{% set address = json_decode(institution.address1) %}
+				
+				{% for each in address %}
+				    {{ each ? each ~ ', ' : '' }}
+				{% endfor %} 
+				
+				<br/>
+				
+				{% if institution.state %}
+				    {{ institution.state }},
+				{% endif %} 
+				
+				{% if institution.city %}
+				    {{ institution.city.name }} 
+				{% endif %}
+				
+				{{ institution.zipCode }},
+
+				{{ institution.country.name }}
+			</p>
+		</div>
+		<ul class="contact_now span5">
+			<li><a class="call btn orange" href="#">Call Us</a></li>
+			<li><a class="email btn orange" href="#">Email</a></li>
+			<li><a class="website btn orange" href="#">Visit Website</a></li>
+		</ul>	
+	</div>
+</div>

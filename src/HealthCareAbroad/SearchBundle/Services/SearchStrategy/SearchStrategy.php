@@ -46,4 +46,23 @@ abstract class SearchStrategy extends ContainerAware
     {
         return $this->isViewReadyResults;
     }
+
+    // NOTE: The following functions may be better suited residing in the
+    // the extending class. Right now, it seems that the implementation will be
+    // similar independent of whichever concrete search strategy is used.
+
+    public function searchForInstitutionsByCountry($country)
+    {
+        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
+    }
+
+    public function searchForInstitutionsByCity($city)
+    {
+        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
+    }
+
+    public function searchForMedicalCentersBySubSpecialization($subSpecialization)
+    {
+        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecialization($subSpecialization);
+    }
 }

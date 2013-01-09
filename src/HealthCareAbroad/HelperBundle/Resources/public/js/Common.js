@@ -208,7 +208,4 @@ $(function(){
 	$('#main-content').click(function(){
 		$('#main-nav .dropdown-menu, #right-nav .dropdown-menu').hide();		
 	});
-
-
-	$( ".accordion" ).accordion();
 });

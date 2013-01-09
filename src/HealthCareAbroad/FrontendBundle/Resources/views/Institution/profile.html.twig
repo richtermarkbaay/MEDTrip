@@ -1,77 +1,48 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
+
 {% block content %}
-	{% block wrappedContent %}
 
-        <div class="main">        
+	<section id="content" class="container">
 
-            <div class="box_outer">        
-               <div class="news_box">
-            
-                    <div class="listing_box_heading">
-                        <h3><a href="#">{{ institution.name }}</a></h3>
-                    </div> <!--End nb Heading-->
-            
-                    <div class="recent_news_item">
-                        <h4 class="recent_news_title"><a href="#">Lorem Ipsum Dolor</a></h4>
-            
-                	    <div class="imgBlock">
-                    	    <div class="recent_news_img" style="opacity: 1;">
-                    	        <a href="#"><img title="" alt="" src="/images/frontend/sam.png"></a>
-                    	    </div>
-                    	    <a href="#"><img title="" alt="" src="/images/frontend/awards.png"></a>
-                	    </div>
-            
-                        <div class="recent_news_content">
-                            <p>{{ institution.description }}</p>
-                    		<div class="nb_meta"></div> <!--End NB META-->
-                        </div>
-            
-                        <!--recent news Content-->
-                        <div class="clear"></div>
+	    {% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
 
-                        <div class="brdr3"></div>
-                                
-                        <!-- Gallery -->
-                            {% include 'FrontendBundle:Institution:profileGallery.html.twig' with {media: null } %}
-                        <!-- End of Gallery -->
-            
-                        <div class="clear"></div>
-                        
-                        <!-- Medical Centers or Listings -->        
-                            {% include 'FrontendBundle:Institution:listings.html.twig' with {institution: institution, currentCenterSlug: app.request.get('centerSlug') } %}
-                        <!-- End of Medical Center or Listings -->
+		<div id="details" class="row">
+			<div class="tab-content span8">
+				<ul class="nav nav-tabs" id="clinicTab">
+				  	<li class="active"><a href="#main_content">OVERVIEW</a></li>
+				  	<li><a href="#clinics">CLINIC LIST</a></li>
+				</ul> <!--Twitter bootstrap Tabs-->
+
+                {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
                 
-                        <div class="clear"></div>
-                
-                        <div class="accordion">
-                            <!-- Doctors -->
-                            {% include 'FrontendBundle:Institution:doctors.html.twig' %}
-                            <!-- End of Doctors -->
-                
-                            <h2 class="acc_title">Location</h2>
-                            <div class="acc_content">
-                             <a href="#"><img alt="" src="/images/frontend/demo/map.png"></a>
-                            by injected humour, or randomised words which don’t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be</div>
-                            
-                            
-                            <h2 class="acc_title">Contact Location</h2>
-                            <div class="acc_content">{{ institution.address1 }}, {{ institution.city.name }}, {{ institution.country.name }}</div>
-                            
-                        </div>
-            
-                    </div> <!--recent News Item-->
-            
-                </div> <!--News Box-->
-            </div> <!--Box Outer-->
+                {% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
 
-        </div>
-	
-		<!-- Sidebar Navigation -->
-		{% block right_navigation %}
-			{% include 'FrontendBundle:Default:sidebar.html.twig' %}
-		{% endblock %}
-		
-	{% endblock %}
+			</div>
+
+			<aside id="aside_content" class="span4">
+			
+			    {% include 'FrontendBundle:Institution/Widgets:locationAside.html.twig' %}
+			    
+			    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
+			    
+			    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
+
+			    {% include 'FrontendBundle:Institution/Widgets:mediaAside.html.twig' %}
+			    
+			    {% include 'FrontendBundle:Institution/Widgets:socialAside.html.twig' %}
+
+			</aside> <!--End of aside_content-->
+		</div>
+	</section> <!--End of content-->
+
+	<!--Twitter bootstrap Tab JS -->
+	<script type="text/javascript">
+		$('#clinicTab a').click(function (e) {
+		  e.preventDefault();
+		  $(this).tab('show');
+		})
+	</script>
 
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+
 {% endblock %}

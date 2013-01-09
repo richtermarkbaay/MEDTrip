@@ -1,31 +1,40 @@
 <header id="header"> <!--Header-->
-	<div class="container">
-		<a class="logo span5" href="index.html">
-			<h1 class="title">HealthcareAbroad</h1>
-		</a>
-		<nav class="menu">
-			<ul>
-				<li><a href="#">Procedures</a></li>
-				<li><span class="inset"></span></li>
-				<li class="active"><a href="#">Destination</a></li>
-			</ul>
-		</nav>
-	</div>
+    <div class="container">
+        <a class="logo span5" href="index.html">
+            <h1 class="title">HealthcareAbroad</h1>
+        </a>
+        <nav class="menu">
+            <ul>
+                <li><a href="#">Search</a></li>
+                <li><a href="#">Procedures</a></li>
+                <li><span class="inset"></span></li>
+                <li class="active"><a href="#">Destination</a></li>
+            </ul>
+        </nav>
+    </div>
 </header> <!--End of header-->
 
 {% if app.request.attributes.get('_route') == 'main_homepage' %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
-    	<div id="hero_unit" class="row">
-    		<h1 class="welcome">welcome to <b>healthcare</b> abroad!<br>
-    		<small>the resource for global <b>healthcare</b><br>a comprehensive, <b>unbiased</b> directory</small>
-    		</h1>
-    		<form action="get" name="search_box" class="span12 search_box  form-inline">
-    			<label>Search</label>
-    			<input type="text" placeholder="Specialization or Treatment" name="procedure"/>
-    			<label>Near</label>
-    			<input type="text" placeholder="City, Country or Zip" name="location"/>
-    			<button class="btn">Let's Go</button>
-    		</form>
-    	</div>
+        <div id="hero_unit" class="row">
+            <h1 class="welcome">welcome to <b>healthcare</b> abroad!<br>
+            <small>the resource for global <b>healthcare</b><br>a comprehensive, <b>unbiased</b> directory</small>
+            </h1>
+
+            {% block searchBox %}
+                {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
+                {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
+            {% endblock %}
+
+            <!--
+            <form action="get" name="search_box" class="span12 search_box  form-inline">
+                <label>Search</label>
+                <input type="text" placeholder="Specialization or Treatment" name="procedure"/>
+                <label>Near</label>
+                <input type="text" placeholder="City, Country or Zip" name="location"/>
+                <button class="btn">Let's Go</button>
+            </form>
+             -->
+        </div>
     </div> <!--End of hero unit-->
-{% endif %}        
+{% endif %}

@@ -17,9 +17,9 @@ class FilesystemManager
         $this->baseUploadRootDir = $baseUploadRootDir;
     }
 
-    public function get($institutionId, $adapterType = 'local')
+    public function get($pathDiscriminator, $adapterType = 'local')
     {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $institutionId);
+        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $pathDiscriminator);
 
         switch ($adapterType) {
             default:
@@ -28,30 +28,18 @@ class FilesystemManager
 
         return new Filesystem($adapter);
     }
-    
-    public function getAd($institutionId, $adapterType = 'local')
-    {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir . '/ads', $institutionId);
-    
-        switch ($adapterType) {
-            default:
-                $adapter = new LocalAdapter($this->uploadRootDir, true);
-        }
-    
-        return new Filesystem($adapter);
-    }
-    
-    public function getDoctor($adapterType = 'local')
-    {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, 'doctors');
-    
-        switch ($adapterType) {
-            default:
-                $adapter = new LocalAdapter($this->uploadRootDir, true);
-        }
 
-        return new Filesystem($adapter);
-    }
+//     public function getDoctor($adapterType = 'local')
+//     {
+//         $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, 'doctors');
+    
+//         switch ($adapterType) {
+//             default:
+//                 $adapter = new LocalAdapter($this->uploadRootDir, true);
+//         }
+
+//         return new Filesystem($adapter);
+//     }
 
     /**
      * Convenience functions

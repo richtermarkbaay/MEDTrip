@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Query;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -96,5 +100,53 @@ class InstitutionRepository extends EntityRepository
 
 
         return $query->getResult();
+    }
+
+    public function getInstitutionsByCity($city)
+    {
+        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status = :status ";
+        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.city = :city ";
+
+        $query = $this->_em->createQuery($dql)
+            //->setParameter('status', InstitutionStatus::APPROVED)
+            ->setParameter('city', $city);
+
+
+        return $query->getResult();
+    }
+
+    /**
+     * Get global awards of an institution
+     *
+     * @param Institution $institution
+     * @return array GlobalAward
+     */
+    public function getAllGlobalAwardsByInstitution(Institution $institution)
+    {
+        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
+
+        $sql = "SELECT a.value  FROM institution_properties a ".
+                        "WHERE a.institution_property_type_id = :propertyType AND a.institution_id = :institutionId";
+        $statement = $this->getEntityManager()
+        ->getConnection()->prepare($sql);
+
+        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'institutionId' => $institution->getId()));
+
+        $result = array();
+        if($statement->rowCount() > 0) {
+            $ids = array();
+            while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
+                $ids[] = $row['value'];
+            }
+
+            $dql = "SELECT a, b FROM HelperBundle:GlobalAward a INNER JOIN a.awardingBody as b WHERE a.id IN (?1)";
+            $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameter(1, $ids);
+
+            $result = $query->getResult();
+        }
+
+        return $result;
+
     }
 }

@@ -1,0 +1,23 @@
+<table class="table table-striped table-bordered bootstrap-datatable">
+    <thead>
+        <tr>
+            <th>Account Id</th>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Actions</th>
+		</tr>
+    </thead>
+    <tbody>
+        {% for _user in adminUsers %}
+        <tr>
+            <td>{{ _user.accountId }}</td>
+			<td>{{ _user.fullName }}</td>
+			<td>{{ _user.email }}</td>
+			<td>
+			    <a target="_blank" href="{{ path('admin_bypass_login_client_admin', {'accountId': _user.accountId, 'institutionId':institution.id } ) }}" title="login to client admin using this credentials">Login to Client</a>
+			</td>
+		</tr>
+        {% endfor %}
+        
+    </tbody>
+</table>

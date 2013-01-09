@@ -30,6 +30,12 @@ admin_institution_addAncilliaryService:
     requirements:
         institutionId: \d+
 
+admin_institution_viewGlobalAwards:
+    pattern:  /admin/institution/{institutionId}/global-awards
+    defaults: { _controller: AdminBundle:InstitutionProperties:viewGlobalAwards }
+    requirements:
+        institutionId: \d+
+
 admin_institution_viewAncilliaryService:
     pattern:  /admin/institution/{institutionId}/ancilliary-services
     defaults: { _controller: AdminBundle:InstitutionProperties:index }

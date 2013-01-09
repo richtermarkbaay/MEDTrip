@@ -105,6 +105,19 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getMedicalCentersBySubSpecialization($subSpecialization)
+    {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+            LEFT JOIN a.institutionSpecializations b
+            LEFT JOIN b.treatments c
+            LEFT JOIN c.subSpecializations d
+            WHERE d.id = :subSpecialization'
+        )->setParameter('subSpecialization', $subSpecialization);
+
+        return $query->getResult();
+    }
+
     public function getMedicalCentersByTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment)
     {
         $query = $this->getEntityManager()->createQuery('

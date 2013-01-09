@@ -77,7 +77,26 @@ class InstitutionService
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;
-    }    
+    }
+
+    public function getAdminUsers(Institution $institution)
+    {
+        $_users = $this->doctrine->getRepository('UserBundle:InstitutionUser')
+            ->findByTypeName($institution, 'ADMIN');
+        
+        $retVal = array();
+        foreach ($_users as $user) {
+            try {
+                $retVal[] = $this->institutionUserService->getAccountData($user);
+            }
+            catch (\Exception $e) {
+                $retVal[] = $user;
+            }
+                
+        }
+        
+        return $retVal;
+    }
     
     public function getAllStaffOfInstitution(Institution $institution)
     {
@@ -182,6 +201,24 @@ class InstitutionService
     }
     
     /**
+     * Get values of institution $institution for property type $propertyType
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @return array InstitutionProperty
+     */
+    public function getPropertyValues(Institution $institution, InstitutionPropertyType $propertyType)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->getResult();
+    
+        return $result;
+    }
+    /**
      * Check if $institution has a property type value of $value
      *
      * @param Institution $institution
@@ -195,4 +232,31 @@ class InstitutionService
     
         return !\is_null($result) ;
     }
+    
+    public function getAllGlobalAwards(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
+    }
+    
+    public function getAllDoctors(Institution $institution)
+    {
+        $institutionDoctors = array();
+        foreach($institution->getInstitutionMedicalCenters() as $each) {
+            $institutionDoctors = array_merge($institutionDoctors, $each->getDoctors()->toArray());
+        }
+
+        return $institutionDoctors;
+    }
+    
+//     public function getBranches(Institution $institution)
+//     {
+//         $groupCriteria = array('medicalProviderGroups' => $this->institution->getMedicalProviderGroups()->first());
+//         $institutionBranches = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($groupCriteria);
+        
+//         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        
+//         $qb->select('a')->from('InstitutionBundle:Institution')
+//            ->leftJoin('a.medicalProviderGroups', 'b')
+//            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
+//     }
 }

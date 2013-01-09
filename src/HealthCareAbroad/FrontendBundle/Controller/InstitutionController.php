@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+
 use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
@@ -31,9 +35,26 @@ class InstitutionController extends Controller
         $request = $this->getRequest();
 
         if($request->get('institutionSlug')) {
-            $criteria = array('status' => InstitutionStatus::ACTIVE, 'slug' => $request->get('institutionSlug'));
+            $criteria = array('slug' => $request->get('institutionSlug'));
             $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneBy($criteria);
 
+            $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+            $qb->select('a, b, c, d, e, f, g, h, i')->from('InstitutionBundle:Institution', 'a')
+               ->leftJoin('a.institutionMedicalCenters', 'b')
+               ->leftJoin('b.institutionSpecializations', 'c')
+               ->leftJoin('c.specialization', 'd')
+               ->leftJoin('c.treatments', 'e')
+               ->leftJoin('a.country', 'f')
+               ->leftJoin('a.city', 'g')
+               ->leftJoin('a.media', 'h')
+               ->leftJoin('a.institutionOfferedServices', 'i')
+
+               ->where('a.slug = :institutionSlug')
+               ->setParameter('institutionSlug', $criteria['slug']);
+
+            $this->institution = $qb->getQuery()->getOneOrNullResult();
+
+            
             if(!$this->institution) {
                 throw $this->createNotFoundException('Invalid institution');                
             }
@@ -43,8 +64,16 @@ class InstitutionController extends Controller
 
     public function profileAction($institutionSlug)
     {
-        //$gallery = $this->getDoctrine()->getRepository('MediaBundle:Medi')
-        return $this->render('FrontendBundle:Institution:profile.html.twig', array('institution' => $this->institution));
+        $institutionService = $this->get('services.institution');
+        
+        $params = array(
+            'institution' => $this->institution, 
+            'institutionAwards' => $institutionService->getAllGlobalAwards($this->institution), 
+            'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
+//            'institutionBranches' => $institutionService->getBranches($this->institution)
+        );
+
+        return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
     }
 
     public function listingAction()
@@ -54,7 +83,7 @@ class InstitutionController extends Controller
         if($request->get('centerSlug')) {
             $criteria = array('status' => MedicalCenter::STATUS_ACTIVE, 'slug' => $request->get('centerSlug'));
             $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy($criteria);
-
+            
             if(!$medicalCenter) {
                 throw $this->createNotFoundException('Invalid Medical Center');
             }

@@ -133,6 +133,60 @@ var InstitutionMedicalCenter = {
          });
     },
     
+    /**
+     * Clicking on submit button of modal MedicalCenter Sidebar forms
+     * 
+     * @param DOMElement button
+     */
+    submitMedicalCenterSidebarForms: function(domButtonElement) {
+        _button = $(domButtonElement);
+        _buttonHtml = _button.html();
+        _button.html("Processing...").attr('disabled', true);
+        _form = _button.parents('.modal-content').find('form');
+        _data = _form.serialize();
+        $.ajax({
+            url: _form.attr('action'),
+            data: _data,
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+            	
+                switch(_form.attr('id')){
+                case 'addressModalForm':
+                    var address = response.institutionMedicalCenter.address; 
+                    $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
+                    $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
+                    $('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
+                    $('#profileCountryText').html(response.institutionMedicalCenter.country);
+                    break;
+
+                case 'numberModalForm':
+                	var number = response.institutionMedicalCenter.contactNumber;
+                    $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                    break;
+                    
+                case 'emailModalForm':
+                	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                    break;
+                   
+                case 'websitesModalForm':
+                    var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
+                    for(name in websites) {
+                        websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
+                    }
+                    $('#profileWebsitesText').html(websitesString);
+                    break;
+                } 
+                _form.parents('.modal').modal('hide');
+                _button.html(_buttonHtml).attr('disabled', false);
+            },
+            error: function(response) {
+                _button.html(_buttonHtml).attr('disabled', false);
+            }
+        });
+        return false;
+    },
+    
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {
