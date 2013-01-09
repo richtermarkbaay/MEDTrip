@@ -1,7 +1,7 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
     {% block modalBody %}
 
-        <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id, 'isLogo': 'isLogo'}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
+        <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
         
             <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" />
           
