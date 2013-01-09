@@ -6,7 +6,7 @@
             {% for each in fields %}
 
                 {% if each == 'description' %}
-                    {{ form_row(institutionMedicalCenterForm[each], { 'attr': {class: 'tinymce', rows: 5} })  }}
+                    {{ form_row(institutionMedicalCenterForm[each], { 'attr': {rows: 5} })  }}
                 {% elseif each == 'address' or each == 'contactNumber' or each == 'websites' %}
                     {{ form_widget(institutionMedicalCenterForm[each]) }}
                 {% else %}
