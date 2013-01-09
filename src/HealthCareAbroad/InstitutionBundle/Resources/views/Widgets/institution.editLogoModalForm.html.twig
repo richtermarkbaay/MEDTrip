@@ -3,7 +3,7 @@
 
         <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
         
-            <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" />
+            <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" size="40" class="profilephoto" />
           <hr>
             <div class="clearfix"></div>
                 <div class="modal-footer button-wrapper">
