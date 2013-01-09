@@ -34,7 +34,7 @@
                                 {% set mediaCount = mediaCount + 1 %}
                             {% endif %}
 
-                                    <td valign="top">{{ media(medium, 'gallery', {'institutionId': institution.id}) | raw }}</td>
+                                    <td valign="top">{{ media(medium, institution, 'gallery') | raw }}</td>
 
                             {% if mediaCount == 4 %}
                                 </tr>

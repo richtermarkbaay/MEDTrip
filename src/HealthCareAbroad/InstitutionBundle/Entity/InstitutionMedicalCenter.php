@@ -13,7 +13,6 @@ class InstitutionMedicalCenter
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     
-
     /**
      * @var bigint $id
      */
@@ -33,11 +32,26 @@ class InstitutionMedicalCenter
      * @var text $description
      */
     private $description;
-    
+
     /**
-     * @var text $address
+     * @var string $address
      */
     private $address;
+
+    /**
+     * @var string $contactNumber
+     */
+    private $contactNumber;
+
+    /**
+     * @var string $contactEmail
+     */
+    private $contactEmail;
+
+    /**
+     * @var string $websites
+     */
+    private $websites;
 
     /**
      * @var datetime $dateCreated
@@ -65,9 +79,9 @@ class InstitutionMedicalCenter
     private $institutionSpecializations;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
      */
-    private $institutionGlobalAwards;
+    private $logo;
 
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
@@ -77,25 +91,30 @@ class InstitutionMedicalCenter
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
+    private $media;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
     private $doctors;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $media;
+    private $institutionGlobalAwards;
 
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionGlobalAwards = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionGlobalAwards = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
-     * @return bigint
+     * @return bigint 
      */
     public function getId()
     {
@@ -117,7 +136,7 @@ class InstitutionMedicalCenter
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -139,7 +158,7 @@ class InstitutionMedicalCenter
     /**
      * Get businessHours
      *
-     * @return string
+     * @return string 
      */
     public function getBusinessHours()
     {
@@ -161,7 +180,7 @@ class InstitutionMedicalCenter
     /**
      * Get description
      *
-     * @return text
+     * @return text 
      */
     public function getDescription()
     {
@@ -171,7 +190,7 @@ class InstitutionMedicalCenter
     /**
      * Set address
      *
-     * @param text $address
+     * @param string $address
      * @return InstitutionMedicalCenter
      */
     public function setAddress($address)
@@ -179,269 +198,16 @@ class InstitutionMedicalCenter
         $this->address = $address;
         return $this;
     }
-    
+
     /**
      * Get address
      *
-     * @return text
+     * @return string 
      */
     public function getAddress()
     {
         return $this->address;
     }
-    
-    /**
-     * Set dateCreated
-     *
-     * @param datetime $dateCreated
-     * @return InstitutionMedicalCenter
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->dateCreated = $dateCreated;
-        return $this;
-    }
-
-    /**
-     * Get dateCreated
-     *
-     * @return datetime
-     */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-
-    /**
-     * Set dateUpdated
-     *
-     * @param datetime $dateUpdated
-     * @return InstitutionMedicalCenter
-     */
-    public function setDateUpdated($dateUpdated)
-    {
-        $this->dateUpdated = $dateUpdated;
-        return $this;
-    }
-
-    /**
-     * Get dateUpdated
-     *
-     * @return datetime
-     */
-    public function getDateUpdated()
-    {
-        return $this->dateUpdated;
-    }
-
-    /**
-     * Set status
-     *
-     * @param smallint $status
-     * @return InstitutionMedicalCenter
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return smallint
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     * @return InstitutionMedicalCenter
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-        return $this;
-    }
-
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Add institutionSpecializations
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
-    {
-        $this->institutionSpecializations[] = $institutionSpecializations;
-        return $this;
-    }
-
-    /**
-     * Remove institutionSpecializations
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
-     */
-    public function removeInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
-    {
-        $this->institutionSpecializations->removeElement($institutionSpecializations);
-    }
-
-    /**
-     * Get institutionSpecializations
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getInstitutionSpecializations()
-    {
-        return $this->institutionSpecializations;
-    }
-
-    /**
-     * Set institution
-     *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
-     * @return institution
-     */
-    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
-    {
-        $this->institution = $institution;
-        return $this;
-    }
-
-    /**
-     * Get institution
-     *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
-     */
-    public function getInstitution()
-    {
-        return $this->institution;
-    }
-
-    /**
-     * Add doctors
-     *
-     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
-     * @return InstitutionMedicalCenter
-     */
-    public function addDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
-    {
-        $this->doctors[] = $doctors;
-        return $this;
-    }
-
-    /**
-     * Remove doctors
-     *
-     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
-     */
-    public function removeDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
-    {
-        $this->doctors->removeElement($doctors);
-    }
-
-    /**
-     * Add institutionGlobalAwards
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
-     * @return InstitutionGlobalAward
-     */
-    public function addInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards)
-    {
-        $this->institutionGlobalAwards[] = $institutionGlobalAwards;
-        return $this;
-    }
-
-    /**
-     * Remove institutionGlobalAwards
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
-     */
-    public function removeInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAward)
-    {
-        $this->institutionGlobalAwards->removeElement($institutionGlobalAwards);
-    }
-
-    /**
-     * Get institutionGlobalAwards
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getInstitutionGlobalAwards()
-    {
-        return $this->institutionGlobalAwards;
-    }
-
-    /**
-     * Get doctors
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getDoctors()
-    {
-        return $this->doctors;
-    }
-
-    /**
-     * Add media
-     *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
-     * @return InstitutionMedicalCenter
-     */
-    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
-    {
-        $this->media[] = $media;
-        return $this;
-    }
-
-    /**
-     * Remove media
-     *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
-     */
-    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
-    {
-        $this->media->removeElement($media);
-    }
-
-    /**
-     * Get media
-     *
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function getMedia()
-    {
-        return $this->media;
-    }
-    /**
-     * @var string $contactNumber
-     */
-    private $contactNumber;
-
-    /**
-     * @var string $contactEmail
-     */
-    private $contactEmail;
-
-    /**
-     * @var string $websites
-     */
-    private $websites;
-
 
     /**
      * Set contactNumber
@@ -507,5 +273,265 @@ class InstitutionMedicalCenter
     public function getWebsites()
     {
         return $this->websites;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param datetime $dateCreated
+     * @return InstitutionMedicalCenter
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return datetime 
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * Set dateUpdated
+     *
+     * @param datetime $dateUpdated
+     * @return InstitutionMedicalCenter
+     */
+    public function setDateUpdated($dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+        return $this;
+    }
+
+    /**
+     * Get dateUpdated
+     *
+     * @return datetime 
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
+    }
+
+    /**
+     * Set status
+     *
+     * @param smallint $status
+     * @return InstitutionMedicalCenter
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return smallint 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return InstitutionMedicalCenter
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Add institutionSpecializations
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
+    {
+        $this->institutionSpecializations[] = $institutionSpecializations;
+        return $this;
+    }
+
+    /**
+     * Remove institutionSpecializations
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations
+     */
+    public function removeInstitutionSpecialization(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization $institutionSpecializations)
+    {
+        $this->institutionSpecializations->removeElement($institutionSpecializations);
+    }
+
+    /**
+     * Get institutionSpecializations
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionSpecializations()
+    {
+        return $this->institutionSpecializations;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $logo
+     * @return InstitutionMedicalCenter
+     */
+    public function setLogo(\HealthCareAbroad\MediaBundle\Entity\Media $logo = null)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * Set institution
+     *
+     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @return InstitutionMedicalCenter
+     */
+    public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
+    {
+        $this->institution = $institution;
+        return $this;
+    }
+
+    /**
+     * Get institution
+     *
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     */
+    public function getInstitution()
+    {
+        return $this->institution;
+    }
+
+    /**
+     * Add media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return InstitutionMedicalCenter
+     */
+    public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media[] = $media;
+        return $this;
+    }
+
+    /**
+     * Remove media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     */
+    public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
+    {
+        $this->media->removeElement($media);
+    }
+
+    /**
+     * Get media
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * Add doctors
+     *
+     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
+     * @return InstitutionMedicalCenter
+     */
+    public function addDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
+    {
+        $this->doctors[] = $doctors;
+        return $this;
+    }
+
+    /**
+     * Remove doctors
+     *
+     * @param HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors
+     */
+    public function removeDoctor(\HealthCareAbroad\DoctorBundle\Entity\Doctor $doctors)
+    {
+        $this->doctors->removeElement($doctors);
+    }
+
+    /**
+     * Get doctors
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getDoctors()
+    {
+        return $this->doctors;
+    }
+
+    /**
+     * Add institutionGlobalAwards
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards)
+    {
+        $this->institutionGlobalAwards[] = $institutionGlobalAwards;
+        return $this;
+    }
+
+    /**
+     * Remove institutionGlobalAwards
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards
+     */
+    public function removeInstitutionGlobalAward(\HealthCareAbroad\HelperBundle\Entity\GlobalAward $institutionGlobalAwards)
+    {
+        $this->institutionGlobalAwards->removeElement($institutionGlobalAwards);
+    }
+
+    /**
+     * Get institutionGlobalAwards
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionGlobalAwards()
+    {
+        return $this->institutionGlobalAwards;
     }
 }

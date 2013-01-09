@@ -29,7 +29,7 @@
         {% for media in institutionMedia %}
             <tr class="{{ cycle(['alternate-row', ''], loop.index) }}">
                 <td valign="top">
-                    {{ media(media, 'galleryAdd', {'institutionId': institution.id}) | raw }}
+                    {{ media(media, institution, 'galleryAdd') | raw }}
                 </td>
 
                 <td>{{ media.caption }}</td>

@@ -10,16 +10,22 @@ class FilesystemManager
     private $baseUploadRootDir;
     private $uploadRootDir;
     private $pathGenerator;
+    private $pathDiscriminator;
+    private $pathDiscriminators;
+    
 
-    public function __construct(PathGeneratorInterface $pathGenerator, $baseUploadRootDir)
+    public function __construct(PathGeneratorInterface $pathGenerator, $baseUploadRootDir, $pathDiscriminators)
     {
         $this->pathGenerator = $pathGenerator;
         $this->baseUploadRootDir = $baseUploadRootDir;
+        $this->pathDiscriminators = $pathDiscriminators;
     }
 
-    public function get($institutionId, $adapterType = 'local')
-    {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $institutionId);
+    public function get($object, $adapterType = 'local')
+    {        
+        $this->pathDiscriminator = $this->getPathDiscriminator($object);
+
+        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, $this->pathDiscriminator);
 
         switch ($adapterType) {
             default:
@@ -28,30 +34,18 @@ class FilesystemManager
 
         return new Filesystem($adapter);
     }
-    
-    public function getAd($institutionId, $adapterType = 'local')
-    {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir . '/ads', $institutionId);
-    
-        switch ($adapterType) {
-            default:
-                $adapter = new LocalAdapter($this->uploadRootDir, true);
-        }
-    
-        return new Filesystem($adapter);
-    }
-    
-    public function getDoctor($adapterType = 'local')
-    {
-        $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, 'doctors');
-    
-        switch ($adapterType) {
-            default:
-                $adapter = new LocalAdapter($this->uploadRootDir, true);
-        }
 
-        return new Filesystem($adapter);
-    }
+//     public function getDoctor($adapterType = 'local')
+//     {
+//         $this->uploadRootDir = $this->pathGenerator->generatePath($this->baseUploadRootDir, 'doctors');
+    
+//         switch ($adapterType) {
+//             default:
+//                 $adapter = new LocalAdapter($this->uploadRootDir, true);
+//         }
+
+//         return new Filesystem($adapter);
+//     }
 
     /**
      * Convenience functions
@@ -67,5 +61,25 @@ class FilesystemManager
     {
         //TODO: use path generator
         return '/media/';
+    }
+    
+    public function getWebPath()
+    {
+        //TODO: use path generator
+        return '/media/' . $this->pathDiscriminator;
+    }
+    
+    private function getPathDiscriminator($object)
+    {
+        $namespace = get_class($object);
+        $namespaceArr = explode('\\', $namespace);
+        $class = array_pop($namespaceArr);
+        $path = $this->pathDiscriminators[lcfirst($class)];
+        
+        if($object) {
+            $path = str_replace("{objectId}", $object->getId(), $path);            
+        }
+
+        return $path;
     }
 }

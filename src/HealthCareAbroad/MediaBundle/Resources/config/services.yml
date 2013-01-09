@@ -2,7 +2,13 @@ parameters:
     services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
     services.media.pathgenerator.class: HealthCareAbroad\MediaBundle\Generator\Path\DefaultPathGenerator
     services.media.resizer.class: HealthCareAbroad\MediaBundle\Resizer\SquareResizer
-    services.media.adapter.class: Imagine\Gd\Imagine
+    services.media.adapter.class: Imagine\Gd\Imagine 
+
+    mediapathdiscriminators:
+            institution: institutions/{objectId}
+            institutionMedicalCenter: institutions/{objectId}
+            doctor: doctors
+            advertisement: ads
 
 services:
     services.media.pathgenerator:
@@ -21,6 +27,7 @@ services:
         arguments:
             - @services.media.pathgenerator
             - %kernel.root_dir%/../web/media
+            - %mediapathdiscriminators%
 
     services.media:
         class: %services.media.class%

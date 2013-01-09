@@ -34,6 +34,11 @@ class Doctor
      * @var string $contactNumber
      */
     private $contactNumber;
+    
+    /**
+     * @var string $details
+     */
+    private $details;
 
     /**
      * @var datetime $dateCreated
@@ -44,6 +49,11 @@ class Doctor
      * @var boolean $status
      */
     private $status;
+    
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
 
     /**
      * @var HealthCareAbroad\MediaBundle\Entity\Media
@@ -185,6 +195,28 @@ class Doctor
     {
         return $this->contactNumber;
     }
+    
+    /**
+     * Set details
+     *
+     * @param string $details
+     * @return Doctor
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+        return $this;
+    }
+    
+    /**
+     * Get details
+     *
+     * @return string
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
 
     /**
      * Set dateCreated
@@ -314,5 +346,27 @@ class Doctor
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
+    }
+    
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return Institution
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+    
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }

@@ -210,8 +210,14 @@ class InstitutionAccountController extends InstitutionAwareController
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
             
+            $globalSpecializationsJson = array();
+            foreach ($this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations() as $e) {
+                $globalSpecializationsJson[] = array('value' => $e->getName(), 'id' => $e->getId());
+            } 
+            $templateVariables['specializationsJSON'] = \json_encode($globalSpecializationsJson);
             // load medical center specializations
             $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
+            
         }
         else {
             // multiple center institution profile view
@@ -576,7 +582,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $em->persist($property);
                 $em->flush();
     
-                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+                $html = $this->renderView('InstitutionBundle:Institution:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
@@ -645,5 +651,19 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return $response;
+    }
+    public function ajaxRemovePropertyValueAction(Request $request)
+    {
+        $property = $this->get('services.institution_property')->findById($request->get('id', 0));
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid Institution property.');
+        }
+    
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+    
+        return new Response("Property removed", 200);
     }
 }

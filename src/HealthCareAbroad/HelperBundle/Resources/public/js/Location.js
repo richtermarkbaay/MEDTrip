@@ -23,12 +23,16 @@ var Location = {
 		   data: {'countryId': countryId, 'selectedCityId': selectedCityId },
 		   dataType: 'json',
 		   type: 'get',
-		   success: function(cities){
-			   citiesElem.empty().append(emptyValue);
-	           $.each(cities, function(e){
+		   success: function(response){
+		       citiesElem.html(response.html);
+		       // NOTE: in Chrome, dictionary key-value pairs are reordered if key is numeric 
+			   /**
+		       citiesElem.empty().append(emptyValue);
+			   $.each(cities, function(e){
 	               citiesElem.append('<option value="'+ this.id +'" '+(this.id==selectedCityId ? 'selected': '')+' >' + this.name + '</option>')
 	           });
-	            citiesElem.attr('disabled', false);
+	           **/
+               citiesElem.attr('disabled', false);
 		   }
 		});
 	}	

@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -37,6 +41,36 @@ class InstitutionService
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    function saveMediaToGallery(Institution $institution, Media $media)
+    {
+        $this->saveMedia($institution, $media);
+    }
+    
+    function saveMediaAsLogo(Institution $institution, Media $media)
+    {
+        $institution->setMedia($media);
+        $this->saveMedia($institution, $media);
+    }
+    
+    function saveMedia(Institution $institution, Media $media)
+    {
+        $gallery = $institution->getGallery();
+    
+        if(!$gallery) {
+            $gallery = new Gallery();
+            $gallery->setInstitution($institution);
+        }
+    
+        $gallery->addMedia($media);
+    
+        $institution->setGallery($gallery);
+    
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institution);
+        $em->persist($gallery);
+        $em->flush();
     }
     
     /**
@@ -232,4 +266,31 @@ class InstitutionService
     
         return !\is_null($result) ;
     }
+    
+    public function getAllGlobalAwards(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
+    }
+    
+    public function getAllDoctors(Institution $institution)
+    {
+        $institutionDoctors = array();
+        foreach($institution->getInstitutionMedicalCenters() as $each) {
+            $institutionDoctors = array_merge($institutionDoctors, $each->getDoctors()->toArray());
+        }
+
+        return $institutionDoctors;
+    }
+    
+//     public function getBranches(Institution $institution)
+//     {
+//         $groupCriteria = array('medicalProviderGroups' => $this->institution->getMedicalProviderGroups()->first());
+//         $institutionBranches = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($groupCriteria);
+        
+//         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        
+//         $qb->select('a')->from('InstitutionBundle:Institution')
+//            ->leftJoin('a.medicalProviderGroups', 'b')
+//            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
+//     }
 }

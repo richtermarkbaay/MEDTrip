@@ -15,7 +15,7 @@
 $(function() {
     $("#uploader").plupload({
         runtimes : 'html5',
-        url : '{{ path(routes.media_upload, {'institutionId': institution.id}) }}',
+        url : '{{ path(routes.media_upload, {'institutionId': institution.id}) }}' + '?isLogo=false',
         max_file_size : '10mb',
         unique_names : true,
         filters : [
@@ -44,6 +44,10 @@ $(function() {
             alert('You must at least upload one file.');
 
         return false;
+    });
+
+    $('#uploader_start').click(function(){
+    	$('form[name=multiUploadForm]').submit();
     });
 });
 </script>

@@ -22,7 +22,7 @@ HealthCareAbroad\TreatmentBundle\Entity\Treatment:
                 - versioned
         description:
             type: text
-            nullable: false
+            nullable: true
             gedmo:
                 - versioned
         slug:

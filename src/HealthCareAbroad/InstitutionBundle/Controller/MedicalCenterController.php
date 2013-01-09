@@ -428,8 +428,8 @@ class MedicalCenterController extends InstitutionAwareController
                 $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
                 $form->bind($_data);
                 if ($form->isValid()) {
-//                     $em->persist($form->getData());
-//                     $em->flush();
+                    $em->persist($form->getData());
+                    $em->flush();
                     
                     $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
                         'institutionSpecialization' => $_institutionSpecialization

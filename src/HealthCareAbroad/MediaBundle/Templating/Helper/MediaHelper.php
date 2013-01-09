@@ -17,13 +17,10 @@ class MediaHelper extends Helper
         $this->filesystemManager = $filesystemManager;
     }
 
-    public function getMedia(Media $media, $format = null, array $options = array())
+    public function getMedia(Media $media, $mediaOwner, $format = null, array $options = array())
     {
-        $institutionId = isset($options['institutionId'])
-                ? $options['institutionId']
-                : $media->getGallery()->first()->getInstitution()->getId();
 
-        $filesystem = $this->filesystemManager->get($institutionId);
+        $filesystem = $this->filesystemManager->get($mediaOwner);
 
         $options = $this->processOptions($media, $options);
 
@@ -31,8 +28,8 @@ class MediaHelper extends Helper
             'media' => $media,
             'format' => $format,
             'options' => $options,
-            'src' => $this->filesystemManager->getWebRootPath().$institutionId.'/'.$media->getName(),
-            'src_thumb' => $this->filesystemManager->getWebRootPath().$institutionId.'/thumbnail-'.$media->getName()
+            'src' => $this->filesystemManager->getWebPath() . '/' . $media->getName(),
+            'src_thumb' => $this->filesystemManager->getWebPath() . '/thumbnail-' . $media->getName()
         ));
     }
 

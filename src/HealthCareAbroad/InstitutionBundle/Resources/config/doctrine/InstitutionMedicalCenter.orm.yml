@@ -78,6 +78,15 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
             mappedBy: institutionMedicalCenter
     manyToOne:
+        logo:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                logo:
+                    referencedColumnName: id
+            orphanRemoval: false
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
             inversedBy: institutionMedicalCenters
