@@ -111,7 +111,7 @@
             <div class="span4">
             	<div class="media">
             		<div class="image_preview">
-            		    {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
+            		    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
             			<a href="" class="pull-left">
             			    <img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/>
             			</a>

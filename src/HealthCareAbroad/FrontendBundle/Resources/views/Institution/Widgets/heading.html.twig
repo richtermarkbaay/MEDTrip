@@ -3,10 +3,16 @@
 		<div class="description">
 			<p>{{ institution.name }}</p>
 		</div>
+		
+		{% if featuredImage is defined %}
+		    {{ media(featuredImage, institution, 'default', {class: 'institution_picture'}) | raw }}
+		{% else %}
+		    <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
+		{% endif %}
 
-		<img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
+		
 		<a href="#">
-		    {{ media(institution.media, institution, 'default', {class: 'institution_logo'}) | raw }}
+		    {{ media(institution.media, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
 		</a>
 	</div>
 	<div class="bottom_box content span12">
