@@ -4,11 +4,11 @@
         <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
         
             <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" />
-          
+          <hr>
             <div class="clearfix"></div>
                 <div class="modal-footer button-wrapper">
         		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        		<input type="submit" class="btn btn-primary submit-button" value="Submit">
+        		<input type="submit" class="btn btn-primary" value="Submit">
             </div>
         </form>
   
