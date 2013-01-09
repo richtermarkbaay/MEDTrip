@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -37,6 +41,36 @@ class InstitutionService
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    function saveMediaToGallery(Institution $institution, Media $media)
+    {
+        $this->saveMedia($institution, $media);
+    }
+    
+    function saveMediaAsLogo(Institution $institution, Media $media)
+    {
+        $institution->setMedia($media);
+        $this->saveMedia($institution, $media);
+    }
+    
+    function saveMedia(Institution $institution, Media $media)
+    {
+        $gallery = $institution->getGallery();
+    
+        if(!$gallery) {
+            $gallery = new Gallery();
+            $gallery->setInstitution($institution);
+        }
+    
+        $gallery->addMedia($media);
+    
+        $institution->setGallery($gallery);
+    
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institution);
+        $em->persist($gallery);
+        $em->flush();
     }
     
     /**

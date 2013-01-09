@@ -5,8 +5,11 @@
 			<div class="media">
 				<div class="image_preview">
 					<a class="pull-left" href="#">
-					    {% set image = each.media ? '/media/ads/' ~ each.institution.id ~ '/' ~ each.media.name : '' %}
-					    <img class="media-object img-circle" src="{{image}}" alt="" />
+					    {% if each.media %}
+					        {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
+					    {% else %}
+					        <img class="media-object img-circle"/>
+					    {% endif %}
 					</a>
 				</div>
 				<div class="media-body">

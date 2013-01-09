@@ -3,7 +3,11 @@
 	<ul class="thumbnails">
 	    {% for doctor in institutionDoctors %}
 		<li class="thumbnail">
-			<img class="pull-left img-polaroid" src="" alt="">
+			{% if doctor.media %}
+			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
+			{% else %}
+			    <img src="" class="pull-left img-polaroid"/>
+			{% endif %}
 			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
 			<p class="media-body">
 			    {% for i, each in doctor.specializations %}

@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\MediaService;
+
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -72,24 +76,33 @@ class DefaultController extends Controller
     {
         $response = new Response();
 
-        $institutionId = $request->get('institutionId');
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
+
         $fileBag = $request->files;
 
         if ($fileBag->has('file')) {
-            $errorCode = $this->get('services.media')->upload($fileBag->get('file'), $institutionId, $this->extractContext($request));
-
+            $isLogo = $request->get('isLogo', false);
             $multiUpload = $request->get('multiUpload');
+            
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $institution);
+
+            if(is_object($result)) {
+                $media = $result;
+                $isLogo 
+                    ? $this->get('services.institution')->saveMediaAsLogo($institution, $media)
+                    : $this->get('services.institution')->saveMediaToGallery($institution, $media);
+            }
 
             if (isset($multiUpload) && $multiUpload === '0') {
-
                 $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
 
                 return $this->render('MediaBundle:Admin:addMedia.html.twig', array(
-                        'institution' => $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId),
-                        'multiUpload' => $multiUpload));
+                    'institution' => $institution,
+                    'routes' => MediaService::getRoutes($request->getPathInfo()),
+                    'multiUpload' => $multiUpload));
             }
 
-            return $response->create('Error code: '.$errorCode);
+            return $response;
 
         } else {
 

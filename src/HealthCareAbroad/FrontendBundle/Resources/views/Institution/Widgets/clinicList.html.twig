@@ -1,42 +1,17 @@
 <div id="clinics" class="tab-pane">
 	<div id="content">
 		<ul class="thumbnails">
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo1.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo2.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo3.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo4.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo5.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo6.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo1.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo2.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo3.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo4.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo5.png" alt=""></a>
-			</li>
-			<li class="thumbnail">
-				<a href=""><img src="/images/frontend/clinic-logo6.png" alt=""></a>
-			</li>
+		    {% for each in institution.institutionMedicalCenters %}
+    			<li class="thumbnail">
+    				<a href="#">
+            			{% if each.logo %}
+            			    {{ media(each.logo, institution, 'default', {thumbnail: true}) | raw }}
+            			{% else %}
+            			    <img src="" class="pull-left img-polaroid"/>
+            			{% endif %}
+    				</a>
+    			</li>
+			{% endfor %}
 		</ul>
 	</div>
 </div>

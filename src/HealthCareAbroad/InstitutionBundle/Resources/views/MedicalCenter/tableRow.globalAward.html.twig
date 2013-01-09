@@ -1,4 +1,4 @@
 <tr id="global_award_id:{{ award.id }}">
 	<td><h5 class="award_name">{{ award.name }}</h5><small class="awarding_body_name"> {{ award.awardingBody.name }} </small></td>
-	<td><a class="btn btn-danger award_deleteBtn delete" onclick ="InstitutionMedicalCenter.removeProperty({{ medical_center_property.id }}, $(this).parents('tr')); return false;" href="#">Remove</a></td>
+	<td><a class="btn btn-danger award_deleteBtn delete" onclick ="InstitutionGlobalAwardAutocomplete.removeProperty({{ medical_center_property.id }}, $(this).parents('tr')); return false;">Remove</a></td>
 </tr>

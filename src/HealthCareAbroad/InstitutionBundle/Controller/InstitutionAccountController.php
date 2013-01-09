@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
@@ -51,7 +53,6 @@ class InstitutionAccountController extends InstitutionAwareController
     
 	public function preExecute()
 	{
-	    
 	    $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 
 	    if ($imcId=$this->getRequest()->get('imcId',0)) {
@@ -581,7 +582,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $em->persist($property);
                 $em->flush();
     
-                $html = $this->renderView('InstitutionBundle:Institution:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+                $html = $this->renderView('InstitutionBundle:Institution:tableRow.globalAward.html.twig', array('award' => $award, 'institution_property' => $property));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
@@ -593,6 +594,64 @@ class InstitutionAccountController extends InstitutionAwareController
         return $response;
     }
     
+    /**
+     *
+     * @param unknown_type $institutionId
+     */
+    public function addGlobalAwardsAction()
+    {
+        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institution);
+    
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+    
+            if ($form->isValid()) {
+    
+                $this->institution = $this->get('services.institution')
+                ->saveAsDraft($form->getData());
+    
+                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
+    
+                return $this->redirect($this->generateUrl('institution_medicalCenter_view',
+                                array('institutionId' => $this->institution->getId())));
+            }
+        }
+        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
+                        'form' => $form->createView(),
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institution' => $this->institution
+        ));
+    }
+    
+    public function ajaxRemoveGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+    
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+        
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+        // get property value for this ancillary service
+        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $award->getId());
+        
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+        
+            $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+    
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+        
+        return $response;
+    }
     public function ajaxRemovePropertyValueAction(Request $request)
     {
         $property = $this->get('services.institution_property')->findById($request->get('id', 0));

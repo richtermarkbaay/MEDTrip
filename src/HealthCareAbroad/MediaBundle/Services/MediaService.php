@@ -1,6 +1,7 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Services;
 
+use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
 use HealthCareAbroad\MediaBundle\Entity\Media;
@@ -34,13 +35,11 @@ class MediaService
     private $entityManager;
     private $filesystemManager;
     private $resizer;
-    private $pathDiscriminators;
 
-    public function __construct(FilesystemManager $filesystemManager, EntityManager $entityManager, $pathDiscriminators)
+    public function __construct(FilesystemManager $filesystemManager, EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
         $this->filesystemManager = $filesystemManager;
-        $this->pathDiscriminators = $pathDiscriminators;
     }
 
     /**
@@ -166,15 +165,14 @@ class MediaService
         return $media;
     }
 
-    public function upload(UploadedFile $file, $objectOwner)
+    public function upload(UploadedFile $file, $objectOwner = null)
     {   
         if (!$file->isValid()) {
             return $file->getError();
         }
 
-        $pathDiscriminator = $this->getPathDiscriminator($objectOwner);
-        
-        $filesystem = $this->filesystemManager->get($pathDiscriminator, 'local');
+        //$pathDiscriminator = $this->getPathDiscriminator($objectOwner);
+        $filesystem = $this->filesystemManager->get($objectOwner, 'local');
 
         //TODO: rename/sanitize filename
         $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
@@ -210,33 +208,6 @@ class MediaService
             //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
             $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
 
-            /*
-            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->find($institutionId);
-
-            if (is_null($gallery)) {
-                $gallery = new Gallery();
-                $gallery->setInstitution($objectOwner);
-            }
-
-            $gallery->addMedia($media);
-
-            $mediaEntity = null;
-
-            if (!empty($context)) {
-                switch ($context['context']) {
-                    case 'institutionMedicalCenter':
-                        $mediaEntity = $this->entityManager->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($context['contextId']);
-
-                        break;
-                }
-            }
-
-            if ($mediaEntity) {
-                $mediaEntity->addMedia($media);
-                $this->entityManager->persist($mediaEntity);
-            }
-            */
-            
             //TODO: set cascade persist on entity Gallery
             $this->entityManager->persist($media);
             //$this->entityManager->persist($gallery);
@@ -251,16 +222,7 @@ class MediaService
         return $errorCode;
     }
     
-    private function getPathDiscriminator($object)
-    {
-        $namespace = get_class($object);
-        $namespaceArr = explode('\\', $namespace);
-        $class = array_pop($namespaceArr);
 
-        $path = str_replace("{objectId}", $object->getId(), $this->pathDiscriminators[lcfirst($class)]);
-
-        return $path;
-    }
 
     public function retrieveAllMedia($institutionId)
     {
@@ -346,70 +308,5 @@ class MediaService
         }
 
         return $success;
-    }
-    public function addAdvertisementMedia(Advertisement $advertisement, $media)
-    {
-        $success = 1;
-
-        try {
-            $advertisement->addMedia($media);
-
-            $this->entityManager->persist($advertisement);
-            $this->entityManager->flush($advertisement);
-        } catch (Exception $e) {
-            $success = 0;
-        }
-
-        return $success;
-    }
-
-    public function uploadDoctorImage($file)
-    {
-        if (!$file->isValid()) {
-            return $file->getError();
-        }
-
-        $filesystem = $this->filesystemManager->getDoctor('local');
-
-        //TODO: rename/sanitize filename
-        $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-        $caption = $file->getClientOriginalName();
-
-        $proceed = true;
-        try {
-            $file->move($this->filesystemManager->getUploadRootDir(), $filename);
-        } catch (FileException $e) {
-            $proceed = false;
-        }
-
-        if ($proceed) {
-            $imageAttributes = getimagesize($this->filesystemManager->getUploadRootDir().'/'.$filename);
-
-            $media = new Media();
-            $media->setName($filename);
-            $media->setContentType($imageAttributes['mime']);
-            $media->setCaption($caption);
-            $media->setContext(0);
-            $media->setUuid(time());
-            $media->setWidth($imageAttributes[0]);
-            $media->setHeight($imageAttributes[1]);
-            //TODO: ignore the other attributes for now
-
-            $in = new File($filename, $filesystem);
-            $out = new File('thumbnail-'.$filename, $filesystem);
-
-            $format = image_type_to_extension($imageAttributes[2], false);
-
-            //TODO: inject this dynamically selecting the optimal ImagineInterface available
-            //$resizer = new SquareResizer(new \Imagine\Gd\Imagine());
-            //$resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
-            $this->resizer->resize($media, $in, $out, $format, array('width' => 180, 'height' => 180));
-
-            $em = $this->entityManager;
-            $em->persist($media);
-            $em->flush($media);
-
-            return $media;
-        }
     }
 }

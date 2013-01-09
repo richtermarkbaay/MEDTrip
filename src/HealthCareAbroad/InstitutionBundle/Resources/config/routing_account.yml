@@ -51,13 +51,25 @@ institution_ajaxAddAncillaryService:
 
 institution_ajaxAddGlobalAward:
     pattern: /institution/{institutionId}/awards-certificates-and-affiliations/ajaxAdd
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddGlobalAward, institutionId: ~}
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddGlobalAward}
     requirements:
         _method: POST
+        
+institution_ajaxRemoveGlobalAward:
+    pattern: /institution/{institutionId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemoveGlobalAward}
+    requirements:
+        _method: POST
+        
+institution_addGlobalAwards:
+    pattern:  /institution/{institutionId}/global_awards
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:addGlobalAwards }
+    requirements:
         institutionId: \d+
+        _method: GET|POST
 
 institution_ajaxRemovePropertyValue:
-    pattern: /medical-center/{institutionId}/ajaxRemovePropertyValue
+    pattern: /institution/{institutionId}/ajaxRemovePropertyValue
     defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemovePropertyValue, institutionId: ~}
     requirements:
         _method: GET|POST

@@ -68,6 +68,17 @@ class InstitutionMedicalCenterPropertyService
         return $property;
     }
     
+    public function removeInstitutionMedicalCenterPropertyByName($propertyTypeName, Institution $institution=null, InstitutionMedicalCenter $center)
+    {
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        $property = new InstitutionMedicalCenterProperty();
+        $property->setInstitution($institution);
+        $property->setInstitutionMedicalCenter($center);
+        $property->setInstitutionPropertyType($propertyType);
+    
+        return $property;
+    }
+    
     public function save(InstitutionMedicalCenterProperty $imcProperty)
     {
         $em = $this->doctrine->getEntityManager();

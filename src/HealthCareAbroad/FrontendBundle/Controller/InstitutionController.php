@@ -65,13 +65,20 @@ class InstitutionController extends Controller
     public function profileAction($institutionSlug)
     {
         $institutionService = $this->get('services.institution');
-        
+        $gallery = $this->institution->getGallery();
+
         $params = array(
-            'institution' => $this->institution, 
+            'institution' => $this->institution,
             'institutionAwards' => $institutionService->getAllGlobalAwards($this->institution), 
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
 //            'institutionBranches' => $institutionService->getBranches($this->institution)
         );
+
+        if($gallery && $gallery->getMedia()->count()) {
+            $mediaGallery = $gallery->getMedia()->toArray();
+            $params['featuredImage'] = $mediaGallery[array_rand($mediaGallery)];
+        }
+        
 
         return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
     }

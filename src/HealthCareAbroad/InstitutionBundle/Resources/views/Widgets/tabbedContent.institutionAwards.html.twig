@@ -1,6 +1,6 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <form  action="#" method="POST" >
+    <form action="{{ path('institution_addGlobalAwards', { 'institutionId':institution.id}) }}" method="POST" >
         <div id="awards">
             {{ form_label(form.awards_selector) }}
             {{ form_widget(form.awards_selector) }}
@@ -15,7 +15,7 @@
 				<tbody>
 					<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.award %}
-					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.institution_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -35,7 +35,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
 					{% for _award in currentGlobalAwards.certificate %}
-					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.institution_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -55,7 +55,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.affiliation %}
-					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.institution_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -64,19 +64,10 @@
         {{ form_widget(form._token) }}
         
     </form>
-	<div class="pull-right">
-		<a class="btn btn-success btn-medium" id="addAnotherSpecialization" data-toggle="modal" role="button" title="" href="#addawards">Add Another Awards</a>
-	</div>
     
     {% endblock %}
 {% endembed %}
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/institution/js/institutionProfile.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-    <script src="{{ asset('js/jquery/globalize.js') }}"></script>
-    <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
         $(function() {
         	InstitutionProfile.removePropertyUri = '{{ path("institution_ajaxRemovePropertyValue", {"institutionId" : institution.id} ) }}';

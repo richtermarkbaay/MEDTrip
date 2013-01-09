@@ -6,7 +6,7 @@
                     <div class="photo-group">
 
                         {% if institution.media is not sameas(NULL) %}
-                            {{ media(institution.media, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
+                            {{ media(institution.media, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
                         {% else %}
                             <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                         {% endif %}
@@ -46,7 +46,10 @@
         Loading admin users...
     </div>
 </div>
-{% render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} %}
+
+<!-- Old upload logo. TODO: Change this to bootstrap dialog upload.
+    {# render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} #}
+-->
 
 <script type="text/javascript">
 $(function() {

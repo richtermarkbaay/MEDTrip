@@ -15,6 +15,11 @@
 {
     background-image: url("/images/glyphicons-halflings.png");
 }
+#navbar.affix {
+    position: fixed; 
+    top: 20px; 
+    left: 0px;
+}
 .hour
 {
     width: 70px;	

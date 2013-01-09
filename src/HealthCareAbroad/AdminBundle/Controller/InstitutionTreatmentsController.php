@@ -950,4 +950,46 @@ class InstitutionTreatmentsController extends Controller
     
         return $response;
     }
+    
+    public function ajaxRemoveGlobalAwardAction(Request $request)
+    {
+//         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+    
+//         if (!$award) {
+//             throw $this->createNotFoundException();
+//         }
+        
+//         $propertyService = $this->get('services.institution_medical_center_property');
+//         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+//         // get property value for this ancillary service
+//         $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
+        
+//         try {
+//             $em = $this->getDoctrine()->getEntityManager();
+//             $em->remove($property);
+//             $em->flush();
+        
+//             $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+    
+//             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+//         }
+//         catch (\Exception $e){
+//             $response = new Response($e->getMessage(), 500);
+//         }
+        
+//         return $response;
+        
+         $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid Institution Medical Center property.');
+        }
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+        
+        return new Response("Property removed", 200);
+    }
 }
