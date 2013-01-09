@@ -1,6 +1,6 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <form  action="#" method="POST" >
+    <form action="{{ path('institution_addGlobalAwards', { 'institutionId':institution.id}) }}" method="POST" >
         <div id="awards">
             {{ form_label(form.awards_selector) }}
             {{ form_widget(form.awards_selector) }}
@@ -15,7 +15,7 @@
 				<tbody>
 					<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.award %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -35,7 +35,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
 					{% for _award in currentGlobalAwards.certificate %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -55,7 +55,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.affiliation %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:Institution:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'institution_property': _award.institution_property} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -79,7 +79,8 @@
     <script type="text/javascript">
         $(function() {
             InstitutionGlobalAwardAutocomplete
-            .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+            .setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+            .setRemovePropertyUri('{{ path("institution_ajaxRemoveGlobalAward", {"institutionId" : institution.id}) }}')
             .setAutocompleteOptions('award', {
                 source: $.parseJSON('{{ awardsSourceJSON | raw }}'),
                 target: $('input.award_selector'),
