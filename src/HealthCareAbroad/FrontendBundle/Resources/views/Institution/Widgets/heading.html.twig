@@ -12,7 +12,11 @@
 
 		
 		<a href="#">
-		    {{ media(institution.media, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+    		{% if featuredImage is defined %}
+    		    {{ media(institution.media, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+    		{% else %}
+    		    <img class="institution_logo" src="" alt="institution"/>
+    		{% endif %}
 		</a>
 	</div>
 	<div class="bottom_box content span12">

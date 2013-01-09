@@ -16,20 +16,19 @@
                 {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
                 
                 {% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
-
 			</div>
 
 			<aside id="aside_content" class="span4">
-			
-			    {% include 'FrontendBundle:Institution/Widgets:locationAside.html.twig' %}
+
+			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
 			    
 			    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
 			    
 			    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
 
-			    {% include 'FrontendBundle:Institution/Widgets:mediaAside.html.twig' %}
+			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: []} %}
 			    
-			    {% include 'FrontendBundle:Institution/Widgets:socialAside.html.twig' %}
+			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { links: []} %}
 
 			</aside> <!--End of aside_content-->
 		</div>

@@ -53,8 +53,14 @@ page_exception_report_create:
         _method:  GET|POST
 
 page_institution_profile:
-    pattern: /institution/{institutionSlug}
+    pattern: /{institutionSlug}
     defaults: { _controller: FrontendBundle:Institution:profile }
+    requirements:
+        _method:  GET
+        
+page_institutionMedicaCenter_profile:
+    pattern: /{institutionSlug}/clinic/{imcSlug}
+    defaults: { _controller: FrontendBundle:InstitutionMedicalCenter:profile }
     requirements:
         _method:  GET
 

@@ -1,0 +1,40 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block content %}
+
+	<section id="content" class="container">
+		<div id="details" class="row">
+			<div id="main_content" class="span8">
+				<div class="clinicdetails content">
+				    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
+
+					<p>
+						Yes, this may seem like a particularly unsophisticated algorithm. Nevertheless, random walks can be used to model phenomena that occur in the real world, from the movements of molecules in a gas to the behavior of a gambler spending a day at the casino. As for us, we begin this book studying a random walk with three goals in mind.
+					</p>
+				</div>
+               
+                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' %}
+               
+                {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: [], services: []} %}
+	
+				{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with {doctors: []} %}
+
+			</div> <!--End of main_content-->
+
+			<aside id="aside_content" class="span4">
+
+			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+
+			    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' %}
+
+			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: []} %}
+
+			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { links: []} %}
+
+			</aside> <!--End of aside_content-->
+		</div>
+	</section> <!--End of content-->
+
+	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+
+{% endblock %}
