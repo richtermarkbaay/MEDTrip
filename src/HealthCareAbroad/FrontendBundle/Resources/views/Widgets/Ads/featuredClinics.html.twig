@@ -34,7 +34,7 @@
 				<div class="thumb-box span2">
 					<div class="img-background">
     				    {% if each.media %}
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo', thumbnail: true}) | raw }}
     				    {% else %}
     				        <img class="img-polaroid" src="" alt="featured_pic" />
     				    {% endif %}
