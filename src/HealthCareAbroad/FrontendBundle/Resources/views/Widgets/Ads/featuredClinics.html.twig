@@ -1,3 +1,5 @@
+{% if featuredClinicAds %}
+
 <div class="featured_wrapper">
 	<div class="heading">
 		<h3>Featured Clinics</h3>
@@ -10,7 +12,7 @@
 				<div class="clinic-box span2">
 					<a href="#">
     				    {% if each.institutionMedicalCenter.logo %}
-    				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo'}) | raw }}
+    				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo', thumbnail: true}) | raw }}
     				    {% else %}
     				        <img src="" class="clinic-logo" alt="clinic logo"/>
     				    {% endif %}
@@ -34,7 +36,7 @@
 				<div class="thumb-box span2">
 					<div class="img-background">
     				    {% if each.media %}
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo', thumbnail: true}) | raw }}
     				    {% else %}
     				        <img class="img-polaroid" src="" alt="featured_pic" />
     				    {% endif %}
@@ -59,7 +61,7 @@
 				<div class="span4">
 					<div class="media">
 						<div class="image_preview">
-						    {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
+						    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
 							<a href="#" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
 						</div>
 						<div class="media-body">
@@ -80,3 +82,5 @@
 
 	</div><!--End of featured_content-->
 </div><!--End of featured_wrapper-->
+
+{% endif %}

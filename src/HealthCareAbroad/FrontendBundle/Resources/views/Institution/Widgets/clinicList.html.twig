@@ -5,7 +5,7 @@
     			<li class="thumbnail">
     				<a href="#">
             			{% if each.logo %}
-            			    {{ media(each.logo, institution, 'default') | raw }}
+            			    {{ media(each.logo, institution, 'default', {thumbnail: true}) | raw }}
             			{% else %}
             			    <img src="" class="pull-left img-polaroid"/>
             			{% endif %}

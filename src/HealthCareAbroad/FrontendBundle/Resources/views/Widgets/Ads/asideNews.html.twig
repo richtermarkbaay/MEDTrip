@@ -1,3 +1,5 @@
+{% if news %}
+
 <div class="aside_scrollbar">
 	<div class="viewport">
 		<div class="overview">
@@ -6,7 +8,7 @@
 				<div class="image_preview">
 					<a class="pull-left" href="#">
 					    {% if each.media %}
-					        {{ media(each.media, each, 'default', {class: 'media-object img-circle'}) | raw }}
+					        {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
 					    {% else %}
 					        <img class="media-object img-circle"/>
 					    {% endif %}
@@ -21,3 +23,5 @@
 		</div>
 	</div>
 </div> <!--End of aside_scrollbar-->
+
+{% endif %}

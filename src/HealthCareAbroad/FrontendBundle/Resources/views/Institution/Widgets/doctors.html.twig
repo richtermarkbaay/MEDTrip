@@ -4,7 +4,7 @@
 	    {% for doctor in institutionDoctors %}
 		<li class="thumbnail">
 			{% if doctor.media %}
-			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid'}) | raw }}
+			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
 			{% else %}
 			    <img src="" class="pull-left img-polaroid"/>
 			{% endif %}

@@ -234,12 +234,12 @@ var InstitutionGlobalAwardAutocomplete = {
             loader: null
         }
     },
-    removeProperty: function(_awardId, _container) {
+    removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);
         $.ajax({
             type: 'POST',
             url: this._removePropertyUri,
-            data: {'id': _awardId},
+            data: {'id': _propertyId},
             success: function(response) {
                 _container.remove();
             }

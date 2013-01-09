@@ -1,3 +1,5 @@
+{% if news %}
+
 <div class="heading">
 	<h3>Common Treatments</h3>
 </div>
@@ -7,7 +9,7 @@
 	<div class="media">
 		<div class="image_preview">
 			<a class="pull-left" href="#">
-			    {{ media(each.media, each, 'default', {class: 'media-object img-circle'}) | raw }}
+			    {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
 			    <img class="more-icon" src="/images/frontend/learn_more_button.png" alt="learn more">
 			</a>
 		</div>
@@ -18,3 +20,5 @@
 	</div>
 	{% endfor %}
 </div>
+
+{% endif %}
