@@ -36,7 +36,7 @@
                                 </a>
                                 <div class="center-description">{{ center.description | raw }}</div>
                                 
-                                <textarea required="required" class="tinymce edit-center-textarea" style="display:none">{{ center.description }}</textarea>
+                                <textarea style="width:90%;display:none;" rows="5" required="required" class="edit-center-textarea">{{ center.description }}</textarea>
                             </div>
                             <div class="center-status">Status: {{ get_medical_center_status_label(center) }}</div>
                             <div class="specializations"></div>
@@ -78,7 +78,7 @@
             if($(this).next().is(':visible')) {
             	$(this).find('i').attr('class', 'icon-ok');
             	$(this).find('span').html('save')
-                $(this).next().hide().siblings('.mceEditor').show();
+                $(this).next().hide().siblings('.edit-center-textarea').show();
 
             } else {
                 var url = $(this).attr('href');
@@ -88,7 +88,7 @@
 
             	$(this).find('i').attr('class', 'icon-edit');
             	$(this).find('span').html('edit')
-                $(this).next().html(param.description).show().siblings('.mceEditor').hide();                
+                $(this).next().html(param.description).show().siblings('.edit-center-textarea').hide();                
             }
 
             return false;
