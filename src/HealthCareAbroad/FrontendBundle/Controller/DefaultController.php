@@ -36,7 +36,7 @@ class DefaultController extends Controller
         
         $params = array(
             'highlightAds' => $highlightAds,
-            'highlight' => $highlightAds[array_rand($highlightAds)],
+            'highlight' => $highlightAds && $highlightAds->count() ? $highlightAds[array_rand($highlightAds)] : null,
             'featuredClinicAds' => $featuredClinicAds,
             'commonTreatments' => $commonTreatments,
             'destinationAds' => array(),
