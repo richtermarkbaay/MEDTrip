@@ -6,9 +6,9 @@ parameters:
 
     mediapathdiscriminators:
             institution: institutions/{objectId}
-            institutionMedicalCenter: institutions/{objectId}
             doctor: doctors
-            advertisement: ads
+            advertisement: ads//{objectId}
+            advertisementDenormalizedProperty: ads/{objectId}
 
 services:
     services.media.pathgenerator:

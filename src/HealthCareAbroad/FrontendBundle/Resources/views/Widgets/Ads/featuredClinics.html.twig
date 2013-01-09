@@ -8,8 +8,13 @@
 		    {% for each in featuredClinicAds %}
 			<div class="general row">
 				<div class="clinic-box span2">
-					{% set logo = each.institution.media ? '/media/' ~ each.institution.id ~ '/' ~ each.institution.media.name : '' %}
-					<a href="#"><img class="clinic-logo" src="{{ logo }}" alt="clinic logo"/></a>
+					<a href="#">
+    				    {% if each.institutionMedicalCenter.logo %}
+    				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo'}) | raw }}
+    				    {% else %}
+    				        <img src="" class="clinic-logo" alt="clinic logo"/>
+    				    {% endif %}
+					</a>
 				    <div class="rating">
 				    	<p>USER RATINGS</p>
 				    	<ul>
@@ -28,8 +33,11 @@
 				</div>
 				<div class="thumb-box span2">
 					<div class="img-background">
-					    {% set image = each.media ? '/media/ads/' ~ each.institution.id ~ '/thumbnail-' ~ each.media.name : '' %}
-						<img class="img-polaroid" src="{{ image }}" alt="featured_pic" />
+    				    {% if each.media %}
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
+    				    {% else %}
+    				        <img class="img-polaroid" src="" alt="featured_pic" />
+    				    {% endif %}
 					</div>
 					<button class="btn">Learn More</button>
 				</div>

@@ -93,7 +93,7 @@ class DoctorController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             $doctorData = $request->get('doctor');
             
-            if($newMedia = $this->saveMedia($request->files->get('doctor'))) {
+            if($newMedia = $this->saveMedia($request->files->get('doctor'), $doctor)) {
                 $doctorData['media'] = $newMedia;                
             } else {
                 if($doctor->getId()) {
@@ -153,10 +153,10 @@ class DoctorController extends Controller
     	return $response;
     }
     
-    private function saveMedia($fileBag)
+    private function saveMedia($fileBag, $doctor)
     {
         if($fileBag['media']) {
-            $media = $this->get('services.media')->uploadDoctorImage($fileBag['media']);
+            $media = $this->get('services.media')->upload($fileBag['media'], $doctor);
             return $media;
         }
 
