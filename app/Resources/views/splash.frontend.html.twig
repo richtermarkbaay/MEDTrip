@@ -15,12 +15,11 @@
         {% endjavascripts %}
 
         {% block stylesheets %}
-             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/frontend/style_splash.css') }}" rel="stylesheet"/>
-
         {% endblock %}
     </head>
-{% block body %}
+
 
     <body>
         <div id="main-wrapper">
@@ -41,11 +40,14 @@
                 </form>
                 {% include '::frontend.notice.admin.html.twig' %}
     		</div>
+    		<div class="blog-link">
+			    For updates and resources on Medical Tourism, please visit our <a href="http://www.healthcareabroad.com/blog" class="blog-link">BLOG</a>
+		    </div>
     	</div>
 
     </body>
 
-{% endblock %}
+
 
 
 </html>
