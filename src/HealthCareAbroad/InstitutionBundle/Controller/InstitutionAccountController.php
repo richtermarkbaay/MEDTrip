@@ -670,7 +670,10 @@ class InstitutionAccountController extends InstitutionAwareController
         return new Response("Property removed", 200);
     }
     
-    //TODO: refactor
+    /**
+     * Upload logo
+     * @param Request $request
+     */
     public function uploadAction(Request $request)
     {
         $response = new Response();
