@@ -582,7 +582,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $em->persist($property);
                 $em->flush();
     
-                $html = $this->renderView('InstitutionBundle:Institution:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
+                $html = $this->renderView('InstitutionBundle:Institution:tableRow.globalAward.html.twig', array('award' => $award, 'institution_property' => $property));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }

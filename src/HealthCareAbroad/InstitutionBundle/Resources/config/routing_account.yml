@@ -69,7 +69,7 @@ institution_addGlobalAwards:
         _method: GET|POST
 
 institution_ajaxRemovePropertyValue:
-    pattern: /medical-center/{institutionId}/ajaxRemovePropertyValue
+    pattern: /institution/{institutionId}/ajaxRemovePropertyValue
     defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemovePropertyValue, institutionId: ~}
     requirements:
         _method: GET|POST
