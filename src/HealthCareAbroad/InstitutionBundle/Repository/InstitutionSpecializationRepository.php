@@ -24,17 +24,17 @@ class InstitutionSpecializationRepository extends EntityRepository
 {
     public function getCountByMedicalCenterId($medicalCenterId) {
         $qb = $this->_em->createQueryBuilder();
-    
+
         $qb->select('count(a)')
         ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
         ->andWhere('a.medicalCenter = :medicalCenterId')
         ->setParameter('medicalCenterId', $medicalCenterId);
-    
+
         $count = (int)$qb->getQuery()->getSingleScalarResult();
-    
+
         return $count;
     }
-    
+
     public function getMedicalCentersList($institutionId)
     {
         $qb = $this->_em->createQueryBuilder()
@@ -60,12 +60,12 @@ class InstitutionSpecializationRepository extends EntityRepository
            ->andWhere('a.status = :status')
            ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
            ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
-        
+
         $result = $qb->getQuery()->getResult();
 
         return $result;
     }
-    
+
     public function getTreatmentCountByTreatmentId($treatmentId) {
         $qry = "SELECT count(*) FROM institution_treatments WHERE treatment_id = :treatmentId";
         $param = array('treatmentId' => $treatmentId);
@@ -73,8 +73,8 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $count;
     }
-    
-    public function updateTreatments($institutionSpecializationId, $treatmentIds = array(), $deleletedTreatmentIds = array()) 
+
+    public function updateTreatments($institutionSpecializationId, $treatmentIds = array(), $deleletedTreatmentIds = array())
     {
         $conn = $this->_em->getConnection();
 
@@ -89,12 +89,12 @@ class InstitutionSpecializationRepository extends EntityRepository
             $qry = "INSERT INTO institution_treatments(institution_specialization_id, treatment_id) " .
                    "VALUES ". substr($valuesHolder, 1) .
                    "ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
-            $result = $conn->executeQuery($qry, $params);            
+            $result = $conn->executeQuery($qry, $params);
         }
 
         if(count($deleletedTreatmentIds)) {
             // TODO - bind $deletedSpecializationId
-            $deleteQry = "DELETE FROM institution_treatments " . 
+            $deleteQry = "DELETE FROM institution_treatments " .
                          "WHERE institution_specialization_id = :institutionSpecializationId " .
                          "AND treatment_id IN (" . implode(',', $deleletedTreatmentIds) . ")";
 
@@ -105,11 +105,11 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $result;
     }
-    
+
     public function getActiveSpecializations($institution)
     {
 //           $qb1 = $this->createQueryBuilder('a');
-                
+
                 $qb = $this->_em->createQueryBuilder();
                 $qb->select('b')
                     ->from('InstitutionBundle:InstitutionSpecialization', 'b')
@@ -118,17 +118,17 @@ class InstitutionSpecializationRepository extends EntityRepository
                     ->where('c.institution = :institution')
                     ->setParameter('institution', $institution)
                     ->groupBy('b.specialization');
-    
+
                 return $qb->getQuery()->getResult();
-    
+
 //         if (false === is_null($limit))
 //             $qb->setMaxResults($limit);
-    
+
 //         return $qb->getQuery()
 //         ->getResult();
-        
+
     }
-    
+
 
 //    TODO - Current data structure cannot support this function already!
 //     public function getMedicalCentersByTreatment(Treatment $procedureType, MedicalProcedure $procedure = null)
@@ -189,4 +189,147 @@ class InstitutionSpecializationRepository extends EntityRepository
 //         return $qb->getQuery()->getResult();
 //     }
 
+    public function getSpecializationTopDestinations($specialization, $numOfDestinations = 5)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        if (is_object($specialization)) {
+            $specialization = $specialization->getId();
+        }
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS country, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN countries b ON a.country_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN specializations e ON d.specialization_id = e.id
+            WHERE e.id = :specialization
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+       ');
+        $stmt->bindValue('specialization', $specialization, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+        $topCountries = $stmt->fetchAll();
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS city, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN cities b ON a.city_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN specializations e ON d.specialization_id = e.id
+            WHERE e.id = :specialization
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+       ');
+
+        $stmt->bindValue('specialization', $specialization, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $topCities = $stmt->fetchAll();
+
+        return array($topCountries, $topCities);
+    }
+
+    public function getSubSpecializationTopDestinations($subSpecialization, $numOfDestinations = 5)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        if (is_object($subSpecialization)) {
+            $subSpecialization = $subSpecialization->getId();
+        }
+
+        $stmt = $connection->prepare("
+            SELECT b.id, b.name AS country, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN countries b ON a.country_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN specializations e ON d.specialization_id = e.id
+            LEFT JOIN sub_specializations f ON e.id = f.specialization_id
+            WHERE f.id = :subSpecialization
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+
+       ");
+        $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+        $topCountries = $stmt->fetchAll();
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS city, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN cities b ON a.city_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN specializations e ON d.specialization_id = e.id
+            LEFT JOIN sub_specializations f ON e.id = f.specialization_id
+            WHERE f.id = :subSpecialization
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+       ');
+        $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $topCities = $stmt->fetchAll();
+
+        return array($topCountries, $topCities);
+    }
+
+    public function getTreatmentTopDestinations($treatment, $numOfDestinations = 5)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        if (is_object($treatment)) {
+            $treatment = $treatment->getId();
+        }
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS country, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN countries b ON a.country_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN institution_treatments e ON d.id = e.institution_specialization_id
+            LEFT JOIN treatments f ON e.treatment_id = f.id
+            WHERE f.id = :treatment
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+       ');
+        $stmt->bindValue('treatment', $treatment, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+        $topCountries = $stmt->fetchAll();
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS city, COUNT(*) AS institution_count
+            FROM institutions a
+            LEFT JOIN cities b ON a.city_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
+            LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
+            LEFT JOIN institution_treatments e ON d.id = e.institution_specialization_id
+            LEFT JOIN treatments f ON e.treatment_id = f.id
+            WHERE f.id = :treatment
+            GROUP BY b.id
+            ORDER BY institution_count DESC
+            LIMIT :numOfDestinations
+       ');
+        $stmt->bindValue('treatment', $treatment, \PDO::PARAM_INT);
+        $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $topCities = $stmt->fetchAll();
+
+        return array($topCountries, $topCities);
+    }
 }

@@ -24,7 +24,7 @@ class CommonDeleteFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // add a hidden field with value set to the value of the identifier method of the data
-        $builder->add($options['id'], 'hidden', array('error_bubbling' => true));
+        $builder->add($options['id'], 'hidden', array('virtual' => true, 'error_bubbling' => true));
     }
     
     public function getName()
