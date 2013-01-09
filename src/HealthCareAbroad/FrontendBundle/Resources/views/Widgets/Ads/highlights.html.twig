@@ -73,7 +73,7 @@
 </div> <!--End of highlighted institution-->
 #}
 
-
+{% if highlight %}
 <div id="highlight"> <!--Highighted Institution-->
 	<a href="#" class="clinic span2 offset6">
 	    {% if highlight.institution.media %}
@@ -132,9 +132,6 @@
 
 
 
-
-
-
 <!--This is for the javascript-->
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -144,3 +141,5 @@
 		});
 	});
 </script>
+
+{% endif %}
