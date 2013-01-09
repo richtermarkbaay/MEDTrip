@@ -28,11 +28,6 @@ class Institution
     private $description;
 
     /**
-     * @var integer $logo
-     */
-    private $logo;
-
-    /**
      * @var string $contactEmail
      */
     private $contactEmail;
@@ -100,8 +95,8 @@ class Institution
     /**
      * @var HealthCareAbroad\MediaBundle\Entity\Media
      */
-    private $media;
-
+    private $logo;
+    
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -198,28 +193,6 @@ class Institution
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set logo
-     *
-     * @param integer $logo
-     * @return Institution
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return integer 
-     */
-    public function getLogo()
-    {
-        return $this->logo;
     }
 
     /**
@@ -509,25 +482,25 @@ class Institution
     }
 
     /**
-     * Set media
+     * Set logo
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
-     * @return Institution
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $logo
+     * @return InstitutionMedicalCenter
      */
-    public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media = null)
+    public function setLogo(\HealthCareAbroad\MediaBundle\Entity\Media $logo = null)
     {
-        $this->media = $media;
+        $this->logo = $logo;
         return $this;
     }
 
     /**
-     * Get media
+     * Get logo
      *
      * @return HealthCareAbroad\MediaBundle\Entity\Media 
      */
-    public function getMedia()
+    public function getLogo()
     {
-        return $this->media;
+        return $this->logo;
     }
 
     /**

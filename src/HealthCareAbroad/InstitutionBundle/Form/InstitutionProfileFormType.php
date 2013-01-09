@@ -46,6 +46,7 @@ class InstitutionProfileFormType extends AbstractType
         'description',
         'country',
         'city',
+        'logo',
         'zipCode',
         'state',
         'contactEmail',
