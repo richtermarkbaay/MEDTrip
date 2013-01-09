@@ -1,1 +1,1 @@
-<img class="{{ options.class }}" style="opacity: 1;" src="{{ src }}" alt="{{ media.caption }}" width="{{ options.width is defined ? options.width : '' }}">
+<img class="{{ options.class is defined ? options.class : '' }}" style="opacity: 1; {{ options.style is defined ? options.style : '' }}" src="{{ options.thumbnail is defined ? src_thumb: src }}" alt="{{ media.caption }}" width="{{ options.width is defined ? options.width : '' }}">
