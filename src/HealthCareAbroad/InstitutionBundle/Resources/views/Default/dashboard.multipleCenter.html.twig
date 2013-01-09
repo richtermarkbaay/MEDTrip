@@ -15,9 +15,9 @@
 					    {label: 'Add Contact Details', description: 'Some text explaining the importance of adding contact details.', image: asset('images/institution/phone_ph.png'), done: true },
 					    {label: 'Add Location Details', description: 'Some text explaining the importance of adding location details.', image: asset('images/institution/location_ph.png'), done: true },
 					    {label: 'Add Institution Logo', description: 'Some text explaining the importance of adding institution logo.', image: asset('images/institution/logo_ph.png') },
-					    {label: 'Manage Institution Awards and Certifications', description: 'Some text explaining the importance of adding institution awards.', image: asset('images/institution/awards_ph.png') },
-					    {label: 'Manage your Clinic Profile', description: 'Some text explaining the importance of managing clinic profile.', image: asset('images/institution/institution_ph.png') },
-					    {label: 'Add Clinic', description: 'Some text explaining the importance of adding a clinic.', image: asset('images/institution/clinic_ph.png') }
+					    {href: path('institution_account_profile') ~ '#awards',label: 'Manage Institution Awards and Certifications', description: 'Some text explaining the importance of adding institution awards.', image: asset('images/institution/awards_ph.png') },
+					    {href: path('institution_account_profile'), label: 'Manage your Clinic Profile', description: 'Some text explaining the importance of managing clinic profile.', image: asset('images/institution/institution_ph.png') },
+					    {href: path('institution_medicalCenter_add'),label: 'Add Clinic', description: 'Some text explaining the importance of adding a clinic.', image: asset('images/institution/clinic_ph.png') }
 					]} %}
 					
 				</div>
