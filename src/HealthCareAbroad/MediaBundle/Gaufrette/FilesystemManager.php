@@ -74,9 +74,12 @@ class FilesystemManager
         $namespace = get_class($object);
         $namespaceArr = explode('\\', $namespace);
         $class = array_pop($namespaceArr);
-    
-        $path = str_replace("{objectId}", $object->getId(), $this->pathDiscriminators[lcfirst($class)]);
-    
+        $path = $this->pathDiscriminators[lcfirst($class)];
+        
+        if($object) {
+            $path = str_replace("{objectId}", $object->getId(), $path);            
+        }
+
         return $path;
     }
 }

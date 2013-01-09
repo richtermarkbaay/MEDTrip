@@ -271,7 +271,7 @@ var InstitutionMedicalCenter = {
 
 var InstitutionGlobalAwardAutocomplete = {
     _loadHtmlContentUri: '',
-    
+    _removePropertyUri: '',
     autocompleteOptions: {
         'award':{
             source: '',
@@ -292,16 +292,29 @@ var InstitutionGlobalAwardAutocomplete = {
             loader: null
         }
     },
-    
+    removeProperty: function(_awardId, _container) {
+        _container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: this._removePropertyUri,
+            data: {'id': _awardId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
+    },
     setAutocompleteOptions: function (_type, _options) {
         this.autocompleteOptions[_type] = _options;
         
         return this;
     },
-    
+    setRemovePropertyUri: function (_val) {
+    	this._removePropertyUri = _val;
+        return this;
+    },
     setLoadHtmlContentUri: function (_val) {
         this._loadHtmlContentUri = _val;
-        
         return this;
     },
     
