@@ -4,6 +4,8 @@
 var InstitutionMedicalCenter = {
         
     removePropertyUri: '',
+    
+    _processing: 'Processing...',
         
     _modals: {
         'name': null,
@@ -103,20 +105,32 @@ var InstitutionMedicalCenter = {
         this._modals[_name].dialog("close");
     },
     
+    showCommonModal: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _modal = $(_linkElement.attr('data-target'));
+        _modal.modal('show');
+        
+        return false;
+    },
+    
     // jQuery element for link opener
     openAjaxBootstrapModal: function(_opener) {
+        _opener = $(_opener);
+        _linkContainer = _opener.parents('div.delete-link-container');
         _modal = $(_opener.attr('data-target'));
-        _modal.modal();
         if (_modal.length > 0) {
+            _linkContainer.fadeOut();
             $.ajax({
                 url: _opener.attr('href'),
                 type: 'get',
                 dataType: 'json',
                 success: function(response) {
+                    _modal.modal();
                     _modal.html(response.html);
                 },
                 error: function(response) {
                     console.log(response);
+                   
                 }
             });
         }
@@ -141,7 +155,7 @@ var InstitutionMedicalCenter = {
     submitMedicalCenterSidebarForms: function(domButtonElement) {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
-        _button.html("Processing pa...").attr('disabled', true);
+        _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
         _form = _button.parents('.modal-content').find('form');
         _data = _form.serialize();
         $.ajax({
@@ -193,6 +207,7 @@ var InstitutionMedicalCenter = {
     //
     submitRemoveSpecializationForm: function(_formElement) {
         _button = _formElement.find('button.delete-button');
+        _currentHtml = _button.html();
         _button.attr('disabled', true)
             .html('Processing...');
         $.ajax({
