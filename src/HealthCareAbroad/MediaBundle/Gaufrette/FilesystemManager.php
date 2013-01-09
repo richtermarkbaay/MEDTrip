@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Gaufrette;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\MediaBundle\Generator\Path\PathGeneratorInterface;
 use HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter;
 use Gaufrette\Filesystem;
@@ -74,9 +76,20 @@ class FilesystemManager
         $namespace = get_class($object);
         $namespaceArr = explode('\\', $namespace);
         $class = array_pop($namespaceArr);
-        $path = $this->pathDiscriminators[lcfirst($class)];
         
+        try {
+            $path = $this->pathDiscriminators[lcfirst($class)];            
+        } catch(\Exception $e) {
+            $message = "Invalid path discriminator key given $class. Valid keys are [" . implode(', ', array_keys($this->pathDiscriminators)) . "]";
+            throw new NotFoundHttpException($message, null, $e->getCode());
+        }
+
         if($object) {
+            // TODO - Temporary Fix for advertisement path. Implementation should be change!
+            if($class == 'AdvertisementDenormalizedProperty' || $class == 'Advertisement') {
+                $object = $object->getInstitution();
+            }
+
             $path = str_replace("{objectId}", $object->getId(), $path);            
         }
 
