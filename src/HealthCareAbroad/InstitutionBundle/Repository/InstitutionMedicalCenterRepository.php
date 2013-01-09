@@ -94,7 +94,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getMedicalCentersBySpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specialization)
+    public function getMedicalCentersBySpecialization($specialization)
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
@@ -118,7 +118,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getMedicalCentersByTreatment(\HealthCareAbroad\TreatmentBundle\Entity\Treatment $treatment)
+    public function getMedicalCentersByTreatment($treatment)
     {
         $query = $this->getEntityManager()->createQuery('
             SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a

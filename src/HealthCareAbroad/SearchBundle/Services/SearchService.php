@@ -118,8 +118,18 @@ class SearchService
         return $this->searchStrategy->searchForInstitutionsByCity($city);
     }
 
+    public function searchBySpecialization($specialization)
+    {
+        return $this->searchStrategy->searchMedicalCentersBySpecialization($specialization);
+    }
+
     public function searchBySubSpecialization($subSpecialization)
     {
-        return $this->searchStrategy->searchForMedicalCentersBySubSpecialization($subSpecialization);
+        return $this->searchStrategy->searchMedicalCentersBySubSpecialization($subSpecialization);
+    }
+
+    public function searchByTreatment($treatment)
+    {
+        return $this->searchStrategy->searchMedicalCentersByTreatment($treatment);
     }
 }
