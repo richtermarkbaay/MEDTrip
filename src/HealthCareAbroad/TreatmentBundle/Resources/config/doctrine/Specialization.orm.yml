@@ -22,7 +22,7 @@ HealthCareAbroad\TreatmentBundle\Entity\Specialization:
                 - versioned
         description:
             type: text
-            nullable: false
+            nullable: true
             gedmo:
                 - versioned
         dateCreated:
