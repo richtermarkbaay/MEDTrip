@@ -48,7 +48,13 @@
             </td>
         </tr>
         <tr>
-           <td colspan="4">Notes:<textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;">{{ arrBusinessHours[day].notes }}</textarea></td>
+           <td colspan="4">Notes:
+                {% if arrBusinessHours[day] is not defined %}
+                   <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;" disabled></textarea>
+                {% else %} 
+                    <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;">{{ arrBusinessHours[day].notes }}</textarea>
+                {% endif %}
+           </td>
         </tr>
      {% endfor %}
 </table>
