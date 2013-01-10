@@ -671,7 +671,7 @@ class InstitutionAccountController extends InstitutionAwareController
     }
     
     /**
-     * Upload logo
+     * Upload logo for Institution
      * @param Request $request
      */
     public function uploadAction(Request $request)
