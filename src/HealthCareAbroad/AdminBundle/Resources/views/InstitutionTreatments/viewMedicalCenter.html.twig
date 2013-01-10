@@ -294,7 +294,6 @@
         $('#saveBusinessHours').click(function() {
         	_form = $(this).parents('#businessHours').find('form');
             _form.append('<span class="loader">Loading...</span>');
-            var businessHours = $('#business').serialize();
             $.ajax({
                 url: "{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
                 data: _form.serialize(),
@@ -304,7 +303,6 @@
                   _form.find('span.loader').remove();
                 }
             });
-            console.log(_form.serialize());
             return false;
         });
 
