@@ -12,14 +12,17 @@
 
 		
 		<a href="#">
-		    {{ media(institution.media, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+    		{% if featuredImage is defined %}
+    		    {{ media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+    		{% else %}
+    		    <img class="institution_logo" src="" alt="institution"/>
+    		{% endif %}
 		</a>
 	</div>
 	<div class="bottom_box content span12">
 		<div class="address media span4 offset2">
 			<img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
 			<p>
-				
 				{% set address = json_decode(institution.address1) %}
 				
 				{% for each in address %}

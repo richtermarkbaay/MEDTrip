@@ -18,11 +18,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         description:
             type: text
             nullable: false
-        logo:
-            type: integer
-            length: 20
-            fixed: false
-            nullable: true
         contactEmail:
             type: string
             length: 100
@@ -161,12 +156,20 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 city_id:
                     referencedColumnName: id
             orphanRemoval: false
+            
+        logo:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                logo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
 
     oneToOne:
         gallery:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
             mappedBy: institution
-        media:
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
 
     lifecycleCallbacks: {  }

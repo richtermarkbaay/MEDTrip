@@ -50,7 +50,7 @@ class InstitutionService
     
     function saveMediaAsLogo(Institution $institution, Media $media)
     {
-        $institution->setMedia($media);
+        $institution->setLogo($media);
         $this->saveMedia($institution, $media);
     }
     

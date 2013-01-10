@@ -2,7 +2,7 @@
 
 {% block content %}
 
-	<section id="content" class="container">
+	<div id="content" class="container content">
 
 	    {% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
 
@@ -16,24 +16,23 @@
                 {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
                 
                 {% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
-
 			</div>
 
 			<aside id="aside_content" class="span4">
-			
-			    {% include 'FrontendBundle:Institution/Widgets:locationAside.html.twig' %}
-			    
+
+			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+
 			    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
-			    
+
 			    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
 
-			    {% include 'FrontendBundle:Institution/Widgets:mediaAside.html.twig' %}
-			    
-			    {% include 'FrontendBundle:Institution/Widgets:socialAside.html.twig' %}
+			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [] } %}
+
+			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
 
 			</aside> <!--End of aside_content-->
 		</div>
-	</section> <!--End of content-->
+	</div> <!--End of content-->
 
 	<!--Twitter bootstrap Tab JS -->
 	<script type="text/javascript">

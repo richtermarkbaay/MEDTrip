@@ -1,9 +1,9 @@
-<div id="businessHoursAccordion" class="treatmentbox">
+<div id="businessHours" class="treatmentbox">
     <h5 style="padding: 10px; border: 1px solid #EEEEEE">
         Business Hours
     </h5>
 
-    <form id="business" class="basic-form">
+    <form class="basic-form">
         <div id="clinicHours" class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
             {% if not institutionMedicalCenter.businessHours %}
                 <input type="checkbox" name="businessHourCheckBox" checked="checked" id="businessHourCheckBox" >
@@ -11,8 +11,9 @@
             <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
             {% endif %}
             <span>I have no business hours</span> 
-             <div id="ajax_loader" style="display:none;"><span>Loading...</span></div>
-            {% include 'InstitutionBundle:Widgets:businessHours.html.twig' %}
+            <div class="businessHours-form">
+                {% include 'AdminBundle:Widgets:businessHours.html.twig' %}
+            </div>
         </div>
 
     </form>

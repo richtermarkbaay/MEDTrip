@@ -1,0 +1,35 @@
+{% if media | length %}
+
+    {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Media'} %}
+    
+        {% block asideContent %}
+    		<ul class="large-thumbnail">
+    			<li>
+                    <a href="#">{{ media(media.first, institution, 'frontendGallery') | raw }}</a>
+    			</li>
+    		</ul>
+    
+    		<ul class="thumbnails">
+    		    {% for i, each in media if i > 0 %}
+        			<li class="thumbnail">
+        				<a href="">{{ media(each, institution, 'frontendGallery') | raw }}</a>
+        			</li>
+    			{% endfor %}
+    		</ul>
+    		<img class="video" src="/../../images/frontend/media.png" alt="">
+    
+    	{% endblock %}
+    	
+    {% endembed %}
+    
+    <!-- Add fancyBox -->
+    <link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+    <script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".fancybox").fancybox();
+        });
+    </script>
+
+{% endif %}

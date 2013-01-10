@@ -1,0 +1,21 @@
+<div class="awards-services row">
+    {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Services', class: 'services span4'} %}
+        {% block sectionContent %}
+		<ul>
+			{% for each in services %}
+				<li>{{ each.name }}</li>
+			{% endfor %}
+		</ul>	
+        {% endblock %}
+   {% endembed %}
+
+   {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Awards & Accreditations', class: 'awards span4'} %}
+        {% block sectionContent %}
+		<ul>
+		    {% for each in awards %}
+			<li>{{ each.name }}</li>
+			{% endfor %}
+		</ul>
+        {% endblock %}
+   {% endembed %}
+</div>

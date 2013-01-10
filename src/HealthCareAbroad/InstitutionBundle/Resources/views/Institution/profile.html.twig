@@ -32,6 +32,11 @@
 			{% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
 			     with {formId: 'nameModalForm', fields: ['name'], modalId: 'institutionNameModal', modalTitle: 'Edit Name'} 
 			%} <!-- end Modal Institution name -->
+			
+				 <!-- Modal Institution Logo -->
+			{% include 'InstitutionBundle:Widgets:institution.editLogoModalForm.html.twig' 
+			     with {formId: 'logoModalForm', modalId: 'institutionLogoModal', modalTitle: 'Upload Logo'} 
+			%} <!-- end Modal Institution name -->
 
 
 			<!-- Modal Institution description  -->

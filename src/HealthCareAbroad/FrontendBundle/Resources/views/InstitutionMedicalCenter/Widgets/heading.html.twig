@@ -1,0 +1,43 @@
+<div class="span2">
+	<a href=""><img src="/images/frontend/clinic-logo6.png" alt=""></a>
+	<div class="rating">
+		<p>USER RATINGS</p>
+			<ul>
+			   	<li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
+			    <li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
+			    <li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
+			    <li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
+			    <li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
+			</ul>
+	</div>
+</div>
+<div class="span5 address-box">
+	<h1>{{ institutionMedicalCenter.name }}</h1>
+	<div class="media">
+		<div class="pull-left">
+			<img src="/images/frontend/address_icon2.png" class="media-object">
+		</div>
+		<div class="media-body">
+		
+		    {% set address = json_decode(institutionMedicalCenter.institution.address1) %}
+			<h6>
+                {% for each in address %}
+				    {{ each ? each ~ ', ' : '' }}
+				{% endfor %}
+
+				{{ institutionMedicalCenter.institution.zipCode }} 
+			</h6>
+			<h4>
+                {% if institutionMedicalCenter.institution.city %}
+    			    {{ institutionMedicalCenter.institution.city.name }},  
+    			{% endif %} 
+    			{{ institutionMedicalCenter.institution.country.name }}
+			</h4>
+		</div>
+	</div>
+	<div class="contact_clinic span6">
+		<a href="tel:{{ number }}" class="call btn green">Call Us</a>
+		<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>
+		<a href="{{ mainWebsites }}" class="website btn green" {% if mainWebsites != '#' %} target="_blank" {% endif %}>Visit Website</a>
+	</div>
+</div>

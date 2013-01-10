@@ -27,12 +27,15 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
+use HealthCareAbroad\MediaBundle\Services\MediaService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
+
+use Gaufrette\File;
 
 class InstitutionAccountController extends InstitutionAwareController
 {
@@ -171,7 +174,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
                 
-                return $this->redirect($this->generateUrl('institution_homepage'));
+                return $this->redirect($this->generateUrl('institution_account_profile', array('institutionId' => $this->institution)));
             }
         }
         
@@ -374,7 +377,27 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
-                $parameters['medical_specialists'] = $this->institutionMedicalCenter->getDoctors();
+                 $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
+                $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+                
+                if ($request->isMethod('POST')) {
+                    $form->bind($request);
+                    
+                    if ($form->isValid() && $form->get('id')->getData()) {
+                        $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
+                        $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+                    }
+                }
+                $doctorArr = array();
+                
+                foreach ($doctors as $each) {
+                    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+                }
+                
+                $parameters['form'] = $form->createView();
+                $parameters['doctorsJSON'] = \json_encode($doctorArr);
+                $parameters['institution'] =  $this->institution;
+                $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
@@ -665,5 +688,29 @@ class InstitutionAccountController extends InstitutionAwareController
         $em->flush();
     
         return new Response("Property removed", 200);
+    }
+    
+    /**
+     * Upload logo for Institution
+     * @param Request $request
+     */
+    public function uploadAction(Request $request)
+    {
+        $response = new Response();
+    
+        $fileBag = $request->files;
+        
+        if ($fileBag->get('file')) {
+    
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
+    
+            if(is_object($result)) {
+                 
+                $media = $result;
+                $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('institution_account_profile'));
     }
 }

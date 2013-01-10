@@ -1,12 +1,14 @@
 {% include 'HelperBundle:Widgets:subMenu.html.twig'
     with {
         links: [
-            {name: 'specializations', url: '#specializationsAccordion', label: 'Specializations', icon: 'icon-home'},
-            {name: 'ancilliary services', url: '#ancilliaryServicesAccordion', label: 'Ancilliary Services', icon: 'icon-star'},
-            {name: 'business hours', url: '#businessHoursAccordion', label: 'Business Hours', icon: 'icon-user'},
-            {name: 'awards', url: '#awardsAccordion', label: 'GlobalAwards/Certifications', icon: 'icon-user'},
-            {name: 'media', url: '#mediaAccordion', label: 'Media', icon: 'icon-certificate'},
-            {name: 'doctor', url: '#doctorsAccordion', label: 'Doctors', icon: 'icon-picture'},
-        ]
+            {name: 'specializations', url: '#specializations', label: 'Specializations', icon: 'icon-home'},
+            {name: 'ancilliary services', url: '#ancilliaryServices', label: 'Ancilliary Services', icon: 'icon-star'},
+            {name: 'business hours', url: '#businessHours', label: 'Business Hours', icon: 'icon-user'},
+            {name: 'awards', url: '#awards', label: 'GlobalAwards/Certifications', icon: 'icon-user'},
+            {name: 'media', url: '#media', label: 'Media', icon: 'icon-certificate'},
+            {name: 'doctor', url: '#doctors', label: 'Doctors', icon: 'icon-picture'},
+        ],
+        
+        isScrollable: true
     }
 %}

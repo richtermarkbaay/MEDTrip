@@ -3,22 +3,22 @@
         <a class="logo span5" href="index.html">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
-        <nav class="menu">
+        <!-- nav class="menu">
             <ul>
                 <li><a href="#">Search</a></li>
                 <li><a href="#">Procedures</a></li>
                 <li><span class="inset"></span></li>
                 <li class="active"><a href="#">Destination</a></li>
             </ul>
-        </nav>
+        </nav  -->
     </div>
 </header> <!--End of header-->
 
 {% if app.request.attributes.get('_route') == 'main_homepage' %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
         <div id="hero_unit" class="row">
-            <h1 class="welcome">welcome to <b>healthcare</b> abroad!<br>
-            <small>the resource for global <b>healthcare</b><br>a comprehensive, <b>unbiased</b> directory</small>
+            <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>
+            <small>the resource for global <strong>healthcare</strong><br>a comprehensive, <strong>unbiased</strong> directory</small>
             </h1>
 
             {% block searchBox %}

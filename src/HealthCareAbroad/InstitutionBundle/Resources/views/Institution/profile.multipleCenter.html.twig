@@ -1,9 +1,9 @@
 <div class="span9">
     <div class="row"> 
         <div class="span2">
-            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#upload"> 
-                {% if institution.media is not sameas(NULL) %}
-                    {{ media(institution.media, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
+            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
+                {% if institution.logo is not sameas(NULL) %}
+                    {{ media(institution.logo, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
                 {% else %}
                      <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
                 {% endif %} 
@@ -54,22 +54,6 @@
     </div>
 </div>
 <!-- end span9 -->
-<!-- Modal Doctor's Photo -->
-<div id="upload" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-		<h3>Upload Profile Photo</h3>
-	</div>
-	<div class="modal-body">
-		<!-- doctor photo start-->
-		<input type="file" name="profile_photofile" size="40" class="profilephoto">
-		<!-- doctor photo end-->
-	</div>
-	<div class="modal-footer">
-		<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		<button class="btn btn-primary">Upload</button>
-	</div>
-</div><!-- End Modal Doctor's Photo-->
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript">

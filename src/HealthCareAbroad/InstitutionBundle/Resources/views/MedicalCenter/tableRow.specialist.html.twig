@@ -1,0 +1,14 @@
+{% for doctor in doctors %}
+	<tr id="doctor_id:{{ doctor.id }}">
+		<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+		<td>
+		{% for specialization in doctor.specializations %}
+		    {{ specialization.name |title }} 
+		    {% if loop.last == false %},{% endif %} 
+	    {% else %}
+		    No Specializations yet
+		{% endfor %}
+		</td>
+	    <td><a class="btn btn-danger specialist_deleteBtn delete" onclick ="InstitutionSpecialistAutocomplete.removeProperty({{ doctor.id }}, $(this).parents('tr')); return false;">Remove</a></td>
+	</tr>
+{% endfor %}
