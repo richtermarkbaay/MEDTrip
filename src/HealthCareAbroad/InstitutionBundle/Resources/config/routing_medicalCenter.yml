@@ -176,3 +176,20 @@ institution_medical_center_ajaxLoadSpecializationAccordionEntry:
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
     requirements:
         _method: GET
+        
+        
+institution_medicalCenter_ajaxAddSpecialistService:
+    pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddSpecialistService
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddSpecialist }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+        
+institution_medicalCenter_ajaxRemoveSpecialistService:
+    pattern:  /{institutionId}/medical-center/{imcId}/ajaxRemoveSpecialistService
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxRemoveSpecialist }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST

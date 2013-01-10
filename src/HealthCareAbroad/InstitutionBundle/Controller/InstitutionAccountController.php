@@ -377,7 +377,27 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
-                $parameters['medical_specialists'] = $this->institutionMedicalCenter->getDoctors();
+                 $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
+                $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+                
+                if ($request->isMethod('POST')) {
+                    $form->bind($request);
+                    
+                    if ($form->isValid() && $form->get('id')->getData()) {
+                        $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
+                        $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+                    }
+                }
+                $doctorArr = array();
+                
+                foreach ($doctors as $each) {
+                    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+                }
+                
+                $parameters['form'] = $form->createView();
+                $parameters['doctorsJSON'] = \json_encode($doctorArr);
+                $parameters['institution'] =  $this->institution;
+                $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
