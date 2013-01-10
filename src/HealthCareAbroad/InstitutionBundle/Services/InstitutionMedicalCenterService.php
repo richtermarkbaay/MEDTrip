@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -144,6 +146,7 @@ class InstitutionMedicalCenterService
     
     public function saveInstitutionMedicalCenterDoctor($doctorIdArray, InstitutionMedicalCenter $center)
     {
+   
         $center->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
         $doctorIdArr = explode(",", $doctorIdArray['id']);
          if(\is_array($doctorIdArr)) {
@@ -220,4 +223,25 @@ class InstitutionMedicalCenterService
 
          return $result;
     }
+    
+    /**
+     * Check if specialist exist
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array InstitutionMedicalCenterProperty
+     */
+    public function hasSpecialist(InstitutionMedicalCenter $institutionMedicalCenter, $doctor)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a 
+        LEFT JOIN a.doctors b
+        WHERE a.id = :institutionMedicalCenterId AND b.id = :doctorId";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
+        ->setParameter('doctorId', $doctor)
+        ->getResult();
+    
+        return $result;
+    }
+    
 }
