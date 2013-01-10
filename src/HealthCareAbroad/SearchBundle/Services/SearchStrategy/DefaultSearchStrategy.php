@@ -15,6 +15,8 @@ class DefaultSearchStrategy extends SearchStrategy
     /**
      * Search
      *
+     * TODO: this should be renamed ***autocomplete***?
+     *
      * @param SearchParameterBag $searchParams Search parameters
      *
      * @return array $array
@@ -25,18 +27,7 @@ class DefaultSearchStrategy extends SearchStrategy
     public function search(SearchParameterBag $searchParams)
     {
         $this->isViewReadyResults = true;
-        $this->entityManager = $this->container->get('doctrine')->getEntityManager();
 
-        if ($searchParams->has('term') && $searchParams->get('term')) {
-            $this->searchAutoComplete($searchParams);
-        }
-
-        return $this->results;
-    }
-
-    //TODO: refactor
-    private function searchAutoComplete(SearchParameterBag $searchParams)
-    {
         switch ($searchParams->get('context')) {
             case SearchParameterBag::SEARCH_TYPE_DESTINATIONS:
                 $results = $this->getDestinationsByName($searchParams);
@@ -59,6 +50,13 @@ class DefaultSearchStrategy extends SearchStrategy
                 throw new \Exception('Unknown context: '. $searchParams->get('context'));
         }
 
+        return $results;
+    }
+
+    //TODO: refactor
+    private function searchAutoComplete(SearchParameterBag $searchParams)
+    {
+
         $this->results = $results;
     }
 
@@ -77,16 +75,51 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($searchParams->get('countryId') || $searchParams->get('cityId')) {
             $treatments = $this->searchTreatmentsByNameWithDestination($searchParams);
         } else {
-            $treatments = $this->searchTreatmentsByName($searchParams->get('term'));
+            $treatments = $this->searchTreatmentsByName($searchParams);
         }
 
-        foreach ($treatments as $t) {
-            $value = (is_null($t['specialization_id']) ? 0 : $t['specialization_id']) .'-'.
-                            (is_null($t['sub_specialization_id']) ? 0 : $t['sub_specialization_id']) .'-'.
-                            (is_null($t['treatment_id']) ? 0 : $t['treatment_id']) .'-'.
-                            $t['treatment_type'];
+        $prevTreatmentName = -1;
+        $prevSubSpecializationName = -1;
 
-            $result[] = array('label' => $t['treatment_name'], 'value' => $value);
+        //TODO: this is not working as intended. the specs is if we have similarly
+        //named treatment or subspecialization to append the specialization to the
+        //label
+
+        //NOTE: this assumes that treatment ids that are equal will be grouped together
+        //however, the same assumption for subSpecialization cannot be safely made as of
+        //the moment - the query will still need to be modified
+        foreach ($treatments as $t) {
+            $specializationId = is_null($t['specialization_id']) ? 0 : $t['specialization_id'];
+            $subSpecializationId = is_null($t['sub_specialization_id']) ? 0 : $t['sub_specialization_id'];
+            $treatmentId = is_null($t['treatment_id']) ? 0 : $t['treatment_id'];
+
+//             if ($subSpecializationName == $prevSubSpecializationName) {
+//                 $specializationName = $t['specialization_name'];
+//             } elseif ($subSpecializationName) {
+//                 $prevSubSpecializationName = $subSpecializationName;
+//             }
+
+            //If treatment is the same add specialization to the label
+            $specializationName = '';
+            $treatmentName = $t['treatment_name'];
+            if ($treatmentName == $prevTreatmentName) {
+                $specializationName = $t['specialization_name'];
+            } elseif ($treatmentName) {
+                $prevTreatmentName = $treatmentName;
+            }
+
+            if ($specializationName == $treatmentName) {
+                $label = $treatmentName;
+            } elseif ($specializationName) {
+                $label = $treatmentName . ' in ' . $specializationName;
+            } else {
+                $label = $treatmentName;
+            }
+
+            $result[] = array(
+                'label' => $label,
+                'value' => $specializationId.'-'.$subSpecializationId . '-' . $treatmentId . '-' . $t['treatment_type']
+            );
         }
 
         return $result;
@@ -100,7 +133,7 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($searchParams->get('treatmentType')) {
             $destinations = $this->searchDestinationsByNameWithTreatment($searchParams);
         } else {
-            $destinations = $this->searchDestinationsByName($searchParams->get('term'));
+            $destinations = $this->searchDestinationsByName($searchParams);
         }
 
         foreach ($destinations as $d) {
@@ -117,21 +150,45 @@ class DefaultSearchStrategy extends SearchStrategy
     /**
      * Searches treatments (specializations, subspecializations and treatment) by name.
      *
-     * @param string $name Name to search for
-     *
      * @return array
      */
-    private function searchTreatmentsByName($name)
+    private function searchTreatmentsByName($searchParams)
     {
-        $connection = $this->entityManager->getConnection();
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-        //TODO: some of the SELECT can still be optimized (e.g. unneeded left joins)
+        $cityId = $searchParams->get('cityId', 0);
+        $countryId = $searchParams->get('countryId', 0);
+
+        $extendedDestinationWhereClause = ' ';
+        if ($cityId) {
+            $extendedDestinationWhereClause .= " AND h.city_id = :cityId ";
+        } elseif ($countryId) {
+            $extendedDestinationWhereClause .= " AND h.country_id = :countryId ";
+        }
+        $extendedJoinForDestination = ' ';
+        if (trim($extendedDestinationWhereClause)) {
+            $extendedJoinForDestination = '
+                LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
+                LEFT JOIN institutions AS h ON g.institution_id = h.id ';
+        }
+
+        $term = $searchParams->get('term');
+
+        //select
+        //  treatments with subspecializations
+        //  union
+        //  treatments with no subspecializations(TODO: is query for this part correct?)
+        //  union
+        //  subspecializations
+        //  union
+        //  specializations
         $sql ="
             SELECT
                         f.id AS specialization_id,
                         e.id AS sub_specialization_id,
                         c.id AS treatment_id,
                         c.name AS treatment_name,
+                        f.name AS specialization_name,
                         'treatment' AS treatment_type
             FROM institution_specializations AS a
             LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
@@ -139,24 +196,30 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
             LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
-            WHERE a.status = 1
+            $extendedJoinForDestination
+            WHERE a.status = 1 AND d.treatment_id IS NOT NULL
             AND c.name LIKE :name
+            $extendedDestinationWhereClause
 
             UNION
 
             SELECT
                         f.id AS specialization_id,
-                        0 AS sub_specialization_id,
+                        e.id AS sub_specialization_id,
                         c.id AS treatment_id,
                         c.name AS treatment_name,
+                        f.name AS specialization_name,
                         'treatment' AS treatment_type
             FROM institution_specializations AS a
             LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments AS c ON b.treatment_id = c.id
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
+            LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
-            WHERE a.status = 1 AND d.sub_specialization_id IS NULL
+            $extendedJoinForDestination
+            WHERE a.status = 1
             AND c.name LIKE :name
+            $extendedDestinationWhereClause
 
             UNION
 
@@ -165,6 +228,7 @@ class DefaultSearchStrategy extends SearchStrategy
                         e.id AS sub_specialization_id,
                         0 AS treatment_id,
                         e.name AS treatment_name,
+                        f.name AS specialization_name,
                         'subSpecialization' AS treatment_type
             FROM institution_specializations AS a
             LEFT JOIN institution_treatments AS b ON a.id = b.institution_specialization_id
@@ -172,8 +236,10 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
             LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            $extendedJoinForDestination
             WHERE a.status = 1
             AND e.name LIKE :name
+            $extendedDestinationWhereClause
 
             UNION
 
@@ -182,18 +248,26 @@ class DefaultSearchStrategy extends SearchStrategy
                         0 AS sub_specialization_id,
                         0 AS treatment_id,
                         f.name AS treatment_name,
+                        f.name AS specialization_name,
                         'specialization' AS treatment_type
             FROM institution_specializations AS a
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            $extendedJoinForDestination
             WHERE a.status = 1
             AND f.name LIKE :name
+            $extendedDestinationWhereClause
 
             GROUP BY treatment_name
             ORDER BY treatment_name ASC
         ";
 
         $stmt = $connection->prepare($sql);
-        $stmt->bindValue('name', '%'.$name.'%');
+        $stmt->bindValue('name', '%'.$term.'%');
+        if ($cityId) {
+            $stmt->bindValue('cityId', $cityId);
+        } elseif ($countryId) {
+            $stmt->bindValue('countryId', $countryId);
+        }
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -213,6 +287,8 @@ class DefaultSearchStrategy extends SearchStrategy
      */
     private function searchTreatmentsByNameWithDestination(SearchParameterBag $searchParams)
     {
+        return $this->searchTreatmentsByName($searchParams);
+
         $connection = $this->entityManager->getConnection();
         $cityId = $searchParams->get('cityId', 0);
         $countryId = $searchParams->get('countryId', 0);
@@ -311,7 +387,7 @@ class DefaultSearchStrategy extends SearchStrategy
 
         if ($cityId) {
             $stmt->bindValue('cityId', $cityId);
-        } else if ($countryId) {
+        } elseif ($countryId) {
             $stmt->bindValue('countryId', $countryId);
         }
 
@@ -320,9 +396,9 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll();
     }
 
-    private function searchDestinationsByName($name)
+    private function searchDestinationsByName(SearchParameterBag $searchParams)
     {
-        $connection = $this->entityManager->getConnection();
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $sql ="
         SELECT a.id AS city_id, a.name AS city_name, b.id AS country_id, b.name AS country_name
@@ -347,7 +423,7 @@ class DefaultSearchStrategy extends SearchStrategy
         ";
 
         $stmt = $connection->prepare($sql);
-        $stmt->bindValue('name', '%'.$name.'%');
+        $stmt->bindValue('name', '%'.$searchParams->get('term').'%');
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -366,7 +442,7 @@ class DefaultSearchStrategy extends SearchStrategy
      */
     private function searchDestinationsByNameWithTreatment(SearchParameterBag $searchParams)
     {
-        $connection = $this->entityManager->getConnection();
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $variableWhereClause = '';
         switch ($searchParams->get('treatmentType')) {

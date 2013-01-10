@@ -65,16 +65,10 @@
                     </article>
                 {% endfor %}
 
-                <div class="pagination">
-                  <ul>
-                    <li><a href="#">Prev</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">Next</a></li>
-                  </ul>
-                </div>
+                {% if searchResults.isPaginable %}
+                   {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
+                {% endif %}
+
             </div> <!--End of main_content-->
 
             <aside id="aside_content" class="span4">
