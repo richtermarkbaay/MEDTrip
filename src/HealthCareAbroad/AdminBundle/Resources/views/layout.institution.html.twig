@@ -7,7 +7,7 @@
 
 {% block body %}
 {% set sideBarUsed = sideBarUsed is defined ? sideBarUsed : 'AdminBundle:Institution:sidebar.html.twig' %}
-<body>
+<body data-target=".bs-docs-sidebar" data-spy="scroll">
 
     {% include 'AdminBundle:Embed:header.layout.html.twig' %}
 
@@ -19,7 +19,7 @@
     	<div class="container maincontent" style="margin-top:20px;">
     	    {% include '::notice.admin.html.twig' %}
     	    
-    	    <div class="span3 bs-docs-sidebar">
+    	    <div id="navbar-side" class="span3 bs-docs-sidebar">
     	        {% include sideBarUsed %}
     	    </div>
 		    
