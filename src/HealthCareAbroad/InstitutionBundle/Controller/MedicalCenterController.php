@@ -432,7 +432,8 @@ class MedicalCenterController extends InstitutionAwareController
                     $em->flush();
                     
                     $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
-                        'institutionSpecialization' => $_institutionSpecialization
+                        'institutionSpecialization' => $_institutionSpecialization,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter
                     ));
                 }
                 else {
@@ -953,6 +954,75 @@ class MedicalCenterController extends InstitutionAwareController
     
         return $response;
     }
+    
+    public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
+        if (!$institutionSpecialization ) {
+            throw $this->createNotFoundException('Invalid institution specialization');
+        }
+        
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        if ($request->isMethod('POST')) {
+            $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
+            $em = $this->getDoctrine()->getEntityManager();
+            $errors = array();
+            $output = array('html' => '');
+            foreach ($submittedSpecializations as $_isId => $_data) {
+                if ($_isId == $institutionSpecialization->getSpecialization()->getId()) {
+                    
+                    $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization, array('em' => $em));
+                    $form->bind($_data);
+                    if ($form->isValid()) {
+                        try {
+                            $em->persist($form->getData());
+                            $em->flush();
+                            $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
+                                'institutionSpecialization' => $institutionSpecialization
+                            ));
+                        }catch (\Exception $e) {
+                            $errors[] = $e->getMessage();
+                        }
+                    }
+                    else {
+                        $errors[] = 'Failed form validation';
+                    }
+                }
+            }
+            
+            if (\count($errors) > 0) {
+                $response = new Response('Errors: '.implode('\n',$errors), 400);
+            }
+            else {
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+        }
+        else {
+            $specialization = $institutionSpecialization->getSpecialization();
+            $availableTreatments = $this->get('services.institution_medical_center')
+                ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
+            try {
+                $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
+                    'availableTreatments' => $availableTreatments,
+                    'form' => $form->createView(),
+                    'formName' => InstitutionSpecializationFormType::NAME,
+                    'specialization' => $specialization,
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'institutionSpecialization' => $institutionSpecialization,
+                    'currentTreatments' => $institutionSpecialization->getTreatments()
+                ));
+                
+                $response = new Response(\json_encode(array('html' => $html)));
+            }
+            catch (\Exception $e) {
+                $response = new Response($e->getMessage(), 500);
+            }
+            
+        }
+        
+        return $response;   
+    }
+    
     public function ajaxLoadSpecializationAccordionEntryAction(Request $request)
     {
         $specializationId = $request->get('specializationId', 0);
@@ -971,7 +1041,7 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
         $params['formName'] = InstitutionSpecializationFormType::NAME;
         $params['form'] = $form->createView();
-        $params['subSpecializations'] = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getBySpecializationId($specializationId, $groupBySubSpecialization);
+        $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);

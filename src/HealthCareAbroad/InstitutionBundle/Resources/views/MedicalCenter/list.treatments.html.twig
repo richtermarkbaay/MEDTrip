@@ -1,0 +1,16 @@
+{# --- this will be the list of institution specialization treatments in table format --- #}
+{% for _treatment in institutionSpecialization.treatments %}
+<tr>
+	<td>{{ _treatment.name |title }}</td>
+	<td>
+		<div class="post-toolbar">
+			<i class="icon-trash" title="Delete"></i>
+			<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
+		</div>
+	</td>
+</tr>
+{% else %}
+<tr>
+    <td colspan="2">This specialty has no treatments yet</td>
+</tr>
+{% endfor %}

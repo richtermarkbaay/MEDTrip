@@ -60,6 +60,14 @@ institution_medicalCenter_ajaxRemoveSpecialization:
         imcId: \d+
         isId: \d+
 
+institution_medicalCenter_ajaxEditSpecialization:
+    pattern: /medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddInstitutionSpecializationTreatments }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        isId: \d+
+
 institution_medicalCenter_addAncilliaryServices:
     pattern: /medical-center/{imcId}/ancilliary-services/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addAncilliaryServices }
