@@ -6,24 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
-
-use HealthCareAbroad\MedicalProcedureBundle\Entity\MedicalCenter;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
 
-use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
-use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
-use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
-
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InstitutionMedicalCenterController extends Controller
@@ -38,13 +22,14 @@ class InstitutionMedicalCenterController extends Controller
             $criteria = array('slug' => $request->get('imcSlug'));
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            $qb->select('a, b, c, d, e, f, g, h')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
                ->leftJoin('a.institution', 'b')
                ->leftJoin('b.country', 'c')
                ->leftJoin('b.city', 'd')
                ->leftJoin('a.institutionSpecializations', 'e')
                ->leftJoin('e.specialization', 'f')
                ->leftJoin('e.treatments', 'g')
+               ->leftJoin('g.subSpecializations', 'h')
                ->where('a.slug = :centerSlug')
                ->setParameter('centerSlug', $criteria['slug']);
             $this->institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
@@ -57,11 +42,12 @@ class InstitutionMedicalCenterController extends Controller
 
     public function profileAction($institutionSlug)
     {
-//         $institutionService = $this->get('services.institution');
+         $centerService = $this->get('services.institution_medical_center');
 //         $gallery = $this->institution->getGallery();
         $params = array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-//            'institutionBranches' => $institutionService->getBranches($this->institution)
+            'awards' => $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter),
+            'services' => $centerService->getMedicalCenterServices($this->institutionMedicalCenter),
         );
 
 //         if($gallery && $gallery->getMedia()->count()) {

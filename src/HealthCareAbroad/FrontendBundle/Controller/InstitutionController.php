@@ -46,7 +46,7 @@ class InstitutionController extends Controller
                ->leftJoin('c.treatments', 'e')
                ->leftJoin('a.country', 'f')
                ->leftJoin('a.city', 'g')
-               ->leftJoin('a.media', 'h')
+               ->leftJoin('a.logo', 'h')
                ->leftJoin('a.institutionOfferedServices', 'i')
 
                ->where('a.slug = :institutionSlug')
