@@ -3,13 +3,13 @@
 {% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
 {% if not arrBusinessHours %}
     {% set arrBusinessHours = {
-            'Sunday' :{"from": "08:15 AM", "to": "07:00 PM"},
-            'Monday' :{"from": "08:15 AM", "to": "07:00 PM"},
-            'Tuesday' :{"from": "08:15 AM", "to": "07:00 PM" },
-            'Wednesday' :{"from": "08:15 AM", "to": "07:00 PM"},
-            'Thursday' :{"from": "08:15 AM", "to": "07:00 PM"},
-            'Friday' :{"from": "08:15 AM", "to": "07:00 PM"},
-            'Saturday' :{"from": "08:15 AM", "to": "07:00 PM"}
+            'Sunday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"},
+            'Monday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"},
+            'Tuesday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM" },
+            'Wednesday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"},
+            'Thursday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"},
+            'Friday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"},
+            'Saturday' :{"notes": "","from": "08:15 AM", "to": "07:00 PM"}
             }
     %}
 {% endif %}
@@ -17,23 +17,16 @@
 <div id="clinicHoursTable"  class="clinicHours">
     <table border="1" cellpadding="0" cellspacing="0" class="table table-bordered" id="table-businessHours">
         <tr>
-            <th class="minwidth-1"> <a href="#">Is Closed</a></th>
             <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
             <th class="minwidth-1"> <a href="#">From</a></th>
             <th class="minwidth-1"> <a href="#">To</a></th>
+            <th class="minwidth-1" style="width:22px;"> <a href="#">Is Closed</a></th>
         </tr>
         <input class="imcId" name="imcId" id="imcId" value="{{ institutionMedicalCenter.id }}"  type="hidden"/>
         {% for i, day in daysArr %}
             <tr>
-                <td  align="center">
-                    {% if arrBusinessHours[day] is not defined %}
-                        <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                    {% else %}
-                        <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
-                    {% endif %}
-                </td>
-                <td  align="center">{{ day }}</td>
-                <td  align="center">
+                <td align="center">{{ day }}</td>
+                <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <input class="hour" name="businessHours[{{day}}][from]" disabled="true" id="businessHours[{{day}}][from]" value="" />
                     {% else %}
@@ -47,12 +40,28 @@
                          <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
                     {% endif %}
                 </td>
+                <td  align="center">
+                    {% if arrBusinessHours[day] is not defined %}
+                        <input checked="checked" type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                    {% else %}
+                        <input type="checkbox" class="is_closed_checkbox" id="{{ i }}"/></td>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">Notes:
+                {% if arrBusinessHours[day] is not defined %}
+                   <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;" disabled></textarea>
+                {% else %} 
+                    <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;">{{ arrBusinessHours[day].notes }}</textarea>
+                {% endif %}
+                </td>
             </tr>
          {% endfor %}
     </table>
-      <div class="modal-footer button-wrapper">
-    		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-    		<button class="btn btn-primary submit-button">Submit</button>
+    <div class="modal-footer button-wrapper">
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+    	<button class="btn btn-primary submit-button">Submit</button>
     </div>
     
 </div>

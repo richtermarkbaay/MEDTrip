@@ -12,20 +12,32 @@
 	</div>
 </div>
 <div class="span5 address-box">
-	<h1>Family Name Clinic</h1>
+	<h1>{{ institutionMedicalCenter.name }}</h1>
 	<div class="media">
 		<div class="pull-left">
 			<img src="/images/frontend/address_icon2.png" class="media-object">
 		</div>
 		<div class="media-body">
-			<h6>Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450</h6>
-			<h4>Kuala Lumpur, Malaysia</h4>
-			
+		
+		    {% set address = json_decode(institutionMedicalCenter.institution.address1) %}
+			<h6>
+                {% for each in address %}
+				    {{ each ? each ~ ', ' : '' }}
+				{% endfor %}
+
+				{{ institutionMedicalCenter.institution.zipCode }} 
+			</h6>
+			<h4>
+                {% if institutionMedicalCenter.institution.city %}
+    			    {{ institutionMedicalCenter.institution.city.name }},  
+    			{% endif %} 
+    			{{ institutionMedicalCenter.institution.country.name }}
+			</h4>
 		</div>
 	</div>
 	<div class="contact_clinic span6">
-		<a href="#" class="call btn green">Call Us</a>
-		<a href="#" class="email btn green">Email</a>
-		<a href="#" class="website btn green">Visit Website</a>
+		<a href="tel:{{ number }}" class="call btn green">Call Us</a>
+		<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>
+		<a href="{{ mainWebsites }}" class="website btn green" {% if mainWebsites != '#' %} target="_blank" {% endif %}>Visit Website</a>
 	</div>
 </div>

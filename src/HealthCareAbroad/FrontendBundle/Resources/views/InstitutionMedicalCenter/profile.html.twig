@@ -1,23 +1,32 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
+{% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institutionMedicalCenter.institution.contactEmail %}
+
+{% set number = institutionMedicalCenter.contactNumber ? institutionMedicalCenter.contactNumber : institutionMedicalCenter.institution.contactNumber  %}
+{% set number = json_decode(number) | join %}
+
+{% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institutionMedicalCenter.institution.websites %}
+{% set websites = json_decode(websites) %}
+{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : '#' %}
+
+
 {% block content %}
 
-	<section id="content" class="container">
+	<div id="content" class="container">
 		<div id="details" class="row">
 			<div id="main_content" class="span8">
 				<div class="clinicdetails content">
-				    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
-
-					<p>
-						Yes, this may seem like a particularly unsophisticated algorithm. Nevertheless, random walks can be used to model phenomena that occur in the real world, from the movements of molecules in a gas to the behavior of a gambler spending a day at the casino. As for us, we begin this book studying a random walk with three goals in mind.
-					</p>
+                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
+                    <div class="description">
+                        {{ institutionMedicalCenter.description | raw }}
+                    </div>
 				</div>
                
                 {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' %}
                
-                {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: [], services: []} %}
+                {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
 	
-				{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with {doctors: []} %}
+				{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with { doctors: institutionMedicalCenter.doctors } %}
 
 			</div> <!--End of main_content-->
 
@@ -29,11 +38,11 @@
 
 			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: []} %}
 
-			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { links: []} %}
+			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 
 			</aside> <!--End of aside_content-->
 		</div>
-	</section> <!--End of content-->
+	</div> <!--End of content-->
 
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
 
