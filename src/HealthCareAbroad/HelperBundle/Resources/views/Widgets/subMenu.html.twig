@@ -1,5 +1,5 @@
 <div class="sidebar-nav">
-    <ul class="nav nav-list bs-docs-sidenav affix">
+    <ul class="nav nav-list bs-docs-sidenav">
         {% set i = 0 %}
         {% for link in links %}
         <li class="{{ i == 0  ? 'active' : '' }}">
@@ -10,9 +10,20 @@
 			 {% if link.class is defined %}
               	 <a href="{{ link.url }}" class="{{ link.class }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
              {% endif %}
-           
         </li>
         {% set i = i + 1 %}
         {% endfor %}
     </ul>
 </div>
+
+<script type="text/javascript">
+$(function(){
+	$(window).scroll(function(){
+		if($(window).scrollTop() >= 220 && {{ (isScrollable is defined) and isScrollable }}) {
+			$('#navbar-side > div > ul').addClass('affix');
+		} else {
+			$('#navbar-side > div > ul').removeClass('affix');
+		}
+	});
+});
+</script>

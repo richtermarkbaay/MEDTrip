@@ -16,17 +16,15 @@
     background-image: url("/images/glyphicons-halflings.png");
 }
 .bs-docs-sidenav.affix {
-    bottom: 75px;
+    top: 50px;
     margin-bottom: 40px;
-    margin-left: 12px;
+    margin-top: 0;
 }
 
 .bs-docs-sidenav {
     background-color: #FFFFFF;
     border-radius: 6px 6px 6px 6px;
     /*box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);*/
-    margin: 30px 0 0;
-    padding: 0;
     width: 228px;
 }
 .bs-docs-sidenav > li:first-child > a {
