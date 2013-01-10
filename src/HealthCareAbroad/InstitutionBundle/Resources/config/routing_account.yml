@@ -74,3 +74,10 @@ institution_ajaxRemovePropertyValue:
     requirements:
         _method: GET|POST
         institutionId: \d+
+        
+institution_logo_upload:
+    pattern: /institution/{institutionId}/logo/upload/
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload }
+    requirements:
+        _method: POST
+        institutionId: \d+

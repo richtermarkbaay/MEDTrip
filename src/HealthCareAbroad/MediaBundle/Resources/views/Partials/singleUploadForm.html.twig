@@ -6,10 +6,10 @@
 <div>Select a file to upload:</div>
 
 <form action="{{ path(routes.media_upload, {'institutionId': institution.id, isLogo: isLogo is defined ? isLogo : false}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
-    <input type="file" name="file" accept="image/gif, image/jpeg" />
+    <input type="file" name="file" />
     <input type="hidden" name="multiUpload" value="0"/>
 
-    <input type="submit" value="Upload"/>
+    <input type="submit" name="submit" value="Upload"/>
 </form>
 
 <div>

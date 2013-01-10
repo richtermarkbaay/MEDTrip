@@ -27,12 +27,15 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
+use HealthCareAbroad\MediaBundle\Services\MediaService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 use Symfony\Component\Security\Core\SecurityContext;
+
+use Gaufrette\File;
 
 class InstitutionAccountController extends InstitutionAwareController
 {
@@ -171,7 +174,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
                 
-                return $this->redirect($this->generateUrl('institution_homepage'));
+                return $this->redirect($this->generateUrl('institution_account_profile', array('institutionId' => $this->institution)));
             }
         }
         
@@ -665,5 +668,29 @@ class InstitutionAccountController extends InstitutionAwareController
         $em->flush();
     
         return new Response("Property removed", 200);
+    }
+    
+    /**
+     * Upload logo
+     * @param Request $request
+     */
+    public function uploadAction(Request $request)
+    {
+        $response = new Response();
+    
+        $fileBag = $request->files;
+        
+        if ($fileBag->get('file')) {
+    
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
+    
+            if(is_object($result)) {
+                 
+                $media = $result;
+                $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
+            }
+        }
+        
+        return $this->redirect($this->generateUrl('institution_account_profile'));
     }
 }
