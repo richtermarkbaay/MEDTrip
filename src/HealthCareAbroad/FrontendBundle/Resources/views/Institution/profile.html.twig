@@ -2,7 +2,7 @@
 
 {% block content %}
 
-	<div id="content" class="container">
+	<div id="content" class="container content">
 
 	    {% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
 
@@ -20,13 +20,13 @@
 
 			<aside id="aside_content" class="span4">
 
-			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
 			    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
 
 			    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
 
-			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: []} %}
+			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [] } %}
 
 			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
 
