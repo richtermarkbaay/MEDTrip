@@ -12,12 +12,12 @@
 
 {% block content %}
 
-	<section id="content" class="container">
+	<div id="content" class="container">
 		<div id="details" class="row">
 			<div id="main_content" class="span8">
 				<div class="clinicdetails content">
                     {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
-                    <div>
+                    <div class="description">
                         {{ institutionMedicalCenter.description | raw }}
                     </div>
 				</div>
@@ -42,7 +42,7 @@
 
 			</aside> <!--End of aside_content-->
 		</div>
-	</section> <!--End of content-->
+	</div> <!--End of content-->
 
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
 
