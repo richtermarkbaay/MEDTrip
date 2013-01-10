@@ -171,7 +171,6 @@
                     },
                 });
                 
-
                 $('#dialog-container').dialog("open");
 
                      return false;
@@ -265,11 +264,14 @@
             if(this.checked) {
                 $(this).parent().parent().find('.hour').val("");
                 var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+                $(this).parent().parent().next().find('.businessHourNotes').val("");
+                $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
             }
             else
             {
                 $(this).parent().parent().find('.hour').val("8:00 AM");
                 var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+                $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
             }
 
         });
@@ -290,17 +292,17 @@
     	}) 
         
         $('#saveBusinessHours').click(function() {
-            var businessHours = $('#business').serialize();
-            $('div#ajax_loader').show();
+        	_form = $(this).parents('#businessHours').find('form');
+            _form.append('<span class="loader">Loading...</span>');
             $.ajax({
-                url: "{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
-                data: businessHours,
-                type: 'post',
-                success: function(){
-                    $('div#ajax_loader').hide();
+                url: "{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
+                data: _form.serialize(),
+                type: 'POST',
+                success: function(data) {  
+          		  $('#institutionBusinessHoursText').html(data.html);
+                  _form.find('span.loader').remove();
                 }
             });
-
             return false;
         });
 
