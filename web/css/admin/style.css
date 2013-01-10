@@ -15,11 +15,48 @@
 {
     background-image: url("/images/glyphicons-halflings.png");
 }
+.bs-docs-sidenav.affix {
+    top: 50px;
+    margin-bottom: 40px;
+    margin-top: 0;
+}
+
+.bs-docs-sidenav {
+    background-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    /*box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);*/
+    width: 228px;
+}
+.bs-docs-sidenav > li:first-child > a {
+    border-radius: 6px 6px 0 0;
+}
+.bs-docs-sidenav > li > a {
+    border: 1px solid #E5E5E5;
+    display: block;
+    margin: 0 0 -1px;
+    padding: 8px 14px;
+}
+.nav-list > li > a, .nav-list .nav-header {
+    margin-left: -15px;
+    margin-right: -15px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.nav > li > a {
+    display: block;
+}
+a {
+    color: #0088CC;
+    text-decoration: none;
+}
+
+.nav {
+    list-style: none outside none;
+}
 #navbar.affix {
     position: fixed; 
-    top: 20px; 
-    left: 0px;
+    top: 0px; 
 }
+
 .hour
 {
     width: 70px;	

@@ -1,7 +1,8 @@
- <div class="sidebar-nav">
-    <ul class="nav nav-tabs nav-stacked">
+<div class="sidebar-nav">
+    <ul class="nav nav-list bs-docs-sidenav">
+        {% set i = 0 %}
         {% for link in links %}
-        <li class="{{ app.request.requestUri == link.url or (selectedSubMenu is defined and selectedSubMenu == link.name)  ? 'active' : '' }}">
+        <li class="{{ i == 0  ? 'active' : '' }}">
          	 {% if link.class is not defined  %}
 			 	 <a href="{{ link.url }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
 			 {% endif %}
@@ -9,8 +10,20 @@
 			 {% if link.class is defined %}
               	 <a href="{{ link.url }}" class="{{ link.class }}"><i class="{{ link.icon }}"></i>{{ link.label }}</a>
              {% endif %}
-           
         </li>
+        {% set i = i + 1 %}
         {% endfor %}
     </ul>
 </div>
+
+<script type="text/javascript">
+$(function(){
+	$(window).scroll(function(){
+		if($(window).scrollTop() >= 220 && {{ (isScrollable is defined) and isScrollable }}) {
+			$('#navbar-side > div > ul').addClass('affix');
+		} else {
+			$('#navbar-side > div > ul').removeClass('affix');
+		}
+	});
+});
+</script>

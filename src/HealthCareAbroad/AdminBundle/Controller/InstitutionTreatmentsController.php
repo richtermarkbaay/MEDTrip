@@ -229,7 +229,7 @@ class InstitutionTreatmentsController extends Controller
         foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
-        
+        //var_dump($this->institutionMedicalCenter->getBusinessHours());exit;
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -451,6 +451,39 @@ class InstitutionTreatmentsController extends Controller
         }
     }
 
+    public function ajaxUpdateBusinessHoursAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            if($request->get('businessHours') == null){
+                $businessHours = '';
+            }else{
+                $businessHours = json_encode($request->get('businessHours'));
+            }
+            $this->institutionMedicalCenter->setBusinessHours($businessHours);
+            $em = $this->getDoctrine()->getEntityManager();
+    
+            try {
+                if ($businessHours) {
+                    $em->persist($this->institutionMedicalCenter);
+                    $em->flush();
+                    // TODO: Verify Event!
+                    // dispatch event
+                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
+                                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
+                                    ));
+                }
+            }
+            catch (\Exception $e) {
+                 
+                return new Response($e->getMessage(),500);
+            }
+        }
+    
+        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+    
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+    }
+    
     public function editMedicalCenterAction()
     {
         $service = $this->get('services.institution_medical_center');
@@ -459,11 +492,10 @@ class InstitutionTreatmentsController extends Controller
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
-   
         if ($request->isMethod('POST')) {
             $form->bind($request);
-
-            // Get contactNumbers and convert to json format
+            
+            // Get businessHours and convert to json format
             if($request->get('businessHours') == null){
                 $businessHours = '';
             }else{
@@ -953,34 +985,7 @@ class InstitutionTreatmentsController extends Controller
     
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
-//         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
-    
-//         if (!$award) {
-//             throw $this->createNotFoundException();
-//         }
-        
-//         $propertyService = $this->get('services.institution_medical_center_property');
-//         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        
-//         // get property value for this ancillary service
-//         $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
-        
-//         try {
-//             $em = $this->getDoctrine()->getEntityManager();
-//             $em->remove($property);
-//             $em->flush();
-        
-//             $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
-    
-//             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-//         }
-//         catch (\Exception $e){
-//             $response = new Response($e->getMessage(), 500);
-//         }
-        
-//         return $response;
-        
-         $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+        $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
         
         if (!$property) {
             throw $this->createNotFoundException('Invalid Institution Medical Center property.');
