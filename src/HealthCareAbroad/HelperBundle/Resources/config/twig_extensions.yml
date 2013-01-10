@@ -8,6 +8,12 @@ services:
         tags:
             - { name: twig.extension }
             
+    services.treatments.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\TreatmentsTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+            
     services.helpetext.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\HelpTextTwigExtension
         arguments: [@doctrine]   
