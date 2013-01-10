@@ -549,7 +549,8 @@ class MedicalCenterController extends InstitutionAwareController
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
             'institutionMedicalCenterForm' => $form->createView(),
-            'specializationsJSON' => \json_encode($specializationArr)
+            'specializationsJSON' => \json_encode($specializationArr),
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
         ));
     }
     
@@ -828,25 +829,25 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             if ($form->isValid()) {
                 $_id = $institutionSpecialization->getId();
-//                 $em = $this->getDoctrine()->getEntityManager();
-//                 $em->remove($institutionSpecialization);
-//                 $em->flush();
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($institutionSpecialization);
+                $em->flush();
                 $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
             }
             else {
                 $response = new Response("Invalid form", 400);
             }
         }
-        else {
+//         else {
             
-            $html = $this->renderView('InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig', array(
-                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                'institutionSpecialization' => $institutionSpecialization,
-                'form' => $form->createView()
-            ));
+//             $html = $this->renderView('InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig', array(
+//                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                 'institutionSpecialization' => $institutionSpecialization,
+//                 'form' => $form->createView()
+//             ));
             
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        }
+//             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+//         }
         
         return $response;
     }

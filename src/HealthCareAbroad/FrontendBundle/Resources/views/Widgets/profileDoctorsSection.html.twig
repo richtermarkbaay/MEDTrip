@@ -1,7 +1,9 @@
-<div class="doctors content row">
-	<h5>Doctors</h5>
+{% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors'} %}
+
+    {% block sectionContent %}
+
 	<ul class="thumbnails">
-	    {% for doctor in institutionDoctors %}
+	    {% for doctor in doctors %}
 		<li class="thumbnail">
 			{% if doctor.media %}
 			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
@@ -22,4 +24,7 @@
 		</li>
 		{% endfor %}
 	</ul>
-</div>
+	
+    {% endblock %}	
+	
+{% endembed %}
