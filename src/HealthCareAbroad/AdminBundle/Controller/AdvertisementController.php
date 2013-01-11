@@ -35,7 +35,7 @@ class AdvertisementController extends Controller
 
     public function preExecute()
     {
-        $ad = $this->getRequest()->get('advertisement');
+        $ad = $this->getRequest()->get('advertisement') ? $this->getRequest()->get('advertisement') : 1;
 
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
             $this->advertisement = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($advertisementId);
@@ -45,7 +45,7 @@ class AdvertisementController extends Controller
             }
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', $ad['institution'])) {
+        if ($institutionId = $this->getRequest()->get('institutionId', $ad)) {
             //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
