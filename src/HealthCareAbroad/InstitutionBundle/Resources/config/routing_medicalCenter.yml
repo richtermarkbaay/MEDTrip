@@ -201,3 +201,13 @@ institution_medicalCenter_ajaxRemoveSpecialistService:
         institutionId: \d+
         imcId: \d+
         _method: POST
+        
+institution_medicalCenter_ajaxRemoveSpecializationTreatment:
+    pattern:  /{institutionId}/medical-center/{imcId}/specialization/{isId}/ajaxRemoveTreatment/{tId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxRemoveSpecializationTreatment }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        isId: \d+
+        tId: \d+
+        _method: POST

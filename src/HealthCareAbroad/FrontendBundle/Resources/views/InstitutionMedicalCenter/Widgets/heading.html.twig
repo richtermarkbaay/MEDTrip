@@ -6,16 +6,7 @@
 	        <img src="" alt="default logo" />
 	    {% endif %}
 	</a>
-	<div class="rating">
-		<p>USER RATINGS</p>
-			<ul>
-			   	<li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-			    <li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-			    <li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-			    <li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
-			    <li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
-			</ul>
-	</div>
+    {% include 'FrontendBundle:Widgets:ratings.html.twig' %}
 </div>
 <div class="span5 address-box">
 	<h1>{{ object.name }}</h1>

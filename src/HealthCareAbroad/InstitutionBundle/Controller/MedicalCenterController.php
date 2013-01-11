@@ -49,6 +49,11 @@ class MedicalCenterController extends InstitutionAwareController
     private $institutionMedicalCenter = null;
     
     /**
+     * @var InstitutionSpecializations
+     */
+    private $institutionSpecializations = null;
+    
+    /**
      * @var InstitutionMedicalCenterRepository
      */
     private $repository;
@@ -351,11 +356,11 @@ class MedicalCenterController extends InstitutionAwareController
         $specializationsData = '';
         //construct specialization data
         foreach($specializations as $each) {
-            $specializationsData .= $each['name'] ."<br>";
+            $specializationsData .= $each['name']."<br>";
         }
         
         // construct the row for a medical specialist
-        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
+        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
         return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
     }
     
@@ -1102,12 +1107,12 @@ class MedicalCenterController extends InstitutionAwareController
         }
         // check if this medical center already have this property
         if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
-            
             $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
         }
         else {
+            $this->institutionMedicalCenter->addDoctor($specialist);
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             
-            $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($request->get('id'), $this->institutionMedicalCenter);
             $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist)));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
@@ -1138,20 +1143,30 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
+    
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('id', 0));
-
+        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
+        
         if (!$institutionSpecialization) {
             throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
         }
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-            $institutionSpecialization->removeTreatment($treatment);
+        
+        $institutionSpecialization->removeTreatment($treatment);
+        
+        try {
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionSpecialization);
             $em->flush();
-            
-            return new Response("Treatment removed", 200);
+            $response = new Response("Treatment removed", 200);
+        }
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
+        
+        
+        return $response;
     }
 }

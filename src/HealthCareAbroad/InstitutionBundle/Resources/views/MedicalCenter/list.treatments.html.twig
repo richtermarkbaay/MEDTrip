@@ -1,13 +1,9 @@
 {# --- this will be the list of institution specialization treatments in table format --- #}
 {% for _treatment in institutionSpecialization.treatments %}
-<tr>
+<tr id="treatment_id:{{ _treatment.id }}">
 	<td>{{ _treatment.name |title }}</td>
-	<td>
-		<div class="post-toolbar">
-			<i class="icon-trash" title="Delete"></i>
-			<a href="#deletetreatment" title="" role="button" data-toggle="modal">Delete</a>
-		</div>
-	</td>
+    <td> <i class="icon-trash" title="Delete"></i><a href="{{ path('institution_medicalCenter_ajaxRemoveSpecializationTreatment', {'imcId': institutionMedicalCenter.id,'tId': _treatment.id, institutionId: institution.id, isId: institutionSpecialization.id }) }}" 
+    onclick="InstitutionSpecialization.removeTreatment($(this)); return false;" title="" >Delete</a></td>
 </tr>
 {% else %}
 <tr>

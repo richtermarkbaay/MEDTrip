@@ -27,15 +27,15 @@ class DoctorController extends Controller
         $doctorId = $request->get('doctorId');
         $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
         $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
-    
+        
         $specializationsData = '';
         //construct specialization data
         foreach($specializations as $each) {
-            $specializationsData .= $each['name'] ."<br>";
+            $specializationsData .= $each['name']."<br>";
         }
-    
+        
         // construct the row for a medical specialist
-        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5><br>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
+        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
         return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
     }
     
