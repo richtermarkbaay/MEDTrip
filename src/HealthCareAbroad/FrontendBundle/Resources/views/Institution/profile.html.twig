@@ -2,22 +2,20 @@
 
 {% block content %}
 
-    <div id="content" class="container content">
+    {% embed 'FrontendBundle:Embed:mainContentWrapper.html.twig' %}
+        {% block mainContent %}
 
-        {% if isSingleCenterInstitution %}
+            {% if isSingleCenterInstitution %}
 
-            {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
-                with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
-            %}
+                {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
+                    with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
+                %}
 
-        {% else %}
+            {% else %}
+                {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
+            {% endif %}
 
-            {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
-            
-        {% endif %}
-
-    </div> <!--End of content-->
-
-    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}     
+        {% endblock %}
+    {% endembed %}
 
 {% endblock %}

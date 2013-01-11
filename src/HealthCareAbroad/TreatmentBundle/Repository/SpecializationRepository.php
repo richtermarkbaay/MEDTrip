@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\TreatmentBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use Doctrine\ORM\EntityRepository;
@@ -81,6 +85,7 @@ class SpecializationRepository extends EntityRepository
      */
     public function getActiveSpecializations()
     {
+        
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('a')
         ->from('TreatmentBundle:Specialization', 'a')
@@ -91,6 +96,26 @@ class SpecializationRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Get Active Specializations that still not assign
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getAvailableSpecializations($assignedSpecializations)
+    {
+        $ids = array();
+        foreach ($assignedSpecializations as $each) {
+            $ids[] = $each->getSpecialization()->getId();
+        }
+        
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+        
+        $dql = "SELECT a FROM TreatmentBundle:Specialization a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
+        $query = $this->getEntityManager()->createQuery($dql)
+        ->setParameter('active', Specialization::STATUS_ACTIVE);
+        return $query->getResult();
+        
+    }
 
     /////////////////////////////////////////////////////
     // MOVE FUNCTIONS TO INSTITUTION SPECIALIZATION

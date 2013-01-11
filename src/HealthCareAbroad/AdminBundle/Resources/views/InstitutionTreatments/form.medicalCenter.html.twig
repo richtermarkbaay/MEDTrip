@@ -18,8 +18,7 @@
                     
                     </br>
                     {{ form_label(form.businessHours) }}
-                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
-                        <span>I have no business hours</span> 
+                        <label><input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >I have no business hours</label>
                         {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     
                     {{ form_rest(form) }}

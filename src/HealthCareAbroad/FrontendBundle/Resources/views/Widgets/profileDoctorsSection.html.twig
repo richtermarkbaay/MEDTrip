@@ -2,7 +2,7 @@
 
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors'} %}    
         {% block sectionContent %}
-    
+
     	<ul class="thumbnails">
     	    {% for doctor in doctors %}
     		<li class="thumbnail">
@@ -18,9 +18,18 @@
     			    {% endfor %}
     			</p>
     			<ul class="contact">
-    				<li class="email"><a href="">email</a></li>
-    				<li class="call"><a href="">contact</a></li>
+    			    {% if doctor.contactEmail %}
+    				    <li class="email"><a href="mailto:{{ doctor.contactEmail }}">email</a></li>
+    				{% endif %}
+
+                    {% set contactNumbers = json_decode(doctor.contactNumber) %}
+    				{% if contactNumbers and (contactNumbers | length) and (contactNumbers[0].number)  %}
+    				    <li class="call"><a href="tel:{{ contactNumbers[0].number }}">contact</a></li>
+    				{% endif %}
+
+    			    {% if doctor.website is defined %}
     				<li class="web"><a href="">website</a></li>	
+    				{% endif %}
     			</ul>
     		</li>
     		{% endfor %}

@@ -626,7 +626,7 @@ class InstitutionTreatmentsController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function addSpecializationAction()
+    public function addSpecializationAction(Request $request)
     {
         $service = $this->get('services.institution_medical_center');
 
@@ -669,9 +669,9 @@ class InstitutionTreatmentsController extends Controller
         }
         else {
             $form = $this->createForm(new InstitutionSpecializationSelectorFormType());
-            $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+            $assignedSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->findByInstitutionMedicalCenter($this->institutionMedicalCenter);
+            $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($assignedSpecialization);
             $specializationArr = array();
-            
             foreach ($specializations as $e) {
                 $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
             }
@@ -689,7 +689,38 @@ class InstitutionTreatmentsController extends Controller
         
         return $response; 
     }
-
+    /**
+     * Add a new specialization to medical center
+     *
+     */
+    public function ajaxAddSpecializationAction(Request $request)
+    {
+        $specializationId = $request->get('specializationId', 0);
+        $criteria = array('status' => Specialization::STATUS_ACTIVE, 'id' => $specializationId);
+    
+        $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
+    
+        if(!$params['specialization']) {
+            $result = array('error' => 'Invalid Specialization');
+    
+            return new Response('Invalid Specialization', 404);
+        }
+    
+        $groupBySubSpecialization = true;
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        $params['formName'] = InstitutionSpecializationFormType::NAME;
+        $params['form'] = $form->createView();
+        $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
+        $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
+        $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
+        $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
+    
+        $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);
+        //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
+    
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+    }
+    
     /**
      *
      * @param unknown_type $institutionId

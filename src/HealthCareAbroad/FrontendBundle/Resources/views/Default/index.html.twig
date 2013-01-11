@@ -2,29 +2,29 @@
 
 {% block content %}
 
-    	<div id="main_content" class="row">
+	<div id="main_content" class="row">
 
-    	    <!-- Main Content -->
-    		<div id="content" class="span8">
-                {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}
-                
-                {% include 'FrontendBundle:Widgets/Ads:featuredClinics.html.twig' %}
+	    <!-- Main Content -->
+		<div id="content" class="span8">
+            {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}
+            
+            {% include 'FrontendBundle:Widgets/Ads:featuredClinics.html.twig' %}
 
-                {% include 'FrontendBundle:Widgets/Ads:destinations.html.twig' %}
-    		</div> <!--End Main Content -->
+            {% include 'FrontendBundle:Widgets/Ads:destinations.html.twig' %}
+		</div> <!--End Main Content -->
 
-    		
-    		<!--Sidebar Content -->
-    		<aside id="aside_content" class="span4">
-                {% include 'FrontendBundle:Widgets/Ads:asideNews.html.twig' %}
+		
+		<!--Sidebar Content -->
+		<aside id="aside_content" class="span4">
+            {% include 'FrontendBundle:Widgets/Ads:asideNews.html.twig' %}
 
-                {% include 'FrontendBundle:Widgets/Ads:asideCommonTreatments.html.twig' %}
+            {% include 'FrontendBundle:Widgets/Ads:asideCommonTreatments.html.twig' %}
 
-                {% include 'FrontendBundle:Widgets/Ads:asideImageAds.html.twig' %}
-    		</aside> <!--End of Sidebar Content -->
+            {% include 'FrontendBundle:Widgets/Ads:asideImageAds.html.twig' %}
+		</aside> <!--End of Sidebar Content -->
 
-    	</div>
-	
+	</div>
+
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
 
 {% endblock %}

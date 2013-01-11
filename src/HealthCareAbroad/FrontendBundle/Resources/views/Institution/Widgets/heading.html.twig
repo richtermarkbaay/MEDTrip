@@ -18,33 +18,34 @@
         {% endif %}
 
         
-        <a href="#">
-            {% if featuredImage is defined %}
-                {{ media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+        {% if featuredImage is defined %}
+            {% set institutionLogo = media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) %}
+            {% if mainWebsites %} 
+                <a href="{{ mainWebsites }}" target="_link">{{ institutionLogo|raw }}</a>
             {% else %}
-                <img class="institution_logo" src="" alt="institution"/>
+                {{ institutionLogo|raw }}
             {% endif %}
-        </a>
+        {% else %}
+            <img class="institution_logo" src="" alt="institution"/>
+        {% endif %}
+
     </div>
     <div class="bottom_box content span12">
         <div class="address media span4 offset2">
             <img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
             <p>
-                
                 {% for each in address %}
                     {{ each ? each ~ ', ' : '' }}
                 {% endfor %} 
-                
                 <br/>
-                
                 {% if institution.state %}
                     {{ institution.state }},
                 {% endif %} 
-                
+
                 {% if institution.city %}
                     {{ institution.city.name }} 
                 {% endif %}
-                
+
                 {{ institution.zipCode }},
 
                 {{ institution.country.name }}

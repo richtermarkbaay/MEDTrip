@@ -8,47 +8,47 @@
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 
-
-
-
 {% block content %}
-    <div id="content" class="container content">
-        <div id="details" class="row">
-            <div id="main_content" class="span8">
-                <div class="clinicdetails content">
 
-                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' with { object: institutionMedicalCenter } %}
+    {% embed 'FrontendBundle:Embed:mainContentWrapper.html.twig' %}
+        {% block mainContent %}
 
-                    <div class="description">
-                        {{ institutionMedicalCenter.description | raw }}
+            <div id="details" class="row">
+                <div id="main_content" class="span8">
+                    <div class="clinicdetails content">
+    
+                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' with { object: institutionMedicalCenter } %}
+    
+                        <div class="description">
+                            {{ institutionMedicalCenter.description | raw }}
+                        </div>
                     </div>
-                </div>
-
-                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
-                    with { specializations: institutionMedicalCenter.institutionSpecializations } %}
-
-                {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
-
-                {% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
-                    with { doctors: institutionMedicalCenter.doctors } %}
-
-            </div> <!--End of main_content-->
-
-            <aside id="aside_content" class="span4">
-
-                {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
-
-                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
-                    with { businessHours: institutionMedicalCenter.businessHours } %}
-
-                {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' 
-                    with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution } %}
-
-                {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
-
-            </aside> <!--End of aside_content-->
-        </div>
-    </div> <!--End of content-->
-
-    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}     
+    
+                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+                        with { specializations: institutionMedicalCenter.institutionSpecializations } %}
+    
+                    {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
+    
+                    {% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
+                        with { doctors: institutionMedicalCenter.doctors } %}
+    
+                </div> <!--End of main_content-->
+    
+                <aside id="aside_content" class="span4">
+    
+                    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+    
+                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
+                        with { businessHours: institutionMedicalCenter.businessHours } %}
+    
+                    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' 
+                        with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution } %}
+    
+                    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
+    
+                </aside> <!--End of aside_content-->
+            </div>
+        {% endblock %}
+    {% endembed %}
+     
 {% endblock %}

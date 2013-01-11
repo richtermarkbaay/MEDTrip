@@ -276,9 +276,14 @@ class InstitutionService
     {
         $institutionDoctors = array();
         foreach($institution->getInstitutionMedicalCenters() as $each) {
-            $institutionDoctors = array_merge($institutionDoctors, $each->getDoctors()->toArray());
-        }
+            $doctors = $each->getDoctors();
 
+            foreach($doctors as $doctor) {
+                if(!isset($institutionDoctors[$doctor->getId()])) {
+                    $institutionDoctors[$doctor->getId()] = $doctor;                    
+                }
+            }
+        }        
         return $institutionDoctors;
     }
     
