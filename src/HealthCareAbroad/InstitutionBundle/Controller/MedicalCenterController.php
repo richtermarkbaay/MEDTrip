@@ -419,8 +419,8 @@ class MedicalCenterController extends InstitutionAwareController
         if (!$this->institutionMedicalCenter) {
             throw $this->createNotFoundException('Invalid institutionMedicalCenter');
         }
-        
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+        $assignedSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->findByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($assignedSpecialization);
         $form = $this->createForm(new InstitutionSpecializationSelectorFormType());
         $specializationArr = array();
 
