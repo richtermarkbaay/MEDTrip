@@ -1,49 +1,54 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institutionMedicalCenter.institution.contactEmail %}
-
-{% set number = institutionMedicalCenter.contactNumber ? institutionMedicalCenter.contactNumber : institutionMedicalCenter.institution.contactNumber  %}
+{% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institution.contactEmail %}
+{% set number = institutionMedicalCenter.contactNumber ? institutionMedicalCenter.contactNumber : institution.contactNumber  %}
 {% set number = json_decode(number) | join %}
-
-{% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institutionMedicalCenter.institution.websites %}
+{% set address = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.address : institution.address1 %}
+{% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
 {% set websites = json_decode(websites) %}
-{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : '#' %}
+{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
+
+
 
 
 {% block content %}
+    <div id="content" class="container content">
+        <div id="details" class="row">
+            <div id="main_content" class="span8">
+                <div class="clinicdetails content">
 
-	<div id="content" class="container content">
-		<div id="details" class="row">
-			<div id="main_content" class="span8">
-				<div class="clinicdetails content">
-                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
+                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' with { object: institutionMedicalCenter } %}
+
                     <div class="description">
                         {{ institutionMedicalCenter.description | raw }}
                     </div>
-				</div>
-               
-                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' %}
-               
+                </div>
+
+                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+                    with { specializations: institutionMedicalCenter.institutionSpecializations } %}
+
                 {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
-	
-				{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with { doctors: institutionMedicalCenter.doctors } %}
 
-			</div> <!--End of main_content-->
+                {% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
+                    with { doctors: institutionMedicalCenter.doctors } %}
 
-			<aside id="aside_content" class="span4">
+            </div> <!--End of main_content-->
 
-			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+            <aside id="aside_content" class="span4">
 
-			    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' %}
+                {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
 
-			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution } %}
+                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
+                    with { businessHours: institutionMedicalCenter.businessHours } %}
 
-			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
+                {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' 
+                    with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution } %}
 
-			</aside> <!--End of aside_content-->
-		</div>
-	</div> <!--End of content-->
+                {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 
-	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+            </aside> <!--End of aside_content-->
+        </div>
+    </div> <!--End of content-->
 
+    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}     
 {% endblock %}

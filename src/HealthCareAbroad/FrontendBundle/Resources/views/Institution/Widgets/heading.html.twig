@@ -1,53 +1,67 @@
+{% set number = institution.contactNumber  %}
+{% set number = json_decode(number) | join %}
+{% set address = json_decode(institution.address1) %}
+{% set websites = institution.websites %}
+{% set websites = json_decode(websites) %}
+{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
+
 <div id="highlight" class="row">
-	<div class="top_box span12">
-		<div class="description">
-			<p>{{ institution.name }}</p>
-		</div>
-		
-		{% if featuredImage is defined %}
-		    {{ media(featuredImage, institution, 'default', {class: 'institution_picture'}) | raw }}
-		{% else %}
-		    <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
-		{% endif %}
+    <div class="top_box span12">
+        <div class="description">
+            <p>{{ institution.name }}</p>
+        </div>
+        
+        {% if featuredImage is defined %}
+            {{ media(featuredImage, institution, 'default', {class: 'institution_picture'}) | raw }}
+        {% else %}
+            <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
+        {% endif %}
 
-		
-		<a href="#">
-    		{% if featuredImage is defined %}
-    		    {{ media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
-    		{% else %}
-    		    <img class="institution_logo" src="" alt="institution"/>
-    		{% endif %}
-		</a>
-	</div>
-	<div class="bottom_box content span12">
-		<div class="address media span4 offset2">
-			<img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
-			<p>
-				{% set address = json_decode(institution.address1) %}
-				
-				{% for each in address %}
-				    {{ each ? each ~ ', ' : '' }}
-				{% endfor %} 
-				
-				<br/>
-				
-				{% if institution.state %}
-				    {{ institution.state }},
-				{% endif %} 
-				
-				{% if institution.city %}
-				    {{ institution.city.name }} 
-				{% endif %}
-				
-				{{ institution.zipCode }},
+        
+        <a href="#">
+            {% if featuredImage is defined %}
+                {{ media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+            {% else %}
+                <img class="institution_logo" src="" alt="institution"/>
+            {% endif %}
+        </a>
+    </div>
+    <div class="bottom_box content span12">
+        <div class="address media span4 offset2">
+            <img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
+            <p>
+                
+                {% for each in address %}
+                    {{ each ? each ~ ', ' : '' }}
+                {% endfor %} 
+                
+                <br/>
+                
+                {% if institution.state %}
+                    {{ institution.state }},
+                {% endif %} 
+                
+                {% if institution.city %}
+                    {{ institution.city.name }} 
+                {% endif %}
+                
+                {{ institution.zipCode }},
 
-				{{ institution.country.name }}
-			</p>
-		</div>
-		<ul class="contact_now span5">
-			<li><a class="call btn orange" href="#">Call Us</a></li>
-			<li><a class="email btn orange" href="#">Email</a></li>
-			<li><a class="website btn orange" href="#">Visit Website</a></li>
-		</ul>	
-	</div>
+                {{ institution.country.name }}
+            </p>
+        </div>
+        <ul class="contact_now span5">
+            {% if number %}
+                <li><a class="call btn orange" href="tel:{{ number }}">Call Us</a></li>
+            {% endif %}
+
+            {% if institution.contactEmail %}
+                <li><a class="email btn orange" href="mailto:{{ institution.contactEmail }}">Email</a></li>
+            {% endif %}
+
+            {% if mainWebsites %}
+                <li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li>
+            {% endif %}
+        </ul>    
+    </div>
 </div>
