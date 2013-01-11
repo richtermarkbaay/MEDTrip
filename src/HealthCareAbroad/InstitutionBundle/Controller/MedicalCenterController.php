@@ -432,6 +432,11 @@ class MedicalCenterController extends InstitutionAwareController
         ));
     }
     
+    /**
+     * TODO: Separate logic for AJAX request.
+     * @param Request $request
+     * @return Ambigous <\Symfony\Component\HttpFoundation\Response, \Symfony\Component\HttpFoundation\RedirectResponse>
+     */
     public function saveSpecializationsAction(Request $request)
     {
         $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
@@ -451,10 +456,13 @@ class MedicalCenterController extends InstitutionAwareController
                     $em->persist($form->getData());
                     $em->flush();
                     
-                    $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
-                        'institutionSpecialization' => $_institutionSpecialization,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter
-                    ));
+                    if ($request->isXmlHttpRequest()) {
+                        $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
+                            'institutionSpecialization' => $_institutionSpecialization,
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter
+                        ));
+                    }
+                    
                 }
                 else {
             
@@ -1119,4 +1127,28 @@ class MedicalCenterController extends InstitutionAwareController
         return new Response("Doctor removed", 200);
     }
 
+    /**
+     * Remove a Treatmnent from an institution specialization
+     * Expected parameters
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxRemoveSpecializationTreatmentAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
+        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('id', 0));
+
+        if (!$institutionSpecialization) {
+            throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
+        }
+        if (!$treatment) {
+            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
+        }
+            $institutionSpecialization->removeTreatment($treatment);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($institutionSpecialization);
+            $em->flush();
+            
+            return new Response("Treatment removed", 200);
+    }
 }

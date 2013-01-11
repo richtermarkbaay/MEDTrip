@@ -155,38 +155,8 @@ class InstitutionTreatmentsController extends Controller
         
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
-        $institutionSpecializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $specializationsData = array();
-        foreach ($institutionSpecializations as $_institutionSpecialization) {
-            $_specialization = $_institutionSpecialization->getSpecialization();
-            
-            $groupedTreatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')
-                ->getBySpecializationId($_specialization->getId(), true);
-            if (empty($groupedTreatments)) {
-                // there are no  treatments for this specialization
-                $specializationsData[] = array(
-                    'institutionSpecialization' => $_institutionSpecialization,
-                    'groupedTreatments' => array(),
-                    'selectedTreatments' => array()
-                );
-            }
-            else {
-                $selectedTreatments = $_institutionSpecialization->getTreatments();
-                $_selectedTreamentIds = array();
-                foreach ($selectedTreatments as $_treatment) {
-                    $_selectedTreamentIds[] = $_treatment->getId();
-                }
-                
-                $specializationsData[] = array(
-                    'institutionSpecialization' => $_institutionSpecialization,
-                    'groupedTreatments' => $groupedTreatments,
-                    'selectedTreatments' => $_selectedTreamentIds
-                );
-            }
-        }
+        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
-        
-        //$form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
         
         //globalAwards Form
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
@@ -229,11 +199,11 @@ class InstitutionTreatmentsController extends Controller
         foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
-        //var_dump($this->institutionMedicalCenter->getBusinessHours());exit;
+        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'institutionSpecializationsData' => $specializationsData,
+            'institutionSpecializations' => $institutionSpecializations,
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
