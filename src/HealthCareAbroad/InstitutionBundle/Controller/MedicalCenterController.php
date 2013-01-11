@@ -443,6 +443,7 @@ class MedicalCenterController extends InstitutionAwareController
         $em = $this->getDoctrine()->getEntityManager();
         $ajaxOutput = array('html' => '');
         $errors = array();
+        $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
         if (\count($submittedSpecializations) > 0) {
             foreach ($submittedSpecializations as $specializationId => $_data) {
                 $_institutionSpecialization = new InstitutionSpecialization();
@@ -459,7 +460,8 @@ class MedicalCenterController extends InstitutionAwareController
                     if ($request->isXmlHttpRequest()) {
                         $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
                             'institutionSpecialization' => $_institutionSpecialization,
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'commonDeleteForm' => $commonDeleteForm->createView()
                         ));
                     }
                     
@@ -1028,6 +1030,7 @@ class MedicalCenterController extends InstitutionAwareController
             $specialization = $institutionSpecialization->getSpecialization();
             $availableTreatments = $this->get('services.institution_medical_center')
                 ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
+            
             try {
                 $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
                     'availableTreatments' => $availableTreatments,

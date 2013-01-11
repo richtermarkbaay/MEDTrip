@@ -16,9 +16,9 @@
 		</div>
 		
 		<div id="{{ _deleteSpecializationModalId }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
 		    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
-		            'institutionSpecialization' : institutionSpecialization,
-		            'form' : commonDeleteForm
+		            'institutionSpecialization' : institutionSpecialization
 		        }
 		    %}
 		</div>

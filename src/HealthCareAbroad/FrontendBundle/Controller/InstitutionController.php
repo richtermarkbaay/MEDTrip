@@ -69,6 +69,7 @@ class InstitutionController extends Controller
 
         $params = array(
             'institution' => $this->institution,
+            'isSingleCenterInstitution' => $institutionService->isSingleCenter($this->institution),
             'institutionAwards' => $institutionService->getAllGlobalAwards($this->institution), 
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
 //            'institutionBranches' => $institutionService->getBranches($this->institution)
