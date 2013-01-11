@@ -1,0 +1,19 @@
+<div class="pagination">
+    <ul>
+    {#% if pager.isFirstPage == false %#}
+        <li><a href="{{ paginate_path(route, pager.getPreviousPage, parameters) }}">Prev</a></li>
+    {#% endif %#}
+
+    {% for page in pager.getPages %}
+        {% if page == pager.getPage %}
+        <li><a href="">{{ page }}</a></li>
+        {% else %}
+        <li><a href="{{ paginate_path(route, page, parameters) }}">{{ page }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {#% if pager.isLastPage == false %#}
+        <li class="next"><a href="{{ paginate_path(route, pager.getNextPage, parameters) }}">Next</a></li>
+    {#% endif %#}
+    </ul>
+</div>

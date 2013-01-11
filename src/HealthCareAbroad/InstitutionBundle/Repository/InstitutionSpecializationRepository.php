@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use Doctrine\ORM\Query\ResultSetMapping;
+
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 use Doctrine\ORM\Query;
@@ -33,6 +35,33 @@ class InstitutionSpecializationRepository extends EntityRepository
         $count = (int)$qb->getQuery()->getSingleScalarResult();
 
         return $count;
+    }
+    
+    public function getAvailableTreatments(InstitutionSpecialization $institutionSpecialization)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        
+        $sql = "SELECT i.`treatment_id` as treatment_id FROM `institution_treatments` i WHERE i.`institution_specialization_id` = :institutionSpecializationId ";
+        $statement = $this->getEntityManager()
+            ->getConnection()->prepare($sql);
+        
+        $statement->execute(array('institutionSpecializationId' => $institutionSpecialization->getId()));
+        $result = array();
+        
+        $ids = array();
+        while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
+            $ids[] = $row['treatment_id'];
+        }
+        $hasIds = $statement->rowCount() > 0;
+        $dql = "SELECT t, s FROM TreatmentBundle:Treatment t INNER JOIN t.subSpecializations s WHERE ".
+            ($hasIds ? " t.id NOT IN (?1) " : "?1 ").
+            "AND t.specialization = :specializationId ";
+        
+        $query = $this->_em->createQuery($dql)
+            ->setParameter(1, $hasIds ? $ids : 1)
+            ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+        
+        return $query->getResult();
     }
 
     public function getMedicalCentersList($institutionId)

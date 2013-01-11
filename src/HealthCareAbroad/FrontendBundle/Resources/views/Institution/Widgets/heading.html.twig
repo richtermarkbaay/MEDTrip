@@ -13,7 +13,7 @@
 		
 		<a href="#">
     		{% if featuredImage is defined %}
-    		    {{ media(institution.media, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
+    		    {{ media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) | raw }}
     		{% else %}
     		    <img class="institution_logo" src="" alt="institution"/>
     		{% endif %}

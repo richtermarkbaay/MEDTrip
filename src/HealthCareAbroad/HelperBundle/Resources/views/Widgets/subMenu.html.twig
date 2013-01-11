@@ -18,12 +18,14 @@
 
 <script type="text/javascript">
 $(function(){
-	$(window).scroll(function(){
-		if($(window).scrollTop() >= 220 && {{ (isScrollable is defined) and isScrollable }}) {
-			$('#navbar-side > div > ul').addClass('affix');
-		} else {
-			$('#navbar-side > div > ul').removeClass('affix');
-		}
-	});
+	{% if (isScrollable is defined) and isScrollable %}
+    	$(window).scroll(function(){
+    		if($(window).scrollTop() >= 220) {
+    			$('#navbar-side > div > ul').addClass('affix');
+    		} else {
+    			$('#navbar-side > div > ul').removeClass('affix');
+    		}
+    	});
+	{% endif %}
 });
 </script>

@@ -12,7 +12,7 @@
 
 {% block content %}
 
-	<div id="content" class="container">
+	<div id="content" class="container content">
 		<div id="details" class="row">
 			<div id="main_content" class="span8">
 				<div class="clinicdetails content">
@@ -36,7 +36,7 @@
 
 			    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' %}
 
-			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: []} %}
+			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution } %}
 
 			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 

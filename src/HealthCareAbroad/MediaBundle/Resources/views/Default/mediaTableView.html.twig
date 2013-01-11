@@ -1,52 +1,52 @@
-                    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
-                        {% if media.isPaginable is defined %}
-                        <thead>
-                            <tr>
-                                <td colspan="4">
-                                    <div style="float: right; margin-right: 10px">
-                                        {% if media.isPaginable %}
-                                            {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    <div style="float: right; margin-right: 10px">
-                                        {% if media.isPaginable %}
-                                            {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                        {% endif %}
+<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
+    {% if media.isPaginable is defined %}
+    <thead>
+        <tr>
+            <td colspan="4">
+                <div style="float: right; margin-right: 10px">
+                    {% if media.isPaginable %}
+                        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="4">
+                <div style="float: right; margin-right: 10px">
+                    {% if media.isPaginable %}
+                        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+                    {% endif %}
+                </div>
+            </td>
+        </tr>
+    </tfoot>
+    {% endif %}
 
-                        {% set mediaCount = 0 %}
-                        {% for medium in media %}
+    {% set mediaCount = 0 %}
+    {% for medium in media %}
 
-                            {% if (loop.index - 1) % 4 == 0 %}
-                                {% set mediaCount = 1 %}
-                                <tr>
-                            {% else %}
-                                {% set mediaCount = mediaCount + 1 %}
-                            {% endif %}
+        {% if (loop.index - 1) % 4 == 0 %}
+            {% set mediaCount = 1 %}
+            <tr>
+        {% else %}
+            {% set mediaCount = mediaCount + 1 %}
+        {% endif %}
 
-                                    <td valign="top">{{ media(medium, institution, 'gallery') | raw }}</td>
+                <td valign="top">{{ media(medium, institution, 'gallery') | raw }}</td>
 
-                            {% if mediaCount == 4 %}
-                                </tr>
-                            {% endif %}
+        {% if mediaCount == 4 %}
+            </tr>
+        {% endif %}
 
-                        {% else %}
-                            <tr class="">
-                                <td colspan="4" align="center"> No media yet. </td>
-                            </tr>
-                        {% endfor %}
+    {% else %}
+        <tr class="">
+            <td colspan="4" align="center"> No media yet. </td>
+        </tr>
+    {% endfor %}
 
-                    </table>
+</table>
 
     <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
         <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">

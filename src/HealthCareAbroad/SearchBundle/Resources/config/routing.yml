@@ -26,33 +26,39 @@ search_frontend_ajaxLoadDestinations:
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
 
 search_frontend_results_destinations:
-    pattern: /search/destinations
-    defaults: { _controller: SearchBundle:Frontend:searchResultsDestinations }
+    pattern: /search/destinations/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsDestinations, page: 1 }
 
 search_frontend_results_treatments:
-    pattern: /search/treatments
-    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
+    pattern: /search/treatments/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments, page: 1 }
 
-#search_frontend_results_countries:
-#    pattern: /search/destination/{country}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsCountries }
+search_frontend_results_countries:
+    pattern: /search/destination/{country}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsCountries, page: 1 }
+    requirements:
+        page: \d+
 
-#search_frontend_results_cities:
-#    pattern: /search/destination/{country}/{city}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsCities }
+search_frontend_results_cities:
+    pattern: /search/destination/{country}/{city}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsCities, page: 1 }
+    requirements:
+        page: \d+
 
-#search_frontend_results_specializations:
-#   pattern: /search/treatment/{specialization}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsSpecializations }
+search_frontend_results_treatments:
+    pattern: /search/treatment/{specialization}/{treatment}/treatment/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments, page: 1 }
+    requirements:
+        page: \d+
 
-#search_frontend_results_treatments:
-#    pattern: /search/treatment/{specialization}/{treatment}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
+search_frontend_results_specializations:
+    pattern: /search/treatment/{specialization}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsSpecializations, page: 1 }
+    requirements:
+        page: \d+
 
-#search_frontend_results_treatments:
-#    pattern: /search/treatment/{medicalCenter}/{treatment}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments }
-
-#search_frontend_results_medicalCenters:
-#    pattern: /search/treatment/{medicalCenter}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsMedicalCenters }
+search_frontend_results_subSpecializations:
+    pattern: /search/treatment/{specialization}/{subSpecialization}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsSubSpecializations, page: 1 }
+    requirements:
+        page: \d+

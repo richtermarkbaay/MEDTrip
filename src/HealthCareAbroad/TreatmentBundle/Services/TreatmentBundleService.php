@@ -165,8 +165,20 @@ class TreatmentBundleService
     
     public function getTreatmentsBySpecializationGroupedBySubSpecialization(Specialization $specialization)
     {
-        return $this->doctrine->getRepository('TreatmentBundle:Treatment')
+        $result = $this->doctrine->getRepository('TreatmentBundle:Treatment')
                 ->getBySpecializationId($specialization->getId(), true);
+        
+        $treatments = array();
+        foreach($result as $each)
+        {
+            if(!$each['subSpecializationId']) {
+                $treatments['Other Treatments'][] = $each;
+            } else {
+                $treatments[$each['subSpecializationName']][] = $each;
+            }
+        }
+        
+        return $treatments;
     }
     
     /** ----- End Treatment related functionalities ------ **/

@@ -1,43 +1,47 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    	<div class="maincontentblock">
-	    <table class="table table-striped table-bordered bootstrap-datatable">
-	      <thead>
-            <tr>
+    <form id="modal_specialist_form" action="{{ path('institution_medicalCenter_ajaxAddSpecialistService', {'imcId': institutionMedicalCenter.id, 'institutionId': institution.id} ) }}">
+        {{ form_label(form.firstName) }}
+        {{ form_widget(form.firstName) }}
+         <table class="table table-striped table-bordered specialist_table">
+         <thead>
+            <tr>    
 				<th>Medical Specialist</th>
 				<th>Specializations</th>
 				<th>Actions</th>
-			</tr>
-        </thead>
-	        <tbody>
-             {% for doctor in medical_specialists %}
-				<tr>
-					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
-					<td>
-					{% for specialization in doctor.specializations %}
-					    {{ specialization.name |title }} 
-					    {% if loop.last == false %},{% endif %} 
-				    
-				    {% else %}
-					    No Specializations yet
-					{% endfor %}
-					</td>
-					<td>
-						<div class="post-toolbar">
-							<i class="icon-trash" title="Delete"></i>
-							<a href="#deleteMedicalSpecialist" title="" role="button" data-toggle="modal">Delete</a>
-						</div>
-					</td>
-				</tr>
-		      {% else %}
-    		  	<tr>
-    			   <td> No Medical Specialist yet. </td>
-    			   <td></td>
-    			</tr>
-			{% endfor %}
-			</tbody>
-		</table>
-    </div>
-    
+    		</tr>
+         </thead>
+         <tbody>
+    		<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
+    		    {% include 'InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig' %}
+        </tbody>
+    	</table>
+    	
+         {{ form_widget(form._token) }}
+    </form>
     {% endblock %}
 {% endembed %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+    	InstitutionSpecialistAutocomplete.removePropertyUri = '{{ path("institution_medicalCenter_ajaxRemoveSpecialistService", {"imcId" : institutionMedicalCenter.id, "institutionId" : institution.id} ) }}';
+
+        InstitutionSpecialistAutocomplete
+        .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddSpecialistService", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
+        .setAutocompleteOptions('specialist', {
+            source: $.parseJSON('{{ doctorsJSON | raw }}'),
+            target: $('#institutionDoctorSearch_firstName'),
+            selectedDataContainer: $('table.specialist_table tbody'),
+            loader: $('table.specialist_table tbody tr.loader')
+        })
+        .autocomplete();
+    });
+    
+})(jQuery);
+//-->
+</script>
+{% endblock %}

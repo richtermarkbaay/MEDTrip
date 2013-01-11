@@ -72,6 +72,8 @@ class SearchService
         $transformedResults = array();
 
         //TODO: optimize this loop
+        $prevTreatmentId = -1;
+        $prevSubSpecializatioId = -1;
         foreach ($results as $result) {
             switch (get_class($result)) {
                 case 'HealthCareAbroad\HelperBundle\Entity\Country':
@@ -110,12 +112,12 @@ class SearchService
 
     public function searchByCountry($country)
     {
-        return $this->searchStrategy->searchForInstitutionsByCountry($country);
+        return $this->searchStrategy->searchInstitutionsByCountry($country);
     }
 
     public function searchByCity($city)
     {
-        return $this->searchStrategy->searchForInstitutionsByCity($city);
+        return $this->searchStrategy->searchInstitutionsByCity($city);
     }
 
     public function searchBySpecialization($specialization)

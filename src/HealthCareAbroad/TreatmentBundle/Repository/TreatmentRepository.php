@@ -113,7 +113,7 @@ class TreatmentRepository extends EntityRepository
 //     }
 
 
-    public function getBySpecializationId($specializationId, $groupBySubSpecialization = false)
+    public function getBySpecializationId($specializationId)
     {
         $conn = $this->_em->getConnection();
 
@@ -129,23 +129,8 @@ class TreatmentRepository extends EntityRepository
         );
 
         $result = $conn->executeQuery($sql, $params)->fetchAll(Query::HYDRATE_ARRAY);
-
-        if(!$groupBySubSpecialization) {
-            $treatments = $result;
-        } else {
-            $treatments = array();
-            foreach($result as $each)
-            {
-                if(!$each['subSpecializationId']) {
-                    $treatments['Other Treatments'][] = $each;
-                } else {
-                    $treatments[$each['subSpecializationName']][] = $each;
-                }
-            }
-        }
-
-        return $treatments;
-
+        
+        return $result;
     }
     
     /**
