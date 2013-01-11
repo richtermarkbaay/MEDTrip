@@ -146,30 +146,6 @@ class InstitutionMedicalCenterService
         return $institutionMedicalCenter;
     }
     
-    public function saveInstitutionMedicalCenterDoctor($doctorIdArray, InstitutionMedicalCenter $center)
-    {
-   
-        $center->setStatus(InstitutionMedicalCenter::STATUS_ACTIVE);
-        $doctorIdArr = explode(",", $doctorIdArray['id']);
-         if(\is_array($doctorIdArr)) {
-            foreach($doctorIdArr as $doctorId)
-            {
-                $doctor = $this->doctrine->getRepository("DoctorBundle:Doctor")->find($doctorId);
-                $center->addDoctor($doctor);
-                $this->save($center);
-            }
-        }
-        else {
-            $doctor = $this->doctrine->getRepository("DoctorBundle:Doctor")->find($doctorIdArr);
-            $center->addDoctor($doctor);
-            $this->save($center);
-        }
-        
-        $this->setInstitutionStatusActive($center->getInstitution());
-        
-        return $center;
-    }
-    
     public function setInstitutionStatusActive(Institution $institution)
     {
         $institution->setStatus(Institution::ACTIVE);

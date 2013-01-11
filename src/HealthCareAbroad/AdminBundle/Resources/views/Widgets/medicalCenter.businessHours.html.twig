@@ -4,13 +4,15 @@
     </h5>
 
     <form class="basic-form">
-        <div id="clinicHours" class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+        <div id="clinicHours" class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none; ">
+            <label>
             {% if not institutionMedicalCenter.businessHours %}
                 <input type="checkbox" name="businessHourCheckBox" checked="checked" id="businessHourCheckBox" >
             {% else %}
             <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
             {% endif %}
-            <span>I have no business hours</span> 
+            I have no business hours
+            </label>
             <div class="businessHours-form">
                 {% include 'AdminBundle:Widgets:businessHours.html.twig' %}
             </div>

@@ -34,7 +34,7 @@
         				<td>
     				        <div class="post-toolbar treatment_action">
         						<i class="icon-trash" title="Delete"></i>
-        						<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment', {'tId': _treatment.id, institutionId: institution.id, isId: _institutionSpecialization.id }) }}" onclick="InstitutionSpecialization.removeTreatment($(this)); return false;" title="" >Delete</a>
+        						<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment', {'tId': _treatment.id, institutionId: institution.id, isId: _institutionSpecialization.id }) }}" onclick="InstitutionSpecialization.removeTreatment(this); return false;" title="" >Delete</a>
         					</div>
         				</td>
         			</tr>

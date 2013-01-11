@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/admin/js/institutionTreatments.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/admin/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
@@ -155,7 +155,7 @@
 
                      return false;
             });
-
+            
             $('a.removeDoctor').click(function(){
             	var elem = $(this);
                 var _url = elem.attr('href');
