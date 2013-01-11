@@ -1030,6 +1030,7 @@ class MedicalCenterController extends InstitutionAwareController
             $specialization = $institutionSpecialization->getSpecialization();
             $availableTreatments = $this->get('services.institution_medical_center')
                 ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
+            
             try {
                 $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
                     'availableTreatments' => $availableTreatments,

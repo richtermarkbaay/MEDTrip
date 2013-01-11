@@ -53,13 +53,21 @@ class InstitutionSpecializationRepository extends EntityRepository
             $ids[] = $row['treatment_id'];
         }
         $hasIds = $statement->rowCount() > 0;
-        $dql = "SELECT t, s FROM TreatmentBundle:Treatment t INNER JOIN t.subSpecializations s WHERE ".
-            ($hasIds ? " t.id NOT IN (?1) " : "?1 ").
-            "AND t.specialization = :specializationId ";
-        
-        $query = $this->_em->createQuery($dql)
-            ->setParameter(1, $hasIds ? $ids : 1)
-            ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+        if ($hasIds) {
+            $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE ".
+                " t.id NOT IN (?1) ".
+                "AND t.specialization = :specializationId ";
+            
+            $query = $this->_em->createQuery($dql)
+                ->setParameter(1, $ids)
+                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+        }
+        else {
+            $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE t.specialization = :specializationId";
+            
+            $query = $this->_em->createQuery($dql)
+                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+        }
         
         return $query->getResult();
     }

@@ -8,8 +8,10 @@
         <div class="accordion-inner" style="border-top: none; !important">
         {% for subSpecializationId, _data in groupedTreatments %}
             {% set _subSpecialization = _data.subSpecialization %}
-            <h5>{{ _subSpecialization.name | length ? _subSpecialization.name :"Other treatments"  }}</h5>
-            <hr/>
+            {% if _subSpecialization %}
+                <h5>{{ _subSpecialization.name | length ? _subSpecialization.name :"Other treatments"  }}</h5>
+                <hr/>
+            {% endif %}
             
             {% for _treatment in _data.treatments %}
                 <div class="span4">
