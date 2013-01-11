@@ -53,7 +53,7 @@
             selectedDataContainer: $('#specializationAccordion') 
         })
         .setLoaderElement($('#specializationLoading'))
-        .setLoadSpecializationFormUri('{{ path("helper_specializationAccordionEntry") }}')
+        .setLoadSpecializationFormUri('{{ path("admin_institution_medicalCenter_ajaxAddSpecialization", { "institutionId" : institution.id, "imcId": institutionMedicalCenter.id }) }}')
         .autocomplete();
     });
 })(jQuery);
