@@ -16,8 +16,8 @@ var InstitutionSpecialization = {
         return this;
     },
         
-    removeTreatment: function(_linkElement) {
-        return this._doCommonTreatmentAction(_linkElement)
+    removeTreatment: function(_linkElement, _container) {
+        return this._doCommonTreatmentAction(_linkElement, _container)
     },
     
     addTreatment: function(_linkElement) {
@@ -86,6 +86,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
+            	_linkElement.parents('tr').remove();
                 _linkElement.removeClass('disabled')
                     .html(response.link.html)
                     .attr('href', response.link.href);
@@ -137,6 +138,7 @@ var InstitutionSpecialization = {
 };
 
 var InstitutionSpecializationAutocomplete = {
+    removePropertyUri: '',
     singleSelectionOnly: false,
     _loadSpecializationFormUri : '',
     _loaderElement: null, // jQuery DOM element loader
@@ -163,6 +165,18 @@ var InstitutionSpecializationAutocomplete = {
         this._loadSpecializationFormUri = _val;
         
         return this;
+    },
+    removeProperty: function(_treatmentId, _container) {
+    	_container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: InstitutionSpecializationAutocomplete.removePropertyUri,
+            data: {'id': _treatmentId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
     },
     
     autocomplete: function(){

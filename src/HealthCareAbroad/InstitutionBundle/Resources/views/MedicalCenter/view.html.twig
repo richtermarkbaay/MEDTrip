@@ -5,9 +5,6 @@
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-           <section id="content">
-            	<div class="container">
-            		<div class="row">
             			<div class="span9">
             			    <h1><span>Manage Clinic</span></h1>
                             {% include 'InstitutionBundle:Widgets:medicalCenter.profileHeader.html.twig' %}
@@ -38,9 +35,6 @@
                                 {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
                             {% endblock %}
                         {% endembed %}
-                    </div><!-- end .row -->
-                </div>
-            </section>
         {% endblock %}
     {% endembed %}
     
