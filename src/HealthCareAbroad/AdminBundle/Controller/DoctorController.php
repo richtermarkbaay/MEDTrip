@@ -16,8 +16,9 @@ class DoctorController extends Controller
     public function indexAction()
     {
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
+        
         return $this->render('AdminBundle:Doctor:index.html.twig', array(
-                        'doctors' => $doctors
+                        'doctors' => $this->filteredResult
         ));
     }
     

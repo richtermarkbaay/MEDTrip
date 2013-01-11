@@ -19,7 +19,12 @@
 
         	{% block sectionContent %}
 
-                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+        	{% include '::notice.admin.html.twig' %}
+
+            <!-- Render Filter Box -->
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+        	
+                
                 {% set sortBy = app.request.get('sortBy') %}
                 {% set sortOrder = app.request.get('sortOrder') %}
                 {% set default = sortBy | length ? '' : 'sort-asc' %}
@@ -29,6 +34,7 @@
                         <th id="column-name">First Name</th>
                         <th id="column-name">Middle Name</th>
                         <th id="column-name">Last Name</th>
+                        <th id="column-name">Country</th>
                        <th width="15%">Actions</th>
                     </tr>
             
@@ -38,6 +44,7 @@
                         <td>{{ each.firstName }}</td>
                         <td>{{ each.middleName }}</td>
                         <td>{{ each.lastName }}</td>
+                        <td>{{ each.country }}</td>
                         <td>
                             <ul style="list-style: none;">
                                 <li><a href="{{ path('admin_doctor_edit', { idId:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
