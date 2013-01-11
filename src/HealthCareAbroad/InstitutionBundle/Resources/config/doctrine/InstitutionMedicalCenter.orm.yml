@@ -84,8 +84,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             mappedBy: null
             inversedBy: null
             joinColumns:
-                logo:
-                    referencedColumnName: id
+                name: logo_id
+                referencedColumnName: id
             orphanRemoval: false
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
