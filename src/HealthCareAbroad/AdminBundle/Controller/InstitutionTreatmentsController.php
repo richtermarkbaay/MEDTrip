@@ -619,55 +619,6 @@ class InstitutionTreatmentsController extends Controller
         
         return $response;
     }
-    
-    /**
-     * Remove a Treatmnent from an institution specialization
-     * Expected parameters
-     *     
-     * 
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ajaxRemoveSpecializationTreatmentAction(Request $request)
-    {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
-            ->find($request->get('isId', 0));
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
-        
-        if (!$institutionSpecialization) {
-            throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
-        }
-        if (!$treatment) {
-            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
-        }
-        
-        try {
-            $institutionSpecialization->removeTreatment($treatment);
-            
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($institutionSpecialization);
-            $em->flush();
-            
-            $output = array(
-                'link' => array(
-                    'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddSpecializationTreatment', array(
-                        'tId' => $treatment->getId(),
-                        'institutionId' => $this->institution->getId(),
-                        'isId' =>  $institutionSpecialization->getId())
-                    ),
-                    'html' => 'Add Treatment'
-                ),
-                'icon' => 'icon-ok'
-            );
-            
-            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-        }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
-        }
-        
-        return $response;
-    }
 
 
     /**
