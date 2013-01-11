@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class InstitutionMedicalCenterController extends Controller
 {
     protected $institutionMedicalCenter;
-    
+
     public function preExecute()
     {
         $request = $this->getRequest();
@@ -33,7 +33,7 @@ class InstitutionMedicalCenterController extends Controller
                ->where('a.slug = :centerSlug')
                ->setParameter('centerSlug', $criteria['slug']);
             $this->institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
-            
+
             if(!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institutionMedicalCenter');                
             }
@@ -42,20 +42,14 @@ class InstitutionMedicalCenterController extends Controller
 
     public function profileAction($institutionSlug)
     {
-         $centerService = $this->get('services.institution_medical_center');
-//         $gallery = $this->institution->getGallery();
+        $centerService = $this->get('services.institution_medical_center');
         $params = array(
+            'institution' => $this->institutionMedicalCenter->getInstitution(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'awards' => $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter),
             'services' => $centerService->getMedicalCenterServices($this->institutionMedicalCenter),
         );
 
-//         if($gallery && $gallery->getMedia()->count()) {
-//             $mediaGallery = $gallery->getMedia()->toArray();
-//             $params['featuredImage'] = $mediaGallery[array_rand($mediaGallery)];
-//         }
-
         return $this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params);
     }
-
 }

@@ -1,0 +1,43 @@
+{% set email = institution.contactEmail %}
+{% set number = institution.contactNumber  %}
+{% set number = json_decode(number) | join %}
+{% set address = institution.address1 %}
+{% set websites = institution.websites %}
+{% set websites = json_decode(websites) %}
+{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
+
+<div id="details" class="row">
+	<div id="main_content" class="span8">
+		<div class="clinicdetails content">
+            {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' 
+                with { object: institution, city: institution.city, country: institution.country } 
+            %}
+            <div class="description">
+                {{ institution.description | raw }}
+            </div>
+		</div>
+
+        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+            with { specializations: institutionMedicalCenter ? institutionMedicalCenter.institutionSpecializations : [] } %}
+
+    	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' 
+    	    with { awards: institutionAwards, services: institution.institutionOfferedServices} %}
+    	
+    	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
+    	    with { doctors: institutionDoctors} %}
+
+	</div> <!--End of main_content-->
+
+	<aside id="aside_content" class="span4">
+
+	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+
+	    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
+	        with { businessHours: institutionMedicalCenter ? institutionMedicalCenter.businessHours : '' } %}
+
+	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [] } %}
+
+	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
+
+	</aside> <!--End of aside_content-->
+</div>

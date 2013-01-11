@@ -27,13 +27,25 @@ class TreatmentsTwigExtension extends \Twig_Extension
                 continue;
             }
             
-            foreach ($_treatment->getSubSpecializations() as $_subSpecialization) {
-                if (!\array_key_exists($_subSpecialization->getId(), $grouped)) {
-                    $grouped[$_subSpecialization->getId()] = array('treatments' => array(), 'subSpecialization' => $_subSpecialization);
+            $subSpecializations = $_treatment->getSubSpecializations();
+            if (count($subSpecializations)) {
+                foreach ($subSpecializations as $_subSpecialization) {
+                    if (!\array_key_exists($_subSpecialization->getId(), $grouped)) {
+                        $grouped[$_subSpecialization->getId()] = array('treatments' => array(), 'subSpecialization' => $_subSpecialization);
+                    }
+                    $grouped[$_subSpecialization->getId()]['treatments'][] = $_treatment;
+                }   
+            }
+            // treatment has no subspecializations
+            else {
+                if (!\array_key_exists(0, $grouped)) {
+                    $grouped[0] = array('treatments' => array(), 'subSpecialization' => null);
                 }
-                $grouped[$_subSpecialization->getId()]['treatments'][] = $_treatment;
+                $grouped[0]['treatments'][] = $_treatment;
             }
         }
+        
+        
         
         return $grouped;
     }

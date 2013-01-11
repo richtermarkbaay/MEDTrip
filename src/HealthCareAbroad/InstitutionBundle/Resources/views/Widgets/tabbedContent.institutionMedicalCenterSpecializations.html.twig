@@ -1,5 +1,6 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
+        {% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
         {% for institutionSpecialization in specializations %}
             {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig' %}
         {% else %}                
