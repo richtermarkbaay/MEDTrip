@@ -15,7 +15,7 @@ var InstitutionSpecialization = {
             url: _href,
             type: 'POST',
             success: function(response) {
-                console.log(response);
+            	_linkElement.parents('tr').remove();
             },
             error: function(response) {
                 console.log(response);

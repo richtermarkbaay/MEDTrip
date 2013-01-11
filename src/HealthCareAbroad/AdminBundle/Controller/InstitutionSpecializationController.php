@@ -78,15 +78,14 @@ class InstitutionSpecializationController extends Controller
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-    
+        $this->institutionSpecialization->removeTreatment($treatment);
+
         try {
-            $this->institutionSpecialization->removeTreatment($treatment);
     
-//             $em = $this->getDoctrine()->getEntityManager();
-//             $em->persist($this->institutionSpecialization);
-//             $em->flush();
-    
-            $response = new Response("Removed treatment", 200);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($this->institutionSpecialization);
+            $em->flush();
+            $response = new Response("Treatment removed", 200);
         }
         catch (\Exception $e) {
             $response = new Response($e->getMessage(), 500);
