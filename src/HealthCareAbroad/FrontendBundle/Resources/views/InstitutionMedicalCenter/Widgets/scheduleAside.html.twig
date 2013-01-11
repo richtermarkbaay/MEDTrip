@@ -1,18 +1,22 @@
-{% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Schedule'} %}
+{% set businessHours = json_decode(businessHours) %}
 
-    {% block asideContent %}
+{% if businessHours %}
+
+    {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Schedule'} %}    
+        {% block asideContent %}
+        
     
-        {% set businessHours = json_decode(institutionMedicalCenter.businessHours) %}
-		<table>
-		    {% for day, time in businessHours %}
-			<tr>
-				<td>{{ day }}</td>
-				<td>{{ time.from }}</td>
-				<td>-</td>
-				<td>{{ time.to }}</td>
-			</tr>
-			{% endfor %}
-		</table>
-	{% endblock %}
-	
-{% endembed %}
+    		<table>
+    		    {% for day, time in businessHours %}
+    			<tr>
+    				<td>{{ day }}</td>
+    				<td>{{ time.from }}</td>
+    				<td>-</td>
+    				<td>{{ time.to }}</td>
+    			</tr>
+    			{% endfor %}
+    		</table>
+    	{% endblock %}
+    {% endembed %}
+
+{% endif %}

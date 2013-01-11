@@ -2,46 +2,22 @@
 
 {% block content %}
 
-	<div id="content" class="container content">
+    <div id="content" class="container content">
 
-	    {% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
+        {% if isSingleCenterInstitution %}
 
-		<div id="details" class="row">
-			<div class="tab-content span8">
-				<ul class="nav nav-tabs" id="clinicTab">
-				  	<li class="active"><a href="#main_content">OVERVIEW</a></li>
-				  	<li><a href="#clinics">CLINIC LIST</a></li>
-				</ul> <!--Twitter bootstrap Tabs-->
+            {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
+                with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
+            %}
 
-                {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
-                
-                {% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
-			</div>
+        {% else %}
 
-			<aside id="aside_content" class="span4">
+            {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
+            
+        {% endif %}
 
-			    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+    </div> <!--End of content-->
 
-			    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
-
-			    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
-
-			    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [] } %}
-
-			    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
-
-			</aside> <!--End of aside_content-->
-		</div>
-	</div> <!--End of content-->
-
-	<!--Twitter bootstrap Tab JS -->
-	<script type="text/javascript">
-		$('#clinicTab a').click(function (e) {
-		  e.preventDefault();
-		  $(this).tab('show');
-		})
-	</script>
-
-	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
+    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}     
 
 {% endblock %}
