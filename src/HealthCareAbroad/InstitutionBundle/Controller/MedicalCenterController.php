@@ -1107,12 +1107,12 @@ class MedicalCenterController extends InstitutionAwareController
         }
         // check if this medical center already have this property
         if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
-            
             $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
         }
         else {
+            $this->institutionMedicalCenter->addDoctor($specialist);
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             
-            $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($request->get('id'), $this->institutionMedicalCenter);
             $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist)));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
