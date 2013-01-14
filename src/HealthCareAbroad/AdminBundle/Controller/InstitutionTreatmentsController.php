@@ -257,7 +257,13 @@ class InstitutionTreatmentsController extends Controller
             $specializationsData = '';
             //construct specialization data
             foreach($specializations as $each) {
-                $specializationsData .= $each['name'].",";
+                if($specializationsData != "") {
+                    $specializationsData .= "," .$each['name'];
+                }
+                else {
+                    $specializationsData .= $each['name'];
+                }
+                
             }
         
             // construct the row for a medical specialist
