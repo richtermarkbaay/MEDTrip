@@ -246,9 +246,14 @@ class InstitutionTreatmentsController extends Controller
         $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
         $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
     
-        $this->institutionMedicalCenter->addDoctor($doctor);
-        $center = $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-        if ($center) {
+        // check if this medical center already have this property
+        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $doctorId)) {
+            return $response = new Response("Medical specialist value {$doctorId} already exists.", 500);
+        }
+        else {
+            $this->institutionMedicalCenter->addDoctor($doctor);
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+        
             $specializationsData = '';
             //construct specialization data
             foreach($specializations as $each) {
@@ -260,9 +265,7 @@ class InstitutionTreatmentsController extends Controller
             $html = '<tr id="doctor_block_"'.$doctorId.'"><td>'.$doctor->getLastName() .",". $doctor->getFirstName().'</td><td>'.$specializationsData.'</td><td><div class="post-toolbar"><i class="icon-trash" title="Delete"></i><a href="'.$path.'" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a></div></td></tr>';
             return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
         }
-        else {
-            return $response = new Response("Unable to add medical specialist!", 400);
-        }
+        
     }
     
     /*
