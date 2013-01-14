@@ -18,7 +18,7 @@ class WebsitesDataTransformer implements  DataTransformerInterface
         else {
             \array_walk($jsonValue, function(&$value, $key){
                 // if it matches http or https
-                if (! \preg_match('/^https?:\/\//i', $value)) {
+                if ( ! \preg_match('/^https?:\/\//i', $value)) {
                     $value = 'http://'.$value;
                 }
             });
@@ -39,7 +39,7 @@ class WebsitesDataTransformer implements  DataTransformerInterface
         else {
             \array_walk($value, function(&$v, $key){
                 // if it matches http or https
-                if (! \preg_match('/^https?:\/\//i', $v)) {
+                if (\trim($v) != '' && ! \preg_match('/^https?:\/\//i', $v)) {
                     $v = 'http://'.$v;
                 }
             });
