@@ -3,12 +3,11 @@
     <div class="clear"></div>
     <table class="table table-striped">
         <tr>
-            <td>
-                <span id="profileAddressText">{{ json_decode(institution.address1) | join(', ') }}</span>, 
-                <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
-                <span id="profileZipcodeText">{% if institution.zipCode %} {{ institution.zipCode }}, {% endif %}</span>
-                <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
-                <span id="profileCountryText">{{ institution.country.name }}</span>
+            <td class="address_column">
+                {% set _address = institution_address_to_array(institution) %}
+                
+                <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                
                 <a href="#addressModal" data-toggle="modal" role="button">
                     <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                 </a>

@@ -101,6 +101,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     
     /**
      * Convert institution address to array
+     *     - address1
      *     - city
      *     - state
      *     - country
@@ -111,6 +112,17 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function institution_address_to_array(Institution $institution)
     {
         $elements = array();
+        
+        $street_address = array();
+        foreach (\json_decode($institution->getAddress1(), true) as $key => $v) {
+            if (\trim($v) != '') {
+                $street_address[] = $v;
+            }
+        }
+        $address1 = \implode(', ', $street_address);
+        if ('' != $address1) {
+            $elements['address1'] = $address1;
+        }
         
         if ($institution->getCity()) {
             $elements['city'] = $institution->getCity()->getName();
