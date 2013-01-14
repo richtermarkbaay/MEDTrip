@@ -1,5 +1,9 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\PagerBundle\Pager;
+
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
@@ -90,13 +94,26 @@ class MedicalCenterController extends InstitutionAwareController
 
     }
     
+    /**
+     * View all medical centers of current institution
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
+        $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
+        $pagerParams = array(
+            'page' => $request->get('page', 1),
+            'limit' => 10
+        );
+        $pager = new Pager($pagerAdapter, $pagerParams);
+        
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
             'institution' => $this->institution,
-            'medicalCenters' => $this->filteredResult
+            'medicalCenters' => $pager->getResults(),
+            'pager' => $pager
         ));
-        
     }
     
     /**

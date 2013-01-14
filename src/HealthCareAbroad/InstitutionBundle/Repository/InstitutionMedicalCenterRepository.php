@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Doctrine\ORM\Query\Expr\Join;
 
 use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
@@ -128,6 +130,24 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         )->setParameter('treatment', $treatment);
 
         return $query->getResult();
+    }
+    
+    /**
+     * Get QueryBuilder for getting all medical centers of an institution
+     * 
+     * @param Institution $institution
+     * @return QueryBuilder
+     */
+    public function getInstitutionMedicalCentersQueryBuilder(Institution $institution)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('a')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->where('a.institution = :institutionId')
+            ->orderBy('a.name')
+            ->setParameter('institutionId', $institution->getId());
+        
+        return $qb;
     }
 
     private function _getCommonRSM()
