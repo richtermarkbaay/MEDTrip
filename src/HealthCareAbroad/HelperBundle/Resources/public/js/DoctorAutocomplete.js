@@ -100,12 +100,16 @@ var DoctorAuto = {
 				terms.push( ui.item.id );
 				var link = ui.item.path;
 				var specifications = '';
+				$( "#loader" )
+	            .html('Processing...');
 				$.ajax({
-					  type: "GET",
+					  type: "POST",
 					  dataType: 'JSON',
 					  url: link,
 					  success: function(data){
 						  DoctorAuto.log(data);
+						  $( "#loader" )
+				            .html('');
 					   }
 					 });
 				
