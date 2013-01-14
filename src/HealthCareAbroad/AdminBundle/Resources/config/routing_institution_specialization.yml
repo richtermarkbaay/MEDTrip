@@ -6,3 +6,12 @@ admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment:
         isId: \d+
         tId: \d+
         _method: POST
+        
+admin_medicalCenter_ajaxEditSpecialization:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
+    defaults: { _controller: AdminBundle:InstitutionSpecialization:ajaxAddMedicalSpecializationTreatments }
+    requirements:
+        _method: GET|POST
+        institutionId: \d+
+        imcId: \d+
+        isId: \d+
