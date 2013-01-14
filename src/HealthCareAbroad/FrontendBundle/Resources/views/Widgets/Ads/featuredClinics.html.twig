@@ -8,28 +8,24 @@
 
 		<div class="featured_item">
 		    {% for each in featuredClinicAds %}
+		    {% set clinicUrl = path('page_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
 			<div class="general row">
 				<div class="clinic-box span2">
-					<a href="#">
+					<a href="{{ clinicUrl }}">
     				    {% if each.institutionMedicalCenter.logo %}
     				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo', thumbnail: true}) | raw }}
     				    {% else %}
     				        <img src="" class="clinic-logo" alt="clinic logo"/>
     				    {% endif %}
 					</a>
-				    <div class="rating">
-				    	<p>USER RATINGS</p>
-				    	<ul>
-				    		<li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-				    		<li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-				    		<li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-				    		<li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
-				    		<li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
-				    	</ul>
-				    </div>
+
+                    {% include 'FrontendBundle:Widgets:ratings.html.twig' %}
+
 				</div>
 				<div class="description-box span4">
-					<a href="#link-to-clinic-page"><h3>{{ each.institutionMedicalCenter.name }}</h3></a>
+					<a href="{{ clinicUrl }}">
+					    <h3>{{ each.institutionMedicalCenter.name }}</h3>
+					</a>
 					<h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
 					<div>{{ each.institutionMedicalCenter.description | raw }}</div>
 				</div>
@@ -41,7 +37,7 @@
     				        <img class="img-polaroid" src="" alt="featured_pic" />
     				    {% endif %}
 					</div>
-					<button class="btn">Learn More</button>
+					<a href="{{ clinicUrl }}" class="btn orange"> <span class="icon-search icon-white"></span> Learn More </a>
 				</div>
 			</div>
  			<div class="details row">
