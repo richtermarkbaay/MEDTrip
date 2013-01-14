@@ -35,6 +35,8 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
             'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
+            'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
+            'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
         );
     }
     
@@ -89,14 +91,33 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     
     public function json_encode($jsonArray)
     {
-        echo  \json_encode($jsonArray);
-
-        exit;
+        return  \json_encode($jsonArray);
     }
     
     public function json_decode($jsonData)
     {
         return json_decode($jsonData, true);
+    }
+    
+    /**
+     * Alias to json_decode with option to not include empty values
+     * 
+     * @param string $jsonString
+     * @param boolean $includeEmptyValues
+     */
+    public function json_to_array($jsonString, $includeEmptyValues=true)
+    {
+        $returnVal = \json_decode($jsonString, true);
+        
+        if (!$includeEmptyValues) {
+            foreach ($returnVal as $k => $v) {
+                if (\is_null($v) || '' == \trim($v)) {
+                    unset($returnVal[$k]);
+                } 
+            }
+        }
+        
+        return $returnVal;
     }
     
     /**
@@ -141,6 +162,15 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         }
         
         return $elements;
+    }
+    
+    public function unset_array_key($key, $arr)
+    {
+        if (\array_key_exists($key, $arr)) {
+            unset($arr[$key]);
+        }
+        
+        return $arr;
     }
     
     public function institution_websites_to_array(Institution $institution)
