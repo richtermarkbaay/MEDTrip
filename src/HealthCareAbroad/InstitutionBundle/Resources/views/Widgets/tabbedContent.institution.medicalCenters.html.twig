@@ -28,6 +28,9 @@
     				{% endfor %}
 		    </tbody>
 	    </table>
+	     {% if pager.isPaginable %}
+                   {{ paginate(pager, 'institution_account_profile', app.request.query.all) }}
+                {% endif %}
     {% endblock %}
     
     {% block tabbedContentActionButtons %}

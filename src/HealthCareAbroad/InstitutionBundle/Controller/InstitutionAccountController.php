@@ -4,7 +4,10 @@
  * 
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
@@ -193,6 +196,13 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
+        $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
+        $pagerParams = array(
+                        'page' => $request->get('page', 1),
+                        'limit' => 10
+        );
+        $pager = new Pager($pagerAdapter, $pagerParams);
+        
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         $templateVariables = array(
             'institutionForm' => $form->createView(),
@@ -220,11 +230,13 @@ class InstitutionAccountController extends InstitutionAwareController
             $templateVariables['specializationsJSON'] = \json_encode($globalSpecializationsJson);
             // load medical center specializations
             $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
+            $templateVariables['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
             
         }
         else {
             // multiple center institution profile view
-            $templateVariables['medicalCenters'] = $this->get('services.institution')->getAllMedicalCenters($this->institution);
+            $templateVariables['medicalCenters'] = $pager->getResults();
+            $templateVariables['pager'] = $pager;
         }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
