@@ -1012,7 +1012,8 @@ class MedicalCenterController extends InstitutionAwareController
                             $em->persist($form->getData());
                             $em->flush();
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
-                                'institutionSpecialization' => $institutionSpecialization
+                                'institutionSpecialization' => $institutionSpecialization,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter
                             ));
                         }catch (\Exception $e) {
                             $errors[] = $e->getMessage();
