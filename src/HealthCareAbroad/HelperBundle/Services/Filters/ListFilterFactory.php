@@ -58,7 +58,6 @@ final class ListFilterFactory
             'admin_institution_manageSpecializations' => 'InstitutionSpecializationListFilter',
 //            'admin_institution_manageProcedureTypes' => 'InstitutionTreatmentProcedureTypeListFilter',
             'institution_specialization_index' => 'InstitutionSpecializationListFilter',
-            'institution_medicalCenter_index' => 'InstitutionMedicalCenterListFilter',
             'admin_advertisement_index' => 'AdvertisementListFilter',
             'admin_advertisementType_index' => 'AdvertisementTypeListFilter',
             'admin_user_index' => 'AdminUserListFilter',

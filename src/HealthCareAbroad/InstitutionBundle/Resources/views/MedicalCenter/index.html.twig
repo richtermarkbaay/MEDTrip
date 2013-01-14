@@ -25,7 +25,7 @@
 					        <td>
 					            <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a>
 				            </td>
-				            <td>{{ medicalCenter.description(30) | raw }}</td>
+				            <td>{{ medicalCenter.description | striptags | raw | slice(0, 400) ~ (medicalCenter.description | length > 400 ? '...' : '') }}</td>
 				            <td>Created on {{ medicalCenter.dateCreated|date("M d, Y H:i A") }}</td>
 				            <td>
 				                <div class="post-toolbar">
@@ -37,6 +37,11 @@
 		                {% endfor %}
 	                </tbody>
                 </table>
+                
+                {% if pager.isPaginable %}
+                   {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
+                {% endif %}
+                
             </div>
         </div><!--End of row-->
     </div><!--End of container-->

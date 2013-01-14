@@ -1,5 +1,9 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\PagerBundle\Pager;
+
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
@@ -90,13 +94,26 @@ class MedicalCenterController extends InstitutionAwareController
 
     }
     
+    /**
+     * View all medical centers of current institution
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
+        $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
+        $pagerParams = array(
+            'page' => $request->get('page', 1),
+            'limit' => 10
+        );
+        $pager = new Pager($pagerAdapter, $pagerParams);
+        
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
             'institution' => $this->institution,
-            'medicalCenters' => $this->filteredResult
+            'medicalCenters' => $pager->getResults(),
+            'pager' => $pager
         ));
-        
     }
     
     /**
@@ -377,7 +394,6 @@ class MedicalCenterController extends InstitutionAwareController
     
             $form->bind($request);
             if ($form->isValid() && $form->get('id')->getData()) {
-                
                 $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
                 $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
     
@@ -1012,7 +1028,8 @@ class MedicalCenterController extends InstitutionAwareController
                             $em->persist($form->getData());
                             $em->flush();
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
-                                'institutionSpecialization' => $institutionSpecialization
+                                'institutionSpecialization' => $institutionSpecialization,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter
                             ));
                         }catch (\Exception $e) {
                             $errors[] = $e->getMessage();
@@ -1135,38 +1152,5 @@ class MedicalCenterController extends InstitutionAwareController
         return new Response("Doctor removed", 200);
     }
 
-    /**
-     * Remove a Treatmnent from an institution specialization
-     * Expected parameters
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ajaxRemoveSpecializationTreatmentAction(Request $request)
-    {
     
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
-        
-        if (!$institutionSpecialization) {
-            throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
-        }
-        if (!$treatment) {
-            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
-        }
-        
-        $institutionSpecialization->removeTreatment($treatment);
-        
-        try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($institutionSpecialization);
-            $em->flush();
-            $response = new Response("Treatment removed", 200);
-        }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
-        }
-        
-        
-        return $response;
-    }
 }
