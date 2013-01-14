@@ -157,7 +157,7 @@ class InstitutionTreatmentsController extends Controller
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
-        
+        $institutionMedicalSpecialistForm = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         //globalAwards Form
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         $global_awards = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->getInstitutionGlobalAwards($this->institutionMedicalCenter->getId());
@@ -200,6 +200,12 @@ class InstitutionTreatmentsController extends Controller
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
         
+        //get doctors
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+        }
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -207,8 +213,10 @@ class InstitutionTreatmentsController extends Controller
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
+            'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
             'global_awards' => $global_awards,
+            'doctorsJSON' => \json_encode($doctorArr),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
@@ -228,6 +236,34 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
+    /*
+     * ajax
+    * This will add medicalSpecialist on InstitutionMedicalCenter
+    */
+    public function ajaxAddMedicalSpecialistAction(Request $request)
+    {
+        $doctorId = $request->get('doctorId');
+        $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
+        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
+    
+        $this->institutionMedicalCenter->addDoctor($doctor);
+        $center = $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+        if ($center) {
+            $specializationsData = '';
+            //construct specialization data
+            foreach($specializations as $each) {
+                $specializationsData .= $each['name'].",";
+            }
+        
+            // construct the row for a medical specialist
+            $path = $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', array('doctorId' =>  $doctorId, 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId()));
+            $html = '<tr id="doctor_block_"'.$doctorId.'"><td>'.$doctor->getLastName() .",". $doctor->getFirstName().'</td><td>'.$specializationsData.'</td><td><div class="post-toolbar"><i class="icon-trash" title="Delete"></i><a href="'.$path.'" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a></div></td></tr>';
+            return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
+        }
+        else {
+            return $response = new Response("Unable to add medical specialist!", 400);
+        }
+    }
     
     /*
      *
@@ -243,7 +279,8 @@ class InstitutionTreatmentsController extends Controller
     
             $form->bind($request);
             if ($form->isValid() && $form->get('id')->getData()) {
-    
+                $this->institutionMedicalCenter->addDoctor($doctors);
+                
                 $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
                 $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
             }
@@ -289,7 +326,8 @@ class InstitutionTreatmentsController extends Controller
                 $em->persist($doctor);
                 $em->flush();
         
-                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor(array("firstName" => "", "id" => $doctor->getId()), $this->institutionMedicalCenter);
+                $this->institutionMedicalCenter->addDoctor($doctor);
+                $center = $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addMedicalSpecialist',array("institutionId" => $this->institution->getId(), "imcId" => $request->get('imcId'))));
             }

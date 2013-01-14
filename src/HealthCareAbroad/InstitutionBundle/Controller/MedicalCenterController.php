@@ -377,7 +377,6 @@ class MedicalCenterController extends InstitutionAwareController
     
             $form->bind($request);
             if ($form->isValid() && $form->get('id')->getData()) {
-                
                 $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
                 $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
     

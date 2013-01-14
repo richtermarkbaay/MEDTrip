@@ -18,7 +18,8 @@ class DoctorController extends Controller
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
         
         return $this->render('AdminBundle:Doctor:index.html.twig', array(
-                        'doctors' => $this->filteredResult
+                        'doctors' => $this->filteredResult,
+                        'pager' => $this->pager
         ));
     }
     

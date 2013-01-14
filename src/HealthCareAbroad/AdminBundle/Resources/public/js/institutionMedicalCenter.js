@@ -99,9 +99,11 @@ var InstitutionMedicalCenter = {
     },
     
     closeModal: function(_name) {
-        this._modals[_name].dialog("close");
+    	this._modals[_name].dialog("close");
     },
-    
+    closeDialog: function() {
+    	$('#dialog-container').dialog("close");
+    },
     // jQuery element for link opener
     openAjaxBootstrapModal: function(_opener) {
         _modal = $(_opener.attr('data-target'));

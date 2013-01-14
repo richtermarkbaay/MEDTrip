@@ -39,7 +39,15 @@ admin_doctor_load_doctor_specializations:
     defaults: { _controller: AdminBundle:Doctor:searchMedicalSpecialistSpecialization, doctorId: ~ }
     requirements:
         doctorId: \d+
-        
+
+admin_institution_medicalCenter_ajaxAddMedicalSpecialist:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/{doctorId}/add
+    defaults: {_controller: AdminBundle:InstitutionTreatments:ajaxAddMedicalSpecialist}
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+
 admin_doctor_save:
     pattern: /admin/doctor/save/{idId}
     defaults: {_controller: AdminBundle:Doctor:save}

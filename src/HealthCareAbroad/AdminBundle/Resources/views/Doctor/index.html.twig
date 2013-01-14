@@ -64,7 +64,9 @@
             
         {% endembed %}
        
-        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_doctor_index', app.request.query.all) }}
+        {% endif %}
     </div>
 
 {% endblock %}
