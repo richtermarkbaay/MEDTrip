@@ -33,7 +33,8 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
             'institution_address_to_array' => new \Twig_Function_Method($this, 'institution_address_to_array'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
-            'json_encode' => new  \Twig_Function_Method($this, 'json_encode')
+            'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
+            'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
         );
     }
     
@@ -128,5 +129,18 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         }
         
         return $elements;
+    }
+    
+    public function institution_websites_to_array(Institution $institution)
+    {
+        $websites = \json_decode($institution->getWebsites(), true);
+        \array_walk($websites, function(&$v, $key){
+            // if it matches http or https
+            if (! \preg_match('/^https?:\/\//i', $v)) {
+                $v = 'http://'.$v;
+            }
+        });
+        
+        return $websites;
     }
 }

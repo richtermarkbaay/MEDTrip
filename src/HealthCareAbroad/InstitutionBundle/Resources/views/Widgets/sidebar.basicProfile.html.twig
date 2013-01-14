@@ -28,7 +28,7 @@
         <tr>
             <td>
                 <p>
-                    <span id="profileEmailText">{{ institution.contactEmail }}</span>
+                    <span id="profileEmailText">{{ institution.contactEmail | length ? institution.contactEmail : 'Add contact email'}}</span>
                     <a href="#emailModal" role="button" data-toggle="modal">
                         <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                     </a>
@@ -39,8 +39,8 @@
         <tr>
             <td>
                 <div id="profileWebsitesText">
-                    {% for type, site in json_decode(institution.websites) %}
-                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% for type, site in institution_websites_to_array(institution) %}
+                        {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
                     {% endfor %}
                 </div>
                 <a href="#websitesModal" role="button" data-toggle="modal">

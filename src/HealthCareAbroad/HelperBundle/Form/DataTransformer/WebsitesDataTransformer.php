@@ -15,6 +15,14 @@ class WebsitesDataTransformer implements  DataTransformerInterface
             
             $jsonValue = $this->defaultValue;
         }
+        else {
+            \array_walk($jsonValue, function(&$value, $key){
+                // if it matches http or https
+                if (! \preg_match('/^https?:\/\//i', $value)) {
+                    $value = 'http://'.$value;
+                }
+            });
+        }
         
         return $jsonValue;
     }
@@ -28,7 +36,14 @@ class WebsitesDataTransformer implements  DataTransformerInterface
         if (!is_array($value)) {
             throw new \Exception(__CLASS__.' expects $value to be an array, '.\gettype($value).' given');
         }
-        
+        else {
+            \array_walk($value, function(&$v, $key){
+                // if it matches http or https
+                if (! \preg_match('/^https?:\/\//i', $v)) {
+                    $v = 'http://'.$v;
+                }
+            });
+        }
         return \json_encode($value);
     }
 }
