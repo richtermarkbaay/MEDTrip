@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\PagerBundle\Pager;
@@ -13,127 +15,78 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 /**
- * Controller for Institution Specialization
- *
- *
- * TODO: these business rules should be moved to a service class
- *
- * A newly added Specialization has status DRAFT and will have this status until
- * at least one procedure type is added to it, after which the status will change
- * to PENDING. A Specialization with status PENDING should have at least one media
- * attached to it.
- *
- * Note: this spec needs to be verified with Hazel.
+ * Controller for actions related to Institution Specializations
+ * 
+ * @author Allejo Chris G. Velarde
  *
  */
 class SpecializationController extends InstitutionAwareController
 {
     /**
-     * Displays a list of of ACTIVE/APPROVED institution specializations by default.
-     * Can also display a list of DRAFT, PENDING, and EXPIRED specializations.
-     *
-     * Uses the ListFilterBeforeController to get the filtered list and the pager.
-     *
+     * @var InstitutionMedicalCenter
+     */
+    protected $institutionMedicalCenter;
+    
+    /**
+     * @var InstitutionSpecialization
+     */
+    protected $institutionSpecialization;
+    
+    public function preExecute()
+    {
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+                ->find($imcId);
+        
+            // non-existent medical center group
+            if (!$this->institutionMedicalCenter) {
+                throw $this->createNotFoundException('Invalid medical center.');
+            }
+        
+            // medical center group does not belong to this institution
+            if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
+                 return new Response('Medical center does not belong to institution', 401);           
+            }
+        }
+        
+        $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+            ->find($this->getRequest()->get('isId', 0));
+        
+    }
+    
+    /**
+     * Remove a Treatmnent from an institution specialization
+     * Expected parameters
+     *     
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
-        $institutionRepository = $this->getDoctrine()->getRepository('InstitutionBundle:Institution');
-
-        return $this->render('InstitutionBundle:Specialization:index.html.twig', array(
-            'institutionSpecializations' => $this->filteredResult,
-            'pager' => $this->pager,
-            'institution' => $this->institution
-        ));
-    }
-
-    /**
-     * Displays form for editing an institution specialization
-     *
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
-     */
-    public function editAction(Request $request)
-    {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
-
-        if (!$institutionSpecialization) {
-            throw $this->createNotFoundException("Invalid institution specialization.");
+    
+        $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
+        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
+    
+        if (!$this->institutionSpecialization) {
+            throw $this->createNotFoundException("Invalid institution specialization {$this->institutionSpecialization->getId()}.");
         }
-        $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization);
-
-        return $this->render('InstitutionBundle:Specialization:edit.html.twig', array(
-            'institutionSpecialization' => $institutionSpecialization,
-            'form' => $form->createView(),
-        ));
-    }
-
-    /**
-     * Saves an institution specialization
-     *
-     * Dispatches an event upon successful save.
-     *
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
-     *
-     */
-    public function saveAction(Request $request)
-    {
-        if (!$request->isMethod('POST')) {
-            return $this->_errorResponse("POST is the only allowed method", 405);
+        if (!$treatment) {
+            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-
-        if ($isId= $request->get('isId', 0)) {
-            $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($isId);
-            if (!$institutionSpecialization) {
-                throw $this->createNotFoundException("Invalid institution specialization.");
-            }
-        }
-        else {
-            $institutionSpecialization = new InstitutionSpecialization();
-            $institutionSpecialization->setInstitution($this->institution);
-        }
-        $isNew = $institutionSpecialization->getId() == 0;
-        $form = $this->createForm(new InstitutionSpecializationType(), $institutionSpecialization);
-        $form->bind($request);
-
-        if ($form->isValid()) {
-
+    
+        $this->institutionSpecialization->removeTreatment($treatment);
+    
+        try {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($institutionSpecialization);
-            $em->flush();
-
-            $this->dispatchEvent(
-                $isNew ? InstitutionBundleEvents::ON_ADD_INSTITUTION_SPECIALIZATION : InstitutionBundleEvents::ON_EDIT_INSTITUTION_SPECIALIZATION,
-                $institutionSpecialization
-            );
-
-            $request->getSession()->setFlash('success', "Successfully ".($isNew?'added':'updated')." {$institutionSpecialization->getSpecialization()->getName()} specialization.");
-
-            return $this->redirect($this->generateUrl('institution_specialization_edit', array('isId' => $institutionSpecialization->getId())));
+//             $em->persist($this->institutionSpecialization);
+//             $em->flush();
+            $response = new Response("Treatment removed", 200);
         }
-        else {
-
-            return $this->render($isNew ? 'InstitutionBundle:Specialization:add.html.twig': 'InstitutionBundle:Specialization:edit.html.twig', array(
-                'form' => $form->createView(),
-                'isNew' => $isNew,
-                'institutionSpecialization' => $institutionSpecialization
-            ));
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
         }
+    
+    
+        return $response;
     }
-
-    /**
-     * Convenience function for dispatching events for logs
-     */
-    private function dispatchEvent($eventName, $loggedEntity, $optionalArguments = array())
-    {
-        $optionalArguments['institutionId'] = $this->institution->getId();
-        $event = $this->get('events.factory')->create($eventName, $loggedEntity, $optionalArguments);
-        $this->get('event_dispatcher')->dispatch($eventName, $event);
-    }
-
-    private function _errorResponse($message, $code=500)
-    {
-        return new Response($message, $code);
-    }
-
 }
