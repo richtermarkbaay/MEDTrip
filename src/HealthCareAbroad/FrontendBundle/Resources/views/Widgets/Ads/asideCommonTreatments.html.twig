@@ -1,4 +1,4 @@
-{% if news %}
+{% if commonTreatments %}
 
 <div class="heading">
 	<h3>Common Treatments</h3>
@@ -6,6 +6,7 @@
 
 <div class="aside_wrapper">
     {% for each in commonTreatments %}
+
 	<div class="media">
 		<div class="image_preview">
 			<a class="pull-left" href="#">
@@ -14,7 +15,7 @@
 			</a>
 		</div>
 		<div class="media-body">
-			<a href="#"><h4 class="media-heading">{{ each.title }}</h4></a>
+			<a href="{{ path('search_frontend', {treatment_id: each.treatmentId}) }}"><h4 class="media-heading">{{ each.title }}</h4></a>
 			<p>{{ each.description }}</p>
 		</div>
 	</div>

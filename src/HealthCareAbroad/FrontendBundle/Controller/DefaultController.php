@@ -36,14 +36,14 @@ class DefaultController extends Controller
         
         $params = array(
             'highlightAds' => $highlightAds,
-            'highlight' => $highlightAds && $highlightAds->count() ? $highlightAds[array_rand($highlightAds)] : null,
+            'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
             'featuredClinicAds' => $featuredClinicAds,
             'commonTreatments' => $commonTreatments,
             'destinationAds' => array(),
             'news' => $news,
             'searchParams' => array()
         );
-
+        //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
 

@@ -74,12 +74,14 @@
 #}
 
 {% if highlight %}
+{% set institutionUrl = path('page_institution_profile', {institutionSlug: highlight.institution.slug }) %}
+
 <div id="highlight"> <!--Highighted Institution-->
-	<a href="#" class="clinic span2 offset6">
-	    {% if highlight.institution.media %}
-	        {{ media(highlight.institution.media, highlight.institution, 'default', {alt: 'clinic logo', thumbnail: true}) | raw }}
+	<a href="{{ institutionUrl }}" class="clinic span2 offset6">
+	    {% if highlight.institution.logo %}
+	        {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo', thumbnail: true}) | raw }}
 	    {% else %}
-	        <img src="{{ logo }}" alt="clinic logo"/>
+	        <img src="{{ logo }}" alt="logo"/>
 	    {% endif %}
 	</a>
 	
@@ -99,9 +101,13 @@
 				    {{ media(highlight.media, highlight, 'default') | raw }}
 				</div> <!--End of slider_item 2-->
 			</div>
-			<a class="carousel-pills" href="#feature_carousel" data-slide="prev"><span>&nbsp;</span></a>
-			<a class="carousel-pills" href="#feature_carousel" data-slide="next"><span>&nbsp;</span></a>
-			<button class="btn">Learn More</button>
+			
+            <!-- div class="nav-pills">
+				<a data-to="1" href="#highlight" class="carousel-pills"><span>&nbsp;</span></a>
+				<a data-to="2" href="#highlight" class="carousel-pills pager-active"><span>&nbsp;</span></a>
+				<a data-to="3" href="#highlight" class="carousel-pills"><span>&nbsp;</span></a>
+			</div -->
+			<a href="{{ institutionUrl }}" class="btn white feature-btn"> <span class="icon-search"></span> Learn More </a>
 		</div> <!--End of carousel slide-->
 	</div> <!--End of carousel row-->
 
