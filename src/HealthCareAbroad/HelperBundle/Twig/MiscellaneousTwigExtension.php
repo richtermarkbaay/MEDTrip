@@ -110,12 +110,18 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     {
         $returnVal = \json_decode($jsonString, true);
 
-        if (!$includeEmptyValues) {
-            foreach ($returnVal as $k => $v) {
-                if (\is_null($v) || '' == \trim($v)) {
-                    unset($returnVal[$k]);
+        if (!\is_null($returnVal)) {
+            if (!$includeEmptyValues) {
+                foreach ($returnVal as $k => $v) {
+                    if (\is_null($v) || '' == \trim($v)) {
+                        unset($returnVal[$k]);
+                    }
                 }
-            }
+            }    
+        }
+        else {
+            // invalid JSON string
+            $returnVal = array();
         }
 
         return $returnVal;
@@ -124,14 +130,21 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function json_websites_to_array($jsonString)
     {
         $websites = \json_decode($jsonString, true);
-        \array_walk($websites, function(&$v, $key){
-            // if it matches http or https
-
-            if ($v != '' && ! \preg_match('/^https?:\/\//i', $v)) {
-                $v = 'http://'.$v;
-            }
-
-        });
+        if (!\is_null($websites)) {
+            \array_walk($websites, function(&$v, $key){
+                // if it matches http or https
+            
+                if ($v != '' && ! \preg_match('/^https?:\/\//i', $v)) {
+                    $v = 'http://'.$v;
+                }
+            
+            });
+        }
+        else {
+            // invalid JSON string
+            $websites = array();
+        }
+        
 
         return $websites;
     }
