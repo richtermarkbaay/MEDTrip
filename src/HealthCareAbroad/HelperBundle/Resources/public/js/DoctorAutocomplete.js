@@ -108,11 +108,11 @@ var DoctorAuto = {
 					  url: link,
 					  success: function(data){
 						  DoctorAuto.log(data);
-						  $( "#loader" )
-				            .html('');
+						  
 					   }
 					 });
-				
+				$( "#loader" )
+	            .html('');
 				
 				this.value = terms.join( "" );					
 				add_field = $(DoctorAuto.inputHiddenField);

@@ -7,8 +7,8 @@
 				</div>
 			</div>
 			<div class="pull-right">
-				<form class="navbar-search pull-left">
-					<input type="text" placeholder="Search" class="search-query">
+				<form action="{{ path('institution_medicalCenter_search') }}" class="navbar-search pull-left">
+					<input id="searchKey" name="searchKey" type="text" placeholder="Search" class="search-query">
 				</form>
 				
 				<div class="pull-left">

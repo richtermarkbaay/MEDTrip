@@ -203,7 +203,6 @@ class InstitutionMedicalCenterService
          return $result;
     }
     
-
     public function getAvailableTreatmentsByInstitutionSpecialization(InstitutionSpecialization $institutionSpecialization)
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')
@@ -232,5 +231,23 @@ class InstitutionMedicalCenterService
         return $result;
     }
     
+    public function searchMedicaCenterWithSearchTerm($searchTerm)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                    LEFT JOIN a.institutionSpecializations b
+                    LEFT JOIN b.treatments c
+                    LEFT JOIN c.subSpecializations d
+                    WHERE b.specialization = :searchTerm
+                    OR c.id = :searchTerm
+                    OR d.id = :searchTerm
+                    OR a.status != :inactive";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('searchTerm', '%'.$searchTerm.'%')
+        ->setParameter('inactive', InstitutionMedicalCenter::STATUS_INACTIVE)
+        ->getResult();
+        
+        return $result;
+    }
 
 }
