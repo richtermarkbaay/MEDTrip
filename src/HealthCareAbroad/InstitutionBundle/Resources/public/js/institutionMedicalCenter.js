@@ -168,11 +168,16 @@ var InstitutionMedicalCenter = {
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.response);
                         break;
                     case 'addressModalForm':
-                        var address = response.institutionMedicalCenter.address; 
-                        $('#profileAddressText').html(address.room_number + ', ' + address.building + ', '+ address.street);
-                        $('#profileCityText').html(response.institutionMedicalCenter.city ? response.institutionMedicalCenter.city + ', ' : '');
-                        $('#profileStateText').html(response.institutionMedicalCenter.state ? response.institutionMedicalCenter.state + ', ' : '');
-                        $('#profileCountryText').html(response.institutionMedicalCenter.country);
+                        var _street_address = [];
+                        $.each(response.institutionMedicalCenter.address, function(_k, _v){
+                           if ($.trim(_v) != '') {
+                               _street_address.push(_v);
+                           } 
+                        });
+                        $('span.street_address_part').html(_street_address.length
+                            ? _street_address.join(', ')+', '
+                            : ''
+                        );
                         break;
     
                     case 'numberModalForm':

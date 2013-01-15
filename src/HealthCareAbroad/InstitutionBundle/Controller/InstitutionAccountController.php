@@ -483,15 +483,16 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
                 else {
                     // construct the error message
-                    $html ="<ul class='errors'>";
+                    $html ="<ul class='text-error' style='margin: 0px;'>";
                     foreach ($form->getErrors() as $err){
                          $html .= '<li>'.$err->getMessage().'</li>';
                     }
                     $html .= '</ul>';
                      
-                    //var_dump($form->get('name')->getErrors()); exit;
                     $output['form_error'] = 1;
                     $output['form_error_html'] = $html;
+                    
+                    return new Response(\json_encode($output), 400, array('content-type' => 'application/json'));
                 }    
             }
             catch (\Exception $e) {   
