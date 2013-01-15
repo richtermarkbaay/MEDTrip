@@ -1,0 +1,17 @@
+frontend_multiple_center_institution_profile:
+    pattern: /hospital/{institutionSlug}
+    defaults: { _controller: FrontendBundle:Institution:profile }
+    requirements:
+        _method:  GET
+        
+frontend_single_center_institution_profile:
+    pattern: /clinic/{institutionSlug}
+    defaults: { _controller: FrontendBundle:Institution:profile }
+    requirements:
+        _method:  GET
+        
+page_institutionMedicaCenter_profile:
+    pattern: /{institutionSlug}/clinic/{imcSlug}
+    defaults: { _controller: FrontendBundle:InstitutionMedicalCenter:profile }
+    requirements:
+        _method:  GET

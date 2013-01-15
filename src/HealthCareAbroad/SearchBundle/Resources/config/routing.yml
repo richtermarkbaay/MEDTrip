@@ -12,6 +12,14 @@ search_admin_initiate:
     pattern: /admin/search
     defaults: { _controller: SearchBundle:Admin:initiate }
 
+##INSTITUTION BUNDLE
+institution_medicalCenter_search:
+    pattern: /medical-center/search
+    defaults: { _controller: SearchBundle:Search:search }
+    requirements:
+        _method: GET|POST
+
+
 ## FRONTEND BUNDLE
 search_frontend:
     pattern: /search

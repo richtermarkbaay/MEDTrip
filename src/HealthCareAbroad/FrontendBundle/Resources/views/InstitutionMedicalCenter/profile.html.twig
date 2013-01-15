@@ -8,6 +8,26 @@
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 
+{% block callout %}
+    {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
+        {% block calloutContent %}
+        <div class="span9">
+            <div class="media">
+                <div class="pull-left">
+                    <img class="media-object" alt="" src="images/frontend/clinic-logo6.png">
+                </div>
+                <div class="media-body">
+                    <h1>{{ institution.name }}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="span3">
+            <a class="all-clinic btn green" href="{{ get_frontend_url(institution) }}">Hospital Page</a>
+        </div>			
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
 {% block content %}
 
     {% embed 'FrontendBundle:Embed:mainContentWrapper.html.twig' %}
