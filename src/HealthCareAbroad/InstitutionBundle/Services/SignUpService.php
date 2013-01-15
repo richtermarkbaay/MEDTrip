@@ -63,6 +63,7 @@ class SignUpService
     
     public function completeProfileOfInstitutionWithMultipleCenter(Institution $institution)
     {
+        $institution->setSignupStepStatus(InstitutionSignupStepStatus::FINISH);
         $this->institutionFactory->save($institution);
     }
 }

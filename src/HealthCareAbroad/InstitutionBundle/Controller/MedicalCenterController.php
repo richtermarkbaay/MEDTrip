@@ -339,7 +339,21 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->addDetailsAction($request);
     }
     
-    
+    public function searchAction(Request $request)
+    {
+        
+        $centers = $this->get('services.institutionMedicalCenter')->searchMedicaCenterWithSearchTerm($request->get('searchKey'));
+        $treatments = array();
+        foreach($centers as $each )
+        {
+            var_dump($each->getInstitutionSpecializations()->getSpecialization());exit;
+        }
+        
+        return $this->render('InstitutionBundle:MedicalCenter:searchResultpage.html.twig', array(
+                        'institution' => $this->institution,
+                        'medicalCenters' => $centers
+        ));
+    }
     /**
      * This is the first step when creating a new InstitutionMedicalCenter. Add details of a InstitutionMedicalCenter
      * 
@@ -382,26 +396,6 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /*
-     * Load Doctors with the specialization listed on InstitutionSpecialization.
-    */
-    public function searchMedicalSpecialistSpecializationAction(Request $request)
-    {
-        $doctorId = $request->get('doctorId');
-        $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
-        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
-        
-        $specializationsData = '';
-        //construct specialization data
-        foreach($specializations as $each) {
-            $specializationsData .= $each['name']."<br>";
-        }
-        
-        // construct the row for a medical specialist
-        $html = '<tr id="doctor"'.$doctorId.'"><td><h5>'.$doctor->getFirstName() ." ". $doctor->getLastName().'</h5>'.$specializationsData.'</td><td><input class="btn btn-danger award_deleteBtn" type="button" onclick="DoctorAuto.deleteRow($(this),'.$doctorId.')" value="Remove"></td></tr>';
-        return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
-    }
-    
-    /*
      * 
      * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter
      */
@@ -415,10 +409,9 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
 
         if ($request->isMethod('POST')) {
-
+    
             $form->bind($request);
-
-            if ($form->isValid() && $form->get('id')->getData()) {
+            if ($form->isValid()) {
 
                 // Update SignupStepStatus 
                 $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
@@ -432,12 +425,13 @@ class MedicalCenterController extends InstitutionAwareController
                 
                 return $this->redirect($this->generateUrl($routeName));
             }
+            
         }
         $doctorArr = array();
         foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('institution_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id']);
         }
-    
+
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
@@ -573,7 +567,7 @@ class MedicalCenterController extends InstitutionAwareController
                     $_new->setValue($_value->getId());
                     $propertyService->save($_new);
                 }
-
+                
                 $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
 

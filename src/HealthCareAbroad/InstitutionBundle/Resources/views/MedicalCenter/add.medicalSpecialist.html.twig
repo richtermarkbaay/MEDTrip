@@ -18,15 +18,18 @@
         	            {{ form_widget(form.firstName) }}
                         {{ form_row(form.id) }}
                         {{ form_rest(form) }}
-                        
-                        <div style="margin-top:15px;">
-                            <table id="medicalSpecialistTable" class="table table-striped table-bordered">
-    							<tr>
-    								<th>Medical Specialist</th>
-    								<th>Actions</th>
-    							</tr>
-                			</table>
-            			</div>
+                          <table class="table table-striped table-bordered specialist_table">
+                             <thead>
+                                <tr>    
+                    				<th>Medical Specialist</th>
+                    				<th>Specializations</th>
+                    				<th>Actions</th>
+                        		</tr>
+                             </thead>
+                             <tbody>
+                        		<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
+                            </tbody>
+                    	</table>
             			
         	        </div>
         	        
@@ -37,7 +40,7 @@
                     </div>
         		    
         		    <div class="pull-right">
-                        <button class="btn btn-primary btn-large submit_button" type="button">Submit</button>
+                        <button class="btn btn-primary btn-large submit_button" type="submit">Submit</button>
                     </div>
         	    </form>
         	</div>
@@ -56,29 +59,24 @@
 {% endblock %}
  
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
+    <script src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}"></script>
 	<script type="text/javascript">
 
 		$(function() {
-			var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
-			var inputHiddenField = "#institutionDoctorSearch_id";
-			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
-			var selectedTags = [];
-		    
-        	var params = {
-                	availableTags: availableDoctors,
-                	selectedTags : selectedTags,
-                	inputHiddenField :inputHiddenField,
-                	inputAutoDoctor :inputAutoDoctor
-        		};
-        	DoctorAuto.init(params);
+			InstitutionSpecialistAutocomplete.removePropertyUri = '{{ path("institution_medicalCenter_ajaxRemoveSpecialistService", {"imcId" : institutionMedicalCenter.id, "institutionId" : institution.id} ) }}';
+
+			InstitutionSpecialistAutocomplete
+	        .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddSpecialistService", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
+	        .setAutocompleteOptions('specialist', {
+	            source: $.parseJSON('{{ doctorsJSON | raw }}'),
+	            target: $('#institutionDoctorSearch_firstName'),
+	            selectedDataContainer: $('table.specialist_table tbody'),
+	            loader: $('table.specialist_table tbody tr.loader')
+	        })
+	        .autocomplete();
 
         	$('button.previous_button').click(function(){
                 window.location = "{{ path('institution_medicalCenter_addGlobalAwards', {'imcId': institutionMedicalCenter.id} )}}";
-            });
-
-        	$('button.submit_button').click(function(){
-                window.location = "{{ isSingleCenter ? path('institution_homepage') : path('institution_medicalCenter_index')}}";
             });
 		});
 

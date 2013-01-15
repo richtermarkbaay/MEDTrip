@@ -274,38 +274,6 @@ class InstitutionTreatmentsController extends Controller
         
     }
     
-    /*
-     *
-     * This will add medicalSpecialist on InstitutionMedicalCenter
-     */
-    public function addMedicalSpecialistAction(Request $request)
-    {
-        $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
-        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
-        $formActionUrl = $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'imcId' => $request->get('imcId')));
-        if ($request->isMethod('POST')) {
-    
-            $form->bind($request);
-            if ($form->isValid() && $form->get('id')->getData()) {
-                $this->institutionMedicalCenter->addDoctor($doctors);
-                
-                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
-                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
-            }
-        }
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
-        }
-        return $this->render('AdminBundle:InstitutionTreatments:add.medicalSpecialist.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'doctorsJSON' => \json_encode($doctorArr)
-        ));
-    }
-    
     public function addNewMedicalSpecialistAction(Request $request)
     {
         $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
