@@ -231,7 +231,7 @@ class InstitutionMedicalCenterService
         return $result;
     }
     
-    public function searchMedicaCenterWithSearchTerm($searchTerm)
+    public function searchMedicaCenterWithSearchTerm(Institution $institution, $searchTerm)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
                     LEFT JOIN a.institutionSpecializations b
@@ -241,13 +241,31 @@ class InstitutionMedicalCenterService
                     OR c.id = :searchTerm
                     OR d.id = :searchTerm
                     OR a.status != :inactive";
-        $result = $this->doctrine->getEntityManager()
+        
+        $dql = "SELECT imc, imcs, s, t FROM InstitutionBundle:InstitutionMedicalCenter imc
+            INNER JOIN imc.institutionSpecializations imcs
+            INNER JOIN imcs.specialization s
+            LEFT JOIN imcs.treatments t
+            LEFT JOIN t.subSpecializations ss
+            WHERE imc.status != :inactive 
+            AND imc.institution = :institutionId 
+            AND (t.name LIKE :searchTerm OR ss.name LIKE :searchTerm OR s.name LIKE :searchTerm OR imc.name LIKE :searchTerm)";
+        
+        /*
+         
+            OR 
+            OR 
+            AND 
+         */
+        $query = $this->doctrine->getEntityManager()
         ->createQuery($dql)
         ->setParameter('searchTerm', '%'.$searchTerm.'%')
         ->setParameter('inactive', InstitutionMedicalCenter::STATUS_INACTIVE)
-        ->getResult();
+        ->setParameter('institutionId', $institution->getId());
+        //echo $query->getSQL(); exit;
+        //->getResult();
         
-        return $result;
+        return $query->getResult();
     }
 
     public function getCountByInstitution(Institution $institution)
