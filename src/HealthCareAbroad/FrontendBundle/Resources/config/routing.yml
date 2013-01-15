@@ -1,3 +1,8 @@
+# Routes for institution related routes #
+FrontendBundle_institution:
+    resource: "@FrontendBundle/Resources/config/routing.institution.yml"
+    prefix:   /
+
 newsletter_new:
     pattern:  /
     defaults: { _controller: FrontendBundle:Default:new}
@@ -51,18 +56,6 @@ page_exception_report_create:
     defaults: { _controller: FrontendBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
-
-page_institution_profile:
-    pattern: /{institutionSlug}
-    defaults: { _controller: FrontendBundle:Institution:profile }
-    requirements:
-        _method:  GET
-        
-page_institutionMedicaCenter_profile:
-    pattern: /{institutionSlug}/clinic/{imcSlug}
-    defaults: { _controller: FrontendBundle:InstitutionMedicalCenter:profile }
-    requirements:
-        _method:  GET
 
 splash_page:
     pattern:  /{url}

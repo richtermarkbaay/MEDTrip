@@ -1,0 +1,9 @@
+services:
+    frontend.institution_twig_extension:
+        class: HealthCareAbroad\FrontendBundle\Twig\InstitutionTwigExtension
+        public: false
+        calls: 
+            - [setInstitutionService, [@services.institution]]
+            - [setRouter, [@router]]
+        tags:
+            - { name: twig.extension }
