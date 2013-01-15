@@ -45,7 +45,10 @@
             
         </ul>
         <div class="tab-content" id="tabbed_content">
-            <div id="medical_centers" class="tab-pane active">
+                <div class="progress progress-striped active" style="display:none;">
+                    <div class="bar" style="width: 40%;"></div>
+                </div>
+            <div id="medical_centers" class="medical_centers tab-pane active">
                 {% include 'InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig' %}
             </div>
             <div id="services" class="tab-pane"><span>Loading {{ ancillaryServiceClassLabel.plural }}...</span></div>

@@ -39,7 +39,7 @@
                 </table>
                 
                 {% if pager.isPaginable %}
-                   {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
+                   {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all, 'PagerBundle:Pager:paginateAjax.html.twig') }}
                 {% endif %}
                 
             </div>
