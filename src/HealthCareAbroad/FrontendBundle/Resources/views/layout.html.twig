@@ -8,15 +8,9 @@
         {% block header %}
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
-
+        {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
         <div id="content_wrapper" class="container">
-
-            {# if app.request.attributes.get('_route') != 'main_homepage' #}        
-                {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
-            {# endif #}
-
             {% block content %}{% endblock %}
-
         </div>
         <div class="border_pattern_footer">&nbsp;</div>
 
