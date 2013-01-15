@@ -250,4 +250,8 @@ class InstitutionMedicalCenterService
         return $result;
     }
 
+    public function getCountByInstitution(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
+    }
 }

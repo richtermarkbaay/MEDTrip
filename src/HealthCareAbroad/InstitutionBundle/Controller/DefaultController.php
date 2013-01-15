@@ -2,30 +2,17 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
-use HealthCareAbroad\HelperBundle\Services\AlertRecipient;
-
-use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
-
-use HealthCareAbroad\HelperBundle\Services\AlertService;
-
-use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
-
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
-
 use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
-
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
-
 use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\HttpFoundation\Response;
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionFormType;
+use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 class DefaultController extends InstitutionAwareController
 {
     public $institutionMedicalCenter;
@@ -39,7 +26,21 @@ class DefaultController extends InstitutionAwareController
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
+        $signupStepStatus = $this->institution->getSignupStepStatus();
         
+        if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
+            $params = array();
+            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
+            if(!InstitutionSignupStepStatus::isStep1($signupStepStatus)) {
+                if(!$this->institutionMedicalCenter) {
+                    $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+                }
+                $params['imcId'] = $this->institutionMedicalCenter->getId();
+            }
+            
+            return $this->redirect($this->generateUrl($routeName, $params));
+        }
+
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }

@@ -4,6 +4,8 @@
  * 
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 
 use HealthCareAbroad\PagerBundle\Pager;
@@ -148,8 +150,11 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
                 
+                
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                
                 // this should redirect to 2nd step
-                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $institutionMedicalCenter->getId())));
+                return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
             }
         }
         
@@ -177,7 +182,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
                 
-                return $this->redirect($this->generateUrl('institution_account_profile', array('institutionId' => $this->institution)));
+                return $this->redirect($this->generateUrl('institution_account_profile'));
             }
         }
         
@@ -216,13 +221,16 @@ class InstitutionAccountController extends InstitutionAwareController
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
 
-            if(!$templateVariables['institutionMedicalCenter']) {
-                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+            $signupStepStatus = $this->institution->getSignupStepStatus();
+            if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
+                $params = InstitutionSignupStepStatus::isStep1($signupStepStatus) ? array() : array('imcId' => $this->institutionMedicalCenter->getId());
+                return $this->redirect($this->generateUrl($routeName, $params));
             }
 
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
-            
+
             $globalSpecializationsJson = array();
             foreach ($this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations() as $e) {
                 $globalSpecializationsJson[] = array('value' => $e->getName(), 'id' => $e->getId());

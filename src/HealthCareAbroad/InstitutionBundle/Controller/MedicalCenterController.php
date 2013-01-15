@@ -1,5 +1,9 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\PagerBundle\Pager;
 
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
@@ -102,6 +106,22 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function indexAction(Request $request)
     {
+        // Check if Already Completed the signupSteps
+        $signupStepStatus = $this->institution->getSignupStepStatus();
+        if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
+            $params = array();
+            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
+
+            if(!InstitutionSignupStepStatus::isStep1($signupStepStatus)) { 
+                if(!$this->institutionMedicalCenter) {
+                    $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+                }
+                $params['imcId'] = $this->institutionMedicalCenter->getId();                
+            }
+
+            return $this->redirect($this->generateUrl($routeName, $params));
+        }
+        
         $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
         $pagerParams = array(
             'page' => $request->get('page', 1),
@@ -381,17 +401,31 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addMedicalSpecialistAction(Request $request)
     {
+        $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP5);
+        $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+
         $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+
         if ($request->isMethod('POST')) {
     
-            if($isSingleCenter) {
-                return $this->redirect($this->generateUrl('institution_homepage'));
+            $form->bind($request);
+            if ($form->isValid()) {
+
+                // Update SignupStepStatus 
+                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
+
+                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
+                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+
+                $routeName =  $isSingleCenter 
+                    ? InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus())
+                    : InstitutionSignupStepStatus::getMultipleCenterRouteNameByStatus($this->institution->getSignupStepStatus());
+                
+                return $this->redirect($this->generateUrl($routeName));
             }
-            else {
-                return $this->redirect($this->generateUrl('institution_medicalCenter_index'));
-            }
+            
         }
         $doctorArr = array();
         foreach ($doctors as $each) {
@@ -473,7 +507,6 @@ class MedicalCenterController extends InstitutionAwareController
                             'commonDeleteForm' => $commonDeleteForm->createView()
                         ));
                     }
-                    
                 }
                 else {
             
@@ -499,8 +532,12 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             else {
+                // Set Next Step
+                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+
                 // redirect to next step
-                $response = $this->redirect($this->generateUrl('institution_medicalCenter_addAncilliaryServices',  array('imcId' => $this->institutionMedicalCenter->getId())));
+                $response = $this->redirect($this->generateUrl($routeName,  array('imcId' => $this->institutionMedicalCenter->getId())));
             }   
         }
         
@@ -514,6 +551,7 @@ class MedicalCenterController extends InstitutionAwareController
         $medicalCenterService = $this->get('services.institution_medical_center');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
         
+
         if ($request->isMethod('POST')) {
             
             $form->bind($request);
@@ -529,8 +567,16 @@ class MedicalCenterController extends InstitutionAwareController
                     $_new->setValue($_value->getId());
                     $propertyService->save($_new);
                 }
+<<<<<<< HEAD
                 
                 return $this->redirect($this->generateUrl('institution_medicalCenter_addGlobalAwards', array('imcId' => $this->institutionMedicalCenter->getId())));
+=======
+
+                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+
+                return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
+>>>>>>> 8bd48d95c57a8d4dcb0bfaabf981722b462fb70a
             }
             else {
                 $request->getSession()->setFlash('notice', 'Please fill up form properly.');
