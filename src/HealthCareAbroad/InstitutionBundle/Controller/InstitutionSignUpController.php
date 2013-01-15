@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -91,12 +93,12 @@ class InstitutionSignUpController  extends Controller
     			$institution->setContactEmail('');
     			$institution->setContactNumber('');
     			$institution->setDescription('');
-    			$institution->setLogo('');
     			$institution->setCoordinates('');
     			$institution->setState('');
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
+    			$institution->setSignupStepStatus(InstitutionSignupStepStatus::STEP1);
     			$factory->save($institution);
 	            
 	            // create Institution user

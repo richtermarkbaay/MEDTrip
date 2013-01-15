@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Services;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+
 /**
  * Service class to handle the flow of institution sign up which consists of several steps and different flows depending on the institution type
  * 
@@ -46,6 +48,7 @@ class SignUpService
     public function completeProfileOfInstitutionWithSingleCenter(Institution $institution, InstitutionMedicalCenter $institutionMedicalCenter)
     {
         // save the institution
+        $institution->setSignupStepStatus(InstitutionSignupStepStatus::STEP2);
         $this->institutionFactory->save($institution);
         
         // set medical center name and description to institution.name and institution.description

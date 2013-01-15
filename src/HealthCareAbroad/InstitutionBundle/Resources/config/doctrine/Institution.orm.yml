@@ -31,11 +31,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             nullable: false
             column: contact_number
         websites:
-            type: string
-            length: 100
-            fixed: false
+            type: text
             nullable: false
-            column: websites
         address1:
             type: text
             nullable: false
@@ -52,6 +49,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: string
             length: 100
             column: coordinates
+        signupStepStatus:
+            type: smallint
+            nullable: false
+            column: signup_step_status
         dateModified:
             type: datetime
             nullable: false

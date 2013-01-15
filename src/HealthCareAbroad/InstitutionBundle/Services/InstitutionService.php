@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+
 use HealthCareAbroad\MediaBundle\Entity\Media;
 
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
@@ -29,8 +31,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\HelperBundle\Entity\City;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 class InstitutionService
-{
-	
+{    	
     protected $doctrine;
     
     /**
@@ -298,4 +299,15 @@ class InstitutionService
 //            ->leftJoin('a.medicalProviderGroups', 'b')
 //            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
 //     }
+
+    public function updateSignupStepStatus(Institution $institution, $stepStatus = InstitutionSignupStepStatus::FINISH)
+    {
+        if($stepStatus != $institution->getSignupStepStatus() && $institution->getSignupStepStatus() > 0) {
+            $institution->setSignupStepStatus($stepStatus);
+            $em = $this->doctrine->getEntityManager();
+
+            $em->persist($institution);
+            $em->flush($institution);
+        }
+    }
 }

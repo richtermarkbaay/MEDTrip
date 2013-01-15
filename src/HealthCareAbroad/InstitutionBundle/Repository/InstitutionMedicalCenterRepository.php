@@ -149,6 +149,24 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         
         return $qb;
     }
+    
+    /**
+     * Get medicaCenter count by Institution
+     *
+     * @param Institution $institution
+     * @return int
+     */
+    public function getCountByInstitution(Institution $institution)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('count(a)')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        ->where('a.institution = :institutionId')
+        ->setParameter('institutionId', $institution->getId());
+        $count = $qb->getQuery()->getSingleScalarResult();
+        
+        return $count;
+    }    
 
     private function _getCommonRSM()
     {
