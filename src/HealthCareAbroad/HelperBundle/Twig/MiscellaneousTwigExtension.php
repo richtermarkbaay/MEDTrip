@@ -1,7 +1,7 @@
 <?php
 /**
  * Twig extension for miscellaneous functions or filters
- * 
+ *
  * @author Allejo Chris G. Velarde
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
@@ -12,17 +12,17 @@ class MiscellaneousTwigExtension extends \Twig_Extension
 {
     private $classKeys;
     private $classLabels;
-    
+
     public function setClassKeys($keys)
     {
         $this->classKeys = $keys;
     }
-    
+
     public function setClassLabels($labels)
     {
         $this->classLabels = $labels;
     }
-    
+
     public function getFunctions()
     {
         return array(
@@ -39,29 +39,29 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
         );
     }
-    
+
     public function base64_encode($s) {
         return \base64_encode($s);
     }
-    
+
     public function getClass($object)
     {
         return \get_class($object);
     }
-    
+
     public function getClassLabels($classKeys=array())
     {
         $labels = array();
         foreach ($classKeys as $classKey) {
             $labels[$classKey] = $this->getClassLabel($classKey);
         }
-        
+
         return $labels;
     }
-    
+
     /**
      * Get label for class.
-     * 
+     *
      * @param mixed $classKey
      * @param boolean $plural
      */
@@ -73,53 +73,53 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             if (!\array_key_exists($class, $r)) {
                 throw new \Exception("Unable to find class key for class {$class}");
             }
-            
+
             $classKey = $r[$class];
         }
-        
+
         if (!\array_key_exists($classKey, $this->classLabels)) {
-            throw new \Exception("Unable to find label for class {$classKey}");   
+            throw new \Exception("Unable to find label for class {$classKey}");
         }
-        
+
         return $this->classLabels[$classKey];
     }
-    
+
     public function getName()
     {
         return 'miscellaneous';
     }
-    
+
     public function json_encode($jsonArray)
     {
         return  \json_encode($jsonArray);
     }
-    
+
     public function json_decode($jsonData)
     {
         return json_decode($jsonData, true);
     }
-    
+
     /**
      * Alias to json_decode with option to not include empty values
-     * 
+     *
      * @param string $jsonString
      * @param boolean $includeEmptyValues
      */
     public function json_to_array($jsonString, $includeEmptyValues=true)
     {
         $returnVal = \json_decode($jsonString, true);
-        
+
         if (!$includeEmptyValues) {
             foreach ($returnVal as $k => $v) {
                 if (\is_null($v) || '' == \trim($v)) {
                     unset($returnVal[$k]);
-                } 
+                }
             }
         }
-        
+
         return $returnVal;
     }
-    
+
     /**
      * Convert institution address to array
      *     - address1
@@ -127,15 +127,18 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *     - state
      *     - country
      *     - zip code
-     * 
+     *
      * @param Institution $institution
      */
     public function institution_address_to_array(Institution $institution)
     {
         $elements = array();
-        
+
         $street_address = array();
-        foreach (\json_decode($institution->getAddress1(), true) as $key => $v) {
+
+        $decodedAddress = \json_decode($institution->getAddress1(), true) ?: array();
+
+        foreach ($decodedAddress as $key => $v) {
             if (\trim($v) != '') {
                 $street_address[] = $v;
             }
@@ -144,35 +147,35 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         if ('' != $address1) {
             $elements['address1'] = $address1;
         }
-        
+
         if ($institution->getCity()) {
             $elements['city'] = $institution->getCity()->getName();
         }
-        
+
         if ('' != $institution->getState()) {
             $elements['state'] = $institution->getState();
         }
-        
+
         if ($institution->getCountry()) {
             $elements['country'] = $institution->getCountry()->getName();
         }
-        
+
         if (0 != $institution->getZipCode() || '' != $institution->getZipCode()) {
             $elements['zip_code'] = $institution->getZipCode();
         }
-        
+
         return $elements;
     }
-    
+
     public function unset_array_key($key, $arr)
     {
         if (\array_key_exists($key, $arr)) {
             unset($arr[$key]);
         }
-        
+
         return $arr;
     }
-    
+
     public function institution_websites_to_array(Institution $institution)
     {
         $websites = \json_decode($institution->getWebsites(), true);
@@ -182,7 +185,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
                 $v = 'http://'.$v;
             }
         });
-        
+
         return $websites;
     }
 }
