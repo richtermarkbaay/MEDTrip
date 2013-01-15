@@ -245,11 +245,18 @@ class InstitutionAccountController extends InstitutionAwareController
             // multiple center institution profile view
             $templateVariables['medicalCenters'] = $pager->getResults();
             $templateVariables['pager'] = $pager;
+            
+            if($request->get('page') > 0 ){
+                $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig', $templateVariables);
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            
+                return $response;
+            }
         }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
-    
+
 
     /**
      * Ajax handler for loading tabbed contents in institution profile page
@@ -484,15 +491,16 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
                 else {
                     // construct the error message
-                    $html ="<ul class='errors'>";
+                    $html ="<ul class='text-error' style='margin: 0px;'>";
                     foreach ($form->getErrors() as $err){
                          $html .= '<li>'.$err->getMessage().'</li>';
                     }
                     $html .= '</ul>';
                      
-                    //var_dump($form->get('name')->getErrors()); exit;
                     $output['form_error'] = 1;
                     $output['form_error_html'] = $html;
+                    
+                    return new Response(\json_encode($output), 400, array('content-type' => 'application/json'));
                 }    
             }
             catch (\Exception $e) {   

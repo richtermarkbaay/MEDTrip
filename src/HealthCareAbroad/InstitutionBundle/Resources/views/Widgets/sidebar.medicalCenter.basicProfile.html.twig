@@ -3,11 +3,12 @@
     <div class="clear"></div>
     <table class="table table-striped">
         <tr>
-            <td>
-                <span id="profileAddressText">{{ json_decode(institutionMedicalCenter.address) | join(', ') }}</span>, 
-                <span id="profileCityText">{% if institution.city.id is defined %} {{ institution.city.name }}, {% endif %}</span>
-                <span id="profileStateText">{% if institution.state %} {{ institution.state }}, {% endif %}</span>
-                <span id="profileCountryText">{{ institution.country.name }}</span>
+            <td class="medical_center_address">
+                {% set _institution_address =  unset_array_key('address1', institution_address_to_array(institution) ) %}
+                {% set _institution_medical_center_address = json_to_array(institutionMedicalCenter.address, false) %}
+                
+                <span class="street_address_part">{{  _institution_medical_center_address | length ? _institution_medical_center_address | join(', ') ~ ', ' : '' }}</span>
+                <span class="institution_address">{{ _institution_address | join(', ')}}</span>
                 <a href="#addressModal" data-toggle="modal" role="button">
                     <i class="icon-pencil" title="Edit"></i><small>Edit</small>
                 </a>
@@ -38,8 +39,8 @@
         <tr>
             <td>
                 <div id="profileWebsitesText">
-                    {% for type, site in json_decode(institutionMedicalCenter.websites) %}
-                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% for type, site in json_websites_to_array(institutionMedicalCenter.websites) %}
+                        {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
                     {% endfor %}
                 </div>
                 <a href="#websitesModal" role="button" data-toggle="modal">

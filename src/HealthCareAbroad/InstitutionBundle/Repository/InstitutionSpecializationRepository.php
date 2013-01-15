@@ -36,18 +36,18 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $count;
     }
-    
+
     public function getAvailableTreatments(InstitutionSpecialization $institutionSpecialization)
     {
         $qb = $this->_em->createQueryBuilder();
-        
+
         $sql = "SELECT i.`treatment_id` as treatment_id FROM `institution_treatments` i WHERE i.`institution_specialization_id` = :institutionSpecializationId ";
         $statement = $this->getEntityManager()
             ->getConnection()->prepare($sql);
-        
+
         $statement->execute(array('institutionSpecializationId' => $institutionSpecialization->getId()));
         $result = array();
-        
+
         $ids = array();
         while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
             $ids[] = $row['treatment_id'];
@@ -57,18 +57,18 @@ class InstitutionSpecializationRepository extends EntityRepository
             $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE ".
                 " t.id NOT IN (?1) ".
                 "AND t.specialization = :specializationId ";
-            
+
             $query = $this->_em->createQuery($dql)
                 ->setParameter(1, $ids)
                 ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
         }
         else {
             $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE t.specialization = :specializationId";
-            
+
             $query = $this->_em->createQuery($dql)
                 ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
         }
-        
+
         return $query->getResult();
     }
 
@@ -368,5 +368,109 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topCities = $stmt->fetchAll();
 
         return array($topCountries, $topCities);
+    }
+
+    /**
+     * Get the top specializations and treatments for specified country
+     *
+     * @param unknown $country
+     * @param number $max
+     * @return multitype:unknown
+     */
+    public function getCountryTopTreatments($country, $max = 5)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        if (is_object($country)) {
+            $country = $country->getId();
+        }
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS specialization, COUNT(*) AS count
+            FROM institution_specializations a
+            LEFT JOIN specializations b ON a.specialization_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.institution_medical_center_id = c.id
+            LEFT JOIN institutions AS d ON c.institution_id = d.id
+            WHERE d.country_id = :country
+            GROUP BY b.id
+            ORDER BY count DESC
+            LIMIT :max
+       ');
+        $stmt->bindValue('country', $country, \PDO::PARAM_INT);
+        $stmt->bindValue('max', $max, \PDO::PARAM_INT);
+        $stmt->execute();
+        $topSpecializations = $stmt->fetchAll();
+
+        $stmt = $connection->prepare('
+            SELECT c.id, c.name AS treatment, COUNT(*) AS count
+            FROM institution_specializations a
+            LEFT JOIN institution_treatments b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments c ON b.treatment_id = c.id
+            LEFT JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
+            LEFT JOIN institutions AS e ON d.institution_id = e.id
+            WHERE e.country_id = :country
+            GROUP BY c.id
+            ORDER BY count DESC
+            LIMIT :max
+       ');
+        $stmt->bindValue('country', $country, \PDO::PARAM_INT);
+        $stmt->bindValue('max', $max, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $topTreatments = $stmt->fetchAll();
+
+        return array($topSpecializations, $topTreatments);
+    }
+
+    /**
+     * Get the top specializations and treatments for specified city
+     *
+     * @param unknown $country
+     * @param number $max
+     * @return multitype:unknown
+     */
+    public function getCityTopTreatments($city, $max = 5)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        if (is_object($city)) {
+            $city = $city->getId();
+        }
+
+        $stmt = $connection->prepare('
+            SELECT b.id, b.name AS specialization, COUNT(*) AS count
+            FROM institution_specializations a
+            LEFT JOIN specializations b ON a.specialization_id = b.id
+            LEFT JOIN institution_medical_centers c ON a.institution_medical_center_id = c.id
+            LEFT JOIN institutions AS d ON c.institution_id = d.id
+            WHERE d.city_id = :city
+            GROUP BY b.id
+            ORDER BY count DESC
+            LIMIT :max
+       ');
+        $stmt->bindValue('city', $city, \PDO::PARAM_INT);
+        $stmt->bindValue('max', $max, \PDO::PARAM_INT);
+        $stmt->execute();
+        $topSpecializations = $stmt->fetchAll();
+
+        $stmt = $connection->prepare('
+            SELECT c.id, c.name AS treatment, COUNT(*) AS count
+            FROM institution_specializations a
+            LEFT JOIN institution_treatments b ON a.id = b.institution_specialization_id
+            LEFT JOIN treatments c ON b.treatment_id = c.id
+            LEFT JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
+            LEFT JOIN institutions AS e ON d.institution_id = e.id
+            WHERE e.city_id = :city
+            GROUP BY c.id
+            ORDER BY count DESC
+            LIMIT :max
+       ');
+        $stmt->bindValue('city', $city, \PDO::PARAM_INT);
+        $stmt->bindValue('max', $max, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $topTreatments = $stmt->fetchAll();
+
+        return array($topSpecializations, $topTreatments);
     }
 }

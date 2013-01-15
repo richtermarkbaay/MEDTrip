@@ -34,31 +34,31 @@ search_frontend_results_treatments:
     defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments, page: 1 }
 
 search_frontend_results_countries:
-    pattern: /search/destination/{country}/{page}
+    pattern: /destination/{country}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsCountries, page: 1 }
     requirements:
         page: \d+
 
 search_frontend_results_cities:
-    pattern: /search/destination/{country}/{city}/{page}
+    pattern: /destination/{country}/{city}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsCities, page: 1 }
     requirements:
         page: \d+
 
 search_frontend_results_treatments:
-    pattern: /search/treatment/{specialization}/{treatment}/treatment/{page}
+    pattern: /treatment/{specialization}/{treatment}/treatment/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments, page: 1 }
     requirements:
         page: \d+
 
 search_frontend_results_specializations:
-    pattern: /search/treatment/{specialization}/{page}
+    pattern: /treatment/{specialization}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsSpecializations, page: 1 }
     requirements:
         page: \d+
 
 search_frontend_results_subSpecializations:
-    pattern: /search/treatment/{specialization}/{subSpecialization}/{page}
+    pattern: /treatment/{specialization}/{subSpecialization}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsSubSpecializations, page: 1 }
     requirements:
         page: \d+
