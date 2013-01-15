@@ -20,7 +20,7 @@
         </div>
     </section>
 
-    <section id="content" class="container">
+    <div id="content" class="container content">
         <div id="details" class="row">
             <div id="main_content" class="span8">
                 <header class="filters">
@@ -31,7 +31,7 @@
                 {% for center in searchResults %}
                     {% set rating = random(5) %}
                     <article class="media search-entry">
-                        <a class="pull-left" href="#">
+                        <a class="pull-left" href="{{ path('page_institutionMedicaCenter_profile', {'institutionSlug': center.institution.slug, 'imcSlug': center.slug}) }}">
                             <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
                             <div class="rating">
                                 <p>USER RATINGS</p>
@@ -59,7 +59,7 @@
                                         <b>{{ center.institution.city }}, {{ center.institution.country }}</b>
                                     </small>
                                 </div>
-                                <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                                <a href="{{ path('page_institutionMedicaCenter_profile', {'institutionSlug': center.institution.slug, 'imcSlug': center.slug}) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
                             </div>
                         </div>
                     </article>
@@ -72,7 +72,7 @@
             </div> <!--End of main_content-->
 
             <aside id="aside_content" class="span4">
-                <div class="box-in">
+                <section class="box-in">
                     <h5 class="heading"><small>Narrow</small> Search </h5>
                     <ul class="related">
                         <li class="row">
@@ -100,17 +100,17 @@
                                 </ul>
                         </li>
                     </ul>
-                </div>
-                <div class="box-in">
+                </section>
+                <section class="box-in">
                     <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
                     <ul class="ads">
                         <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
                         <li>When I grow up, I want to be an <b>NEWS</b>.</li>
                     </ul>
-                </div>
+                </section>
             </aside> <!--End of aside_content-->
         </div>
-    </section> <!--End of content-->
+    </div> <!--End of content-->
 
     {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
 
