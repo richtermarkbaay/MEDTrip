@@ -9,6 +9,13 @@
 		    No Specializations yet
 		{% endfor %}
 		</td>
-	    <td><a class="btn btn-danger specialist_deleteBtn delete" onclick ="InstitutionSpecialistAutocomplete.removeProperty({{ doctor.id }}, $(this).parents('tr')); return false;">Remove</a></td>
+	    <td>
+	     <div class="post-toolbar treatment_action">
+    		<i class="icon-trash" title="Delete"></i>
+    		<a href="#" onclick ="InstitutionSpecialistAutocomplete.removeProperty({{ doctor.id }}, $(this).parents('tr')); return false;" >Edit</a>
+    		<i class="icon-edit" title="Edit"></i>
+    		<a href="{{ path('institution_manageDoctorProfile', { 'institutionId':institution.id,'idId' :doctor.id }) }}" >Edit</a>
+    	</div>
+	    </td>
 	</tr>
 {% endfor %}

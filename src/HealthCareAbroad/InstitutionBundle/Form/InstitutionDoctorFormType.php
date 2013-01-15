@@ -2,7 +2,9 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionDoctorSpecializationListType;
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
+use HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -20,10 +22,14 @@ class InstitutionDoctorFormType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	$builder
-     		->add('firstName', 'text', array('label' => 'First name', 'constraints' => new NotBlank()))
-     		->add('middleName', 'text', array('label' => 'Middle name'))
-     		->add('lastName', 'text', array('label' => 'Last name', 'constraints' => new NotBlank()));
+        $gender = array(Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
+        
+        	$builder
+     		->add('country','globalCountry_list')
+    	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
+    	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
+    	    ->add('contactNumber', 'contact_number', array('label' => 'Contact Number'))
+        	->add('gender', 'choice', array('choices'=>$gender));
     }
     
     public function getName()

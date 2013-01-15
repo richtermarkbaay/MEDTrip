@@ -4,6 +4,9 @@ class Doctor
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+    
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
 
     /**
      * @var bigint $id
@@ -24,6 +27,11 @@ class Doctor
      * @var string $lastName
      */
     private $lastName;
+    
+    /**
+     * @var smallint $gender
+     */
+    private $gender;
 
     /**
      * @var string $contactEmail
@@ -150,6 +158,28 @@ class Doctor
     public function getLastName()
     {
         return $this->lastName;
+    }
+    
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     * @return Doctor
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+        return $this;
+    }
+    
+    /**
+     * Get gender
+     *
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 
     /**

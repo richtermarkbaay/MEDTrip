@@ -1,0 +1,15 @@
+institution_manageDoctorProfile:
+    pattern:  /institution/{institutionId}/specialist/{idId}/manage-doctor-profile.html
+    defaults: { _controller: InstitutionBundle:Doctor:doctorProfile }
+    requirements:
+        institutionId: \d+
+        idId: \d+
+        _method: GET
+        
+institution_saveDoctorProfile:
+    pattern:  /institution/{institutionId}/specialist/{idId}/manage-doctor-profile.html
+    defaults: { _controller: InstitutionBundle:Doctor:save }
+    requirements:
+        institutionId: \d+
+        idId: \d+
+        _method: GET|POST

@@ -10,7 +10,7 @@
 	{% else %}
 	    {% set class = '' %}
 	{% endif %}
-    <div class="alert {{ class }}">
+    <div class="alert {{ class }} span12">
         <!-- button type="button" class="close" data-dismiss="alert">x</button>  -->
         <strong>{{ alert | title }}!</strong> {{ message | raw}}
     </div>
