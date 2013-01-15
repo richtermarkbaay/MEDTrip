@@ -20,7 +20,7 @@
         </div>
     </section>
 
-    <section id="content" class="container">
+    <div id="content" class="container content">
         <div id="details" class="row">
             <div id="main_content" class="span8">
                 <header class="filters">
@@ -32,7 +32,7 @@
                 {% for institution in searchResults %}
                     {% set rating = random(5) %}
                 <article class="media search-entry">
-                    <a class="pull-left" href="#">
+                    <a class="pull-left" href="{{ path('page_institution_profile', {'institutionSlug': institution.slug}) }}">
                         <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
                         <div class="rating">
                             <p>USER RATINGS</p>
@@ -60,7 +60,7 @@
                                     <b>{{ institution.city }}, {{ institution.country }}</b>
                                 </small>
                             </div>
-                            <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                            <a href="{{ path('page_institution_profile', {'institutionSlug': institution.slug}) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
                         </div>
                     </div>
                 </article>
@@ -73,10 +73,45 @@
             </div> <!--End of main_content-->
 
             <aside id="aside_content" class="span4">
-                {#% include  %#}
+                <section class="box-in">
+                    <h5 class="heading"><small>Narrow</small> Search </h5>
+                    <ul class="related">
+                        <li class="row">
+                            <h3>By Specialization</h3>
+                                <ul>
+                                    {% for item in topSpecializations %}
+                                        <li><a href="#">{{ item.specialization }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                        </li>
+                        <li class="row">
+                            <h3>By Treatment</h3>
+                                <ul>
+                                    {% for item in topTreatments %}
+                                        <li><a href="#">{{ item.treatment }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                        </li>
+                        <li class="row">
+                            <h3>Related Treatments</h1>
+                                <ul>
+                                    <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
+                                    <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
+                                    <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
+                                </ul>
+                        </li>
+                    </ul>
+                </section>
+                <section class="box-in">
+                    <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
+                    <ul class="ads">
+                        <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
+                        <li>When I grow up, I want to be an <b>NEWS</b>.</li>
+                    </ul>
+                </section>
             </aside> <!--End of aside_content-->
         </div>
-    </section> <!--End of content-->
+    </div> <!--End of content-->
 
     {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
 
