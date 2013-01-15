@@ -567,16 +567,11 @@ class MedicalCenterController extends InstitutionAwareController
                     $_new->setValue($_value->getId());
                     $propertyService->save($_new);
                 }
-<<<<<<< HEAD
                 
-                return $this->redirect($this->generateUrl('institution_medicalCenter_addGlobalAwards', array('imcId' => $this->institutionMedicalCenter->getId())));
-=======
-
                 $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
 
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
->>>>>>> 8bd48d95c57a8d4dcb0bfaabf981722b462fb70a
             }
             else {
                 $request->getSession()->setFlash('notice', 'Please fill up form properly.');
