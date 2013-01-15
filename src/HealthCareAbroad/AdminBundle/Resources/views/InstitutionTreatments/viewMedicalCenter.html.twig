@@ -244,26 +244,32 @@
         });
 
         $('#businessHourCheckBox').click(function(){
-        	
     	    if ($('#businessHourCheckBox').attr('checked')) {
 
     	    	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
     	    	$('#table-businessHours').hide();
     	    	
     	    }else{
         	    $('#table-businessHours').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
         	}
     	}) 
         
         $('#saveBusinessHours').click(function() {
+            
         	_form = $(this).parents('#businessHours').find('form');
             _form.append('<span class="loader">Loading...</span>');
+            var businessHoursData = _form.serialize();
+            if ($('#businessHourCheckBox').attr('checked')) {
+                businessHoursData = '';
+            }
             $.ajax({
                 url: "{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
-                data: _form.serialize(),
+                data: businessHoursData,
                 type: 'POST',
                 success: function(data) {  
           		  $('#institutionBusinessHoursText').html(data.html);

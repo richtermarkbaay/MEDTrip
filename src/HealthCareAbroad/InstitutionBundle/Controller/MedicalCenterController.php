@@ -1,47 +1,30 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
-
-use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
-
-use HealthCareAbroad\PagerBundle\Pager;
-
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
-use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
-
-use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
-
-use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
-
-use Symfony\Component\HttpFoundation\Response;
-
-use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
-
-use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
+use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
+
+
 
 /**
  * Controller for InstitutionMedicalCenter.
@@ -144,7 +127,6 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateByFieldAction(Request $request)
     {
         $output = array();
-        //if ($request->isMethod('POST')) {
         if (true) {
             try {
                 $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
@@ -338,22 +320,7 @@ class MedicalCenterController extends InstitutionAwareController
     {
         return $this->addDetailsAction($request);
     }
-    
-    public function searchAction(Request $request)
-    {
-        
-        $centers = $this->get('services.institutionMedicalCenter')->searchMedicaCenterWithSearchTerm($request->get('searchKey'));
-        $treatments = array();
-        foreach($centers as $each )
-        {
-            var_dump($each->getInstitutionSpecializations()->getSpecialization());exit;
-        }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:searchResultpage.html.twig', array(
-                        'institution' => $this->institution,
-                        'medicalCenters' => $centers
-        ));
-    }
+         
     /**
      * This is the first step when creating a new InstitutionMedicalCenter. Add details of a InstitutionMedicalCenter
      * 

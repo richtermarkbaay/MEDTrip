@@ -242,6 +242,7 @@ class InstitutionTreatmentsController extends Controller
     */
     public function ajaxAddMedicalSpecialistAction(Request $request)
     {
+        echo "test";exit;
         $doctorId = $request->get('doctorId');
         $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
         $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
@@ -439,6 +440,7 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
         if ($request->isMethod('POST')) {
+            
             if($request->get('businessHours') == null){
                 $businessHours = '';
             }else{
@@ -448,7 +450,6 @@ class InstitutionTreatmentsController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
     
             try {
-                if ($businessHours) {
                     $em->persist($this->institutionMedicalCenter);
                     $em->flush();
                     // TODO: Verify Event!
@@ -456,7 +457,6 @@ class InstitutionTreatmentsController extends Controller
                     $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
                                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
                                     ));
-                }
             }
             catch (\Exception $e) {
                  

@@ -25,12 +25,6 @@ institution_medicalCenter_addDetails:
         _method: GET|POST
         imcId: \d+
 
-institution_medicalCenter_search:
-    pattern: /medical-center/search
-    defaults: { _controller: InstitutionBundle:MedicalCenter:search }
-    requirements:
-        _method: GET|POST
-
 institution_medicalCenter_add:
     pattern: /medical-center/add-new
     defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
