@@ -182,7 +182,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
                 
-                return $this->redirect($this->generateUrl('institution_account_profile', array('institutionId' => $this->institution)));
+                return $this->redirect($this->generateUrl('institution_account_profile'));
             }
         }
         
