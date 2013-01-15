@@ -237,11 +237,18 @@ class InstitutionAccountController extends InstitutionAwareController
             // multiple center institution profile view
             $templateVariables['medicalCenters'] = $pager->getResults();
             $templateVariables['pager'] = $pager;
+            
+            if($request->get('page') > 0 ){
+                $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig', $templateVariables);
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            
+                return $response;
+            }
         }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
-    
+
 
     /**
      * Ajax handler for loading tabbed contents in institution profile page

@@ -1,0 +1,31 @@
+<div style="float:left;display: none"><input type="checkbox" id="sort-all-pages">
+    <label for="sort-all-pages">Sort Current Page Only</label>
+</div>
+ <div class="pagination pagination-right">                   
+<ul >
+   {% if pager.isFirstPage == false %}
+        <li class="first"><a href="{{ paginate_path(route, pager.getFirstPage, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">&laquo;</a></li>
+        <li class="previous"><a href="{{ paginate_path(route, pager.getPreviousPage, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">&lsaquo;</a></li>
+   {% endif %}
+   {% for page in pager.getPages %}
+      {% if page == pager.getPage %}
+        <li class="active">
+            <a href="{{ paginate_path(route, page, parameters) }}">{{ page }}</a>
+        </li>
+      {% else %}
+        <li>
+            <a href="{{ paginate_path(route, page, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">{{ page }}</a>
+        </li>
+      {% endif %}
+   {% endfor %}
+   {% if pager.isLastPage == false %}
+        <li class="next"><a href="{{ paginate_path(route, pager.getNextPage, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">&rsaquo;&rsaquo;</a></li>
+        <li class="last"><a href="{{ paginate_path(route, pager.getLastPage, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">&raquo;&raquo;</a></li>
+   {% endif %}
+</ul>
+</div>
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
+
+{% endblock %}

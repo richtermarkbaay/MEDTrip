@@ -28,8 +28,8 @@
     				{% endfor %}
 		    </tbody>
 	    </table>
-	     {% if pager.isPaginable %}
-                   {{ paginate(pager, 'institution_account_profile', app.request.query.all) }}
+                 {% if pager.isPaginable %}
+                   {{ paginate(pager, 'institution_account_profile', app.request.query.all, 'PagerBundle:Pager:paginateAjax.html.twig') }}
                 {% endif %}
     {% endblock %}
     
