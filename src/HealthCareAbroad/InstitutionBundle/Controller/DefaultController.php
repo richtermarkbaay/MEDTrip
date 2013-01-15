@@ -42,10 +42,6 @@ class DefaultController extends InstitutionAwareController
         }
 
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
-            if($routeName = InstitutionSignupStepStatus::getSingleRouteNameByStatus($signupStepStatus)) {
-                return $this->redirect($this->generateUrl($routeName));
-            }
-
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }
         else {
