@@ -39,8 +39,8 @@
         <tr>
             <td>
                 <div id="profileWebsitesText">
-                    {% for type, site in json_decode(institutionMedicalCenter.websites) %}
-                        {{ type }}: <a href="http://{{ site }}">{{ site }}</a><br/>
+                    {% for type, site in json_websites_to_array(institutionMedicalCenter.websites) %}
+                        {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
                     {% endfor %}
                 </div>
                 <a href="#websitesModal" role="button" data-toggle="modal">

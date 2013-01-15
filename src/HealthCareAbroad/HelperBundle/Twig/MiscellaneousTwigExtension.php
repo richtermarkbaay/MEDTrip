@@ -37,6 +37,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
             'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
+            'json_websites_to_array' => new \Twig_Function_Method($this, 'json_websites_to_array'),
         );
     }
 
@@ -120,6 +121,21 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         return $returnVal;
     }
 
+    public function json_websites_to_array($jsonString)
+    {
+        $websites = \json_decode($jsonString, true);
+        \array_walk($websites, function(&$v, $key){
+            // if it matches http or https
+
+            if ($v != '' && ! \preg_match('/^https?:\/\//i', $v)) {
+                $v = 'http://'.$v;
+            }
+
+        });
+
+        return $websites;
+    }
+
     /**
      * Convert institution address to array
      *     - address1
@@ -186,6 +202,6 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             }
         });
 
-        return $websites;
+        return $this->json_websites_to_array($institution->getWebsites());
     }
 }
