@@ -422,7 +422,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
                 
                 $parameters['form'] = $form->createView();
-                $parameters['doctorsJSON'] = \json_encode($doctorArr);
+                $parameters['doctorsJSON'] = \json_encode($doctorArr, JSON_HEX_APOS);
                 $parameters['institution'] =  $this->institution;
                 $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
