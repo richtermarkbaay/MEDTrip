@@ -24,6 +24,7 @@
                                     {{ form_row(form.firstName) }}
                                     {{ form_row(form.middleName) }}
                                     {{ form_row(form.lastName) }}
+                                    {{ form_row(form.gender) }}
                                     {{ form_row(form.details) }}
                                     {{ form_row(form.country) }}
                                     {{ form_row(form.media) }}
@@ -34,29 +35,8 @@
                                     {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
                                     <div class="clearfix"></div>
                                     {{ form_row(form.contactEmail) }}
-		                            {% set arrContactNumber = json_decode(doctor.contactNumber) %}
+		                            {{ form_row(form.contactNumber) }}
 		
-		                            {% if not arrContactNumber|length %}
-		                                {% set arrContactNumber = [{"number" : "", "type": ""}] %}
-		                            {% endif %}
-		                        
-		                            {{ form_label(form.contactNumber) }}
-		
-		                            <div style="margin-bottom: 5px;display:inline-block;" id="contactNumberContainer">
-		                                {% for i, contact in arrContactNumber %}
-		                                    <div id="contact-{{ i }}">
-		                                        <input type="text" name="contactNumber[{{ i }}][number]" value="{{ contact.number}}">
-		                                        <a href="javascript:addAnotherContact()" class="add-another-number"> add another</a> 
-		                                        <span class="bar"> | </span> 
-		                                        <a href="javascript:removeContact({{ i }})" class="remove-contact">remove</a>
-		                                        <div style="margin-top: 3px;font-size: 11px;padding-left:5px;">
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="phone" id="phone{{ i }}" {{ ('phone' == contact.type) or ('' == contact.type) ? 'checked' : '' }}><label for="phone{{ i }}">Phone</label> &nbsp;
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="mobile" id="mobile{{ i }}" {{ 'mobile' == contact.type ? 'checked' : '' }}><label for="mobile{{ i }}">Mobile</label> &nbsp;
-		                                            <input type="radio" name="contactNumber[{{ i }}][type]" value="fax"  id="fax{{ i }}" {{ 'fax' == contact.type ? 'checked' : '' }}><label for="fax{{ i }}">Fax</label>
-		                                        </div>
-		                                    </div> 
-		                                {% endfor %}
-		                            </div>
 		                        </div>
                                     {{ form_rest(form) }}
                                      <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>
