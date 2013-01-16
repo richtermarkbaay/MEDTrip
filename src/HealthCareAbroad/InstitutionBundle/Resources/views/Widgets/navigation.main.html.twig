@@ -14,7 +14,7 @@
     				{#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
                     {% if (institution.type != 3) %}
                     <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
-                        <a href="{{ path('institution_medicalCenter_index') }}">Medical Listing</a>
+                        <a href="{{ path('institution_medicalCenter_index') }}">Your Clinics</a>
                     </li>
                     {% endif %}
                     <li class="{{ 'logs' == mainNavigation.selected  ? 'active' : '' }}">
