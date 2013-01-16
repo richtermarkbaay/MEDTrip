@@ -28,7 +28,7 @@
         {% for center in searchResults %}
             {% set rating = random(5) %}
             <article class="media search-entry">
-                <a class="pull-left" href="{{ path('page_institutionMedicaCenter_profile', {'institutionSlug': center.institution.slug, 'imcSlug': center.slug}) }}">
+                <a class="pull-left" href="{{ get_institution_medical_center_frontend_url(center) }}">
                     <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
                     <div class="rating">
                         <p>USER RATINGS</p>
