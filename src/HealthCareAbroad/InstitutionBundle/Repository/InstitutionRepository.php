@@ -91,11 +91,11 @@ class InstitutionRepository extends EntityRepository
     //TODO: paging
     public function getInstitutionsByCountry($country)
     {
-        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status = :status ";
-        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country ";
+        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status = :status ";
+        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country ";
 
         $query = $this->_em->createQuery($dql)
-            //->setParameter('status', InstitutionStatus::APPROVED)
+            ->setParameter('status', InstitutionStatus::APPROVED)
             ->setParameter('country', $country);
 
 
@@ -104,11 +104,11 @@ class InstitutionRepository extends EntityRepository
 
     public function getInstitutionsByCity($city)
     {
-        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status = :status ";
+        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status = :status ";
         $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.city = :city ";
 
         $query = $this->_em->createQuery($dql)
-            //->setParameter('status', InstitutionStatus::APPROVED)
+            ->setParameter('status', InstitutionStatus::APPROVED)
             ->setParameter('city', $city);
 
 
