@@ -52,8 +52,12 @@
                         </div>
                         <div class="media-body">
                             <small>
-                                {{ institution_address_to_array(center.institution) | join(', ')  }}<br>
-                                <b>{{ center.institution.city }}, {{ center.institution.country }}</b>
+                                {# -- center street/specific address -- #}
+                                {% set _institution_medical_center_address = medical_center_complete_address_to_array(center, ['address', 'zipCode']) %}
+                                {% set _institution_address = medical_center_complete_address_to_array(center, ['city', 'state', 'country']) %}
+                                {{ _institution_medical_center_address | join(', ') }}
+                                <br>
+                                <b>{{ _institution_address | join(', ') }}</b>
                             </small>
                         </div>
                         <a href="{{ get_institution_medical_center_frontend_url(center) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>

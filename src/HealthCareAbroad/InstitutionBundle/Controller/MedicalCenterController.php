@@ -303,7 +303,7 @@ class MedicalCenterController extends InstitutionAwareController
                 }
                 
                 $parameters['form'] = $form->createView();
-                $parameters['doctorsJSON'] = \json_encode($doctorArr);
+                $parameters['doctorsJSON'] = \json_encode($doctorArr, JSON_HEX_APOS);
                 $parameters['institution'] =  $this->institution;
                 $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
@@ -404,7 +404,7 @@ class MedicalCenterController extends InstitutionAwareController
                         'institution' => $this->institution,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
-                        'doctorsJSON' => \json_encode($doctorArr)
+                        'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS)
         ));
     }
     
@@ -572,7 +572,7 @@ class MedicalCenterController extends InstitutionAwareController
             'form' => $form->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'doctorsJSON' => \json_encode($doctorArr),
+            'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'currentDoctors' => $this->institutionMedicalCenter->getDoctors()
         ));
     }

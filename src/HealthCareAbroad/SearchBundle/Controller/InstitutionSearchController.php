@@ -1,5 +1,7 @@
 <?php
-namespace HealthCareAbroad\InstitutionBundle\Controller;
+namespace HealthCareAbroad\SearchBundle\Controller;
+
+use HealthCareAbroad\InstitutionBundle\Controller\InstitutionAwareController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
