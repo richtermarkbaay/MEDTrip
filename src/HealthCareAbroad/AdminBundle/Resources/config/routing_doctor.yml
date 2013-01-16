@@ -41,7 +41,7 @@ admin_doctor_load_doctor_specializations:
         doctorId: \d+
 
 admin_institution_medicalCenter_ajaxAddMedicalSpecialist:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/{doctorId}/add
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/add
     defaults: {_controller: AdminBundle:InstitutionTreatments:ajaxAddMedicalSpecialist}
     requirements:
         institutionId: \d+
