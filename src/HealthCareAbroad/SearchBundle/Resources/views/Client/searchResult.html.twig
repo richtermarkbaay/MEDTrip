@@ -1,0 +1,54 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'medical_centers'} %}
+{% block content %}
+<section id="content">
+    <div class="container">
+        <div class="row">
+            <div class="span12">
+                <div class="pull-right">
+                    <a href="{{ path('institution_medicalCenter_add') }}" class="btn btn-success btn-large">Create New Listing</a>
+                </div>
+                <h1><span>Medical Listing</span></h1>
+                
+                <table class="table table-striped table-bordered bootstrap-datatable">
+                    <thead>
+                        <tr>
+                            <th class="span3">Clinic</th>
+                            <th>Clinic Specializations</th>
+                            <th class="span3">Clinic Treatments</th>
+                            <th class="span3">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+					    {% for medicalCenter in medicalCenters %}
+					    <tr>
+					        <td>
+					            <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a>
+				            </td>
+				            <td>{% for specialization in medicalCenter.institutionSpecializations %}
+				                    {{ specialization.specialization }},
+				                {% endfor %}
+				            </td>
+				            <td>
+				                {% for _is in medicalCenter.institutionSpecializations %}
+				                    {% for _treatment in  _is.treatments %}
+				                        {{ _treatment.name }}
+				                    {% endfor %}
+				                {% endfor %}
+				            </td>
+				            <td>
+				                <div class="post-toolbar">
+				                    <i title="Edit" class="icon-pencil"></i>
+				                    <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="Edit" class="icon-1 info-tooltip">Edit</a>
+				                </div>
+			                </td>
+		                </tr>
+		                {% endfor %}
+	                </tbody>
+                </table>
+                
+            </div>
+        </div><!--End of row-->
+    </div><!--End of container-->
+</section>
+{% endblock %}

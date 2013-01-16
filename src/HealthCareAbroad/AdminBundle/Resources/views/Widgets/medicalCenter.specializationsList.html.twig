@@ -1,6 +1,5 @@
 {% set specializationLabel = getClassLabel('institution_specialization') %}
-   {% for institutionSpecialization in institutionSpecializations %}
-<div class="specializations_block" id="specialization_block_{{ institutionSpecialization.id }}">
+<div id="specializations">
     <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="clinic_specializations">
         {{ specializationLabel.plural | title }}
         <a href="{{ path('admin_institution_medicalCenter_addSpecialization', {institutionId: institution.id, imcId: institutionMedicalCenter.id, 'instituionId': institution.id}) }}">
@@ -10,38 +9,39 @@
             </button>
         </a>
     </h5>
-
-    {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
-    {% set _editSpecializationUri = path('admin_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id, 'institutionId': institution.id} ) %}
-     <div class="maincontentblock">
-       <table class="table table-striped table-bordered bootstrap-datatable">
-            <thead>
-                <tr>
-                    <th colspan="2">{{ institutionSpecialization.specialization.name |title}}
-    					<i class="icon-pencil" title=""></i>
-    					 <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
-                    </th>
-    			</tr>
-            </thead>
-            <tbody class="institution_specialization_treatments_container">
-	            {% include 'AdminBundle:InstitutionTreatments:list.institutionTreatments.html.twig' %}
-			</tbody>
-        </table>
-		
-		<div id="{{ _editSpecializationModalId }}" class="modal add_treatments_modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-header">
-		        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-		        <h3>Add {{ institutionSpecialization.specialization.name }} treatments</h3>
-		    </div>
-		    <div class="modal-body">
-		        <span class="ajax_loader"><img src="{{ asset('images/institution/loading.gif') }}" /></span>
-		        <div class=" ajax_content_container"></div>
-		    </div>
-		    <div class="modal-footer">
-		        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-		        <button onclick="InstitutionSpecialization.submitAddTreatmentsForm(this); return false;" class="btn btn-primary submit_button" disabled="disabled">Submit</button>
-		    </div>
-		</div>
-	</div>
+    <br>
+    {% for institutionSpecialization in institutionSpecializations %}
+        {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
+        {% set _editSpecializationUri = path('admin_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id, 'institutionId': institution.id} ) %}
+         <div class="maincontentblock">
+           <table class="table table-striped table-bordered bootstrap-datatable">
+                <thead>
+                    <tr>
+                        <th colspan="2">{{ institutionSpecialization.specialization.name |title}}
+        					<i class="icon-pencil" title=""></i>
+        					 <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
+                        </th>
+        			</tr>
+                </thead>
+                <tbody class="institution_specialization_treatments_container">
+    	            {% include 'AdminBundle:InstitutionTreatments:list.institutionTreatments.html.twig' %}
+    			</tbody>
+            </table>
+    		
+    		<div id="{{ _editSpecializationModalId }}" class="modal add_treatments_modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    		    <div class="modal-header">
+    		        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
+    		        <h3>Add {{ institutionSpecialization.specialization.name }} treatments</h3>
+    		    </div>
+    		    <div class="modal-body">
+    		        <span class="ajax_loader"><img src="{{ asset('images/institution/loading.gif') }}" /></span>
+    		        <div class=" ajax_content_container"></div>
+    		    </div>
+    		    <div class="modal-footer">
+    		        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+    		        <button onclick="InstitutionSpecialization.submitAddTreatmentsForm(this); return false;" class="btn btn-primary submit_button" disabled="disabled">Submit</button>
+    		    </div>
+    		</div>
+	    </div>
   {% endfor %} 
  </div>

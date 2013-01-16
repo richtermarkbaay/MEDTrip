@@ -110,18 +110,18 @@
 
                      return false;
             });
-			var availableDoctors = $.parseJSON('{{ doctorsJSON | raw}}');
-			var inputHiddenField = "#institutionDoctorSearch_id";
-			var inputAutoDoctor = "#institutionDoctorSearch_firstName";
-			var selectedTags = [];
-		    
-        	var params = {
-                	availableTags: availableDoctors,
-                	selectedTags : selectedTags,
-                	inputHiddenField :inputHiddenField,
-                	inputAutoDoctor :inputAutoDoctor
-        		};
-        	DoctorAuto.init(params);
+
+			InstitutionSpecialistAutocomplete
+	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
+	        .setAutocompleteOptions('specialist', {
+	            source: $.parseJSON('{{ doctorsJSON | raw }}'),
+	            target: $('#institutionDoctorSearch_firstName'),
+	            selectedDataContainer: $('table.specialist_table tbody'),
+	            loader: $('table.specialist_table tbody tr.loader')
+	        })
+	        .autocomplete();
+
+        	
             $('a.removeDoctor').click(function(){
             	var elem = $(this);
                 var _url = elem.attr('href');
