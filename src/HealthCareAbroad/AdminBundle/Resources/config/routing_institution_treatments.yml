@@ -45,14 +45,6 @@ admin_institution_medicalCenter_addGlobalAwards:
         imcId: \d+
         _method: GET|POST
         
-admin_institution_medicalCenter_addMedicalSpecialist:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/add
-    defaults: {_controller: AdminBundle:InstitutionTreatments:addMedicalSpecialist}
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: GET|POST
-
 admin_institution_medicalCenter_addNewMedicalSpecialist:
     pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/addNew
     defaults: {_controller: AdminBundle:InstitutionTreatments:addNewMedicalSpecialist}

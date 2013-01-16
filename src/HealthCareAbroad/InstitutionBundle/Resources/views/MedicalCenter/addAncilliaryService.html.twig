@@ -27,9 +27,9 @@
         		    <div id="services">
         		        <ul>
         		        {% for _choice in form.value.vars.choices %}
-        		        <li>
+        		        <li><label>
         		            <input type="checkbox" value="{{ _choice.value }}" name="{{ form.value.vars.full_name }}[]" {{ _choice.value in selectedServices ? 'checked' : ''  }} />
-        		            {{ _choice.label }}
+        		            {{ _choice.label }}</label>
         		        </li>
         		        {% endfor %}
         		        </ul>

@@ -32,7 +32,7 @@
                 {% for institution in searchResults %}
                     {% set rating = random(5) %}
                 <article class="media search-entry">
-                    <a class="pull-left" href="{{ path('page_institution_profile', {'institutionSlug': institution.slug}) }}">
+                    <a class="pull-left" href="{{ get_institution_frontend_url(institution) }}">
                         <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
                         <div class="rating">
                             <p>USER RATINGS</p>
@@ -60,7 +60,7 @@
                                     <b>{{ institution.city }}, {{ institution.country }}</b>
                                 </small>
                             </div>
-                            <a href="{{ path('page_institution_profile', {'institutionSlug': institution.slug}) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                            <a href="{{ get_institution_frontend_url(institution) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
                         </div>
                     </div>
                 </article>

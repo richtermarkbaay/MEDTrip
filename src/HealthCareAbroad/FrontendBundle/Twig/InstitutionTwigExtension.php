@@ -24,7 +24,7 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_frontend_url' => new \Twig_Function_Method($this, 'getInstitutionFrontendUrl'),
+            'get_institution_frontend_url' => new \Twig_Function_Method($this, 'getInstitutionFrontendUrl'),
             'get_institution_medical_center_frontend_url' => new \Twig_Function_Method($this, 'getInstitutionMedicalCenterFrontendUrl')
         );
     }
