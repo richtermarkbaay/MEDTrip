@@ -260,7 +260,7 @@
     	}) 
         
         $('#saveBusinessHours').click(function() {
-            
+        	$('#saveBusinessHours').attr('disabled',"true");
         	_form = $(this).parents('#businessHours').find('form');
             _form.append('<span class="loader">Loading...</span>');
             var businessHoursData = _form.serialize();
@@ -274,6 +274,7 @@
                 success: function(data) {  
           		  $('#institutionBusinessHoursText').html(data.html);
                   _form.find('span.loader').remove();
+                  $('#saveBusinessHours').removeAttr('disabled');
                 }
             });
             return false;
