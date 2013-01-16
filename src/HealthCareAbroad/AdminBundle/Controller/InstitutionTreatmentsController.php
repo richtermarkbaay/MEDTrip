@@ -204,8 +204,9 @@ class InstitutionTreatmentsController extends Controller
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         $doctorArr = array();
         foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+            $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
         }
+        //var_dump(\json_encode($doctorArr, JSON_HEX_QUOT)); exit;
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -216,7 +217,7 @@ class InstitutionTreatmentsController extends Controller
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
             'global_awards' => $global_awards,
-            'doctorsJSON' => \json_encode($doctorArr),
+            'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),

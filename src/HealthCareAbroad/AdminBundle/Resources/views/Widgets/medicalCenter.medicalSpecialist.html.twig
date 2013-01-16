@@ -22,7 +22,7 @@
 	        <tbody>
              {% for doctor in institutionMedicalCenter.doctors %}
 				<tr id="doctor_id_{{ doctor.id }}">
-					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+					<td>{{ doctor.lastName |escape }}, {{ doctor.firstName |title |escape }}</td>
 					<td>
 					{% for specialization in doctor.specializations %}
 					    {{ specialization.name |title }} 
