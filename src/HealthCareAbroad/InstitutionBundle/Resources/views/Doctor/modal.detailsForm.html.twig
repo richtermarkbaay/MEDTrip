@@ -1,7 +1,7 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
     {% block modalBody %}
 		 <form id= "biography" novalidate="novalidate" action="{{ path('doctor_update_byField', {'idId': doctor.id , 'imcId' :institutionMedicalCenter.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-			<textarea name="details" rows="5" cols="60" required >{{ doctor.details |raw }}</textarea>
+			<textarea name="details" rows="5" cols="60" required >{{ doctor.details | raw }}</textarea>
 			<small class="pull-left">Having difficulties in writing Doctor's Biography.
 				<a href="#">CLICK HERE</a>for some sample to look at.</small>
 			<!-- doctor Bio end-->
