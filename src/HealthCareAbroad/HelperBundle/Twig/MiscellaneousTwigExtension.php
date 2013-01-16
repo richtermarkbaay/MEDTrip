@@ -159,41 +159,37 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *
      * @param Institution $institution
      */
-    public function institution_address_to_array(Institution $institution)
+    public function institution_address_to_array(Institution $institution, array $includedKeys=array())
     {
-        $elements = array();
-
-        $street_address = array();
-
-        $decodedAddress = \json_decode($institution->getAddress1(), true) ?: array();
-
-        foreach ($decodedAddress as $key => $v) {
-            if (\trim($v) != '') {
-                $street_address[] = $v;
+        $defaultIncludedKeys = array('address1', 'zipCode', 'state', 'city', 'country');
+        $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
+        
+        $street_address = \json_decode($institution->getAddress1(), true);
+        if (\in_array('address1', $includedKeys) && !\is_null($street_address)) {
+            $this->_removeEmptyValueInArray($street_address);
+            if (\count($street_address)) {
+                $elements['address1'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
             }
         }
-        $address1 = \implode(', ', $street_address);
-        if ('' != $address1) {
-            $elements['address1'] = $address1;
-        }
 
-        if ($institution->getCity()) {
+        if (\in_array('city', $includedKeys) && $institution->getCity()) {
             $elements['city'] = $institution->getCity()->getName();
         }
 
-        if ('' != $institution->getState()) {
+        if (\in_array('state', $includedKeys) && '' != $institution->getState()) {
             $elements['state'] = $institution->getState();
         }
 
-        if ($institution->getCountry()) {
+        if (\in_array('country', $includedKeys) && $institution->getCountry()) {
             $elements['country'] = $institution->getCountry()->getName();
         }
 
-        if (0 != $institution->getZipCode() || '' != $institution->getZipCode()) {
-            $elements['zip_code'] = $institution->getZipCode();
+        if (\in_array('zipCode', $includedKeys) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
+            $elements['zipCode'] = $institution->getZipCode();
         }
-
-        return $elements;
+        
+        
+        return array_merge(array_flip($includedKeys), $elements);
     }
 
     public function unset_array_key($key, $arr)
@@ -216,5 +212,14 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         });
 
         return $this->json_websites_to_array($institution->getWebsites());
+    }
+    
+    private function _removeEmptyValueInArray(&$array = array())
+    {
+        foreach ($array as $k => $v) {
+            if (\is_null($v) || '' == \trim($v)) {
+                unset($array[$k]);
+            }
+        }
     }
 }

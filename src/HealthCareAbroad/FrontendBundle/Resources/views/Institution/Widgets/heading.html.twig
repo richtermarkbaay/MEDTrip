@@ -1,6 +1,5 @@
 {% set number = institution.contactNumber  %}
 {% set number = json_decode(number) | join %}
-{% set address = json_to_array(institution.address1) %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
@@ -34,20 +33,9 @@
         <div class="address media span4 offset2">
             <img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
             <p>
-                {{ address | join(', ')}}
+                {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
                 <br/>
-                
-                {{ institution.zipCode }},
-                
-                {% if institution.city %}
-                    {{ institution.city.name }}, 
-                {% endif %}
-                
-                {% if institution.state %}
-                    {{ institution.state }},
-                {% endif %}
-
-                {{ institution.country.name }}
+                {{ institution_address_to_array(institution, ['zipCode', 'city', 'state', 'country']) | join(', ')}}
             </p>
         </div>
         <ul class="contact_now span5">

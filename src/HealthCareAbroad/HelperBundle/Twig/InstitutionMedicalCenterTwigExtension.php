@@ -65,7 +65,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $returnVal['country'] = $institution->getCountry()->getName();
         }
         
-        return $returnVal;
+        return array_merge(array_flip($includedKeys), $returnVal);
     }
     
     public function getName()
