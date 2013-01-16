@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Doctrine\ORM\QueryBuilder;
 
 use Doctrine\ORM\Query\Expr\Join;
@@ -79,31 +83,40 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->createQuery('
                 SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
                 LEFT JOIN a.institution b
-                WHERE b.country = :country')
-            ->setParameter('country', $country);
+                WHERE b.country = :country
+                AND a.status = :imcStatus')
+            ->setParameter('country', $country)
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
         return $query->getResult();
     }
 
     public function getMedicalCentersByCity(\HealthCareAbroad\HelperBundle\Entity\City $city)
     {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institution b
-            WHERE b.city = :city'
-        )->setParameter('city', $city);
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                LEFT JOIN a.institution b
+                WHERE b.city = :city
+                AND a.status = :imcStatus')
+            ->setParameter('city', $city)
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
         return $query->getResult();
     }
 
     public function getMedicalCentersBySpecialization($specialization)
     {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institutionSpecializations b
-            WHERE b.specialization = :specialization'
-        )->setParameter('specialization', $specialization);
-
+        //TODO: we may need to link to specializations table and filter by its status
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                LEFT JOIN a.institutionSpecializations b
+                WHERE b.specialization = :specialization
+                AND a.status = :imcStatus
+            ')
+            ->setParameter('specialization', $specialization)
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
         return $query->getResult();
     }
 
@@ -114,8 +127,11 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             LEFT JOIN a.institutionSpecializations b
             LEFT JOIN b.treatments c
             LEFT JOIN c.subSpecializations d
-            WHERE d.id = :subSpecialization'
-        )->setParameter('subSpecialization', $subSpecialization);
+            WHERE d.id = :subSpecialization
+            AND a.status = :imcStatus
+        ')
+        ->setParameter('subSpecialization', $subSpecialization)
+        ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
         return $query->getResult();
     }
@@ -126,15 +142,18 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
             LEFT JOIN a.institutionSpecializations b
             LEFT JOIN b.treatments c
-            WHERE c.id = :treatment'
-        )->setParameter('treatment', $treatment);
+            WHERE c.id = :treatment
+            AND a.status = :imcStatus
+        ')
+        ->setParameter('treatment', $treatment)
+        ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);;
 
         return $query->getResult();
     }
-    
+
     /**
      * Get QueryBuilder for getting all medical centers of an institution
-     * 
+     *
      * @param Institution $institution
      * @return QueryBuilder
      */
@@ -146,10 +165,10 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->where('a.institution = :institutionId')
             ->orderBy('a.name')
             ->setParameter('institutionId', $institution->getId());
-        
+
         return $qb;
     }
-    
+
     /**
      * Get medicaCenter count by Institution
      *
@@ -164,9 +183,9 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         ->where('a.institution = :institutionId')
         ->setParameter('institutionId', $institution->getId());
         $count = $qb->getQuery()->getSingleScalarResult();
-        
+
         return $count;
-    }    
+    }
 
     private function _getCommonRSM()
     {

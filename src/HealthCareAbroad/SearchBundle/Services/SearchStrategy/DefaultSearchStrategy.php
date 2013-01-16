@@ -1,6 +1,18 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services\SearchStrategy;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy;
 
@@ -168,7 +180,6 @@ class DefaultSearchStrategy extends SearchStrategy
         $extendedJoinForDestination = ' ';
         if (trim($extendedDestinationWhereClause)) {
             $extendedJoinForDestination = '
-                LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
                 LEFT JOIN institutions AS h ON g.institution_id = h.id ';
         }
 
@@ -196,8 +207,14 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
             LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
             $extendedJoinForDestination
-            WHERE a.status = 1 AND d.treatment_id IS NOT NULL
+            WHERE a.status = :statusInstitutionSpecialization
+            AND g.status = :statusInstitutionMedicalCenter
+            AND c.status = :statusTreatment
+            AND e.status = :statusSubSpecialization
+            AND f.status = :statusSpecialization
+            AND d.treatment_id IS NOT NULL
             AND c.name LIKE :name
             $extendedDestinationWhereClause
 
@@ -216,8 +233,13 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
             LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
             $extendedJoinForDestination
-            WHERE a.status = 1
+            WHERE a.status = :statusInstitutionSpecialization
+            AND g.status = :statusInstitutionMedicalCenter
+            AND c.status = :statusTreatment
+            AND f.status = :statusSpecialization
+            AND d.treatment_id IS NULL
             AND c.name LIKE :name
             $extendedDestinationWhereClause
 
@@ -236,8 +258,12 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN treatment_sub_specializations AS d ON c.id = d.treatment_id
             LEFT JOIN sub_specializations AS e ON d.sub_specialization_id = e.id
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
             $extendedJoinForDestination
-            WHERE a.status = 1
+            WHERE a.status = :statusInstitutionSpecialization
+            AND g.status = :statusInstitutionMedicalCenter
+            AND c.status = :statusTreatment
+            AND f.status = :statusSpecialization
             AND e.name LIKE :name
             $extendedDestinationWhereClause
 
@@ -252,8 +278,11 @@ class DefaultSearchStrategy extends SearchStrategy
                         'specialization' AS treatment_type
             FROM institution_specializations AS a
             LEFT JOIN specializations AS f ON a.specialization_id = f.id
+            LEFT JOIN institution_medical_centers AS g ON a.institution_medical_center_id = g.id
             $extendedJoinForDestination
-            WHERE a.status = 1
+            WHERE a.status = :statusInstitutionSpecialization
+            AND g.status = :statusInstitutionMedicalCenter
+            AND f.status = :statusSpecialization
             AND f.name LIKE :name
             $extendedDestinationWhereClause
 
@@ -263,6 +292,11 @@ class DefaultSearchStrategy extends SearchStrategy
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('name', '%'.$term.'%');
+        $stmt->bindValue('statusInstitutionMedicalCenter', InstitutionMedicalCenterStatus::APPROVED);
+        $stmt->bindValue('statusInstitutionSpecialization', InstitutionSpecialization::STATUS_ACTIVE);
+        $stmt->bindValue('statusTreatment', Treatment::STATUS_ACTIVE);
+        $stmt->bindValue('statusSubSpecialization', SubSpecialization::STATUS_ACTIVE);
+        $stmt->bindValue('statusSpecialization', Specialization::STATUS_ACTIVE);
         if ($cityId) {
             $stmt->bindValue('cityId', $cityId);
         } elseif ($countryId) {
@@ -407,23 +441,32 @@ class DefaultSearchStrategy extends SearchStrategy
         LEFT JOIN institutions AS c ON a.id = c.city_id AND b.id = c.country_id
         LEFT JOIN institution_medical_centers AS d ON c.id = d.institution_id
         RIGHT JOIN institution_specializations AS e ON d.id = e.institution_medical_center_id
-        WHERE a.status = 1 AND b.status = 1
+        WHERE c.status = :statusInstitution
+        AND d.status = :statusInstitutionMedicalCenter
+        AND e.status = :statusInstitutionSpecialization
         AND (a.name LIKE :name OR b.name LIKE :name)
 
         UNION
 
-        SELECT 0, '', a.id, a.name FROM countries AS a
+        SELECT 0, '', a.id, a.name
+        FROM countries AS a
         LEFT JOIN institutions AS b ON a.id = b.country_id
         LEFT JOIN institution_medical_centers AS c ON b.id = c.institution_id
         RIGHT JOIN institution_specializations AS d ON c.id = d.institution_medical_center_id
-
-        WHERE a.status = 1 AND a.name LIKE :name
+        WHERE b.status = :statusInstitution
+        AND c.status = :statusInstitutionMedicalCenter
+        AND d.status = :statusInstitutionSpecialization
+        AND a.status = 1 AND a.name LIKE :name
 
         ORDER BY city_name ASC, country_name ASC
         ";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('name', '%'.$searchParams->get('term').'%');
+        $stmt->bindValue('statusInstitution', InstitutionStatus::ACTIVE);
+        $stmt->bindValue('statusInstitutionMedicalCenter', InstitutionMedicalCenterStatus::APPROVED);
+        $stmt->bindValue('statusInstitutionSpecialization', InstitutionSpecialization::STATUS_ACTIVE);
+
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -438,6 +481,8 @@ class DefaultSearchStrategy extends SearchStrategy
      * @todo optimize sql; verify that results are what we want
      * 	     compare query performance with the one used in
      * 		 searchTreatmentByNameWithDestination()
+     *
+     *       fixed statuses in where clause
      *
      */
     private function searchDestinationsByNameWithTreatment(SearchParameterBag $searchParams)
