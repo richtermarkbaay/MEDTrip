@@ -1,0 +1,19 @@
+{% for doctor in doctors %}
+	<tr id="doctor_id_{{ doctor.id }}">
+		<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+		<td>
+		{% for specialization in doctor.specializations %}
+		    {{ specialization.name |title }} 
+		    {% if loop.last == false %},{% endif %} 
+	    {% else %}
+		    No Specializations yet
+		{% endfor %}
+		</td>
+	    <td>
+	     <div class="post-toolbar  treatment_action">
+    		<i class="icon-trash" title="Delete"></i>
+    		<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
+    	</div>
+	    </td>
+	</tr>
+{% endfor %}

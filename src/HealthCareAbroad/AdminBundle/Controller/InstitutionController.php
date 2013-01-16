@@ -180,6 +180,9 @@ class InstitutionController extends Controller
 	        if ($form->isValid()) {
 	            $institution = $form->getData();
 	            
+	            // update the sign up step status
+	            $institution->setSignupStepStatus(0);
+	            
 	            // update to active status
 	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
 	            $this->get('services.institution.factory')->save($institution);

@@ -280,39 +280,43 @@ class InstitutionSpecializationRepository extends EntityRepository
         if (is_object($subSpecialization)) {
             $subSpecialization = $subSpecialization->getId();
         }
-
-        $stmt = $connection->prepare("
-            SELECT b.id, b.name AS country, COUNT(*) AS institution_count
+        
+        $sql = "
+            SELECT b.id, b.name AS country, COUNT(DISTINCT c.id) AS institution_count
             FROM institutions a
             LEFT JOIN countries b ON a.country_id = b.id
             LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
             LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
-            LEFT JOIN specializations e ON d.specialization_id = e.id
-            LEFT JOIN sub_specializations f ON e.id = f.specialization_id
-            WHERE f.id = :subSpecialization
+            LEFT JOIN `institution_treatments` e on d.`id` = e.`institution_specialization_id`
+            INNER JOIN `treatments` f ON e.`treatment_id` = f.`id`
+            INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
+            WHERE g.sub_specialization_id = :subSpecialization
             GROUP BY b.id
             ORDER BY institution_count DESC
-            LIMIT :numOfDestinations
-
-       ");
+            LIMIT :numOfDestinations";
+        $stmt = $connection->prepare($sql); 
+        
         $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
         $stmt->execute();
         $topCountries = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS city, COUNT(*) AS institution_count
+            SELECT b.id, b.name AS city, COUNT(DISTINCT c.id) AS institution_count
             FROM institutions a
             LEFT JOIN cities b ON a.city_id = b.id
             LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
             LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
-            LEFT JOIN specializations e ON d.specialization_id = e.id
-            LEFT JOIN sub_specializations f ON e.id = f.specialization_id
-            WHERE f.id = :subSpecialization
-            GROUP BY b.id
+            LEFT JOIN `institution_treatments` e on d.`id` = e.`institution_specialization_id`
+            INNER JOIN `treatments` f ON e.`treatment_id` = f.`id`
+            INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
+            WHERE g.sub_specialization_id = :subSpecialization
+            GROUP BY c.id, b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
        ');
+        
+        
         $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
         $stmt->execute();

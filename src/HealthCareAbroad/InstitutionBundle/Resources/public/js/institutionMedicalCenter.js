@@ -234,8 +234,8 @@ var InstitutionMedicalCenter = {
             data: _formElement.serialize(),
             type: 'POST',
             success: function(response){
+            	$('#doctor_id_'+response.id).remove();
             	$('#dialog-container').dialog("close");
-            	$('#doctor_block_'+response.id).remove();
             }
          });
     },

@@ -10,8 +10,8 @@
             {{ form_row(institutionMedicalSpecialistForm.id) }}
             {{ form_rest(institutionMedicalSpecialistForm) }}
         </form>
-        <div id="loader"></div>
-        <table id="medicalSpecialistTable" class="table table-striped table-bordered bootstrap-datatable">
+        
+        <table class="table table-striped table-bordered specialist_table">
     	    <thead>
                 <tr>
     			    <th>Medical Specialist</th>
@@ -21,7 +21,7 @@
             </thead>
 	        <tbody>
              {% for doctor in institutionMedicalCenter.doctors %}
-				<tr id="doctor_block_{{ doctor.id}}">
+				<tr id="doctor_id_{{ doctor.id }}">
 					<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
 					<td>
 					{% for specialization in doctor.specializations %}
@@ -33,17 +33,12 @@
 					{% endfor %}
 					</td>
 					<td>
-						<div class="post-toolbar">
+						<div class="post-toolbar  treatment_action">
 							<i class="icon-trash" title="Delete"></i>
 							<a href="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {institutionId: institution.id, imcId: institutionMedicalCenter.id, doctorId: doctor.id} )}}" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a>
 						</div>
 					</td>
 				</tr>
-		      {% else %}
-    		  	<tr>
-    			   <td> No Medical Specialist yet. </td>
-    			   <td></td>
-    			</tr>
 			{% endfor %}
 			</tbody>
 		</table>

@@ -242,36 +242,23 @@ class InstitutionTreatmentsController extends Controller
     */
     public function ajaxAddMedicalSpecialistAction(Request $request)
     {
-        echo "test";exit;
-        $doctorId = $request->get('doctorId');
-        $doctor = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->find($doctorId);
-        $specializations = $this->getDoctrine()->getRepository("DoctorBundle:Doctor")->getSpecializationByMedicalSpecialist($doctorId);
-    
+        $specialist = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
+        
+        if (!$specialist) {
+            throw $this->createNotFoundException();
+        }
         // check if this medical center already have this property
-        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $doctorId)) {
-            return $response = new Response("Medical specialist value {$doctorId} already exists.", 500);
+        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
+            $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
         }
         else {
-            $this->institutionMedicalCenter->addDoctor($doctor);
+            $this->institutionMedicalCenter->addDoctor($specialist);
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-        
-            $specializationsData = '';
-            //construct specialization data
-            foreach($specializations as $each) {
-                if($specializationsData != "") {
-                    $specializationsData .= "," .$each['name'];
-                }
-                else {
-                    $specializationsData .= $each['name'];
-                }
-                
-            }
-        
-            // construct the row for a medical specialist
-            $path = $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', array('doctorId' =>  $doctorId, 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId()));
-            $html = '<tr id="doctor_block_"'.$doctorId.'"><td>'.$doctor->getLastName() .",". $doctor->getFirstName().'</td><td>'.$specializationsData.'</td><td><div class="post-toolbar"><i class="icon-trash" title="Delete"></i><a href="'.$path.'" class="removeDoctor" title="" role="button" data-toggle="modal">Delete</a></div></td></tr>';
-            return new Response(\json_encode($html),200, array('content-type' => 'application/json'));
+            
+            $html = $this->renderView('AdminBundle:InstitutionTreatments:tableRow.specialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
+        return $response;
         
     }
     
@@ -307,7 +294,7 @@ class InstitutionTreatmentsController extends Controller
                 $this->institutionMedicalCenter->addDoctor($doctor);
                 $center = $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 
-                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addMedicalSpecialist',array("institutionId" => $this->institution->getId(), "imcId" => $request->get('imcId'))));
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist',array("institutionId" => $this->institution->getId(), "imcId" => $request->get('imcId'))));
             }
         }
         return $this->render('AdminBundle:Doctor:common.form.html.twig', array(
@@ -341,8 +328,8 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $_id = $doctor->getId();
-                $this->institutionMedicalCenter->removeDoctor($doctor);
-                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                //$this->institutionMedicalCenter->removeDoctor($doctor);
+                //$this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
             }
             else {
