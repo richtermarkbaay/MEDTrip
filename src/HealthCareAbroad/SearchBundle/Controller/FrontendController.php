@@ -2,23 +2,18 @@
 namespace HealthCareAbroad\SearchBundle\Controller;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
-
 use HealthCareAbroad\HelperBundle\Entity\Country;
-
+use HealthCareAbroad\HelperBundle\Repository\CountryRepository;
+use HealthCareAbroad\HelperBundle\Repository\CityRepository;
 use HealthCareAbroad\PagerBundle\Pager;
-
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
-
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use HealthCareAbroad\HelperBundle\Repository\CountryRepository;
-use HealthCareAbroad\HelperBundle\Repository\CityRepository;
 
 /**
  * TODO: Refactor whole class
@@ -65,7 +60,6 @@ class FrontendController extends Controller
 
     public function searchAction(Request $request)
     {
-
         $sessionParams = array();
 
         $searchParams = $this->getSearchParams($request);
@@ -111,7 +105,6 @@ class FrontendController extends Controller
                 break;
 
             case SearchParameterBag::SEARCH_TYPE_COMBINATION:
-
                 return $this->processCombinationSearch($request, $searchParams);
 
             default:
@@ -128,7 +121,7 @@ class FrontendController extends Controller
         $sessionParams['countryId'] = $searchParams->get('countryId');
         $combinationPrefix = 'country';
 
-        if ($searchParams->has('cityId')) {
+        if ($searchParams->get('cityId')) {
             $sessionParams['cityId'] = $searchParams->get('cityId');
             $combinationPrefix = 'city';
 
@@ -150,7 +143,7 @@ class FrontendController extends Controller
 
         $sessionParams['treatmentType'] = $searchParams->get('treatmentType');
         $sessionParams['treatmentLabel'] = $request->get('sb_treatment');
-        $sessionParams['treatmentId'] = $request->get('treatment_id');
+        $sessionParams['treatmentParameter'] = $request->get('treatment_id');
 
         $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'));
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'));
@@ -196,8 +189,27 @@ class FrontendController extends Controller
                 break;
         }
 
-        $session = new Session();
-        $session->set(md5($request->getPathInfo()), json_encode($variables));
+        if (get_class($this->container) === 'appDevDebugProjectContainer') {
+            $url = '/app_dev.php'.$url;
+        }
+
+        $setVariables = function($sessionParams) {
+            $variables['countryId'] = $sessionParams['countryId'];
+            if (!empty($sessionParams['cityId'])) {
+                $variables['cityId'] = $sessionParams['cityId'];
+            }
+            $variables['specializationId'] = $sessionParams['specializationId'];
+            if (!empty($sessionParams['treatmentId'])) {
+                $variables['treatmentId'] = $sessionParams['treatmentId'];
+            } elseif (!empty($sessionParams['subSpecializationId'])) {
+                $variables['subSpecializationId'] = $sessionParams['subSpecializationId'];
+            }
+
+            return $variables;
+        };
+
+        $session = $request->getSession();
+        $session->set(md5($url), json_encode($setVariables($sessionParams)));
 
         return $this->redirect($url);
     }
@@ -207,8 +219,12 @@ class FrontendController extends Controller
     {
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
 
-        if (!$country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchTerms['countryId'])) {
-            //Get country from url
+        $country = null;
+        if (isset($searchTerms['countryId']) && $searchTerms['countryId']) {
+            $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchTerms['countryId']);
+        }
+
+        if (!$country) {
             if (!$country = $this->getDoctrine()->getRepository('HelperBundle:Country')->findOneBy(array('slug' => $request->get('country')))) {
                 throw new \Exception('No identifier for country');
             }
@@ -220,10 +236,12 @@ class FrontendController extends Controller
         $adapter = new ArrayAdapter($searchResults);
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
 
+        $destinationLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName();
+
         $parameters = array(
             'searchResults' => $searchResults,
-            'destinationLabel' => $searchTerms['destinationLabel'],
-            'destinationParameter' => $searchTerms['destinationParameter'],
+            'destinationLabel' => $destinationLabel,
+            //'destinationParameter' => $searchTerms['destinationParameter'],
             'routeName' => 'search_frontend_results_countries',
             'paginationParameters' => array('country' => $country->getSlug())
         );
@@ -246,8 +264,12 @@ class FrontendController extends Controller
     {
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
 
-        if (!$city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['cityId'])) {
-            //Get city from url
+        $city = null;
+        if (isset($searchTerms['cityId']) && $searchTerms['cityId'] ) {
+            $city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['cityId']);
+        }
+
+        if (!$city) {
             if (!$city = $this->getDoctrine()->getRepository('HelperBundle:City')->findOneBy(array('slug' => $request->get('city')))) {
                 throw new \Exception('No identifier for city');
             }
@@ -259,10 +281,12 @@ class FrontendController extends Controller
         $adapter = new ArrayAdapter($searchResults);
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
 
+        $destinationLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getSlug().', '.$city->getCountry()->getSlug();
+
         $parameters = array(
                         'searchResults' => $searchResults,
-                        'destinationLabel' => $searchTerms['destinationLabel'],
-                        'destinationParameter' => $searchTerms['destinationParameter'],
+                        'destinationLabel' => $destinationLabel,
+                        //'destinationParameter' => $searchTerms['destinationParameter'],
                         'routeName' => 'search_frontend_results_cities',
                         'paginationParameters' => array(
                             'city' => $city->getSlug(),
@@ -283,28 +307,35 @@ class FrontendController extends Controller
         return $response;
     }
 
-    //TODO: merged the treatment-based search actions
+    //TODO: merge the treatment-based search actions
     public function searchResultsSpecializationsAction(Request $request)
     {
         //$searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
-        $searchResults = $this->get('services.search')->searchBySpecialization($searchTerms['specializationId']);
 
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($searchTerms['specializationId'])) {
-            //Get slug
+        $specialization = null;
+        if (isset($searchTerms['specializationId']) && $searchTerms['specializationId'] ) {
+            $specialization = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['specializationId']);
+        }
+
+        if (!$specialization) {
             if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $request->get('specialization')))) {
                 throw new \Exception('No identifier for specialization');
             }
         }
 
+        $searchResults = $this->get('services.search')->searchBySpecialization($specialization);
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
 
+        $treatmentLabel = isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $city->getSlug().', '.$city->getCountry()->getSlug();
+
         $parameters = array(
                         'searchResults' => $searchResults,
-                        'treatmentLabel' => $searchTerms['treatmentLabel'],
-                        'treatmentParameter' => $searchTerms['treatmentParameter'],
+                        'treatmentLabel' => $treatmentLabel,
+                        //'treatmentParameter' => $searchTerms['treatmentParameter'],
                         'routeName' => 'search_frontend_results_specializations',
                         'paginationParameters' => array('specialization' => $specialization->getSlug())
         );
@@ -330,15 +361,23 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
         $searchResults = $this->get('services.search')->searchBySubSpecialization($searchTerms['subSpecializationId']);
 
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($searchTerms['specializationId'])) {
-            //Get slug
+        $specialization = null;
+        if (isset($searchTerms['specializationId']) && $searchTerms['specializationId'] ) {
+            $specialization = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['specializationId']);
+        }
+
+        if (!$specialization) {
             if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $request->get('specialization')))) {
                 throw new \Exception('No identifier for specialization');
             }
         }
 
-        if (!$subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($searchTerms['subSpecializationId'])) {
-            //Get slug
+        $subSpecialization = null;
+        if (isset($searchTerms['subSpecializationId']) && $searchTerms['subSpecializationId'] ) {
+            $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($searchTerms['subSpecializationId']);
+        }
+
+        if (!$subSpecialization) {
             if (!$subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->findOneBy(array('slug' => $request->get('subSpecialization')))) {
                 throw new \Exception('No identifier for subSpecialization');
             }
@@ -351,7 +390,7 @@ class FrontendController extends Controller
         $parameters = array(
                         'searchResults' => $searchResults,
                         'treatmentLabel' => $searchTerms['treatmentLabel'],
-                        'treatmentParameter' => $searchTerms['treatmentParameter'],
+                        //'treatmentParameter' => $searchTerms['treatmentParameter'],
                         'routeName' => 'search_frontend_results_subSpecializations',
                         'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug())
         );
@@ -377,15 +416,23 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
         $searchResults = $this->get('services.search')->searchByTreatment($searchTerms['treatmentId']);
 
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($searchTerms['specializationId'])) {
-            //Get slug
+        $specialization = null;
+        if (isset($searchTerms['specializationId']) && $searchTerms['specializationId'] ) {
+            $specialization = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['specializationId']);
+        }
+
+        if (!$specialization) {
             if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $request->get('specialization')))) {
                 throw new \Exception('No identifier for specialization');
             }
         }
 
-        if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($searchTerms['treatmentId'])) {
-            //Get slug
+        $treatment = null;
+        if (isset($searchTerms['treatmentId']) && $searchTerms['treatmentId']) {
+            $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($searchTerms['treatmentId']);
+        }
+
+        if (!$treatment) {
             if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneBy(array('slug' => $request->get('treatment')))) {
                 throw new \Exception('No identifier for treatment');
             }
@@ -398,7 +445,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => $searchResults,
             'treatmentLabel' => $searchTerms['treatmentLabel'],
-            'treatmentParameter' => $searchTerms['treatmentParameter'],
+            //'treatmentParameter' => $searchTerms['treatmentParameter'],
             'routeName' => 'search_frontend_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug())
         );
