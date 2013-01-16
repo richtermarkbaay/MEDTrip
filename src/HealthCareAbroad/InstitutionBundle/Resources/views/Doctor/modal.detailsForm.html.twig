@@ -1,0 +1,16 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
+    {% block modalBody %}
+		 <form id= "biography" novalidate="novalidate" action="{{ path('doctor_update_byField', {'idId': doctor.id , 'imcId' :institutionMedicalCenter.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+			<textarea name="details" rows="5" cols="60" required >{{ doctor.details |raw }}</textarea>
+			<small class="pull-left">Having difficulties in writing Doctor's Biography.
+				<a href="#">CLICK HERE</a>for some sample to look at.</small>
+			<!-- doctor Bio end-->
+		</form>
+        <div class="clearfix"></div>
+       <div class="modal-footer button-wrapper">
+        		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        		<button class="btn btn-primary submit-button" onclick="return InstitutionDoctor.submitInstitutionSidebarForms(this);">Submit</button>
+        </div>
+  
+    {% endblock %}
+{% endembed %} 

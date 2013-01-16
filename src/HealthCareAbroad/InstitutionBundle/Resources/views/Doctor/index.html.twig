@@ -3,98 +3,100 @@
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-    			{% include '::notice.admin.html.twig' %}
-    				<div class="span9">
-							<h1><span>Manage Doctor's Profile</span></h1>
-							<div class="row">
-								<div class="span2">
-									<!-- <a href="#">manage profile pic</a> -->
-									<a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal">
-						               {% if doctor.media is not sameas(NULL) %}
-                                            {{ media(doctor.media, doctor, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'doctor image'}) | raw }}
-                                        {% else %}
-                                              <img src="{{ asset('images/institution/image_ph.png') }}" alt="[Gallery Photo]" class="pic" />
-                                        {% endif %} 
-                                      <span class="image-icon"><img src="{{ asset('images/institution/image-icon.png') }}" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
-                                    </a>
-								</div>
-								<div class="span7">
-									<h2 class="pull-left">{{ doctor.firstName }} {{ doctor.lastName }} </h2>
-									<div class="editname">
-										<i class="icon-pencil" title="Edit"></i>
-										<a href="#doctorsFullName" role="button" data-toggle="modal"><small>Edit</small></a>
-									</div>
-										<!-- Modal Doctor's Name-->
-									<div id="doctorsFullName" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-											<h3>Edit Doctor's Full Name</h3>
-										</div>
-										<div class="modal-body">
-											<form action="">
-    											<label for="doctorName">First Name:</label>
-        										<input type="text" name="doctors_firstName" value="">
-        										<label for="doctorName">Last Name:</label>
-        										<input type="text" name="doctors_lastName" value="">
-											</form>
-										</div>
-										<div class="modal-footer">
-											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-											<button class="btn btn-primary">Submit</button>
-										</div>
-									</div><!-- End Modal Doctor's name-->
-									<div class="maincontentblock">
-										<p>{{ doctor.details }}
-											<i class="icon-pencil" title="Edit"></i>
-											<a href="#biography" role="button" data-toggle="modal">Add Doctor's Biography</a>
-										</p>
-									</div>
-									<!-- Modal Doctor's Bio -->
-									<div id="biography" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-										<div class="modal-header">
-											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-											<h3>Doctor's Biography</h3>
-										</div>
-										<div class="modal-body">
-											<form action="">
-    											<textarea name="details" rows="5" cols="60" required></textarea>
-    											<small class="pull-left">Having difficulties in writing Doctor's Biography.
-    												<a href="#">CLICK HERE</a>for some sample to look at.</small>
-    											<!-- doctor Bio end-->
-											</form>
-										</div>
-										<div class="modal-footer">
-											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-											<button class="btn btn-primary">Submit</button>
-										</div>
-									</div><!-- End Modal Doctor's bio-->
-								</div><!-- End span7-->
+				<div class="span9">
+						<h1><span>Manage Doctor's Profile</span></h1>
+						<div class="row">
+							<div class="span2">
+								<!-- <a href="#">manage profile pic</a> -->
+								<a href="#doctorLogo" class="gallerypic" title="" role="button" data-toggle="modal">
+					               {% if doctor.media is not sameas(NULL) %}
+                                        {{ media(doctor.media, doctor, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'doctor image'}) | raw }}
+                                    {% else %}
+                                          <img src="{{ asset('images/institution/image_ph.png') }}" alt="[Gallery Photo]" class="pic" />
+                                    {% endif %} 
+                                  <span class="image-icon"><img src="{{ asset('images/institution/image-icon.png') }}" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
+                                </a>
 							</div>
-						   <form novalidate="novalidate" action="{{ path('institution_saveDoctorProfile', {'idId': doctor.id , 'institutionId' :institution.id}) }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-                            {% include '::notice.admin.html.twig' %}
-                                <!-- start id-form -->
-                                 {{ form_errors(form) }}
-                                    {{ form_row(form.gender) }}
-                                    {{ form_row(form.country) }}
-                                    {{ form_row(form.contactEmail) }}
-                                    {{ form_row(form.contactNumber) }}
-                                     <br>
-                                    {{ form_label(form.specializations) }}
-                                    {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
-                                    <div class="clearfix"></div>
-                                    {{ form_rest(form) }}
-                                     <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>
-                                     <input type="submit" class="btn btn-large btn-primary" name="submit" value="Submit"/>
-                                <!-- end id-form  -->
-                            </form>
+							<div class="span7">
+								<h2 class="pull-left" id="doctorsFullNameText">{{ doctor.firstName }} {{ doctor.lastName }} </h2>
+								<div class="editname">
+									<i class="icon-pencil" title="Edit"></i>
+									<a href="#doctorsFullName" role="button" data-toggle="modal"><small>Edit</small></a>
+								</div>
+								<div class="maincontentblock">
+									<p> <h5 id="doctorDescriptionText">{{ doctor.details |raw }} </h5>
+										<i class="icon-pencil" title="Edit"></i>
+										<a href="#biography" role="button" data-toggle="modal">Add Doctor's Biography</a>
+									</p>
+								</div>
+							</div><!-- End span7-->
 						</div>
-    				<!--End of span9-->
-    			    
-    			    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-    				<!--End of span3-->
+					     <div class="tabbable">
+                            <ul class="nav nav-tabs profile_tabs">
+                                <li class="active">
+                                    <a data-toggle="tab" class="profile_tab_links" href="#doctors">Doctors Profile</a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" class="profile_tab_links" href="#specializations">Specialization</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="tabbed_content">
+                                    <div class="progress progress-striped active" style="display:none;">
+                                        <div class="bar" style="width: 40%;"></div>
+                                    </div>
+                                <div id="doctors" class="doctors tab-pane active">
+                                    {% include 'InstitutionBundle:Doctor:edit.html.twig' %}
+                                </div>
+                                <div id="specializations" class="tab-pane"><span>Loading Specializations...</span></div>
+                            </div><!-- /.tab-content -->
+                        </div>
+					</div>
+				<!--End of span9-->
+			    
+			    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+				<!--End of span3-->
+				
+			 <!-- Modal Doctor Details -->
+			{% include 'InstitutionBundle:Doctor:modal.detailsForm.html.twig' 
+			     with { modalId: 'biography', modalTitle: 'Edit Biography'} 
+			%} <!-- end Modal Doctor name -->	
+				
+			 <!-- Modal Doctor name -->
+			{% include 'InstitutionBundle:Doctor:modalFullNameDoctorForm.html.twig' 
+			     with { modalId: 'doctorsFullName', modalTitle: 'Edit profile name'} 
+			%} <!-- end Modal InstitDoctorution name -->
+			
+		     <!-- Modal Doctor Logo -->
+			{% include 'InstitutionBundle:Doctor:editLogoModalForm.html.twig' 
+			     with {formId: 'logoModalForm', modalId: 'doctorLogo', modalTitle: 'Upload Logo'} 
+			%} <!-- end Modal Doctor Logo -->
+			
         {% endblock %}
         
     {% endembed %}
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionDoctor.js') }}" ></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        _url_base = '{{ path("institution_load_tabbed_contents_doctor", {"idId" : doctor.id , "imcId" :institutionMedicalCenter.id}) }}';
+    	
+        // initialize the tabbed contents
+        InstitutionDoctor.setAjaxUrls({
+                'loadInstitutionSpecialization': _url_base+'?content=specializations',
+            });
+        
+        InstitutionDoctor.tabbedContentElement = $('#tabbed_content');
+        InstitutionDoctor.doctorTabbedContentElement = $("#doctor");
+        InstitutionDoctor.specializationTabbedContentElement = $('#specializations');
+        InstitutionDoctor.loadTabbedContentsOfMultipleCenterInstitution();        
+    });
+})(jQuery);
+//-->
+</script>
 {% endblock %}
 
 

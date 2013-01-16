@@ -26,7 +26,6 @@ class InstitutionDoctorFormType extends AbstractType
         
         	$builder
      		->add('country','globalCountry_list')
-    	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
     	    ->add('contactNumber', 'contact_number', array('label' => 'Contact Number'))
         	->add('gender', 'choice', array('choices'=>$gender));
