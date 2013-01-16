@@ -1,0 +1,26 @@
+{% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
+    {% block tabbedContent %}
+	    
+		<div class="maincontentblock">
+		    <table class="table table-striped table-bordered bootstrap-datatable">
+		      <thead>
+                <tr>
+    				<th>Specializations</th>
+    			</tr>
+            </thead>
+		        <tbody>
+                {% for _specialization in specializations %}
+                    <tr id="_specialization_id:{{ _specialization.id }}">
+                    	<td>{{ _specialization.name |title }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">No specializations yet</td>
+                    </tr>
+                    {% endfor %}
+    			</tbody>
+			</table>
+        </div>
+                
+    {% endblock %}
+{% endembed %}

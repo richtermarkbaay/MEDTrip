@@ -25,7 +25,7 @@ class DoctorFormType extends AbstractType
      		->add('middleName', 'text', array('label' => 'Middle name'))
      		->add('lastName', 'text', array('label' => 'Last name'))
      		->add('country','globalCountry_list')
-     		->add('details', 'textarea', array('attr' => array('class' => 'tinymce')))
+     		->add('details', 'textarea')
      		->add('media', 'file', array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))

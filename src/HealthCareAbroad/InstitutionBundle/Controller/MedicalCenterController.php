@@ -1125,7 +1125,7 @@ class MedicalCenterController extends InstitutionAwareController
             $this->institutionMedicalCenter->addDoctor($specialist);
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             
-            $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist)));
+            $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist) , 'institutionMedicalCenter' => $this->institutionMedicalCenter));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
         
