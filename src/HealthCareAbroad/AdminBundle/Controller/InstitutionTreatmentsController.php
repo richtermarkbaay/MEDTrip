@@ -391,7 +391,6 @@ class InstitutionTreatmentsController extends Controller
     
                 // Get contactNumbers and convert to json format
                 $businessHours = json_encode($request->get('businessHours'));
-    
                 if ($form->isValid()) {
     
                     // Set BusinessHours before saving

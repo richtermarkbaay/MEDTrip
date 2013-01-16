@@ -19,8 +19,9 @@
                     </br>
                     {{ form_label(form.businessHours) }}
                         <label><input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >I have no business hours</label>
-                        {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
-                    
+                        <div class="businessHours-form">
+                            {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
+                        </div>
                     {{ form_rest(form) }}
                                         	                        	
                 	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
@@ -53,26 +54,31 @@
 
         	    	$(this).parent().parent().find('.hour').val("");
         	    	$(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	    	$(this).parent().parent().find('.businessHourNotes').attr('disabled','true');
         	    	$('#clinicHoursTable').hide();
         	    	
         	    }else{
             	    $('#clinicHoursTable').show();
             	    $(this).parent().parent().find('.hour').val("8:00 AM");
         	    	$(this).parent().parent().find('.hour').spinner({ disabled: false });
+        	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
             	}
         	}) 
     	    $('input.is_closed_checkbox').change(function(){
-    		    if(this.checked) {
-    		    	$(this).parent().parent().find('.hour').val("");
-    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    			}
-    		    else 
-    		    {
-    		    	$(this).parent().parent().find('.hour').val("8:00 AM");
-    		    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-    		    }
-    		   
-    		});
+                if(this.checked) {
+                    $(this).parent().parent().find('.hour').val("");
+                    var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+                    $(this).parent().parent().next().find('.businessHourNotes').val("");
+                    $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+                }
+                else
+                {
+                    $(this).parent().parent().find('.hour').val("8:00 AM");
+                    var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+                    $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
+                }
+    
+            });
         </script>
     {% endblock %}
 {% endblock %}

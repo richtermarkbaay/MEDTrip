@@ -248,6 +248,7 @@
 
     	    	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+    	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
     	    	$('#table-businessHours').hide();
     	    	
@@ -255,6 +256,7 @@
         	    $('#table-businessHours').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+    	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
         	}
     	}) 
