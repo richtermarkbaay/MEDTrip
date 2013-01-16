@@ -311,6 +311,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             INNER JOIN `treatments` f ON e.`treatment_id` = f.`id`
             INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
             WHERE g.sub_specialization_id = :subSpecialization
+            AND a.city_id IS NOT NULL
             GROUP BY c.id, b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
