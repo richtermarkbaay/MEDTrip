@@ -28,13 +28,13 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $defaultIncludedKeys = array('address', 'zipCode', 'city', 'country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
         $institution = $institutionMedicalCenter->getInstitution();
-        
+        $returnVal = array();
         if (\in_array('address', $includedKeys)) {
             $street_address = \json_decode($institutionMedicalCenter->getAddress(), true);
             if (!\is_null($street_address)) {
                 $this->_removeEmptyValueInArray($street_address);
                 if (\count($street_address)) {
-                    $returnVal['address'] = \implode(', ', $street_address);
+                    $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
                 }
             }
             else {
@@ -43,7 +43,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 if (!\is_null($street_address)) {
                     $this->_removeEmptyValueInArray($street_address);
                     if (\count($street_address)) {
-                        $returnVal['address'] = \implode(', ', $street_address);
+                        $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
                     }
                 }
             }   

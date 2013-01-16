@@ -7,13 +7,16 @@
         
     
     		<table>
+    		    
     		    {% for day, time in businessHours %}
-    			<tr>
-    				<td>{{ day }}</td>
-    				<td>{{ time.from }}</td>
-    				<td>-</td>
-    				<td>{{ time.to }}</td>
-    			</tr>
+        		    {% if time.from is defined and time.to is defined %}
+        			<tr>
+        				<td>{{ day }}</td>
+        				<td>{{ time.from }}</td>
+        				<td>-</td>
+        				<td>{{ time.to }}</td>
+        			</tr>
+        			{% endif %}
     			{% endfor %}
     		</table>
     	{% endblock %}
