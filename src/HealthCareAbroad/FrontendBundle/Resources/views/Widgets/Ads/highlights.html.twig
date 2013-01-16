@@ -28,7 +28,7 @@
         				        <img src="" style="width:620px; height:256px"/>
         				    {% endif %}
         				</div>
-        				<a class="btn" href="{{ path('page_institution_profile', {institutionSlug: each.institution.slug}) }}">Learn More</a>
+        				<a class="btn" href="{{ get_institution_frontend_url(each.institution) }}">Learn More</a>
         			</div> <!--End of carousel slide-->
         		</div>
         	</div> <!--End of carousel row-->
@@ -74,7 +74,7 @@
 #}
 
 {% if highlight %}
-{% set institutionUrl = path('page_institution_profile', {institutionSlug: highlight.institution.slug }) %}
+{% set institutionUrl = get_institution_frontend_url(highlight.institution) %}
 
 <div id="highlight"> <!--Highighted Institution-->
 	<a href="{{ institutionUrl }}" class="clinic span2 offset6">
