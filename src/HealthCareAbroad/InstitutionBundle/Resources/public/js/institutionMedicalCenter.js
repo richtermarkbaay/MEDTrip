@@ -164,8 +164,11 @@ var InstitutionMedicalCenter = {
             dataType: 'json',
             success: function(response) {
             	switch(_form.attr('id')){
+            	    case 'nameModalForm':
+            	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
+                        break;
                     case 'descriptionModalForm':
-                        $('#clinicDescriptionText').html(response.institutionMedicalCenter.response);
+                        $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
                         break;
                     case 'addressModalForm':
                         var _street_address = [];

@@ -10,28 +10,43 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Doctor;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionDoctor;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 class DoctorController extends InstitutionAwareController
 {
+    /**
+     * 
+     * @var InstitutionDoctor
+     */
+    protected $institutionDoctor; 
+
+    /**
+     * @var InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter = null;
+    
+    public function preExecute()
+    {
+        $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+        
+        if ($idId=$this->getRequest()->get('idId',0)) {
+            $this->institutionDoctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($idId);
+        }
+       
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->repository->find($imcId);
+        }
+         
+        $this->request = $this->getRequest();
+    }
+    
     public function doctorProfileAction(Request $request)
     {
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findAll();
-        
-        if($doctorId = $request->get('idId', 0)) {
-            $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
-            if (!$doctor) {
-                throw $this->createNotFoundException("Invalid doctor.");
-            }
-            $title = 'Edit Doctor Details';
-        }
-        
-        $form = $this->createForm(new InstitutionDoctorFormType(), $doctor);
+        $form = $this->createForm(new InstitutionDoctorFormType(), $this->institutionDoctor);
 
         return $this->render('InstitutionBundle:Doctor:index.html.twig', array(
-                    'doctor' => $doctor,
+                    'doctor' => $this->institutionDoctor,
+                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
                     'form' => $form->createView()
         ));
     }
@@ -41,12 +56,7 @@ class DoctorController extends InstitutionAwareController
     */
     public function saveAction(Request $request)
     {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('idId', 0));
-
-        if (!$doctor) {
-            throw $this->createNotFoundException("Invalid doctor.");
-        }
-        $form = $this->createForm(new InstitutionDoctorFormType(), $doctor);
+        $form = $this->createForm(new InstitutionDoctorFormType(), $this->institutionDoctor);
     
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($request);
@@ -56,18 +66,99 @@ class DoctorController extends InstitutionAwareController
             
             if($form->isValid()) {
              
-                $form->getData()->setContactNumber($contactNumber);
+                $this->institutionDoctor = $form->getData();
+                $this->institutionDoctor->setContactNumber($contactNumber);
              
                 $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($form->getData());
+                $em->persist($this->institutionDoctor);
                 $em->flush();
                 
                 $this->get('session')->setFlash('notice', "Successfully updated profile");
             }
         }
         return $this->render('InstitutionBundle:Doctor:index.html.twig', array(
-                        'doctor' => $doctor,
+                        'doctor' => $this->institutionDoctor,
+                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'form' => $form->createView()
         ));
+    }
+    
+    /**
+     * Ajax handler for loading tabbed contents in institution profile page
+     *
+     * @param Request $request
+     */
+    public function loadTabbedContentsAction(Request $request)
+    {
+        $content = $request->get('content');
+        $output = array();
+        $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
+    
+        switch ($content) {
+            case 'specializations':
+                $parameters['specializations'] = $this->institutionDoctor->getSpecializations();
+                $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Doctor:tabbedContent.doctorSpecialization.html.twig', $parameters));
+                break;
+        }
+    
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Upload logo for Institution
+     * @param Request $request
+     */
+    public function uploadAction(Request $request)
+    {
+        $response = new Response();
+    
+        $fileBag = $request->files;
+    
+        if ($fileBag->get('file')) {
+    
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionDoctor);
+    
+            if(is_object($result)) {
+                 
+                $media = $result;
+                $this->institutionDoctor->setMedia($media);
+                
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($this->institutionDoctor);
+                $em->flush();
+            }
+        }
+    
+        return $this->redirect($this->generateUrl('institution_manageDoctorProfile', array('idId' => $this->institutionDoctor->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
+    }
+    
+    public function ajaxUpdateDoctorByFieldAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+    
+            if($request->get('firstName')){
+               $this->institutionDoctor->setFirstName($request->get('firstName'));
+               $this->institutionDoctor->setLastName($request->get('lastName'));
+               
+               $output['info']['firstName'] = $this->institutionDoctor->getFirstName();
+               $output['info']['lastName'] = $this->institutionDoctor->getLastName();
+            }else{
+                $this->institutionDoctor->setDetails($request->get('details'));
+                $output['info']['details'] = $this->institutionDoctor->getDetails();
+            }
+            
+            $em = $this->getDoctrine()->getEntityManager();
+    
+            try {
+                $em->persist($this->institutionDoctor);
+                $em->flush();
+            }
+            catch (\Exception $e) {
+                 
+                return new Response($e->getMessage(),500);
+            }
+        }
+    
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 }

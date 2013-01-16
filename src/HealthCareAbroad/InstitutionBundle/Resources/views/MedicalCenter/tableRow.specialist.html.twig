@@ -14,7 +14,7 @@
     		<i class="icon-trash" title="Delete"></i>
     		<a href="#" onclick ="InstitutionSpecialistAutocomplete.removeProperty({{ doctor.id }}, $(this).parents('tr')); return false;" >Edit</a>
     		<i class="icon-edit" title="Edit"></i>
-    		<a href="{{ path('institution_manageDoctorProfile', { 'institutionId':institution.id,'idId' :doctor.id }) }}" >Edit</a>
+    		<a href="{{ path('institution_manageDoctorProfile', { 'imcId':institutionMedicalCenter.id,'idId' :doctor.id }) }}" >Edit</a>
     	</div>
 	    </td>
 	</tr>
