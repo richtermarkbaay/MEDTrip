@@ -189,8 +189,9 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             $elements['zipCode'] = $institution->getZipCode();
         }
         
+        $keysWithValues = \array_intersect($includedKeys, \array_keys($elements));
         
-        return array_merge(array_flip($includedKeys), $elements);
+        return array_merge(array_flip($keysWithValues), $elements);
     }
 
     public function unset_array_key($key, $arr)

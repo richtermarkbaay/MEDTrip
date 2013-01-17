@@ -66,8 +66,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         if (\in_array('country', $includedKeys) && $institution->getCountry()) {
             $returnVal['country'] = $institution->getCountry()->getName();
         }
+        $keysWithValues = \array_intersect($includedKeys, \array_keys($returnVal));
         
-        return array_merge(array_flip($includedKeys), $returnVal);
+        return array_merge(array_flip($keysWithValues), $returnVal);
     }
     
     public function getName()
