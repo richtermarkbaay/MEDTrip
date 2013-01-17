@@ -31,7 +31,7 @@
                                 <div>
                                     {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
                                     <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
-                                    <span class="required" for="institutionSignUp_type_1">{{ _typeChoice.label }}</span>
+                                    <label class="required" for="institutionSignUp_type_1">{{ _typeChoice.label }}</label>
                                 </div>
                             {% endfor %}
                             {{ form_errors(form.type) }}

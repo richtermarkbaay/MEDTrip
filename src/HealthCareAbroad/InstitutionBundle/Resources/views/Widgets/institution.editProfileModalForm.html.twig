@@ -6,7 +6,7 @@
             {% for each in fields %}
 
                 {% if each == 'description' %}
-                    {{ form_row(institutionForm[each], { 'attr': { rows: 5} })  }}
+                    {{ form_row(institutionForm[each], { 'attr': { class: 'tinymce'} })  }}
                 {% elseif each == 'name' %}
                     {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
                 {% elseif each == 'address' %}
