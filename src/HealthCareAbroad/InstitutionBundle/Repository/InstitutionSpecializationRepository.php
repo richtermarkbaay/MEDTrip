@@ -41,7 +41,7 @@ class InstitutionSpecializationRepository extends EntityRepository
     {
         $qb = $this->_em->createQueryBuilder();
 
-        $sql = "SELECT i.`treatment_id` as treatment_id FROM `institution_treatments` i WHERE i.`institution_specialization_id` = :institutionSpecializationId ";
+        $sql = "SELECT i.`treatment_id` as treatment_id FROM `institution_treatments` i WHERE i.`institution_specialization_id` = :institutionSpecializationId";
         $statement = $this->getEntityManager()
             ->getConnection()->prepare($sql);
 
@@ -56,17 +56,19 @@ class InstitutionSpecializationRepository extends EntityRepository
         if ($hasIds) {
             $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE ".
                 " t.id NOT IN (?1) ".
-                "AND t.specialization = :specializationId ";
+                "AND t.specialization = :specializationId AND t.status = :status ";
 
             $query = $this->_em->createQuery($dql)
                 ->setParameter(1, $ids)
-                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId())
+                ->setParameter('status', Treatment::STATUS_ACTIVE);
         }
         else {
-            $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE t.specialization = :specializationId";
+            $dql = "SELECT t, s FROM TreatmentBundle:Treatment t LEFT JOIN t.subSpecializations s WHERE t.specialization = :specializationId AND t.status = :status";
 
             $query = $this->_em->createQuery($dql)
-                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId());
+                ->setParameter('specializationId', $institutionSpecialization->getSpecialization()->getId())
+                ->setParameter('status', Treatment::STATUS_ACTIVE);
         }
 
         return $query->getResult();
