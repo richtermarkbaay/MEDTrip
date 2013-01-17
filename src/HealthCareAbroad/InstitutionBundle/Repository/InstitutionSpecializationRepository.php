@@ -419,6 +419,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
             LEFT JOIN institutions AS e ON d.institution_id = e.id
             WHERE e.country_id = :country
+            AND c.id IS NOT NULL
             AND d.status = 2
             GROUP BY c.id
             ORDER BY count DESC
@@ -473,6 +474,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
             LEFT JOIN institutions AS e ON d.institution_id = e.id
             WHERE e.city_id = :city
+            AND c.id IS NOT NULL
             AND d.status = 2
             GROUP BY c.id
             ORDER BY count DESC

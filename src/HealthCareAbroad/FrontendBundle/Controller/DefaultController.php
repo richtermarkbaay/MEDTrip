@@ -33,7 +33,7 @@ class DefaultController extends Controller
         $news = $advertisementRepo->getActiveNews();
         $commonTreatments = $advertisementRepo->getCommonTreatments();
 
-        
+
         $params = array(
             'highlightAds' => $highlightAds,
             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
@@ -104,57 +104,174 @@ class DefaultController extends Controller
      **************************************************************************/
     public function commonLandingAction()
     {
+        throw $this->createNotFoundException('Test');
+
+        echo __METHOD__ . '<br/>';
         echo 'Route parameters:<br/>';
         var_dump($this->getRequest()->attributes->get('_route_params'));
         exit;
     }
 
-    public function listCentersForCountryAction(Request $request)
+    public function listCountrySpecializationAction(Request $request)
     {
         $parameters = $request->attributes->get('_route_params');
 
         $em = $this->getDoctrine()->getManager();
 
-        $country = $em->getRepository('Helper:Country')->find($parameters['countryId']);
-        $medicalCenter = $em->getRepository('MedicalProcedure:MedicalCenter')->find($parameters['centerId']);
+        $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
+        $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($parameters['specializationId']);
 
-        $response = new Response();
-        $response->headers->setCookie(
-            new Cookie('/'.'', $user, 0, '/', null, false, false)
-        );
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country);
+        $searchTerms = $country->getName() . ', ' . $specialization->getName();
 
-        $institutionMedicalCenters = $em->getRepository('Institution:InstitutionMedicalCenter')
-            ->getCentersWithLocation($medicalCenter, $country);
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
-    public function listCentersForCityAction()
+    public function listCountrySubSpecializationAction(Request $request)
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        exit;
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
+        $subSpecialization = $em->getRepository('TreatmentBundle:SubSpecialization')->find($parameters['subSpecializationId']);
+
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country);
+        $searchTerms = $country->getName() . ', ' . $subSpecialization->getName();
+
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
-    public function listTreatmentsForCenterAction()
+    public function listCountryTreatmentAction(Request $request)
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        exit;
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
+        $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($parameters['treatmentId']);
+
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country);
+        $searchTerms = $country->getName() . ', ' . $treatment->getName();
+
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
-    public function viewTreatmentAction()
+    public function listCitySpecializationAction(Request $request)
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        exit;
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
+        $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($parameters['specializationId']);
+
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city);
+        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $specialization->getName();
+
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
-    public function clinicProfileAction()
+    public function listCitySubSpecializationAction(Request $request)
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        exit;
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
+        $subSpecialization = $em->getRepository('TreatmentBundle:SubSpecialization')->find($parameters['subSpecializationId']);
+
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city);
+        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $subSpecialization->getName();
+
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
-    public function clinicProfileWithTreatmentAction()
+    public function listCityTreatmentAction(Request $request)
     {
-        var_dump($this->getRequest()->attributes->get('_route_params'));
-        exit;
+        $parameters = $request->attributes->get('_route_params');
+
+        $em = $this->getDoctrine()->getManager();
+
+        $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
+        $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($parameters['treatmentId']);
+
+        //TODO: pager
+        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city);
+        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $treatment->getName();
+
+        $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
+                        'searchResults' => $searchResults,
+                        'searchTerms' => $searchTerms
+        ));
+
+        $cookieName = $request->getPathInfo();
+        if (!$request->cookies->has($cookieName)) {
+            $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
+            $response->headers->setCookie($cookie);
+        }
+
+        return $response;
     }
 
     /**************************************************************************
