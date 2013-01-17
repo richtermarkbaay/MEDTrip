@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- www.phpied.com/conditional-comments-block-downloads/ -->
+		<!-- [if IE]><![endif]-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/institution/favicon.ico">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<!-- For the less-enabled mobile browsers like Opera Mini-->
+		<link rel="stylesheet" media="handheld" href="css/handheld.css?v=1" type="text/css">
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<title>HealthCareAbroad</title>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<header id="banner">
+			<div class="container">
+				<div class="row">
+					<div class="span4">
+						<div class="logo"><a href="index.html"><img src="images/institution/logo.png" alt="healthcareabroad"></a></div>
+					</div>
+					<div class="pull-right">
+						<form class="navbar-search pull-left"><input type="text" class="search-query" placeholder="Search"></form>
+						<div class="pull-left">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Help <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="feedback.html">Feedback</a></li>
+									<li><a href="faq.html">FAQ</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="pull-left"><p>you are logged in as</p></div>
+						<div class="pull-right">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel2" role="button" data-toggle="dropdown" data-target="#" href="#">hannah@gmail.com <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="manage-account-profile.html">Manage Account Profile</a></li>
+									<li><a href="add-new-user.html">Invite User</a></li>
+									<li><a href="logout.html">Logout</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--End of container -->
+			<nav id="banner2">
+				<div class="container">
+					<div class="row">
+						<div class="pull-right">
+							<ul class="nav nav-tabs">
+								<li><a href="dashboard-after-login.html">Dashboard</a></li>
+								<li><a href="institution-profile-initial.html">Institutional Profile</a></li>
+								<li><a href="medical-listing.html">Your Clinics</a></li>
+								<li><a href="site-logs.html">Events</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<aside id="featured">
+			<div class="container">
+				<h4>Welcome!</h4><p>Please tell us more about your clinic.</p>
+			</div>
+		</aside>
+		<section id="content">
+			<div class="container">
+				<div class="row">
+					<div class="span9">
+						<h1><span>Manage Account Profile</span></h1>
+						<!-- accordion start -->
+						<div class="accountsettings">
+							<div class="accordion" id="accordion2">
+								<div class="accordion-group">
+									<div class="accordion-heading">
+										<h5>Personal Information</h5>
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+									</div>
+									<div id="collapseOne" class="accordion-body collapse">
+										<div class="accordion-inner">
+											<table class="offset2">
+												<tbody>
+													<tr>
+														<th>
+															<label>First Name:</label>
+														</th>
+														<td class="data">
+															<input type="text" value="" name="first_name"></td>
+													</tr>
+													<tr>
+														<th>
+															<label>Middle Name:</label>
+														</th>
+														<td class="data">
+															<input type="text" value="Optional" placeholder="Optional" name="middle_name"></td>
+													</tr>
+													<tr>
+														<th>
+															<label>Last Name:</label>
+														</th>
+														<td class="data">
+															<input type="text" value="" name="last_name"></td>
+													</tr>
+													<tr>
+														<td colspan="2">To save these settings, please enter your HCA password.</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<input type="password" name="password"></td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<a href="#" class="btn btn-primary">Save Changes</a>
+															<a href="#" class="btn">Cancel</a>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								<div class="accordion-group">
+									<div class="accordion-heading">
+										<h5>Login Information</h5>
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
+									</div>
+									<div id="collapseTwo" class="accordion-body collapse">
+										<div class="accordion-inner">
+											<strong>Password</strong>
+											<p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>
+											<table class="offset2">
+												<tbody>
+													<tr>
+														<th>
+															<label>Current Password</label>
+														</th>
+														<td class="data">
+															<input type="password" value="" name="password">
+															<a href="#">Forgot Password?</a>
+														</td>
+													</tr>
+													<tr>
+														<th>
+															<label>New Password</label>
+														</th>
+														<td class="data">
+															<input type="password" value="" name="password"></td>
+													</tr>
+													<tr>
+														<th>
+															<label>Repeat Password</label>
+														</th>
+														<td class="data">
+															<input type="password" value="" name="password"></td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<a id="3" class="btn-medium btn btn-info" href="#">Save Changes</a>
+															<a id="4" class="btn-medium btn" href="#">Cancel</a>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- accordion end -->
+					</div>
+					<!--End of span9-->
+					<div class="span3">
+						<div class="sidebar">
+							<div class="box-content">
+								<h4>Benefits Label</h4>
+								<ul class="dashboard-member-activity">
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!--End of span3-->
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</section>
+		<!--FOOTER start-->
+		<div id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="span6 pull-left">
+						<p>© 2012 healthcareabroad.com | All rights reserved.</p>
+						<ul class="nav nav-pills">
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Terms of Use</a></li>
+							<li><a href="#">Ad Choice</a></li>
+						</ul>
+					</div>
+					<div class="pull-right">
+						<ul class="nav nav-pills">
+							<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><img src="images/institution/facebook_icon.png" alt="facebook"></a></li>
+<li><a href="http://twitter.com/HCAbroad" target="_blank"><img src="images/institution/twitter_icon.png" alt="twitter"></a></li><li><a href="#"><img src="images/institution/g+_icon.png" alt="google plus"></a></li>
+						</ul>
+					</div>
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</div><!--End of FOOTER-->
+	</body>
+</html>
