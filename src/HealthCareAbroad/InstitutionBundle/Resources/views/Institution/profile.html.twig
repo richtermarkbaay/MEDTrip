@@ -3,6 +3,7 @@
 {% set _csrf_token_widget = form_widget(institutionForm._token) %}
 {% set globalAwardClassLabel = getClassLabel('global_award') %}
 {% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
+{% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
 
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
