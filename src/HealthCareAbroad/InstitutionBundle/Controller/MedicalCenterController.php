@@ -188,8 +188,11 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
           if ($request->isMethod('POST')) {
-              
-            $businessHours = json_encode($request->get('businessHours'));
+              if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
+                  $businessHours = NULL;
+              }else{
+                  $businessHours = json_encode($request->get('businessHours'));
+              }
             $this->institutionMedicalCenter->setBusinessHours($businessHours);
             $em = $this->getDoctrine()->getEntityManager();
             
@@ -345,8 +348,11 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             
             if ($form->isValid()) {
-                
-                $businessHours = json_encode($request->get('businessHours'));
+                if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
+                    $businessHours = NULL;
+                }else{
+                    $businessHours = json_encode($request->get('businessHours'));
+                }
                 $form->getData()->setBusinessHours($businessHours);
                 
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
