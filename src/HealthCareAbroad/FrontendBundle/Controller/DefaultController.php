@@ -104,7 +104,7 @@ class DefaultController extends Controller
      **************************************************************************/
     public function commonLandingAction()
     {
-        throw $this->createNotFoundException('Test');
+        throw $this->createNotFoundException('An error occurred while processing your request.');
 
         echo __METHOD__ . '<br/>';
         echo 'Route parameters:<br/>';
@@ -123,11 +123,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country);
-        $searchTerms = $country->getName() . ', ' . $specialization->getName();
+        $searchLabel = $country->getName() . ', ' . $specialization->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
@@ -150,11 +150,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country);
-        $searchTerms = $country->getName() . ', ' . $subSpecialization->getName();
+        $searchLabel = $country->getName() . ', ' . $subSpecialization->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
@@ -177,11 +177,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country);
-        $searchTerms = $country->getName() . ', ' . $treatment->getName();
+        $searchLabel = $country->getName() . ', ' . $treatment->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
@@ -204,11 +204,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city);
-        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $specialization->getName();
+        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $specialization->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
@@ -231,11 +231,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city);
-        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $subSpecialization->getName();
+        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $subSpecialization->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
@@ -258,11 +258,11 @@ class DefaultController extends Controller
 
         //TODO: pager
         $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city);
-        $searchTerms = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $treatment->getName();
+        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ', ' . $treatment->getName();
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => $searchResults,
-                        'searchTerms' => $searchTerms
+                        'searchLabel' => $searchLabel
         ));
 
         $cookieName = $request->getPathInfo();
