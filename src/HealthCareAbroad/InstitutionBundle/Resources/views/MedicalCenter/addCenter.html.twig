@@ -1,10 +1,11 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
+{% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
 
 <div class="span12">
-	<h1><span>Create New Clinic Listing</span></h1>
+	<h1><span>Create New {{ clinicClassLabel.singular | title}} Listing</span></h1>
 	<ul class="navstep nav-steps">
-		<li class="active"><a href="#"><h2>1</h2><span>Clinic Details</span></a></li>
+		<li class="active"><a href="#"><h2>1</h2><span>{{ clinicClassLabel.singular | title}} Details</span></a></li>
 		<li><a href="#"><h2>2</h2><span>Specializations and Treatments</span></a></li>
 		<li><a href="#"><h2>3</h2><span>Services</span></a></li>
 		<li><a href="#"><h2>4</h2><span>Awards, Certifications and GlobalAwards</span></a></li>
