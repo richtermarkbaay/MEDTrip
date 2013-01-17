@@ -7,7 +7,7 @@
 					<div class="span2">
 						<h5><a href="">Home</a></h5>
 						<ul>
-							<li><a href="#">Destinations Page</a></li>
+							<li><a href="#">All Listings</a></li>
 							<li><a href="#">Search</a></li>
 						</ul>
 						<h5><a href="">Hospital</a></h5>
@@ -43,28 +43,28 @@
 
 			<div class="facepile span4"> <!--This is for the Facebook API-->
 				<h4>HCA on Facebook</h4>
-				<div id="fb-root">
-					Facepile..
+				<div>
+					<iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:287px; height:368px;" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=558&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false"></iframe>
 				</div>
 			</div>
 
 			<div class="subscription span4"> <!--This is for the Subscriptions-->
 				<div class="subscribe_item row">
 					<h5>Subscribe To Our Newsletter</h5>
-					<form action="get" class="subscribe_form">
-						<input type="text" class="span4" placeholder="email@domain.com" name="email" />
+					<form class="subscribe_form" action="get">
+						<input type="text" name="email" placeholder="email@domain.com" class="span4">
 						<div class="form-inline">
-							<input class="checkbox" type="checkbox"/>
+							<input type="checkbox" class="checkbox">
 							<label>Unsubscribe</label>
-							<button type="submit" class="btn">Submit Now</button>
+							<button class="btn" type="submit">Submit Now</button>
 						</div>
 					</form>
 				</div>
 				<div class="register">
 					<h5>Want to register an Institution?</h5>
-					<a href="#" class="sign-up">Sign Up</a>
-					<img src="/images/frontend/or_option.png" alt="">
-					<a href="#" class="sign-up">Sign In</a>
+					<a class="sign-up" href="#">Sign Up</a>
+					<span class="or-option"></span>
+					<a class="sign-up" href="#">Sign In</a>
 				</div>
 			</div>
 		</div>
@@ -82,12 +82,12 @@
 			</div>
 			<div class="social span6">
 				<ul class="socials-nav">
-					<li><a href="#"><img src="/images/frontend/g+_icon.png" alt="facebook"/></a></li>
-					<li><a href="#"><img src="/images/frontend/facebook_icon.png" alt="facebook"/></a></li>
-					<li><a href="#"><img src="/images/frontend/twitter_icon.png" alt="facebook"/></a></li>
+					<li><a href="#"><span class="g-icon"></span></a></li>
+					<li><a href="#"><span class="facebook-icon"></span></a></li>
+					<li><a href="#"><span class="twitter-icon"></span></a></li>
 				</ul>
 			</div>
 		</div>
 
 	</div> <!--End of class container-->
-</div> <!--End of footer_wrapper-->
+</div>

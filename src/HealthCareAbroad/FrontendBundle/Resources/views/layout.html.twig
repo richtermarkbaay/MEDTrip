@@ -8,11 +8,14 @@
         {% block header %}
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
-        {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
+        
+        {% if 'main_homepage' != app.request.attributes.get('_route') %}
+            {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
+        {% endif %}
         
         {% block callout %}{% endblock %}
-        
-        <div id="content" class="container content">
+        {% set _hasContentClass = _hasContentClass is defined ? _hasContentClass : true %}
+        <div id="content" class="container {{ _hasContentClass ? 'content': ''}}">
             {% block content %}{% endblock %}
         </div>
         <div class="border_pattern_footer">&nbsp;</div>
