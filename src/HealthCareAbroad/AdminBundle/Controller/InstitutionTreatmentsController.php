@@ -432,7 +432,6 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
         if ($request->isMethod('POST')) {
-            
             if($request->get('businessHours') == null){
                 $businessHours = NULL;
             }else{

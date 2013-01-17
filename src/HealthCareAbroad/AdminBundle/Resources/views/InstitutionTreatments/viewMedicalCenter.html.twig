@@ -58,7 +58,7 @@
             	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#businessHours-table').hide();
             }
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -251,10 +251,10 @@
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
     	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-    	    	$('#clinicHoursTable').hide();
+    	    	$('#businessHours-table').hide();
     	    	
     	    }else{
-        	    $('#clinicHoursTable').show();
+        	    $('#businessHours-table').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
     	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
