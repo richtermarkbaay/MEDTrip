@@ -57,7 +57,8 @@
             if ($('#businessHourCheckBox').attr('checked')) {
             	$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$('#table-businessHours').hide();
+    	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+    	    	$('#clinicHoursTable').hide();
             }
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -250,10 +251,10 @@
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
     	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-    	    	$('#table-businessHours').hide();
+    	    	$('#clinicHoursTable').hide();
     	    	
     	    }else{
-        	    $('#table-businessHours').show();
+        	    $('#clinicHoursTable').show();
         	    $(this).parent().parent().find('.hour').val("8:00 AM");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
     	    	$(this).parent().parent().next().find('.businessHourNotes').val("");

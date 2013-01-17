@@ -150,30 +150,30 @@ class FrontendRouteService
 
         switch (count($variables)) {
             case 2:
-                $controller = 'FrontendBundle:Default:listCentersForCountry';
+                $controller = 'FrontendBundle:Default:listCountrySpecialization';
 
                 break;
 
             case 3:
-                if (isset($variables['treatmentId'])) {
-                    $controller = 'FrontendBundle:Default:listTreatmentsForCenter';
-                } else if (isset($variables['cityId'])) {
-                    $controller = 'FrontendBundle:Default:listCentersForCity';
+                if (isset($variables['cityId'])) {
+                    $controller = 'FrontendBundle:Default:listCitySpecialization';
+                } else if (isset($variables['subSpecializationId'])) {
+                    $controller = 'FrontendBundle:Default:listCountrySubSpecialization';
                 }
 
                 break;
 
             case 4:
                 if (isset($variables['treatmentId'])) {
-                    $controller = 'FrontendBundle:Default:viewTreatment';
-                } else if (isset($variables['institutionId'])) {
-                    $controller = 'FrontendBundle:Default:clinicProfile';
+                    $controller = 'FrontendBundle:Default:listCountryTreatment';
+                } else if (isset($variables['cityId'])) {
+                    $controller = 'FrontendBundle:Default:listCitySubSpecialization';
                 }
 
                 break;
 
             case 5:
-                $controller = 'FrontendBundle:Default:clinicProfileWithTreatment';
+                $controller = 'FrontendBundle:Default:listCityTreatment';
 
                 break;
 
@@ -183,6 +183,15 @@ class FrontendRouteService
 
         return $controller;
     }
+
+    // Possible routes:
+    //
+    // /<country>/<city>/<specialization> (3)
+    // /<country>/<city>/<specialization>/<subspecialization> (4)
+    // /<country>/<city>/<specialization>/<treatment>/treatment (5)
+    // /<country>/<specialization> (2)
+    // /<country>/<specialization>/<subspecialization> (3)
+    // /<country>/<specialization>/<treatment>/treatment (4)
 
     /**
      * @todo: move to an external class; refactor
@@ -198,15 +207,7 @@ class FrontendRouteService
         $center = null;
         $clinic = null;
         $treatment = null;
-
-        // Possible routes:
-        //
-        // /country/city/center/clinic/treatment
-        // /country/city/center/clinic
-        // /country/city/center/treatment
-        // /country/city/center
-        // /country/center/treatment
-        // /country/center
+        $page = null; //TODO\
 
         // ALGORITHMN (BRUTE FORCE APPROACH)
         // 1. get number of tokens
@@ -231,22 +232,36 @@ class FrontendRouteService
         }
 
         //MATCHED /country/...
-        // second token can either be a center or a city
-        //TODO: This assumes that there will be no name collisions between
-        // a center and a city.
-        if ($center = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy(array('slug' => $tokens[1]))) {
+        // second token can either be a specialization or a city
+        //TODO: This assumes that there will be no name collisions between a center and a city.
+        if ($specialization = $this->doctrine->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $tokens[1]))) {
             if ($tokenCount == 2) {
-                // MATCHED /country/center
-                $variables = array('countryId' => $country->getId(), 'centerId' => $center->getId());
+                // MATCHED /country/specialization
+                $variables = array('countryId' => $country->getId(), 'specializationId' => $specialization->getId());
 
             } else if ($tokenCount == 3) {
-                if ($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[2]))) {
-                    // MATCHED /country/center/treatment
+                if ($subSpecialization = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')->findOneBy(array('slug' => $tokens[2]))) {
+                    // MATCHED /country/specialization/subSpecialization
                     $variables = array(
                                     'countryId' => $country->getId(),
-                                    'centerId' => $center->getId(),
-                                    'treatmentId' => $treatment->getId()
+                                    'specializationId' => $specialization->getId(),
+                                    'subSpecializationId' => $subSpecialization->getId()
                     );
+                } else {
+                    return null;
+                }
+            } else if ($tokenCount == 4) {
+                if ($tokens[3] == 'treatment') {
+                    if ($treatment = $this->doctrine->getRepository('TreatmentBundle:Treatment')->findOneBy(array('slug'=> $tokens[2]))) {
+                        //matched /country/specialization/treatment/'treatment'
+                        $variables = array(
+                                        'countryId' => $country->getId(),
+                                        'specializationId' => $specialization->getId(),
+                                        'treatmentId' => $treatment->getId()
+                        );
+                    } else {
+                        return null;
+                    }
                 } else {
                     return null;
                 }
@@ -256,64 +271,50 @@ class FrontendRouteService
 
         } else if ($city = $this->doctrine->getRepository('HelperBundle:City')->findOneBy(array('slug' => $tokens[1]))) {
             //MATCHED /country/city/...
-            // third token should always be a center
-            if (is_null($center = $this->doctrine->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy(array('slug' => $tokens[2])))) {
+            // third token should always be a specialization
+            if (is_null($specialization = $this->doctrine->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $tokens[2])))) {
                 return null;
             }
+
             if ($tokenCount == 3) {
-                //MATCHED /country/city/center
+                //MATCHED /country/city/specialization
                 $variables = array(
                                 'countryId' => $country->getId(),
                                 'cityId' => $city->getId(),
-                                'centerId' => $center->getId()
+                                'specializationId' => $specialization->getId()
                 );
             } else if ($tokenCount == 4) {
-                //MATCHED /country/city/center/...
-                // fourth token can either be a treatment or clinic
-                //TODO: This assumes that there will be no name collisions between
-                // a treatment and a clinic.
-                if ($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[3]))) {
-                    //MATCHED /country/city/center/treatment
+                if ($subSpecialization = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')->findOneBy(array('slug' => $tokens[3]))) {
+                    //MATCHED /country/city/specialization/subSpecialization
                     $variables = array(
                                     'countryId' => $country->getId(),
                                     'cityId' => $city->getId(),
-                                    'centerId' => $center->getId(),
-                                    'treatmentId' => $treatment->getId()
-                    );
-                } else if ($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3]))) {
-                    //MATCHED /country/city/center/clinic
-                    $variables = array(
-                                    'countryId' => $country->getId(),
-                                    'cityId' => $city->getId(),
-                                    'centerId' => $center->getId(),
-                                    'institutionId' => $clinic->getId()
+                                    'specializationId' => $specialization->getId(),
+                                    'subSpecializationId' => $subSpecialization->getId()
                     );
                 } else {
                     return null;
                 }
 
             } else if ($tokenCount == 5) {
-                //MATCHED /country/city/center/...
-                //fourth token should be a clinic while the fifth procedure type
-                if (is_null($clinic = $this->doctrine->getRepository('InstitutionBundle:Institution')->findOneBy(array('slug' => $tokens[3])))) {
+                if ($tokens[4] == 'treatment') {
+                    if ($treatment = $this->doctrine->getRepository('TreatmentBundle:Treatment')->findOneBy(array('slug'=> $tokens[3]))) {
+                        //matched /country/city/specialization/treatment/'treatment'
+                        $variables = array(
+                                        'countryId' => $country->getId(),
+                                        'cityId' => $city->getId(),
+                                        'specializationId' => $specialization->getId(),
+                                        'treatmentId' => $treatment->getId()
+                        );
+                    } else {
+                        return null;
+                    }
+                } else {
                     return null;
                 }
-                if (is_null($treatment = $this->doctrine->getRepository('MedicalProcedureBundle:Treatment')->findOneBy(array('slug' => $tokens[4])))) {
-                    return null;
-                }
-                // MATCHED /country/city/center/clinic/treatment
-                $variables = array(
-                                'countryId' => $country->getId(),
-                                'cityId' => $city->getId(),
-                                'centerId' => $center->getId(),
-                                'institutionId' => $clinic->getId(),
-                                'treatmentId' => $treatment->getId()
-                );
-
             } else {
                 return null;
             }
-
         } else {
             return null;
         }
