@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Doctrine\ORM\Query\ResultSetMapping;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
@@ -244,12 +246,14 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN institution_specializations d ON c.id = d.institution_medical_center_id
             LEFT JOIN specializations e ON d.specialization_id = e.id
             WHERE e.id = :specialization
+            AND c.status = :imcStatus
             GROUP BY b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
        ');
         $stmt->bindValue('specialization', $specialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
         $topCountries = $stmt->fetchAll();
 
@@ -262,6 +266,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN specializations e ON d.specialization_id = e.id
             WHERE e.id = :specialization
             AND a.city_id IS NOT NULL
+            AND c.status = :imcStatus
             GROUP BY b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
@@ -269,6 +274,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         $stmt->bindValue('specialization', $specialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
 
         $topCities = $stmt->fetchAll();
@@ -294,6 +300,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             INNER JOIN `treatments` f ON e.`treatment_id` = f.`id`
             INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
             WHERE g.sub_specialization_id = :subSpecialization
+            AND c.status = :imcStatus
             GROUP BY b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations";
@@ -301,6 +308,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
         $topCountries = $stmt->fetchAll();
 
@@ -315,6 +323,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
             WHERE g.sub_specialization_id = :subSpecialization
             AND a.city_id IS NOT NULL
+            AND c.status = :imcStatus
             GROUP BY c.id, b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
@@ -323,6 +332,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         $stmt->bindValue('subSpecialization', $subSpecialization, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
 
         $topCities = $stmt->fetchAll();
@@ -347,13 +357,14 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN institution_treatments e ON d.id = e.institution_specialization_id
             LEFT JOIN treatments f ON e.treatment_id = f.id
             WHERE f.id = :treatment
-            AND c.status = 2
+            AND c.status = :imcStatus
             GROUP BY b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
        ');
         $stmt->bindValue('treatment', $treatment, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
         $topCountries = $stmt->fetchAll();
 
@@ -367,13 +378,14 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN treatments f ON e.treatment_id = f.id
             WHERE f.id = :treatment
             AND a.city_id IS NOT NULL
-            AND c.status = 2
+            AND c.status = :imcStatus
             GROUP BY b.id
             ORDER BY institution_count DESC
             LIMIT :numOfDestinations
        ');
         $stmt->bindValue('treatment', $treatment, \PDO::PARAM_INT);
         $stmt->bindValue('numOfDestinations', $numOfDestinations, \PDO::PARAM_INT);
+        $stmt->bindValue('imcStatus', InstitutionMedicalCenterStatus::APPROVED, \PDO::PARAM_INT);
         $stmt->execute();
 
         $topCities = $stmt->fetchAll();

@@ -1,0 +1,36 @@
+{% if searchResultItem is defined %}
+<article class="media search-entry">
+
+    <div class="pull-left thumb">
+        <a href="{{ searchResultItem.url }}">
+            {% if searchResultItem.logo %}
+                {{ searchResultItem.logo }}
+            {% else %}
+                 <span style="background: url(/images/frontend/defaultLogo.png) center center no-repeat; background-size: 100% 100%" class="search-entry-thumb"></span>
+            {% endif %}
+	    </a>
+	</div>
+
+    <div class="media-body">
+        <h3 class="media-heading">{{ searchResultItem.name }}</h3>
+        <div class="media">
+            <div class="pull-left">
+                <span class="address-icon2"></span>
+            </div>
+            <div class="media-body">
+                <small>
+                    {% if searchResultItem.streetAddress is defined %}
+                        {{ searchResultItem.streetAddress }}
+                        <br />
+                    {% endif %}
+                                        
+                    <b>{{ searchResultItem.mainAddress }}</b>
+                </small>
+            </div>
+            <a href="{{ searchResultItem.url }}" class="more-info btn pull-right green">
+                <span class="icon-search icon-white"></span> More Info
+            </a>
+        </div>
+    </div>
+</article>
+{% endif %}

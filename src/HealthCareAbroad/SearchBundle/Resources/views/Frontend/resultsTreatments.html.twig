@@ -26,44 +26,16 @@
             </div>
         </header>
         {% for center in searchResults %}
-            {% set rating = random(5) %}
-            <article class="media search-entry">
-                <a class="pull-left" href="{{ get_institution_medical_center_frontend_url(center) }}">
-                    <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
-                    <div class="rating">
-                        <p>USER RATINGS</p>
-                        <ul>
-                            {% for i in 1..5 %}
-                                {% if i <= rating %}
-                                    <li><img src="/images/frontend/staricon_orange.png" alt="star"/></li>
-                                {% else %}
-                                    <li><img src="/images/frontend/staricon_grey.png" alt="star"/></li>
-                                {% endif %}
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </a>
-
-                <div class="media-body">
-                    <h3 class="media-heading">{{ center.name }}</h3>
-                    <div class="media">
-                        <div class="pull-left">
-                            <img src="images/frontend/address_icon2.png" class="media-object">
-                        </div>
-                        <div class="media-body">
-                            <small>
-                                {# -- center street/specific address -- #}
-                                {% set _institution_medical_center_address = medical_center_complete_address_to_array(center, ['address', 'zipCode']) %}
-                                {% set _institution_address = medical_center_complete_address_to_array(center, ['city', 'state', 'country']) %}
-                                {{ _institution_medical_center_address | join(', ') }}
-                                <br>
-                                <b>{{ _institution_address | join(', ') }}</b>
-                            </small>
-                        </div>
-                        <a href="{{ get_institution_medical_center_frontend_url(center) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
-                    </div>
-                </div>
-            </article>
+            {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'searchResultItem' : {
+                       url: get_institution_medical_center_frontend_url(center),
+                       logo: center.logo ? media(center.logo, institution, 'frontendSearchResultLogo') | raw  : null,
+                       name: center.name,
+                       mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                       streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+                   } 
+                } 
+            %}
         {% endfor %}
 
         {% if searchResults.isPaginable %}
@@ -71,44 +43,7 @@
         {% endif %}
 
     </div> <!--End of main_content-->
-
-    <aside id="aside_content" class="span4">
-        <section class="box-in">
-            <h5 class="heading"><small>Narrow</small> Search </h5>
-            <ul class="related">
-                <li class="row">
-                    <h3>By Country</h3>
-                        <ul>
-                            {% for item in topCountries %}
-                                <li><a href="#">{{ item.country }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
-                            {% endfor %}
-                        </ul>
-                </li>
-                <li class="row">
-                    <h3>By City</h3>
-                        <ul>
-                            {% for item in topCities %}
-                                <li><a href="#">{{ item.city }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
-                            {% endfor %}
-                        </ul>
-                </li>
-                <li class="row">
-                    <h3>Related Treatments</h1>
-                        <ul>
-                            <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
-                            <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
-                            <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
-                        </ul>
-                </li>
-            </ul>
-        </section>
-        <section class="box-in">
-            <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
-            <ul class="ads">
-                <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
-                <li>When I grow up, I want to be an <b>NEWS</b>.</li>
-            </ul>
-        </section>
-    </aside> <!--End of aside_content-->
+    
+    {% include 'FrontendBundle:Widgets/Search:sidebar.resultsSingleSearch.html.twig' %}
 </div>
 {% endblock %}
