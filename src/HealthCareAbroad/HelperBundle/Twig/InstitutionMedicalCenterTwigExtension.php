@@ -25,7 +25,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     
     public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array())
     {
-        $defaultIncludedKeys = array('address', 'zipCode', 'city', 'country');
+        $defaultIncludedKeys = array('address', 'zipCode', 'city', 'state','country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
         $institution = $institutionMedicalCenter->getInstitution();
         $returnVal = array();
