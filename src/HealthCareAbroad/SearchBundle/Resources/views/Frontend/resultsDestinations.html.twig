@@ -1,24 +1,10 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% block content %}
+{% block callout %}
+    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
+{% endblock %}
 
-    <section class="container">
-        <div class="callout">
-            <div class="content">
-                <div class="span9">
-                    <div class="media">
-                        <div class="media-body">
-                            <h1 class="search-info"> Search Results for <small>{{ searchLabel }}</small></h1>
-                        </div>
-                    </div>
-                </div>
-                <div class="span3">
-                    <a href="#" class="all-clinic btn green">Back to Search</a>
-                </div>
-            </div>
-            <div class="triangle-border"></div>
-        </div>
-    </section>
+{% block content %}
 
     <div id="content" class="container content">
         <div id="details" class="row">
@@ -30,30 +16,18 @@
                 </header>
 
                 {% for institution in searchResults %}
-                    {% set rating = random(5) %}
-                <article class="media search-entry">
-                    <a class="pull-left" href="{{ get_institution_frontend_url(institution) }}">
-                        <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
-                    </a>
-
-                    <div class="media-body">
-                        <h3 class="media-heading">{{ institution.name }}</h3>
-                        <div class="media">
-                            <div class="pull-left">
-                                <img src="images/frontend/address_icon2.png" class="media-object">
-                            </div>
-                            <div class="media-body">
-                                <small>
-                                    {{ institution_address_to_array(institution) | join(', ')  }}<br>
-                                    <b>{{ institution.city }}, {{ institution.country }}</b>
-                                </small>
-                            </div>
-                            <a href="{{ get_institution_frontend_url(institution) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
-                        </div>
-                    </div>
-                </article>
-
+                    {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                           'searchResultItem' : {
+                               url: get_institution_frontend_url(institution),
+                               logo: institution.logo ? media(institution.logo, institution, 'frontendSearchResultLogo') | raw  : null,
+                               name: institution.name,
+                               mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
+                               streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
+                           } 
+                        } 
+                    %}
                 {% endfor %}
+                
                 {% if searchResults.isPaginable %}
                     {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
                 {% endif %}

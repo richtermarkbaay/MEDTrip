@@ -1,78 +1,62 @@
+<script type="text/javascript" src="/js/jquery/jquery.carouFredSel-6.1.0-packed.js"></script>
 <script type="text/javascript">
 
 	(function($){
 
 		$(function(){
-			// main slider
-	        $('.slider').cycle({
-	             fx: 'fade',
-	             speed: 300,
-	             timeout:5000,
-	             pause: 1,
-	             cleartype: true,
-	             cleartypeNoBg: true,
-	             pager: 'ul.slider_nav',
-	             after: function(){
-	             	$('.slider_items .slider_caption').stop().animate({opacity:1, bottom:0},{queue:false,duration:300 });
-	                 $('.feature_video_icon, .feature_slide_icon, .feature_article_icon').stop().animate({top:0},{queue:true,duration:300});
-	             },
-	             before: function(){
-	            	 $('.slider_items .slider_caption').stop().animate({opacity:1, bottom:'-120px'},{queue:false,duration:300});
-	     			$('.feature_video_icon, .feature_slide_icon, .feature_article_icon').animate({top:'-40px'},{queue:true,duration:300});
-	             },
-	             pagerAnchorBuilder: function(idx, slide) {
-
-	                 return 'ul.slider_nav li:eq(' + (idx) + ')';
-	             }
+		    var slider = $('#feature_carousel').carousel({
+				interval: 5000,
+				pause: "hover"
+			})
+			.bind('slid', function() {
+				var index = $(this).find(".active").index();
+				$(this).find("a").removeClass('pager-active').eq(index).addClass('pager-active');
 			});
 
-	        $('ul.slider_nav li').hover(
-    	        function() {
-	        		$('.slider').cycle('pause');
-	        	}, 
-	        	function () {
-	        		$('.slider').cycle('resume'); 
-	          }
-          );
-	        // slider nav
-	        $('.slider_nav li:not(.activeSlide) a').click(
-	        	function () {
-	        		$('.slider_nav li a').css('opacity', 0.7);
-	        		$(this).css('opacity', 1);
-        		}
-			);
+			$(".nav-pills a").click(function (e) {
+				//var index = $(this).index();
+				var index = $(this).attr("data-to") - 1;
+				$("#feature_carousel").carousel(index);
+				e.preventDefault();
+			});
 
-	        $('.slider_nav li:not(.activeSlide) a').hover(
-	        	function () {
-	        			$(this).stop(true, true).animate({opacity: 1}, 300);
+			$('#carousel-inner').carouFredSel({
+				circular: true,
+				infinite: false,
+				auto: true,
+				items: 4,
+				height: 150,
+				scroll: {
+					pauseOnHover: true,
+					duration: 1000
+				},
+				prev: {
+					button: "#carousel_prev",
+					key: "left"
+				},
+				next:  {
+					button: "#carousel_next",
+					key: "right"
+				}
+			});
 
-	        		}, function () {
-
-	        			$(this).stop(true, true).animate({opacity: 0.7}, 300);
-	        			}
-
-	        		);
-
-	      //latest vids wrap		
-			var vids = $(".lates_feat_item");		
-			for(var i = 0; i < vids.length; i+=4) {
-		
-				vids.slice(i, i+4).wrapAll('<div class="four_items"></div>');		
-			}
-		    //latest news video
-		
-		$('.scroll_items').cycle({
-		
-			fx: 'scrollHorz',		
-			easing: 'swing',		
-			speed: 3000,		
-			timeout:7000,		
-			pause: 1,		
-			cleartype: true,	
-			cleartypeNoBg: true,		
-			pager: '.navi .navi_links',		
-		});
-	          
+			// Custom tip implementation
+			// This is temporary, I will make a standard and more abstract module once I'm feeling ok
+			// Hate this stupid cold
+			$('.tip').each(function(){
+				$(this).mouseover(function(e){
+					var bbox = $(this).parent()
+					, 	tx = bbox.position().left - bbox.outerWidth()/2;
+					console.log(tx);
+					//tx = tx - $('.tooltip').outerWidth()/2 - 50;
+					$('.tooltip')
+					.css('left', tx + "px")
+					.html($(this).attr("data-original-title"))
+					.show();
+				}).mouseleave(function(e){
+					$('.tooltip').hide();
+				});
+			});     
 	    });
 
 	})(jQuery);

@@ -1,7 +1,7 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
-
+{% set _hasContentClass = false %}
 {% block content %}
-
+    {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
 	<div id="main_content" class="row">
 
 	    <!-- Main Content -->
@@ -26,5 +26,5 @@
 	</div>
 
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	
-
+    
 {% endblock %}
