@@ -11,15 +11,17 @@ class ContactNumberDataTransformer implements DataTransformerInterface
     {
         $data = \json_decode($data, true);
 
-        if (array_key_exists("country_code",$data)){
-            
-           return $data;
-        }
         if (!$data) {
-            
-           return $data = $this->defaultValue;
-        }else{
-            
+        
+         return $data = $this->defaultValue;
+        }
+        else{
+            if($data){
+                if (array_key_exists("country_code",$data)){
+                
+                    return $data;
+                }
+            }
            return $data = $this->defaultValue;
         }
      
