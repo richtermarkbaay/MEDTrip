@@ -1,20 +1,7 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block callout %}
-    {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
-        {% block calloutContent %}
-            <div class="span9">
-                <div class="media">
-                    <div class="media-body">
-                        <h1 class="search-info"> Search Results for <small>{{ searchLabel }}</small></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="span3">
-                <a href="#" class="all-clinic btn green">Back to Search</a>
-            </div>
-        {% endblock %}
-    {% endembed %}
+    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
 {% endblock %}
 
 {% block content %}
