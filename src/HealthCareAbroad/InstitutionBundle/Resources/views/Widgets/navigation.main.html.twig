@@ -9,7 +9,7 @@
                         <a href="{{ path('institution_homepage')}}">Dashboard</a>
                     </li>
 					<li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
-                        <a href="{{ path('institution_account_profile') }}">Institutional Profile</a> 
+                        <a href="{{ path('institution_account_profile') }}">Your Profile</a> 
                     </li>
     				{#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
                     {% if (institution.type != 3) %}
