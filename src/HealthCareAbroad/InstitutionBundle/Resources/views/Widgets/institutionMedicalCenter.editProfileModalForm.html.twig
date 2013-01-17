@@ -1,6 +1,5 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
     {% block modalBody %}
-
         <form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" style="min-width: 400px;padding: 20px 20px 0;">
         
             {% for each in fields %}
@@ -18,9 +17,9 @@
             {{ _csrf_token_widget | raw}}
 
         </form>
-        <div class="modal-footer button-wrapper">
+    {% endblock %}
+    {% block footerBody %}
 			<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
 			<button class="btn btn-primary submit-button" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
-        </div>
     {% endblock %}
 {% endembed %}
