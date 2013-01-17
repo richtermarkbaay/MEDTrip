@@ -1,25 +1,30 @@
 {% if commonTreatments %}
 
 <div class="heading">
-	<h3>Common Treatments</h3>
+    <h3>Common Treatments</h3>
 </div>
 
 <div class="aside_wrapper">
     {% for each in commonTreatments %}
 
-	<div class="media">
-		<div class="image_preview">
-			<a class="pull-left" href="#">
-			    {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
-			    <img class="more-icon" src="/images/frontend/learn_more_button.png" alt="learn more">
-			</a>
-		</div>
-		<div class="media-body">
-			<a href="{{ path('search_frontend', {treatment_id: each.treatmentId}) }}"><h4 class="media-heading">{{ each.title }}</h4></a>
-			<p>{{ each.description }}</p>
-		</div>
-	</div>
-	{% endfor %}
+    <div class="media">
+        <div class="image_preview">
+            <a class="pull-left" href="#">
+                {% if each.media is defined %}
+                    {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
+                {% endif %}
+                <img class="more-icon" src="/images/frontend/learn_more_button.png" alt="learn more">
+            </a>
+        </div>
+        <div class="media-body">
+            <!--
+            <a href="{#{ path('search_frontend', {treatment_id: each.treatmentId}) }#}"><h4 class="media-heading">{{ each.title }}</h4></a>
+            -->
+            <a href="{{ get_treatment_url(each.treatment) }}"><h4 class="media-heading">{{ each.title }}</h4></a>
+            <p>{{ each.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 
 {% endif %}

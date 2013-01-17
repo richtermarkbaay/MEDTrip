@@ -389,8 +389,12 @@ class InstitutionTreatmentsController extends Controller
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
     
-                // Get contactNumbers and convert to json format
-                $businessHours = json_encode($request->get('businessHours'));
+                // Get businessHours and convert to json format
+                if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
+                    $businessHours = NULL;
+                }else{
+                    $businessHours = json_encode($request->get('businessHours'));
+                }
                 if ($form->isValid()) {
     
                     // Set BusinessHours before saving
@@ -427,9 +431,8 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
         if ($request->isMethod('POST')) {
-            
             if($request->get('businessHours') == null){
-                $businessHours = '';
+                $businessHours = NULL;
             }else{
                 $businessHours = json_encode($request->get('businessHours'));
             }
@@ -469,7 +472,7 @@ class InstitutionTreatmentsController extends Controller
             
             // Get businessHours and convert to json format
             if($request->get('businessHours') == null){
-                $businessHours = '';
+                $businessHours = NULL;
             }else{
                $businessHours = json_encode($request->get('businessHours'));
             }

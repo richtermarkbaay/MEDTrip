@@ -5,13 +5,11 @@
         
             <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" size="40" class="profilephoto" />
           <hr>
-            <div class="clearfix"></div>
-                <div class="modal-footer button-wrapper">
-        		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        		<input type="submit" class="btn btn-primary" value="Submit">
-            </div>
         </form>
-  
+    {% endblock %}
+    {% block footerBody %}
+         <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+    	<input type="submit" class="btn btn-primary" value="Submit">
     {% endblock %}
 {% endembed %}
 

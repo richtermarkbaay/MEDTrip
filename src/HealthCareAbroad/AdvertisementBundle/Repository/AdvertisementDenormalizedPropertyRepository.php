@@ -69,16 +69,17 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getCommonTreatments()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c')
+        $qb->select('a, b, c', 'd')
         ->leftJoin('a.institution', 'b')
         ->leftJoin('a.media', 'c')
+        ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
         ->andWhere('a.status = :status')
         ->setParameter('type', 7)
         ->setParameter('status', 1);
-    
+
         $result = $qb->getQuery()->getResult();
-    
+
         return $result;
     }
 }

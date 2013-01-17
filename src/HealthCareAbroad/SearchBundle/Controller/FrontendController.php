@@ -21,6 +21,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class FrontendController extends Controller
 {
+    private $resultsPerPage = 15;
+
     public function showWidgetAction(Request $request)
     {
         $options['context'] = $request->get('context');
@@ -234,13 +236,13 @@ class FrontendController extends Controller
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        $destinationLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName();
+        $searchLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName();
 
         $parameters = array(
             'searchResults' => $searchResults,
-            'destinationLabel' => $destinationLabel,
+            'searchLabel' => $searchLabel,
             //'destinationParameter' => $searchTerms['destinationParameter'],
             'routeName' => 'search_frontend_results_countries',
             'paginationParameters' => array('country' => $country->getSlug())
@@ -279,13 +281,13 @@ class FrontendController extends Controller
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        $destinationLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getSlug().', '.$city->getCountry()->getSlug();
+        $searchLabel = isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getName().', '.$city->getCountry()->getName();
 
         $parameters = array(
                         'searchResults' => $searchResults,
-                        'destinationLabel' => $destinationLabel,
+                        'searchLabel' => $searchLabel,
                         //'destinationParameter' => $searchTerms['destinationParameter'],
                         'routeName' => 'search_frontend_results_cities',
                         'paginationParameters' => array(
@@ -328,13 +330,13 @@ class FrontendController extends Controller
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        $treatmentLabel = isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $city->getSlug().', '.$city->getCountry()->getSlug();
+        $searchLabel = isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $city->getName().', '.$city->getCountry()->getName();
 
         $parameters = array(
                         'searchResults' => $searchResults,
-                        'treatmentLabel' => $treatmentLabel,
+                        'searchLabel' => $searchLabel,
                         //'treatmentParameter' => $searchTerms['treatmentParameter'],
                         'routeName' => 'search_frontend_results_specializations',
                         'paginationParameters' => array('specialization' => $specialization->getSlug())
@@ -359,7 +361,6 @@ class FrontendController extends Controller
     {
         //$searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
-        $searchResults = $this->get('services.search')->searchBySubSpecialization($searchTerms['subSpecializationId']);
 
         $specialization = null;
         if (isset($searchTerms['specializationId']) && $searchTerms['specializationId'] ) {
@@ -383,13 +384,17 @@ class FrontendController extends Controller
             }
         }
 
+        $searchResults = $this->get('services.search')->searchBySubSpecialization($searchTerms['subSpecializationId']);
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+
+        $searchLabel = $searchLabel = isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $subSpecialization->getName();
 
         $parameters = array(
                         'searchResults' => $searchResults,
-                        'treatmentLabel' => $searchTerms['treatmentLabel'],
+                        'searchLabel' => $searchLabel,
                         //'treatmentParameter' => $searchTerms['treatmentParameter'],
                         'routeName' => 'search_frontend_results_subSpecializations',
                         'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug())
@@ -414,7 +419,6 @@ class FrontendController extends Controller
     {
         //$searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
-        $searchResults = $this->get('services.search')->searchByTreatment($searchTerms['treatmentId']);
 
         $specialization = null;
         if (isset($searchTerms['specializationId']) && $searchTerms['specializationId'] ) {
@@ -438,13 +442,17 @@ class FrontendController extends Controller
             }
         }
 
+        $searchResults = $this->get('services.search')->searchByTreatment($treatment);
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 4));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+
+        $searchLabel = isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $treatment->getName();
 
         $parameters = array(
             'searchResults' => $searchResults,
-            'treatmentLabel' => $searchTerms['treatmentLabel'],
+            'searchLabel' => $searchLabel,
             //'treatmentParameter' => $searchTerms['treatmentParameter'],
             'routeName' => 'search_frontend_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug())
