@@ -221,19 +221,22 @@ var InstitutionGlobalAwardAutocomplete = {
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         },
         'certificate': {
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         },
         'affiliation': {
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         }
     },
     removeProperty: function(_propertyId, _container) {
@@ -269,6 +272,7 @@ var InstitutionGlobalAwardAutocomplete = {
                     minLength: 0,
                     source: _val.source,
                     select: function( event, ui) {
+                    	
                         InstitutionGlobalAwardAutocomplete._loadContent(ui.item.id, _val);
                         return false;
                     }
@@ -285,8 +289,11 @@ var InstitutionGlobalAwardAutocomplete = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
+            	console.log(_option);
                 _option.selectedDataContainer.append(response.html);
                 _option.target.find('option[value='+_val+']').hide();
+                _option.field.val('');
+                
                 _option.loader.hide();
             },
             error: function(response) {

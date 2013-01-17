@@ -1,20 +1,21 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'medical_centers'} %}
+{% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
 <section id="content">
     <div class="container">
         <div class="row">
             <div class="span12">
                 <div class="pull-right">
-                    <a href="{{ path('institution_medicalCenter_add') }}" class="btn btn-success btn-large">Add A New Clinic</a>
+                    <a href="{{ path('institution_medicalCenter_add') }}" class="btn btn-success btn-large">Add A New {{ clinicClassLabel.singular | title}}</a>
                 </div>
-                <h1><span>Medical Listing</span></h1>
+                <h1><span>{{ clinicClassLabel.plural | title}}</span></h1>
                 
                 <table class="table table-striped table-bordered bootstrap-datatable">
                     <thead>
                         <tr>
-                            <th class="span3">Clinic</th>
-                            <th>Clinic Info Details</th>
+                            <th class="span3">{{ clinicClassLabel.singular | title}}</th>
+                            <th>{{ clinicClassLabel.singular | title}} Info Details</th>
                             <th class="span3">Posting Details</th>
                             <th class="span3">Actions</th>
 						</tr>

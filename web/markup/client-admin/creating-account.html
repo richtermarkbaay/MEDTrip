@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- www.phpied.com/conditional-comments-block-downloads/ -->
+		<!-- [if IE]><![endif]-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/institution/favicon.ico">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<!-- For the less-enabled mobile browsers like Opera Mini-->
+		<link rel="stylesheet" media="handheld" href="css/handheld.css?v=1" type="text/css">
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<title>HealthCareAbroad</title>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<header id="banner">
+			<div class="container">
+				<div class="row">
+					<div class="span4">
+						<div class="logo"><a href="index.html"><img src="images/institution/logo.png" alt="healthcareabroad"></a></div>
+					</div>
+					<div class="span5 offset3">
+						<div class="links">
+							<ul>
+								<li><img src="images/institution/about.png" alt="about"><a href="#">ABOUT</a></li>
+								<li><img src="images/institution/blog.png" alt="blog"><a href="#">BLOG</a></li>
+								<li><img src="images/institution/contact.png" alt="contact"><a href="#">CONTACT US</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div><!--End of container -->
+		</header>
+		<aside id="featured">
+			<div class="container">
+				<h4>Welcome!</h4><p>Please tell us more about your clinic.</p>
+			</div>
+		</aside>
+		<section id="content">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<h6>
+							<span>Thank you for your interest in being a part of HealthcareAbroad.com!</span>
+						</h6>
+					</div><!--End of span12-->
+					<div class="maincontent2">
+						<div class="span7">
+							<form id="createaccount" action="#" method="post" class="form">
+								<fieldset>
+									<label for="institution_name">
+										<b>Hospital / Clinic / Company Name:</b>
+									</label>
+									<input name="institution_name" type="text" id="institution_name" value="" class="institution_name" required="">
+									<label>Please select which best describes the healthcare provider you are adding:</label>
+									<input type="radio" name="tab" value="pkfrom" class="pull-left">
+									<label for="A Hospital with many clinics, centers or units">A Hospital with many clinics, centers or units</label>
+									<input type="radio" name="tab" value="pkfrom" class="pull-left">
+									<label for="A single clinic or an Independent healthcare provider">A single clinic or an Independent healthcare provider</label>
+									<input type="radio" name="tab" value="pkfrom" class="pull-left">
+									<label for="I'm a Medical Tourism Facilitator / Agent">I'm a Medical Tourism Facilitator / Agent</label>
+									<hr>
+									<h5>Now, please tell us a bit about you:</h5>
+									<label for="username">Your email address</label>
+									<span>
+										<small>(Please indicate YOUR own email address, you will be asked to add your clinic/company's email address later.)</small>
+									</span>
+									<input name="email" type="email" id="email" value="" required="">
+									<label for="password">Password</label>
+									<input name="password" type="password" id="password" value="" required="">
+									<label for="confirm_password">Verify Password</label>
+									<input name="confirm_password" type="password" id="confirm_password" value="" required="">
+									<div class="maincontentblock">
+										<input type="checkbox" id="terms" name="terms" value="Terms and Conditions">
+										<label>I have read and agree with the
+											<a href="#">Terms and Conditions</a>.</label>
+									</div>
+									<!-- Modal Thank you message -->
+									<div id="popupmsg" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-header">
+											<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+										</div>
+										<div class="modal-body">
+											<h3>Your account has been created.</h3>
+											<h5>In the steps that follow, we will guide you through adding information about your clinic.</h5>
+										</div>
+										<div class="modal-footer"></div>
+									</div><!-- End Modal Thank you message-->
+									<div class="maincontentblock2">
+										<a href="#" class="btn-large btn-primary" title="" role="button">SUBMIT</a>
+									</div>
+								</fieldset>
+							</form>
+						</div><!--End of span6-->
+						<div class="span4 box pull-right">
+							<p>If you are a patient looking for a clinic, you need not sign up. You can
+								<a href="http://healthcareabroad.com">search the site</a>or
+								<a href="http://healthcareabroad.com/inquiry">send us an inquiry</a>
+							</p>
+						</div><!--End of span4-->
+					</div>
+					<!--End of maincontent-->
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</section>
+		<!--FOOTER start-->
+		<div id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="span6 pull-left">
+						<p>© 2012 healthcareabroad.com | All rights reserved.</p>
+						<ul class="nav nav-pills">
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Terms of Use</a></li>
+							<li><a href="#">Ad Choice</a></li>
+						</ul>
+					</div>
+					<div class="pull-right">
+						<ul class="nav nav-pills">
+							<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><img src="images/institution/facebook_icon.png" alt="facebook"></a></li>
+<li><a href="http://twitter.com/HCAbroad" target="_blank"><img src="images/institution/twitter_icon.png" alt="twitter"></a></li><li><a href="#"><img src="images/institution/g+_icon.png" alt="google plus"></a></li>
+						</ul>
+					</div>
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</div><!--End of FOOTER-->
+	</body>
+</html>

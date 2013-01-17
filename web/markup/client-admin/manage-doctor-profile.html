@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- www.phpied.com/conditional-comments-block-downloads/ -->
+		<!-- [if IE]><![endif]-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/institution/favicon.ico">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<!-- For the less-enabled mobile browsers like Opera Mini-->
+		<link rel="stylesheet" media="handheld" href="css/handheld.css?v=1" type="text/css">
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<title>HealthCareAbroad</title>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<header id="banner">
+			<div class="container">
+				<div class="row">
+					<div class="span4">
+						<div class="logo"><a href="index.html"><img src="images/institution/logo.png" alt="healthcareabroad"></a></div>
+					</div>
+					<div class="pull-right">
+						<form class="navbar-search pull-left"><input type="text" class="search-query" placeholder="Search"></form>
+						<div class="pull-left">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Help <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="feedback.html">Feedback</a></li>
+									<li><a href="faq.html">FAQ</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="pull-left"><p>you are logged in as</p></div>
+						<div class="pull-right">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel2" role="button" data-toggle="dropdown" data-target="#" href="#">hannah@gmail.com <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="manage-account-profile.html">Manage Account Profile</a></li>
+									<li><a href="add-new-user.html">Invite User</a></li>
+									<li><a href="logout.html">Logout</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--End of container -->
+			<nav id="banner2">
+				<div class="container">
+					<div class="row">
+						<div class="pull-right">
+							<ul class="nav nav-tabs">
+								<li><a href="dashboard-after-login.html">Dashboard</a></li>
+								<li><a href="institution-profile-initial.html">Institutional Profile</a></li>
+								<li class="active"><a href="medical-listing.html">Your Clinics</a></li>
+								<li><a href="site-logs.html">Events</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<aside id="featured">
+			<div class="container">
+				<h4>Welcome!</h4><p>Please tell us more about your clinic.</p>
+			</div>
+		</aside>
+		<section id="content">
+			<div class="container">
+				<div class="row">
+					<div class="addnewclinic">
+						<div class="span9">
+							<h1><span>Manage Doctor's Profile</span></h1>
+							<div class="row">
+								<div class="span2">
+									<!-- <a href="#">manage profile pic</a> -->
+									<a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal">
+
+  <img src="images/institution/image_ph.png" alt="[Gallery Photo]" class="pic" />
+
+  <span class="image-icon"><img src="images/institution/image-icon.png" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
+
+</a>
+									<!-- Modal Doctor's Photo -->
+									<div id="upload" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-header">
+											<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											<h3>Upload Profile Photo</h3>
+										</div>
+										<div class="modal-body">
+											<!-- doctor photo start-->
+											<input type="file" name="profile_photofile" size="40" class="profilephoto">
+											<!-- doctor photo end-->
+										</div>
+										<div class="modal-footer">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+											<button class="btn btn-primary">Upload</button>
+										</div>
+									</div><!-- End Modal Doctor's Photo-->
+								</div>
+								<div class="span7">
+									<h2 class="pull-left">Firstname Lastname</h2>
+									<div class="editname">
+										<i class="icon-pencil" title="Edit"></i>
+										<a href="#"><small>Edit</small></a>
+									</div>
+									<div class="maincontentblock">
+										<p>
+											<i class="icon-pencil" title="Edit"></i>
+											<a href="#biography" role="button" data-toggle="modal">Add Doctor's Biography</a>
+										</p>
+									</div>
+									<!-- Modal Doctor's Bio -->
+									<div id="biography" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-header">
+											<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											<h3>Doctor's Biography</h3>
+										</div>
+										<div class="modal-body">
+											<!-- doctor bio start-->
+											<textarea name="Doctor_Biography" rows="5" cols="60" required></textarea>
+											<small class="pull-left">Having difficulties in writing Doctor's Biography.
+												<a href="#">CLICK HERE</a>for some sample to look at.</small>
+											<!-- doctor Bio end-->
+										</div>
+										<div class="modal-footer">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+											<button class="btn btn-primary">Submit</button>
+										</div>
+									</div><!-- End Modal Doctor's bio-->
+								</div><!-- End span7-->
+							</div>
+							<form action="doctorprofile_form">
+								<fieldset>
+									<label for="Doctor_gender">Gender</label>
+									<div>
+										<select>
+											<option value="na">Select Gender</option>
+											<option value="Female">Female</option>
+											<option value="Male">Male</option>
+										</select>
+									</div>
+								</fieldset>
+								<fieldset>
+									<label for="Doctor_birthdate">Date of Birth</label>
+									<select name="month" onChange="changeDate(this.options[selectedIndex].value);">
+										<option value="na">Month</option>
+										<option value="1">January</option>
+										<option value="2">February</option>
+										<option value="3">March</option>
+										<option value="4">April</option>
+										<option value="5">May</option>
+										<option value="6">June</option>
+										<option value="7">July</option>
+										<option value="8">August</option>
+										<option value="9">September</option>
+										<option value="10">October</option>
+										<option value="11">November</option>
+										<option value="12">December</option>
+									</select>
+									<select name="day" id="day">
+										<option value="na">Day</option>
+									</select>
+									<select name="year" id="year">
+										<option value="na">Year</option>
+									</select>
+									<script language="JavaScript" type="text/javascript">
+										function changeDate(i){
+										var e = document.getElementById('day');
+										while(e.length>0)
+										e.remove(e.length-1);
+										var j=-1;
+										if(i=="na")
+										k=0;
+										else if(i==2)
+										k=28;
+										else if(i==4||i==6||i==9||i==11)
+										k=30;
+										else
+										k=31;
+										while(j++<k){
+										var s=document.createElement('option');
+										var e=document.getElementById('day');
+										if(j==0){
+										s.text="Day";
+										s.value="na";
+										try{
+										e.add(s,null);}
+										catch(ex){
+										e.add(s);}}
+										else{
+										s.text=j;
+										s.value=j;
+										try{
+										e.add(s,null);}
+										catch(ex){
+										e.add(s);}}}}
+										y = 2013;
+										while (y-->1909){
+										var s = document.createElement('option');
+										var e = document.getElementById('year');
+										s.text=y;
+										s.value=y;
+										try{
+										e.add(s,null);}
+										catch(ex){
+										e.add(s);}}
+									</script>
+								</fieldset>
+								<fieldset>
+									<label for="Doctor_language">Languages Spoken</label>
+									<select id="multiSelect" name="multiSelect" multiple="multiple" size="5" class="span6">
+										<option value="ar">Arabic &mdash; العربية</option>
+										<option value="bn">Bengali &mdash; বাংলা</option>
+										<option value="bg">Bulgarian &mdash; български</option>
+										<option value="ca">Catalan &mdash; Català</option>
+										<option value="zh_CN">Chinese (Simplified) &mdash; 中文（简体）</option>
+										<option value="zh_TW">Chinese (Traditional) &mdash; 中文 (繁體)</option>
+										<option value="hr">Croatian &mdash; Hrvatski</option>
+										<option value="cs">Czech &mdash; čeština</option>
+										<option value="da">Danish &mdash; Dansk</option>
+										<option value="nl">Dutch &mdash; Nederlands</option>
+										<option selected="" value="en">English</option>
+										<option value="en_GB">English (UK) &mdash; English (UK)</option>
+										<option value="fil">Filipino &mdash; Filipino</option>
+										<option value="fi">Finnish &mdash; suomi</option>
+										<option value="fr">French &mdash; Français</option>
+										<option value="de">German &mdash; Deutsch</option>
+										<option value="el">Greek &mdash; Ελληνικά</option>
+										<option value="gu">Gujarati &mdash; ગુજરાતી</option>
+										<option value="iw">Hebrew &mdash; עברית</option>
+										<option value="hi">Hindi &mdash; हिन्दी</option>
+										<option value="hu">Hungarian &mdash; magyar</option>
+										<option value="in">Indonesian &mdash; Indonesia</option>
+										<option value="it">Italian &mdash; Italiano</option>
+										<option value="ja">Japanese &mdash; 日本語</option>
+										<option value="kn">Kannada &mdash; ಕನ್ನಡ</option>
+										<option value="ko">Korean &mdash; 한국어</option>
+										<option value="lv">Latvian &mdash; Latviešu valoda</option>
+										<option value="lt">Lithuanian &mdash; Lietuvių</option>
+										<option value="ms">Malay &mdash; Bahasa Malaysia</option>
+										<option value="ml">Malayalam &mdash; മലയാളം</option>
+										<option value="mr">Marathi &mdash; मराठी</option>
+										<option value="no">Norwegian &mdash; Norsk</option>
+										<option value="or">Oriya &mdash; ଓଡିଆ</option>
+										<option value="fa">Persian &mdash; فارسی</option>
+										<option value="pl">Polish &mdash; polski</option>
+										<option value="pt_BR">Portuguese (Brazil) &mdash; Português (Brasil)</option>
+										<option value="pt_PT">Portuguese (Portugal) &mdash; Português (Portugal)</option>
+										<option value="ro">Romanian &mdash; Română</option>
+										<option value="ru">Russian &mdash; Русский</option>
+										<option value="sr">Serbian &mdash; српски</option>
+										<option value="sk">Slovak &mdash; Slovenčina</option>
+										<option value="sl">Slovenian &mdash; Slovenščina</option>
+										<option value="es">Spanish &mdash; Español</option>
+										<option value="sv">Swedish &mdash; Svenska</option>
+										<option value="ta">Tamil &mdash; தமிழ்</option>
+										<option value="te">Telugu &mdash; తెలుగు</option>
+										<option value="th">Thai &mdash; ไทย</option>
+										<option value="tr">Turkish &mdash; Türkçe</option>
+										<option value="uk">Ukrainian &mdash; Українська</option>
+										<option value="vi">Vietnamese &mdash; Tiếng Việt</option>
+									</select>
+								</fieldset>
+								<h4>Professional Details</h4>
+								<fieldset>
+									<label for="Doctor_licensetype">Type of license</label>
+									<div>
+										<select>
+											<option value="Certified Histological Technician">Certified Histological Technician</option>
+											<option value="Clinical Laboratory Technologist">Clinical Laboratory Technologist</option>
+											<option value="Dietitian/Nutritionist, Certified">Dietitian/Nutritionist, Certified</option>
+											<option value="Medicine (Physician), limited license ( 3 - year )">Medicine (Physician), limited license ( 3 - year )</option>
+										</select>
+									</div>
+								</fieldset>
+								<fieldset>
+									<label for="license_number">License Number</label>
+									<input name="license_number" type="text" id="license_number" value="" required>
+									<small>6 Digit Number</small>
+								</fieldset>
+								<fieldset>
+									<label for="Year">Year License Issued</label>
+									<select name="year" id="">
+										<option value="na">Year</option>
+										<option value="">2013</option>
+										<option value="">2012</option>
+										<option value="">2011</option>
+										<option value="">2010</option>
+										<option value="">2009</option>
+									</select>
+								</fieldset>
+								<h4>Educational Details</h4>
+								<fieldset>
+									<label for="school">School Graduated</label>
+									<input name="school" type="text" id="school" value="">
+								</fieldset>
+								<fieldset>
+									<label for="Year">Year Graduated</label>
+									<select name="year" id="">
+										<option value="na">Year</option>
+										<option value="">2013</option>
+										<option value="">2012</option>
+										<option value="">2011</option>
+										<option value="">2010</option>
+										<option value="">2009</option>
+									</select>
+								</fieldset>
+							</form>
+						</div>
+					</div>
+					<!--End of span9-->
+					<div class="span3">
+						<div class="sidebar">
+							<div class="box-content">
+								<h4>Benefits Label</h4>
+								<ul class="dashboard-member-activity">
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+									<li><a href="#"><span>Benefits <strong>Sometext Here</strong></span></a>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean bibendum, est at congue gravida...</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!--End of span3-->
+				</div>
+				<!--End of addnewclinic-->
+			</div>
+			<!--End of row-->
+			</div><!--End of container-->
+		</section>
+		<!--FOOTER start-->
+		<div id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="span6 pull-left">
+						<p>© 2012 healthcareabroad.com | All rights reserved.</p>
+						<ul class="nav nav-pills">
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Terms of Use</a></li>
+							<li><a href="#">Ad Choice</a></li>
+						</ul>
+					</div>
+					<div class="pull-right">
+						<ul class="nav nav-pills">
+							<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><img src="images/institution/facebook_icon.png" alt="facebook"></a></li>
+<li><a href="http://twitter.com/HCAbroad" target="_blank"><img src="images/institution/twitter_icon.png" alt="twitter"></a></li><li><a href="#"><img src="images/institution/g+_icon.png" alt="google plus"></a></li>
+						</ul>
+					</div>
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</div><!--End of FOOTER-->
+	</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- www.phpied.com/conditional-comments-block-downloads/ -->
+		<!-- [if IE]><![endif]-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<link rel="shortcut icon" type="image/x-icon" href="images/institution/favicon.ico">
+		<link rel="stylesheet" href="css/style.css" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+		<!-- For the less-enabled mobile browsers like Opera Mini-->
+		<link rel="stylesheet" media="handheld" href="css/handheld.css?v=1" type="text/css">
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<title>HealthCareAbroad</title>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+		<!-- Bootstrap Modal -->
+		<link rel="stylesheet" href="css/bootstrap-modal.css">
+		<script src="js/bootstrap-modalmanager.js"></script>
+		<script src="js/bootstrap-modal.js"></script>
+		<script>
+			$(document).ready(function(){
+				var $modal = $('#ajax-modal');
+ 
+				$('.modal-test').on('click', function(){
+				  // create the backdrop and wait for next modal to be triggered
+				  $('body').modalmanager('loading');
+				 
+				  setTimeout(function(){
+				     $modal.load('modal_ajax_test.html', '', function(){
+				      $modal.modal();
+				    });
+				  }, 1000);
+				});
+				 
+				$modal.on('click', '.update', function(){
+				  $modal.modal('loading');
+				  setTimeout(function(){
+				    $modal
+				      .modal('loading')
+				      .find('.modal-body')
+				        .prepend('<div class="alert alert-info fade in">' +
+				          'Updated!<button type="button" class="Closed" data-dismiss="alert">&times;</button>' +
+				        '</div>');
+				  }, 1000);
+				});
+			});
+
+		</script>
+	</head>
+	<body>
+		<header id="banner">
+			<div class="container">
+				<div class="row">
+					<div class="span4">
+						<div class="logo"><a href="index.html"><img src="images/institution/logo.png" alt="healthcareabroad"></a></div>
+					</div>
+					<div class="pull-right">
+						<form class="navbar-search pull-left"><input type="text" class="search-query" placeholder="Search"></form>
+						<div class="pull-left">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">Help <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="feedback.html">Feedback</a></li>
+									<li><a href="faq.html">FAQ</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="pull-left"><p>you are logged in as</p></div>
+						<div class="pull-right">
+							<div class="dropdown">
+								<a class="dropdown-toggle" id="dLabel2" role="button" data-toggle="dropdown" data-target="#" href="#">hannah@gmail.com <b class="caret"></b></a>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+									<li><a href="manage-account-profile.html">Manage Account Profile</a></li>
+									<li><a href="add-new-user.html">Invite User</a></li>
+									<li><a href="logout.html">Logout</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div><!--End of container -->
+			<nav id="banner2">
+				<div class="container">
+					<div class="row">
+						<div class="pull-right">
+							<ul class="nav nav-tabs">
+								<li><a href="dashboard-after-login.html">Dashboard</a></li>
+								<li class="active">
+									<a href="institution-profile-initial.html">Institutional Profile</a></li>
+								<li><a href="medical-listing.html">Your Clinics</a></li>
+								<li><a href="site-logs.html">Events</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<aside id="featured">
+			<div class="container">
+				<h4>Welcome!</h4><p>Please tell us more about your clinic.</p>
+			</div>
+		</aside>
+		<section id="content">
+			<div class="container">
+				<div class="row">
+					<div class="maincontent">
+						<div class="span9">
+							<div class="row">
+								<div class="span2">
+									<!-- <a href="#">manage profile pic</a> -->
+									<a href="#upload" class="gallerypic" title="" role="button" data-toggle="modal"> <img src="images/institution/image_ph.png" alt="[Gallery Photo]" class="pic" /><span class="image-icon"><img src="images/institution/image-icon.png" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span> </a>
+									<!-- Modal Doctor's Photo -->
+									<div id="upload" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-header">
+											<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											<h3>Upload Profile Photo</h3>
+										</div>
+										<div class="modal-body">
+											<!-- doctor photo start-->
+											<input type="file" name="profile_photofile" size="40" class="profilephoto">
+											<!-- doctor photo end-->
+										</div>
+										<div class="modal-footer">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+											<button class="btn btn-primary">Upload</button>
+										</div>
+									</div><!-- End Modal Doctor's Photo-->
+								</div>
+								<div class="span7">
+									<h2 class="pull-left">Institution Name</h2>
+									<div class="editname">
+										<i class="icon-pencil" title="Edit"></i>
+										<a href="#editinstitutionname" role="button" data-toggle="modal">
+
+			<small>Edit</small></a>
+										<!-- Modal Edit Name of the Institution -->
+										<div id="editinstitutionname" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-header">
+												<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+												<h3>Edit Institution Name</h3>
+											</div>
+											<div class="modal-body">
+												<!-- content number start-->
+												
+												<!-- content number end-->
+											</div>
+											<div class="modal-footer">
+												<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+												<button class="btn btn-primary">Submit</button>
+											</div>
+										</div><!-- End Modal Edit Name of the Institution-->
+									</div>
+									<div class="maincontentblock">
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non quam venenatis diam rhoncus malesuada. Nulla ut eros dolor. Cras condimentum congue erat id luctus. Vivamus vel sagittis tortor. Nam ac purus vitae mauris iaculis sodales ac at elit. Praesent quis sapien vehicula lorem posuere euismod. Mauris ut sem lorem. Duis vitae felis urna.
+											<i class="icon-pencil" title="Edit"></i>
+											<a href="#editinstitutiondescription" role="button" data-toggle="modal"><small>Edit</small></a>
+										</p>
+									</div>
+									<!-- Modal Edit Description of the Institution -->
+									<div id="editinstitutiondescription" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+										<div class="modal-header">
+											<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											<h3>Edit Institution Description</h3>
+										</div>
+										<div class="modal-body">
+											<!-- content number start-->
+											<div>
+												<textarea name="Clinic_Description" class="span5" rows="5" cols="60">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse non quam venenatis diam rhoncus malesuada. Nulla ut eros dolor. Cras condimentum congue erat id luctus. Vivamus vel sagittis tortor. Nam ac purus vitae mauris iaculis sodales ac at elit. Praesent quis sapien vehicula lorem posuere euismod. Mauris ut sem lorem. Duis vitae felis urna.</textarea>
+											</div>
+											<!-- content number end-->
+										</div>
+										<div class="modal-footer">
+											<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+											<button class="btn btn-primary">Submit</button>
+										</div>
+									</div><!-- End Modal Edit Description of the Institution-->
+								</div>
+							</div>
+							<div class="tabbable">
+								<ul class="nav nav-tabs">
+									<li class="active">
+										<a href="#pane1" data-toggle="tab">List of Clinic</a>
+									</li>
+									<li><a href="#pane2" data-toggle="tab">Services</a>
+									</li>
+									<li><a href="#pane3" data-toggle="tab">Awards, Certifications and Affiliations</a>
+									</li>
+								</ul>
+								<div class="tab-content">
+									<div id="pane1" class="tab-pane active">
+										<div class="row-fluid">
+											<div id="Specializationdetails">
+												<div class="maincontentblock">
+													<p>Some TExt that there is no clinic has been added.
+														<a href="add-new-clinic-for-institution-with-centers.html">Click here</a>to add clinic.</p>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="pane2" class="tab-pane">
+										<p>Some TExt that there is no services has been added.
+											<a href="#addservices" title="" role="button" data-toggle="modal">Click here</a>to add services.</p>
+										<!-- Modal Adding Specialization -->
+										<div id="addservices" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-header">
+												<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											</div>
+											<div class="modal-body">Add service form here...</div>
+											<div class="modal-footer">
+												<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+												<button class="btn btn-primary">Submit</button>
+											</div>
+										</div><!-- End Modal Adding Specialization -->
+									</div>
+									<div id="pane3" class="tab-pane">
+										<p>Some TExt that there is no awards has been added.
+											<a href="#addawards" title="" role="button" data-toggle="modal">Click here</a>to add services.</p>
+										<p>Some TExt that there is no awards has been added.
+											<a href="#addcertifications" title="" role="button" data-toggle="modal">Click here</a>to add services.</p>
+										<p>Some TExt that there is no awards has been added.
+											<a href="#addaffiliations" title="" role="button" data-toggle="modal">Click here</a>to add services.</p>
+										<!-- Modal Adding awards -->
+										<div id="addawards" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-header">
+												<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											</div>
+											<div class="modal-body">Add awards form here...</div>
+											<div class="modal-footer">
+												<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+												<button class="btn btn-primary">Submit</button>
+											</div>
+										</div><!-- End Modal Adding awards -->
+										<!-- Modal Adding Certifications -->
+										<div id="addcertifications" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-header">
+												<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											</div>
+											<div class="modal-body">Add Certifications form here...</div>
+											<div class="modal-footer">
+												<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+												<button class="btn btn-primary">Submit</button>
+											</div>
+										</div><!-- End Modal Adding awards -->
+										<!-- Modal Adding affiliations -->
+										<div id="addaffiliations" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+											<div class="modal-header">
+												<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+											</div>
+											<div class="modal-body">Add affiliations form here...</div>
+											<div class="modal-footer">
+												<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+												<button class="btn btn-primary">Submit</button>
+											</div>
+										</div><!-- End Modal Adding awards -->
+									</div>
+								</div>
+								<!-- /.tab-content -->
+							</div>
+							<!-- /.tabbable -->
+						</div><!--End of span9-->
+						<div class="span3">
+							<div class="sidebar">
+								<div class="box-content">
+									<h4 class="pull-left">Basic Profile</h4>
+									<table class="table table-striped">
+										<tr>
+											<td>
+												<p>Gleneagles Hospital (Kuala Lumpur) Sdn. Bhd. 282 Jalan Ampang 50450 Kuala Lumpur Malaysia
+													<i class="icon-pencil" title="Edit"></i>
+													<a href="#clinicaddress" role="button" data-toggle="modal"><small>Edit</small></a>
+												</p>
+												
+											<!-- Modal Clinic Address -->
+											<div id="clinicaddress" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-header">
+													<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+													<h3 id="myModalLabel4">Edit Clinic Address</h3>
+												</div>
+												<div class="modal-body">
+													<div class="address">
+														<span>
+															<label for="Unit or Room #">Unit or Room #</label>
+															<input name="room" type="text" id="areacode" value="">
+														</span>
+														<span>
+															<label for="Building">Building</label>
+															<input name="building" type="text" id="building" value="">
+														</span>
+													</div>
+													<div class="address">
+														<label for="street">Street Details</label>
+														<input name="email" type="email" id="email" value="" required>
+													</div>
+													<div class="address">
+														<span>
+															<label for="City">City</label>
+															<input name="city" type="text" id="areacode" value="" //>
+														</span>
+														<span>
+															<label for="mailcode">Zip or Mail Code</label>
+															<input name="mailcode" type="text" id="mailcode" value="" //>
+														</span>
+													</div>
+													<div class="address2">
+														<span>
+															<label for="state">State or Province</label>
+															<input name="state" type="text" id="areacode" value="" //>
+														</span>
+														<span>
+															<label for="Country">Country</label>
+															<input name="country" type="text" id="country" value="" //>
+														</span>
+													</div>
+												</div>
+												<div class="modal-footer">
+													<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+													<button class="btn btn-primary">Submit</button>
+												</div>
+											</div><!-- End Modal Clinic Address -->
+
+
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p>
+													<a a href="#" class="btn-small modal-test"><i class="icon-pencil" title="Edit"></i> Edit</a>
+													<div id="ajax-modal" class="modal fade hide"></div>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p>+603-4141 3000
+													<a href="#clinicnumber" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+												</p>
+												<!-- Modal Clinic Number -->
+												<div id="clinicnumber" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="modal-header">
+														<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+														<h3 id="myModalLabel">Edit Clinic Number</h3>
+													</div>
+													<div class="modal-body">
+														<!-- content number start-->
+														<div class="phonenumber" required="">
+															<span class="span1 marginleft0">
+																<small>Country Code</small>
+																<input name="institution_countrycode" type="text" id="institution_countrycode" value="" class="institution_website span1">
+															</span>
+															<span class="span1">
+																<small>Area Code</small>
+																<input name="institution_areacode" type="text" id="institution_areacode" value="" class="institution_website span1">
+															</span>
+															<span class="span2">
+																<small>Phone Number</small>
+																<input name="institution_phonenumber" type="text" id="institution_phonenumber" value="" class="institution_website span2">
+															</span>
+															<!--<ul>
+
+								<li>Please enter an institution Phone Number</li>
+
+							</ul>-->
+														</div>
+														<!-- content number end-->
+													</div>
+													<div class="modal-footer">
+														<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+														<button class="btn btn-primary">Submit</button>
+													</div>
+												</div>
+												<!-- End Modal Clinic Number-->
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p>inquiry@gleneagleskl.com.my
+													<a href="#clinicemail" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+												</p>
+												<!-- Modal Clinic email -->
+												<div id="clinicemail" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="modal-header">
+														<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+														<h3 id="myModalLabel">Edit Clinic Email</h3>
+													</div>
+													<div class="modal-body">
+														<!-- content email start-->
+														<input type="email" required value="inquiry@gleneagleskl.com.my" id="email" name="email">
+	
+
+														<!-- content email end-->
+													</div>
+													<div class="modal-footer">
+														<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+														<button class="btn btn-primary">Submit</button>
+													</div>
+												</div>
+												<!-- End Modal Clinic Email-->
+											</td>
+										</tr>
+										<tr>
+											<td>
+												<p>http://gleneagleskl.com.my
+													<a href="#clinicwebsite" role="button" data-toggle="modal"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+												</p>
+												<!-- Modal Clinic website -->
+												<div id="clinicwebsite" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+													<div class="modal-header">
+														<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+														<h3 id="myModalLabel">Edit Clinic Website</h3>
+													</div>
+													<div class="modal-body">
+														<!-- content web start-->
+														<input type="email" required value="gleneagleskl.com.my" id="email" name="email">
+	
+
+														<!-- content web end-->
+													</div>
+													<div class="modal-footer">
+														<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+														<button class="btn btn-primary">Submit</button>
+													</div>
+												</div>
+												<!-- End Modal Clinic website-->
+											</td>
+										</tr>
+									</table>
+								</div>
+							</div>
+							<div class="box-content">
+								<h4 class="pull-left">MEDIA GALLERY</h4>
+								<div class="pull-right">
+									<a href="#managegallery" role="button" data-toggle="modal"><i class="icon-picture pull-left" title="Edit"></i><small class="pull-right">Manage Files</small></a>
+								</div>
+								<div class="maincontentblock">
+									<p>Some Text telling no media Files.
+										<a href="#managegallery" role="button" data-toggle="modal">Upload Media Files here.</a>
+									</p>
+								</div>
+								<!-- Modal Gallery -->
+								<div id="managegallery" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+									<div class="modal-header">
+										<button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">×</button>
+										<h3 id="myModalLabel">Manage Gallery</h3>
+									</div>
+									<div class="modal-body">
+										<!-- doctor photo start-->
+										<input type="file" name="profile_photofile" size="40" class="profilephoto">
+										<!-- doctor photo end-->
+									</div>
+									<div class="modal-footer">
+										<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+										<button class="btn btn-primary">Upload</button>
+									</div>
+								</div><!-- End Modal Gallery-->
+							</div>
+						</div><!--End of sidebar-->
+					</div>
+					<!--End of span3-->
+				</div>
+				<!--End of addnewclinic-->
+			</div>
+			<!--End of row-->
+			</div><!--End of container-->
+		</section>
+		<!--FOOTER start-->
+		<div id="footer">
+			<div class="container">
+				<div class="row">
+					<div class="span6 pull-left">
+						<p>© 2012 healthcareabroad.com | All rights reserved.</p>
+						<ul class="nav nav-pills">
+							<li><a href="#">Privacy</a></li>
+							<li><a href="#">Terms of Use</a></li>
+							<li><a href="#">Ad Choice</a></li>
+						</ul>
+					</div>
+					<div class="pull-right">
+						<ul class="nav nav-pills">
+							<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><img src="images/institution/facebook_icon.png" alt="facebook"></a></li>
+<li><a href="http://twitter.com/HCAbroad" target="_blank"><img src="images/institution/twitter_icon.png" alt="twitter"></a></li><li><a href="#"><img src="images/institution/g+_icon.png" alt="google plus"></a></li>
+						</ul>
+					</div>
+				</div><!--End of row-->
+			</div><!--End of container-->
+		</div><!--End of FOOTER-->
+	</body>
+</html>
