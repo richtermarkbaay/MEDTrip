@@ -52,6 +52,7 @@ class DefaultController extends InstitutionAwareController
             'alerts' => $institutionAlerts,
     		'news' => $news,
             'institution' => $this->institution,
+            'isDashBoard' => true
         ));
     }
     public function addClinicAction()
