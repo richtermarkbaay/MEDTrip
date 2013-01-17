@@ -161,6 +161,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      */
     public function institution_address_to_array(Institution $institution, array $includedKeys=array())
     {
+        $elements = array();
         $defaultIncludedKeys = array('address1', 'zipCode', 'state', 'city', 'country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
         
