@@ -18,10 +18,11 @@
                     
                     </br>
                     {{ form_label(form.businessHours) }}
-                        <label><input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >I have no business hours</label>
-                        <div class="businessHours-form">
-                            {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
-                        </div>
+                        <label>
+                            <input type="checkbox" name="businessHourCheckBox" checked="checked" id="businessHourCheckBox" >
+                            I have no business hours
+                        </label>
+                        {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     {{ form_rest(form) }}
                                         	                        	
                 	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
@@ -42,33 +43,25 @@
         	$(function() {
     	    	$(".hour").timepicker({ seconds: false});
     	    	$('input.is_closed_checkbox').each(function(){
-    			    if(this.checked) {
-    			    	$(this).parent().parent().find('.hour').val("");
-    			    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    				}
-    			});
-    	    });
-        	$('#businessHourCheckBox').click(function(){
-            	
-        	    if ($('#businessHourCheckBox').attr('checked')) {
-
-        	    	$(this).parent().parent().find('.hour').val("");
-        	    	$(this).parent().parent().find('.hour').spinner({ disabled: true });
-        	    	$(this).parent().parent().find('.businessHourNotes').attr('disabled','true');
-        	    	$('#clinicHoursTable').hide();
+                    if(this.checked) {
+                        $(this).parent().parent().find('.hour').val("");
+                        //var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+                    }
+                });
+                if ($('#businessHourCheckBox').attr('checked')) {
+                	$(this).parent().parent().find('.hour').val("");
+        	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	    	$('#isClosed').val('yes');
+        	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+        	    	$('#businessHours-table').hide();
         	    	
-        	    }else{
-            	    $('#clinicHoursTable').show();
-            	    $(this).parent().parent().find('.hour').val("8:00 AM");
-        	    	$(this).parent().parent().find('.hour').spinner({ disabled: false });
-        	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
-            	}
-        	}) 
-    	    $('input.is_closed_checkbox').change(function(){
+                }
+    	    });
+        	
+        	$('input.is_closed_checkbox').change(function(){
                 if(this.checked) {
                     $(this).parent().parent().find('.hour').val("");
                     var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-                    $(this).parent().parent().next().find('.businessHourNotes').val("");
                     $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
                 }
                 else
@@ -77,8 +70,26 @@
                     var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
                     $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
                 }
-    
+
             });
+
+            $('#businessHourCheckBox').click(function(){
+        	    if ($('#businessHourCheckBox').attr('checked')) {
+        	    	$(this).parent().parent().find('.hour').val("");
+        	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
+        	    	$('#isClosed').val('yes');
+        	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+        	    	$('#businessHours-table').hide();
+        	    	
+        	    }else{
+            	    $('#businessHours-table').show();
+            	    $(this).parent().parent().find('.hour').val("8:00 AM");
+        	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
+        	    	$('#isClosed').val('no');
+        	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
+            	}
+        	})
+
         </script>
     {% endblock %}
 {% endblock %}
