@@ -31,7 +31,6 @@ var tableId = 4442675; // imported from 3835940
 		    }
 		    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 		    geocoder = new google.maps.Geocoder();
-		    console.log(adress);
 		    geocoder.geocode( { 'address': address}, geocoderCallback);
 		  }
 		
