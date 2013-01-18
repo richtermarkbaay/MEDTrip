@@ -128,7 +128,6 @@ class FrontendController extends Controller
             'routeName' => 'search_frontend_results_countries',
             'paginationParameters' => array('country' => $country->getSlug())
         );
-
         list($parameters['topSpecializations'], $parameters['topTreatments']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCountryTopTreatments($country);
 
@@ -149,7 +148,6 @@ class FrontendController extends Controller
             'routeName' => 'search_frontend_results_cities',
             'paginationParameters' => array('city' => $city->getSlug(), 'country' => $city->getCountry()->getSlug())
         );
-
         list($parameters['topSpecializations'], $parameters['topTreatments']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCityTopTreatments($city);
 
@@ -170,7 +168,6 @@ class FrontendController extends Controller
             'routeName' => 'search_frontend_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug())
         );
-
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSpecializationTopDestinations($specialization);
 
@@ -192,7 +189,6 @@ class FrontendController extends Controller
             'routeName' => 'search_frontend_results_subSpecializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug())
         );
-
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSubSpecializationTopDestinations($subSpecialization);
 
@@ -214,7 +210,6 @@ class FrontendController extends Controller
             'routeName' => 'search_frontend_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug())
         );
-
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment);
 

@@ -142,11 +142,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'specializationId' => $specializationId)));
 
         return $response;
     }
@@ -169,11 +165,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'subSpecializationId' => $subSpecializationId)));
 
         return $response;
     }
@@ -196,11 +188,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'treatmentId' => $treatmentId)));
 
         return $response;
     }
@@ -223,11 +211,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'specializationId' => $specializationId)));
 
         return $response;
     }
@@ -250,40 +234,39 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'subSpecializationId' => $subSpecializationId)));
 
         return $response;
     }
 
     public function listCityTreatmentAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
+
+        $parameters = $request->attributes->get('_route_params');
 
         $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
         $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($parameters['treatmentId']);
 
-        //TODO: pager
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city);
-        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName();
-
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+            'searchResults' => $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city),
+            'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName()
         ));
 
-//         $cookieName = $request->getPathInfo();
-//         if (!$request->cookies->has($cookieName)) {
-//             $cookie = new Cookie($cookieName, md5(json_encode(array('countryId'=> $country->getId()))));
-//             $response->headers->setCookie($cookie);
-//         }
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'treatmentId' => $treatmentId)));
 
         return $response;
+    }
+
+    private function buildCookie(array $values)
+    {
+        //TODO: ttl
+        return new Cookie(md5($this->getRequest()->getPathInfo()), json_encode($values));
+
+        // maybe we should update the cookie from time to time to reset ttl?
+        //if (!$this->getRequest()->cookies->has($cookieName)) {
+        //    return new Cookie($cookieName, json_encode($values));
+        //}
     }
 
     /**************************************************************************
