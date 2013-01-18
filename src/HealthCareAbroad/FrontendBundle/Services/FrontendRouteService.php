@@ -147,7 +147,7 @@ class FrontendRouteService
     private function extrapolateControllerFromVariables(array $variables)
     {
         $controller = '';
-
+//var_dump($variables); exit;
         switch (count($variables)) {
             case 2:
                 $controller = 'FrontendBundle:Default:listCountrySpecialization';
@@ -159,6 +159,8 @@ class FrontendRouteService
                     $controller = 'FrontendBundle:Default:listCitySpecialization';
                 } else if (isset($variables['subSpecializationId'])) {
                     $controller = 'FrontendBundle:Default:listCountrySubSpecialization';
+                } elseif (isset($variables['treatmentId'])) {
+                    $controller = 'FrontendBundle:Default:listCountryTreatment';
                 }
 
                 break;
@@ -221,7 +223,7 @@ class FrontendRouteService
 
         $tokens = explode('/', substr($uri, 1));
         $tokenCount = count($tokens);
-
+//var_dump($tokenCount); exit;
         if (count($tokens) < 2 || count($tokens) > 5) {
             return null;
         }
