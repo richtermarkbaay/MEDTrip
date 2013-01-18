@@ -5,7 +5,7 @@
 {% if hasAwards or hasServices %}
     <div class="awards-services row">
         {% if hasServices %}
-            {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Services', class: 'services ' ~ class} %}
+            {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {_inlineStyle: hasAwards ? '' : 'width:100%;', title: 'Services', class: 'services ' ~ class} %}
                 {% block sectionContent %}
         		<ul>
         			{% for each in services %}
@@ -17,7 +17,7 @@
        {% endif %}
     
         {% if hasAwards %}
-           {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Awards & Accreditations', class: 'awards ' ~ class } %}
+           {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {_inlineStyle: hasServices ? '' : 'width:100%;', title: 'Awards & Accreditations', class: 'awards ' ~ class } %}
                 {% block sectionContent %}
         		<ul>
         		    {% for each in awards %}
