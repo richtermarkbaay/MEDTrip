@@ -275,6 +275,14 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
                             }
                         }
                     }
+
+                    if(is_object($each->getValue())) {
+                        $arrValue =  $each->getValue()->toArray();
+                    }
+
+                    if(empty($arrValue)) {
+                        $advertisementPropertyValues->remove($i);
+                    }
                 }
             }
         }

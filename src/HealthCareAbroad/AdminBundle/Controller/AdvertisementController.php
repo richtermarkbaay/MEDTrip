@@ -231,9 +231,10 @@ class AdvertisementController extends Controller
             $value = $each->getValue();
             $property = $each->getAdvertisementPropertyName();
 
+
             if($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
 
-                if(get_class($value) == $fileClassName) {
+                if( $value && is_object($value) && get_class($value) == $fileClassName) {
                      $media = $this->get('services.media')->upload($value, $advertisement);
                     $each->setValue($media->getId());
 
@@ -246,9 +247,9 @@ class AdvertisementController extends Controller
             }
         }
         
-//         foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+//         foreach($advertisement->getAdvertisementPropertyValues() as $value) {
 //             var_dump($value);
 //         }
-
+// exit;
     }
 }
