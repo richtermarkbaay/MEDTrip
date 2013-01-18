@@ -163,7 +163,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     {
         $elements = array();
         $defaultIncludedKeys = array('address1', 'zipCode', 'state', 'city', 'country');
-        $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
+        $includedKeys = \count($includedKeys) ? \array_intersect($includedKeys, $defaultIncludedKeys) : $defaultIncludedKeys;
         
         $street_address = \json_decode($institution->getAddress1(), true);
         if (\in_array('address1', $includedKeys) && !\is_null($street_address)) {
