@@ -22,7 +22,6 @@
 	<div class="row"> <!--Bootstrap carousel-->
 		<div class="carousel slide span8" id="feature_carousel">
 			<div class="carousel-inner">			
-			
 			    {% for i, image in featuredImages %}
 				<div class="{{ i==0 ? 'active' : '' }} item row">
 					<img alt="" src="/media/ads/{{ highlight.institution.id }}/{{ image.name }}" class="span8">
@@ -30,9 +29,9 @@
 			    {% endfor %}
 			</div>
 			<div class="nav-pills">
-				<a data-to="1" href="#feature_carousel" class="carousel-pills pager-active"><span>&nbsp;</span></a>
-				<a data-to="2" href="#feature_carousel" class="carousel-pills"><span>&nbsp;</span></a>
-				<a data-to="3" href="#feature_carousel" class="carousel-pills"><span>&nbsp;</span></a>
+			    {% for i, image in featuredImages %}
+				    <a data-to="{{ loop.index }}" href="#feature_carousel" class="carousel-pills {{ i==0 ? 'pager-active' : '' }}"><span>&nbsp;</span></a>
+			    {% endfor %}
 			</div>
 			<a class="btn white feature-btn"> <span class="icon-search icon-orange"></span> Learn More </a>
 		</div> <!--End of carousel slide-->
