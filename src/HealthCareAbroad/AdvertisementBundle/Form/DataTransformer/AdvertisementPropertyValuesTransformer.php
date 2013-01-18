@@ -280,12 +280,17 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
                         $arrValue =  $each->getValue()->toArray();
                     }
 
-                    if(empty($arrValue)) {
+                    if(isset($arrValue) && empty($arrValue)) {
                         $advertisementPropertyValues->remove($i);
                     }
                 }
             }
         }
+
+//         foreach($advertisementPropertyValues as $each) {
+//             var_dump($each);
+//         }
+//         exit;
 
         return $advertisement;
     }
