@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::layout.gmap.html.twig' %}
+{% extends 'InstitutionBundle::layout.html.twig' %}
 {% set disableMainNavigation = true %}
 {% block content %}
 
@@ -32,12 +32,12 @@
 				<div class="span6">
                         <div class="mapbox" id="map_canvas">Map Here</div>
                         <div class="address3">
-                            {{ form_row(form.country, {attr: {class: 'country_dropdown addressFields'} } )}}
+                            {{ form_row(form.country, {attr: {class: 'country_dropdown slectAdressFields'} } )}}
                             {{ form_row(form.state, {attr: {class:'span12 addressFields'}} )}}
                         </div>
                         <div class="address3">
                             {{ form_label(form.city)}}
-                            {{ form_widget(form.city, {attr: {class: 'city_dropdown addressFields'} } )}}
+                            {{ form_widget(form.city, {attr: {class: 'city_dropdown slectAdressFields'} } )}}
                             {{ form_errors(form.city) }}
                         
                             {{ form_label(form.zipCode)}}
@@ -66,11 +66,15 @@
 
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 <!--
 (function($){
-    
-    $(function(){        
+
+    $(function(){
+        initialize();
+                
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('select.country_dropdown').change();
         $('a#submit_button_link').click(function(){

@@ -7,26 +7,28 @@
         {% for each in specializations %}
     		<ul class="specializations-list">
     			<li class="first"><a href="#">{{ each.specialization.name }}</a></li>
-
-                {% set _notFoundSubYet = true %}
-    			{% for treatment in each.treatments %}
-    			 	<li class="second">
-    					<ul>
-    					    {% for sub in treatment.subSpecializations if _notFoundSubYet %}
-    					        {% if (sub.specialization.id == each.specialization.id)  %}
-                                     {% set _notFoundSubYet = false %}
-                                    <li><a href="#">{{ sub.name }}</a></li>
-    	                	    {% endif %}
-    	                	{% endfor %}
-
-    						<li class="third">
-    							<ul>
+                {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
+                
+                {% for _subId, _groupedData in _groupedTreatments %}
+                
+                    {% if _groupedData.treatments | length %}
+                    <li class="second">
+        				<ul>
+        				    <li><a href="#">{{ _groupedData.subSpecialization.name }}</a></li>
+                        	    
+                    	    {% for treatment in _groupedData.treatments %}
+        			 	    <li class="third">
+        						<ul>
         							<li><a href="#">{{ treatment.name }}</a></li>
-    							</ul>
-    						</li>
-    					</ul>
-    				</li>
-    			{% endfor %}
+        						</ul>
+        					</li>
+        			        {% endfor %}
+        					
+        				</ul>
+        			</li>
+                    {% endif %}
+                {% endfor %}
+    			
     		</ul>
     	{% endfor %}
     	</div>

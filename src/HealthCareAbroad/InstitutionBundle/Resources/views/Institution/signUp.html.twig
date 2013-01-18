@@ -36,7 +36,14 @@
                             {% endfor %}
                             {{ form_errors(form.type) }}
                         </div>
-                        
+                        <hr>
+                        <div>
+                            <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
+                            <label for="medicalGroupBox">The healthcare provider I am adding belongs to a group. network or cluster</label>
+                         </div>
+                        <div id="medicalProviderGroupsInput">
+                            {{ form_row(form.medicalProviderGroups) }}
+                        </div>
                         <hr>
                         <h5>Now, please tell us a bit about you:</h5>
                         <div>
@@ -52,15 +59,7 @@
                         {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
                                 
                         {{ form_row(form.confirm_password, { 'label': 'Verify Password', 'attr': {'class': 'span8'} }) }}
-                        <div>
-                            <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
-                            <label for="medicalGroupBox">I belong to a group / Network</label>
-                         </div>
-                       <div id="medicalProviderGroupsInput">
-                            {{ form_row(form.medicalProviderGroups) }}
-                        </div>
-                        <br/>
-                        
+            
                         <label>
                             {{ form_errors(form.agree_to_terms) }}
                             {{ form_widget(form.agree_to_terms) }} I have read and agree with the <a href="#">Terms and Conditions</a>.
