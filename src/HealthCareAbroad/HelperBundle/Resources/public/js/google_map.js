@@ -11,18 +11,26 @@ var tableId = 4442675; // imported from 3835940
 		  var address = 'Manila, Philippines';
 
 		 $('.addressFields').live('keydown', function(e) {
-			 
             if (e.which == 17){
             	  e.preventDefault();
             }
-            
             var selectedCity = document.getElementById('institution_profile_form_city');
 			var selectedCountry = document.getElementById('institution_profile_form_country');
-
 			var address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
-		    geocoder.geocode( { 'address': address}, geocoderCallback ); 
+		    
+			geocoder.geocode( { 'address': address}, geocoderCallback ); 
         });
-		
+		 
+		 
+		 $('.slectAdressFields').live('change', function(e) {
+			 
+		    var selectedCity = document.getElementById('institution_profile_form_city');
+			var selectedCountry = document.getElementById('institution_profile_form_country');
+			var address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
+		    
+			geocoder.geocode( { 'address': address}, geocoderCallback ); 
+		 });
+		 
 		  function initialize() {
 		    var myOptions = {
 		      zoom: 17,
