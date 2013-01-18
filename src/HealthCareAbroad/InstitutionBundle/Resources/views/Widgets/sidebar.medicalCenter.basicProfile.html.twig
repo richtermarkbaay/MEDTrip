@@ -4,8 +4,8 @@
     <table class="table table-striped">
         <tr>
             <td class="medical_center_address">
-                {% set _institution_address =  unset_array_key('address1', institution_address_to_array(institution) ) %}
-                {% set _institution_medical_center_address = json_to_array(institutionMedicalCenter.address, false) %}
+                {% set _institution_address =  institution_address_to_array(institution, ['city', 'state', 'country', 'zipCode'])  %}
+                {% set _institution_medical_center_address = medical_center_complete_address_to_array(institutionMedicalCenter, ['address']) %}
                 
                 <span class="street_address_part">{{  _institution_medical_center_address | length ? _institution_medical_center_address | join(', ') ~ ', ' : '' }}</span>
                 <span class="institution_address">{{ _institution_address | join(', ')}}</span>

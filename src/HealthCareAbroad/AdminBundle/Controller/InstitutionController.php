@@ -115,12 +115,13 @@ class InstitutionController extends Controller
 	    			$institution->setContactEmail('');
 	    			$institution->setContactNumber('');
 	    			$institution->setDescription('');
-	    			$institution->setLogo('');
+	    			$institution->setLogo(null);
 	    			$institution->setCoordinates('');
 	    			$institution->setState('');
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
+	    			$institution->setSignupStepStatus(0);
 
 	    			$factory->save($institution);
 	    			 
@@ -188,7 +189,7 @@ class InstitutionController extends Controller
 	            $this->get('services.institution.factory')->save($institution);
 	    		$this->get('session')->setFlash('notice', "Successfully completed details of {$institution->getName()}.");
 	    
-	    		return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+	    		return $this->redirect($this->generateUrl('admin_institution_view', array('institutionId' => $this->institution->getId())));
 	    	}
 	    }
 	    
