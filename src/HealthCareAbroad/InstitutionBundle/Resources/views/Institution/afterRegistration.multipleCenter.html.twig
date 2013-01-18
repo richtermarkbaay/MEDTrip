@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::layout.gmap.html.twig' %}
+{% extends 'InstitutionBundle::layout.html.twig' %}
 {% set disableMainNavigation = true %}
 {% block content %}
 
@@ -66,11 +66,15 @@
 
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 <!--
 (function($){
-    
-    $(function(){        
+
+    $(function(){
+        initialize();
+                
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('select.country_dropdown').change();
         $('a#submit_button_link').click(function(){
