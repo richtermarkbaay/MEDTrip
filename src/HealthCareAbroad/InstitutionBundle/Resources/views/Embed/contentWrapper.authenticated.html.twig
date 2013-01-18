@@ -1,14 +1,9 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
 
 {% block aside %}
-{%if isDashBoard is defined%}
-<aside id="featured">
-	<div class="container">
-		<h4>Your account has been created!</h4><p>You can either complete your profile using the guide below, or start <a href="{{ path('institution_medicalCenter_add') }}">adding your clinics or departments.</a></p>
-				<p>We recommend that you complete the steps below to ensure that you are providing patients with complete and updated information about what your institution offers.</p>
-	</div>
-</aside>
-{% endif %}
+    {% if app.session.hasFlash('callout_message') %}
+        {{ app.session.flash('callout_message') | raw }}
+    {% endif %}
 {% endblock %}
 
 <section id="content">
