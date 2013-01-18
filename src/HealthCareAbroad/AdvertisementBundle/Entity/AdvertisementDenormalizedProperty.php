@@ -80,6 +80,11 @@ class AdvertisementDenormalizedProperty
     private $highlightTreatments;
 
     /**
+     * @var text $highlightFeaturedImages
+     */
+    private $highlightFeaturedImages;
+
+    /**
      * @var datetime $dateCreated
      */
     private $dateCreated;
@@ -446,6 +451,28 @@ class AdvertisementDenormalizedProperty
     public function getHighlightTreatments()
     {
         return $this->highlightTreatments;
+    }
+
+    /**
+     * Set highlightFeaturedImages
+     *
+     * @param text $highlightFeaturedImages
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setHighlightFeaturedImages($highlightFeaturedImages)
+    {
+        $this->highlightFeaturedImages = $highlightFeaturedImages;
+        return $this;
+    }
+
+    /**
+     * Get highlightFeaturedImages
+     *
+     * @return text 
+     */
+    public function getHighlightFeaturedImages()
+    {
+        return $this->highlightFeaturedImages;
     }
 
     /**

@@ -67,6 +67,10 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             type: text
             nullable: false
             column: highlight_treatments
+        highlightFeaturedImages:
+            type: text
+            nullable: false
+            column: highlight_featured_images
         dateCreated:
             type: datetime
             nullable: false

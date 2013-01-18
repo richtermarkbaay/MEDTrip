@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
@@ -35,7 +39,12 @@ class AdvertisementController extends Controller
 
     public function preExecute()
     {
-        $ad = $this->getRequest()->get('advertisement') ? $this->getRequest()->get('advertisement') : 1;
+        $ad = $this->getRequest()->get('advertisement');
+        $institutionId = $ad ? $ad['institution'] : null;
+        
+        if(!$institutionId) {
+            $institutionId = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus())->getId();
+        }
 
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
             $this->advertisement = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($advertisementId);
@@ -45,7 +54,7 @@ class AdvertisementController extends Controller
             }
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', $ad)) {
+        if ($institutionId = $this->getRequest()->get('institutionId', $institutionId)) {
             //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
@@ -165,10 +174,14 @@ class AdvertisementController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-            $this->saveMedia($request->files->get('advertisement'), $advertisement);
+            
+//                     foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+//                         var_dump($value);
+//                     }
 
+            
+            $this->saveMedia($advertisement);
             $this->get('services.advertisement')->save($advertisement);
-
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
             return $this->redirect($this->generateUrl('admin_advertisement_index'));
@@ -208,34 +221,34 @@ class AdvertisementController extends Controller
         ));
     }
 
-    private function saveMedia($fileBag, $advertisement)
-    {
-        if($fileBag && count($fileBag['advertisementPropertyValues'])) {
-            $adValuesFile = array_shift($fileBag['advertisementPropertyValues']);
-    
-            if($adValuesFile['value']) {
-                $media = $this->get('services.media')->upload($adValuesFile['value'], $advertisement);
-    
-                if($media && $media->getId()) {
-                    foreach($advertisement->getAdvertisementPropertyValues() as $each) {
-                        $property = $each->getAdvertisementPropertyName();
-                        $config = json_decode($property->getPropertyConfig(), true);
-    
-                        if($config['type'] == 'file') {
-                            $each->setValue($media->getId());
-    
-                            // TODO - Temporary fixed for ads Image
-                            if($each->getId()) {
-                                $em = $this->getDoctrine()->getEntityManager();
-                                $em->persist($each);
-                                $em->flush($each);
-                            }
-    
-                            break;
-                        }
+    private function saveMedia($advertisement)
+    {    
+
+        $fileClassName = 'Symfony\Component\HttpFoundation\File\UploadedFile';
+
+        foreach($advertisement->getAdvertisementPropertyValues() as $each) {
+            $newValue = null;
+            $value = $each->getValue();
+            $property = $each->getAdvertisementPropertyName();
+
+            if($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
+
+                if(get_class($value) == $fileClassName) {
+                     $media = $this->get('services.media')->upload($value, $advertisement);
+                    $each->setValue($media->getId());
+
+                    if($media && $each->getId()) { // TODO - Temporary fixed for ads Image
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($each);
+                        $em->flush($each);
                     }
-                }
+                }                
             }
         }
+        
+//         foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
+//             var_dump($value);
+//         }
+
     }
 }

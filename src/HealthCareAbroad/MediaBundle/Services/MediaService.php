@@ -165,17 +165,22 @@ class MediaService
         return $media;
     }
 
-    public function upload(UploadedFile $file, $objectOwner = null)
+    public function upload(UploadedFile $file = null, $objectOwner = null)
     {   
+        if(is_null($file)) {
+            return null;
+        }
+
         if (!$file->isValid()) {
             return $file->getError();
         }
 
         //$pathDiscriminator = $this->getPathDiscriminator($objectOwner);
         $filesystem = $this->filesystemManager->get($objectOwner, 'local');
+        
 
         //TODO: rename/sanitize filename
-        $filename = time().'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        $filename = time(). rand(1,100) .'.'.pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         $caption = $file->getClientOriginalName();
 
         $proceed = true;
@@ -211,8 +216,8 @@ class MediaService
             //TODO: set cascade persist on entity Gallery
             $this->entityManager->persist($media);
             //$this->entityManager->persist($gallery);
-            $this->entityManager->flush();
-            
+            $this->entityManager->flush($media);
+
             return $media;
         }
 

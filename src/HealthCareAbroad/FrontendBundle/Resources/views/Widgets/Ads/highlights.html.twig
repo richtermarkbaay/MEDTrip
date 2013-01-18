@@ -94,11 +94,15 @@
         <div id="feature_carousel" class="carousel slide span8">
             <div class="carousel-inner">
                 <div class="active item row">
+                {% if highlight.media %}
                     {{ media(highlight.media, highlight, 'default') | raw }}
+                {% endif %}
                 </div> <!--End of slider_item 1-->
 
                 <div class="item row">
+                {% if highlight.media %}
                     {{ media(highlight.media, highlight, 'default') | raw }}
+                {% endif %}
                 </div> <!--End of slider_item 2-->
             </div>
 
