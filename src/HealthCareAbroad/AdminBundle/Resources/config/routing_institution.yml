@@ -14,6 +14,13 @@ admin_institution_add_details:
     requirements:
          institutionId: \d+
          _method: GET|POST   
+         
+admin_institution_view:
+    pattern:  /admin/institution/{institutionId}/view
+    defaults: { _controller: AdminBundle:Institution:view }
+    requirements:
+         institutionId: \d+
+         _method: GET
 
 admin_institution_edit:
     pattern:  /admin/institution/{institutionId}/edit
@@ -65,13 +72,6 @@ admin_institution_updateStatus:
         institutionId: \d+
         status: \d+
         _method: POST
-
-admin_institution_view:
-    pattern:  /admin/institution/{institutionId}/view
-    defaults: { _controller: AdminBundle:Institution:view }
-    requirements:
-         institutionId: \d+
-         _method: GET
 
 
 admin_loadTreatments:
