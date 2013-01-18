@@ -38,7 +38,7 @@ class SubSpecializationRepository extends EntityRepository
 
     /**
      * Get QueryBuilder for getting active treatments that can be used for dropdown field types
-     * 
+     *
      * @param Specialization $specialization optional
      */
     public function getQueryBuilderForGettingAvailableSubSpecializations(Specialization $specialization = null)
@@ -47,14 +47,14 @@ class SubSpecializationRepository extends EntityRepository
             ->add('select', 't')
             ->add('from', 'TreatmentBundle:SubSpecialization t')
             ->add('where', 't.status = :active');
-        
+
         if ($specialization && $specialization->getId()) {
             $qb->andWhere('t.specialization = :specializationId')
                 ->setParameter('specializationId', $specialization->getId());
         }
-        
+
         $qb->setParameter('active', SubSpecialization::STATUS_ACTIVE);
-        
+
         return $qb;
     }
 
@@ -127,4 +127,16 @@ class SubSpecializationRepository extends EntityRepository
 //             ->setParameter('activeProcedureTypeIds', implode(',', $activeProcedureTypeIds))
 //             ->setParameter('active', Treatment::STATUS_ACTIVE);**/
 //     }
+
+    //Get by slug or id
+    public function getSubSpecialization($identifier)
+    {
+        if (is_numeric($identifier)) {
+            return $this->find($identifier);
+        } elseif (is_string($identifier)) {
+            return $this->findOneBy(array('slug' => $identifier));
+        }
+
+        return null;
+    }
 }
