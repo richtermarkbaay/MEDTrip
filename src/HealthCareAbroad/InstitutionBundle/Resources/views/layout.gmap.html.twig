@@ -1,5 +1,6 @@
 {% extends '::base.gmap.html.twig' %}
 {% block body %}
+<body onload="initialize()"> 
 <header id="banner">
     <div class="container">
         <div class="row">
@@ -28,4 +29,5 @@
 {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
     
 {% block inlineJavascriptCode %}{% endblock %}
+</body>
 {% endblock %}

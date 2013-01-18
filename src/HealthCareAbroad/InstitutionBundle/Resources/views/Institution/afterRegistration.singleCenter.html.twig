@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+{% extends 'InstitutionBundle::layout.gmap.html.twig' %}
 {% set disableMainNavigation = true %}
 {% block content %}
 
@@ -30,10 +30,8 @@
                         {{ form_widget(form.websites) }}
                         
                         <h4>Clinic Address</h4>
-                        
-                        {{ form_widget(form.address1) }}
-                        
-                        <div class="address2">
+                        <div class="mapbox" id="map_canvas">Map Here</div>
+                         <div class="address2">
                             <span>
                                 {{ form_label(form.country) }}
                                 {{ form_widget(form.country, {attr: {class: 'country_dropdown'} } )}}
@@ -45,7 +43,9 @@
                                 {{ form_errors(form.city) }}
                             </span>
                         </div>
-                        
+                         <div class="address">
+                        {{ form_widget(form.address1) }}
+                        </div>
                         <div class="address2">
                             <span>
                                 {{ form_label(form.state) }}
@@ -58,6 +58,7 @@
                                 {{ form_errors(form.zipCode) }}
                             </span>
                         </div>
+                        {{ form_widget(form.coordinates) }}
                         
                         <div class="clearfix"></div>
                     

@@ -51,7 +51,8 @@ class InstitutionProfileFormType extends AbstractType
         'contactEmail',
         'address1',
         'contactNumber',
-        'websites'
+        'websites',
+        'coordinates'
     );
     
     public function getName()
@@ -98,6 +99,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Address'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number'));
         $this->_add($builder, 'websites', 'websites_custom_field');
+        $this->_add($builder, 'coordinates', 'hidden');
         
     }
     

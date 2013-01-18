@@ -46,18 +46,18 @@
     <div>
         <span >
             <label>Unit or Room #</label>
-            <input class="" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" />
+            <input class="addressFields" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" />
         </span>
        </div>
     <div class="address3">
         <span >
             <label>Building</label>
-            <input  class="" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" />
+            <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" />
         </span>
     </div>
    	<div class="address">
             <label>Street</label>
-            <input class="" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}"  />
+            <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
     </div>
     <div class="clearfix"></div>
     {% endspaceless %}
