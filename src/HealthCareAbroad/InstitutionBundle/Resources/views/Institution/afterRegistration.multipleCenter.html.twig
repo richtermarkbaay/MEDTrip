@@ -32,12 +32,12 @@
 				<div class="span6">
                         <div class="mapbox" id="map_canvas">Map Here</div>
                         <div class="address3">
-                            {{ form_row(form.country, {attr: {class: 'country_dropdown addressFields'} } )}}
+                            {{ form_row(form.country, {attr: {class: 'country_dropdown slectAdressFields'} } )}}
                             {{ form_row(form.state, {attr: {class:'span12 addressFields'}} )}}
                         </div>
                         <div class="address3">
                             {{ form_label(form.city)}}
-                            {{ form_widget(form.city, {attr: {class: 'city_dropdown addressFields'} } )}}
+                            {{ form_widget(form.city, {attr: {class: 'city_dropdown slectAdressFields'} } )}}
                             {{ form_errors(form.city) }}
                         
                             {{ form_label(form.zipCode)}}
