@@ -66,25 +66,25 @@ class FrontendController extends Controller
 
         switch ($searchParams->get('context')) {
             case SearchParameterBag::SEARCH_TYPE_DESTINATIONS:
-                $parameters['country'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'))->getSlug();
+                $routeParameters['country'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'))->getSlug();
                 $route = 'search_frontend_results_countries';
 
                 if ($searchParams->get('cityId')) {
-                    $parameters['city'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'))->getSlug();
+                    $routeParameters['city'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'))->getSlug();
                     $route = 'search_frontend_results_cities';
                 }
 
                 break;
 
             case SearchParameterBag::SEARCH_TYPE_TREATMENTS:
-                $parameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'))->getSlug();
+                $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'))->getSlug();
                 $route = 'search_frontend_results_specializations';
 
                 if ($searchParams->get('treatmentId')) {
-                    $parameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'))->getSlug();
+                    $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'))->getSlug();
                     $route = 'search_frontend_results_treatments';
                 } elseif ($searchParams->get('subSpecializationId')) {
-                    $parameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'))->getSlug();
+                    $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'))->getSlug();
                     $route = 'search_frontend_results_subSpecializations';
                 }
 
