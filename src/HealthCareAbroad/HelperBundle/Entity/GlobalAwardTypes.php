@@ -9,6 +9,8 @@ final class GlobalAwardTypes
     
     const AFFILIATION = 3;
     
+    const ACCREDITATION = 4;
+    
     private static $types = array();
     
     private static $typeKeys = array();
@@ -28,13 +30,15 @@ final class GlobalAwardTypes
         static::$types = array(
             self::AWARD => 'Award',
             self::CERTIFICATE => 'Certificate',
-            self::AFFILIATION => 'Affiliation'
+            self::AFFILIATION => 'Affiliation',
+            self::ACCREDITATION => 'Accreditation'
         );
         
         static::$typeKeys = array(
             GlobalAwardTypes::AWARD => 'award',
             GlobalAwardTypes::CERTIFICATE => 'certificate',
             GlobalAwardTypes::AFFILIATION => 'affiliation',
+            self::ACCREDITATION => 'accreditation'
         );
     }
 }
