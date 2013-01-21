@@ -1,0 +1,9 @@
+<tr>
+	<td><h3 class="award_name">{{ award.name }}</h3><small class="awarding_body_name"> {{ award.awardingBody.name }} </small></td>
+	<td>
+	     <div class="post-toolbar treatment_action">
+    		<i class="icon-trash" title="Delete"></i>
+    		<a id="globalAward_{{ award.id }}" href="{{ path('institution_medicalCenter_ajaxRemoveGlobalAward', {'imcId':institutionMedicalCenter.id} ) }}" onclick ="InstitutionMedicalCenter.removeGlobalAward(this); return false;" ><small>Delete</small></a>
+    	</div>
+	</td>
+</tr>

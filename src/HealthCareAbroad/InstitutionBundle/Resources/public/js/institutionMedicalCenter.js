@@ -256,6 +256,22 @@ var InstitutionMedicalCenter = {
         
     },
     
+    removeGlobalAward: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.attr('id').split('_')[1];
+        $.ajax({
+           type: 'POST',
+           url: _linkElement.attr('href'),
+           data: {id: _id},
+           success: function(response) {
+               _linkElement.parents('tr').remove();
+           },
+           error: function(response) {
+               console.log(response);
+           }
+        });
+    },
+    
     addAncillaryService: function(_linkElement) {
         return this._doAncillaryServiceAction(_linkElement);
     },
@@ -314,19 +330,14 @@ var InstitutionGlobalAwardAutocomplete = {
             selectedDataContainer: null, // jQuery DOM element container of selected data
             loader: null,
             field: null
+        },
+        'accreditation': {
+            source: '',
+            target: null, // autocomplete target jQuery DOM element
+            selectedDataContainer: null, // jQuery DOM element container of selected data
+            loader: null,
+            field: null
         }
-    },
-    removeProperty: function(_awardId, _container) {
-        _container.find('a.delete').attr('disabled',true);
-        $.ajax({
-            type: 'POST',
-            url: this._removePropertyUri,
-            data: {'id': _awardId},
-            success: function(response) {
-                _container.remove();
-            }
-        });
-        
     },
     setAutocompleteOptions: function (_type, _options) {
         this.autocompleteOptions[_type] = _options;
@@ -379,78 +390,78 @@ var InstitutionGlobalAwardAutocomplete = {
 }
 
 var InstitutionSpecialistAutocomplete = {
-	    _loadHtmlContentUri: '',
-	    _removePropertyUri: '',
-	    autocompleteOptions: {
-	        'specialist':{
-	            source: '',
-	            target: null, // autocomplete target jQuery DOM element
-	            selectedDataContainer: null, // jQuery DOM element container of selected data
-	            loader: null,
-	            field: null
-	        }
-	    },
-	    removeProperty: function(_specialistId, _container) {
-	        _container.find('a.delete').attr('disabled',true);
-	        $.ajax({
-	            type: 'POST',
-	            url: InstitutionSpecialistAutocomplete.removePropertyUri,
-	            data: {'id': _specialistId},
-	            success: function(response) {
-	                _container.remove();
-	            }
-	        });
-	        
-	    },
-	    setAutocompleteOptions: function (_type, _options) {
-	        this.autocompleteOptions[_type] = _options;
-	        
-	        return this;
-	    },
-	    setRemovePropertyUri: function (_val) {
-	    	this._removePropertyUri = _val;
-	        return this;
-	    },
-	    setLoadHtmlContentUri: function (_val) {
-	        this._loadHtmlContentUri = _val;
-	        return this;
-	    },
-	    
-	    autocomplete: function() {
-	        $.each(InstitutionSpecialistAutocomplete.autocompleteOptions, function(_key, _val){
-	            if (_val.target) {
-	                _val.target.autocomplete({
-	                    minLength: 0,
-	                    source: _val.source,
-	                    select: function( event, ui) {
-	                    	InstitutionSpecialistAutocomplete._loadContent(ui.item.id, _val);
-	                        return false;
-	                    }
-	                });
-	            }
-	        });
-	    },
-	    
-	    _loadContent: function(_val, _option) {
-	        _option.loader.show();
-	        $.ajax({
-	            url: InstitutionSpecialistAutocomplete._loadHtmlContentUri,
-	            data: {'id':_val},
-	            type: 'POST',
-	            dataType: 'json',
-	            success: function(response) {
-	                _option.selectedDataContainer.append(response.html);
-	                _option.target.find('option[value='+_val+']').hide();
-	                _option.loader.hide();
-	                _option.field.val('');
-	            },
-	            error: function(response) {
-	                _option.loader.hide();
-	                _option.field.val('');
-	            }
-	        });
-	    }
-	}
+    _loadHtmlContentUri: '',
+    _removePropertyUri: '',
+    autocompleteOptions: {
+        'specialist':{
+            source: '',
+            target: null, // autocomplete target jQuery DOM element
+            selectedDataContainer: null, // jQuery DOM element container of selected data
+            loader: null,
+            field: null
+        }
+    },
+    removeProperty: function(_specialistId, _container) {
+        _container.find('a.delete').attr('disabled',true);
+        $.ajax({
+            type: 'POST',
+            url: InstitutionSpecialistAutocomplete.removePropertyUri,
+            data: {'id': _specialistId},
+            success: function(response) {
+                _container.remove();
+            }
+        });
+        
+    },
+    setAutocompleteOptions: function (_type, _options) {
+        this.autocompleteOptions[_type] = _options;
+        
+        return this;
+    },
+    setRemovePropertyUri: function (_val) {
+    	this._removePropertyUri = _val;
+        return this;
+    },
+    setLoadHtmlContentUri: function (_val) {
+        this._loadHtmlContentUri = _val;
+        return this;
+    },
+    
+    autocomplete: function() {
+        $.each(InstitutionSpecialistAutocomplete.autocompleteOptions, function(_key, _val){
+            if (_val.target) {
+                _val.target.autocomplete({
+                    minLength: 0,
+                    source: _val.source,
+                    select: function( event, ui) {
+                    	InstitutionSpecialistAutocomplete._loadContent(ui.item.id, _val);
+                        return false;
+                    }
+                });
+            }
+        });
+    },
+    
+    _loadContent: function(_val, _option) {
+        _option.loader.show();
+        $.ajax({
+            url: InstitutionSpecialistAutocomplete._loadHtmlContentUri,
+            data: {'id':_val},
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+                _option.selectedDataContainer.append(response.html);
+                _option.target.find('option[value='+_val+']').hide();
+                _option.loader.hide();
+                _option.field.val('');
+            },
+            error: function(response) {
+                _option.loader.hide();
+                _option.field.val('');
+            }
+        });
+    }
+}
 
 
 

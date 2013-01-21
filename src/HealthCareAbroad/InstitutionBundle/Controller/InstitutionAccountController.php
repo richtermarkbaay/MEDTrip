@@ -344,44 +344,19 @@ class InstitutionAccountController extends InstitutionAwareController
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
            case 'awards':
-
                $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-               $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
-               $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+               $currentGlobalAwards = $institutionMedicalCenterService->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
+               $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
                
-               $propertyService = $this->get('services.institution_medical_center_property');
-               $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-               $awardTypes = GlobalAwardTypes::getTypes();
-               $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-               $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-               
-               // get the current property values
-               $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
-
-               foreach ($currentAwardPropertyValues as $_prop) {
-                   $_global_award = $repo->find($_prop->getValue());
-                   if ($_global_award) {
-                       $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
-                                       'global_award' => $_global_award,
-                                       'medical_center_property' => $_prop
-                       );
-                   }
-               }
-               foreach ($globalAwards as $_award) {
-                   $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
-                   //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
-                   $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-                   $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
-               }
-                $parameters['form'] = $form->createView();
-                $parameters['isSingleCenter'] = $this->get('services.institution')->isSingleCenter($this->institution);
-                $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
-                $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);
-                $parameters['affiliationsSourceJSON'] = \json_encode($autocompleteSource['affiliation']);
-                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
-                //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
-                break;
+               $parameters['form'] = $form->createView();
+               $parameters['isSingleCenter'] = true;
+               $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
+               $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);
+               $parameters['affiliationsSourceJSON'] = \json_encode($autocompleteSource['affiliation']);
+               $parameters['currentGlobalAwards'] = $currentGlobalAwards;
+               $parameters['accreditationsSourceJSON'] = \json_encode($autocompleteSource['accreditation']);
+               $output['awards'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig',$parameters));
+               break;
             case 'medical_specialists':
                  $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
                 $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());

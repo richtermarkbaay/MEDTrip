@@ -808,41 +808,6 @@ class MedicalCenterController extends InstitutionAwareController
         ));
     }
     
-    public function ajaxAddGlobalAwardAction(Request $request)
-    {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
-        
-        if (!$award) {
-            throw $this->createNotFoundException();
-        }
-        
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        
-        // check if this medical center already have this property
-        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
-            $response = new Response("Property value {$award->getId()} already exists.", 500);
-        }
-        else {
-            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
-            $property->setValue($award->getId());
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($property);
-                $em->flush();
-                
-                $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $award, 'medical_center_property' => $property));
-                
-                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-            }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
-            }
-        }
-        
-        return $response;
-    }
-    
     public function ajaxRemovePropertyValueAction(Request $request)
     {
         $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
