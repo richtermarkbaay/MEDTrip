@@ -35,6 +35,11 @@ InstitutionBundle_feedback:
 InstitutionBundle_doctor:
     resource: "@InstitutionBundle/Resources/config/routing_doctor.yml"
     prefix:   /institution
+    
+# Routes for Institution properties
+InstitutionBundle_doctor:
+    resource: "@InstitutionBundle/Resources/config/routing_institutionProperties.yml"
+    prefix:   /
 
 institution_gallery:
     pattern: /institution/gallery

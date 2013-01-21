@@ -10,7 +10,7 @@
 			<tbody>
     			{% for _service in services.globalList %}
         			
-        			{% include 'InstitutionBundle:Institution:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
+        			{% include 'InstitutionBundle:Institution/Partials:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
                     
     		    {% else %}
         		  	<tr>

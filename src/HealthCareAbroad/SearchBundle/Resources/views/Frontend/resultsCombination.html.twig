@@ -9,7 +9,7 @@
     <div id="main_content" class="span8">
         <header class="filters">
             <div class="pull-left">
-                <h2 class="total">{{ searchResults | length }} <small>Results Found</small></h2>
+                <h2 class="total">{{ searchResults.getTotalResults }} <small>Results Found</small></h2>
             </div>
         </header>
         {% for center in searchResults %}
@@ -40,6 +40,10 @@
                 </div>
             </article>
         {% endfor %}
+
+        {% if searchResults.isPaginable %}
+            {{ paginate(searchResults, app.request.uri, {hasNoRouteName: 1}, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
+        {% endif %}
 
     </div> <!--End of main_content-->
 

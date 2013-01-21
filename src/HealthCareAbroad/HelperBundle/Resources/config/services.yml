@@ -18,6 +18,10 @@ services:
         class: HealthCareAbroad\HelperBundle\Services\AncillaryServicesService
         arguments: [@doctrine]
         
+    services.global_award:
+        class: HealthCareAbroad\HelperBundle\Services\GlobalAwardService
+        arguments: [@doctrine]
+        
     services.helper.institution_name_validator:
         class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueNameValidator
         arguments: [@doctrine]
