@@ -1,0 +1,5 @@
+parameters:
+    callouts:
+        signup_multiple_center_success:
+            highlight: 'Your account has been created!'
+            subText: 'You can either complete your profile using the guide below, or start adding your clinics or departments. We recommend that you complete the steps below to ensure that you are providing patients with complete and updated information about what your institution offers.'

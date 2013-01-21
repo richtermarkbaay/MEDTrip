@@ -1,4 +1,4 @@
-<div class="{{ class }} content">
+<div class="{{ class }} content" style="{{ _inlineStyle is defined ? _inlineStyle : '' }}">
 	<h5>{{ title }}</h5>
     {% block sectionContent %}{% endblock %}
 </div>
