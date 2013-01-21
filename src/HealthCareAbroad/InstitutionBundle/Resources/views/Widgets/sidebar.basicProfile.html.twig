@@ -1,53 +1,31 @@
 <div class="box-content">
     <h4 class="pull-left">Basic Profile</h4>            
-    <div class="clear"></div>
-    <table class="table table-striped">
-        <tr>
-            <td class="address_column">
-                {% set _address = institution_address_to_array(institution) %}
-                
-                <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
-                
-                <a href="#addressModal" data-toggle="modal" role="button">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                </a>
-
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                <span id="profileNumberText">{{ json_decode(institution.contactNumber) | join('-') }}</span>
-                <a href="#numberModal" role="button" data-toggle="modal">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                </a>
-            </td>
-        </tr>
-        
-        <tr>
-            <td>
-                <p>
-                    <span id="profileEmailText">{{ institution.contactEmail | length ? institution.contactEmail : 'Add contact email'}}</span>
-                    <a href="#emailModal" role="button" data-toggle="modal">
-                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                    </a>
-                </p>
-            </td>
-        </tr>
     
-        <tr>
-            <td>
-                <div id="profileWebsitesText">
-                    {% for type, site in institution_websites_to_array(institution) %}
-                        {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
-                    {% endfor %}
-                </div>
-                <a href="#websitesModal" role="button" data-toggle="modal">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                </a>
-            </td>
-        </tr>
-    </table>
+        <p><span class="address_part">{% set _address = institution_address_to_array(institution) %}</span>
+            <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+            <a href="#addressModal" data-toggle="modal" role="button"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
+        </p>
+        <p>
+            <span id="profileNumberText">{{ json_decode(institution.contactNumber) | join('-') }}</span>
+            <a href="#numberModal" role="button" data-toggle="modal">
+                <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+            </a>
+         </p>
+        <p>
+            <span id="profileEmailText">{{ institution.contactEmail | length ? institution.contactEmail : 'Add contact email'}}</span>
+            <a href="#emailModal" role="button" data-toggle="modal">
+                <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+            </a>
+        </p>
+    
+        <div id="profileWebsitesText">
+            {% for type, site in institution_websites_to_array(institution) %}
+                {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
+            {% endfor %}
+        </div>
+        <a href="#websitesModal" role="button" data-toggle="modal">
+            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+        </a>
 </div>
 
 <!-- Modal Institution Address -->
