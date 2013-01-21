@@ -335,6 +335,7 @@ class FrontendRouteService
         if ($vars = $this->session->get(\md5($uri), null)) {
             $routeObj = new FrontendRoute();
             $routeObj->setUri($uri);
+            $routeObj->setController($this->extrapolateControllerFromVariables(json_decode($vars, true)));
             $routeObj->setVariables($vars);
             $this->logger->info("Matched uri '{$uri}' from session with variables: {$vars}");
         }
@@ -354,6 +355,7 @@ class FrontendRouteService
         if ($vars = $this->request->cookies->get(\md5($uri),null)) {
             $routeObj = new FrontendRoute();
             $routeObj->setUri($uri);
+            $routeObj->setController($this->extrapolateControllerFromVariables(json_decode($vars, true)));
             $routeObj->setVariables($vars);
             $this->logger->info("Matched uri '{$uri}' from cookie with variables: {$vars}");
         }
