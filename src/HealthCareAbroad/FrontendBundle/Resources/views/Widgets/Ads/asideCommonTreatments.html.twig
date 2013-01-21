@@ -10,10 +10,10 @@
     <div class="media">
         <div class="image_preview">
             <a class="pull-left" href="#">
-                {% if each.media is defined %}
+                {% if (each.media is defined) and each.media %}
                     {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
                 {% endif %}
-                <img class="more-icon" src="/images/frontend/learn_more_button.png" alt="learn more">
+                <span class="more-icon"></span>
             </a>
         </div>
         <div class="media-body">

@@ -58,6 +58,12 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
                 $config = json_decode($property->getPropertyConfig(), true);
                 $config['config']['label'] = $property->getLabel();
                 $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
+                
+//                 if($property->getName() == 'media_id') {
+//                     $value = $each->getValue();
+//                     $config['image_path'] = '/media/ads/' . $param->getId() . '/thumbnail-' . array_shift($value)->getName();
+//                     //var_dump($config['image_path']); exit;
+//                 }
 
                 $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));
             }

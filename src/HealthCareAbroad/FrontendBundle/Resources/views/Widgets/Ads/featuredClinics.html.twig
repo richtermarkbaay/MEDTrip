@@ -56,13 +56,11 @@
                 {% for doctor in doctors %}
 				<div class="span4">
 					<div class="media">
-						<div class="image_preview">
-						    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
-							<a href="#" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
-						</div>
+					    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
+						<img class="media-object img-circle pull-left" src="{{ doctorImage }}" alt="clinic logo" width="50"/>
 						<div class="media-body">
 						    {% set doctors = json_decode(each.getHighlightDoctors) %}
-							<a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
+							<h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5>
                 			<p>
                 			    {% for i, specialization in doctor.specializations %}
                 			        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}

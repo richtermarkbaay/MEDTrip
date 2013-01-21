@@ -1,129 +1,70 @@
-{#<div id="highlight" class="carousel slide"> <!--Highighted Institution-->
-    <div class="carousel-inner">
-        {% for i, each in highlightAds %}
-        <div class="{{ i == 0 ? 'active ' : ''}}item">
-            <div class="upper_box row">
-                <div class="heading span6">
-                    <h3>{{ each.institution.name }}</h3><br/>
-                    <h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
-                </div>
-                <div class="clinic span2">
-                    <a href="#">
-                        {% if media %}
-                            {{ media(each.institution.media, each.institution, 'default', {style: 'width:620px; height:256px'}) | raw }}
-                        {% else %}
-                            <img src="" style="width:620px; height:256px"/>
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span8">
-                    <div id="feature_carousel">
-                        <div>
-                            {% if each.media %}
-                                {{ media(each.media, each.institution, 'default', {style: 'width:620px; height:256px'}) | raw }}
-                            {% else %}
-                                <img src="" style="width:620px; height:256px"/>
-                            {% endif %}
-                        </div>
-                        <a class="btn" href="{{ get_institution_frontend_url(each.institution) }}">Learn More</a>
-                    </div> <!--End of carousel slide-->
-                </div>
-            </div> <!--End of carousel row-->
-
-            <div class="lower_box row">
-<!--         		<div class="span4">
-                    <div class="media">
-                        <div class="image_preview">
-                            <a class="pull-left" href="#"><img class="media-object img-circle" src="/images/frontend/about_icon.png" alt="clinic logo"/></a>
-                        </div>
-                        <div class="media-body">
-                            <p><a href="#">{{ each.description }}</a></p>
-                        </div>
-                    </div>
-                </div>
- -->
-                {% set doctors = json_decode(each.getHighlightDoctors) %}
-                {% for doctor in doctors %}
-                    <div class="span4">
-                        <div class="media">
-                            <div class="image_preview">
-                                {% set doctorImage = doctor.media ? '/media/doctors/' ~ doctor.media.name : '' %}
-                                <a href="" class="pull-left"><img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/></a>
-                            </div>
-                            <div class="media-body">
-                                <a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
-                                <p>
-                                    {% for i, specialization in doctor.specializations %}
-                                        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
-                                    {% endfor %}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    <a class="carousel-pills" href="#highlight" data-slide="prev">&lsaquo;</a>
-    <a class="carousel-pills" href="#highlight" data-slide="next">&rsaquo;</a>
-</div> <!--End of highlighted institution-->
-#}
 
 {% if highlight %}
+
 {% set institutionUrl = get_institution_frontend_url(highlight.institution) %}
+{% set featuredImages = json_decode(highlight.highlightFeaturedImages) %} 
 
 <div id="highlight"> <!--Highighted Institution-->
-    <a href="{{ institutionUrl }}" class="clinic span2 offset6">
+	<a href="{{ institutionUrl }}" class="clinic span2 offset6">
         {% if highlight.institution.logo %}
             {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo', thumbnail: true}) | raw }}
         {% else %}
             <img src="" alt="logo"/>
         {% endif %}
-    </a>
+	</a>
 
     <div class="upper_box row">
         <h3 class="span6">{{ highlight.institution.name }}</h3><br>
         <h5 class="span6">{{ highlight.institution.city.name }}, {{ highlight.institution.country.name }}</h5>
     </div>
+	
+	
+	<div class="row"> <!--Bootstrap carousel-->
+		<div class="carousel slide span8" id="feature_carousel">
+			<div class="carousel-inner">			
+			    {% for i, image in featuredImages %}
+				<div class="{{ i==0 ? 'active' : '' }} item row">
+					<img alt="" src="/media/ads/{{ highlight.institution.id }}/{{ image.name }}" class="span8">
+				</div> <!--End of slider_item 1-->
+			    {% endfor %}
+			</div>
+			<div class="nav-pills">
+			    {% for i, image in featuredImages %}
+				    <a data-to="{{ loop.index }}" href="#feature_carousel" class="carousel-pills {{ i==0 ? 'pager-active' : '' }}"><span>&nbsp;</span></a>
+			    {% endfor %}
+			</div>
+			<a class="btn white feature-btn"> <span class="icon-search icon-orange"></span> Learn More </a>
+		</div> <!--End of carousel slide-->
+	</div> <!--End of carousel row-->
 
-    <div class="row"> <!--Bootstrap carousel-->
-        <div id="feature_carousel" class="carousel slide span8">
-            <div class="carousel-inner">
-                <div class="active item row">
-                    {{ media(highlight.media, highlight, 'default') | raw }}
-                </div> <!--End of slider_item 1-->
+	<div class="lower_box row">
+		<!-- div class="span4">
+			<div class="media">
+				<span class="about-icon media-object img-circle pull-left"></span>
+				<div class="media-body">
+					<p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues.</p>
+				</div>
+			</div>
+		</div -->
 
-                <div class="item row">
-                    {{ media(highlight.media, highlight, 'default') | raw }}
-                </div> <!--End of slider_item 2-->
-            </div>
-
-            <!-- div class="nav-pills">
-                <a data-to="1" href="#highlight" class="carousel-pills"><span>&nbsp;</span></a>
-                <a data-to="2" href="#highlight" class="carousel-pills pager-active"><span>&nbsp;</span></a>
-                <a data-to="3" href="#highlight" class="carousel-pills"><span>&nbsp;</span></a>
-            </div -->
-            <a href="{{ institutionUrl }}" class="btn white feature-btn"> <span class="icon-search"></span> Learn More </a>
-        </div> <!--End of carousel slide-->
-    </div> <!--End of carousel row-->
-
-    <div class="lower_box row">
+		<!-- div class="span4">
+			<div class="media">
+				<img alt="clinic logo" src="images/frontend/featured_doctor1.png" class="media-object img-circle pull-left">
+				<div class="media-body">
+					<h5 class="media-heading">Dr. Alex Ponakotanapoulis</h5>
+					<p>Some awesome specialties of this doctor.</p>
+				</div>
+			</div>
+		</div-->
+		
         {% set doctors = json_decode(highlight.getHighlightDoctors) %}
         {% for doctor in doctors %}
             <div class="span4">
                 <div class="media">
-                    <div class="image_preview">
-                        {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
-                        <a href="" class="pull-left">
-                            <img class="media-object img-circle" src="{{ doctorImage }}" alt="clinic logo"/>
-                        </a>
-                    </div>
+                    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
+                    <img class="media-object img-circle pull-left" src="{{ doctorImage }}" alt="doctor logo" width="50"/>
                     <div class="media-body">
-                        <a href="#"><h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5></a>
+                        <h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5>
                         <p>
                             {% for i, specialization in doctor.specializations %}
                                 {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
@@ -133,10 +74,8 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
-</div> <!--End of highlighted institution-->
-
-
+	</div>
+</div>
 
 <!--This is for the javascript-->
 <script type="text/javascript">

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services\SearchStrategy;
 
+use Doctrine\DBAL\Statement;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
@@ -144,6 +146,7 @@ class DefaultSearchStrategy extends SearchStrategy
         $destinations = null;
         if ($searchParams->get('treatmentType')) {
             $destinations = $this->searchDestinationsByNameWithTreatment($searchParams);
+
         } else {
             $destinations = $this->searchDestinationsByName($searchParams);
         }
@@ -315,9 +318,7 @@ class DefaultSearchStrategy extends SearchStrategy
      *
      * @return array:
      *
-     * @todo optimize sql; verify that results are what we want;
-     *       compare query performance with the one using subselects in
-     *       searchDestinationsByNameWithTreatementId
+     * @deprecated Functionality merged with searchTreatmentsByName()
      */
     private function searchTreatmentsByNameWithDestination(SearchParameterBag $searchParams)
     {
@@ -478,27 +479,30 @@ class DefaultSearchStrategy extends SearchStrategy
      *
      * @param SearchParameterBag $searchParams Search parameters
      *
-     * @todo optimize sql; verify that results are what we want
-     * 	     compare query performance with the one used in
-     * 		 searchTreatmentByNameWithDestination()
+     * TODO: this is buggy; this will return an empty result but if the sql is
+     * ran manually a non-empty result is returned.
+     * Test data: input "acne scar removal" first then "thailand"
+     *    -> suggestions for thailand search term won't show up
      *
-     *       fixed statuses in where clause
-     *
+     * If we switch the order input "thailand" then "acne scar removal" will show up
+     * Possibly the query for searchTreatmentsWithDestination() is also buggy.
      */
     private function searchDestinationsByNameWithTreatment(SearchParameterBag $searchParams)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-        $variableWhereClause = '';
+        $activeStatus = 1;
+
+        $variableWhereClause = ' ';
         switch ($searchParams->get('treatmentType')) {
             case 'specialization':
-                $variableWhereClause = ' AND h.id=' . $searchParams->get('specializationId');
+                $variableWhereClause = ' AND h.id=' . $searchParams->get('specializationId') . " AND h.status = $activeStatus ";
                 break;
             case 'subSpecialization':
-                $variableWhereClause = ' AND g.sub_specialization_id=' . $searchParams->get('subSpecializationId');
+                $variableWhereClause = ' AND i.id=' . $searchParams->get('subSpecializationId') . " AND i.status = $activeStatus ";
                 break;
             case 'treatment':
-                $variableWhereClause = ' AND f.treatment_id=' . $searchParams->get('treatmentId');
+                $variableWhereClause = ' AND j.id=' . $searchParams->get('treatmentId') . " AND j.status = $activeStatus ";
                 break;
         }
 
@@ -512,6 +516,8 @@ class DefaultSearchStrategy extends SearchStrategy
         LEFT JOIN institution_treatments AS f ON e.id = f.institution_specialization_id
         LEFT JOIN treatment_sub_specializations AS g ON f.treatment_id = g.treatment_id
         LEFT JOIN specializations AS h ON e.specialization_id = h.id
+        LEFT JOIN sub_specializations AS i ON g.sub_specialization_id = i.id
+        LEFT JOIN treatments AS j ON f.treatment_id = j.id
         WHERE a.status = 1 AND b.status = 1
         AND c.status <> :statusInstitution
         AND d.status = :statusInstitutionMedicalCenter
@@ -529,6 +535,8 @@ class DefaultSearchStrategy extends SearchStrategy
         LEFT JOIN institution_treatments AS f ON e.id = f.institution_specialization_id
         LEFT JOIN treatment_sub_specializations AS g ON f.treatment_id = g.treatment_id
         LEFT JOIN specializations AS h ON e.specialization_id = h.id
+        LEFT JOIN sub_specializations AS i ON g.sub_specialization_id = i.id
+        LEFT JOIN treatments AS j ON f.treatment_id = j.id
         WHERE a.status = 1 AND a.name LIKE :name
         AND b.status <> :statusInstitution
         AND c.status = :statusInstitutionMedicalCenter
@@ -543,8 +551,11 @@ class DefaultSearchStrategy extends SearchStrategy
         $stmt->bindValue('statusInstitution', InstitutionStatus::INACTIVE);
         $stmt->bindValue('statusInstitutionMedicalCenter', InstitutionMedicalCenterStatus::APPROVED);
         $stmt->bindValue('statusInstitutionSpecialization', InstitutionSpecialization::STATUS_ACTIVE);
-        $stmt->execute();
 
+
+// var_dump($searchParams); exit;
+// print_r($stmt->getWrappedStatement()); exit;
+//var_dump($stmt->fetchAll()); exit;
         return $stmt->fetchAll();
     }
 

@@ -51,7 +51,7 @@ class TreatmentRepository extends EntityRepository
             ->where('a.status = :active')
             ->setParameter('subSpecializationId', $subSpecializationId)
             ->setParameter('active', Treatment::STATUS_ACTIVE);
-            
+
 
         $count = (int)$qb->getQuery()->getSingleScalarResult();
 
@@ -118,9 +118,9 @@ class TreatmentRepository extends EntityRepository
         $conn = $this->_em->getConnection();
 
         $sql = "SELECT a.*, d.id as subSpecializationId, d.name as subSpecializationName, d.description as subSpecializationDesc FROM treatments AS a " .
-               "LEFT JOIN specializations AS b ON a.specialization_id = b.id " . 
+               "LEFT JOIN specializations AS b ON a.specialization_id = b.id " .
                "LEFT JOIN treatment_sub_specializations AS c ON a.id = c.treatment_id " .
-               "LEFT JOIN sub_specializations AS d ON c.sub_specialization_id = d.id ". 
+               "LEFT JOIN sub_specializations AS d ON c.sub_specialization_id = d.id ".
                "WHERE a.specialization_id = :specializationId AND a.status = :treatmentStatus";
 
         $params = array(
@@ -129,10 +129,10 @@ class TreatmentRepository extends EntityRepository
         );
 
         $result = $conn->executeQuery($sql, $params)->fetchAll(Query::HYDRATE_ARRAY);
-        
+
         return $result;
     }
-    
+
     /**
      * Get Treatments By Specialization Id's
      * DEPRECATED - acgvelarde
@@ -141,7 +141,7 @@ class TreatmentRepository extends EntityRepository
 //     {
 //         foreach ($specializations as $val){
 //           $conn = $this->_em->getConnection();
-          
+
 //           $sql = "SELECT a.*, b.name as specializationName, b.id as specializationId, d.id as subSpecializationId, d.name as subSpecializationName, d.description as subSpecializationDesc FROM treatments AS a " .
 //                           "LEFT JOIN specializations AS b ON a.specialization_id = b.id " .
 //                           "LEFT JOIN treatment_sub_specializations AS c ON a.id = c.treatment_id " .
@@ -151,36 +151,47 @@ class TreatmentRepository extends EntityRepository
 //                           'id' => $val->getSpecialization()->getID(),
 //                           'treatmentStatus' => Treatment::STATUS_ACTIVE
 //           );
- 
+
 //           $result[] = $conn->executeQuery($sql, $params)->fetchAll(Query::HYDRATE_ARRAY);
 //         }
 //         $selectedTreatments = array();
 //         foreach ($val->getSpecialization()->getTreatments() as $treatId){
 //             $selectedTreatments[] = $treatId->getID();
 //         }
-        
+
 //         $treatments = array();
 //         $specialization = array();
 //         if(!$groupBySubSpecialization) {
-            
+
 //             $treatments = $result;
-          
+
 //         } else {
 //              foreach($result as $array){
 //                  foreach ($array as $each){
-                     
+
 //                     if(!$each['subSpecializationId']) {
 //                        $specialization['Other Treatments'][] = $each;
 //                     } else {
 //                        $specialization[$each['subSpecializationName']]['treatments'] = $each;
 //                     }
-                    
+
 //                     $treatments[$each['specializationName']] = $each;
 //                     $treatments[$each['specializationName']]['subSpecializations'] = $specialization;
 //                  }
 //              }
 //         }
-     
+
 //         return array('treatments' => $treatments ,'selectedTreatments' => $selectedTreatments ) ;
 //     }
+    //Get by slug or id
+    public function getTreatment($identifier)
+    {
+        if (is_numeric($identifier)) {
+            return $this->find($identifier);
+        } elseif (is_string($identifier)) {
+            return $this->findOneBy(array('slug' => $identifier));
+        }
+
+        return null;
+    }
 }
