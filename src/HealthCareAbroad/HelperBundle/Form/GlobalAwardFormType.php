@@ -20,7 +20,7 @@ class GlobalAwardFormType extends AbstractType
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('awardingBody', new AwardingBodyListType());
 		$builder->add('country', 'country_list', array('empty_value' => 'Choose Country'));
-		$builder->add('details', 'text', array('constraints'=>array(new NotBlank())));
+		$builder->add('details', 'textarea');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 

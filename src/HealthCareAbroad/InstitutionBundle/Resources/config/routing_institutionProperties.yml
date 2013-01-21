@@ -1,0 +1,25 @@
+institution_ajaxRemoveAncillaryService:
+    pattern:  /institution/{institutionId}/ajaxRemoveAncillaryService
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemoveAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
+
+institution_ajaxAddAncillaryService:
+    pattern:  /institution/{institutionId}/ajaxAddAncillaryService
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
+
+institution_ajaxAddGlobalAward:
+    pattern: /institution/{institutionId}/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxAddGlobalAward}
+    requirements:
+        _method: POST
+        
+institution_ajaxRemoveGlobalAward:
+    pattern: /institution/{institutionId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxRemoveGlobalAward}
+    requirements:
+        _method: POST

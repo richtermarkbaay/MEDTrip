@@ -23,8 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
-
-
+use HealthCareAbroad\MediaBundle\Services\MediaService;
+use Gaufrette\File;
 
 /**
  * Controller for InstitutionMedicalCenter.
@@ -1153,5 +1153,21 @@ class MedicalCenterController extends InstitutionAwareController
         return new Response("Doctor removed", 200);
     }
 
-    
+    /**
+     * Upload logo for Institution Medical Center
+     * @param Request $request
+     */
+    public function uploadAction(Request $request)
+    {
+        $fileBag = $request->files;
+
+        if ($fileBag->get('file')) {
+       
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionMedicalCenter);
+            if(is_object($result)) {
+               $media =  $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $result);
+            }
+        }
+        return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
+    }
 }

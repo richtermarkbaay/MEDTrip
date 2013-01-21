@@ -201,3 +201,10 @@ institution_medicalCenter_ajaxRemoveSpecialistService:
         institutionId: \d+
         imcId: \d+
         _method: POST
+        
+institution_medicalCenter_logo_upload:
+    pattern: /medical-center/{imcId}/logo/upload/
+    defaults: { _controller: InstitutionBundle:MedicalCenter:upload }
+    requirements:
+        _method: POST
+        imcId: \d+

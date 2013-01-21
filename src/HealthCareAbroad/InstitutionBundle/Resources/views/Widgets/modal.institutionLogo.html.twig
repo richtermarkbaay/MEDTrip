@@ -1,18 +1,25 @@
-<!-- Modal Doctor's Photo -->
-<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="upload" style="display: none;">
-  <div class="modal-header">
-    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-    <h3>Upload Profile Photo</h3>
-  </div>
-  <div class="modal-body"> 
-    <!-- doctor photo start-->
-    <input type="file" class="profilephoto" size="40" name="profile_photofile">
-    
-    <!-- doctor photo end--> 
-  </div>
-  <div class="modal-footer">
-    <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-    <button class="btn btn-primary">Upload</button>
-  </div>
-</div>
-<!-- End Modal Doctor's Photo--> 
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle }} %}
+    {% block modalBody %}
+
+        <form id="{{ formId }}" action="{{ path('institution_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
+        
+            <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" size="40" class="profilephoto" />
+    {% endblock %}
+    {% block footerBody %}
+         <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+    	<input type="submit" class="btn btn-primary" value="Submit">
+      </form>
+    {% endblock %}
+{% endembed %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+function validate(form) {
+   if ((/.(gif|jpe?g|png)$/i.test(form['file'].value))==false) {
+
+       return (false);
+   }
+       return(true);
+}
+</script>
+{% endblock %}
