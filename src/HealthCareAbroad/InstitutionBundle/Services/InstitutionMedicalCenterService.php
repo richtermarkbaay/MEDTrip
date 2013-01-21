@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -197,6 +199,25 @@ class InstitutionMedicalCenterService
     public function getMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter);
+    }
+    
+    public function getGroupedMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
+        
+        // initialize holder for awards
+        foreach ($globalAwards as $k => $v) {
+            $globalAwards[$k] = array();
+        }
+        
+        foreach ($this->getMedicalCenterGlobalAwards($institutionMedicalCenter) as $_globalAward) {
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
+                'global_award' => $_globalAward,
+            );
+        }
+        
+        return $globalAwards;
     }
     
     public function getActiveMedicalCenters(Institution $institution)

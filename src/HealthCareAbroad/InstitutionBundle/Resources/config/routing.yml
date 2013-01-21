@@ -2,6 +2,11 @@
 InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /institution
+    
+# Routes for Institution MedicalCenter properties Controller #
+InstitutionBundle_medicalCenterProperties:
+    resource: "@InstitutionBundle/Resources/config/routing_medicalCenterProperties.yml"
+    prefix:   /
 
 # Routes for Institution SpecializationController #
 InstitutionBundle_specialization:
