@@ -142,7 +142,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'specializationId' => $specializationId)));
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'specializationId' => $specialization->getId())));
 
         return $response;
     }
@@ -165,7 +165,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'subSpecializationId' => $subSpecializationId)));
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'subSpecializationId' => $subSpecialization->getId())));
 
         return $response;
     }
@@ -188,7 +188,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'treatmentId' => $treatmentId)));
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'treatmentId' => $treatment->getId())));
 
         return $response;
     }
@@ -211,7 +211,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'specializationId' => $specializationId)));
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'specializationId' => $specialization->getId())));
 
         return $response;
     }
@@ -234,7 +234,7 @@ class DefaultController extends Controller
                         'searchLabel' => $searchLabel
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'subSpecializationId' => $subSpecializationId)));
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'subSpecializationId' => $subSpecialization->getId())));
 
         return $response;
     }
@@ -253,7 +253,7 @@ class DefaultController extends Controller
             'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'treatmentId' => $treatmentId)));
+        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'treatmentId' => $treatment->getId())));
 
         return $response;
     }
