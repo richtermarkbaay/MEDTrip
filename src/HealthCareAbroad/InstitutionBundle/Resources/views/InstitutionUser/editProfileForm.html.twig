@@ -1,0 +1,13 @@
+<div class="accordion-inner">
+    <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+            {{ form_errors(form) }} 
+            {{ form_row(form.firstName) }}
+            {{ form_row(form.middleName) }}
+            {{ form_row(form.lastName) }}
+            
+            {{ form_rest(form) }}
+    </form>
+     <input type="reset" value="Reset" class="btn-medium btn"  />
+    <button class="btn btn-info submit-button" onclick="return InstitutionProfile.submitInstitutionProfileForm(this);">Submit</button> 
+</div>
+
