@@ -92,7 +92,7 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $media;
-
+    
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */

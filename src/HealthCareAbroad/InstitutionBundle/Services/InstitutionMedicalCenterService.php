@@ -6,6 +6,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
+use HealthCareAbroad\MediaBundle\Entity\Gallery;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -271,5 +275,12 @@ class InstitutionMedicalCenterService
     public function getCountByInstitution(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
+    }
+    
+    public function saveMediaAsLogo(InstitutionMedicalCenter $institutionMedicalCenter, Media $media)
+    {
+        $institutionMedicalCenter->setLogo($media);
+
+        return $this->save($institutionMedicalCenter);
     }
 }
