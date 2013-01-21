@@ -106,6 +106,44 @@ CREATE TABLE IF NOT EXISTS `applications` (
 INSERT INTO `applications` (`id`, `name`, `domain`, `secret`, `status`) VALUES
 (1, 'Test Application', 'testapplication.chromedia.com', '620de3ad308942cb43181ed4369e8d5e0c6147907b9c670c0e132988dcccc8f1', 1);
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cities`
+--
+
+DROP TABLE IF EXISTS `cities`;
+CREATE TABLE IF NOT EXISTS `cities` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `country_id` int(10) unsigned NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `country_id_2` (`country_id`,`name`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `countries`
+--
+
+DROP TABLE IF EXISTS `countries`;
+CREATE TABLE IF NOT EXISTS `countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `abbr` varchar(10) DEFAULT NULL,
+  `code` char(11) DEFAULT NULL,
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+
 --
 -- Constraints for dumped tables
 --
@@ -116,6 +154,12 @@ INSERT INTO `applications` (`id`, `name`, `domain`, `secret`, `status`) VALUES
 ALTER TABLE `account_applications`
   ADD CONSTRAINT `account_applications_ibfk_2` FOREIGN KEY (`application_id`) REFERENCES `applications` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `account_applications_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `accounts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+--
+-- Constraints for table `cities`
+--
+ALTER TABLE `cities`
+  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

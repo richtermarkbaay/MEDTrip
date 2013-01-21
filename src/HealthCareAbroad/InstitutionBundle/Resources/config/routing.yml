@@ -2,6 +2,11 @@
 InstitutionBundle_medicalCenter:
     resource: "@InstitutionBundle/Resources/config/routing_medicalCenter.yml"
     prefix:   /institution
+    
+# Routes for Institution MedicalCenter properties Controller #
+InstitutionBundle_medicalCenterProperties:
+    resource: "@InstitutionBundle/Resources/config/routing_medicalCenterProperties.yml"
+    prefix:   /
 
 # Routes for Institution SpecializationController #
 InstitutionBundle_specialization:
@@ -37,10 +42,10 @@ InstitutionBundle_doctor:
     prefix:   /institution
     
 # Routes for Institution properties
-InstitutionBundle_doctor:
+InstitutionBundle_properties:
     resource: "@InstitutionBundle/Resources/config/routing_institutionProperties.yml"
     prefix:   /
-
+    
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }

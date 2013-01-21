@@ -319,6 +319,8 @@ var InstitutionProfile = {
         });
         return false;
     }
+    
+ 
 };
 
 var InstitutionGlobalAwardAutocomplete = {

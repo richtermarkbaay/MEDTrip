@@ -3,7 +3,7 @@
 	<td>
 	 <div class="post-toolbar treatment_action">
     		<i class="icon-trash" title="Delete"></i>
-    		<a id="globalAward_{{ award.id }}" href="{{ path('institution_ajaxRemoveGlobalAward', {institutionId: institution.id} ) }}" onclick ="InstitutionProfile.removeGlobalAward(this); return false;"><small>Delete</small></a>
+    		<a id="globalAward_{{ award.id }}" href="{{ path('institution_ajaxRemoveGlobalAward' ) }}" onclick ="InstitutionProfile.removeGlobalAward(this); return false;"><small>Delete</small></a>
     	</div>
 	</td>
 </tr>
