@@ -200,6 +200,22 @@ var InstitutionProfile = {
         return this;
     },
     
+    removeGlobalAward: function(_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.attr('id').split('_')[1];
+        $.ajax({
+           type: 'POST',
+           url: _linkElement.attr('href'),
+           data: {id: _id},
+           success: function(response) {
+               _linkElement.parents('tr').remove();
+           },
+           error: function(response) {
+               console.log(response);
+           }
+        });
+    },
+    
     removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);
         $.ajax({
@@ -326,7 +342,13 @@ var InstitutionGlobalAwardAutocomplete = {
 	            target: null, // autocomplete target jQuery DOM element
 	            selectedDataContainer: null, // jQuery DOM element container of selected data
 	            loader: null
-	        }
+	        },
+	        'accreditation': {
+                source: '',
+                target: null, // autocomplete target jQuery DOM element
+                selectedDataContainer: null, // jQuery DOM element container of selected data
+                loader: null
+            }
 	    },
 	    
 	    setAutocompleteOptions: function (_type, _options) {
