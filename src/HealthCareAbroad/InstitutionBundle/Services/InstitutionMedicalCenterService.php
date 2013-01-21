@@ -297,11 +297,4 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
     }
-    
-    public function saveMediaAsLogo(InstitutionMedicalCenter $institutionMedicalCenter, Media $media)
-    {
-        $institutionMedicalCenter->setLogo($media);
-
-        return $this->save($institutionMedicalCenter);
-    }
 }

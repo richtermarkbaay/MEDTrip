@@ -133,7 +133,7 @@ class InstitutionUserController extends Controller
                         $this->get('services.institution_user')->update($institutionUser);
                         $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
     
-                        $output['alert'] ="Success Updated Password";
+                        $output['alert'] ="Success! Updated Password";
                         $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:form.changePassword.html.twig', array(
                                         'formChangePassword' => $formChangePassword->createView(),
                                         'institutionUser' => $institutionUser
@@ -153,7 +153,7 @@ class InstitutionUserController extends Controller
                         // create event on editAccount and dispatch
                         $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
         
-                        $output['alert'] ="Success Updated Account";
+                        $output['alert'] ="Success! Updated Account";
                         $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:editProfileForm.html.twig', array(
                                         'form' => $form->createView(),
                                         'institutionUser' => $institutionUser
