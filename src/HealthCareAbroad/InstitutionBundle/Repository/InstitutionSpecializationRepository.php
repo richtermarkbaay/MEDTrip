@@ -481,7 +481,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topSpecializations = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT c.id, c.name AS treatment, COUNT(DISTINCT d.city_id) AS count
+            SELECT c.id, c.name AS treatment, COUNT(DISTINCT e.city_id) AS count
             FROM institution_specializations a
             LEFT JOIN institution_treatments b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments c ON b.treatment_id = c.id

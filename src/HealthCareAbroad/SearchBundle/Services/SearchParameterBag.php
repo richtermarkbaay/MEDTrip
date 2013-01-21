@@ -113,6 +113,20 @@ class SearchParameterBag extends ParameterBag
         );
     }
 
+    public function getDynamicRouteParams()
+    {
+        $includedKeys = array('countryId', 'cityId', 'specializationId', 'subSpecializationId', 'treatmentId');
+
+        $sessionParams = array();
+        foreach ($this->parameters as $key => $value) {
+            if ($value !== 0 && in_array($key, $includedKeys)) {
+                $sessionParams['key'] = $value;
+            }
+        }
+
+        return $sessionParams;
+    }
+
     ////////////////////////////////////////////
     // The following functions have been disabled
     ////////////////////////////////////////////

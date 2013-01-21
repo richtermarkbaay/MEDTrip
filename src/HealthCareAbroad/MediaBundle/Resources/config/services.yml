@@ -53,3 +53,7 @@ services:
             - { name: twig.extension }
         arguments:
             - @services.media.templating.helper
+    services.image_type_extension:
+        class: HealthCareAbroad\MediaBundle\Form\Extension\ImageTypeExtension
+        tags:
+            - { name: form.type_extension, alias: file }

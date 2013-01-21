@@ -77,7 +77,7 @@ class SpecializationRepository extends EntityRepository
 
         return $query->getResult();
     }
-    
+
     /**
      * Get Active Specializations
      *
@@ -85,14 +85,14 @@ class SpecializationRepository extends EntityRepository
      */
     public function getActiveSpecializations()
     {
-        
+
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('a')
         ->from('TreatmentBundle:Specialization', 'a')
         ->add('where', 'a.status = :status')
         ->orderBy('a.name')
         ->setParameter('status', Specialization::STATUS_ACTIVE);
-    
+
         return $qb->getQuery()->getResult();
     }
 
@@ -107,14 +107,14 @@ class SpecializationRepository extends EntityRepository
         foreach ($assignedSpecializations as $each) {
             $ids[] = $each->getSpecialization()->getId();
         }
-        
+
         $idsNotIn = "'".\implode("', '",$ids)."'";
-        
+
         $dql = "SELECT a FROM TreatmentBundle:Specialization a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
         $query = $this->getEntityManager()->createQuery($dql)
         ->setParameter('active', Specialization::STATUS_ACTIVE);
         return $query->getResult();
-        
+
     }
 
     /////////////////////////////////////////////////////
@@ -181,4 +181,16 @@ class SpecializationRepository extends EntityRepository
 
 //         return $qb;
 //     }
+
+    //Get by slug or id
+    public function getSpecialization($identifier)
+    {
+        if (is_numeric($identifier)) {
+            return $this->find($identifier);
+        } elseif (is_string($identifier)) {
+            return $this->findOneBy(array('slug' => $identifier));
+        }
+
+        return null;
+    }
 }

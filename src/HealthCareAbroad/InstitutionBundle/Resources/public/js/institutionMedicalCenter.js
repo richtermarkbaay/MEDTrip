@@ -294,23 +294,26 @@ var InstitutionGlobalAwardAutocomplete = {
     _loadHtmlContentUri: '',
     _removePropertyUri: '',
     autocompleteOptions: {
-        'award':{
+    	'award':{
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         },
         'certificate': {
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         },
         'affiliation': {
             source: '',
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null
+            loader: null,
+            field: null
         }
     },
     removeProperty: function(_awardId, _container) {
@@ -365,8 +368,10 @@ var InstitutionGlobalAwardAutocomplete = {
                 _option.selectedDataContainer.append(response.html);
                 _option.target.find('option[value='+_val+']').hide();
                 _option.loader.hide();
+                _option.field.val('');
             },
             error: function(response) {
+            	_option.field.val('');
                 _option.loader.hide();
             }
         });
@@ -381,7 +386,8 @@ var InstitutionSpecialistAutocomplete = {
 	            source: '',
 	            target: null, // autocomplete target jQuery DOM element
 	            selectedDataContainer: null, // jQuery DOM element container of selected data
-	            loader: null
+	            loader: null,
+	            field: null
 	        }
 	    },
 	    removeProperty: function(_specialistId, _container) {
@@ -436,9 +442,11 @@ var InstitutionSpecialistAutocomplete = {
 	                _option.selectedDataContainer.append(response.html);
 	                _option.target.find('option[value='+_val+']').hide();
 	                _option.loader.hide();
+	                _option.field.val('');
 	            },
 	            error: function(response) {
 	                _option.loader.hide();
+	                _option.field.val('');
 	            }
 	        });
 	    }

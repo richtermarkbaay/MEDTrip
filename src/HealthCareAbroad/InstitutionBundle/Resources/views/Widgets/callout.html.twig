@@ -1,0 +1,10 @@
+{% if callout is defined %}
+<aside id="featured">
+	<div class="container">
+	    {% if callout.highlight is defined %}
+		    <h4>{{ callout.highlight }}</h4>
+	    {% endif %}
+		<p>{{ callout.subText is defined ? callout.subText : '' }}</p>
+	</div>
+</aside>
+{% endif %}

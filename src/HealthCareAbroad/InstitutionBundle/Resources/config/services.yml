@@ -55,5 +55,9 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTransformer
         calls: 
             - [setInstitutionService, [@services.institution]]
+            
+    services.institution.callouts:
+        class: HealthCareAbroad\InstitutionBundle\Services\CalloutMessagesService
+        arguments: [%callouts%]
 
     

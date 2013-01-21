@@ -14,22 +14,34 @@ use Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends EntityRepository
 {
-	function getCountryList() {
-		$countries = $this->_em->getRepository('HelperBundle:Country')->findByStatus(1);
-		$arrCountries = array();
-		foreach($countries as $each){
-			$arrCountries[$each->getId()] = $each->getName();
-		}
+    function getCountryList() {
+        $countries = $this->_em->getRepository('HelperBundle:Country')->findByStatus(1);
+        $arrCountries = array();
+        foreach($countries as $each){
+            $arrCountries[$each->getId()] = $each->getName();
+        }
 
-		return $arrCountries;
-	}
-	
-	public function getQueryBuilderForCountries()
-	{
-		return $this->_em->createQueryBuilder()
-		->add('select', 'c')
-		->add('from', 'HelperBundle:Country c')
-		->add('where', 'c.status = :status')
-		->setParameter('status', Country::STATUS_ACTIVE);
-	}
+        return $arrCountries;
+    }
+
+    public function getQueryBuilderForCountries()
+    {
+        return $this->_em->createQueryBuilder()
+        ->add('select', 'c')
+        ->add('from', 'HelperBundle:Country c')
+        ->add('where', 'c.status = :status')
+        ->setParameter('status', Country::STATUS_ACTIVE);
+    }
+
+    //Get by slug or id
+    public function getCountry($identifier)
+    {
+        if (is_numeric($identifier)) {
+            return $this->find($identifier);
+        } elseif (is_string($identifier)) {
+            return $this->findOneBy(array('slug' => $identifier));
+        }
+
+        return null;
+    }
 }
