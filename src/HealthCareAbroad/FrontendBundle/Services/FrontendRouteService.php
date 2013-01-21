@@ -235,7 +235,6 @@ class FrontendRouteService
 
         //MATCHED /country/...
         // second token can either be a specialization or a city
-        //TODO: This assumes that there will be no name collisions between a center and a city.
         if ($specialization = $this->doctrine->getRepository('TreatmentBundle:Specialization')->findOneBy(array('slug' => $tokens[1]))) {
             if ($tokenCount == 2) {
                 // MATCHED /country/specialization
@@ -335,6 +334,7 @@ class FrontendRouteService
         $routeObj = null;
         if ($vars = $this->session->get(\md5($uri), null)) {
             $routeObj = new FrontendRoute();
+            $routeObj->setUri($uri);
             $routeObj->setVariables($vars);
             $this->logger->info("Matched uri '{$uri}' from session with variables: {$vars}");
         }
@@ -353,6 +353,7 @@ class FrontendRouteService
         $routeObj = null;
         if ($vars = $this->request->cookies->get(\md5($uri),null)) {
             $routeObj = new FrontendRoute();
+            $routeObj->setUri($uri);
             $routeObj->setVariables($vars);
             $this->logger->info("Matched uri '{$uri}' from cookie with variables: {$vars}");
         }
