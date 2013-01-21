@@ -168,8 +168,15 @@ class InstitutionTreatmentsController extends Controller
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $awardKeys = \array_flip(GlobalAwardTypes::getTypeKeys());
+        
+        // initialize holder for awards
+        foreach ($awardKeys as $k => $v) {
+            $awardKeys[$k] = array();
+        }
+        $currentGlobalAwards = $awardKeys;
+        $autocompleteSource = $awardKeys;
+        
         
         // get the current property values
         $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
