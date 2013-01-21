@@ -1,4 +1,4 @@
-{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+{% extends 'InstitutionBundle::layout.html.twig' %}
 {% set disableMainNavigation = true %}
 {% block content %}
 
@@ -30,26 +30,26 @@
                         {{ form_widget(form.websites) }}
                         
                         <h4>Clinic Address</h4>
-                        
-                        {{ form_widget(form.address1) }}
-                        
-                        <div class="address2">
+                        <div class="mapbox" id="map_canvas">Map Here</div>
+                         <div class="address2">
                             <span>
                                 {{ form_label(form.country) }}
-                                {{ form_widget(form.country, {attr: {class: 'country_dropdown'} } )}}
+                                {{ form_widget(form.country, {attr: {class: 'country_dropdown slectAdressFields'} } )}}
                                 {{ form_errors(form.country) }}
                             </span> 
                             <span>
                                 {{ form_label(form.city)}}
-                                {{ form_widget(form.city, {label: 'City', attr: {class: 'city_dropdown'} } )}}
+                                {{ form_widget(form.city, {label: 'City', attr: {class: 'city_dropdown slectAdressFields'} } )}}
                                 {{ form_errors(form.city) }}
                             </span>
                         </div>
-                        
+                         <div class="address">
+                        {{ form_widget(form.address1) }}
+                        </div>
                         <div class="address2">
                             <span>
                                 {{ form_label(form.state) }}
-                                {{ form_widget(form.state, { attr: {class: ''} } )}}
+                                {{ form_widget(form.state, { attr: {class: 'addressFields'} } )}}
                                 {{ form_errors(form.state) }}
                             </span>
                             <span>
@@ -58,6 +58,7 @@
                                 {{ form_errors(form.zipCode) }}
                             </span>
                         </div>
+                        {{ form_widget(form.coordinates) }}
                         
                         <div class="clearfix"></div>
                     
@@ -97,9 +98,15 @@
 <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">    
 <!--
 (function($){
+
+    $(function(){
+
+	initialize();
 	
 	$(".hour").timepicker({ seconds: false});
     	$('input.is_closed_checkbox').each(function(){
@@ -148,6 +155,7 @@
         });
     });
 
+    });
 })(jQuery);
 //-->
        

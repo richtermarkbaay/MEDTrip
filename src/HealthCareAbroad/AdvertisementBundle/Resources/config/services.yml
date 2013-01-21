@@ -23,4 +23,9 @@ services:
         class: HealthCareAbroad\AdvertisementBundle\Form\ListType\AdvertisementPropertyNameListType
         tags:
             - {name: form.type, alias: advertisementPropertyName_list }
+
+    form.highlight_featured_images:
+        class: HealthCareAbroad\AdvertisementBundle\Form\HighlightFeaturedImagesFormType
+        tags:
+            - {name: form.type, alias: highlight_featured_images }
                 

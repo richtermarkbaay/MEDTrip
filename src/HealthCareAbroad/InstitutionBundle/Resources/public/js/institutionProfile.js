@@ -231,7 +231,7 @@ var InstitutionProfile = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.modal-content').find('form');
+        _form = _button.parents('.modal').find('form');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),

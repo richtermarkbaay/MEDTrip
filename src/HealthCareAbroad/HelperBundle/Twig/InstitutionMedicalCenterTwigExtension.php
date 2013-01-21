@@ -25,17 +25,19 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     
     public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array())
     {
-        $defaultIncludedKeys = array('address', 'zipCode', 'city', 'country');
+        $defaultIncludedKeys = array('address', 'zipCode', 'city', 'state','country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
         $institution = $institutionMedicalCenter->getInstitution();
         $returnVal = array();
         if (\in_array('address', $includedKeys)) {
             $street_address = \json_decode($institutionMedicalCenter->getAddress(), true);
-            if (!\is_null($street_address)) {
-                $this->_removeEmptyValueInArray($street_address);
-                if (\count($street_address)) {
-                    $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
-                }
+            
+            $street_address = !\is_null($street_address)
+                ?  $this->_removeEmptyValueInArray($street_address)
+                : array();
+            
+            if (\count($street_address)) {
+                $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
             }
             else {
                 // try to fetch the institution adress
@@ -46,7 +48,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                         $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
                     }
                 }
-            }   
+            }
         }
         
         if (\in_array('zipCode', $includedKeys) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
@@ -64,8 +66,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         if (\in_array('country', $includedKeys) && $institution->getCountry()) {
             $returnVal['country'] = $institution->getCountry()->getName();
         }
+        $keysWithValues = \array_intersect($includedKeys, \array_keys($returnVal));
         
-        return array_merge(array_flip($includedKeys), $returnVal);
+        return array_merge(array_flip($keysWithValues), $returnVal);
     }
     
     public function getName()
@@ -80,5 +83,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 unset($array[$k]);
             }
         }
+        
+        return $array;
     }
 }

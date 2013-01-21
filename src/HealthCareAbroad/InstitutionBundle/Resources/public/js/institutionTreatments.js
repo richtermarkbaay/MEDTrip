@@ -43,12 +43,14 @@ var InstitutionSpecialization = {
         _modal = $(_linkElement.attr('data-target'));
         _modal.modal('show');
         _modal.find('.ajax_loader').show();
+        $('.ajax_content_container').hide();
         $.ajax({
            url: _linkElement.attr('href'),
            type: 'GET',
            dataType: 'json',
            success: function(response) {
                _modal.find('.ajax_loader').hide();
+               $('.ajax_content_container').show();
                _modal.find('div.ajax_content_container').html(response.html);
                _modal.find('button.submit_button').attr('disabled', false);
            },

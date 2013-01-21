@@ -27,8 +27,11 @@ class CityTransformer implements DataTransformerInterface
     
     public function reverseTransform($data)
     {
-        if(!$data)
-            return $data;
+        
+        if(!$data){
+            
+            return null;
+        }
 
         $city = $this->service->getCityById($data);
         if (!$city) {

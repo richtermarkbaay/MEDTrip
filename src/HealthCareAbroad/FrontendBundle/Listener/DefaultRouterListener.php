@@ -31,7 +31,7 @@ class DefaultRouterListener
 
             // check first if it is /admin/ or /institution/, do nothing if it matches since it should be forwarded to the router
             // this check is necessary if this listner's priority is higher than RouterListener priority to save execution time
-            if ((strpos($pathInfo, '/admin') !== false) || (strpos($pathInfo, '/institution') !== false)) {
+            if ((strpos($pathInfo, '/admin') !== false) || (strpos($pathInfo, '/institution') !== false) || (strpos($pathInfo, '/search') !== false)) {
                 return;
             }
 

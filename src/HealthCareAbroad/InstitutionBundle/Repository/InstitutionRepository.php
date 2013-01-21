@@ -88,29 +88,32 @@ class InstitutionRepository extends EntityRepository
         return $qb;
     }
 
-    //TODO: paging
     public function getInstitutionsByCountry($country)
     {
-        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status <> :status ";
-        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country ";
+        $dql = "SELECT a
+                FROM InstitutionBundle:Institution a
+                INNER JOIN a.institutionMedicalCenters b
+                WHERE a.country = :country AND a.status <> :status AND b.status = :imcStatus ";
 
         $query = $this->_em->createQuery($dql)
             ->setParameter('status', InstitutionStatus::INACTIVE)
-            ->setParameter('country', $country);
-
+            ->setParameter('country', $country)
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
         return $query->getResult();
     }
 
     public function getInstitutionsByCity($city)
     {
-        $dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.country = :country AND a.status <> :status ";
-        //$dql = "SELECT a FROM InstitutionBundle:Institution a WHERE a.city = :city ";
+        $dql = "SELECT a
+                FROM InstitutionBundle:Institution a
+                INNER JOIN a.institutionMedicalCenters b
+                WHERE a.city = :city AND a.city IS NOT NULL AND a.status <> :status AND b.status = :imcStatus";
 
         $query = $this->_em->createQuery($dql)
             ->setParameter('status', InstitutionStatus::INACTIVE)
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
             ->setParameter('city', $city);
-
 
         return $query->getResult();
     }
