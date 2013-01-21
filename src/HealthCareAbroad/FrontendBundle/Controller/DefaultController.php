@@ -131,7 +131,7 @@ class DefaultController extends Controller
         //TODO: This is temporary; use OrmAdapter
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $specialization->getName()
         ));
 
@@ -153,7 +153,7 @@ class DefaultController extends Controller
 
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName()
 
         ));
@@ -177,7 +177,7 @@ class DefaultController extends Controller
 
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $treatment->getName()
         ));
 
@@ -199,7 +199,7 @@ class DefaultController extends Controller
 
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName()
         ));
 
@@ -222,7 +222,7 @@ class DefaultController extends Controller
 
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $subSpecialization->getName()
         ));
 
@@ -246,7 +246,7 @@ class DefaultController extends Controller
 
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $resultsPerPage)),
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName()
         ));
 
