@@ -3,3 +3,9 @@ parameters:
         signup_multiple_center_success:
             highlight: 'Your account has been created!'
             subText: 'You can either complete your profile using the guide below, or start adding your clinics or departments. We recommend that you complete the steps below to ensure that you are providing patients with complete and updated information about what your institution offers.'
+        signup_welcome_complete_profile:
+            highlight: 'Welcome to HealthcareAbroad!'
+            subText: "Now, let's give your patients a way to contact and find you."
+        signup_welcome_back_complete_profile:
+            highlight: 'Welcome back!'
+            subText: 'To help your patients contact you and find your location, please take time to complete the information asked below..'
