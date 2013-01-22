@@ -1,6 +1,7 @@
 var Location = {
         
     loadCitiesUrl: '',
+    loadNonGlobalCities: false,
     
     citiesDropdownElement: null,
 	
@@ -20,8 +21,7 @@ var Location = {
 
 		$.ajax({
 		   url:  Location.loadCitiesUrl,
-		   data: {'countryId': countryId, 'selectedCityId': selectedCityId },
-		   dataType: 'json',
+		   data: {'countryId': countryId, 'selectedCityId': selectedCityId, 'loadNonGlobalCities': Location.loadNonGlobalCities },
 		   type: 'get',
 		   success: function(response){
 		       citiesElem.html(response.html);
