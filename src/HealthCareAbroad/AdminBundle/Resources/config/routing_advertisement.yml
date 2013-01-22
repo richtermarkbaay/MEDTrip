@@ -29,17 +29,24 @@ admin_advertisement_update:
     requirements:
         _method: POST
         advertisementId: \d+
-        
+
 admin_advertisement_addInvoice:
     pattern:  /admin/advertisement/{advertisementId}/add-invoice
     defaults: { _controller: AdminBundle:Advertisement:addInvoice }
     requirements:
         _method: GET|POST
         advertisementId: \d+
-        
+
 admin_advertisement_preview:
     pattern:  /admin/advertisement/{advertisementId}/preview
     defaults: { _controller: AdminBundle:Advertisement:preview }
     requirements:
         _method: GET
         advertisementId: \d+
+
+admin_advertisement_ajaxDeleteImage:
+    pattern:  /admin/advertisement/ajax-delete-image/{advertisementPropertyValueId}
+    defaults: { _controller: AdminBundle:Advertisement:ajaxDeleteImage }
+    requirements:
+        _method: POST|GET
+        advertisementPropertyValueId: \d+

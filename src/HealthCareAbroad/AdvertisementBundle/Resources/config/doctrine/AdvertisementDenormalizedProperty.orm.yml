@@ -51,6 +51,12 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             type: bigint
             nullable: false
             column: media_id
+        videoUrl:
+            type: string
+            length: 200
+            fixed: false
+            nullable: false
+            column: video_url
         highlightDoctors:
             type: text
             nullable: false

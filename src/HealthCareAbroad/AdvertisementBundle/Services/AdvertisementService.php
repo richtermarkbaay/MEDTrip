@@ -120,58 +120,5 @@ class AdvertisementService
         $query = "INSERT INTO advertisement_denormalized_properties ($columns) VALUES($valuesPlaceholder) ON DUPLICATE KEY UPDATE $onDuplicatePlaceholder";
         $result = $this->em->getConnection()->executeQuery($query, $data);
 
-//         $denormalizedAdvertisement = $this->em->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find($advertisement->getId());
-
-//         if(!$denormalizedAdvertisement) {
-//             $denormalizedAdvertisement = new AdvertisementDenormalizedProperty();
-//         }
-
-//         $advertisementMethods = get_class_methods($advertisement);
-//         $propertyValues = $advertisement->getAdvertisementPropertyValues();
-
-//         $arrPropertyValues = array();
-//         foreach($propertyValues as $each) {
-//             $name = $each->getAdvertisementPropertyName()->getName();
-//             $name = str_replace('_', '', $name);
-    
-//             if($each->getAdvertisementPropertyName()->getDataType()->getColumnType() == 'collection') {
-//                 $arrPropertyValues[$name][] = (int)$each->getValue();
-//             } else {
-//                 $arrPropertyValues[$name] = $each->getValue();
-//             }
-//         }
-    
-//         foreach(get_class_methods($denormalizedAdvertisement) as $method) {
-    
-//             if(substr($method, 0, 3) == 'set') {
-//                 $propertyName = substr($method, 3);
-    
-//                 $getMethod = 'get' . $propertyName;
-    
-//                 if(in_array($getMethod, $advertisementMethods)) {
-//                     $value = $advertisement->{$getMethod}();
-//                     $denormalizedAdvertisement->{$method}($value);
-//                 } else {
-//                     if(isset($arrPropertyValues[strtolower($propertyName)])) {
-//                         $value = $arrPropertyValues[strtolower($propertyName)];
-//                         if(is_array($value)) {
-//                             $value = json_encode($value);
-//                         }
-//                     }
-    
-//                     else $value = '';
-//                 }
-                
-//                 if($method == 'setMedia') {
-//                     continue;
-//                 }
-
-//                 try { $denormalizedAdvertisement->{$method}($value);}
-//                 catch(\Exception $e){}
-//             }
-//         }
-    
-//         $this->em->persist($denormalizedAdvertisement);
-//         $this->em->flush($denormalizedAdvertisement);
     }
 }
