@@ -293,6 +293,21 @@ class InstitutionMedicalCenterService
         return $query->getResult();
     }
 
+    public function checkIfOpenTwentyFourHours($businessHours)
+    {
+        $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+        $isOpen = true;
+        foreach ($days as $day)
+        {
+            if($businessHours[$day]['isOpen'] != true) {
+                $isOpen = false;
+                exit;
+            }
+        }
+        return $isOpen;
+        
+    }
+    
     public function getCountByInstitution(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
