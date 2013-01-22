@@ -4,7 +4,7 @@ var HCA = {
 		
 	init : function(params)
 	{
-		HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
+		//HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
 		
 		HCA.tinymceConfig = params.tinymceConfig;
 	},
@@ -18,7 +18,6 @@ var HCA = {
 		window.location = url + '?' + params.substr(1); 
 	}
 };
-
 
 function tinymceSetup(ed, e)
 {

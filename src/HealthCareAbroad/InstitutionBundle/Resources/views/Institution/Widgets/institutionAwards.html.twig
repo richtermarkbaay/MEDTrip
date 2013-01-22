@@ -90,35 +90,34 @@
 {% block inlineJavascriptCode %}
     <script type="text/javascript">
         $(function() {
-        	InstitutionProfile.removePropertyUri = '{{ path("institution_ajaxRemovePropertyValue", {"institutionId" : institution.id} ) }}';
-            
-            InstitutionGlobalAwardAutocomplete
-            .setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
-            .setAutocompleteOptions('award', {
-                source: $.parseJSON('{{ awardsSourceJSON | raw }}'),
-                target: $('input.award_selector'),
-                selectedDataContainer: $('table.awards_table tbody'),
-                loader: $('table.awards_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('certificate', {
-                source: $.parseJSON('{{ certificatesSourceJSON | raw }}'),
-                target: $('input.certificate_selector'),
-                selectedDataContainer: $('table.certificates_table tbody'),
-                loader: $('table.certificates_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('affiliation', {
-                source: $.parseJSON('{{ affiliationsSourceJSON | raw }}'),
-                target: $('input.affiliation_selector'),
-                selectedDataContainer: $('table.affiliations_table tbody'),
-                loader: $('table.affiliations_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('accreditation', {
-                source: $.parseJSON('{{ accreditationsSourceJSON | raw }}'),
-                target: $('input.accreditations_selector'),
-                selectedDataContainer: $('table.accreditation_table tbody'),
-                loader: $('table.accreditation_table tbody tr.loader')
-            })
-            .autocomplete();
+            var _nsUrl = '{{ path("institution_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
+        	InstitutionGlobalAwardAutocomplete
+            	.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+                .setAutocompleteOptions('award', {
+                    source: _nsUrl+'?type=award',
+                    target: $('input.award_selector'),
+                    selectedDataContainer: $('table.awards_table tbody'),
+                    loader: $('table.awards_table tbody tr.loader')
+                })
+                .setAutocompleteOptions('certificate', {
+                    source: _nsUrl+'?type=certificate',
+                    target: $('input.certificate_selector'),
+                    selectedDataContainer: $('table.certificates_table tbody'),
+                    loader: $('table.certificates_table tbody tr.loader')
+                })
+                .setAutocompleteOptions('affiliation', {
+                    source: _nsUrl+'?type=affiliation',
+                    target: $('input.affiliation_selector'),
+                    selectedDataContainer: $('table.affiliations_table tbody'),
+                    loader: $('table.affiliations_table tbody tr.loader')
+                })
+                .setAutocompleteOptions('accreditation', {
+                    source: _nsUrl+'?type=accreditation',
+                    target: $('input.accreditations_selector'),
+                    selectedDataContainer: $('table.accreditation_table tbody'),
+                    loader: $('table.accreditation_table tbody tr.loader')
+                })
+                .autocomplete();
         });
         
     </script>
