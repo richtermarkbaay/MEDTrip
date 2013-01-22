@@ -192,6 +192,18 @@ class InstitutionAccountController extends InstitutionAwareController
             }
         }
         
+        if($this->institution->getContactNumber()){
+               $message = $this->get('services.institution.callouts')->get('signup_welcome_back_complete_profile');
+        }else{
+               $message = $this->get('services.institution.callouts')->get('signup_welcome_complete_profile');
+        }
+        
+        $calloutMessage = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array(
+                        'callout' => $message
+        ));
+        
+        $this->get('session')->setFlash('callout_message', $calloutMessage);
+        
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,

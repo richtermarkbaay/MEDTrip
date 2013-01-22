@@ -5,12 +5,16 @@
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
     with {'contentSpanClass' : 'span12' } %}
     {% block wrappedContent %}
-
+    {% block aside %}
+        {% if app.session.hasFlash('callout_message') %}
+            {{ app.session.flash('callout_message') | raw }}
+        {% endif %}
+    {% endblock %}
 		<div class="span12">
 			<h2>{{ institution.name }}</h2>
 				  
             {% if institutionTypeLabel is defined %}
-            <p>Type of Institution:
+            <p>You have indicated that you are a :
 				<strong>{{ institutionTypeLabel }}</strong>
 			</p>
             {% endif %}

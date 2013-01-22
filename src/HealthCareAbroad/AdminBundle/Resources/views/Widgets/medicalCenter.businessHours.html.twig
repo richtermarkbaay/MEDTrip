@@ -3,15 +3,15 @@
         Business Hours
     </h5>
 
-    <form class="basic-form">
+    <form id="businessHours-form" class="basic-form">
         <div id="clinicHours" class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none; ">
             <label>
-            {% if not institutionMedicalCenter.businessHours %}
+            {% if not institutionMedicalCenter.businessHours or isOpen24hrs == 1%}
                 <input type="checkbox" name="businessHourCheckBox" checked="checked" id="businessHourCheckBox" >
             {% else %}
             <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
             {% endif %}
-            I have no business hours
+            Our clinic is <strong>open 24/7</strong>
             </label>
                 {% include 'AdminBundle:Widgets:businessHours.html.twig' %}
         </div>

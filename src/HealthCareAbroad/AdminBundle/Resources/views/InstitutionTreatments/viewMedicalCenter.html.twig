@@ -48,18 +48,38 @@
     <script type="text/javascript">
         $(function() {
         	$(".hour").timepicker({ seconds: false  });
-            $('input.is_closed_checkbox').each(function(){
-                if(this.checked) {
-                    $(this).parent().parent().find('.hour').val("");
-                    //var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-                }
-            });
-            if ($('#businessHourCheckBox').attr('checked')) {
-            	$(this).parent().parent().find('.hour').val("");
+        	//if ($('#businessHourCheckBox').attr('checked')) {
+            	/*$(this).parent().parent().find('.hour').val("");
     	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
     	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-    	    	$('#businessHours-table').hide();
-            }
+    	    	$('#businessHours-table').hide();*/
+            	//$(this).parent().parent().find('.is_open').val('1');
+    	    	//$(this).parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	//$('textarea.businessHourNotes').removeAttr('disabled');
+    	    	//$(this).parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	//$(this).parent().parent().find('.is_close_checkbox').removeAttr('checked');
+    	        //$(this).parent().parent().find('.is_close_checkbox').attr({disabled : true});
+            //}
+            $('input.is_close_checkbox').each(function(){
+                if(this.checked) {
+                    $(this).parent().parent().parent().find('.hour').val("");
+                    $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
+                    $(this).parent().parent().parent().next().find('.businessHourNotes').val("");
+                    $(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+                }
+            });
+            $('input.is_open_checkbox').each(function(){
+                if(this.checked) {
+                	$(this).parent().parent().parent().find('.hour').val("8:00 AM");
+                    $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
+                    $(this).parent().parent().parent().find('.is_open').val('1');
+                    $('textarea.businessHourNotes').removeAttr('disabled');
+                    $('input.is_close_checkbox').removeAttr('checked');
+                    $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
+                    $(this).parent().parent().parent().find('.is_open_checkbox').attr({disabled : true});
+                }
+            });
+            
             $('#dialog-container').dialog({
                 position: ['center', 100],
                 autoOpen: false,
@@ -121,7 +141,8 @@
 	            source: $.parseJSON('{{ doctorsJSON | raw }}'),
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
-	            loader: $('table.specialist_table tbody tr.loader')
+	            loader: $('table.specialist_table tbody tr.loader'),
+                field: $('#institutionDoctorSearch_firstName')
 	        })
 	        .autocomplete();
 
@@ -231,48 +252,52 @@
     		});
         });
         
-        $('input.is_closed_checkbox').change(function(){
+        $('input.is_close_checkbox').change(function(){
             if(this.checked) {
-                $(this).parent().parent().find('.hour').val("");
-                var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-                $(this).parent().parent().next().find('.businessHourNotes').val("");
-                $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+            	$(this).parent().parent().parent().find('.is_open_checkbox').val('0');
+                $(this).parent().parent().parent().find('.is_open').val('0');
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
+                $(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('disabled');
+                $(this).parent().parent().parent().next().find('.businessHourNotes').val("");
+                $(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
             }
-            else
-            {
-                $(this).parent().parent().find('.hour').val("8:00 AM");
-                var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-                $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
+
+        });
+        $('input.is_open_checkbox').change(function(){
+            if(this.checked) {
+                $(this).parent().parent().parent().find('.hour').val("8:00 AM");
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
+                $(this).parent().parent().parent().find('.is_open').val('1');
+                $('textarea.businessHourNotes').removeAttr('disabled');
             }
 
         });
 
         $('#businessHourCheckBox').click(function(){
     	    if ($('#businessHourCheckBox').attr('checked')) {
-
-    	    	$(this).parent().parent().find('.hour').val("");
-    	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
-    	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-    	    	$('#businessHours-table').hide();
-    	    	
+    	    	$(this).parent().parent().parent().find('.is_open').val('1');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	$('textarea.businessHourNotes').removeAttr('disabled');
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
+    	        $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
     	    }else{
-        	    $('#businessHours-table').show();
-        	    $(this).parent().parent().find('.hour').val("8:00 AM");
-    	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-    	    	$(this).parent().parent().next().find('.businessHourNotes').val("");
-    	    	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
+    	    	$(this).parent().parent().parent().find('.is_open').val('');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: false }).val(" 8:00 AM");
+    	    	$('textarea.businessHourNotes').removeAttr('disabled');
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
+    	    	$(this).parent().parent().parent().find('.is_close_checkbox').attr({ disabled: false});
         	}
     	}) 
         
         $('#saveBusinessHours').click(function() {
         	$('#saveBusinessHours').attr('disabled',"true");
-        	_form = $(this).parents('#businessHours').find('form');
+        	_form = $('#businessHours-form');
             _form.append('<span class="loader">Loading...</span>');
             var businessHoursData = _form.serialize();
-            if ($('#businessHourCheckBox').attr('checked')) {
+            /*if ($('#businessHourCheckBox').attr('checked')) {
                 businessHoursData = '';
-            }
+            }*/
             $.ajax({
                 url: "{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
                 data: businessHoursData,

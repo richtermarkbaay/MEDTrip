@@ -1130,7 +1130,9 @@ class MedicalCenterController extends InstitutionAwareController
        
             $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionMedicalCenter);
             if(is_object($result)) {
-               $media =  $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $result);
+                
+               $this->institutionMedicalCenter->setLogo($result);
+               $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             }
         }
         return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));

@@ -42,10 +42,10 @@ InstitutionBundle_doctor:
     prefix:   /institution
     
 # Routes for Institution properties
-InstitutionBundle_doctor:
+InstitutionBundle_properties:
     resource: "@InstitutionBundle/Resources/config/routing_institutionProperties.yml"
     prefix:   /
-
+    
 institution_gallery:
     pattern: /institution/gallery
     defaults: { _controller: MediaBundle:Default:gallery }

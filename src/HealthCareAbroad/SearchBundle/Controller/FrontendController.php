@@ -111,7 +111,7 @@ class FrontendController extends Controller
         // this is used to avoid using slugs after redirection
         $request->getSession()->set('search_terms', json_encode($searchParams->all()));
 
-        return $this->redirect($this->generateUrl($route, $parameters));
+        return $this->redirect($this->generateUrl($route, $routeParameters));
     }
 
     public function searchResultsCountriesAction(Request $request)
