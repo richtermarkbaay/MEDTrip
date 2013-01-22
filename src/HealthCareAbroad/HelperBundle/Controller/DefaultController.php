@@ -32,14 +32,15 @@ class DefaultController extends Controller
     {
         $countryId = $request->get('countryId', 0);
         $selectedCity = $request->get('selectedCityId', 0);
-    	$data = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
-    	$html = '<option value="0">Select a city</option>';
-    	foreach ($data as $each) {
-    	    $html .= '<option value="'.$each['id'].'" '. ($selectedCity == $each['id']?'selected':'')  . '>'.$each['name'].'</option>';
-    	}
-		$response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
-		
-		return $response;
+
+        $data = $request->get('loadNonGlobalCities')
+            ? $this->get('services.location')->getListActiveCitiesByCountryId($countryId)
+            : $this->get('services.location')->getGlobalCitiesListByContry($countryId);
+
+        $html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
+        $response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
+
+        return $response;
     }
     
     /**
@@ -59,7 +60,7 @@ class DefaultController extends Controller
         if(!$params['specialization']) {
             $result = array('error' => 'Invalid Specialization');
 
-    		return new Response('Invalid Specialization', 404);
+            return new Response('Invalid Specialization', 404);
         }
 
         $groupBySubSpecialization = true;
@@ -80,36 +81,36 @@ class DefaultController extends Controller
 
     public function searchTagsAction($term)
     {
-		$data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
+        $data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
 
-    	$response = new Response(json_encode($data));
-    	$response->headers->set('Content-Type', 'application/json');
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
 
-    	return $response;
+        return $response;
     }
     
     // TODO: DEPRECATED ??
     public function autoCompleteSearchAction()
     {
-    	$data = array();
-		$request = $this->getRequest();
-		$section = $request->get('section', null);
-		$term = $request->get('term', null);
+        $data = array();
+        $request = $this->getRequest();
+        $section = $request->get('section', null);
+        $term = $request->get('term', null);
 
-		switch($section) {
-			case 'specialization' :
-				$data = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->autoCompleteSearch($term);
-				break;
-			case 'procedure-type' :
-				$data = array(); // TODO - Get Array Result
-				break;
-			case 'procedure' :
-				$data = array(); // TODO - Get Array Result
-				break;
-		}
+        switch($section) {
+            case 'specialization' :
+                $data = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->autoCompleteSearch($term);
+                break;
+            case 'procedure-type' :
+                $data = array(); // TODO - Get Array Result
+                break;
+            case 'procedure' :
+                $data = array(); // TODO - Get Array Result
+                break;
+        }
 
-		$response = new Response(json_encode($data));
-		$response->headers->set('Content-Type', 'application/json');		
-		return $response;
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');        
+        return $response;
     }
 }
