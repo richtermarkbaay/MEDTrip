@@ -1,8 +1,9 @@
 <div class="box-content">
-    <h4 class="pull-left">Basic Profile</h4>            
-    
-        <p><span class="address_part">{% set _address = institution_address_to_array(institution) %}</span>
-            <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+    <h4>Basic Profile</h4>            
+        
+        <p class="address_column">
+            <span class="address_part">{% set _address = institution_address_to_array(institution) %}</span>
+            <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part pull-left">') | raw}}&nbsp;</span>
             <a href="#addressModal" data-toggle="modal" role="button"><i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
         </p>
         <p>
