@@ -42,7 +42,14 @@ class AdvertisementController extends Controller
         $institutionId = $ad ? $ad['institution'] : null;
         
         if(!$institutionId) {
-            $institutionId = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus())->getId();
+            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus());
+
+            if (!$institution) {
+                $this->getRequest()->getSession()->setFlash("notice", "There's no approved institution yet.");
+                return $this->redirect($this->generateUrl('admin_advertisement_index'));
+            } 
+            
+            $institutionId = $institution->getId();
         }
 
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
