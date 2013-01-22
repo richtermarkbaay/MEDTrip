@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AdvertisementDenormalizedProperty
 {
+
     /**
      * @var bigint $id
      */
@@ -58,6 +59,11 @@ class AdvertisementDenormalizedProperty
      * @var bigint $mediaId
      */
     private $mediaId;
+
+    /**
+     * @var string $videoUrl
+     */
+    private $videoUrl;
 
     /**
      * @var text $highlightDoctors
@@ -363,6 +369,28 @@ class AdvertisementDenormalizedProperty
     public function getMediaId()
     {
         return $this->mediaId;
+    }
+
+    /**
+     * Set videoUrl
+     *
+     * @param string $videoUrl
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setVideoUrl($videoUrl)
+    {
+        $this->videoUrl = $videoUrl;
+        return $this;
+    }
+
+    /**
+     * Get videoUrl
+     *
+     * @return string 
+     */
+    public function getVideoUrl()
+    {
+        return $this->videoUrl;
     }
 
     /**

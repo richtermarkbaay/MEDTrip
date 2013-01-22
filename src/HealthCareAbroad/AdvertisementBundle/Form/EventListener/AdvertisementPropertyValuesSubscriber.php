@@ -57,13 +57,8 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
                 // Transform advertisementPropertyValues form/field type based on advertisementPropertyName
                 $config = json_decode($property->getPropertyConfig(), true);
                 $config['config']['label'] = $property->getLabel();
-                $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
                 
-//                 if($property->getName() == 'media_id') {
-//                     $value = $each->getValue();
-//                     $config['image_path'] = '/media/ads/' . $param->getId() . '/thumbnail-' . array_shift($value)->getName();
-//                     //var_dump($config['image_path']); exit;
-//                 }
+                $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
 
                 $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));
             }

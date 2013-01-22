@@ -6,10 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\Advertisement;
@@ -18,6 +16,7 @@ use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use HealthCareAbroad\HelperBundle\Services\Filters\ListFilter;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
@@ -174,12 +173,6 @@ class AdvertisementController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
-            
-//                     foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
-//                         var_dump($value);
-//                     }
-
-            
             $this->saveMedia($advertisement);
             $this->get('services.advertisement')->save($advertisement);
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
@@ -223,33 +216,64 @@ class AdvertisementController extends Controller
 
     private function saveMedia($advertisement)
     {    
-
+        $em = $this->getDoctrine()->getEntityManager();
         $fileClassName = 'Symfony\Component\HttpFoundation\File\UploadedFile';
 
-        foreach($advertisement->getAdvertisementPropertyValues() as $each) {
+        foreach($advertisement->getAdvertisementPropertyValues() as $i => $each) {
             $newValue = null;
             $value = $each->getValue();
             $property = $each->getAdvertisementPropertyName();
 
-
             if($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
+                
+                if(is_array($value)) {
+                    $advertisement->getAdvertisementPropertyValues()->remove($i);
+                    continue;
+                }
 
-                if( $value && is_object($value) && get_class($value) == $fileClassName) {
-                     $media = $this->get('services.media')->upload($value, $advertisement);
+                if($value && is_object($value) && get_class($value) == $fileClassName) {
+                    $media = $this->get('services.media')->upload($value, $advertisement);
                     $each->setValue($media->getId());
 
-                    if($media && $each->getId()) { // TODO - Temporary fixed for ads Image
+                    if($media) { // TODO - Temporary fixed for ads Image
+                        $hasPersisted = true;
                         $em = $this->getDoctrine()->getEntityManager();
-                        $em->persist($each);
-                        $em->flush($each);
+                        $em->persist($each);                        
                     }
                 }                
             }
         }
-        
-//         foreach($advertisement->getAdvertisementPropertyValues() as $value) {
-//             var_dump($value);
-//         }
-// exit;
+
+        $em->flush();
+    }
+
+    public function ajaxDeleteImageAction($advertisementPropertyValueId)
+    {
+        $result = false;
+        $em = $this->getDoctrine()->getEntityManager();
+        $advertisementValue = $em->getRepository('AdvertisementBundle:AdvertisementPropertyValue')->find($advertisementPropertyValueId);
+
+        if($advertisementValue) {
+            $advertisement = $advertisementValue->getAdvertisement();
+            $advertisementDenormolized = $em->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find($advertisement->getId());
+            
+            $featuedImages = json_decode($advertisementDenormolized->getHighlightFeaturedImages(), true);
+
+            foreach($featuedImages as $i => $each) {
+                if($each['id'] == $advertisementValue->getValue())
+                    unset($featuedImages[$i]);
+            }
+
+            $advertisementDenormolized->setHighlightFeaturedImages(json_encode($featuedImages));
+            $em->remove($advertisementValue);
+            $em->persist($advertisementDenormolized);
+            $em->flush();
+            
+            $result = true;
+        }
+
+		$response = new Response(json_encode($result));
+		$response->headers->set('Content-Type', 'application/json');		
+		return $response;
     }
 }

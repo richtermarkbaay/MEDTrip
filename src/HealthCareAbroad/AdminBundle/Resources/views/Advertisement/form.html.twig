@@ -61,26 +61,39 @@
     				    {{ form_row(form.description) }}
 
     				    {% for propertyValue in form.advertisementPropertyValues %}
+    				    
+                            {{ form_row(propertyValue.advertisementPropertyName) }}
+    				    
                             {% set valueObj = propertyValue.get('value') %}
     				        {% if ((valueObj.advertisementPropertyName.name == 'highlight_featured_images') or (valueObj.advertisementPropertyName.name == 'media_id')) and valueObj.value|length %}
-    				            {% for i, media in valueObj.value %}
-    				                {% if media %} 
+    				            <div>
+                                    {{ form_label(propertyValue.value) }}
+        				            {% for adValueId, media in valueObj.value %} 
+
         				                {% if valueObj.advertisementPropertyName.name == 'highlight_featured_images' %}
-                				            <div style="position:absolute; padding-top:50px; left:{{450 + ( i * 120)}}px;">
-                				                <div>Image {{ i+1 }}</div>
+                                            {% if media %}
+                    				            <div>
+                    				                {{ form_row(propertyValue.value.children['image' ~ loop.index0], {attr: {style: 'display:none;'}} ) }}
+                    				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                    				                <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: adValueId}) }}" class="remove-image">remove</a>
+                    				            </div>
+                                            {% else  %}
+                                                {{ form_row(propertyValue.value.children[adValueId]) }}
+                                            {% endif %}    				                    
+
+        				                {% else %}
+                				            <div style="position:absolute; left:450px;">
                 				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
                 				            </div>
-        				                {% else %}
-            				            <div style="position:absolute; left:450px;">
-            				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
-            				            </div>    				                
+                                            {{ form_widget(propertyValue.value) }}
         				                {% endif %}
-        				            {% endif %}
-    				            {% endfor %}
+        				            {% endfor %}
+                                </div>
+    				        {% else %}
+        				        {{ form_row(propertyValue.value) }}
     				        {% endif %}
 
-    				        {{ form_row(propertyValue.advertisementPropertyName) }}
-    				        {{ form_row(propertyValue.value) }}
+
     				        
     				    {% else %}
     				        <div style="display:none">{{ form_row(form.advertisementPropertyValues) }}</div>    
@@ -109,6 +122,25 @@
                 window.location = "{{ path('admin_advertisement_add') }}?institutionId="+institutionId+"&advertisementTypeId="+advertisementTypeId;
             }
         });
+
+        $('.remove-image').click(function(){
+            var inputElem = $(this).parent().find('input:file');
+            var imgElem = $(this).parent().find('img');
+            var url = $(this).attr('href');
+            $(this).html('removing image...');
+            $.post(url, function(result){
+                if(result) {
+                	imgElem.next().fadeOut(500);
+                    imgElem.fadeOut(300, function(){inputElem.show();});
+                } else {
+                	$(this).html('remove');
+                }
+
+            }, 'json');
+
+            return false;
+        });
+
     });
 </script>
 {% endblock %}
