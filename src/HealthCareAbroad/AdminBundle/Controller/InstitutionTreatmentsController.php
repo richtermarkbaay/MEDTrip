@@ -102,16 +102,16 @@ class InstitutionTreatmentsController extends Controller
         $institutionService = $this->get('services.institution');
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-            
             if ($firstMedicalCenter) {
                 // forward action to viewing a medical center
-                $response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $firstMedicalCenter));
+                $response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $firstMedicalCenter, 'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($firstMedicalCenter->getBusinessHours(),true))));
             }
             else {
                 // no medical center yet, redirect to add medical center with 
                 $this->request->getSession()->setFlash('notice', 'No medical centers yet, add a clinic now.');
                 $response = $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId())));
             }
+                
         }
         else {
             $institutionMedicalCenters = $institutionService->getAllMedicalCenters($this->institution);
@@ -428,7 +428,8 @@ class InstitutionTreatmentsController extends Controller
                 'form' => $form->createView(),
                 'institution' => $this->institution,
                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                'selectedSubMenu' => 'centers'
+                'selectedSubMenu' => 'centers',
+                'isNew' => true
             );
     
             return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
@@ -467,7 +468,7 @@ class InstitutionTreatmentsController extends Controller
             
         }
     
-        $html = $this->renderView('AdminBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
+        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
     
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }

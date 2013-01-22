@@ -19,7 +19,7 @@
 				<tbody>
 					<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.award %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -39,7 +39,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
 					{% for _award in currentGlobalAwards.certificate %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
 					{% endfor %}
 				</tbody>
 			</table>
@@ -59,7 +59,7 @@
 				<tbody>
 					<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
 					{% for _award in currentGlobalAwards.affiliation %}
-					    {% include 'InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig' with {'award': _award.global_award, 'medical_center_property': _award.medical_center_property} %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
 					{% endfor %}
 				</tbody>
 			</table>

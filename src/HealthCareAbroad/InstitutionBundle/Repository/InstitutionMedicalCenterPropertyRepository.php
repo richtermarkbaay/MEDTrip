@@ -43,11 +43,16 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         $rsm->addFieldResult('b', 'status', 'status');
         $rsm->addFieldResult('b', 'date_created', 'dateCreated');
         
+        $propertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE));
         
-        $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId ORDER BY b.name ASC";
+        $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value 
+        WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId
+        AND a.institution_property_type_id = :propertyType
+        ORDER BY b.name ASC";
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
             ->setParameter('id', $institutionMedicalCenter->getInstitution()->getId())
-            ->setParameter('imcId', $institutionMedicalCenter->getId());
+            ->setParameter('imcId', $institutionMedicalCenter->getId())
+            ->setParameter('propertyType', $propertyType->getId());
         
         return $query->getResult();
     }

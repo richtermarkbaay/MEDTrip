@@ -15,25 +15,6 @@ institution_signup_complete_profile:
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
     requirements:
         _method: GET|POST
-
-institution_add_service_for_clinic:
-    pattern: /institution/add-service-for-clinic.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:addService }
-    requirements:
-        _method: GET|POST
-
-institution_load_tabbed_contents_profile:
-    pattern: /institution/load-tabbed-contents-profile
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:loadTabbedContents }
-    requirements:
-        _method: GET
-        
-institution_load_tabbed_contents_singleProfile:
-    pattern: /institution/load-tabbed-contents-single-profile/{imcId}
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:loadSingleTabbedContents }
-    requirements:
-        _method: GET|POST
-        imcId: \d+
         
 institution_addGlobalAwards:
     pattern:  /institution/{institutionId}/global_awards

@@ -1,0 +1,12 @@
+institution_load_tabbed_contents_profile:
+    pattern: /ns-institution/{institutionId}/load-tabbed-contents-institution
+    defaults: { _controller: InstitutionBundle:Unsecured:loadMultipleCenterInstitutionTabbedContents }
+    requirements:
+        _method: GET
+        
+institution_load_tabbed_contents_singleProfile:
+    pattern: /ns-institution/{institutionId}/load-tabbed-contents-medical-center/{imcId}
+    defaults: { _controller: InstitutionBundle:Unsecured:loadMedicalCenterTabbedContents}
+    requirements:
+        _method: GET|POST
+        imcId: \d+
