@@ -468,7 +468,7 @@ class InstitutionTreatmentsController extends Controller
             
         }
     
-        $html = $this->renderView('AdminBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
+        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
     
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
