@@ -29,7 +29,7 @@
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <input class="hour" name="businessHours[{{day}}][from]" disabled id="businessHours[{{day}}][from]" value="" />
-                    {% elseif arrBusinessHours[day].isOpen == 1 %}
+                    {% elseif arrBusinessHours[day].isOpen is defined and arrBusinessHours[day].isOpen == 1 %}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled/>
                     {% else %}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
@@ -38,8 +38,8 @@
                 <td  align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <input class="hour" name="businessHours[{{day}}][to]" disabled id="businessHours[{{day}}][to]" value="" />
-                    {% elseif arrBusinessHours[day].isOpen == 1 %}
-                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" />
+                    {% elseif arrBusinessHours[day].isOpen is defined and  arrBusinessHours[day].isOpen == 1 %}
+                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled />
                     {% else %}
                          <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
                     {% endif %}
