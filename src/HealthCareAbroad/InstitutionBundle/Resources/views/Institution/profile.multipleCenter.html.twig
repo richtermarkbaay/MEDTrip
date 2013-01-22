@@ -63,7 +63,7 @@
 <!--
 (function($){
     $(function(){
-        _url_base = '{{ path("institution_load_tabbed_contents_profile") }}';
+        _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
     	
         // initialize the tabbed contents
         InstitutionProfile.setAjaxUrls({

@@ -192,18 +192,6 @@ class InstitutionAccountController extends InstitutionAwareController
             }
         }
         
-        if($this->institution->getContactNumber()){
-               $message = $this->get('services.institution.callouts')->get('signup_welcome_back_complete_profile');
-        }else{
-               $message = $this->get('services.institution.callouts')->get('signup_welcome_complete_profile');
-        }
-        
-        $calloutMessage = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array(
-                        'callout' => $message
-        ));
-        
-        $this->get('session')->setFlash('callout_message', $calloutMessage);
-        
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
@@ -273,54 +261,6 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
-    }
-
-
-    /**
-     * Ajax handler for loading tabbed contents in institution profile page
-     * 
-     * @param Request $request
-     */
-    public function loadTabbedContentsAction(Request $request)
-    {
-        $content = $request->get('content');
-        $output = array();
-        $parameters = array('institution' => $this->institution);
-        
-        switch ($content) {
-            case 'medical_centers':
-                $parameters['medical_centers'] = $this->get('services.institution_medical_center')->getActiveMedicalCenters($this->institution);
-                $output['medicalCenters'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.activeMedicalCenters.html.twig', $parameters));
-                break;
-            case 'services':
-                $ancillaryServicesData = array(
-                                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                                'selectedAncillaryServices' => array()
-                );
-                
-                foreach ($this->get('services.institution')->getInstitutionServices($this->institution) as $_selectedService) {
-                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService['id'];
-                }
-                $parameters['services'] = $ancillaryServicesData;
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', $parameters));
-                break;
-            case 'awards':
-                $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-                $currentGlobalAwards = $this->institutionService->getGroupedGlobalAwardsByType($this->institution);
-                $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-                
-                $parameters['form'] = $form->createView();
-                $parameters['isSingleCenter'] = $this->institutionService->isSingleCenter($this->institution);
-                $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
-                $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);
-                $parameters['affiliationsSourceJSON'] = \json_encode($autocompleteSource['affiliation']);
-                $parameters['accreditationsSourceJSON'] = \json_encode($autocompleteSource['accreditation']);
-                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
-                $parameters['institution'] = $this->institution;
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', $parameters));
-        }
-        
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -476,108 +416,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
-    
-    /**
-     * Remove an ancillary service to institution
-     * Required parameters:
-     *     - institutionId
-     *     - asId ancillary service id
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @author alniejacobe
-     */
-    public function ajaxRemoveAncillaryServiceAction(Request $request)
-    {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        ->find($request->get('asId', 0));
-    
-        if (!$ancillaryService) {
-            throw $this->createNotFoundException('Invalid ancillary service id');
-        }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
-        // get property value for this ancillary service
-        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $ancillaryService->getId());
-    
-        try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->remove($property);
-            $em->flush();
-    
-            $output = array(
-                            'html' => $this->renderView('InstitutionBundle:Institution:row.ancillaryService.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'ancillaryService' => $ancillaryService,
-                                            '_isSelected' => false
-                            )),
-                            'error' => 0
-            );
-            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-        }
-        catch (\Exception $e){
-            $response = new Response($e->getMessage(), 500);
-        }
-    
-        return $response;
-    }
-    
-    /**
-     * Add an ancillary service to institution
-     * Required parameters:
-     *     - institutionId
-     *     - asId ancillary service id
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @author alniejacobe
-     */
-    public function ajaxAddAncillaryServiceAction(Request $request)
-    {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        ->find($request->get('asId', 0));
-    
-        if (!$ancillaryService) {
-            throw $this->createNotFoundException('Invalid ancillary service id');
-        }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
-        // check if this institution already have this property value
-        if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $ancillaryService->getId())) {
-            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
-        }
-        else {
-            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
-            $property->setValue($ancillaryService->getId());
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($property);
-                $em->flush();
-    
-                $output = array(
-                                'html' => $this->renderView('InstitutionBundle:Institution:row.ancillaryService.html.twig', array(
-                                                'institution' => $this->institution,
-                                                'ancillaryService' => $ancillaryService,
-                                                '_isSelected' => true
-                                )),
-                                'error' => 0
-                );
-                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-            }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
-            }
-    
-        }
-    
-        return $response;
-    }
-    
-    
     
     /**
      *

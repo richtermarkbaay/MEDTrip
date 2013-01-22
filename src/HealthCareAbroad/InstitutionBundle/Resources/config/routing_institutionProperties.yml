@@ -1,13 +1,13 @@
 institution_ajaxRemoveAncillaryService:
     pattern:  /institution/ajaxRemoveAncillaryService
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemoveAncillaryService }
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxRemoveAncillaryService }
     requirements:
         institutionId: \d+
         _method: POST
 
 institution_ajaxAddAncillaryService:
     pattern:  /institution/ajaxAddAncillaryService
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxAddAncillaryService }
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxAddAncillaryService }
     requirements:
         institutionId: \d+
         _method: POST
