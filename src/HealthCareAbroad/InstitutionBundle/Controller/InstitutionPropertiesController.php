@@ -1,6 +1,14 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionPropertyService;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOption;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -15,13 +23,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class InstitutionPropertiesController extends Controller
+class InstitutionPropertiesController extends InstitutionAwareController
 {
-    /**
-     * @var Institution
-     */
-    private $institution;
-    
     /**
      * @var InstitutionService
      */
@@ -30,7 +33,6 @@ class InstitutionPropertiesController extends Controller
     public function preExecute()
     {
         $this->institutionService = $this->get('services.institution');
-        $this->institution = $this->get('services.institution.factory')->findById($this->getRequest()->get('institutionId', 0));
         
         // Check Institution
         if(!$this->institution) {

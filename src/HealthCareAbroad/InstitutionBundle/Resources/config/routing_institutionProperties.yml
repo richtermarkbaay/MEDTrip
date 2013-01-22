@@ -23,3 +23,11 @@ institution_ajaxRemoveGlobalAward:
     defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxRemoveGlobalAward}
     requirements:
         _method: POST
+
+# institutionId is included in request parameters since this is an unsecured request
+institution_ajaxGlobalAwardSource:
+    pattern: /ns-institution/{institutionId}/awards-certificates-and-affiliations/search
+    defaults: { _controller: InstitutionBundle:Unsecured:ajaxGlobalAwardSource}
+    requirements:
+        institutionId: \d+
+        _method: GET
