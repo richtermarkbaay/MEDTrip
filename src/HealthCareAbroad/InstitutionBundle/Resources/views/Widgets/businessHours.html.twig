@@ -20,8 +20,8 @@
             <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
             <th class="minwidth-1"> <a href="#">From</a></th>
             <th class="minwidth-1"> <a href="#">To</a></th>
-            <th class="minwidth-1" style="width:22px;"></th>
-             <th class="minwidth-1" style="width:22px;"></th>
+            <th class="minwidth-1" style="width:22px;"> <a href="#">Is Closed</a></th>
+            <th class="minwidth-1" style="width:22px;"> <a href="#">Is Open 24hrs</a></th>
         </tr>
         <input class="imcId" name="imcId" id="imcId" value="{{ institutionMedicalCenter.id }}"  type="hidden"/>
         {% for i, day in daysArr %}
@@ -29,31 +29,40 @@
                 <td align="center">{{ day }}</td>
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
-                        <input class="hour" name="businessHours[{{day}}][from]" disabled="true" id="businessHours[{{day}}][from]" value="" />
+                        <input class="hour" name="businessHours[{{day}}][from]" disabled id="businessHours[{{day}}][from]" value="" />
+                    {% elseif arrBusinessHours[day].isOpen is defined and arrBusinessHours[day].isOpen == 1 %}
+                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled/>
                     {% else %}
-                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
+                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
                     {% endif %}
                 </td>
-                <td align="center">
+                <td  align="center">
                     {% if arrBusinessHours[day] is not defined %}
-                        <input class="hour" name="businessHours[{{day}}][to]" disabled="true" id="businessHours[{{day}}][to]" value="" />
+                        <input class="hour" name="businessHours[{{day}}][to]" disabled id="businessHours[{{day}}][to]" value="" />
+                    {% elseif arrBusinessHours[day].isOpen is defined and  arrBusinessHours[day].isOpen == 1 %}
+                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled />
                     {% else %}
                          <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
                     {% endif %}
                 </td>
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
-                        <label><input checked="checked" type="radio" class="is_closed_checkbox" id="{{ i }}"/>Closed</label></td>
+                        <label><input checked="checked" type="radio" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
+                    {% elseif arrBusinessHours[day].isOpen is not defined or arrBusinessHours[day].isOpen is sameas("") %}
+                        <label><input type="radio" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
                     {% else %}
-                        <label><input type="radio" class="is_closed_checkbox" id="{{ i }}"/>Closed</label></td>
+                        <label><input type="radio" checked="checked" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
                     {% endif %}
                 </td>
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
-                        <label><input checked="" type="radio" class="is_closed_checkbox" id="{{ i }}"/>Open 24hrs</label></td>
+                        <label><input type="radio" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
+                    {% elseif arrBusinessHours[day].isOpen is not defined or arrBusinessHours[day].isOpen is sameas("") %}
+                        <label><input type="radio" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
                     {% else %}
-                        <label><input checked="checked" type="radio" class="is_closed_checkbox" id="{{ i }}"/>Open 24hrs</label></td>
+                        <label><input checked="checked" type="radio" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
                     {% endif %}
+                    <input type="hidden" class="is_open" name="businessHours[{{day}}][isOpen]" id="businessHours[{{day}}][isOpen]" />
                 </td>
             </tr>
             <tr>

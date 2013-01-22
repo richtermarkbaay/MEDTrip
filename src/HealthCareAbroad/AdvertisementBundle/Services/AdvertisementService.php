@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Services;
 
+use HealthCareAbroad\AdvertisementBundle\Exception\AdvertisementPropertyException;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty;
@@ -88,15 +90,20 @@ class AdvertisementService
         $onDuplicatePlaceholder = $columns = $valuesPlaceholder = '';
         
         foreach($data as $key => $value) {
+
             if(is_array($value)) {
                 if(empty($value)) {
                     $data[$key] = ''; continue;
                 }
 
-                $qb = $this->em->createQueryBuilder();
+                if(!$collectionClasses[$key]) {
+                    throw AdvertisementPropertyException::emptyPropertyClass($key);
+                }
                 
+                $qb = $this->em->createQueryBuilder();
+
                 if($key == 'highlight_doctors') {
-                    $query = $qb->select('a,b','c')
+                    $query = $qb->select('a,b,c')
                                 ->from($collectionClasses[$key], 'a')
                                 ->leftJoin('a.specializations', 'b')
                                 ->leftJoin('a.media', 'c')
