@@ -262,13 +262,8 @@ class DefaultController extends Controller
 
     private function buildCookie(array $values)
     {
-        //TODO: ttl = 3 months
-        return new Cookie(md5($this->getRequest()->getPathInfo()), json_encode($values), 7776000);
-
-        // maybe we should update the cookie from time to time to reset ttl?
-        //if (!$this->getRequest()->cookies->has($cookieName)) {
-        //    return new Cookie($cookieName, json_encode($values));
-        //}
+        // ttl = 3 months
+        return new Cookie(md5($this->getRequest()->getPathInfo()), json_encode($values), time() + 7776000);
     }
 
     /**************************************************************************
