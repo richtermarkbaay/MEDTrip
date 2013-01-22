@@ -49,19 +49,17 @@
         $(function() {
         	$(".hour").timepicker({ seconds: false  });
         	var isOpen = '{{ isOpen24hrs }}';
-			
         	if(isOpen) {
         		$('#businessHourCheckBox').attr("checked","checked");
         	}
         	if ($('#businessHourCheckBox').attr('checked')) {
-        		$(this).parent().parent().parent().find('.is_open').val('1');
+	    		$(this).parent().parent().parent().find('.is_open').val('1');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
-    	    	$('textarea.businessHourNotes').removeAttr('disabled');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	$(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked'});
     	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
-    	        $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
             }
-            $('input.is_close_checkbox').each(function(){
+	    	$('input.is_close_checkbox').each(function(){
                 if(this.checked) {
                     $(this).parent().parent().parent().find('.hour').val("");
                     $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
@@ -76,8 +74,6 @@
                     $(this).parent().parent().parent().find('.is_open').val('1');
                     $('textarea.businessHourNotes').removeAttr('disabled');
                     $('input.is_close_checkbox').removeAttr('checked');
-                    $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
-                    $(this).parent().parent().parent().find('.is_open_checkbox').attr({disabled : true});
                 }
             });
             
@@ -261,20 +257,35 @@
         
         $('input.is_close_checkbox').change(function(){
             if(this.checked) {
-            	$(this).parent().parent().parent().find('.is_open_checkbox').val('0');
-                $(this).parent().parent().parent().find('.is_open').val('0');
-                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
-                $(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('disabled');
+                $('#businessHourCheckBox').removeAttr('checked');
+            	$(this).parent().parent().parent().find('.is_open').attr('0');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
                 $(this).parent().parent().parent().next().find('.businessHourNotes').val("");
                 $(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+            }
+            else
+            {
+            	$(this).parent().parent().find('.hour').val(" 8:00 AM");
+            	$(this).parent().parent().parent().find('.is_open').val('');
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: false });
+                $(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
+                $(this).parent().parent().parent().next().find('.businessHourNotes').removeAttr('disabled');
             }
 
         });
         $('input.is_open_checkbox').change(function(){
             if(this.checked) {
-                $(this).parent().parent().parent().find('.hour').val("8:00 AM");
-                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
-                $(this).parent().parent().parent().find('.is_open').val('1');
+            	$(this).parent().parent().parent().find('.is_open').val('1');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	$('textarea.businessHourNotes').removeAttr('disabled');
+    	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
+            }
+            else
+            {
+                $(this).parent().parent().parent().find('.hour').val(" 8:00 AM");
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: false });
+                $(this).parent().parent().parent().find('.is_open').val('');
                 $('textarea.businessHourNotes').removeAttr('disabled');
             }
 
@@ -284,17 +295,14 @@
     	    if ($('#businessHourCheckBox').attr('checked')) {
     	    	$(this).parent().parent().parent().find('.is_open').val('1');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
-    	    	$('textarea.businessHourNotes').removeAttr('disabled');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	$(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked'});
     	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
-    	        $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
     	    }else{
     	    	$(this).parent().parent().parent().find('.is_open').val('');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: false }).val(" 8:00 AM");
     	    	$('textarea.businessHourNotes').removeAttr('disabled');
     	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ disabled: false});
-    	    	$(this).parent().parent().parent().find('.is_close_checkbox').attr({ disabled: false});
         	}
     	}) 
         

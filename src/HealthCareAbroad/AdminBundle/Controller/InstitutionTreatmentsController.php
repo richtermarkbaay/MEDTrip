@@ -364,17 +364,9 @@ class InstitutionTreatmentsController extends Controller
      
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
-    
-                // Get businessHours and convert to json format
-                if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
-                    $businessHours = NULL;
-                }else{
-                    $businessHours = json_encode($request->get('businessHours'));
-                }
+                
                 if ($form->isValid()) {
     
-                    // Set BusinessHours before saving
-                    $form->getData()->setBusinessHours($businessHours);
                     $form->getData()->setAddress('');
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
     
@@ -430,14 +422,13 @@ class InstitutionTreatmentsController extends Controller
                                     ));
             }
             catch (\Exception $e) {
-                 
                 return new Response($e->getMessage(),500);
             }
             
             
         }
     
-        $html = $this->renderView('AdminBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
+        $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
     
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }

@@ -84,6 +84,7 @@
         				                {% else %}
                 				            <div style="position:absolute; left:450px;">
                 				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                				                <!-- a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a-->
                 				            </div>
                                             {{ form_widget(propertyValue.value) }}
         				                {% endif %}
@@ -114,6 +115,8 @@
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
     Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
+    Location.loadNonGlobalCities = true;
+
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
             var institutionId = $('#advertisement_institution').val();
@@ -141,6 +144,7 @@
             return false;
         });
 
+        $('.country-load-cities').change();
     });
 </script>
 {% endblock %}
