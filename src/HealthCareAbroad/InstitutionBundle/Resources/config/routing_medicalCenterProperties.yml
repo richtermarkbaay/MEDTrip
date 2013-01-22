@@ -1,0 +1,20 @@
+institution_medicalCenter_ajaxAddGlobalAward:
+    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxAddGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_ajaxRemoveGlobalAward:
+    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemoveGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_ajaxRemovePropertyValue:
+    pattern: /institution/medical-center/{imcId}/ajaxRemovePropertyValue
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemovePropertyValue, imcId: ~}
+    requirements:
+        _method: GET|POST
+        imcId: \d+

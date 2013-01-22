@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use HealthCareAbroad\MediaBundle\Entity\Media;
@@ -271,6 +273,25 @@ class InstitutionService
     public function getAllGlobalAwards(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
+    }
+    
+    public function getGroupedGlobalAwardsByType(Institution $institution)
+    {
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
+        
+        // initialize holder for awards
+        foreach ($globalAwards as $k => $v) {
+            $globalAwards[$k] = array();
+        }
+        
+        foreach ($this->getAllGlobalAwards($institution) as $_globalAward) {
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
+                'global_award' => $_globalAward,
+            );
+        }
+        
+        return $globalAwards;
     }
     
     public function getAllDoctors(Institution $institution)

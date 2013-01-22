@@ -122,119 +122,116 @@ class DefaultController extends Controller
 
     public function listCountrySpecializationAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
 
+        $parameters = $request->attributes->get('_route_params');
         $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
         $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($parameters['specializationId']);
 
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country);
-
         //TODO: This is temporary; use OrmAdapter
-        $adapter = new ArrayAdapter($searchResults);
-        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1));
-
-        $searchLabel = $country->getName() . ' - ' . $specialization->getName();
-
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $country->getName() . ' - ' . $specialization->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'specializationId' => $specializationId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $country->getId(),
+                        'specializationId' => $specialization->getId()
+        )));
 
         return $response;
     }
 
     public function listCountrySubSpecializationAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
 
+        $parameters = $request->attributes->get('_route_params');
         $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
         $subSpecialization = $em->getRepository('TreatmentBundle:SubSpecialization')->find($parameters['subSpecializationId']);
 
-        //TODO: pager
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country);
-        $searchLabel = $country->getName() . ' - ' . $subSpecialization->getName();
-
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName()
+
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'subSpecializationId' => $subSpecializationId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $country->getId(),
+                        'specializationId' => $subSpecialization->getSpecialization()->getId(),
+                        'subSpecializationId' => $subSpecialization->getId()
+        )));
 
         return $response;
     }
 
     public function listCountryTreatmentAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
 
+        $parameters = $request->attributes->get('_route_params');
         $country = $em->getRepository('HelperBundle:Country')->find($parameters['countryId']);
         $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($parameters['treatmentId']);
 
-        //TODO: pager
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country);
-        $searchLabel = $country->getName() . ' - ' . $treatment->getName();
-
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $country->getName() . ' - ' . $treatment->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'treatmentId' => $treatmentId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $country->getId(),
+                        'specializationId' => $treatment->getSpecialization()->getId(),
+                        'treatmentId' => $treatment->getId())));
 
         return $response;
     }
 
     public function listCitySpecializationAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
 
+        $parameters = $request->attributes->get('_route_params');
         $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
         $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($parameters['specializationId']);
 
-        //TODO: pager
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city);
-        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName();
-
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'specializationId' => $specializationId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $city->getCountry()->getId(),
+                        'cityId' => $city->getId(),
+                        'specializationId' => $specialization->getId()
+        )));
 
         return $response;
     }
 
     public function listCitySubSpecializationAction(Request $request)
     {
-        $parameters = $request->attributes->get('_route_params');
-
         $em = $this->getDoctrine()->getManager();
 
+        $parameters = $request->attributes->get('_route_params');
         $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
         $subSpecialization = $em->getRepository('TreatmentBundle:SubSpecialization')->find($parameters['subSpecializationId']);
 
-        //TODO: pager
-        $searchResults = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city);
-        $searchLabel = $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $subSpecialization->getName();
-
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $searchLabel
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $subSpecialization->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'subSpecializationId' => $subSpecializationId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $city->getCountry()->getId(),
+                        'cityId' => $city->getId(),
+                        'specializationId' => $specialization->getId(),
+                        'subSpecializationId' => $subSpecialization->getId()
+        )));
 
         return $response;
     }
@@ -244,29 +241,29 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $parameters = $request->attributes->get('_route_params');
-
         $city = $em->getRepository('HelperBundle:City')->find($parameters['cityId']);
         $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($parameters['treatmentId']);
 
+        $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-            'searchResults' => $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city),
-            'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName()
+                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName()
         ));
 
-        $response->headers->setCookie($this->buildCookie(array('cityId' => $city->getId(), 'treatmentId' => $treatmentId)));
+        $response->headers->setCookie($this->buildCookie(array(
+                        'countryId' => $city->getCountry()->getId(),
+                        'cityId' => $city->getId(),
+                        'specializationId' => $treatment->getSpecialization()->getId(),
+                        'treatmentId' => $treatment->getId()
+        )));
 
         return $response;
     }
 
     private function buildCookie(array $values)
     {
-        //TODO: ttl
-        return new Cookie(md5($this->getRequest()->getPathInfo()), json_encode($values));
-
-        // maybe we should update the cookie from time to time to reset ttl?
-        //if (!$this->getRequest()->cookies->has($cookieName)) {
-        //    return new Cookie($cookieName, json_encode($values));
-        //}
+        // ttl = 3 months
+        return new Cookie(md5($this->getRequest()->getPathInfo()), json_encode($values), time() + 7776000);
     }
 
     /**************************************************************************

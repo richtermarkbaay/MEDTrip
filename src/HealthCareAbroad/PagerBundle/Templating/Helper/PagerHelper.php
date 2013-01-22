@@ -55,6 +55,8 @@ class PagerHelper extends Helper
     /**
      * Generates a URL for a given route and page
      *
+     * This method employs a workaround for "routes" that have no configuration.
+     *
      * @param string $route Route name
      * @param int $page Page number
      * @param array $parameters Optional route parameters
@@ -70,11 +72,25 @@ class PagerHelper extends Helper
             $parameters['page'] = $page;
         }
 
+        //TODO: this is just a quick fix and is a temporary workaround for
+        //routes that are not known at runtime
+        if (isset($parameters['hasNoRouteName'])) {
+            return $this->generateRoute($route, $page);
+        }
+
         return $this->router->generate($route, $parameters);
     }
 
     public function getName()
     {
         return 'pager';
+    }
+
+    private function generateRoute($uri, $page)
+    {
+        //normalize the route
+        $uriParts = explode('?', $uri);
+
+        return $uriParts[0] . '?page=' . $page;
     }
 }

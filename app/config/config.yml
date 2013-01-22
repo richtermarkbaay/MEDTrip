@@ -21,6 +21,8 @@ framework:
     default_locale:  %locale%
     session: true
     trusted_proxies: ~
+    session:
+        cookie_lifetime: 7776000
 
 # Twig Configuration
 twig:

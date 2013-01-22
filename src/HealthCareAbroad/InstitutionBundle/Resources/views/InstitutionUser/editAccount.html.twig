@@ -18,26 +18,7 @@
     						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
     					</div>
     					<div id="collapseOne" class="accordion-body collapse">
-    						<div class="accordion-inner">
-                                <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-                                    <table class="offset2">
-                                        {{ form_errors(form) }} 
-                                        {{ form_row(form.firstName) }}
-                                        {{ form_row(form.middleName) }}
-                                        {{ form_row(form.lastName) }}
-                                        <tr>
-                                            <th>&nbsp;</th>
-                                            <td valign="top">
-                                                <input type="reset" value="Reset" class="btn-medium btn"  />
-                                                <input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />   
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        {{ form_rest(form) }}
-                                    </table>
-                                <!-- end id-form  -->
-                                </form>
-    						</div>
+    						 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
     					</div>
     				</div>
     				<div class="accordion-group">
@@ -48,32 +29,7 @@
     					 
     					<div id="collapseTwo" class="accordion-body collapse">
     						<div class="accordion-inner">
-                                <strong>Password</strong>
-                                <p>Update your account password. Always set a strong password, which helps to prevent unauthorized access to your account.</p>  
-                                {% include '::notice.admin.html.twig' %}  
-                                <table class="offset2">
-                                    <form novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-                                     
-                                	    <!-- start id-form -->
-                                            <tr>
-                                                <td>{{ form_row( formChangePassword.current_password ) }} </td>
-                                            </tr>
-                                            <tr>
-                                                 <td>{{ form_row( formChangePassword.new_password ) }} </td>
-                                            </tr>
-                                            <tr>
-                                                 <td> {{ form_row( formChangePassword.confirm_password ) }} </td>
-                                            </tr>
-                                            <tr>
-                                            	<td valign="top">
-                                            		<input type="reset" value="Reset" class="btn-medium btn"/>
-                                            		<input type="submit" name="submit" value="Submit" class="btn-medium btn btn-info" />
-                                            	</td>
-                                            </tr>
-                                             {{ form_rest(formChangePassword) }}
-                                    	<!-- end id-form  -->
-                                	</form>
-                        		</table>
+                               {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
     						</div>
     					</div>
     				</div>
@@ -89,4 +45,9 @@
 	<!--End of container-->
 </section>
 
+{% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
+
+{% endblock %}
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionUserProfile.js') }}" ></script>
 {% endblock %}

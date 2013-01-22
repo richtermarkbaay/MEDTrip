@@ -16,12 +16,12 @@
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
                        url: get_institution_medical_center_frontend_url(center),
-                       logo: center.logo ? media(center.logo, institution, 'frontendSearchResultLogo') | raw  : null,
+                       logo: center.logo ? media(center.logo, center.institution, 'frontendSearchResultLogo') | raw  : null,
                        name: center.name,
                        mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                        streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
-                   } 
-                } 
+                   }
+                }
             %}
         {% endfor %}
 
@@ -30,7 +30,7 @@
         {% endif %}
 
     </div> <!--End of main_content-->
-    
+
     {% include 'FrontendBundle:Widgets/Search:sidebar.resultsSingleSearch.html.twig' %}
 </div>
 {% endblock %}
