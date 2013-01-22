@@ -177,7 +177,6 @@ class InstitutionTreatmentsController extends Controller
         $currentGlobalAwards = $awardKeys;
         $autocompleteSource = $awardKeys;
         
-        
         // get the current property values
         $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
         foreach ($currentAwardPropertyValues as $_prop) {
@@ -231,6 +230,7 @@ class InstitutionTreatmentsController extends Controller
             'currentGlobalAwards' => $currentGlobalAwards,
             'ancillaryServicesData' => $ancillaryServicesData,
             'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
+            'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
             //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
             //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
             //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
@@ -441,14 +441,18 @@ class InstitutionTreatmentsController extends Controller
             if($request->get('businessHours') == null){
                 $businessHours = NULL;
             }else{
+                //check if isOpen 24hrs
+                $isOpen = $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours($request->get('businessHours'));
                 $businessHours = json_encode($request->get('businessHours'));
+                
             }
             $this->institutionMedicalCenter->setBusinessHours($businessHours);
             $em = $this->getDoctrine()->getEntityManager();
-    
+                
             try {
                     $em->persist($this->institutionMedicalCenter);
                     $em->flush();
+                    
                     // TODO: Verify Event!
                     // dispatch event
                     $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
@@ -459,9 +463,11 @@ class InstitutionTreatmentsController extends Controller
                  
                 return new Response($e->getMessage(),500);
             }
+            
+            
         }
     
-        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+        $html = $this->renderView('AdminBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
     
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
