@@ -177,10 +177,12 @@ class AdvertisementController extends Controller
         
         $em = $this->getDoctrine()->getEntityManager();
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
+
         $form->bind($request);
 
         if ($form->isValid()) {
             $this->saveMedia($advertisement);
+            
             $this->get('services.advertisement')->save($advertisement);
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
@@ -232,7 +234,6 @@ class AdvertisementController extends Controller
             $property = $each->getAdvertisementPropertyName();
 
             if($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
-                
                 if(is_array($value)) {
                     $advertisement->getAdvertisementPropertyValues()->remove($i);
                     continue;
@@ -243,15 +244,12 @@ class AdvertisementController extends Controller
                     $each->setValue($media->getId());
 
                     if($media) { // TODO - Temporary fixed for ads Image
-                        $hasPersisted = true;
                         $em = $this->getDoctrine()->getEntityManager();
                         $em->persist($each);                        
                     }
                 }                
             }
         }
-
-        $em->flush();
     }
 
     public function ajaxDeleteImageAction($advertisementPropertyValueId)

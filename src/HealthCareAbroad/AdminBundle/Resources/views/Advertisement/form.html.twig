@@ -84,6 +84,7 @@
         				                {% else %}
                 				            <div style="position:absolute; left:450px;">
                 				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                				                <!-- a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a-->
                 				            </div>
                                             {{ form_widget(propertyValue.value) }}
         				                {% endif %}

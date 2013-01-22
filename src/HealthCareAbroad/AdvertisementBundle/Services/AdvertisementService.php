@@ -56,8 +56,8 @@ class AdvertisementService
 
         $advertisement->setStatus(Advertisement::STATUS_ACTIVE);
         $this->em->persist($advertisement);
-        $this->em->flush($advertisement);
-        
+        $this->em->flush();
+
         // Update Denormalized Advertisement Data
         $this->updateAdvertisementDenormalizedData($advertisement);
     }

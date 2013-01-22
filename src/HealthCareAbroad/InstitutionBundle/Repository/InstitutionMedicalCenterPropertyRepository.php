@@ -5,7 +5,7 @@ namespace HealthCareAbroad\InstitutionBundle\Repository;
 use HealthCareAbroad\HelperBundle\Entity\AwardingBody;
 
 use Doctrine\ORM\Query;
-
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -89,5 +89,47 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         }
    
         return $result;
+    }
+    
+    public function getAvailableGlobalAwardsOfInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, QueryOptionBag $options)
+    {
+        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
+        $sql = "SELECT a.value  FROM institution_medical_center_properties a WHERE a.institution_property_type_id = :propertyType AND a.institution_medical_center_id = :institutionMedicalCenterId";
+    
+        $statement = $this->getEntityManager()
+        ->getConnection()->prepare($sql);
+    
+        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'institutionMedicalCenterId' => $institutionMedicalCenter->getId()));
+    
+        $result = array();
+        $ids = array();
+        if($statement->rowCount() > 0) {
+            while ($row = $statement->fetch(Query::HYDRATE_ARRAY)) {
+                $ids[] = $row['value'];
+            }
+        }
+    
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('a,b')
+        ->from('HelperBundle:GlobalAward', 'a')
+        ->innerJoin('a.awardingBody', 'b')
+        ->where('1=1');
+    
+        if ($options->has('globalAward.name')) {
+            $qb->andWhere('a.name LIKE :globalAwardName')
+            ->setParameter('globalAwardName', '%'.$options->get('globalAward.name').'%');
+        }
+    
+        if ($options->has('globalAward.type')) {
+            $qb->andWhere('a.type = :globalAwardType')
+            ->setParameter('globalAwardType', $options->get('globalAward.type'));
+        }
+    
+        if (\count($ids)) {
+            $qb->andWhere($qb->expr()->notIn('a.id', ':globalAwardIds'))
+            ->setParameter('globalAwardIds', $ids);
+        }
+        //echo $qb->getQuery()->getSQL(); exit;
+        return $qb->getQuery()->getResult();
     }
 }

@@ -214,93 +214,96 @@ var InstitutionMedicalCenter = {
 
 
 var InstitutionGlobalAwardAutocomplete = {
-    _loadHtmlContentUri: '',
-    _removePropertyUri: '',
-    autocompleteOptions: {
-        'award':{
-            source: '',
-            target: null, // autocomplete target jQuery DOM element
-            selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null,
-            field: null
-        },
-        'certificate': {
-            source: '',
-            target: null, // autocomplete target jQuery DOM element
-            selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null,
-            field: null
-        },
-        'affiliation': {
-            source: '',
-            target: null, // autocomplete target jQuery DOM element
-            selectedDataContainer: null, // jQuery DOM element container of selected data
-            loader: null,
-            field: null
-        }
-    },
-    removeProperty: function(_propertyId, _container) {
-        _container.find('a.delete').attr('disabled',true);
-        $.ajax({
-            type: 'POST',
-            url: this._removePropertyUri,
-            data: {'id': _propertyId},
-            success: function(response) {
-                _container.remove();
-            }
-        });
-        
-    },
-    setAutocompleteOptions: function (_type, _options) {
-        this.autocompleteOptions[_type] = _options;
-        
-        return this;
-    },
-    setRemovePropertyUri: function (_val) {
-    	this._removePropertyUri = _val;
-        return this;
-    },
-    setLoadHtmlContentUri: function (_val) {
-        this._loadHtmlContentUri = _val;
-        return this;
-    },
     
-    autocomplete: function() {
-        $.each(InstitutionGlobalAwardAutocomplete.autocompleteOptions, function(_key, _val){
-            if (_val.target) {
-                _val.target.autocomplete({
-                    minLength: 0,
-                    source: _val.source,
-                    select: function( event, ui) {
-                    	
-                        InstitutionGlobalAwardAutocomplete._loadContent(ui.item.id, _val);
-                        return false;
-                    }
-                });
+	 _loadHtmlContentUri: '',
+	    
+	    autocompleteOptions: {
+	        'award':{
+	            source: '',
+	            target: null, // autocomplete target jQuery DOM element
+	            selectedDataContainer: null, // jQuery DOM element container of selected data
+	            loader: null
+	        },
+	        'certificate': {
+	            source: '',
+	            target: null, // autocomplete target jQuery DOM element
+	            selectedDataContainer: null, // jQuery DOM element container of selected data
+	            loader: null
+	        },
+	        'affiliation': {
+	            source: '',
+	            target: null, // autocomplete target jQuery DOM element
+	            selectedDataContainer: null, // jQuery DOM element container of selected data
+	            loader: null
+	        },
+	        'accreditation': {
+                source: '',
+                target: null, // autocomplete target jQuery DOM element
+                selectedDataContainer: null, // jQuery DOM element container of selected data
+                loader: null
             }
-        });
-    },
-    
-    _loadContent: function(_val, _option) {
-        _option.loader.show();
-        $.ajax({
-            url: InstitutionGlobalAwardAutocomplete._loadHtmlContentUri,
-            data: {'id':_val},
-            type: 'POST',
-            dataType: 'json',
-            success: function(response) {
-            	console.log(_option);
-                _option.selectedDataContainer.append(response.html);
-                _option.target.find('option[value='+_val+']').hide();
-                _option.field.val('');
-                _option.loader.hide();
-            },
-            error: function(response) {
-                _option.loader.hide();
-                _option.field.val('');
-            }
-        });
-    }
+	    },
+	    
+	    removeGlobalAward: function(_linkElement) {
+	        _linkElement = $(_linkElement);
+	        _id = _linkElement.attr('id').split('_')[1];
+	        $.ajax({
+	           type: 'POST',
+	           url: _linkElement.attr('href'),
+	           data: {id: _id},
+	           success: function(response) {
+	               _linkElement.parents('tr').remove();
+	           },
+	           error: function(response) {
+	               console.log(response);
+	           }
+	        });
+	    },
+	    
+	    setAutocompleteOptions: function (_type, _options) {
+	        this.autocompleteOptions[_type] = _options;
+	        
+	        return this;
+	    },
+	    
+	    setLoadHtmlContentUri: function (_val) {
+	        this._loadHtmlContentUri = _val;
+	        
+	        return this;
+	    },
+	    
+	    autocomplete: function() {
+	        $.each(InstitutionGlobalAwardAutocomplete.autocompleteOptions, function(_key, _val){
+	            if (_val.target) {
+	                _val.target.autocomplete({
+	                    minLength: 0,
+	                    source: _val.source,
+	                    select: function( event, ui) {
+	                    	InstitutionGlobalAwardAutocomplete._loadContent(ui.item.id, _val);
+	                        return false;
+	                    }
+	                });
+	            }
+	        });
+	    },
+	    
+	    _loadContent: function(_val, _option) {
+	        _option.loader.show();
+	        $.ajax({
+	            url: InstitutionGlobalAwardAutocomplete._loadHtmlContentUri,
+	            data: {'id':_val},
+	            type: 'POST',
+	            dataType: 'json',
+	            success: function(response) {
+	                _option.selectedDataContainer.append(response.html);
+	                _option.target.find('option[value='+_val+']').hide();
+	                _option.loader.hide();
+	            },
+	            error: function(response) {
+	                _option.loader.hide();
+	            }
+	        });
+	    }
 }
 
 var InstitutionSpecialistAutocomplete = {

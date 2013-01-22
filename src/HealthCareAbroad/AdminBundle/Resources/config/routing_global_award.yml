@@ -41,13 +41,44 @@ admin_institution_medicalCenter_ajaxAddGlobalAward:
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddGlobalAward, imcId: ~}
     requirements:
         _method: POST
-        imcId: \d+
         institutionId: \d+
+        imcId: \d+
 
 admin_institution_medicalCenter_ajaxRemoveGlobalAward:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveGlobalAward }
     requirements:
+        _method: GET|POST
         institutionId: \d+
         imcId: \d+
+        
+admin_institution_ajaxAddGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+
+admin_institution_ajaxRemoveGlobalAward:
+    pattern:  /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveGlobalAward }
+    requirements:
         _method: GET|POST
+        institutionId: \d+
+        
+# institutionId is included in request parameters since this is an unsecured request
+admin_ajaxGlobalAwardSource:
+    pattern: /ns-admin/{institutionId}/awards-certificates-and-affiliations/search
+    defaults: { _controller: AdminBundle:Unsecured:ajaxGlobalAwardSource}
+    requirements:
+        institutionId: \d+
+        _method: GET
+        
+admin_ajaxMedicalCenterGlobalAwardSource:
+    pattern: /{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search
+    defaults: { _controller: AdminBundle:Unsecured:ajaxMedicalCenterGlobalAwardSource}
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET
+        
