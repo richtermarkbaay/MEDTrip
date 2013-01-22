@@ -29,6 +29,10 @@
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <input class="hour" name="businessHours[{{day}}][from]" disabled id="businessHours[{{day}}][from]" value="" />
+                         </td>
+                         <td>
+                             <input class="hour" name="businessHours[{{day}}][to]" disabled id="businessHours[{{day}}][to]" value="" />
+                         
                     {% elseif arrBusinessHours[day].isOpen == 1 or isNew == true %}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled/>
                     {% else %}
