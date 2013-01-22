@@ -284,8 +284,8 @@ var InstitutionProfile = {
                         });
                         _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
                         
-                        $('td.address_column').find('span.address_part').remove();
-                        $('td.address_column').prepend(_html);
+                        $('.address_column').find('span.address_part').remove();
+                        $('.address_column').prepend(_html);
                         
                         break;
     
