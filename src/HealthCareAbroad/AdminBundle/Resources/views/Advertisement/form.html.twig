@@ -114,6 +114,8 @@
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
     Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
+    Location.loadNonGlobalCities = true;
+
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
             var institutionId = $('#advertisement_institution').val();
@@ -141,6 +143,7 @@
             return false;
         });
 
+        $('.country-load-cities').change();
     });
 </script>
 {% endblock %}
