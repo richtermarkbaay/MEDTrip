@@ -3,69 +3,85 @@
     <form id="modal_award_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
         {{ form_label(form.awards_selector) }}
         {{ form_widget(form.awards_selector) }}
-         <table class="table table-striped table-bordered awards_table">
-         <thead>
-            <tr>    
-    			<th>Awards</th>
-    			<th>Actions</th>
-    		</tr>
-         </thead>
-         <tbody>
-    		<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
-        		{% for _award in currentGlobalAwards.award %}
-        		    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
-        		{% endfor %}
-        </tbody>
-    	</table>
-    	<table class="table table-striped table-bordered certificates_table">
-    	    {{ form_label(form.certifications_selector) }}
+          <div id="awards">
+            {{ form_label(form.awards_selector) }}
+            {{ form_widget(form.awards_selector) }}
+            
+            <table class="table table-striped table-bordered awards_table">
+                <thead>
+                    <tr>
+						<th>Awards</th>
+						<th>Actions</th>
+					</tr>
+                </thead>
+				<tbody>
+					<tr style="display:none;" class="loader"><td colspan="2">Loading...</td></tr>
+					{% for _award in currentGlobalAwards.award %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
+					{% endfor %}
+				</tbody>
+			</table>
+        </div>
+        
+        <div id="certifications">
+            {{ form_label(form.certifications_selector) }}
             {{ form_widget(form.certifications_selector) }}
-            <thead>
-                <tr>
-            		<th>Certifications</th>
-            		<th>Actions</th>
-            	</tr>
-            </thead>
-            <tbody>
-            	<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
-            	{% for _award in currentGlobalAwards.certificate %}
-            	    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
-            	{% endfor %}
-            </tbody>
-    	</table>
-    	<table class="table table-striped table-bordered affiliations_table">
-    	    {{ form_label(form.affiliations_selector) }}
+            
+            <table class="table table-striped table-bordered certificates_table">
+                <thead>
+                    <tr>
+						<th>Certifications</th>
+						<th>Actions</th>
+					</tr>
+                </thead>
+				<tbody>
+					<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
+					{% for _award in currentGlobalAwards.certificate %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
+					{% endfor %}
+				</tbody>
+			</table>
+        </div>
+        
+        <div id="affiliations">
+            {{ form_label(form.affiliations_selector) }}
             {{ form_widget(form.affiliations_selector) }}
-    		<thead>
-                <tr>
-    				<th>Affilliations</th>
-    				<th>Actions</th>
-    			</tr>
-            </thead>
-    		<tbody>
-    			<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
-    			{% for _award in currentGlobalAwards.affiliation %}
-    			    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
-    			{% endfor %}
-    		</tbody>
-    	</table>
-    	
-    	<table class="table table-striped table-bordered accreditations_table">
-    	    {{ form_label(form.accreditations_selector) }}
+            
+            <table class="table table-striped table-bordered affiliations_table">
+                <thead>
+                    <tr>
+						<th>Affilliations</th>
+						<th>Actions</th>
+					</tr>
+                </thead>
+				<tbody>
+					<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
+					{% for _award in currentGlobalAwards.affiliation %}
+					    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
+					{% endfor %}
+				</tbody>
+			</table>
+        </div>
+        
+        <div id="accreditations">
+            {{ form_label(form.accreditations_selector) }}
             {{ form_widget(form.accreditations_selector) }}
-    		<thead>
-                <tr>
-    				<th>Accreditations</th>
-    				<th>Actions</th>
-    			</tr>
-            </thead>
-    		<tbody>
-    			<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
-    			{% for _award in currentGlobalAwards.accreditation %}
-    			    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
-    			{% endfor %}
-    		</tbody>
-    	</table>
+            
+            <table class="table table-striped table-bordered accreditation_table">
+                <thead>
+                    <tr>
+						<th>Accreditations</th>
+						<th>Actions</th>
+					</tr>
+                </thead>
+				<tbody>
+					<tr style="display:none;"  class="loader"><td colspan="2">Loading...</td></tr>
+    				{% for _award in currentGlobalAwards.accreditation %}
+    				    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
+    				{% endfor %}
+				</tbody>
+			</table>
+        </div>
         {{ form_widget(form._token) }}
     </form>
     {% endblock %}
@@ -75,32 +91,32 @@
 <!--
 (function($){
     $(function(){
-
+    	var _nsUrl = '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {imcId: institutionMedicalCenter.id}) }}';
         InstitutionGlobalAwardAutocomplete
         .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}') 
         .setAutocompleteOptions('award', {
-            source: $.parseJSON('{{ awardsSourceJSON | raw }}'),
+            source: _nsUrl+'?type=award',
             target: $('input.award_selector'),
             selectedDataContainer: $('table.awards_table tbody'),
             loader: $('table.awards_table tbody tr.loader')
         })
         .setAutocompleteOptions('certificate', {
-            source: $.parseJSON('{{ certificatesSourceJSON | raw }}'),
+            source: _nsUrl+'?type=certificate',
             target: $('input.certificate_selector'),
             selectedDataContainer: $('table.certificates_table tbody'),
             loader: $('table.certificates_table tbody tr.loader')
         })
         .setAutocompleteOptions('affiliation', {
-            source: $.parseJSON('{{ affiliationsSourceJSON | raw }}'),
+            source: _nsUrl+'?type=affiliation',
             target: $('input.affiliation_selector'),
             selectedDataContainer: $('table.affiliations_table tbody'),
             loader: $('table.affiliations_table tbody tr.loader')
         })
         .setAutocompleteOptions('accreditation', {
-            source: $.parseJSON('{{ accreditationsSourceJSON | raw }}'),
+            source: _nsUrl+'?type=accreditation',
             target: $('input.accreditations_selector'),
-            selectedDataContainer: $('table.accreditations_table tbody'),
-            loader: $('table.accreditations_table tbody tr.loader')
+            selectedDataContainer: $('table.accreditation_table tbody'),
+            loader: $('table.accreditation_table tbody tr.loader')
         })
         .autocomplete();
     });
