@@ -248,12 +248,16 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             
             if ($form->isValid()) {
-                if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
-                    $businessHours = NULL;
-                }else{
-                    $businessHours = json_encode($request->get('businessHours'));
+                
+                // initialize business hours default submitted data
+                $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+                $businessHours = $request->get('businessHours', array());
+                foreach ($businessHours as $_day => $data) {
+                    $businessHours[$_day] = \array_merge($defaultDailyData, $data);
                 }
-                $form->getData()->setBusinessHours($businessHours);
+                
+                $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+                $form->getData()->setBusinessHours($jsonEncodedBusinessHours);
                 
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
                     ->saveAsDraft($form->getData());
