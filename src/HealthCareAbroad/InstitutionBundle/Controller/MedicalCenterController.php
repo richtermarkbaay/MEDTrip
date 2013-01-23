@@ -290,9 +290,10 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             if ($form->isValid()) {
 
-                // Update SignupStepStatus 
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
-                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    // Update SignupStepStatus
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
+                }
 
                 $routeName =  $isSingleCenter 
                     ? InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus())
@@ -407,9 +408,13 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             else {
-                // Set Next Step
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                // if single center institution, update sign up step status
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    // Set Next Step
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
+                    
+                }
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP3);
 
                 // redirect to next step
                 $response = $this->redirect($this->generateUrl($routeName,  array('imcId' => $this->institutionMedicalCenter->getId())));
@@ -443,8 +448,11 @@ class MedicalCenterController extends InstitutionAwareController
                     $propertyService->save($_new);
                 }
                 
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
+                }
+                
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP4);
 
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
@@ -670,34 +678,8 @@ class MedicalCenterController extends InstitutionAwareController
     public function addGlobalAwardsAction(Request $request)
     {
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-        
-        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
-        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
-        
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        
-        // get the current property values
-        $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
-        foreach ($currentAwardPropertyValues as $_prop) {
-            $_global_award = $repo->find($_prop->getValue());
-            if ($_global_award) {
-                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
-                    'global_award' => $_global_award,
-                    'medical_center_property' => $_prop
-                );
-            }
-        }
-        
-        foreach ($globalAwards as $_award) {
-            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
-            //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
-            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-            $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
-        }
+        $currentGlobalAwards = $this->get('services.institution_medical_center')->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
+        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
         
         return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),
