@@ -1,0 +1,60 @@
+
+{% set decodedBusinessHours = json_decode_business_hours(institutionMedicalCenter) %}
+
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:300px;'}} %}
+    {% block modalBody %}
+    <form id="modal_clinicHours_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
+        
+        <input class="alwaysOpenToggle" type="checkbox">Our clinic is <b>open 24/7</b>
+        
+        <table class="table table-striped table-bordered clinichours">
+    		<tr>
+        		<th>Days of the Week</th>
+        		<th>From</th>
+        		<th>&nbsp;</th>
+        		<th>To</th>	
+        		<th>&nbsp;</th>
+        		<th>&nbsp;</th>
+    		</tr>
+    		{% for _day, _data in decodedBusinessHours %}
+    		    {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
+    		    {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
+    		    {% set _fromInputId = 'businessHours['~ _day ~'][from]' %}
+    		    {% set _toInputId = 'businessHours['~ _day ~'][to]' %}
+    		    <tr class="weekday_container">
+    		        <td>{{ _day | capitalize }}</td>
+    		        <td>
+    		            {% if _data.from is defined and _data.from != '' %}
+    		                <input class="hour clinicHour_from" name="{{ _fromInputId }}" id="{{ _fromInputId }}" value="{{ _data.from }}" />
+    		            {% else %}
+    		                <input disabled="disabled" class="hour clinicHour_from" name="{{ _fromInputId }}" id="{{ _fromInputId }}" value="08:00 AM" />
+    		            {% endif %}
+    		        </td>
+    		        <td>-</td>
+    		        <td>
+    		            {% if _data.to is defined and _data.to != '' %}
+    		                <input class="hour clinicHour_to" name="{{ _toInputId }}" id="{{ _toInputId }}" value="{{ _data.to }}" />
+    		            {% else %}
+    		                <input disabled="disabled" class="hour clinicHour_to" name="{{ _toInputId }}" id="{{ _toInputId }}" value="6:00 PM" />
+    		            {% endif %}
+    		        </td>
+    		        <td>
+    		            <input type="checkbox" class="closedToggle" value="1" {{ _isClosed ? 'checked' : '' }}>Closed
+    	            </td>
+        			<td>
+        			    <input name="businessHours[{{ _day }}][isOpen]" type="checkbox" class="openWholeDayToggle" value="1" {{ _isWholeDayOpen ? 'checked' : '' }} >Open 24hrs
+    			    </td>
+    		    </tr>
+    		    <tr>
+    		        <td>&nbsp;</td><td colspan="5">Notes:<textarea name="businessHours[{{ _day }}][notes]">{{ _data.notes }}</textarea></td>
+		        </tr>
+    		{% endfor %} 
+    	</table>
+        
+    </form>
+    {% endblock %}
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-loader-text="Processing..."  id="modal_clinicHours_submitButton" class="btn btn-primary submit-button">Submit</button>
+    {% endblock %}
+{% endembed %}

@@ -464,5 +464,104 @@ var InstitutionSpecialistAutocomplete = {
 }
 
 
+var ClinicBusinessHoursForm = {
+    
+    _formElement: null,
+    
+    _ajaxContentElement: null,
+        
+    _inputElements: {
+        'isAlwaysOpen': null,
+        'submitButton': null,
+        'isClosed': null,
+        'isOpenWholeDay': null
+    },
+    setAjaxContentElement: function (_el) {
+        this._ajaxContentElement = _el;
+        
+        return this;
+    },
+    
+    setFormElement: function(_el) {
+        this._formElement = _el;
+        
+        return this;
+    },
+        
+    initInputElements: function (_options) {
+        this._inputElements = _options;
+        
+        return this;
+    },
+    
+    _commonDailyToggle: function(_checkbox) {
+        _weekdayContainer = _checkbox.parents('.weekday_container');
+        _otherCheckbox = _checkbox.hasClass('closedToggle')
+            ? _weekdayContainer.find('input.openWholeDayToggle:checked')
+            : _weekdayContainer.find('input.closedToggle:checked');
+        if (_checkbox.attr('checked')) {
+            _otherCheckbox.attr('checked', false);
+            _weekdayContainer.find('input.hour').spinner({ disabled: true });
+        }
+        else {
+            _weekdayContainer.find('input.hour').spinner({ disabled: _otherCheckbox.attr('checked') });
+        }
+        _isAlwaysOpen = ClinicBusinessHoursForm._inputElements.isOpenWholeDay.not(':checked').length == 0;
+        ClinicBusinessHoursForm._inputElements.isAlwaysOpen.attr('checked', _isAlwaysOpen);
+    },
+    
+    initializeState: function() {
+        
+        // initialize handler when is closed checkbox is ticked
+        this._inputElements.isClosed.change(function(){
+            ClinicBusinessHoursForm._commonDailyToggle($(this));
+            
+        }).change();
+        
+        this._inputElements.isOpenWholeDay.change(function(){
+            ClinicBusinessHoursForm._commonDailyToggle($(this));
+            
+        }).change();
+        
+        this._inputElements.isAlwaysOpen.change(function(){
+            if (this.checked) {
+                ClinicBusinessHoursForm._inputElements.isOpenWholeDay.not(':checked').attr('checked', true).change();
+            }
+        }).change();
+        
+        this._formElement.bind('submit', ClinicBusinessHoursForm.submit);
+        this._inputElements.submitButton.click(function(){ 
+            ClinicBusinessHoursForm._formElement.submit(); 
+            return false; 
+        });
+    },
+    
+    submit: function(_event) {
+        _form = $(this);
+        _oldButtonHtml = ClinicBusinessHoursForm._inputElements.submitButton.html();
+        ClinicBusinessHoursForm._inputElements.submitButton
+            .html(ClinicBusinessHoursForm._inputElements.submitButton.attr('data-loader-text'))
+            .attr('disabled', true);
+        _modal = _form.parents('.modal');
+        $.ajax({
+            url: _form.attr('action'),
+            data: _form.serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function(response) {
+                ClinicBusinessHoursForm._ajaxContentElement.html(response.html);
+                ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);
+                _modal.modal('hide');
+            },
+            error: function(response) {
+                ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);
+            }
+        });
+        
+        return false;
+    }
+}
+
+
 
 
