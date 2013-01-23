@@ -29,6 +29,11 @@ class Doctor
     private $lastName;
     
     /**
+     * @var string $lastName
+     */
+    private $suffix;
+    
+    /**
      * @var smallint $gender
      */
     private $gender;
@@ -153,11 +158,33 @@ class Doctor
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
         return $this->lastName;
+    }
+    
+    /**
+     * Set suffix
+     *
+     * @param string $suffix
+     * @return Doctor
+     */
+    public function setSuffix($suffix)
+    {
+        $this->suffix = $suffix;
+        return $this;
+    }
+    
+    /**
+     * Get suffix
+     *
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->suffix;
     }
     
     /**

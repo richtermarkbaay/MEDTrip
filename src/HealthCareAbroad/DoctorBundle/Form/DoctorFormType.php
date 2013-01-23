@@ -27,6 +27,7 @@ class DoctorFormType extends AbstractType
      		->add('firstName', 'text', array('label' => 'First name'))
      		->add('middleName', 'text', array('label' => 'Middle name'))
      		->add('lastName', 'text', array('label' => 'Last name'))
+     		->add('suffix', 'text', array('label' => 'Suffix'))
      		->add('gender', 'choice', array('choices'=>$gender))
      		->add('country','globalCountry_list')
      		->add('details', 'textarea')
