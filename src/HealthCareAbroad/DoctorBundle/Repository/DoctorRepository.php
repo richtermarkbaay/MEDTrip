@@ -42,6 +42,26 @@ class DoctorRepository extends EntityRepository
         return $stmt->fetchAll();
         
     }
+    /**
+     * Get Active Specialist that still not assign
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getAvailableSpecialistByInstitutionMedicalCenter($imcId)
+    {
+        $ids = array();
+        foreach ($assignedSpecializations as $each) {
+            $ids[] = $each->getSpecialization()->getId();
+        }
+    
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+    
+        $dql = "SELECT a FROM TreatmentBundle:Specialization a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
+        $query = $this->getEntityManager()->createQuery($dql)
+        ->setParameter('active', Specialization::STATUS_ACTIVE);
+        return $query->getResult();
+    
+    }
     public function getSpecializationByMedicalSpecialist($doctorId)
     {
         $connection = $this->getEntityManager()->getConnection();

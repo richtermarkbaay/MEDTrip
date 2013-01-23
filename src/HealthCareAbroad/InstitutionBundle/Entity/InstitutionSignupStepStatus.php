@@ -49,7 +49,7 @@ final class InstitutionSignupStepStatus {
         return (int)$signupStepStatus === self::STEP1;
     }
     
-    public function getMultipleCenterRouteNameByStatus($signupStepStatus)
+    public static function getMultipleCenterRouteNameByStatus($signupStepStatus)
     {
         $status = self::getMultipleCenterRouteNames();
         return $status[$signupStepStatus];
