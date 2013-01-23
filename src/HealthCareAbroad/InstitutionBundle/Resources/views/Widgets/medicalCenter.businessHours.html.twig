@@ -33,7 +33,7 @@
                          <td>
                              <input class="hour" name="businessHours[{{day}}][to]" disabled id="businessHours[{{day}}][to]" value="" />
                          
-                    {% elseif arrBusinessHours[day].isOpen == 1 or isNew == true %}
+                    {% elseif arrBusinessHours[day].isOpen == 1%}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled/>
                     {% else %}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}" />
@@ -42,7 +42,7 @@
                 <td  align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <input class="hour" name="businessHours[{{day}}][to]" disabled id="businessHours[{{day}}][to]" value="" />
-                    {% elseif arrBusinessHours[day].isOpen == 1 or isNew == true%}
+                    {% elseif arrBusinessHours[day].isOpen == 1%}
                         <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled />
                     {% else %}
                          <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
@@ -51,8 +51,6 @@
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <label><input checked="checked" type="radio" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
-                    {% elseif isNew == true %}
-                        <label><input type="radio" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
                     {% elseif arrBusinessHours[day].isOpen is not defined or arrBusinessHours[day].isOpen is sameas("") %}
                         <label><input type="radio" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label></td>
                     {% else %}
@@ -62,8 +60,6 @@
                 <td align="center">
                     {% if arrBusinessHours[day] is not defined %}
                         <label><input type="radio" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
-                    {% elseif isNew == true %}
-                        <label><input type="radio" checked"="checked" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
                     {% elseif arrBusinessHours[day].isOpen is not defined or arrBusinessHours[day].isOpen is sameas("") %}
                         <label><input type="radio" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label></td>
                     
