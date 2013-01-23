@@ -18,7 +18,7 @@ class AwardingBodyFormType extends AbstractType
 
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('details', 'textarea', array('constraints'=>array(new NotBlank())));
-		$builder->add('website', 'text', array('constraints'=>array(new NotBlank())));
+		$builder->add('website', 'text');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 
