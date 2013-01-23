@@ -47,10 +47,11 @@ class DoctorRepository extends EntityRepository
      *
      * @return Doctrine\ORM\QueryBuilder
      */
-    public function getAvailableSpecialistByInstitutionMedicalCenter($imcId)
+    public function getAvailableDoctors($term, InstitutionMedicalCenter $center)
     {
         $ids = array();
-        foreach ($assignedSpecializations as $each) {
+        foreach ($center->getDoctors() as $each) {
+            var_dump($each);exit;
             $ids[] = $each->getSpecialization()->getId();
         }
     

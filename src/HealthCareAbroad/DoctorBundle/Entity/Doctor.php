@@ -5,6 +5,7 @@ class Doctor
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     
+    const GENDER_NONE = 0;
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
