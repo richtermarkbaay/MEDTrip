@@ -24,7 +24,7 @@
 					    {% for medicalCenter in medicalCenters %}
 					    <tr>
 					        <td>
-					            <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | title }}</strong></a>
+					            <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name | capitalize }}</strong></a>
 				            </td>
 				            <td>{{ medicalCenter.description | striptags | raw | slice(0, 400) ~ (medicalCenter.description | length > 400 ? '...' : '') }}</td>
 				            <td>Created on {{ medicalCenter.dateCreated|date("M d, Y H:i A") }}</td>
