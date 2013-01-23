@@ -304,12 +304,12 @@ class InstitutionMedicalCenterService
             {
                 if($businessHours[$day]['isOpen'] != true) {
                     $isOpen = false;
-                    exit;
+                    break;
                 }
                 elseif ($businessHours[$day]['isOpen'] == "")
                 {
                     $isOpen = false;
-                    exit;
+                    break;
                 }
             }
             else {

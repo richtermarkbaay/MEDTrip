@@ -288,8 +288,6 @@ class MedicalCenterController extends InstitutionAwareController
 
                 // Update SignupStepStatus 
                 $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
-
-                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
                 $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
 
                 $routeName =  $isSingleCenter 

@@ -21,12 +21,14 @@ class DoctorFormType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $gender = array(Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
+        
+        $gender = array(Doctor::GENDER_NONE => '--Select--', Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
         
     	$builder
      		->add('firstName', 'text', array('label' => 'First name'))
      		->add('middleName', 'text', array('label' => 'Middle name'))
      		->add('lastName', 'text', array('label' => 'Last name'))
+     		->add('suffix', 'text', array('label' => 'Suffix'))
      		->add('gender', 'choice', array('choices'=>$gender))
      		->add('country','globalCountry_list')
      		->add('details', 'textarea')

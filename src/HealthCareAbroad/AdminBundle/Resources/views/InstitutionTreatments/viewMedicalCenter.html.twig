@@ -49,19 +49,17 @@
         $(function() {
         	$(".hour").timepicker({ seconds: false  });
         	var isOpen = '{{ isOpen24hrs }}';
-			
         	if(isOpen) {
         		$('#businessHourCheckBox').attr("checked","checked");
         	}
         	if ($('#businessHourCheckBox').attr('checked')) {
-        		$(this).parent().parent().parent().find('.is_open').val('1');
+	    		$(this).parent().parent().parent().find('.is_open').val('1');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
-    	    	$('textarea.businessHourNotes').removeAttr('disabled');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	$(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked'});
     	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
-    	        $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
             }
-            $('input.is_close_checkbox').each(function(){
+	    	$('input.is_close_checkbox').each(function(){
                 if(this.checked) {
                     $(this).parent().parent().parent().find('.hour').val("");
                     $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
@@ -76,8 +74,6 @@
                     $(this).parent().parent().parent().find('.is_open').val('1');
                     $('textarea.businessHourNotes').removeAttr('disabled');
                     $('input.is_close_checkbox').removeAttr('checked');
-                    $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
-                    $(this).parent().parent().parent().find('.is_open_checkbox').attr({disabled : true});
                 }
             });
             
@@ -89,31 +85,6 @@
                 resizable: false,
                 close: function() {}
             });
-            InstitutionGlobalAwardAutocomplete
-            .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
-            .setRemovePropertyUri('{{ path("admin_institution_medicalCenter_ajaxRemoveGlobalAward", {"institutionId" : institution.id, "imcId": institutionMedicalCenter.id}) }}')
-            .setAutocompleteOptions('award', {
-                source: $.parseJSON('{{ awardsSourceJSON | raw }}'),
-                target: $('input.award_selector'),
-                selectedDataContainer: $('table.awards_table tbody'),
-                loader: $('table.awards_table tbody tr.loader'),
-                field: $('#institution_global_awards_selector_awards_selector')
-            })
-            .setAutocompleteOptions('certificate', {
-                source: $.parseJSON('{{ certificatesSourceJSON | raw }}'),
-                target: $('input.certificate_selector'),
-                selectedDataContainer: $('table.certificates_table tbody'),
-                loader: $('table.certificates_table tbody tr.loader'),
-                field: $('#institution_global_awards_selector_certifications_selector')
-            })
-            .setAutocompleteOptions('affiliation', {
-                source: $.parseJSON('{{ affiliationsSourceJSON | raw }}'),
-                target: $('input.affiliation_selector'),
-                selectedDataContainer: $('table.affiliations_table tbody'),
-                loader: $('table.affiliations_table tbody tr.loader'),
-                field: $('#institution_global_awards_selector_affiliations_selector')
-            })
-            .autocomplete();
             
             $('a.add-global_award').click(function(){
                 var elem = $(this);
@@ -135,6 +106,36 @@
 
                      return false;
             });
+
+            var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
+
+        	InstitutionGlobalAwardAutocomplete
+        	 .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
+             .setAutocompleteOptions('award', {
+             	source: _nsUrl+'?type=award',
+                 target: $('input.award_selector'),
+                 selectedDataContainer: $('table.awards_table tbody'),
+                 loader: $('table.awards_table tbody tr.loader')
+             })
+             .setAutocompleteOptions('certificate', {
+             	source: _nsUrl+'?type=certificate',
+                 target: $('input.certificate_selector'),
+                 selectedDataContainer: $('table.certificates_table tbody'),
+                 loader: $('table.certificates_table tbody tr.loader')
+             })
+             .setAutocompleteOptions('affiliation', {
+             	source: _nsUrl+'?type=affiliation',
+                 target: $('input.affiliation_selector'),
+                 selectedDataContainer: $('table.affiliations_table tbody'),
+                 loader: $('table.affiliations_table tbody tr.loader')
+             })
+             .setAutocompleteOptions('accreditation', {
+             	source: _nsUrl+'?type=accreditation',
+                 target: $('input.accreditations_selector'),
+                 selectedDataContainer: $('table.accreditation_table tbody'),
+                 loader: $('table.accreditation_table tbody tr.loader')
+             })
+             .autocomplete();
 
 			InstitutionSpecialistAutocomplete
 	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
@@ -251,24 +252,40 @@
     			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
     			$(this).parent().removeClass('ui-state-disabled'); 
     		});
+
         });
         
         $('input.is_close_checkbox').change(function(){
             if(this.checked) {
-            	$(this).parent().parent().parent().find('.is_open_checkbox').val('0');
-                $(this).parent().parent().parent().find('.is_open').val('0');
-                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
-                $(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('disabled');
+                $('#businessHourCheckBox').removeAttr('checked');
+            	$(this).parent().parent().parent().find('.is_open').attr('0');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
                 $(this).parent().parent().parent().next().find('.businessHourNotes').val("");
                 $(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+            }
+            else
+            {
+            	$(this).parent().parent().find('.hour').val(" 8:00 AM");
+            	$(this).parent().parent().parent().find('.is_open').val('');
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: false });
+                $(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
+                $(this).parent().parent().parent().next().find('.businessHourNotes').removeAttr('disabled');
             }
 
         });
         $('input.is_open_checkbox').change(function(){
             if(this.checked) {
-                $(this).parent().parent().parent().find('.hour').val("8:00 AM");
-                $(this).parent().parent().parent().find('.hour').spinner({ disabled: true });
-                $(this).parent().parent().parent().find('.is_open').val('1');
+            	$(this).parent().parent().parent().find('.is_open').val('1');
+    	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
+    	    	$('textarea.businessHourNotes').removeAttr('disabled');
+    	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
+            }
+            else
+            {
+                $(this).parent().parent().parent().find('.hour').val(" 8:00 AM");
+                $(this).parent().parent().parent().find('.hour').spinner({ disabled: false });
+                $(this).parent().parent().parent().find('.is_open').val('');
                 $('textarea.businessHourNotes').removeAttr('disabled');
             }
 
@@ -278,17 +295,14 @@
     	    if ($('#businessHourCheckBox').attr('checked')) {
     	    	$(this).parent().parent().parent().find('.is_open').val('1');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: true }).val(" 8:00 AM");
-    	    	$('textarea.businessHourNotes').removeAttr('disabled');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked', disabled: true});
+    	    	$(this).parent().parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
+    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ checked: 'checked'});
     	    	$(this).parent().parent().parent().find('.is_close_checkbox').removeAttr('checked');
-    	        $(this).parent().parent().parent().find('.is_close_checkbox').attr({disabled : true});
     	    }else{
     	    	$(this).parent().parent().parent().find('.is_open').val('');
     	    	$(this).parent().parent().parent().find('.hour').spinner({ disabled: false }).val(" 8:00 AM");
     	    	$('textarea.businessHourNotes').removeAttr('disabled');
     	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
-    	    	$(this).parent().parent().parent().find('.is_open_checkbox').attr({ disabled: false});
-    	    	$(this).parent().parent().parent().find('.is_close_checkbox').attr({ disabled: false});
         	}
     	}) 
         
@@ -318,6 +332,8 @@
 
          	return false;       
         });
+
+        
         
     </script>
 {% endblock %}

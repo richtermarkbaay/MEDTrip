@@ -22,7 +22,7 @@ class InstitutionDoctorFormType extends AbstractType
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $gender = array(Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
+        $gender = array(Doctor::GENDER_NONE => '--Select--',Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
         
         	$builder
      		->add('country','globalCountry_list')

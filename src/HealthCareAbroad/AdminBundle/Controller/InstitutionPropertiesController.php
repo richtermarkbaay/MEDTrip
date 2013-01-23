@@ -66,27 +66,11 @@ class InstitutionPropertiesController extends Controller
         $propertyService = $this->get('services.institution_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
+        $currentGlobalAwards =$this->get('services.institution')->getGroupedGlobalAwardsByType($this->institution);
+        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
          
         // get the current property values
         $currentAwardPropertyValues = $this->get('services.institution')->getPropertyValues($this->institution, $propertyType);
-        
-        foreach ($currentAwardPropertyValues as $_prop) {
-            $_global_award = $repo->find($_prop->getValue());
-            if ($_global_award) {
-                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
-                                'global_award' => $_global_award,
-                                'institution_property' => $_prop
-                );
-            }
-        }
-        
-        foreach ($globalAwards as $_award) {
-            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
-            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-            $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
-        }
         
         return $this->render('AdminBundle:InstitutionGlobalAwards:index.html.twig', array(
                         'form' => $form->createView(),
@@ -94,6 +78,7 @@ class InstitutionPropertiesController extends Controller
                         'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
                         'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
                         'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
+                        'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
                         'currentGlobalAwards' => $currentGlobalAwards,
                         'institution' => $this->institution,
         ));
@@ -140,6 +125,82 @@ class InstitutionPropertiesController extends Controller
     {
         $response = new Response(json_encode($data));
         $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
+    }
+    
+    /**
+     * Add a GlobalAward
+     *
+     * @param Request $request
+     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
+     */
+    public function ajaxAddGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        // check if this medical center already have this property
+        if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $award->getId())) {
+            $response = new Response("Property value {$award->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
+            $property->setValue($award->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $html = $this->renderView('AdminBundle:Institution/Partials:row.globalAwards.html.twig', array(
+                                'institution' => $this->institution,
+                                'award' => $award
+                ));
+    
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * Remove institution global award
+     *
+     * @param Request $request
+     */
+    public function ajaxRemoveGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
+    
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        // get property value for this ancillary service
+        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $award->getId());
+    
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+    
+            $response = new Response('Award property removed', 200);
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
     
         return $response;
     }

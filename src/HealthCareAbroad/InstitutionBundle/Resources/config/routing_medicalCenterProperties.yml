@@ -18,3 +18,11 @@ institution_medicalCenter_ajaxRemovePropertyValue:
     requirements:
         _method: GET|POST
         imcId: \d+
+        
+# institutionId is included in request parameters since this is an unsecured request
+institution_medicalCenter_ajaxGlobalAwardSource:
+    pattern: /ns-institution/medical-center/{imcId}/awards-certificates-and-affiliations/search
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxMedicalCenterGlobalAwardSource}
+    requirements:
+        imcId: \d+
+        _method: GET

@@ -5,6 +5,7 @@ class Doctor
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
     
+    const GENDER_NONE = 0;
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
@@ -27,6 +28,11 @@ class Doctor
      * @var string $lastName
      */
     private $lastName;
+    
+    /**
+     * @var string $lastName
+     */
+    private $suffix;
     
     /**
      * @var smallint $gender
@@ -153,11 +159,33 @@ class Doctor
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
         return $this->lastName;
+    }
+    
+    /**
+     * Set suffix
+     *
+     * @param string $suffix
+     * @return Doctor
+     */
+    public function setSuffix($suffix)
+    {
+        $this->suffix = $suffix;
+        return $this;
+    }
+    
+    /**
+     * Get suffix
+     *
+     * @return string
+     */
+    public function getSuffix()
+    {
+        return $this->suffix;
     }
     
     /**
