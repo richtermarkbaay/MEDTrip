@@ -2,6 +2,7 @@
 {% set mainNavigation = {selected: 'medical_centers'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
+
 <section id="content">
     <div class="container">
         <div class="row">
@@ -26,7 +27,11 @@
 					        <td>
 					            <a href="{{ path('institution_medicalCenter_edit', {imcId:medicalCenter.id}) }}" title="View"><strong> {{ medicalCenter.name }}</strong></a>
 				            </td>
-				            <td>{{ medicalCenter.description | striptags | raw | slice(0, 400) ~ (medicalCenter.description | length > 400 ? '...' : '') }}</td>
+				            <td>
+				                <div class="truncatedDescription">
+				                    {{ medicalCenter.description | raw  }}
+				                </div>
+				            </td>
 				            <td>Created on {{ medicalCenter.dateCreated|date("M d, Y H:i A") }}</td>
 				            <td>
 				                <div class="post-toolbar">
@@ -47,4 +52,28 @@
         </div><!--End of row-->
     </div><!--End of container-->
 </section>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
+<script type="text/javascript">
+<!--
+    (function($){
+        $(function(){
+            $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
+        });
+
+        function grow(_el) {
+            _el.css('height', '').css('overflow', '');
+            _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');
+        }
+        
+        function shrink(_el) {
+            _el.css('height', 200).css('overflow', 'hidden');
+            _el.parents('td').find('a.collapse_toggle').addClass('collapsed').html('<small>More</small>');
+            _el.parents('td').find('a.collapse_toggle').show();
+        }
+    })(jQuery);
+//-->
+</script>
 {% endblock %}
