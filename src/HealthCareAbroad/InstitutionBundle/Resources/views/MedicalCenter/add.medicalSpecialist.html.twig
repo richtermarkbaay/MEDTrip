@@ -68,7 +68,7 @@
 			
 			InstitutionSpecialistAutocomplete
 	        .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddSpecialistService", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
-	        .setLoadMedicalSpecialistUri('{{ path("institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
+	        .setLoadMedicalSpecialistUri('{{ path("institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id}) }}')
 	        .setAutocompleteOptions('specialist', {
 	            source: '',
 	            target: $('#institutionDoctorSearch_firstName'),

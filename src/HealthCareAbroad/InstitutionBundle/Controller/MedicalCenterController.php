@@ -282,7 +282,7 @@ class MedicalCenterController extends InstitutionAwareController
         $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
 
         $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
+        //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
 
         if ($request->isMethod('POST')) {
@@ -303,17 +303,17 @@ class MedicalCenterController extends InstitutionAwareController
             }
             
         }
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id']);
-        }
+        //$doctorArr = array();
+        //foreach ($doctors as $each) {
+        //    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id']);
+        //}
 
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
-                        'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS)
+                        //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS)
         ));
     }
     
@@ -587,24 +587,12 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function loadMedicalSpecialistAction(Request $request)
     {
-//         $searchKey = \trim($request->get('term',''));
-//         $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
-//             ->findAvailableDoctorBySearchKey($this->institutionMedicalCenter, $searchKey);
-        
-//         $output = array();
-//         foreach ($availableDoctors as $doctor) {
-//             $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
-//             $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:doctorListItem.html.twig', array('imcId' => $this->institutionMedicalCenter->getId(),'doctor' => $doctor));
-//             $output[] = $arr;
-//         }
-        
-//         //return $this->render('::base.ajaxDebugger.html.twig');
-//         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
         $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
         $doctorArr = array();
         foreach ($doctors as $each) {
             $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
         }
+        
         return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
     }
     
