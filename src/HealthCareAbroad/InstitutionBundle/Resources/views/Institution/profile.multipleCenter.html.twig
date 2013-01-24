@@ -59,10 +59,14 @@
 <!-- end span9 -->
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
+
+        $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
+        
         _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
     	
         // initialize the tabbed contents
