@@ -63,17 +63,23 @@ class GlobalAwardController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
 
         $global_award = $id ? $em->getRepository('HelperBundle:GlobalAward')->find($id) : new GlobalAward();
-
+        
         $form = $this->createForm(New GlobalAwardFormType(), $global_award);
            $form->bind($request);
 
            if ($form->isValid()) {
-               $em->persist($global_award);
-               $em->flush($global_award);
-
-               $request->getSession()->setFlash('success', 'GlobalAward has been saved!');
-               return $this->redirect($this->generateUrl('admin_global_award_index'));
-        }
+               if(!$id && $award = $em->getRepository('HelperBundle:GlobalAward')->findOneBy(array('name' => $global_award->getName(), 'type' => $global_award->getType(), 'awardingBody' => $global_award->getAwardingBody()))) {
+                   $request->getSession()->setFlash("failed", "Property value {$award->getName()} already exists!");
+               }
+               else {
+                   $em->persist($global_award);
+                   $em->flush($global_award);
+                   
+                   $request->getSession()->setFlash('success', 'GlobalAward has been saved!');
+                   return $this->redirect($this->generateUrl('admin_global_award_index'));
+                    
+               }
+           }
 
         $formAction = $id
             ? $this->generateUrl('admin_global_award_update', array('id' => $id))
