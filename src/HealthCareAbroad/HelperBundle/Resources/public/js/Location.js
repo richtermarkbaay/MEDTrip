@@ -1,7 +1,7 @@
 var Location = {
         
     loadCitiesUrl: '',
-    loadNonGlobalCities: false,
+    loadNonGlobalCities: 0,
     
     citiesDropdownElement: null,
 	
