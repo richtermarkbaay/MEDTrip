@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -31,7 +33,7 @@ class InstitutionListFilter extends ListFilter
     
     function setCountryFilterOption()
     {
-        $countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findAll();
+        $countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findBy(array('status' => Country::STATUS_ACTIVE),array('name' => 'ASC'));
         
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         foreach($countries as $each) {
