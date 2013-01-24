@@ -3,7 +3,7 @@
     {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
     {% set _editSpecializationUri = path('institution_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id} ) %}
      <div class="maincontentblock">
-        <h4 class="pull-left">{{ institutionSpecialization.specialization.name |title}}</h4>
+        <h4 class="pull-left">{{ institutionSpecialization.specialization.name }}</h4>
         <div class="editname2 pull-left">
             <i class="icon-pencil" title="Edit"></i>
             <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
@@ -42,7 +42,7 @@
     <div class="maincontentblock">
 	    <table class="table table-striped table-bordered bootstrap-datatable">
 	        <tbody class="institution_specialization_treatments_container">
-	            {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig' %}
+	            {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig' with {'commonDeleteForm': commonDeleteForm} %}
 			</tbody>
 		</table>
     </div>

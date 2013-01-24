@@ -62,10 +62,14 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionTreatments.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
+
+        $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
+        
         InstitutionMedicalCenter.initializeTabs({
             'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
             'awards' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
