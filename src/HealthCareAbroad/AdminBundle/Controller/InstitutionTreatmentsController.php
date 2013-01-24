@@ -175,11 +175,11 @@ class InstitutionTreatmentsController extends Controller
         }
         
         //get doctors
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-            $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
-        }
+        //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
+        //$doctorArr = array();
+        //foreach ($doctors as $each) {
+        //    $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+        //}
         //var_dump(\json_encode($doctorArr, JSON_HEX_QUOT)); exit;
         $params = array(
             'institution' => $this->institution,
@@ -190,7 +190,7 @@ class InstitutionTreatmentsController extends Controller
             'form' => $form->createView(),
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
-            'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
+            //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' =>\json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
@@ -328,7 +328,25 @@ class InstitutionTreatmentsController extends Controller
         return $response;
     
     }
-    
+    /**
+     * Ajax handler for searching available doctors for an InstitutionMedicalCenter in HCA Data
+     * Expected GET parameters:
+     *     - imcId institutionMedicalCenterId
+     *     - searchKey
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loadMedicalSpecialistAction(Request $request)
+    {
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+        }
+        
+        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
+    }
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response

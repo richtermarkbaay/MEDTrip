@@ -185,134 +185,34 @@ class MedicalCenterController extends InstitutionAwareController
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
+    /**
+     * Save clinic business hours
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde, alnie
+     */
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
-          if ($request->isMethod('POST')) {
-              if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
-                  $businessHours = NULL;
-              }else{
-                  $businessHours = json_encode($request->get('businessHours'));
-              }
-            $this->institutionMedicalCenter->setBusinessHours($businessHours);
-            $em = $this->getDoctrine()->getEntityManager();
+        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+        $businessHours = $request->get('businessHours', array());
+        foreach ($businessHours as $_day => $data) {
+            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
+        }
+        
+        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
+        try {
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+            $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
             
-            try {
-                if ($businessHours) {
-                    $em->persist($this->institutionMedicalCenter);
-                    $em->flush();
-                    // TODO: Verify Event!
-                    // dispatch event
-                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
-                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-                    ));
-                }
-            }
-          catch (\Exception $e) {
-               
-              return new Response($e->getMessage(),500);
-          }
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
         }
         
-        $html = $this->renderView('InstitutionBundle:Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-        
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-    }
-    /**
-     * Ajax handler for loading tabbed contents of an institution medical center
-     * @param Request $request
-     */
-    public function loadTabbedContentsAction(Request $request)
-    {
-        $content = $request->get('content');
-        $output = array();
-        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
-        $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
-        switch ($content) {
-            case 'specializations':
-                $parameters['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
-                $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig', $parameters));
-                break;
-            case 'services':
-//                 $parameters['services'] = $this->institution->getInstitutionOfferedServices();
-                // get global ancillary services
-                $ancillaryServicesData = array(
-                                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                                'selectedAncillaryServices' => array()
-                );
-                
-                foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
-                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
-                }
-                $parameters['ancillaryServicesData'] = $ancillaryServicesData;
-                $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig',$parameters));
-                break;
-            case 'awards':
-                $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-                
-                $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
-                $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
-                
-                $propertyService = $this->get('services.institution_medical_center_property');
-                $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-                $awardTypes = GlobalAwardTypes::getTypes();
-                $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-                $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-                
-                // get the current property values
-                $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
-                foreach ($currentAwardPropertyValues as $_prop) {
-                    $_global_award = $repo->find($_prop->getValue());
-                    if ($_global_award) {
-                        $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
-                                        'global_award' => $_global_award,
-                                        'medical_center_property' => $_prop
-                        );
-                    }
-                }
-                
-                foreach ($globalAwards as $_award) {
-                    $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
-                    $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-                    $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
-                }
-                
-                $parameters['form'] = $form->createView();
-                $parameters['isSingleCenter'] = $this->get('services.institution')->isSingleCenter($this->institution);
-                $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
-                $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);
-                $parameters['affiliationsSourceJSON'] = \json_encode($autocompleteSource['affiliation']);
-                $parameters['currentGlobalAwards'] = $currentGlobalAwards;
-                //return $this->render('::base.ajaxDebugger.html.twig',$parameters);
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterAwards.html.twig',$parameters));
-                break;
-                
-            case 'medical_specialists':
-                
-                $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($request->get('imcId'));
-                $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
-                
-                if ($request->isMethod('POST')) {
-                    $form->bind($request);
-                    
-                    if ($form->isValid() && $form->get('id')->getData()) {
-                        $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
-                        $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
-                    }
-                }
-                $doctorArr = array();
-                
-                foreach ($doctors as $each) {
-                    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
-                }
-                
-                $parameters['form'] = $form->createView();
-                $parameters['doctorsJSON'] = \json_encode($doctorArr, JSON_HEX_APOS);
-                $parameters['institution'] =  $this->institution;
-                $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
-                $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
-                break;
-        }
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return $response;
     }
     
     /**
@@ -348,12 +248,16 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             
             if ($form->isValid()) {
-                if($request->get('businessHours') == null || $request->get('businessHourCheckBox')){
-                    $businessHours = NULL;
-                }else{
-                    $businessHours = json_encode($request->get('businessHours'));
+                
+                // initialize business hours default submitted data
+                $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+                $businessHours = $request->get('businessHours', array());
+                foreach ($businessHours as $_day => $data) {
+                    $businessHours[$_day] = \array_merge($defaultDailyData, $data);
                 }
-                $form->getData()->setBusinessHours($businessHours);
+                
+                $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+                $form->getData()->setBusinessHours($jsonEncodedBusinessHours);
                 
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
                     ->saveAsDraft($form->getData());
@@ -386,9 +290,10 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
             if ($form->isValid()) {
 
-                // Update SignupStepStatus 
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
-                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    // Update SignupStepStatus
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
+                }
 
                 $routeName =  $isSingleCenter 
                     ? InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus())
@@ -503,9 +408,13 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             else {
-                // Set Next Step
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                // if single center institution, update sign up step status
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    // Set Next Step
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
+                    
+                }
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP3);
 
                 // redirect to next step
                 $response = $this->redirect($this->generateUrl($routeName,  array('imcId' => $this->institutionMedicalCenter->getId())));
@@ -539,8 +448,11 @@ class MedicalCenterController extends InstitutionAwareController
                     $propertyService->save($_new);
                 }
                 
-                $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
+                }
+                
+                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP4);
 
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
@@ -565,6 +477,7 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addDoctorsAction()
     {
+        echo "test";exit;
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         $doctorArr = array();
@@ -664,7 +577,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /**
-     * Ajax handler for searching available doctors for an InstitutionMedicalCenter
+     * Ajax handler for searching available doctors for an InstitutionMedicalCenter in Client-Admin
      * Expected GET parameters:
      *     - imcId institutionMedicalCenterId
      *     - searchKey
@@ -672,21 +585,27 @@ class MedicalCenterController extends InstitutionAwareController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchAvailableDoctorAction(Request $request)
+    public function loadMedicalSpecialistAction(Request $request)
     {
-        $searchKey = \trim($request->get('searchKey',''));
-        $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
-            ->findAvailableDoctorBySearchKey($this->institutionMedicalCenter, $searchKey);
+//         $searchKey = \trim($request->get('term',''));
+//         $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+//             ->findAvailableDoctorBySearchKey($this->institutionMedicalCenter, $searchKey);
         
-        $output = array();
-        foreach ($availableDoctors as $doctor) {
-            $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
-            $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:doctorListItem.html.twig', array('imcId' => $this->institutionMedicalCenter->getId(),'doctor' => $doctor));
-            $output[] = $arr;
+//         $output = array();
+//         foreach ($availableDoctors as $doctor) {
+//             $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
+//             $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:doctorListItem.html.twig', array('imcId' => $this->institutionMedicalCenter->getId(),'doctor' => $doctor));
+//             $output[] = $arr;
+//         }
+        
+//         //return $this->render('::base.ajaxDebugger.html.twig');
+//         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
         }
-        
-        //return $this->render('::base.ajaxDebugger.html.twig');
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -766,34 +685,8 @@ class MedicalCenterController extends InstitutionAwareController
     public function addGlobalAwardsAction(Request $request)
     {
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-        
-        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
-        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
-        
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        $autocompleteSource = array('award' => array(), 'certificate' => array(), 'affiliation' => array());
-        
-        // get the current property values
-        $currentAwardPropertyValues = $this->get('services.institution_medical_center')->getPropertyValues($this->institutionMedicalCenter, $propertyType);
-        foreach ($currentAwardPropertyValues as $_prop) {
-            $_global_award = $repo->find($_prop->getValue());
-            if ($_global_award) {
-                $currentGlobalAwards[\strtolower($awardTypes[$_global_award->getType()])][] = array(
-                    'global_award' => $_global_award,
-                    'medical_center_property' => $_prop
-                );
-            }
-        }
-        
-        foreach ($globalAwards as $_award) {
-            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
-            //$_arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.globalAward.html.twig', array('award' => $_award));
-            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-            $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
-        }
+        $currentGlobalAwards = $this->get('services.institution_medical_center')->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
+        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
         
         return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),

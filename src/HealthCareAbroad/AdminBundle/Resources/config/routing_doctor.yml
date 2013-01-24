@@ -47,7 +47,15 @@ admin_institution_medicalCenter_ajaxAddMedicalSpecialist:
         institutionId: \d+
         imcId: \d+
         _method: GET|POST
-
+        
+admin_institution_medicalCenter_loadMedicalSpecialist:
+    pattern: /ns-admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/load
+    defaults: {_controller: AdminBundle:InstitutionTreatments:loadMedicalSpecialist}
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
 admin_doctor_save:
     pattern: /admin/doctor/save/{idId}
     defaults: {_controller: AdminBundle:Doctor:save}

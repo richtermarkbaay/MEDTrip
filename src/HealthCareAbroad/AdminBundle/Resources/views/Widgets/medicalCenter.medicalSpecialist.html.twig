@@ -6,7 +6,7 @@
         <form novalidate="novalidate" method="POST" class="basic-form" >
             {{ form_errors(institutionMedicalSpecialistForm) }}
             {{ form_row(institutionMedicalSpecialistForm.firstName) }}
-            
+		        <img style="display:none; width:380px;margin:-47px 269px 0px 0px;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
             {{ form_row(institutionMedicalSpecialistForm.id) }}
             {{ form_rest(institutionMedicalSpecialistForm) }}
         </form>

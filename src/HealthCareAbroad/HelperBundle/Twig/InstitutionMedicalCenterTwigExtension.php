@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -11,6 +13,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'json_decode_business_hours' => new \Twig_Function_Method($this, 'jsonDecodeBusinessHours'),
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
         );
@@ -69,6 +72,11 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $keysWithValues = \array_intersect($includedKeys, \array_keys($returnVal));
         
         return array_merge(array_flip($keysWithValues), $returnVal);
+    }
+    
+    public function jsonDecodeBusinessHours(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        return InstitutionMedicalCenterService::jsonDecodeBusinessHours($institutionMedicalCenter->getBusinessHours());
     }
     
     public function getName()

@@ -28,7 +28,6 @@
                         </div>
                         
                     </div>
-                    
                     {% include 'AdminBundle:Widgets:medicalCenter.medicalSpecialist.html.twig'%}
                 </div>
             {% endblock %}
@@ -47,6 +46,7 @@
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+        	$('.ajax_loader').hide();
         	$(".hour").timepicker({ seconds: false  });
         	var isOpen = '{{ isOpen24hrs }}';
         	if(isOpen) {
@@ -137,13 +137,15 @@
              })
              .autocomplete();
 
-			InstitutionSpecialistAutocomplete
-	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
+        	var LoadMedicalSpecialists = '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}';
+        	InstitutionSpecialistAutocomplete
+	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
+	        .setLoadMedicalSpecialistUri('{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
 	        .setAutocompleteOptions('specialist', {
-	            source: $.parseJSON('{{ doctorsJSON | raw }}'),
+	            source: LoadMedicalSpecialists,
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
-	            loader: $('table.specialist_table tbody tr.loader'),
+	            loader: $('#institutionDoctorSearch_firstName'),
                 field: $('#institutionDoctorSearch_firstName')
 	        })
 	        .autocomplete();

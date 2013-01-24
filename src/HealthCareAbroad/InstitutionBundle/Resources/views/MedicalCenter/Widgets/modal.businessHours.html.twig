@@ -1,0 +1,14 @@
+
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:300px;'}} %}
+    {% block modalBody %}
+    <form id="modal_clinicHours_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
+        
+        {% include 'InstitutionBundle:MedicalCenter/Partials:field.businessHours.html.twig' %}
+        
+    </form>
+    {% endblock %}
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-loader-text="Processing..."  id="modal_clinicHours_submitButton" class="btn btn-primary submit-button">Submit</button>
+    {% endblock %}
+{% endembed %}

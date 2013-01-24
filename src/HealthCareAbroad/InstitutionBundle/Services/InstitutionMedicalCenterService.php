@@ -323,4 +323,49 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
     }
+    
+    private static $defaultDailyValues = array(
+        'isOpen' => 1,
+        'notes' => '',
+    );
+    
+    static public function jsonDecodeBusinessHours($businessHours)
+    {
+        $defaultWeekValue = array(
+            'Sunday' => static::$defaultDailyValues,
+            'Monday' => static::$defaultDailyValues,
+            'Tuesday' => static::$defaultDailyValues,
+            'Wednesday' => static::$defaultDailyValues,
+            'Thursday' => static::$defaultDailyValues,
+            'Friday' => static::$defaultDailyValues,
+            'Saturday' => static::$defaultDailyValues,
+        );
+        
+        $businessHours = \json_decode($businessHours, true);
+        if (!$businessHours) {
+            $businessHours = $defaultWeekValue;
+        }
+        foreach ($businessHours as $day => $data) {
+            $businessHours[$day] = \array_merge(static::$defaultDailyValues, $data);
+        }
+        
+        return $businessHours;
+    }
+    
+    static public function jsonEncodeBusinessHours(array $businessHours=array())
+    {
+        $defaultWeekValue = array(
+            'Sunday' => static::$defaultDailyValues,
+            'Monday' => static::$defaultDailyValues,
+            'Tuesday' => static::$defaultDailyValues,
+            'Wednesday' => static::$defaultDailyValues,
+            'Thursday' => static::$defaultDailyValues,
+            'Friday' => static::$defaultDailyValues,
+            'Saturday' => static::$defaultDailyValues,
+        );
+        
+        $businessHours = \array_merge($defaultWeekValue, $businessHours);
+        
+        return \json_encode($businessHours);
+    }
 }
