@@ -2,7 +2,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [name]
-            message: This specialization already exists!
+            message: This institution already exists!
             groups: [editInstitutionInformation]
     properties:
         name:

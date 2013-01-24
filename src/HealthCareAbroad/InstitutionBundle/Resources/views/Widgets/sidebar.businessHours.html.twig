@@ -1,21 +1,20 @@
-        <div class="box-content">
-        	<h4 class="pull-left">CLINIC HOURS</h4>
-        	<div class="pull-right editname2">
-			   <a href="#" role="button" class="businessHoursModalLink" id="businessHoursModal-{{institutionMedicalCenter.id}}">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
-                </a>
-        	</div>
-        	
-        	<table class="table table-striped" id="institutionBusinessHoursText">
-        	    {% include 'InstitutionBundle:Widgets:businessHoursTable.html.twig' %}
-    	    </table>
-    	    		 <!-- Modal Business Hours -->
-			{% include 'InstitutionBundle:Widgets:modal.businessHours.html.twig' 
-			     with {modalId: 'business_hours_modal_form', modalTitle: 'Change Clinic Hours'} 
-			%} <!-- end Modal Business Hours -->
+<div class="box-content">
+    <h4 class="pull-left">CLINIC HOURS</h4>
+    <div class="pull-right editname2">
+	   <a href="#" role="button" class="businessHoursModalLink" id="businessHoursModal-{{institutionMedicalCenter.id}}">
+            <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+        </a>
+	</div>
+	
+	<table class="table table-striped" id="institutionBusinessHoursText">
+    {% include 'InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig' %}
+    </table>
     	    
-        	
-        </div>
+    <!-- Modal Business Hours -->
+	{% include 'InstitutionBundle:MedicalCenter/Widgets:modal.businessHours.html.twig' 
+	     with {modalId: 'business_hours_modal_form', modalTitle: 'Change Clinic Hours'} 
+	%} <!-- end Modal Business Hours -->
+</div>
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('js/jquery/timepicker.js') }}"></script>
@@ -34,64 +33,18 @@
 
             return false;
         });
-    	$('input.is_closed_checkbox').each(function(){
-    	    if(this.checked) {
-    	    	$(this).parent().parent().find('.hour').val("");
-    	    	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-    		}
-    	});
 
-        $('#businessHourCheckBox').click(function(){
-        	
-            if ($('#businessHourCheckBox').attr('checked')) {
-        
-            	$(this).parent().parent().find('.hour').val("");
-            	$(this).parent().parent().find('.hour').spinner({ disabled: true });
-            	$('#clinicHoursTable').hide();
-            	
-            }else{
-        	    $('#clinicHoursTable').show();
-        	    $(this).parent().parent().find('.hour').val("8:00 AM");
-            	$(this).parent().parent().find('.hour').spinner({ disabled: false });
-        	}
-        }); 
-        
-        $('input.is_closed_checkbox').change(function(){
-            if(this.checked) {
-            	$(this).parent().parent().find('.hour').val("");
-            	var id = $(this).parent().parent().find('.hour').spinner({ disabled: true });
-            	$(this).parent().parent().next().find('.businessHourNotes').val("");
-                $(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: true });
-        	}
-            else 
-            {
-            	$(this).parent().parent().find('.hour').val("8:00 AM");
-            	var id = $(this).parent().parent().find('.hour').spinner({ disabled: false });
-            	$(this).parent().parent().next().find('.businessHourNotes').attr({ disabled: false });
-            }
-           
-        });
-
-        // Set Submit button of modal forms to save the specific property changes and update the text property.
-        $('div#business_hours_modal_form .submit-button').click(function(){
-            _form = $('#modal_institutionMedicalCenter_description_form');
-            _form.append('<span class="loader">Loading...</span>');
-            $.ajax({  
-                 url: _form.attr('action'), 
-            	  type: "POST",  
-            	  data: _form.serialize(),
-            	  success: function(data) {      
-            		  $('#institutionBusinessHoursText').html(data.html);
-            		  _form.parents('.modal').modal('hide');
-                      _form.find('span.loader').remove();
-                },
-                error: function(response) {
-                	_form.find('span.loader').hide();
-                }
-        	}); 
-
-        	return false; 
-        });
+        // initialize businesshours form
+        ClinicBusinessHoursForm
+        .setAjaxContentElement($('#institutionBusinessHoursText'))
+        .setFormElement($('#modal_clinicHours_form'))
+        .initInputElements({
+            'submitButton': $('#modal_clinicHours_submitButton'),
+            'isClosed': $('input.closedToggle'),
+            'isOpenWholeDay': $('input.openWholeDayToggle'),
+            'isAlwaysOpen': $('input.alwaysOpenToggle')
+        })
+        .initializeState();
             
     });    
 })(jQuery);
