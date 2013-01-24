@@ -33,7 +33,7 @@
         InstitutionSpecialistAutocomplete
         .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddSpecialistService", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
         .setAutocompleteOptions('specialist', {
-            source: $.parseJSON('{{ doctorsJSON | raw }}'),
+            source: '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}',//$.parseJSON('{{ doctorsJSON | raw }}'),
             target: $('#institutionDoctorSearch_firstName'),
             selectedDataContainer: $('table.specialist_table tbody'),
             loader: $('table.specialist_table tbody tr.loader'),

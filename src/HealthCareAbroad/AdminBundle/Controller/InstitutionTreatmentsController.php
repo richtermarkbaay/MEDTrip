@@ -329,6 +329,25 @@ class InstitutionTreatmentsController extends Controller
     
     }
     
+    public function loadMedicalSpecialistAction(Request $request)
+    {
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+        
+            if ($form->isValid() && $form->get('id')->getData()) {
+                $center = $this->get('services.institution_medical_center')->saveInstitutionMedicalCenterDoctor($form->getData(), $this->institutionMedicalCenter);
+                $this->get('session')->setFlash('notice', "Successfully added Medical Specialist");
+            }
+        }
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+        }
+        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
+    }
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response
