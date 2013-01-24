@@ -8,6 +8,7 @@ parameters:
         mode: "textareas"
         theme: "advanced"
         setup: "tinymceSetup"
+        forced_root_block: ""
         paste_text_sticky: true,
         paste_text_sticky_default: true,
         #theme_advanced_buttons1: "mylistbox,mysplitbutton,bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink"
