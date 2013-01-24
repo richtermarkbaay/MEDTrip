@@ -64,6 +64,13 @@ class InstitutionUserController extends Controller
 
     public function loginAction()
     {
+        // checking for security context here does not work since this is not firewalled
+        // TODO: find a better approach
+        if ($this->get('session')->get('accountId', null)) {
+            // redirect to dashboard if there is an active session
+            return $this->redirect($this->generateUrl('institution_homepage'));
+        }
+        
         $request = $this->getRequest();
         $session = $request->getSession();
 
