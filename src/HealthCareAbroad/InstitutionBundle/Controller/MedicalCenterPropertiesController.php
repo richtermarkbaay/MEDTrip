@@ -8,6 +8,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
@@ -79,7 +81,8 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
                     'award' => $award,
                     'institution' => $this->institution,
-                    'institutionMedicalCenter' => $this->institutionMedicalCenter
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -90,44 +93,6 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         }
     
         return $response;
-    }
-    
-    /**
-     * Remove global award of an institution medical center
-     * 
-     * @param Request $request
-     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
-     */
-    public function ajaxRemoveGlobalAwardAction(Request $request)
-    {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
-        
-        if (!$award) {
-            throw $this->createNotFoundException();
-        }
-        
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        
-        // get property value
-        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
-        if ($property) {
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->remove($property);
-                $em->flush();
-            
-                $response = new Response('Award property removed', 200);
-            }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
-            }
-
-            return $response;
-        }
-        else {
-            throw $this->createNotFoundException('Global award does not exist.');
-        }
     }
     
     /**

@@ -993,7 +993,8 @@ class MedicalCenterController extends InstitutionAwareController
                             $em->flush();
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
                                 'institutionSpecialization' => $institutionSpecialization,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
                             ));
                         }catch (\Exception $e) {
                             $errors[] = $e->getMessage();
