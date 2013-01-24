@@ -142,7 +142,7 @@
 	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
 	        .setLoadMedicalSpecialistUri('{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
 	        .setAutocompleteOptions('specialist', {
-	            source: LoadMedicalSpecialists,//$.parseJSON('{{ doctorsJSON | raw }}'),
+	            source: LoadMedicalSpecialists,
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
 	            loader: $('#institutionDoctorSearch_firstName'),

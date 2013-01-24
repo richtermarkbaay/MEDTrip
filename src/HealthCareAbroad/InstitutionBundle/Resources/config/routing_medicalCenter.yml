@@ -123,9 +123,9 @@ institution_medicalCenter_loadAvailableTreatments:
         _method: GET
         imcId: \d+
 
-institution_medicalCenter_searchAvailableDoctor:
-    pattern: /medical-center/search-available-doctor/{imcId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:searchAvailableDoctor }
+institution_medicalCenter_loadMedicalSpecialist:
+    pattern: /medical-center/{imcId}/medical-specialists/load
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadMedicalSpecialist }
     requirements:
         _method: GET
         imcId: \d+
