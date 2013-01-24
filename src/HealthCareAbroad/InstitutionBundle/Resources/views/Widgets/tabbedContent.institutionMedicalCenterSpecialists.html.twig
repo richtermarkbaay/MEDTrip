@@ -30,10 +30,11 @@
 
     	InstitutionSpecialistAutocomplete.removePropertyUri = '{{ path("institution_medicalCenter_ajaxRemoveSpecialistService", {"imcId" : institutionMedicalCenter.id, "institutionId" : institution.id} ) }}';
 
-        InstitutionSpecialistAutocomplete
+    	InstitutionSpecialistAutocomplete
         .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddSpecialistService", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}') 
+        .setLoadMedicalSpecialistUri('{{ path("institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id}) }}')
         .setAutocompleteOptions('specialist', {
-            source: '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}',//$.parseJSON('{{ doctorsJSON | raw }}'),
+            source: '',
             target: $('#institutionDoctorSearch_firstName'),
             selectedDataContainer: $('table.specialist_table tbody'),
             loader: $('table.specialist_table tbody tr.loader'),
