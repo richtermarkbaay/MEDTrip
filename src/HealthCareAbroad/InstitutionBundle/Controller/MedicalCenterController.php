@@ -477,6 +477,7 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addDoctorsAction()
     {
+        echo "test";exit;
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         $doctorArr = array();
@@ -576,7 +577,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /**
-     * Ajax handler for searching available doctors for an InstitutionMedicalCenter
+     * Ajax handler for searching available doctors for an InstitutionMedicalCenter in Client-Admin
      * Expected GET parameters:
      *     - imcId institutionMedicalCenterId
      *     - searchKey
@@ -584,21 +585,27 @@ class MedicalCenterController extends InstitutionAwareController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function searchAvailableDoctorAction(Request $request)
+    public function loadMedicalSpecialistAction(Request $request)
     {
-        $searchKey = \trim($request->get('searchKey',''));
-        $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
-            ->findAvailableDoctorBySearchKey($this->institutionMedicalCenter, $searchKey);
+//         $searchKey = \trim($request->get('term',''));
+//         $availableDoctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+//             ->findAvailableDoctorBySearchKey($this->institutionMedicalCenter, $searchKey);
         
-        $output = array();
-        foreach ($availableDoctors as $doctor) {
-            $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
-            $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:doctorListItem.html.twig', array('imcId' => $this->institutionMedicalCenter->getId(),'doctor' => $doctor));
-            $output[] = $arr;
+//         $output = array();
+//         foreach ($availableDoctors as $doctor) {
+//             $arr = $this->get('services.doctor.twig.extension')->doctorToArray($doctor);
+//             $arr['html'] = $this->renderView('InstitutionBundle:MedicalCenter:doctorListItem.html.twig', array('imcId' => $this->institutionMedicalCenter->getId(),'doctor' => $doctor));
+//             $output[] = $arr;
+//         }
+        
+//         //return $this->render('::base.ajaxDebugger.html.twig');
+//         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
         }
-        
-        //return $this->render('::base.ajaxDebugger.html.twig');
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -879,7 +886,8 @@ class MedicalCenterController extends InstitutionAwareController
                             $em->flush();
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
                                 'institutionSpecialization' => $institutionSpecialization,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
                             ));
                         }catch (\Exception $e) {
                             $errors[] = $e->getMessage();

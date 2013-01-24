@@ -7,6 +7,7 @@
                     
         <div id="awards">
             {{ form_label(form.awards_selector) }}
+            <img style="display:none; width:380px;margin:-47px 269px 0px 0px;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
             {{ form_widget(form.awards_selector) }}
             
             <table class="table table-striped table-bordered awards_table">

@@ -309,9 +309,10 @@ var InstitutionGlobalAwardAutocomplete = {
 var InstitutionSpecialistAutocomplete = {
     _loadHtmlContentUri: '',
     _removePropertyUri: '',
+    _loadMedicalSpecialistUri: '',
     autocompleteOptions: {
         'specialist':{
-            source: '',
+            source: null,
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
             loader: null,
@@ -332,7 +333,7 @@ var InstitutionSpecialistAutocomplete = {
     },
     setAutocompleteOptions: function (_type, _options) {
         this.autocompleteOptions[_type] = _options;
-        
+
         return this;
     },
     setRemovePropertyUri: function (_val) {
@@ -343,13 +344,33 @@ var InstitutionSpecialistAutocomplete = {
         this._loadHtmlContentUri = _val;
         return this;
     },
-    
+    setLoadMedicalSpecialistUri: function (_val) {
+        this._loadMedicalSpecialistUri = _val;
+        return this;
+    },
     autocomplete: function() {
         $.each(InstitutionSpecialistAutocomplete.autocompleteOptions, function(_key, _val){
             if (_val.target) {
                 _val.target.autocomplete({
-                    minLength: 0,
-                    source: _val.source,
+                    minLength: 2,
+                    source: function(_val, response) {
+                    	$('#loader_ajax').show();
+                    	$.ajax({
+                            url: InstitutionSpecialistAutocomplete._loadMedicalSpecialistUri,
+                            data: {'term':_val.term},
+                            dataType: "json",
+                            success: function(json) {
+                            	$('#loader_ajax').hide();
+                            	response($.each(json, function(item){
+                            		return { label: item.label, value: item.value }
+                            	}));
+                            	
+                            },
+                            error: function(response) {
+                            	$('#loader_ajax').hide();
+                            }
+                        });
+                    },
                     select: function( event, ui) {
                     	InstitutionSpecialistAutocomplete._loadContent(ui.item.id, _val);
                         return false;
@@ -358,9 +379,7 @@ var InstitutionSpecialistAutocomplete = {
             }
         });
     },
-    
     _loadContent: function(_val, _option) {
-        _option.loader.show();
         $.ajax({
             url: InstitutionSpecialistAutocomplete._loadHtmlContentUri,
             data: {'id':_val},

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
@@ -63,7 +64,6 @@ class SpecializationController extends InstitutionAwareController
      */
     public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
-    
         $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
     
@@ -73,20 +73,23 @@ class SpecializationController extends InstitutionAwareController
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-    
-        $this->institutionSpecialization->removeTreatment($treatment);
-    
-        try {
-            $em = $this->getDoctrine()->getEntityManager();
-//             $em->persist($this->institutionSpecialization);
-//             $em->flush();
-            $response = new Response("Treatment removed", 200);
+        
+        $form = $this->createForm(new CommonDeleteFormType(), $this->institutionSpecialization);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $treatment->getId();
+                $this->institutionSpecialization->removeTreatment($treatment);
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->flush();
+                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
         }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
-        }
-    
-    
+
         return $response;
     }
 }
