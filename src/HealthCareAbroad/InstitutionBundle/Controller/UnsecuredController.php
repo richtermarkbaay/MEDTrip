@@ -191,6 +191,7 @@ class UnsecuredController extends Controller
                 $parameters['doctorsJSON'] = \json_encode($doctorArr, JSON_HEX_APOS);
                 $parameters['institution'] =  $this->institution;
                 $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
+                $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
