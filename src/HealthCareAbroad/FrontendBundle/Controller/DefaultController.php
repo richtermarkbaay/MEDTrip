@@ -38,14 +38,15 @@ class DefaultController extends Controller
         $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
         $news = $advertisementRepo->getActiveNews();
         $commonTreatments = $advertisementRepo->getCommonTreatments();
-
+        $featuredDestinations = $advertisementRepo->getFeaturedDestinations(); 
+        
         $params = array(
             'highlightAds' => $highlightAds,
             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
             //'highlight' => $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find(52),
             'featuredClinicAds' => $featuredClinicAds,
             'commonTreatments' => $commonTreatments,
-            'destinationAds' => array(),
+            'destinationAds' => $featuredDestinations,
             'news' => $news,
             'searchParams' => array()
         );

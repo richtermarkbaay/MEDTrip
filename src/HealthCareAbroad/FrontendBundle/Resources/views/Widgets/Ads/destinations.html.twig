@@ -8,47 +8,20 @@
 			...
 		</div>
 		<div id="carousel-inner">
+		    {% for each in destinationAds %}
 			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll1.png" alt="img_preview" /></a>
-				<h6>hawaii</h6>
+				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
+			        {% if each.media %}
+				        {{ media(each.media, each, 'default', {class: 'img-polaroid', thumbnail: true}) | raw }}
+				    {% else %}
+				        <img class="img-polaroid" src="" alt="featured_pic" />
+				    {% endif %}
+				</a>
+				<h6>{{ each.country.name }}</h6>
 			</div>
-			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat2 dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll2.png" alt="img_preview" /></a>
-				<h6>thailand</h6>
-			</div>
-			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat3 dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll3.png" alt="img_preview" /></a>
-				<h6>philippines</h6>
-			</div>
-			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll4.png" alt="img_preview" /></a>
-				<h6>japan</h6>
-			</div>
-			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll5.png" alt="img_preview" /></a>
-				<h6>malaysia</h6>
-			</div>
-			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#"><img class="img-polaroid" src="/images/frontend/scroll6.png" alt="img_preview" /></a>
-				<h6>indonesia</h6>
-			</div>
+			{% endfor %}
 		</div>
 		<a class="prev carousel-control" id="carousel_prev" href="#">&nbsp;</a>
 		<a class="next carousel-control" id="carousel_next" href="#">&nbsp;</a>
 	</div>
 </div><!--End of travel_section_wrapper-->
-{# --
-<script type="text/javascript">
-	$(document).ready(function () {
-		$('#destination_carousel').carousel({
-			interval: 5000,
-			pause: "hover"
-		});
-
-		$("a[rel=popover]").popover({
-				placement: "top",
-				trigger: "hover"
-		});	
-	});
-</script>
--- #}

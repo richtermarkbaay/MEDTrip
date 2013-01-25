@@ -20,7 +20,15 @@ admin_institution_medicalCenter_view:
         institutionId: \d+
         imcId: \d+
         _method: GET|POST
-      
+ 
+admin_institution_medicalCenter_edit:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/edit
+    defaults: { _controller: AdminBundle:InstitutionTreatments:editMedicalCenter }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+             
 admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}
     defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenter, imcId: ~ }
@@ -66,15 +74,6 @@ admin_institution_medicalCenter_updateGlobalAwards:
         institutionId: \d+
         imcId: \d+
         global_awardId: \d+
-        _method: GET|POST
-
-admin_institution_medicalCenter_edit:
-    pattern:  /admin/institution/{institutionId}/medical-centers/{imcId}/edit
-    #pattern: /admin/institution/{institutionId}/medical-center/view/{imcId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:editMedicalCenter }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
         _method: GET|POST
 
 admin_institution_medicalCenter_ajaxUpdateBusinessHours:
