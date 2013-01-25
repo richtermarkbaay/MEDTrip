@@ -6,6 +6,9 @@
  */
 namespace HealthCareAbroad\AdvertisementBundle\Form\EventListener;
 
+use HealthCareAbroad\AdvertisementBundle\Form\HighlightFormType;
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Symfony\Component\Form\FormEvent;
@@ -27,7 +30,7 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::POST_SET_DATA => 'postSetData');
+        return array(FormEvents::POST_SET_DATA => 'postSetData', FormEvents::PRE_BIND => 'preBind');
     }
 
     /**
@@ -57,11 +60,49 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
                 // Transform advertisementPropertyValues form/field type based on advertisementPropertyName
                 $config = json_decode($property->getPropertyConfig(), true);
                 $config['config']['label'] = $property->getLabel();
-                
-                $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
 
-                $form->get($i)->add($this->factory->createNamed('value', $type, null, $config['config']));
+                $type = $config['isClass'] ? new $config['type']($param) : $config['type'];
+                $formField = $this->factory->createNamed('value', $type, null, $config['config']);
+
+                $form->get($i)->add($formField);
             }
         }
+    }
+    
+    public function preBind(FormEvent $event)
+    {
+        $data = $event->getData();
+        $form = $event->getForm();
+        $mediaClass = get_class(new Media());
+
+        foreach($data as $each) {
+            $newData[$each['advertisementPropertyName']] = $each;
+        }
+
+        foreach($form->getData() as $i => $each) {
+            $property = $each->getAdvertisementPropertyName();
+            if(isset($newData[$property->getId()])) {
+
+                if($property->getName() == 'highlights') {
+                    foreach($each->getValue() as $i => $highlight) {
+
+                        if(!empty($highlight) && isset($newData[$property->getId()]['value'][$i]) && is_null($newData[$property->getId()]['value'][$i]['icon']) && is_object($highlight['icon']) && get_class($highlight['icon']) == $mediaClass) {
+                            $newData[$property->getId()]['value'][$i]['icon'] = $highlight['icon'];
+                        }
+                    }
+                }
+                
+                if($property->getName() == 'media_id' && is_null($newData[$property->getId()]['value']) && get_class($each->getValue()) == $mediaClass) {
+                    //$newData[$property->getId()]['value'] = $each->getValue()->getId() ? $each->getValue() : '';
+                    $newData[$property->getId()]['value'] = $each->getValue();
+                }
+            }
+        }
+
+//         foreach($newData as $each) {
+//             var_dump($each);
+//         } //exit;
+        
+        $event->setData(array_values($newData));
     }
 }
