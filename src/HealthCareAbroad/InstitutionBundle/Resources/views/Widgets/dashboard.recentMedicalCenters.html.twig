@@ -22,7 +22,7 @@
             {% endfor %}
             
             <div style="text-align:right">
-                <button class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</button>
+                <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</a>
             </div>
         {% endblock  %}
     
@@ -50,7 +50,7 @@
             {% endfor %}
             
             <div style="text-align:right">
-                <button class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</button>
+                 <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</a>
             </div>
         {% endblock  %}
     

@@ -57,19 +57,17 @@
 			</div>
 		</div-->
 		
-        {% set doctors = json_decode(highlight.getHighlightDoctors) %}
-        {% for doctor in doctors %}
+        {% set highlights = json_decode(highlight.highlights) %}
+
+        {% for each in highlights %}
             <div class="span4">
                 <div class="media">
-                    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
-                    <img class="media-object img-circle pull-left" src="{{ doctorImage }}" alt="doctor logo" width="50"/>
+                    <img class="media-object img-circle pull-left" src="{{ each.icon ? each.icon.src_thumbnail : '/images/frontend/default-doctor-logo-orange.png' }}" alt="doctor logo" width="50"/>
                     <div class="media-body">
-                        <h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5>
-                        <p>
-                            {% for i, specialization in doctor.specializations %}
-                                {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
-                            {% endfor %}
-                        </p>
+                        {% if each.header %}
+                            <h5 class="media-heading">{{ each.header }}</h5>
+                        {% endif %}
+                        <p>{{ each.label }}</p>
                     </div>
                 </div>
             </div>
@@ -80,10 +78,10 @@
 <!--This is for the javascript-->
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#highlight').carousel({
+        /*$('#highlight').carousel({
             interval: 5000,
             pause: "hover"
-        });
+        }); */
     });
 </script>
 

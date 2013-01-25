@@ -1,31 +1,20 @@
 <?php
-
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
-use Doctrine\ORM\QueryBuilder;
-
-use Doctrine\ORM\Query\Expr\Join;
-
-use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
-
-use HealthCareAbroad\HelperBundle\Entity\City;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
-
-use HealthCareAbroad\HelperBundle\Entity\Country;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
-use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
+use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\Country;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityRepository;
 
@@ -63,10 +52,24 @@ class InstitutionMedicalCenterRepository extends EntityRepository
          LEFT JOIN institution_medical_center_groups i4_ ON i4_.id = i5_.institution_medical_center_group_id AND (i4_.id = 1)
          WHERE d0_.status = 1 AND i4_.id IS NULL
          */
+
+//         $ids = array();
+//         foreach ($center->getDoctors() as $each) {
+//             var_dump($each);exit;
+//             $ids[] = $each->getSpecialization()->getId();
+//         }
+
+//         $idsNotIn = "'".\implode("', '",$ids)."'";
+
+//         $dql = "SELECT a FROM TreatmentBundle:Specialization a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
+//         $query = $this->getEntityManager()->createQuery($dql)
+//         ->setParameter('active', Specialization::STATUS_ACTIVE);
+//         return $query->getResult();
+
         $qb = $this->getEntityManager()->createQueryBuilder()
         ->select('d, dmc')
         ->from('DoctorBundle:Doctor', 'd')
-        ->innerJoin('d.medicalCenters', 'dmc')
+        ->innerJoin('d.institutionMedicalCenters', 'dmc')
         ->innerJoin('dmc.institutionMedicalCenters', 'imc', Join::WITH, 'imc.institutionMedicalCenterGroup = :imcgId')
         ->leftJoin('d.institutionMedicalCenterGroups', 'imcg', Join::WITH, 'imcg.id = :imcgId')
         ->where('d.status = :activeStatus')
@@ -78,6 +81,30 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function getAvailableDoctorsByInstitutionMedicalCenter(InstitutionMedicalCenter $center, $searchKey)
+    {
+        $ids = array();
+        foreach ($center->getDoctors() as $each) {
+            $ids[] = $each->getId();
+        }
+
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
+                    AND (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey) AND b.specialization_id
+                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active ORDER BY a.first_name ASC";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('imcId', $center->getId());
+        $stmt->bindValue('searchKey', '%'.$searchKey.'%');
+        $stmt->bindValue('active', Doctor::STATUS_ACTIVE);
+        $stmt->execute();
+        //var_dump($stmt->fetchAll());exit;
+        return $stmt->fetchAll();
+
+    }
+
 
     /**
      * Get QueryBuilder for getting all medical centers of an institution
@@ -113,11 +140,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $count = $qb->getQuery()->getSingleScalarResult();
 
         return $count;
-    }
-
-    private function _getCommonRSM()
-    {
-
     }
 
     // --- The following functions are used on the frontend and will return results

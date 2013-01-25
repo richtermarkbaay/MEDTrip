@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
+use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -35,12 +39,18 @@ class AdvertisementController extends Controller
      */
     private $institution;
     
+    /**
+     * 
+     * @var FilesystemManager
+     */
+    private $fileSystemManager;
+    
 
     public function preExecute()
     {
         $ad = $this->getRequest()->get('advertisement');
         $institutionId = $ad ? $ad['institution'] : null;
-        
+
         if(!$institutionId) {
             $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus());
 
@@ -78,6 +88,8 @@ class AdvertisementController extends Controller
                 throw $this->createNotFoundException("Invalid institution.");
             }
         }
+        
+        $this->fileSystemManager = $this->get('services.media.filesystemmanager');
     }
     
     /**
@@ -179,10 +191,9 @@ class AdvertisementController extends Controller
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
 
         $form->bind($request);
-
+        
         if ($form->isValid()) {
             $this->saveMedia($advertisement);
-            
             $this->get('services.advertisement')->save($advertisement);
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
@@ -224,16 +235,35 @@ class AdvertisementController extends Controller
     }
 
     private function saveMedia($advertisement)
-    {    
+    {
         $em = $this->getDoctrine()->getEntityManager();
         $fileClassName = 'Symfony\Component\HttpFoundation\File\UploadedFile';
-
+        
         foreach($advertisement->getAdvertisementPropertyValues() as $i => $each) {
             $newValue = null;
             $value = $each->getValue();
             $property = $each->getAdvertisementPropertyName();
 
-            if($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
+            if($property->getName() == 'highlights') {
+                if(is_object($value)) {
+                    $value = $value->toArray();
+                }
+
+                foreach($value as $i => $highlight) {
+                    $file = $highlight['icon'];
+                    if(is_object($file)) {
+                        if($fileClassName == get_class($file)) {
+                            $media = $this->get('services.media')->upload($file, $advertisement);
+                            $value[$i]['icon'] = $media ? $this->mediaObjectToArray($media) : array(); 
+                        } else {
+                            $value[$i]['icon'] = $this->mediaObjectToArray($file);
+                        }
+                    }
+                }
+
+                $each->setValue(json_encode($value));
+
+            } elseif ($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
                 if(is_array($value)) {
                     $advertisement->getAdvertisementPropertyValues()->remove($i);
                     continue;
@@ -262,23 +292,63 @@ class AdvertisementController extends Controller
             $advertisement = $advertisementValue->getAdvertisement();
             $advertisementDenormolized = $em->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find($advertisement->getId());
             
-            $featuedImages = json_decode($advertisementDenormolized->getHighlightFeaturedImages(), true);
-
-            foreach($featuedImages as $i => $each) {
-                if($each['id'] == $advertisementValue->getValue())
-                    unset($featuedImages[$i]);
+            if($advertisementValue->getAdvertisementPropertyName()->getName() == 'media_id') {
+                $advertisementDenormolized->setMediaId(0);
+                $em->remove($advertisementValue);
             }
 
-            $advertisementDenormolized->setHighlightFeaturedImages(json_encode($featuedImages));
-            $em->remove($advertisementValue);
+            if($advertisementValue->getAdvertisementPropertyName()->getName() == 'highlight_featured_images') {
+                $featuedImages = json_decode($advertisementDenormolized->getHighlightFeaturedImages(), true);
+                foreach($featuedImages as $i => $each) {
+                    if($each['id'] == $advertisementValue->getValue())
+                        unset($featuedImages[$i]);
+                }
+                $advertisementDenormolized->setHighlightFeaturedImages(json_encode($featuedImages));
+                $em->remove($advertisementValue);
+
+            } elseif($advertisementValue->getAdvertisementPropertyName()->getName() == 'highlights') {
+                $highlights = json_decode($advertisementValue->getValue(), true);
+                $index = $this->getRequest()->get('index');
+                $highlights[$index]['icon'] = null;
+
+                $advertisementValue->setValue(json_encode($highlights));
+                $advertisementDenormolized->setHighlights($advertisementValue->getValue());
+                $em->persist($advertisementValue);
+            }
+
             $em->persist($advertisementDenormolized);
             $em->flush();
-            
             $result = true;
         }
 
 		$response = new Response(json_encode($result));
-		$response->headers->set('Content-Type', 'application/json');		
+		$response->headers->set('Content-Type', 'application/json');
+
 		return $response;
+    }
+    
+    private function mediaObjectToArray(Media $media)
+    {
+        $mediaArray = null;
+
+        if($media->getId()) {
+            
+            if(!$this->advertisement) {
+                $this->advertisement = new Advertisement();
+                $this->advertisement->setInstitution($this->institution);
+            }
+            // TODO - Temporary fixed to set pathDiscriminator
+            $this->fileSystemManager->get($this->advertisement);
+
+            $mediaArray = array(
+                'id' => $media->getId(),
+                'uuid' => $media->getUuid(),
+                'caption' => $media->getCaption(),
+                'src' => $this->fileSystemManager->getWebPath() . '/' . $media->getName(),
+                'src_thumbnail' => $this->fileSystemManager->getWebPath() . '/thumbnail-' . $media->getName()
+            );            
+        }
+
+        return $mediaArray;
     }
 }

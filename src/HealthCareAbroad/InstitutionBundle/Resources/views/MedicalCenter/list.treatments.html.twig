@@ -1,12 +1,35 @@
 {# --- this will be the list of institution specialization treatments in table format --- #}
 {% for _treatment in institutionSpecialization.treatments %}
-<tr id="treatment_id:{{ _treatment.id }}">
-	<td>{{ _treatment.name |title }}</td>
-    <td> <i class="icon-trash" title="Delete"></i><a href="{{ path('institution_medicalCenter_ajaxRemoveSpecializationTreatment', {'imcId': institutionMedicalCenter.id,'tId': _treatment.id, isId: institutionSpecialization.id }) }}" 
-    onclick="InstitutionSpecialization.removeTreatment($(this)); return false;" title="" >Delete</a></td>
+<tr id="treatment_id_{{ _treatment.id }}" >
+	<td>{{ _treatment.name }}</td>
+    <td> <i class="icon-trash" title="Delete"></i><a data-target="#{{ _treatment.id }}" onclick="InstitutionMedicalCenter.showCommonModal(this); return false;" role="button" title="" href="#">
+	    <small>Delete</small></a>
+	
+    	<div id="{{_treatment.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        	{% set _commonDeleteCsrfTokenWidget2 = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
+        	<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3>Delete Treatment</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete
+                	<strong>{{_treatment.name}} ?</strong>
+                </p>
+            </div>
+            <div class="modal-footer">
+                <form action="{{ path('institution_medicalCenter_ajaxRemoveSpecializationTreatment', {'imcId': institutionMedicalCenter.id,'tId': _treatment.id, isId: institutionSpecialization.id }) }}" id="treatmentDeleteForm">
+                    {{ _commonDeleteCsrfTokenWidget2 | raw }}
+                     <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
+            	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationTeatmentForm(this); return true;">Delete</button>
+                </form>
+            </div>
+    	</div>    
+    </td>
 </tr>
+
 {% else %}
 <tr>
     <td colspan="2">This specialty has no treatments yet</td>
 </tr>
 {% endfor %}
+

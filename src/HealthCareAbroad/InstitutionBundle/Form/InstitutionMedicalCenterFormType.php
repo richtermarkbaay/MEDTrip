@@ -71,7 +71,6 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $imcProperty = new InstitutionMedicalCenterProperty();
         $this->_add($builder, 'name','text', array('label' => 'Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short description of the clinic', 'attr' => array('rows' => 5)));
-        //->add('ancilliaryServices','institution_property_type_custom_form',array('property_path' => false))
         $this->_add($builder, 'businessHours', 'hidden');
         $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));

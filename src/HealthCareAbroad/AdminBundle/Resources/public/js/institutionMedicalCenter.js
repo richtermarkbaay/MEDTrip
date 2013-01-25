@@ -309,9 +309,10 @@ var InstitutionGlobalAwardAutocomplete = {
 var InstitutionSpecialistAutocomplete = {
     _loadHtmlContentUri: '',
     _removePropertyUri: '',
+    _loadMedicalSpecialistUri: '',
     autocompleteOptions: {
         'specialist':{
-            source: '',
+            source: null,
             target: null, // autocomplete target jQuery DOM element
             selectedDataContainer: null, // jQuery DOM element container of selected data
             loader: null,
@@ -332,7 +333,7 @@ var InstitutionSpecialistAutocomplete = {
     },
     setAutocompleteOptions: function (_type, _options) {
         this.autocompleteOptions[_type] = _options;
-        
+
         return this;
     },
     setRemovePropertyUri: function (_val) {
@@ -343,13 +344,33 @@ var InstitutionSpecialistAutocomplete = {
         this._loadHtmlContentUri = _val;
         return this;
     },
-    
+    setLoadMedicalSpecialistUri: function (_val) {
+        this._loadMedicalSpecialistUri = _val;
+        return this;
+    },
     autocomplete: function() {
         $.each(InstitutionSpecialistAutocomplete.autocompleteOptions, function(_key, _val){
             if (_val.target) {
                 _val.target.autocomplete({
-                    minLength: 0,
-                    source: _val.source,
+                    minLength: 2,
+                    source: function(_val, response) {
+                    	$('#loader_ajax').show();
+                    	$.ajax({
+                            url: InstitutionSpecialistAutocomplete._loadMedicalSpecialistUri,
+                            data: {'term':_val.term},
+                            dataType: "json",
+                            success: function(json) {
+                            	$('#loader_ajax').hide();
+                            	response($.each(json, function(item){
+                            		return { label: item.label, value: item.value }
+                            	}));
+                            	
+                            },
+                            error: function(response) {
+                            	$('#loader_ajax').hide();
+                            }
+                        });
+                    },
                     select: function( event, ui) {
                     	InstitutionSpecialistAutocomplete._loadContent(ui.item.id, _val);
                         return false;
@@ -358,9 +379,7 @@ var InstitutionSpecialistAutocomplete = {
             }
         });
     },
-    
     _loadContent: function(_val, _option) {
-        _option.loader.show();
         $.ajax({
             url: InstitutionSpecialistAutocomplete._loadHtmlContentUri,
             data: {'id':_val},
@@ -377,5 +396,103 @@ var InstitutionSpecialistAutocomplete = {
                 _option.field.val('');
             }
         });
+    }
+}
+
+var ClinicBusinessHoursForm = {
+	    
+    _formElement: null,
+    
+    _ajaxContentElement: null,
+        
+    _inputElements: {
+        'isAlwaysOpen': null,
+        'submitButton': null,
+        'isClosed': null,
+        'isOpenWholeDay': null
+    },
+    setAjaxContentElement: function (_el) {
+        this._ajaxContentElement = _el;
+        
+        return this;
+    },
+    
+    setFormElement: function(_el) {
+        this._formElement = _el;
+        
+        return this;
+    },
+        
+    initInputElements: function (_options) {
+        this._inputElements = _options;
+        
+        return this;
+    },
+    
+    _commonDailyToggle: function(_checkbox) {
+        _weekdayContainer = _checkbox.parents('.weekday_container');
+        _otherCheckbox = _checkbox.hasClass('closedToggle')
+            ? _weekdayContainer.find('input.openWholeDayToggle:checked')
+            : _weekdayContainer.find('input.closedToggle:checked');
+        if (_checkbox.attr('checked')) {
+            _otherCheckbox.attr('checked', false);
+            _weekdayContainer.find('input.hour').spinner({ disabled: true });
+        }
+        else {
+            _weekdayContainer.find('input.hour').spinner({ disabled: _otherCheckbox.attr('checked') });
+        }
+        _isAlwaysOpen = ClinicBusinessHoursForm._inputElements.isOpenWholeDay.not(':checked').length == 0;
+        ClinicBusinessHoursForm._inputElements.isAlwaysOpen.attr('checked', _isAlwaysOpen);
+    },
+    
+    initializeState: function() {
+        
+        // initialize handler when is closed checkbox is ticked
+        this._inputElements.isClosed.change(function(){
+            ClinicBusinessHoursForm._commonDailyToggle($(this));
+            
+        }).change();
+        
+        this._inputElements.isOpenWholeDay.change(function(){
+            ClinicBusinessHoursForm._commonDailyToggle($(this));
+            
+        }).change();
+        
+        this._inputElements.isAlwaysOpen.change(function(){
+            if (this.checked) {
+                ClinicBusinessHoursForm._inputElements.isOpenWholeDay.not(':checked').attr('checked', true).change();
+            }
+        }).change();
+        
+        this._formElement.bind('submit', ClinicBusinessHoursForm.submit);
+        this._inputElements.submitButton.click(function(){ 
+            ClinicBusinessHoursForm._formElement.submit(); 
+            return false; 
+        });
+    },
+    
+    submit: function(_event) {
+        _form = $(this);
+        _oldButtonHtml = ClinicBusinessHoursForm._inputElements.submitButton.html();
+        ClinicBusinessHoursForm._inputElements.submitButton
+            .html(ClinicBusinessHoursForm._inputElements.submitButton.attr('data-loader-text'))
+            .attr('disabled', true);
+        _modal = _form.parents('.modal');
+        $.ajax({
+            url: _form.attr('action'),
+            data: _form.serialize(),
+            type: 'post',
+            dataType: 'json',
+            success: function(response) {
+                ClinicBusinessHoursForm._ajaxContentElement.html(response.html);
+                ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);
+                _modal.modal('hide');
+            },
+            error: function(response) {
+                ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);
+            }
+        });
+        
+        return false;
     }
 }

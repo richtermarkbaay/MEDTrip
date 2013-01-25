@@ -10,3 +10,19 @@ institution_load_tabbed_contents_singleProfile:
     requirements:
         _method: GET|POST
         imcId: \d+
+        
+institution_medicalCenter_ajaxRemoveGlobalAward:
+    pattern: /institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: InstitutionBundle:Unsecured:ajaxRemoveGlobalAward, imcId: ~}
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        institutionId: \d+
+        
+        
+institution_medicalCenter_loadMedicalSpecialist:
+    pattern: /ns-institution/medical-center/{imcId}/medical-specialists/load
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadMedicalSpecialist }
+    requirements:
+        _method: GET
+        imcId: \d+

@@ -66,24 +66,9 @@ class AdvertisementDenormalizedProperty
     private $videoUrl;
 
     /**
-     * @var text $highlightDoctors
+     * @var text $highlights
      */
-    private $highlightDoctors;
-
-    /**
-     * @var text $highlightSpecializations
-     */
-    private $highlightSpecializations;
-
-    /**
-     * @var text $highlightSubSpecializations
-     */
-    private $highlightSubSpecializations;
-
-    /**
-     * @var text $highlightTreatments
-     */
-    private $highlightTreatments;
+    private $highlights;
 
     /**
      * @var text $highlightFeaturedImages
@@ -394,91 +379,25 @@ class AdvertisementDenormalizedProperty
     }
 
     /**
-     * Set highlightDoctors
+     * Set highlights
      *
-     * @param text $highlightDoctors
+     * @param text $highlights
      * @return AdvertisementDenormalizedProperty
      */
-    public function setHighlightDoctors($highlightDoctors)
+    public function setHighlights($highlights)
     {
-        $this->highlightDoctors = $highlightDoctors;
+        $this->highlights = $highlights;
         return $this;
     }
 
     /**
-     * Get highlightDoctors
+     * Get highlights
      *
      * @return text 
      */
-    public function getHighlightDoctors()
+    public function getHighlights()
     {
-        return $this->highlightDoctors;
-    }
-
-    /**
-     * Set highlightSpecializations
-     *
-     * @param text $highlightSpecializations
-     * @return AdvertisementDenormalizedProperty
-     */
-    public function setHighlightSpecializations($highlightSpecializations)
-    {
-        $this->highlightSpecializations = $highlightSpecializations;
-        return $this;
-    }
-
-    /**
-     * Get highlightSpecializations
-     *
-     * @return text 
-     */
-    public function getHighlightSpecializations()
-    {
-        return $this->highlightSpecializations;
-    }
-
-    /**
-     * Set highlightSubSpecializations
-     *
-     * @param text $highlightSubSpecializations
-     * @return AdvertisementDenormalizedProperty
-     */
-    public function setHighlightSubSpecializations($highlightSubSpecializations)
-    {
-        $this->highlightSubSpecializations = $highlightSubSpecializations;
-        return $this;
-    }
-
-    /**
-     * Get highlightSubSpecializations
-     *
-     * @return text 
-     */
-    public function getHighlightSubSpecializations()
-    {
-        return $this->highlightSubSpecializations;
-    }
-
-    /**
-     * Set highlightTreatments
-     *
-     * @param text $highlightTreatments
-     * @return AdvertisementDenormalizedProperty
-     */
-    public function setHighlightTreatments($highlightTreatments)
-    {
-        $this->highlightTreatments = $highlightTreatments;
-        return $this;
-    }
-
-    /**
-     * Get highlightTreatments
-     *
-     * @return text 
-     */
-    public function getHighlightTreatments()
-    {
-        return $this->highlightTreatments;
+        return $this->highlights;
     }
 
     /**

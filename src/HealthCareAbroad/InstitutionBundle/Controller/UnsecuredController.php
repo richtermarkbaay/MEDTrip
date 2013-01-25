@@ -8,6 +8,8 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormT
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionPropertyService;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
@@ -115,6 +117,7 @@ class UnsecuredController extends Controller
                 $parameters['accreditationsSourceJSON'] = \json_encode($autocompleteSource['accreditation']);
                 $parameters['currentGlobalAwards'] = $currentGlobalAwards;
                 $parameters['institution'] = $this->institution;
+                $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', $parameters));
         }
         
@@ -163,6 +166,8 @@ class UnsecuredController extends Controller
                 $parameters['affiliationsSourceJSON'] = \json_encode($autocompleteSource['affiliation']);
                 $parameters['currentGlobalAwards'] = $currentGlobalAwards;
                 $parameters['accreditationsSourceJSON'] = \json_encode($autocompleteSource['accreditation']);
+                $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
+                
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig',$parameters));
                 break;
             case 'medical_specialists':
@@ -187,6 +192,7 @@ class UnsecuredController extends Controller
                 $parameters['doctorsJSON'] = \json_encode($doctorArr, JSON_HEX_APOS);
                 $parameters['institution'] =  $this->institution;
                 $parameters['doctors'] = $this->institutionMedicalCenter->getDoctors();
+                $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
                 $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$parameters));
                 break;
         }
@@ -228,5 +234,45 @@ class UnsecuredController extends Controller
         }
     
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Remove global award of an institution medical center
+     *
+     * @param Request $request
+     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
+     */
+    public function ajaxRemoveGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
+    
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        // get property value
+        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
+    
+        $form = $this->createForm(new CommonDeleteFormType(), $property);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+    
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($property);
+                $em->flush();
+    
+                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
+        }
+    
+        return $response;
     }
 }

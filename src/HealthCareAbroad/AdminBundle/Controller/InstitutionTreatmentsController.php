@@ -175,11 +175,11 @@ class InstitutionTreatmentsController extends Controller
         }
         
         //get doctors
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-            $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
-        }
+        //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
+        //$doctorArr = array();
+        //foreach ($doctors as $each) {
+        //    $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+        //}
         //var_dump(\json_encode($doctorArr, JSON_HEX_QUOT)); exit;
         $params = array(
             'institution' => $this->institution,
@@ -190,13 +190,13 @@ class InstitutionTreatmentsController extends Controller
             'form' => $form->createView(),
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
-            'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
+            //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' =>\json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
             'currentGlobalAwards' => $currentGlobalAwards,
             'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
-                        
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),         
             'ancillaryServicesData' => $ancillaryServicesData,
             'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
             'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
@@ -328,7 +328,25 @@ class InstitutionTreatmentsController extends Controller
         return $response;
     
     }
-    
+    /**
+     * Ajax handler for searching available doctors for an InstitutionMedicalCenter in HCA Data
+     * Expected GET parameters:
+     *     - imcId institutionMedicalCenterId
+     *     - searchKey
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function loadMedicalSpecialistAction(Request $request)
+    {
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+        }
+        
+        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
+    }
     /**
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -399,83 +417,48 @@ class InstitutionTreatmentsController extends Controller
 
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            if($request->get('businessHours') == null){
-                $businessHours = NULL;
-            }else{
-                //check if isOpen 24hrs
-                $isOpen = $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours($request->get('businessHours'));
-                $businessHours = json_encode($request->get('businessHours'));
-                
-            }
-            $this->institutionMedicalCenter->setBusinessHours($businessHours);
-            $em = $this->getDoctrine()->getEntityManager();
-                
-            try {
-                    $em->persist($this->institutionMedicalCenter);
-                    $em->flush();
-                    
-                    // TODO: Verify Event!
-                    // dispatch event
-                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
-                                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-                                    ));
-            }
-            catch (\Exception $e) {
-                return new Response($e->getMessage(),500);
-            }
-            
-            
+        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+        $businessHours = $request->get('businessHours', array());
+        foreach ($businessHours as $_day => $data) {
+            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
         }
-    
-        $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
-    
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        
+        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
+        try {
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+            //$html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+            $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+            
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
+        
+        return $response;
     }
     
-    public function editMedicalCenterAction()
+    public function editMedicalCenterAction(Request $request)
     {
-        $service = $this->get('services.institution_medical_center');
-        $request = $this->request;
-        $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
-        $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
-        $form = $this->createForm(new InstitutionMedicalCenterBusinessHourFormType(),$this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
+        $template = 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig';
+        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
+        
         if ($request->isMethod('POST')) {
-            $form->bind($request);
-            
-            // Get businessHours and convert to json format
-            if($request->get('businessHours') == null){
-                $businessHours = NULL;
-            }else{
-               $businessHours = json_encode($request->get('businessHours'));
+            $form->bind($this->request);
+        
+            if ($form->isValid()) {
+                $this->get('services.institution_medical_center')->save($form->getData());
+                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
             }
-            // Set BusinessHours before saving
-            $form->getData()->setBusinessHours($businessHours);
-            $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
-
-            $request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been updated. You can now add Specializations to this center.");
-
-            // TODO: Verify Event!
-            // dispatch event
-            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
-                $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-            ));
-
-            // redirect to step 2;
-            return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
-                'institutionId' => $this->institution->getId(),
-                'imcId' => $this->institutionMedicalCenter->getId()
-            )));
         }
-
-        $params = array(
-            'form' => $form->createView(),
-            'institutionId' => $this->institution->getId(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter
-        );
-
-        return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
+        
+        return $this->render($template, array(
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institution' => $this->institution,
+                        'form' => $form->createView(),
+        ));
     }
 
     /**

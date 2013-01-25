@@ -54,6 +54,17 @@ var InstitutionProfile = {
         return this;
     },
     
+    showCommonModalId: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('#award'+_id).find('h5').html();
+        _modal = $(_linkElement.attr('data-target'));
+        $('#id').val(_id);
+        $(".modal-body p strong").text(_name+'?');
+        
+        return false;
+    },
+    
     closeModal: function(_name) {
         InstitutionProfile.modals[_name].dialog('close');
         
@@ -200,20 +211,21 @@ var InstitutionProfile = {
         return this;
     },
     
-    removeGlobalAward: function(_linkElement) {
-        _linkElement = $(_linkElement);
-        _id = _linkElement.attr('id').split('_')[1];
-        $.ajax({
-           type: 'POST',
-           url: _linkElement.attr('href'),
-           data: {id: _id},
-           success: function(response) {
-               _linkElement.parents('tr').remove();
-           },
-           error: function(response) {
-               console.log(response);
-           }
-        });
+    removeGlobalAward: function(_domButtonElement) {
+  	 _button = $(_domButtonElement);
+	  	_form = _button.parents('.modal').find('form');
+	    _button.html("Processing...").attr('disabled', true);
+
+	    $.ajax({
+	        url: _form.attr('action'),
+	        data: _form.serialize(),
+	        type: 'POST',
+	        success: function(response){
+	        	_form.parents('div.modal').modal('hide');
+	        	_button.html("Delete").attr('disabled', false);
+	        	$('#award'+response.id).remove();
+	        }
+	     });
     },
     
     removeProperty: function(_propertyId, _container) {
@@ -282,6 +294,8 @@ var InstitutionProfile = {
                                 address.push(response.institution[_v]);
                             }
                         });
+                        
+                		$('.addressLabel').html('Edit Contact Address');
                         _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
                         
                         $('.address_column').find('span.address_part').remove();
@@ -291,18 +305,36 @@ var InstitutionProfile = {
     
                     case 'numberModalForm':
                         var number = response.institution.contactNumber;
+                        
+                       	if(number.country_code){
+                    		$('.numberLabel').html('Edit Contact Number');
+                    	}else{
+                    		$('.numberLabel').html('Add Contact Number');
+                    	}
+                        
                         $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
                         break;
     
                     case 'emailModalForm':
+                    	if(response.institution.contactEmail){
+                    		$('.emailLabel').html('Edit Contact Email');
+                    	}else{
+                    		$('.emailLabel').html('Add Contact Email');
+                    	}
                         $('#profileEmailText').html(response.institution.contactEmail);
                         break;
     
                     case 'websitesModalForm':
                         var websites = response.institution.websites, websitesString = ''; 
                         for(name in websites) {
+                        	
                             websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
                         }
+                    	if(websites[name]){
+                    		$('.emailLabel').html('Edit Websites');
+                    	}else{
+                    		$('.emailLabel').html('Add Websites');
+                    	}
                         $('#profileWebsitesText').html(websitesString);
                         break;
                 } 

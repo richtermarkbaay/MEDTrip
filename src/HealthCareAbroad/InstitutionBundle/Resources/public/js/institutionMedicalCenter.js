@@ -112,6 +112,28 @@ var InstitutionMedicalCenter = {
         return false;
     },
     
+    showCommonModalId: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('#award'+_id).find('h3').html();
+        _modal = $(_linkElement.attr('data-target'));
+        $('#id').val(_id);
+        $(".modal-body p strong").text(_name+'?');
+        
+        return false;
+    },
+    
+    showSpecialistCommonModalId: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('#doctor_id_'+_id).find('h3').html();
+        $('.doctorHiddenId').val(_id);
+        _modal = $(_linkElement.attr('data-target'));
+        $(".modal-body p strong").text(_name+'?');
+        
+        return false;
+    },
+    
     // jQuery element for link opener
     openAjaxBootstrapModal: function(_opener) {
         _opener = $(_opener);
@@ -181,15 +203,26 @@ var InstitutionMedicalCenter = {
                             ? _street_address.join(', ')+', '
                             : ''
                         );
+                        $('.addressLabel').html('Edit Contact Address');
                         break;
     
                     case 'numberModalForm':
                     	var number = response.institutionMedicalCenter.contactNumber;
                         $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                    	if(number.country_code){
+                    		$('.numberLabel').html('Edit Contact Number');
+                    	}else{
+                    		$('.numberLabel').html('Add Contact Number');
+                    	}
                         break;
                         
                     case 'emailModalForm':
                     	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                    	if(response.institutionMedicalCenter.contactEmail){
+                    		$('.emailLabel').html('Edit Contact Email');
+                    	}else{
+                    		$('.emailLabel').html('Add Contact Email');
+                    	}
                         break;
                        
                     case 'websitesModalForm':
@@ -197,6 +230,11 @@ var InstitutionMedicalCenter = {
                         for(name in websites) {
                             websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
                         }
+                     	if(websites[name]){
+                    		$('.websiteLabel').html('Edit Websites');
+                    	}else{
+                    		$('.websiteLabel').html('Add Websites');
+                    	}
                         $('#profileWebsitesText').html(websitesString);
                         break;
                 } 
@@ -227,20 +265,39 @@ var InstitutionMedicalCenter = {
             }
          });
     },
-
-    submitRemoveMedicalSpecialistForm: function(_formElement) {
-        _button = _formElement.find('button.delete-button');
-        _button.attr('disabled', true)
-            .html('Processing...');
+    
+    submitRemoveSpecializationTeatmentForm: function(domButtonElement) {
+    	 _button = $(domButtonElement);
+         _form = _button.parents('.modal').find('form');
+        _button.html("Processing...").attr('disabled', true);
         $.ajax({
-            url: _formElement.attr('action'),
-            data: _formElement.serialize(),
+            url: _form.attr('action'),
+            data: _form.serialize(),
             type: 'POST',
             success: function(response){
-            	$('#doctor_id_'+response.id).remove();
-            	$('#dialog-container').dialog("close");
+            	_form.parents('div.modal').modal('hide');
+            	_button.html("Processing").attr('disabled', false);
+            	$('#treatment_id_'+response.id).remove();
             }
          });
+    },
+
+    submitRemoveMedicalSpecialistForm: function(_domButtonElement) {
+  	 _button = $(_domButtonElement);
+	  	_form = _button.parents('.modal').find('form');
+	  	
+	    _button.html("Processing...").attr('disabled', true);
+
+	    $.ajax({
+	        url: _form.attr('action'),
+	        data: _form.serialize(),
+	        type: 'POST',
+	        success: function(response){
+	        	_form.parents('div.modal').modal('hide');
+	        	_button.html("Delete").attr('disabled', false);
+	        	$('#doctor_id_'+response.id).remove();
+	        }
+	     });
     },
     
     removeProperty: function(_propertyId, _container) {
@@ -253,23 +310,23 @@ var InstitutionMedicalCenter = {
                 _container.remove();
             }
         });
-        
     },
     
-    removeGlobalAward: function (_linkElement) {
-        _linkElement = $(_linkElement);
-        _id = _linkElement.attr('id').split('_')[1];
-        $.ajax({
-           type: 'POST',
-           url: _linkElement.attr('href'),
-           data: {id: _id},
-           success: function(response) {
-               _linkElement.parents('tr').remove();
-           },
-           error: function(response) {
-               console.log(response);
-           }
-        });
+    removeGlobalAward: function(_domButtonElement) {
+	  	 _button = $(_domButtonElement);
+	  	_form = _button.parents('.modal').find('form');
+	    _button.html("Processing...").attr('disabled', true);
+
+	    $.ajax({
+	        url: _form.attr('action'),
+	        data: _form.serialize(),
+	        type: 'POST',
+	        success: function(response){
+	        	_form.parents('div.modal').modal('hide');
+	        	_button.html("Delete").attr('disabled', false);
+	        	$('#award'+response.id).remove();
+	        }
+	     });
     },
     
     addAncillaryService: function(_linkElement) {
@@ -386,6 +443,7 @@ var InstitutionGlobalAwardAutocomplete = {
 var InstitutionSpecialistAutocomplete = {
     _loadHtmlContentUri: '',
     _removePropertyUri: '',
+    _loadMedicalSpecialistUri: '',
     autocompleteOptions: {
         'specialist':{
             source: '',
@@ -420,13 +478,33 @@ var InstitutionSpecialistAutocomplete = {
         this._loadHtmlContentUri = _val;
         return this;
     },
-    
+    setLoadMedicalSpecialistUri: function (_val) {
+        this._loadMedicalSpecialistUri = _val;
+        return this;
+    },
     autocomplete: function() {
         $.each(InstitutionSpecialistAutocomplete.autocompleteOptions, function(_key, _val){
             if (_val.target) {
                 _val.target.autocomplete({
-                    minLength: 0,
-                    source: _val.source,
+                    minLength: 2,
+                    source: function(_val, response) {
+                    	$('#loader_ajax').show();
+                    	$.ajax({
+                            url: InstitutionSpecialistAutocomplete._loadMedicalSpecialistUri,
+                            data: {'term':_val.term},
+                            dataType: "json",
+                            success: function(json) {
+                            	$('#loader_ajax').hide();
+                            	response($.each(json, function(item){
+                            		return { label: item.label, value: item.value }
+                            	}));
+                            	
+                            },
+                            error: function(response) {
+                            	$('#loader_ajax').hide();
+                            }
+                        });
+                    },
                     select: function( event, ui) {
                     	InstitutionSpecialistAutocomplete._loadContent(ui.item.id, _val);
                         return false;
