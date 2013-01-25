@@ -47,7 +47,7 @@
     <script type="text/javascript">
         $(function() {
         	$('.ajax_loader').hide();
-        	$(".hour").timepicker({ seconds: false  });
+        	/*$(".hour").timepicker({ seconds: false  });
         	var isOpen = '{{ isOpen24hrs }}';
         	if(isOpen) {
         		$('#businessHourCheckBox').attr("checked","checked");
@@ -75,7 +75,7 @@
                     $('textarea.businessHourNotes').removeAttr('disabled');
                     $('input.is_close_checkbox').removeAttr('checked');
                 }
-            });
+            });*/
             
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -257,7 +257,7 @@
 
         });
         
-        $('input.is_close_checkbox').change(function(){
+        /*$('input.is_close_checkbox').change(function(){
             if(this.checked) {
                 $('#businessHourCheckBox').removeAttr('checked');
             	$(this).parent().parent().parent().find('.is_open').attr('0');
@@ -306,9 +306,19 @@
     	    	$('textarea.businessHourNotes').removeAttr('disabled');
     	    	$(this).parent().parent().parent().find('.is_open_checkbox').removeAttr('checked');
         	}
-    	}) 
-        
-        $('#saveBusinessHours').click(function() {
+    	}) */
+    	// initialize businesshours form
+        ClinicBusinessHoursForm
+        .setAjaxContentElement($('#institutionBusinessHoursText'))
+        .setFormElement($('#businessHours-form'))
+        .initInputElements({
+            'submitButton': $('#saveBusinessHours'),
+            'isClosed': $('input.closedToggle'),
+            'isOpenWholeDay': $('input.openWholeDayToggle'),
+            'isAlwaysOpen': $('input.alwaysOpenToggle')
+        })
+        .initializeState();
+        /*$('#saveBusinessHours').click(function() {
         	$('#saveBusinessHours').attr('disabled',"true");
         	_form = $('#businessHours-form');
             _form.append('<span class="loader">Loading...</span>');
@@ -316,7 +326,7 @@
             /*if ($('#businessHourCheckBox').attr('checked')) {
                 businessHoursData = '';
             }*/
-            $.ajax({
+           /* $.ajax({
                 url: "{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}",
                 data: businessHoursData,
                 type: 'POST',
@@ -327,7 +337,7 @@
                 }
             });
             return false;
-        });
+        });*/
 
         $('#btnClose').click(function() {
         	$(this).dialog('close');

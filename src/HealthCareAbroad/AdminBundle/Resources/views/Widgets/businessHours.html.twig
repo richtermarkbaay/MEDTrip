@@ -1,74 +1,49 @@
 {% set daysArr = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] %}
 
-{% set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) %}
-
+{# set arrBusinessHours = json_decode(institutionMedicalCenter.businessHours) #}
+{% set decodedBusinessHours = json_decode_business_hours(institutionMedicalCenter) %}
 <div id="clinicHoursTable" >
-    <table border="1" cellpadding="0" cellspacing="0" class="table table-striped table-bordered clinichours" id="businessHours-table">
-        <tr>
-            <th class="minwidth-1"> <a href="#">Days of the Week</a></th>
-            <th class="minwidth-1"> <a href="#">From</a></th>
-            <th class="minwidth-1"> <a href="#">To</a></th>
-            <th class="minwidth-1" style="width:22px;"> <a href="#">Is Closed</a></th>
-            <th class="minwidth-1" style="width:22px;"> <a href="#">Is Open 24hrs</a></th>
-        </tr>
-        <input class="imcId" name="imcId" id="imcId" value="{{ institutionMedicalCenter.id }}"  type="hidden"/>
-        {% for i, day in daysArr %}
-            <tr>
-                <td align="center">{{ day }}</td>
-                <td align="center">
-                {% if arrBusinessHours[day] is defined and arrBusinessHours[day].from is defined %}
-                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value="{{ arrBusinessHours[day].from}}"/>
-                    </td>
-                    <td>
-                        <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value="{{ arrBusinessHours[day].to }}" />
-                    </td>
-                {% elseif arrBusinessHours[day].isOpen is defined and arrBusinessHours[day].isOpen == 1 %}
-                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM" disabled/>
-                    </td>
-                    <td>
-                        <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value=" 8:00 AM" disabled/>
-                    </td>
-                {% else %}
-                        <input class="hour" name="businessHours[{{day}}][from]" id="businessHours[{{day}}][from]" value=" 8:00 AM"/>
-                    </td>
-                    <td>
-                        <input class="hour" name="businessHours[{{day}}][to]" id="businessHours[{{day}}][to]" value=" 8:00 AM"/>
-                    </td>
-                {% endif %}
-                
-                {# for Close and Open options #}
-                <td align="center">
-                {% if arrBusinessHours[day].isOpen is defined and arrBusinessHours[day].isOpen == 1 %}
-                        <label><input type="checkbox" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label>
-                    </td>
-                    <td align="center">
-                        <label><input checked="checked" type="checkbox" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label>
-                {% elseif (arrBusinessHours[day].isOpen is defined and arrBusinessHours[day].isOpen == 0) or (arrBusinessHours[day] is not defined) %}
-                        <label><input type="checkbox" class="is_close_checkbox" name="isOpenOption{{day}}" checked="checked" />Closed</label>
-                    </td>
-                    <td align="center">
-                        <label><input type="checkbox" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label>
-                {% else %}
-                        <label><input type="checkbox" class="is_close_checkbox" name="isOpenOption{{day}}" />Closed</label>
-                    </td>
-                    <td align="center">
-                        <label><input type="checkbox" class="is_open_checkbox" name="isOpenOption{{day}}" />Open 24hrs</label>
-                {% endif %}
-                <input type="hidden" class="is_open" name="businessHours[{{day}}][isOpen]" id="businessHours[{{day}}][isOpen]" />
+    <table class="table table-striped table-bordered clinichours">
+    	<tr>
+    		<th>Days of the Week</th>
+    		<th>From</th>
+    		<th>&nbsp;</th>
+    		<th>To</th>	
+    		<th>&nbsp;</th>
+    		<th>&nbsp;</th>
+    	</tr>
+    	{% for _day, _data in decodedBusinessHours %}
+    	    {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
+    	    {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
+    	    {% set _fromInputId = 'businessHours['~ _day ~'][from]' %}
+    	    {% set _toInputId = 'businessHours['~ _day ~'][to]' %}
+    	    <tr class="weekday_container">
+    	        <td>{{ _day | capitalize }}</td>
+    	        <td>
+    	            {% if _data.from is defined and _data.from != '' %}
+    	                <input class="hour clinicHour_from" name="{{ _fromInputId }}" id="{{ _fromInputId }}" value="{{ _data.from }}" />
+    	            {% else %}
+    	                <input disabled="disabled" class="hour clinicHour_from" name="{{ _fromInputId }}" id="{{ _fromInputId }}" value="08:00 AM" />
+    	            {% endif %}
+    	        </td>
+    	        <td>-</td>
+    	        <td>
+    	            {% if _data.to is defined and _data.to != '' %}
+    	                <input class="hour clinicHour_to" name="{{ _toInputId }}" id="{{ _toInputId }}" value="{{ _data.to }}" />
+    	            {% else %}
+    	                <input disabled="disabled" class="hour clinicHour_to" name="{{ _toInputId }}" id="{{ _toInputId }}" value="6:00 PM" />
+    	            {% endif %}
+    	        </td>
+    	        <td>
+    	            <input type="checkbox" class="closedToggle" value="1" {{ _isClosed ? 'checked' : '' }}>Closed
                 </td>
+    			<td>
+    			    <input name="businessHours[{{ _day }}][isOpen]" type="checkbox" class="openWholeDayToggle" value="1" {{ _isWholeDayOpen ? 'checked' : '' }} >Open 24hrs
+    		    </td>
+    	    </tr>
+    	    <tr>
+    	        <td>&nbsp;</td><td colspan="5">Notes:<textarea name="businessHours[{{ _day }}][notes]">{{ _data.notes }}</textarea></td>
             </tr>
-            <tr>
-               <td></td>
-               <td colspan="5">Notes:
-                    {% if arrBusinessHours[day] is not defined %}
-                       <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;" disabled></textarea>
-                    {% elseif arrBusinessHours[day].notes is not defined %}
-                        <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;"></textarea>
-                    {% else %} 
-                        <textarea name="businessHours[{{day}}][notes]" id="businessHours[{{day}}][notes]" class="businessHourNotes" style="width: 684px; height: 41px;">{{ arrBusinessHours[day].notes }}</textarea>
-                    {% endif %}
-               </td>
-            </tr>
-         {% endfor %}
+    	{% endfor %} 
     </table>
 </div>

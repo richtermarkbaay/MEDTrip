@@ -417,38 +417,26 @@ class InstitutionTreatmentsController extends Controller
 
     public function ajaxUpdateBusinessHoursAction(Request $request)
     {
-        if ($request->isMethod('POST')) {
-            if($request->get('businessHours') == null){
-                $businessHours = NULL;
-            }else{
-                //check if isOpen 24hrs
-                $isOpen = $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours($request->get('businessHours'));
-                $businessHours = json_encode($request->get('businessHours'));
-                
-            }
-            $this->institutionMedicalCenter->setBusinessHours($businessHours);
-            $em = $this->getDoctrine()->getEntityManager();
-                
-            try {
-                    $em->persist($this->institutionMedicalCenter);
-                    $em->flush();
-                    
-                    // TODO: Verify Event!
-                    // dispatch event
-                    $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER,
-                                    $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
-                                    ));
-            }
-            catch (\Exception $e) {
-                return new Response($e->getMessage(),500);
-            }
-            
-            
+        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+        $businessHours = $request->get('businessHours', array());
+        foreach ($businessHours as $_day => $data) {
+            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
         }
-    
-        $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter,'isOpen24hrs' => $isOpen));
-    
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        
+        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
+        try {
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+            //$html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+            $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+            
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
+        
+        return $response;
     }
     
     public function editMedicalCenterAction()

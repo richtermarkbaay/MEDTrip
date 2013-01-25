@@ -11,6 +11,6 @@ class AdvertisementPropertyException extends \Exception
     
     static public function emptyPropertyClass($propertyName)
     {
-        return new self(sprintf("Invalid Class given empty string for property %.", $propertyName));
+        return new self(sprintf("Invalid Class given empty string for property %s.", $propertyName));
     }
 }

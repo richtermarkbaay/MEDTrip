@@ -57,22 +57,9 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             fixed: false
             nullable: false
             column: video_url
-        highlightDoctors:
+        highlights:
             type: text
             nullable: false
-            column: highlight_doctors
-        highlightSpecializations:
-            type: text
-            nullable: false
-            column: highlight_specializations
-        highlightSubSpecializations:
-            type: text
-            nullable: false
-            column: highlight_sub_specializations
-        highlightTreatments:
-            type: text
-            nullable: false
-            column: highlight_treatments
         highlightFeaturedImages:
             type: text
             nullable: false
