@@ -126,4 +126,31 @@ class InstitutionMedicalCenterProperty
     {
         return $this->institutionPropertyType;
     }
+    /**
+     * @var text $extraValue
+     */
+    private $extraValue;
+
+
+    /**
+     * Set extraValue
+     *
+     * @param text $extraValue
+     * @return InstitutionMedicalCenterProperty
+     */
+    public function setExtraValue($extraValue)
+    {
+        $this->extraValue = $extraValue;
+        return $this;
+    }
+
+    /**
+     * Get extraValue
+     *
+     * @return text 
+     */
+    public function getExtraValue()
+    {
+        return $this->extraValue;
+    }
 }
