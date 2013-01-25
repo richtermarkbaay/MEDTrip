@@ -33,13 +33,22 @@ search_frontend_ajaxLoadDestinations:
     pattern: /search/ajaxLoadDestinations
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
 
-#search_frontend_results_destinations:
-#    pattern: /search/destinations/{page}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsDestinations, page: 1 }
+search_frontend_ajaxLoadCountries:
+    pattern: /search/ajaxLoadCountries
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'country' }
 
-#search_frontend_results_treatments:
-#    pattern: /search/treatments/{page}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsTreatments, page: 1 }
+search_frontend_ajaxLoadCities:
+    pattern: /search/ajaxLoadCities
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'city' }
+
+search_frontend_ajaxLoadSpecializations:
+    pattern: /search/ajaxLoadSpecializations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadSpecializations }
+
+#TODO: rename this route
+search_frontend_ajaxLoadTreatments2:
+    pattern: /search/ajaxLoadTreatments2
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments2 }
 
 search_frontend_results_countries:
     pattern: /destination/{country}/{page}

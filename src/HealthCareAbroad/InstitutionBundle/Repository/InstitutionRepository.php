@@ -93,10 +93,12 @@ class InstitutionRepository extends EntityRepository
         $dql = "SELECT a
                 FROM InstitutionBundle:Institution a
                 INNER JOIN a.institutionMedicalCenters b
-                WHERE a.country = :country AND a.status <> :status AND b.status = :imcStatus ";
+                WHERE a.country = :country
+                AND a.status = :status
+                AND b.status = :imcStatus ";
 
         $query = $this->_em->createQuery($dql)
-            ->setParameter('status', InstitutionStatus::INACTIVE)
+            ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
             ->setParameter('country', $country)
             ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
@@ -108,10 +110,13 @@ class InstitutionRepository extends EntityRepository
         $dql = "SELECT a
                 FROM InstitutionBundle:Institution a
                 INNER JOIN a.institutionMedicalCenters b
-                WHERE a.city = :city AND a.city IS NOT NULL AND a.status <> :status AND b.status = :imcStatus";
+                WHERE a.city = :city
+                AND a.city IS NOT NULL
+                AND a.status = :status
+                AND b.status = :imcStatus";
 
         $query = $this->_em->createQuery($dql)
-            ->setParameter('status', InstitutionStatus::INACTIVE)
+            ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
             ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
             ->setParameter('city', $city);
 
