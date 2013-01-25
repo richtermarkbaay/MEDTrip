@@ -18,15 +18,14 @@
                         
                     <div>
                         {{ form_row(form.name, {label: 'Clinic Name', attr: {'class': 'span7'}} ) }}
-                        
-                        
                         {{ form_label(form.description,  'Short Description about the Clinic')  }}
                         {{ form_widget(form.description, { attr: {'class': 'span8', rows: 5, cols: 60} } ) }}
                         <small >Having difficulties in writing your Clinic Description. <a href="#">CLICK HERE</a> for some sample to look at.</small>
                         {{ form_errors(form.description) }}
                         
-                        {{ form_row(form.contactEmail, {label: 'Email', attr: {'class': 'span6'}} ) }}
-                        {{ form_row(form.contactNumber) }}
+                        {{ form_row(form.contactEmail ) }}
+                        {{ form_label(form.contactNumber, 'Clinic Contact Number') }}
+                        {{ form_widget(form.contactNumber) }}
                         {{ form_widget(form.websites) }}
                         
                         <h4>Clinic Address</h4>
@@ -63,10 +62,7 @@
                         <div class="clearfix"></div>
                     
                         <label for="Clinic Hours">Clinic Hours</label>
-                        <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
-                        <span style="font-weight:bold;">I have no business hours</span>
-                        
-                        {% include 'InstitutionBundle:Widgets:medicalCenter.businessHours.html.twig' %}
+                        {% include 'InstitutionBundle:MedicalCenter/Partials:field.businessHours.html.twig' %}
                         
                     </div>
                     
@@ -99,6 +95,7 @@
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">    
 <!--
