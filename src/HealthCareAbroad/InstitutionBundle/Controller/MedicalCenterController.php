@@ -477,7 +477,6 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function addDoctorsAction()
     {
-        echo "test";exit;
         $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         $doctorArr = array();
