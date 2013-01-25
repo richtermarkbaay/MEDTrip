@@ -10,7 +10,7 @@
 		<div id="carousel-inner">
 		    {% for each in destinationAds %}
 			<div class="thumb span2">
-				<a class="tip" data-original-title="Fugiat dapibus, tellus ac cursus commodo, mauesris condime ntum nibh" href="#">
+				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
 			        {% if each.media %}
 				        {{ media(each.media, each, 'default', {class: 'img-polaroid', thumbnail: true}) | raw }}
 				    {% else %}
