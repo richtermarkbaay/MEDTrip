@@ -3,15 +3,11 @@
         Business Hours
     </h5>
 
-    <form id="businessHours-form" class="basic-form">
+    <form id="businessHours-form" class="basic-form" action="{{ path('admin_institution_medicalCenter_ajaxUpdateBusinessHours', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}">
         <div id="clinicHours" class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none; ">
             <label>
-            {% if isOpen24hrs == 1%}
-                <input type="checkbox" name="businessHourCheckBox" checked="checked" id="businessHourCheckBox" >
-            {% else %}
-            <input type="checkbox" name="businessHourCheckBox" id="businessHourCheckBox" >
-            {% endif %}
-            Our clinic is <strong>open 24/7</strong>
+            
+            <input class="alwaysOpenToggle" type="checkbox">Our clinic is <b>open 24/7</b>    
             </label>
                 {% include 'AdminBundle:Widgets:businessHours.html.twig' %}
                 <input type="submit" id="saveBusinessHours" name="submit" value="Submit" class="btn btn-large btn-primary" />
