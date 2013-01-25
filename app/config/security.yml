@@ -88,17 +88,17 @@ security:
                 check_path: /institution/login-check
                 always_use_default_target_path: false
                 default_target_path: /institution/dashboard
-                remember_me: true
+                remember_me: false
                 failure_path: /institution/login
 
-            remember_me:
-               key:  %secret%
-               lifetime: 1209600
-               path:     /
-               domain:   ~
-               remember_me_parameter: _institution_remember_me
-               always_remember_me: true
-               httponly: false
+            #remember_me:
+            #   key:  %secret%
+            #   lifetime: 1209600
+            #   path:     /
+            #   domain:   ~
+            #   remember_me_parameter: _institution_remember_me
+            #   always_remember_me: false
+            #   httponly: false
             logout:
                 path:   /institution/logout
                 target: /institution/login
