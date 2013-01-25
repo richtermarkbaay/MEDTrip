@@ -117,6 +117,7 @@ class UnsecuredController extends Controller
                 $parameters['accreditationsSourceJSON'] = \json_encode($autocompleteSource['accreditation']);
                 $parameters['currentGlobalAwards'] = $currentGlobalAwards;
                 $parameters['institution'] = $this->institution;
+                $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
                 $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', $parameters));
         }
         
