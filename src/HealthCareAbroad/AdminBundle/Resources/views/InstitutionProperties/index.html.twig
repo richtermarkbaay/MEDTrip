@@ -25,7 +25,7 @@
         			<tbody>
             			{% for _service in services.globalList %}
                 			
-                			{% include 'InstitutionBundle:Institution:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
+                			{% include 'AdminBundle:InstitutionProperties:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
                             
             		    {% else %}
                 		  	<tr>
@@ -41,7 +41,7 @@
     </div>
 {% endblock %}
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/admin/js/Institution.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         $(function(){
         	
