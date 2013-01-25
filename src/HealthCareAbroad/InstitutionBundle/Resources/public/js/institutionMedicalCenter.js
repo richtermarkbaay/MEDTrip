@@ -203,15 +203,26 @@ var InstitutionMedicalCenter = {
                             ? _street_address.join(', ')+', '
                             : ''
                         );
+                        $('.addressLabel').html('Edit Contact Address');
                         break;
     
                     case 'numberModalForm':
                     	var number = response.institutionMedicalCenter.contactNumber;
                         $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                    	if(number.country_code){
+                    		$('.numberLabel').html('Edit Contact Number');
+                    	}else{
+                    		$('.numberLabel').html('Add Contact Number');
+                    	}
                         break;
                         
                     case 'emailModalForm':
                     	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                    	if(response.institutionMedicalCenter.contactEmail){
+                    		$('.emailLabel').html('Edit Contact Email');
+                    	}else{
+                    		$('.emailLabel').html('Add Contact Email');
+                    	}
                         break;
                        
                     case 'websitesModalForm':
@@ -219,6 +230,11 @@ var InstitutionMedicalCenter = {
                         for(name in websites) {
                             websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
                         }
+                     	if(websites[name]){
+                    		$('.websiteLabel').html('Edit Websites');
+                    	}else{
+                    		$('.websiteLabel').html('Add Websites');
+                    	}
                         $('#profileWebsitesText').html(websitesString);
                         break;
                 } 
