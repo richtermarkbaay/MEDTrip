@@ -1,20 +1,21 @@
 {% for doctor in doctors %}
-	<tr id="doctor_id:{{ doctor.id }}">
-		<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
+	<tr id="doctor_id_{{ doctor.id }}">
+		<td><h3>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</h3></td>
 		<td>
 		{% for specialization in doctor.specializations %}
 		    {{ specialization.name |title }} 
 		    {% if loop.last == false %},{% endif %} 
-	    {% else %}
+	    {% else %} 
 		    No Specializations yet
 		{% endfor %}
 		</td>
 	    <td>
 	     <div class="post-toolbar treatment_action">
     		<i class="icon-trash" title="Delete"></i>
-    		<a href="#" onclick ="InstitutionSpecialistAutocomplete.removeProperty({{ doctor.id }}, $(this).parents('tr')); return false;" >Delete</a>
+    		<a data-toggle="modal" data-id="{{ doctor.id }}" data-target="#specialistModal"  onclick="InstitutionMedicalCenter.showSpecialistCommonModalId(this); return false;"  >Delete</a>
     		<i class="icon-edit" title="Edit"></i>
     		<a href="{{ path('institution_manageDoctorProfile', { 'imcId':institutionMedicalCenter.id,'idId' :doctor.id }) }}" >Edit</a>
+    	
     	</div>
 	    </td>
 	</tr>

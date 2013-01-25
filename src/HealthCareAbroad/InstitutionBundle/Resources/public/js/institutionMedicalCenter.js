@@ -123,6 +123,17 @@ var InstitutionMedicalCenter = {
         return false;
     },
     
+    showSpecialistCommonModalId: function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('#doctor_id_'+_id).find('h3').html();
+        $('.doctorHiddenId').val(_id);
+        _modal = $(_linkElement.attr('data-target'));
+        $(".modal-body p strong").text(_name+'?');
+        
+        return false;
+    },
+    
     // jQuery element for link opener
     openAjaxBootstrapModal: function(_opener) {
         _opener = $(_opener);
@@ -255,19 +266,22 @@ var InstitutionMedicalCenter = {
          });
     },
 
-    submitRemoveMedicalSpecialistForm: function(_formElement) {
-        _button = _formElement.find('button.delete-button');
-        _button.attr('disabled', true)
-            .html('Processing...');
-        $.ajax({
-            url: _formElement.attr('action'),
-            data: _formElement.serialize(),
-            type: 'POST',
-            success: function(response){
-            	$('#doctor_id_'+response.id).remove();
-            	$('#dialog-container').dialog("close");
-            }
-         });
+    submitRemoveMedicalSpecialistForm: function(_domButtonElement) {
+  	 _button = $(_domButtonElement);
+	  	_form = _button.parents('.modal').find('form');
+	  	
+	    _button.html("Processing...").attr('disabled', true);
+
+	    $.ajax({
+	        url: _form.attr('action'),
+	        data: _form.serialize(),
+	        type: 'POST',
+	        success: function(response){
+	        	_form.parents('div.modal').modal('hide');
+	        	_button.html("Delete").attr('disabled', false);
+	        	$('#doctor_id_'+response.id).remove();
+	        }
+	     });
     },
     
     removeProperty: function(_propertyId, _container) {

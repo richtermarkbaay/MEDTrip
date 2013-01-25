@@ -28,4 +28,9 @@ services:
         class: HealthCareAbroad\AdvertisementBundle\Form\HighlightFeaturedImagesFormType
         tags:
             - {name: form.type, alias: highlight_featured_images }
+
+    form.advertisement_highlight:
+        class: HealthCareAbroad\AdvertisementBundle\Form\HighlightFormType
+        tags:
+            - {name: form.type, alias: advertisement_highlight }
                 

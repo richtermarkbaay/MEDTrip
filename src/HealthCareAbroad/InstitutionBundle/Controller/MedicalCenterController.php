@@ -992,10 +992,23 @@ class MedicalCenterController extends InstitutionAwareController
             throw $this->createNotFoundException('Invalid medical center property.');
         }
         
-        $this->institutionMedicalCenter->removeDoctor($doctor);
-        $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-    
-        return new Response("Doctor removed", 200);
+        $form = $this->createForm(new CommonDeleteFormType(), $doctor);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                
+                $this->institutionMedicalCenter->removeDoctor($doctor);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+        
+                $response = new Response(\json_encode(array('id' => $doctor->getId())), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
+        }
+        
+        return $response;
     }
 
     /**

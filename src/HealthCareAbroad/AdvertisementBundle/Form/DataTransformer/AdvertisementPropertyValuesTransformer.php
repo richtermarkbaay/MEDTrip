@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdvertisementBundle\Form\DataTransformer;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -47,12 +49,24 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             if(!$each->getValue()) {
                 continue;
             }
+            
+            if($property->getName() == 'highlights') {
+                $newValue = json_decode($each->getValue(), true);
+                foreach($newValue as $i => $highlight) {
+                    if($mediaId = $highlight['icon']) {
+                        $media = $this->em->getRepository('MediaBundle:Media')->find($mediaId);
+                        $newValue[$i]['icon'] = $media;                        
+                    }
+                }
+ 
+                $each->setValue($newValue);
+            }
 
             if($property->getDataType()->getFormField() == 'entity') {
                 $newValue = $this->em->getRepository($property->getDataClass())->find($each->getValue());
 
-                if($property->getDataType()->getColumnType() != 'collection') {                    
-                    $each->setValue($property->getName() == 'media_id' ? array($newValue) : $newValue);
+                if($property->getDataType()->getColumnType() != 'collection') {
+                    $each->setValue($property->getName() == 'media_id' ? $newValue : $newValue);
                     continue;
                 }
 
@@ -97,6 +111,15 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
                 $newObj = new AdvertisementPropertyValue();
                 $newObj->setAdvertisementPropertyName($each);
                 $newObj->setAdvertisement($advertisement);
+                
+                if($each->getName() == 'media_id') {
+                    $newObj->setValue(new Media());
+                
+                } elseif ($each->getName() == 'highlights') {
+                    $highlights = new ArrayCollection();
+                    $highlights->add(array());
+                    $newObj->setValue($highlights);
+                }
                 if($each->getDataType()->getColumnType() == 'collection') {
                     if($each->getDataType()->getFormField() == 'entity') {
                         $newObj->setValue(new ArrayCollection());                                      
@@ -104,10 +127,11 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
                         $newObj->setValue(array());
                     }
                 }
+
                 $advertisement->addAdvertisementPropertyValue($newObj);
             }
         }
-        
+
         return $advertisement;
     }
 
@@ -117,10 +141,16 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
      */
     public function reverseTransform($advertisement)
     {
+        if(is_null($advertisement->getDescription())) {
+            $advertisement->setDescription('');
+        }
+
+        
         $fileClassName = 'Symfony\Component\HttpFoundation\File\UploadedFile';        
         $advertisementPropertyValues = $advertisement->getAdvertisementPropertyValues();
         $existingCollectionValues = $collectionValues = array();
 
+        
         foreach($advertisementPropertyValues as $i => $each) {
             $property = $each->getAdvertisementPropertyName();
 
@@ -130,20 +160,19 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
         }
 
         foreach($advertisementPropertyValues as $i => $each) {
+            
             $property = $each->getAdvertisementPropertyName();
             $advertisementType = $property->getDataType();
-            //$config = json_decode($property->getPropertyConfig(), true);
+
 
             // If value is null OR empty array OR empty string with columnType collection
             if(is_null($each->getValue()) || (is_array($each->getValue()) && !count($each->getValue())) || (is_string($each->getValue()) && $advertisementType->getColumnType() == 'collection')) {
                 $advertisementPropertyValues->remove($i); continue;
-            }
-            
-            elseif (is_object($each->getValue()) || is_array($each->getValue())) { // If value is object
+
+            } elseif (is_object($each->getValue()) || is_array($each->getValue())) { // If value is object
 
                 if($advertisementType->getColumnType() == 'collection') {
                     $arrValue =  is_object($each->getValue()) ? $each->getValue()->toArray() : $each->getValue();
-
                     $isFirst = true;
                     foreach($arrValue as $key => $value) {
 
@@ -175,10 +204,16 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
                     }                    
 
                 } elseif ($advertisementType->getColumnType() == 'entity' && $fileClassName != get_class($each->getValue())) {
-                   $each->setValue($each->getValue()->getId());
+                    if($each->getValue()->getId()) $each->setValue($each->getValue()->getId());
+                    else $advertisementPropertyValues->remove($i);
                 }
             }
         }
+
+//         foreach($advertisementPropertyValues as $i => $each) {
+//             var_dump($each->getValue()); 
+//         }
+         //exit;
 
         return $advertisement;
     }
