@@ -3,6 +3,7 @@
     <form id="modal_specialist_form" action="{{ path('institution_medicalCenter_ajaxAddSpecialistService', {'imcId': institutionMedicalCenter.id, 'institutionId': institution.id} ) }}">
         {{ form_label(form.firstName) }}
         {{ form_widget(form.firstName) }}
+        <img style="display:none; width:180px;margin:-25px 0px 0px 10px;" class="loader_ajax_class" id="loader_ajax" src="{{ asset('images/institution/loading2.gif') }}" />
          <table class="table table-striped table-bordered specialist_table">
          <thead>
             <tr>    
@@ -60,7 +61,7 @@
             source: '',
             target: $('#institutionDoctorSearch_firstName'),
             selectedDataContainer: $('table.specialist_table tbody'),
-            loader: $('table.specialist_table tbody tr.loader'),
+            loader: $('#institutionDoctorSearch_firstName'),
             field: $('#institutionDoctorSearch_firstName')
         })
         .autocomplete();
