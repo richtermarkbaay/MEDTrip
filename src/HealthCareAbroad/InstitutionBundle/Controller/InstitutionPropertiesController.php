@@ -9,6 +9,8 @@ use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
 
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -119,17 +121,23 @@ class InstitutionPropertiesController extends InstitutionAwareController
         // get property value for this ancillary service
         $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $award->getId());
     
-        try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->remove($property);
-            $em->flush();
+       $form = $this->createForm(new CommonDeleteFormType(), $property);
         
-            $response = new Response('Award property removed', 200);
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+        
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($property);
+                $em->flush();
+        
+                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
         }
-        catch (\Exception $e){
-            $response = new Response($e->getMessage(), 500);
-        }
-    
+        
         return $response;
     }
     
