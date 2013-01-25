@@ -23,6 +23,7 @@ class DefaultController extends InstitutionAwareController
     
     public function indexAction()
     {
+        
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();

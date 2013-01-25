@@ -34,6 +34,42 @@
             width: 80px;
         }
         
+        .tmp-form > div {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .tmp-form > .highlights {
+            width: 1020px;
+        }
+
+        .tmp-form > .highlights > a{
+            position: absolute; 
+            right: 0; 
+            top: 53px;
+        }
+
+        .tmp-form > .highlights > div {
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .tmp-form > .highlights > div > a{  
+            top: 30px;
+            right: 27px;
+            position: absolute;
+        }
+        
+        .tmp-form > .highlights > div > div {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 10px;
+        }
+        
+        .tmp-form > .highlights > div > div select {
+            width: 120px;
+        }
+        
     </style>
 
 	<div id="main-content">
@@ -65,8 +101,9 @@
                             {{ form_row(propertyValue.advertisementPropertyName) }}
     				    
                             {% set valueObj = propertyValue.get('value') %}
-    				        {% if ((valueObj.advertisementPropertyName.name == 'highlight_featured_images') or (valueObj.advertisementPropertyName.name == 'media_id')) and valueObj.value|length %}
-    				            <div>
+
+    				        {% if ((valueObj.advertisementPropertyName.name == 'highlight_featured_images')) and valueObj.value|length %}
+    				            <div class="custom-property-values">
                                     {{ form_label(propertyValue.value) }}
         				            {% for adValueId, media in valueObj.value %} 
 
@@ -88,13 +125,53 @@
                 				            </div>
                                             {{ form_widget(propertyValue.value) }}
         				                {% endif %}
+        				            {% else %}
+        				                {{ form_widget(propertyValue.value) }}
         				            {% endfor %}
                                 </div>
+                            {% elseif valueObj.advertisementPropertyName.name == 'media_id' %}
+    				            <div class="custom-property-values">
+                                    {{ form_label(propertyValue.value) }}
+
+                                    {% if propertyValue.value.get('data').id %}
+                                        {{ form_widget(propertyValue.value, {attr: {style: 'display:none;'}}) }}
+                                        {{ media(propertyValue.value.get('data'), form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                                        <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a>
+                                    {% else %}
+                                        {{ form_widget(propertyValue.value) }}
+                                    {% endif %}
+                                </div>
+    				        {% elseif valueObj.advertisementPropertyName.name == 'highlights' %}
+                                <div class="custom-property-values highlights">
+                                    {{ form_label(propertyValue.value) }}
+                                    {% for highlightIndex, highlight in propertyValue.value %}
+                                        <div id="{{ highlight.get('id') }}">
+                                        {% for property in highlight.children %}
+                                            {% if property.get('name') == 'icon' and property.get('data') and (property.get('data').id is defined) %}
+                                                <div>
+                                                    {{ form_label(property) }}
+                                                    {{ form_widget(property, {attr:{style:'display:none'}}) }}
+                                                    {{ media(property.get('data'), form.get('data'), 'default', {thumbnail: true, width: 80}) | raw }}
+                				                    <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id, mediaId: property.get('data').id, index: highlightIndex}) }}" class="remove-image">remove</a>
+                                                </div>
+                                            {% else %}
+                                                {{ form_row(property) }}
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if loop.index > 1 %}
+                                            <a href="javascript:void(0)" class="remove-highlight">[ - remove highlight ]</a>
+                                        {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                    <a href="javascript:void(0)" class="add-highlight">[ + add another highlight ]</a>
+                                </div>
     				        {% else %}
-        				        {{ form_row(propertyValue.value) }}
+                                <div class="custom-property-values">
+        				            {{ form_label(propertyValue.value) }}
+            				        {{ form_widget(propertyValue.value) }}
+    				            </div>
     				        {% endif %}
-
-
     				        
     				    {% else %}
     				        <div style="display:none">{{ form_row(form.advertisementPropertyValues) }}</div>    
@@ -115,7 +192,7 @@
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
     Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
-    Location.loadNonGlobalCities = true;
+    Location.loadNonGlobalCities = 1;
 
     $(function(){
         $('#advertisement_institution, #advertisement_advertisementType').change(function(){
@@ -144,7 +221,39 @@
             return false;
         });
 
+        $('.highlights a.add-highlight').click(function() {
+            var newHighlight = $('.highlights > div:first').clone().hide();
+            var highlightCount = parseInt($('.highlights > div:last').attr('id').split('_').pop()) + 1;
+
+            if(!newHighlight.find('a.remove-highlight').length) {
+            	newHighlight.append('<a href="javascript:void(0)" class="remove-highlight">[ - remove highlight ]</a>');
+            }
+
+            var hightlightId = newHighlight.attr('id');
+            var arrId = hightlightId.split('_');
+            arrId[arrId.length - 1] = highlightCount;
+            var newhighlightId = arrId.join('_');
+            
+            var regex = new RegExp(hightlightId, "gi");
+            var newHighlightContent = newHighlight.html().replace(regex, newhighlightId).replace(/\[value\]\[0\]/gi, '[value][' + highlightCount + ']');
+
+            newHighlight.attr('id', newhighlightId).html(newHighlightContent);
+            newHighlight.find('div > img, div > a.remove-image').remove();
+            newHighlight.find('div > input').val('').show();
+            newHighlight.find('a.remove-highlight').click(function(){
+                $(this).parent().fadeOut(function(){$(this).remove()});
+            });
+
+            $(newHighlight).insertBefore($(this));
+            newHighlight.fadeIn();
+        });
+
+
         $('.country-load-cities').change();
+
+        $('.highlights > div > a.remove-highlight').click(function(){
+            $(this).parent().fadeOut(function(){$(this).remove()});
+        });
     });
 </script>
 {% endblock %}

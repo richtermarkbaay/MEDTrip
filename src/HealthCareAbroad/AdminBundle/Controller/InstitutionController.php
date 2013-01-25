@@ -88,7 +88,7 @@ class InstitutionController extends Controller
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
             'statusList' => InstitutionStatus::getBitValueLabels(),
-            'updateStatusOptions' => InstitutionStatus::getUpdateStatusOptions()
+            'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus()
         );
 
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
