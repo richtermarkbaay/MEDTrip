@@ -7,7 +7,7 @@ parameters:
     mediapathdiscriminators:
             institution: institutions/{objectId}
             doctor: doctors
-            advertisement: ads//{objectId}
+            advertisement: ads/{objectId}
             advertisementDenormalizedProperty: ads/{objectId}
             institutionMedicalCenter: institutionMedicalCenters/{objectId}
 

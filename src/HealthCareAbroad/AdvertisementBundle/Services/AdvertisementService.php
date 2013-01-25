@@ -23,8 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  */
 class AdvertisementService
-{
-    
+{    
     private $doctrine;
     
     /**
@@ -45,12 +44,10 @@ class AdvertisementService
     }
     
     public function save(Advertisement $advertisement)
-    {        
+    {
         if($advertisement->getId()) {
             foreach($advertisement->getAdvertisementPropertyValues()->getDeleteDiff() as $value) {
-                if($value->getAdvertisementPropertyName()->getName() != 'media_id') { // TODO
-                    $this->em->remove($value);
-                }
+                $this->em->remove($value);
             }
         }
 
@@ -101,16 +98,7 @@ class AdvertisementService
                 }
                 
                 $qb = $this->em->createQueryBuilder();
-
-                if($key == 'highlight_doctors') {
-                    $query = $qb->select('a,b,c')
-                                ->from($collectionClasses[$key], 'a')
-                                ->leftJoin('a.specializations', 'b')
-                                ->leftJoin('a.media', 'c')
-                                ->where($qb->expr()->in('a.id', $value));
-                } else {
-                    $query = $qb->select('a')->from($collectionClasses[$key], 'a')->where($qb->expr()->in('a.id', $value));
-                }
+                $query = $qb->select('a')->from($collectionClasses[$key], 'a')->where($qb->expr()->in('a.id', $value));
 
                 $data[$key] = json_encode($query->getQuery()->getResult(Query::HYDRATE_ARRAY));
             }
