@@ -6,8 +6,8 @@
 	</div>
 	<div id="featured_content">
 
+		{% for each in featuredClinicAds %}
 		<div class="featured_item">
-		    {% for each in featuredClinicAds %}
 		    {% set clinicUrl = path('page_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
 			<div class="general row">
 				<div class="clinic-box span2">
@@ -52,28 +52,23 @@
 					</div>
 				</div>
 -->
-                {% set doctors = json_decode(each.getHighlightDoctors) %}
-                {% for doctor in doctors %}
-				<div class="span4">
-					<div class="media">
-					    {% set doctorImage = doctor.media ? '/media/doctors/thumbnail-' ~ doctor.media.name : '' %}
-						<img class="media-object img-circle pull-left" src="{{ doctorImage }}" alt="clinic logo" width="50"/>
-						<div class="media-body">
-						    {% set doctors = json_decode(each.getHighlightDoctors) %}
-							<h5 class="media-heading">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</h5>
-                			<p>
-                			    {% for i, specialization in doctor.specializations %}
-                			        {{ specialization.name }}{% if i+1 != doctor.specializations | length %}, {% endif %}
-                			    {% endfor %}
-                			</p>
-						</div>
-					</div>
-				</div>
-				{% endfor %}
-			</div>
-	        {% endfor%}
-		</div><!--End of featured_item 1-->
-
+                {% set clinicHighlights = json_decode(each.highlights) %}    
+                {% for clinicHighlight in clinicHighlights %}
+                    <div class="span4">
+                        <div class="media">
+                            <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon ? clinicHighlight.icon.src_thumbnail : '/images/frontend/default-doctor-logo-orange.png' }}" alt="doctor logo" width="50"/>
+                            <div class="media-body">
+                                {% if clinicHighlight.header %}
+                                    <h5 class="media-heading">{{ clinicHighlight.header }}</h5>
+                                {% endif %}
+                                <p>{{ clinicHighlight.label }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+		    </div>
+        </div><!--End of featured_item 1-->
+    {% endfor %}
 	</div><!--End of featured_content-->
 </div><!--End of featured_wrapper-->
 
