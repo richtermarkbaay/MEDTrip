@@ -5,17 +5,23 @@ institution_medicalCenter_ajaxAddGlobalAward:
         _method: POST
         imcId: \d+
         
+institution_medicalCenter_ajaxEditGlobalAward:
+    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxEditGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_ajaxRemoveGlobalAward:
+    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: InstitutionBundle:Unsecured:ajaxRemoveGlobalAward, imcId: ~}
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        
 institution_medicalCenter_ajaxRemovePropertyValue:
     pattern: /institution/medical-center/{imcId}/ajaxRemovePropertyValue
     defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemovePropertyValue, imcId: ~}
     requirements:
         _method: GET|POST
         imcId: \d+
-        
-# institutionId is included in request parameters since this is an unsecured request
-institution_medicalCenter_ajaxGlobalAwardSource:
-    pattern: /ns-institution/medical-center/{imcId}/awards-certificates-and-affiliations/search
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxMedicalCenterGlobalAwardSource}
-    requirements:
-        imcId: \d+
-        _method: GET

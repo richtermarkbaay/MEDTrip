@@ -6,13 +6,18 @@
         <thead>
             <tr>
 				<th>{{ awardsList.header }}</th>
+				<th>Date acquired</th>
 				<th>Actions</th>
 			</tr>
         </thead>
 		<tbody>
-			<tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
+		    <tr style="display:none;"  class="loader"><td colspan="2" >Loading...</td></tr>
 			{% for _award in awardsList.list %}
 			    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'award': _award.global_award} %}
+			{% else %}
+			    <tr class="empty_row">
+			        <td colspan="3">No {{ awardsList.header | lower }} yet. </td>
+			    </tr>
 			{% endfor %}
 		</tbody>
 	</table>

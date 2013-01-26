@@ -44,6 +44,7 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:
             - [setDoctrine, [@doctrine]]
+            - [setInstitutionMedicalCenterPropertyService, [@services.institution_medical_center_property]]
     
     services.institution_signup:
         class: HealthCareAbroad\InstitutionBundle\Services\SignUpService

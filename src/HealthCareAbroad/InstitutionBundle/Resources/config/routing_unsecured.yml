@@ -11,18 +11,17 @@ institution_load_tabbed_contents_singleProfile:
         _method: GET|POST
         imcId: \d+
         
-institution_medicalCenter_ajaxRemoveGlobalAward:
-    pattern: /institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
-    defaults: { _controller: InstitutionBundle:Unsecured:ajaxRemoveGlobalAward, imcId: ~}
-    requirements:
-        _method: GET|POST
-        imcId: \d+
-        institutionId: \d+
-        
-        
 institution_medicalCenter_loadMedicalSpecialist:
     pattern: /ns-institution/medical-center/{imcId}/medical-specialists/load
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadMedicalSpecialist }
     requirements:
         _method: GET
         imcId: \d+
+        
+# institutionId is included in request parameters since this is an unsecured request
+institution_medicalCenter_ajaxGlobalAwardSource:
+    pattern: /ns-institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxMedicalCenterGlobalAwardSource}
+    requirements:
+        imcId: \d+
+        _method: GET

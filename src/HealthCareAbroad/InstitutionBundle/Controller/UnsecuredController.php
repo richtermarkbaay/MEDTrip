@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
@@ -158,8 +160,10 @@ class UnsecuredController extends Controller
                 $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
                 $currentGlobalAwards = $institutionMedicalCenterService->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
                 $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-                 
+                $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+                
                 $parameters['form'] = $form->createView();
+                $parameters['editGlobalAwardForm'] = $editGlobalAwardForm->createView();
                 $parameters['isSingleCenter'] = true;
                 $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
                 $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);
@@ -234,45 +238,5 @@ class UnsecuredController extends Controller
         }
     
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-    }
-    
-    /**
-     * Remove global award of an institution medical center
-     *
-     * @param Request $request
-     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
-     */
-    public function ajaxRemoveGlobalAwardAction(Request $request)
-    {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
-    
-        if (!$award) {
-            throw $this->createNotFoundException();
-        }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
-        // get property value
-        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
-    
-        $form = $this->createForm(new CommonDeleteFormType(), $property);
-    
-        if ($request->isMethod('POST'))  {
-            $form->bind($request);
-            if ($form->isValid()) {
-    
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->remove($property);
-                $em->flush();
-    
-                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
-            }
-            else{
-                $response = new Response("Invalid form", 400);
-            }
-        }
-    
-        return $response;
     }
 }

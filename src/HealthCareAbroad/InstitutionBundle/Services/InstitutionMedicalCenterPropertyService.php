@@ -127,4 +127,19 @@ class InstitutionMedicalCenterPropertyService
             $this->activePropertyTypes[$each->getName()] = $each;
         }
     }
+    
+//     public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, $loadValuesEagerly=true)
+//     {
+//         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+//         $criteria = array(
+//             'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
+//             'institutionPropertyType' => $propertyType
+//         );
+//         // get the properties
+//         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+//         static $_valueObjectMap = array();
+//         if ($loadValuesEagerly) {
+//             $globalAwardRepo = $this->doctrine->getRepository();
+//         }
+//     }
 }

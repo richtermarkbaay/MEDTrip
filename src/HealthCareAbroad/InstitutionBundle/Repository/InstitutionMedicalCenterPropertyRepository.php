@@ -27,7 +27,7 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class InstitutionMedicalCenterPropertyRepository extends EntityRepository
-{
+{   
     /**
      * Get all ancillary services by institution medical center
      * 

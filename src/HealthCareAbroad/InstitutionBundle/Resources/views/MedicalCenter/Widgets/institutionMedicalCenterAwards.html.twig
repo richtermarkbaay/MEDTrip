@@ -66,6 +66,8 @@
             </form>
         </div>
 	</div>
+	
+	{% include 'InstitutionBundle:MedicalCenter/Partials:modal.editGlobalAward.html.twig' %}
     
     {% endblock %}
 {% endembed %}
@@ -74,7 +76,18 @@
 <!--
 (function($){
     $(function(){
-    	var _nsUrl = '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {imcId: institutionMedicalCenter.id}) }}';
+
+        
+        
+        $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
+        
+        $('a.edit_global_award').globalAward('edit', {
+            'modal': $('div.edit_award_form_container'),
+            'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
+            'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
+        });
+        
+    	var _nsUrl = '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}';
         InstitutionGlobalAwardAutocomplete
         .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}') 
         .setAutocompleteOptions('award', {
