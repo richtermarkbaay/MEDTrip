@@ -21,8 +21,8 @@
                        mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                        streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }
-                }
-            %}
+               }
+           %}
         {% endfor %}
 
         {% if searchResults.isPaginable %}
@@ -31,6 +31,7 @@
 
     </div> <!--End of main_content-->
 
-    {% include 'FrontendBundle:Widgets/Search:sidebar.resultsSingleSearch.html.twig' %}
+    {% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', treatmentId: treatmentId } %}
+
 </div>
 {% endblock %}

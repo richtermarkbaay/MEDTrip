@@ -1,0 +1,54 @@
+<aside class="span4" id="aside_content">
+    <section class="box-in">
+        <h5 class="heading"><small>Narrow</small> Search </h5>
+        <ul class="related">
+
+            <li class="row">
+                <div class="pull-right btn-group">
+                    {% render "SearchBundle:Frontend:showWidget" with { context: context, subContext: 'country', treatmentId: treatmentId } %}
+                </div>
+                <h3>By Country</h3>
+                <ul>
+                    {% for item in topCountries %}
+                        <li><a href="#">{{ item.country }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+
+            <li class="row">
+                <div class="pull-right btn-group">
+                    {% render "SearchBundle:Frontend:showWidget" with { context: context, subContext: 'city', treatmentId: treatmentId } %}
+                </div>
+                <h3>By City</h3>
+                <ul>
+                    {% for item in topCities %}
+                        <li><a href="#">{{ item.city }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+
+            <script type="text/javascript">
+                $('.dropdown-menu .search-field').click(function(e){
+                    e.stopPropagation();
+                }, false);
+            </script>
+
+            <li class="row">
+                <h3>Related Treatments</h3>
+                <ul>
+                    <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
+                    <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
+                    <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </section>
+    <section class="box-in">
+        <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
+        <ul class="ads">
+            <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
+            <li>When I grow up, I want to be a <b>NEWS</b>.</li>
+        </ul>
+    </section>
+</aside>

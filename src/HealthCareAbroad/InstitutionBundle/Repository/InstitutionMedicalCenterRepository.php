@@ -1,31 +1,20 @@
 <?php
-
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
-use Doctrine\ORM\QueryBuilder;
-
-use Doctrine\ORM\Query\Expr\Join;
-
-use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
-
-use HealthCareAbroad\HelperBundle\Entity\City;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
-
-use HealthCareAbroad\HelperBundle\Entity\Country;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
-use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterGroupStatus;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+use HealthCareAbroad\TreatmentBundle\Entity\TreatmentProcedure;
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+use HealthCareAbroad\TreatmentBundle\Entity\MedicalCenter;
+use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\Country;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\EntityRepository;
 
@@ -63,20 +52,20 @@ class InstitutionMedicalCenterRepository extends EntityRepository
          LEFT JOIN institution_medical_center_groups i4_ ON i4_.id = i5_.institution_medical_center_group_id AND (i4_.id = 1)
          WHERE d0_.status = 1 AND i4_.id IS NULL
          */
-        
+
 //         $ids = array();
 //         foreach ($center->getDoctors() as $each) {
 //             var_dump($each);exit;
 //             $ids[] = $each->getSpecialization()->getId();
 //         }
-        
+
 //         $idsNotIn = "'".\implode("', '",$ids)."'";
-        
+
 //         $dql = "SELECT a FROM TreatmentBundle:Specialization a WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
 //         $query = $this->getEntityManager()->createQuery($dql)
 //         ->setParameter('active', Specialization::STATUS_ACTIVE);
 //         return $query->getResult();
-        
+
         $qb = $this->getEntityManager()->createQueryBuilder()
         ->select('d, dmc')
         ->from('DoctorBundle:Doctor', 'd')
@@ -101,9 +90,9 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         }
 
         $idsNotIn = "'".\implode("', '",$ids)."'";
-        
+
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn}) 
+        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
                     AND (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey) AND b.specialization_id
                     IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active ORDER BY a.first_name ASC";
         $stmt = $connection->prepare($query);
@@ -113,195 +102,9 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $stmt->execute();
         //var_dump($stmt->fetchAll());exit;
         return $stmt->fetchAll();
-    
-    }
-    
-    
-    public function getMedicalCentersByCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institution b
-                WHERE b.country = :country
-                AND a.status = :imcStatus')
-            ->setParameter('country', $country)
-            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
 
-        return $query->getResult();
     }
 
-    public function getMedicalCentersByCity(\HealthCareAbroad\HelperBundle\Entity\City $city)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institution b
-                WHERE b.city = :city
-                AND a.status = :imcStatus')
-            ->setParameter('city', $city)
-            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySpecialization($specialization)
-    {
-        //TODO: we may need to link to specializations table and filter by its status
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institutionSpecializations b
-                WHERE b.specialization = :specialization
-                AND a.status = :imcStatus
-            ')
-            ->setParameter('specialization', $specialization)
-            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySpecializationAndCountry($specialization, $country)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institutionSpecializations b
-                LEFT JOIN a.institution c
-                WHERE b.specialization = :specialization
-                AND c.country = :country
-                AND a.status = :imcStatus
-            ')
-                    ->setParameter('specialization', $specialization)
-                    ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
-                    ->setParameter('country', $country);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySpecializationAndCity($specialization, $city)
-    {
-        $query = $this->getEntityManager()
-        ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institutionSpecializations b
-                LEFT JOIN a.institution c
-                WHERE b.specialization = :specialization
-                AND c.city = :city
-                AND a.status = :imcStatus
-            ')
-                ->setParameter('specialization', $specialization)
-                ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
-                ->setParameter('city', $city);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country)
-    {
-        $query = $this->getEntityManager()
-        ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institutionSpecializations b
-                LEFT JOIN b.treatments c
-                LEFT JOIN c.subSpecializations d
-                LEFT JOIN a.institution e
-                WHERE d.id = :subSpecialization
-                AND e.country = :country
-                AND a.status = :imcStatus
-            ')
-                ->setParameter('subSpecialization', $subSpecialization)
-                ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
-                ->setParameter('country', $country);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city)
-    {
-        $query = $this->getEntityManager()
-        ->createQuery('
-                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-                LEFT JOIN a.institutionSpecializations b
-                LEFT JOIN b.treatments c
-                LEFT JOIN c.subSpecializations d
-                LEFT JOIN a.institution e
-                WHERE d.id = :subSpecialization
-                AND e.city = :city
-                AND a.status = :imcStatus
-            ')
-                ->setParameter('subSpecialization', $subSpecialization)
-                ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
-                ->setParameter('city', $city);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersByTreatmentAndCountry($treatment, $country)
-    {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institutionSpecializations b
-            LEFT JOIN b.treatments c
-            LEFT JOIN a.institution d
-            WHERE c.id = :treatment
-            AND d.country = :country
-            AND a.status = :imcStatus
-        ')
-                ->setParameter('treatment', $treatment)
-                ->setParameter('country', $country)
-                ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);;
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersByTreatmentAndCity($treatment, $city)
-    {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institutionSpecializations b
-            LEFT JOIN b.treatments c
-            LEFT JOIN a.institution d
-            WHERE c.id = :treatment
-            AND d.city = :city
-            AND a.status = :imcStatus
-        ')
-            ->setParameter('treatment', $treatment)
-            ->setParameter('city', $city)
-            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);;
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersBySubSpecialization($subSpecialization)
-    {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institutionSpecializations b
-            LEFT JOIN b.treatments c
-            LEFT JOIN c.subSpecializations d
-            WHERE d.id = :subSpecialization
-            AND a.status = :imcStatus
-        ')
-        ->setParameter('subSpecialization', $subSpecialization)
-        ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
-
-        return $query->getResult();
-    }
-
-    public function getMedicalCentersByTreatment($treatment)
-    {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
-            LEFT JOIN a.institutionSpecializations b
-            LEFT JOIN b.treatments c
-            WHERE c.id = :treatment
-            AND a.status = :imcStatus
-        ')
-        ->setParameter('treatment', $treatment)
-        ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);;
-
-        return $query->getResult();
-    }
 
     /**
      * Get QueryBuilder for getting all medical centers of an institution
@@ -339,8 +142,202 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $count;
     }
 
-    private function _getCommonRSM()
-    {
+    // --- The following functions are used on the frontend and will return results
+    // --- where institution has ACTIVE and APPROVED statuses and/or where the
+    // --- institution medical center has APPROVED status
 
+//     public function getMedicalCentersByCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country)
+//     {
+//         $query = $this->getEntityManager()->createQuery('
+//                 SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+//                 LEFT JOIN a.institution b
+//                 WHERE b.country = :country
+//                 AND a.status = :imcStatus
+//                 AND b.status = :institutionStatus')
+//             ->setParameter('country', $country)
+//             ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+//             ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+
+//         return $query->getResult();
+//     }
+
+//     public function getMedicalCentersByCity(\HealthCareAbroad\HelperBundle\Entity\City $city)
+//     {
+//         $query = $this->getEntityManager()->createQuery('
+//                 SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+//                 LEFT JOIN a.institution b
+//                 WHERE b.city = :city
+//                 AND b.city IS NOT NULL
+//                 AND a.status = :imcStatus
+//                 AND b.status = :institutionStatus')
+//             ->setParameter('city', $city)
+//             ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+//             ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+
+//         return $query->getResult();
+//     }
+
+    public function getMedicalCentersBySpecialization($specialization)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN a.institution c
+                WHERE b.specialization = :specialization
+                AND c.status = :institutionStatus
+                AND a.status = :imcStatus')
+            ->setParameter('specialization', $specialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySpecializationAndCountry($specialization, $country)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN a.institution c
+                WHERE b.specialization = :specialization
+                AND c.status = :institutionStatus
+                AND c.country = :country
+                AND a.status = :imcStatus')
+            ->setParameter('specialization', $specialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
+            ->setParameter('country', $country);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySpecializationAndCity($specialization, $city)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN a.institution c
+                WHERE b.specialization = :specialization
+                AND c.status = :institutionStatus
+                AND c.city = :city
+                AND a.status = :imcStatus')
+            ->setParameter('specialization', $specialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
+            ->setParameter('city', $city);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN c.subSpecializations d
+                LEFT JOIN a.institution e
+                WHERE d.id = :subSpecialization
+                AND e.status = :institutionStatus
+                AND e.country = :country
+                AND a.status = :imcStatus')
+            ->setParameter('subSpecialization', $subSpecialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
+            ->setParameter('country', $country);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city)
+    {
+        $query = $this->getEntityManager()
+        ->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN c.subSpecializations d
+                LEFT JOIN a.institution e
+                WHERE d.id = :subSpecialization
+                AND e.city = :city
+                AND e.status = :institutionStatus
+                AND a.status = :imcStatus')
+            ->setParameter('subSpecialization', $subSpecialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED)
+            ->setParameter('city', $city);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersByTreatmentAndCountry($treatment, $country)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN a.institution d
+                WHERE c.id = :treatment
+                AND d.country = :country
+                AND a.status = :imcStatus')
+            ->setParameter('treatment', $treatment)
+            ->setParameter('country', $country)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersByTreatmentAndCity($treatment, $city)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN a.institution d
+                WHERE c.id = :treatment
+                AND d.status = :institutionStatus
+                AND d.city = :city
+                AND a.status = :imcStatus')
+            ->setParameter('treatment', $treatment)
+            ->setParameter('city', $city)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);;
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersBySubSpecialization($subSpecialization)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN c.subSpecializations d
+                LEFT JOIN a.institution e
+                WHERE d.id = :subSpecialization
+                AND e.status = :institutionStatus
+                AND a.status = :imcStatus')
+            ->setParameter('subSpecialization', $subSpecialization)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+
+        return $query->getResult();
+    }
+
+    public function getMedicalCentersByTreatment($treatment)
+    {
+        $query = $this->getEntityManager()->createQuery('
+                SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
+                INNER JOIN a.institutionSpecializations b
+                LEFT JOIN b.treatments c
+                LEFT JOIN a.institution d
+                WHERE c.id = :treatment
+                AND d.status = :institutionStatus
+                AND a.status = :imcStatus')
+            ->setParameter('treatment', $treatment)
+            ->setParameter('institutionStatus', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+            ->setParameter('imcStatus', InstitutionMedicalCenterStatus::APPROVED);
+
+        return $query->getResult();
     }
 }

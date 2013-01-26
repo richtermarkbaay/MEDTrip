@@ -16,6 +16,11 @@ class SearchParameterBag extends ParameterBag
     const SEARCH_TYPE_TREATMENTS = 2;
     const SEARCH_TYPE_COMBINATION = 3;
 
+    const FILTER_COUNTRY = 'country';
+    const FILTER_CITY = 'city';
+    const FILTER_SPECIALIZATION = 'specialization';
+    const FILTER_TREATMENT = 'treatment';
+
     /**
      * Constructor.
      *
@@ -34,6 +39,7 @@ class SearchParameterBag extends ParameterBag
         $destination = null;
         $treatmentLabel = '';
         $destinationLabel = '';
+        $filter = '';
 
         // Allow only these keys
         foreach ($parameters as $key => $value) {
@@ -47,15 +53,17 @@ class SearchParameterBag extends ParameterBag
                 $treatmentLabel = $parameters['treatmentLabel'];
             } else if ('destinationLabel' === $key) {
                 $destinationLabel = $parameters['destinationLabel'];
+            } else if ('filter' === $key) {
+                $filter = $parameters['filter'];
             } else {
                 throw new \Exception('Invalid parameter: ' . $key);
             }
         }
 
-        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term);
+        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term, $filter);
     }
 
-    private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term)
+    private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term, $filter)
     {
         $treatmentType = '';
         $context = '';
@@ -81,11 +89,12 @@ class SearchParameterBag extends ParameterBag
         }
 
         if ($term) {
+            //TODO: first condition is not enough
             if ($treatmentLabel && $destinationLabel) {
                 $context = self::SEARCH_TYPE_COMBINATION;
-            } elseif ($treatmentLabel === $term) {
+            } elseif ($treatmentLabel === $term || ($countryId || $cityId)) {
                 $context = self::SEARCH_TYPE_TREATMENTS;
-            } elseif ($destinationLabel === $term) {
+            } elseif ($destinationLabel === $term || ($specializationId || $subSpecializationId || $treatmentId)) {
                 $context = self::SEARCH_TYPE_DESTINATIONS;
             }
         } else {
@@ -109,7 +118,8 @@ class SearchParameterBag extends ParameterBag
                         'treatmentParameter' => $treatment,
                         'destinationParameter' => $destination,
                         'treatmentLabel' => $treatmentLabel,
-                        'destinationLabel' => $destinationLabel
+                        'destinationLabel' => $destinationLabel,
+                        'filter' => $filter
         );
     }
 

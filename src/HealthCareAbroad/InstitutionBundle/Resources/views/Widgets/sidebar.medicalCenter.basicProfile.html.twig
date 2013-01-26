@@ -10,7 +10,7 @@
                 <span class="street_address_part">{{  _institution_medical_center_address | length ? _institution_medical_center_address | join(', ') ~ ', ' : '' }}</span>
                 <span class="institution_address">{{ _institution_address | join(', ')}}</span>
                 <a href="#addressModal" data-toggle="modal" role="button">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    <i class="icon-pencil" title="Edit"></i><small class="addressLabel">Edit Address</small>
                 </a>
 
             </td>
@@ -18,9 +18,10 @@
         
         <tr>
             <td>
+            {% set contact = json_to_array(institutionMedicalCenter.contactNumber, false) %}
                 <span id="profileNumberText">{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</span>
                 <a href="#numberModal" role="button" data-toggle="modal">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    <i class="icon-pencil" title="Edit"></i><small class="numberLabel">{{ contact | length ? 'Edit':'Add'}} Contact Number</small>
                 </a>
             </td>
         </tr>
@@ -30,7 +31,7 @@
                 <p>
                     <span id="profileEmailText">{{ institutionMedicalCenter.contactEmail }}</span>
                     <a href="#emailModal" role="button" data-toggle="modal">
-                        <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                        <i class="icon-pencil" title="Edit"></i><small class="emailLabel">{{ institutionMedicalCenter.contactEmail | length ? 'Edit':'Add'}} Contact Email</small>
                     </a>
                 </p>
             </td>
@@ -39,12 +40,13 @@
         <tr>
             <td>
                 <div id="profileWebsitesText">
+                {% set site = json_to_array(institutionMedicalCenter.websites, false) %}
                     {% for type, site in json_websites_to_array(institutionMedicalCenter.websites) %}
                         {{ type }}: <a href="{{ site }}">{{ site }}</a><br/>
                     {% endfor %}
                 </div>
                 <a href="#websitesModal" role="button" data-toggle="modal">
-                    <i class="icon-pencil" title="Edit"></i><small>Edit</small>
+                    <i class="icon-pencil" title="Edit"></i><small class="websiteLabel">{{ site | length ? 'Edit':'Add'}} Website</small>
                 </a>
             </td>
         </tr>

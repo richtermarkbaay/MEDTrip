@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Entity\Media;
+
+use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -35,12 +39,18 @@ class AdvertisementController extends Controller
      */
     private $institution;
     
+    /**
+     * 
+     * @var FilesystemManager
+     */
+    private $fileSystemManager;
+    
 
     public function preExecute()
     {
         $ad = $this->getRequest()->get('advertisement');
         $institutionId = $ad ? $ad['institution'] : null;
-        
+
         if(!$institutionId) {
             $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus());
 
@@ -78,6 +88,8 @@ class AdvertisementController extends Controller
                 throw $this->createNotFoundException("Invalid institution.");
             }
         }
+        
+        $this->fileSystemManager = $this->get('services.media.filesystemmanager');
     }
     
     /**
@@ -226,7 +238,7 @@ class AdvertisementController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $fileClassName = 'Symfony\Component\HttpFoundation\File\UploadedFile';
-
+        
         foreach($advertisement->getAdvertisementPropertyValues() as $i => $each) {
             $newValue = null;
             $value = $each->getValue();
@@ -242,13 +254,13 @@ class AdvertisementController extends Controller
                     if(is_object($file)) {
                         if($fileClassName == get_class($file)) {
                             $media = $this->get('services.media')->upload($file, $advertisement);
-                            $value[$i]['icon'] = is_object($media) ? $media->getId() : '';                            
+                            $value[$i]['icon'] = $media ? $this->mediaObjectToArray($media) : array(); 
                         } else {
-                            $value[$i]['icon'] = $file->getId();
+                            $value[$i]['icon'] = $this->mediaObjectToArray($file);
                         }
-
                     }
                 }
+
                 $each->setValue(json_encode($value));
 
             } elseif ($property->getName() == 'media_id' || ($property->getDataType()->getColumnType() == 'collection' && $property->getDataType()->getFormField() == 'file')) {
@@ -306,12 +318,37 @@ class AdvertisementController extends Controller
 
             $em->persist($advertisementDenormolized);
             $em->flush();
-            
             $result = true;
         }
 
 		$response = new Response(json_encode($result));
-		$response->headers->set('Content-Type', 'application/json');		
+		$response->headers->set('Content-Type', 'application/json');
+
 		return $response;
+    }
+    
+    private function mediaObjectToArray(Media $media)
+    {
+        $mediaArray = null;
+
+        if($media->getId()) {
+            
+            if(!$this->advertisement) {
+                $this->advertisement = new Advertisement();
+                $this->advertisement->setInstitution($this->institution);
+            }
+            // TODO - Temporary fixed to set pathDiscriminator
+            $this->fileSystemManager->get($this->advertisement);
+
+            $mediaArray = array(
+                'id' => $media->getId(),
+                'uuid' => $media->getUuid(),
+                'caption' => $media->getCaption(),
+                'src' => $this->fileSystemManager->getWebPath() . '/' . $media->getName(),
+                'src_thumbnail' => $this->fileSystemManager->getWebPath() . '/thumbnail-' . $media->getName()
+            );            
+        }
+
+        return $mediaArray;
     }
 }

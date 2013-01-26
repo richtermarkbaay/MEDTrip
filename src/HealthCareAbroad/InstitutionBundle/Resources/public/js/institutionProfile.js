@@ -294,6 +294,8 @@ var InstitutionProfile = {
                                 address.push(response.institution[_v]);
                             }
                         });
+                        
+                		$('.addressLabel').html('Edit Contact Address');
                         _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
                         
                         $('.address_column').find('span.address_part').remove();
@@ -303,18 +305,36 @@ var InstitutionProfile = {
     
                     case 'numberModalForm':
                         var number = response.institution.contactNumber;
+                        
+                       	if(number.country_code){
+                    		$('.numberLabel').html('Edit Contact Number');
+                    	}else{
+                    		$('.numberLabel').html('Add Contact Number');
+                    	}
+                        
                         $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
                         break;
     
                     case 'emailModalForm':
+                    	if(response.institution.contactEmail){
+                    		$('.emailLabel').html('Edit Contact Email');
+                    	}else{
+                    		$('.emailLabel').html('Add Contact Email');
+                    	}
                         $('#profileEmailText').html(response.institution.contactEmail);
                         break;
     
                     case 'websitesModalForm':
                         var websites = response.institution.websites, websitesString = ''; 
                         for(name in websites) {
+                        	
                             websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
                         }
+                    	if(websites[name]){
+                    		$('.emailLabel').html('Edit Websites');
+                    	}else{
+                    		$('.emailLabel').html('Add Websites');
+                    	}
                         $('#profileWebsitesText').html(websitesString);
                         break;
                 } 
