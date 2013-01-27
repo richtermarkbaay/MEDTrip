@@ -219,13 +219,16 @@ class InstitutionMedicalCenterService
             $globalAwards[$k] = array();
         }
         
-        //$imcGlobalAwards = $this->institutionMedicalCenterPropertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($institutionMedicalCenter);
-        
-        foreach ($this->getMedicalCenterGlobalAwards($institutionMedicalCenter) as $_globalAward) {
-            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
-                'global_award' => $_globalAward,
-            );
+        $imcProperties = $this->institutionMedicalCenterPropertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($institutionMedicalCenter);
+        foreach ($imcProperties as $imcp) {
+            $_globalAward = $imcp->getValueObject();
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $imcp;
         }
+//         foreach ($this->getMedicalCenterGlobalAwards($institutionMedicalCenter) as $_globalAward) {
+//             $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
+//                 'global_award' => $_globalAward,
+//             );
+//         }
         
         return $globalAwards;
     }

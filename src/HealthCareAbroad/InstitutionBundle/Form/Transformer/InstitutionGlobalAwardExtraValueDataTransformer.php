@@ -6,9 +6,16 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class InstitutionGlobalAwardExtraValueDataTransformer implements DataTransformerInterface
 {
-    private $defaultValue = array(
-        'year_acquired' => array() // an array of years when this award was acquired
-    );
+    const YEAR_ACQUIRED_JSON_KEY = 'year_acquired';
+    
+    private $defaultValue = array();
+    
+    public function __construct()
+    {
+        $this->defaultValue = array(
+            self::YEAR_ACQUIRED_JSON_KEY => array() // an array of years when this award was acquired
+        );
+    }
     
     /**
      * Transform submitted extraValue data into formatted form

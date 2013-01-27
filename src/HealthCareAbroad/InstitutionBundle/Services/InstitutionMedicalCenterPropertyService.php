@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Services\GlobalAwardService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
@@ -36,12 +38,22 @@ class InstitutionMedicalCenterPropertyService
     
     private $activePropertyTypes;
     
+    /**
+     * @var GlobalAwardService
+     */
+    private $globalAwardService;
+    
     public function __construct(Registry $doctrine, MemcacheService $memcache)
     {
         $this->doctrine = $doctrine;
         $this->memcache = $memcache;
         
         $this->_setupAvailablePropertyTypes();
+    }
+    
+    public function setGlobalAwardService($v)
+    {
+        $this->globalAwardService = $v;
     }
     
     public  function findById($id)
@@ -128,18 +140,49 @@ class InstitutionMedicalCenterPropertyService
         }
     }
     
-//     public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, $loadValuesEagerly=true)
-//     {
-//         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-//         $criteria = array(
-//             'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
-//             'institutionPropertyType' => $propertyType
-//         );
-//         // get the properties
-//         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
-//         static $_valueObjectMap = array();
-//         if ($loadValuesEagerly) {
-//             $globalAwardRepo = $this->doctrine->getRepository();
-//         }
-//     }
+    /**
+     * Get InstitutionMedicalCenterProperties of an institution medical center where property type is global award
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param boolean $loadValuesEagerly
+     * @return array InstitutionMedicalCenterProperty
+     */
+    public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, $loadValuesEagerly=true)
+    {
+        $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $criteria = array(
+            'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
+            'institutionPropertyType' => $propertyType
+        );
+        // get the properties
+        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        $returnVal = $properties;
+        
+        if ($loadValuesEagerly) {
+            $globalAwardIds = array();
+            $propertiesByValue = array();
+            foreach ($properties as $imcp) {
+                $globalAwardIds[] = $imcp->getValue(); 
+                // store the property with the value as the key
+                $propertiesByValue[$imcp->getValue()][] = $imcp;
+            }
+            
+            // find global awards with ids equal to the retrieve property values
+            $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findByIds($globalAwardIds);
+
+            $returnVal = array();
+            // get the property from the stored list
+            foreach ($globalAwards as $_award) {
+                if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
+                    foreach ($propertiesByValue[$_award->getId()] as $imcp) {
+                        // set the value object to GlobalAward
+                        $imcp->setValueObject($_award);
+                        $returnVal[] = $imcp;
+                    }
+                }
+            }
+        }
+        
+        return $returnVal;
+    }
 }

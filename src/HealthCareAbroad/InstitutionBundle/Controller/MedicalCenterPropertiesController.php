@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -145,17 +147,28 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         }
         $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $imcProperty = $this->imcService->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId());
-        
+        $imcProperty->setValueObject($globalAward);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
         if ($this->request->isMethod('POST')) {
             $editGlobalAwardForm->bind($this->request);
             if ($editGlobalAwardForm->isValid()) {
                 try {
+                    $imcProperty = $editGlobalAwardForm->getData(); 
                     $em = $this->getDoctrine()->getEntityManager();
-                    $em->persist($editGlobalAwardForm->getData());
+                    $em->persist($imcProperty);
                     $em->flush();
-                    
-                    $response = new Response('saved', 200);
+//                     $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
+//                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                         'award' => $globalAward,
+//                         'property' => $imcProperty
+//                     ));
+                    $extraValue = \json_decode($imcProperty->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                        'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
+                        'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
                 catch(\Exception $e) {
                     $response = new Response('Error: '.$e->getMessage(), 500);

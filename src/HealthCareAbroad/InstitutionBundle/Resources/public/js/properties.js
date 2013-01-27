@@ -13,7 +13,11 @@
     
     function _showModal(_modal) {
         _modal.modal('show');
-    };
+    }
+    
+    function _hideModal(_modal) {
+        _modal.modal('hide');
+    }
     
     /***
      * handler for Global Award related js functionalites
@@ -30,7 +34,8 @@
             'input_award_id': 'input.globalAwardId', // identifier of the hidden input element that will hold the value of the award id 
             'input_extraValueAutocomplete_json': 'input.extraValueAutocomplete_json', // identifier of the hidden input element that will hold the JSON value of the extraValue field
             'input_extraValueAutocomplete': 'input.extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
-            'submit_button': 'button.submit' // identifier of the submit button
+            'submit_button': 'button.submit', // identifier of the submit button
+            'year_acquired_column': '.yearAcquired'
         },
         'autocompleteYear': {
             'minimumYear': 1920
@@ -103,8 +108,7 @@
             .val(_el.attr('data-globalAwardId'));
         
         $.globalAward.options.edit.data_label_target.html(_el.attr('data-label')); // replace data label value
-        
-        $.globalAward.options.edit.modal.find()
+        //$.globalAward.options.edit.modal.find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.attr('data-propertyExtraValue'))// initialize autocomplete field values
         _showModal($.globalAward.options.edit.modal);
         
         return false;
@@ -131,7 +135,11 @@
             data: _form.serialize(),
             dataType: 'json',
             success: function(response) {
+                _currentRow = $(response.targetRow);
+                // currently only replace year acquired
+                _currentRow.find($.globalAward.options.edit.year_acquired_column).html(response.html);
                 _button.html(_buttonHtml).attr('disabled', false);
+                _hideModal($.globalAward.options.edit.modal);
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);

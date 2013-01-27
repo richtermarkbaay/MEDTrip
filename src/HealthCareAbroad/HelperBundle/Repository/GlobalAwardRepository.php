@@ -15,6 +15,20 @@ use Doctrine\ORM\EntityRepository;
 class GlobalAwardRepository extends EntityRepository
 {
 
+    public function findByIds(array $ids, $loadEager=true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('g, ga')
+            ->from('HelperBundle:GlobalAward', 'g')
+            ->innerJoin('g.awardingBody', 'ga')
+            ->where($qb->expr()->in('g.id', ':ids'))
+            ->setParameter('ids', $ids)
+            ->getQuery();
+        
+        return $query->getResult();
+    }
+    
+    
 	function getInstitutionGlobalAwards($medicalCenterId)
 	{
 		$conn = $this->_em->getConnection();

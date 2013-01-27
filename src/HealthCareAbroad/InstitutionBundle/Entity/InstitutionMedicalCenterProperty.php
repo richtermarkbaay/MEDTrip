@@ -153,4 +153,24 @@ class InstitutionMedicalCenterProperty
     {
         return $this->extraValue;
     }
+    
+    /* ----- custom methods here ----- */
+    /**
+     * @var Mixed object representation of the value
+     */
+    private $valueObject;
+    
+    public function setValueObject($v)
+    {
+        $this->valueObject = $v;
+        return $this;
+    }
+    
+    public function getValueObject()
+    {
+        return $this->valueObject;
+    }
+    
+    /* ----- end custom methods ----- */
+    
 }

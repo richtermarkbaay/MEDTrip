@@ -19,6 +19,19 @@ class GlobalAwardService
         $this->doctrine = $v;
     }
     
+    public function findById($id, $loadEager=true)
+    {
+        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
+            ->select('g, ga')
+            ->from('HelperBundle:GlobalAward', 'g')
+            ->innerJoin('g.awardingBody', 'ga')
+            ->where('g.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        
+        return $query->getResult();
+    }
+    
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */
