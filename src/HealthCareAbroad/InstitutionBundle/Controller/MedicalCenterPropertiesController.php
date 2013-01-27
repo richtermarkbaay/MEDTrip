@@ -84,6 +84,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
     
                 $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
                     'award' => $award,
+                    'property' => $property,
                     'institution' => $this->institution,
                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
                     'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),

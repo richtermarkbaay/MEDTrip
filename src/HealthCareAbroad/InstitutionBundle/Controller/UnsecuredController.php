@@ -108,10 +108,13 @@ class UnsecuredController extends Controller
                 break;
             case 'awards':
                 $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-                $currentGlobalAwards = $this->institutionService->getGroupedGlobalAwardsByType($this->institution);
+                //$currentGlobalAwards = $this->institutionService->getGroupedGlobalAwardsByType($this->institution);
+                $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
                 $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
+                $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                 
                 $parameters['form'] = $form->createView();
+                $parameters['editGlobalAwardForm'] = $editGlobalAwardForm->createView();
                 $parameters['isSingleCenter'] = $this->institutionService->isSingleCenter($this->institution);
                 $parameters['awardsSourceJSON'] = \json_encode($autocompleteSource['award']);
                 $parameters['certificatesSourceJSON'] = \json_encode($autocompleteSource['certificate']);

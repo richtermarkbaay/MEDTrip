@@ -18,6 +18,12 @@ institution_ajaxAddGlobalAward:
     requirements:
         _method: POST
         
+institution_ajaxEditGlobalAward:
+    pattern: /institution/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxEditGlobalAward}
+    requirements:
+        _method: POST
+        
 institution_ajaxRemoveGlobalAward:
     pattern: /institution/awards-certificates-and-affiliations/ajaxRemove
     defaults: { _controller: InstitutionBundle:InstitutionProperties:ajaxRemoveGlobalAward}

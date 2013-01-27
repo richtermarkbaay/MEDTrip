@@ -13,7 +13,7 @@
 		<tbody>
 		    <tr style="display:none;"  class="loader"><td colspan="3" >Loading...</td></tr>
 			{% for _award in awardsList.list %}
-			    {% include 'InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig' with {'property': _award, 'award': _award.valueObject} %}
+			    {% include 'InstitutionBundle:Institution/Partials:row.globalAward.html.twig' with {'property': _award, 'award': _award.valueObject} %}
 			{% else %}
 			    {#
 			    <tr class="empty_row">

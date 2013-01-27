@@ -41,9 +41,19 @@ class InstitutionService
      */
     protected $institutionUserService;
     
+    /**
+     * @var InstitutionPropertyService
+     */
+    protected $institutionPropertyService;
+    
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
     	$this->doctrine = $doctrine;
+    }
+    
+    public function setInstitutionPropertyService(InstitutionPropertyService $v)
+    {
+        $this->institutionPropertyService = $v;
     }
     
     function saveMediaToGallery(Institution $institution, Media $media)
@@ -156,17 +166,6 @@ class InstitutionService
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')
             ->findBy(array('institution' => $institution->getId()));
     }
-    
-    public function getTreatmentQueryBuilderByInstitution($institution)
-    {
-        $qry = "SELECT treatment_id FROM institution_treatments WHERE treatment_id = :treatmentId";
-        $param = array('treatmentId' => $treatmentId);
-        $treatmentIds = $this->_em->getConnection()->executeQuery($qry, $param)->fetchAll();
-
-        var_dump($treatmentIds);
-        
-        return $count;
-    }
 
     public function getRecentlyAddedMedicalCenters(Institution $institution, QueryOptionBag $options=null)
     {
@@ -270,28 +269,15 @@ class InstitutionService
         return !\is_null($result) ;
     }
     
+    /**
+     * Get global awards of an institution
+     * 
+     * @param Institution $institution
+     * @return array GlobalAward
+     */
     public function getAllGlobalAwards(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
-    }
-    
-    public function getGroupedGlobalAwardsByType(Institution $institution)
-    {
-        $awardTypes = GlobalAwardTypes::getTypes();
-        $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
-        
-        // initialize holder for awards
-        foreach ($globalAwards as $k => $v) {
-            $globalAwards[$k] = array();
-        }
-        
-        foreach ($this->getAllGlobalAwards($institution) as $_globalAward) {
-            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
-                'global_award' => $_globalAward,
-            );
-        }
-        
-        return $globalAwards;
     }
     
     public function getAllDoctors(Institution $institution)

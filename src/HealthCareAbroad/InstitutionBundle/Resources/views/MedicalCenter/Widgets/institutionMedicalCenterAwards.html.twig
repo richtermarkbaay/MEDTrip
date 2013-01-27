@@ -67,7 +67,7 @@
         </div>
 	</div>
 	
-	{% include 'InstitutionBundle:MedicalCenter/Partials:modal.editGlobalAward.html.twig' %}
+	{% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
     
     {% endblock %}
 {% endembed %}
@@ -76,8 +76,6 @@
 <!--
 (function($){
     $(function(){
-
-        
         
         $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
         

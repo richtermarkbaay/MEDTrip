@@ -53,5 +53,23 @@ class GlobalAwardService
         }
         
         return $autocompleteSource;
-    }    
+    }
+    
+    static public function groupGlobalAwardPropertiesByType(array $properties)
+    {
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
+        
+        // initialize holder for awards
+        foreach ($globalAwards as $k => $v) {
+            $globalAwards[$k] = array();
+        }
+        
+        foreach ($properties as $_property) {
+            $_globalAward = $_property->getValueObject();
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $_property;
+        }
+        
+        return $globalAwards;
+    }
 }

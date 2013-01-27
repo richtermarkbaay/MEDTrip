@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionPropertyService;
@@ -32,6 +36,11 @@ class InstitutionPropertiesController extends InstitutionAwareController
      */
     private $institutionService;
     
+    /**
+     * @var Request
+     */
+    private $request;
+    
     public function preExecute()
     {
         $this->institutionService = $this->get('services.institution');
@@ -40,6 +49,8 @@ class InstitutionPropertiesController extends InstitutionAwareController
         if(!$this->institution) {
             throw $this->createNotFoundException('Invalid Institution');
         }
+        
+        $this->request = $this->getRequest();
     }
     
 //     public function addAncilliaryServiceAction(Request $request)
@@ -89,7 +100,8 @@ class InstitutionPropertiesController extends InstitutionAwareController
     
                 $html = $this->renderView('InstitutionBundle:Institution/Partials:row.globalAward.html.twig', array(
                     'institution' => $this->institution,
-                    'award' => $award
+                    'award' => $award,
+                    'property' => $property
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -99,6 +111,49 @@ class InstitutionPropertiesController extends InstitutionAwareController
             }
         }
     
+        return $response;
+    }
+    
+    public function ajaxEditGlobalAwardAction()
+    {
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($this->request->get('propertyId', 0));
+        $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
+        }
+        
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
+        if (!$globalAward) {
+            throw $this->createNotFoundException('Invalid global award.');
+        }
+        
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $property);
+        if ($this->request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($this->request);
+            if ($editGlobalAwardForm->isValid()) {
+                try {
+                    $property = $editGlobalAwardForm->getData();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($property);
+                    $em->flush();
+                    $extraValue = \json_decode($property->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                                    'targetRow' => '#globalAwardRow_'.$property->getId(),
+                                    'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
+        }
+        
         return $response;
     }
     
