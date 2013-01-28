@@ -3,7 +3,7 @@
 <div class="accordion-group" style="display: block;">
     <div class="accordion-heading" style="font-size: 18px; padding: 8px 15px; display: block;">{{ specialization.name }}</div>
     <div class="accordion-body"  style="height: auto; padding: 0 20px !important">
-        {{ specialization.description }}
+        {# specialization.description #}
         {% set groupedTreatments = group_treatments_by_subspecialization(availableTreatments) %}
         <div class="accordion-inner" style="border-top: none; !important">
         {% for subSpecializationId, _data in groupedTreatments %}
