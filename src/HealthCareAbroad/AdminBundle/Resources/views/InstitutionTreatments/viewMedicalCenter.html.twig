@@ -5,9 +5,20 @@
     <div class="span9">
 
         {% embed 'HelperBundle:Widgets:section.html.twig' 
-            with {title: institutionMedicalCenter.name,
-                  actions: isSingleCenter ? [] : [{link: path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}), label: 'Edit '~ institutionMedicalCenter.name | title, 'icon' : 'icon-ok' }]  
-                 } %}
+            with {
+                    title: institutionMedicalCenter.name,
+                    actions:[
+                        {link: isSingleCenter ? [] : 
+                                path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit '~ institutionMedicalCenter.name | title, 
+                                'icon' : 'icon-ok' },
+                        {link: isSingleCenter ? [] : 
+                                path('admin_institution_medicalCenter_editStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
+                                'icon' : 'icon-ok' }
+                    ]
+                 } 
+         %}
   
             {% block sectionContent %} 
                 <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
@@ -119,7 +130,7 @@
 	            source: LoadMedicalSpecialists,
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
-	            loader: $('#institutionDoctorSearch_firstName'),
+	            loader: $('#loader_ajax'),
                 field: $('#institutionDoctorSearch_firstName')
 	        })
 	        .autocomplete();

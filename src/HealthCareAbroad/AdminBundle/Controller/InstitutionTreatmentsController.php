@@ -173,7 +173,6 @@ class InstitutionTreatmentsController extends Controller
         foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
-        
         //get doctors
         //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         //$doctorArr = array();
@@ -498,32 +497,48 @@ class InstitutionTreatmentsController extends Controller
      */
     public function updateMedicalCenterStatusAction()
     {
-        $request = $this->getRequest();
-        $status = $request->get('status');
-
-        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
-
-        if(!InstitutionMedicalCenterStatus::isValid($status)) {
-            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
-
-            return $this->redirect($redirectUrl);
+        //$request = $this->getRequest();
+        //$status = $request->get('status');
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
+        $template = 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig';
+        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($this->request);
+        
+            if ($form->isValid()) {
+                $this->get('services.institution_medical_center')->save($form->getData());
+                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
+            }
         }
+        
+        return $this->render($template, array(
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institution' => $this->institution,
+                         
+//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
 
-        $this->institutionMedicalCenter->setStatus($status);
+//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
+//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalCenter);
-        $em->flush($this->institutionMedicalCenter);
+//             return $this->redirect($redirectUrl);
+//         }
 
-        // dispatch EDIT institutionMedicalCenter event
-        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+//         $this->institutionMedicalCenter->setStatus($status);
 
-        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+//         $em = $this->getDoctrine()->getEntityManager();
+//         $em->persist($this->institutionMedicalCenter);
+//         $em->flush($this->institutionMedicalCenter);
+
+//         // dispatch EDIT institutionMedicalCenter event
+//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
+//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
+//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
+
+//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
 
 
-        return $this->redirect($redirectUrl);
+//         return $this->redirect($redirectUrl);
     }
 
     /**
