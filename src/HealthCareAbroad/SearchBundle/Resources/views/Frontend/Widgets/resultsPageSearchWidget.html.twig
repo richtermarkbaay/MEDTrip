@@ -1,0 +1,141 @@
+{% set hasTreatment = options.treatmentId is defined and options.treatmentId and options.treatmentId != '0-0-0-0' %}
+{% set hasDestination = options.destinationId is defined and options.destinationId and options.destinationId != '0-0' %}
+
+<button data-toggle="dropdown" class="btn tiny orange dropdown-toggle btn-inverse">
+    <span class="icon-search icon-white"> </span> <span class="caret"></span>
+</button>
+
+<div role="menu" class="input-append dropdown-menu">
+    <form action="{{ path('search_frontend') }}" method="get" name="searchBox-{{ options.subContext }}">
+        <input type="hidden" name="treatment_id" value="{{ options.treatmentId }}"/>
+        <input type="hidden" name="destination_id" value="{{ options.destinationId }}"/>
+
+        <input type="text" placeholder="Enter destination" class="search-field" name="sb_destination">
+        <input type="hidden" name="sb_treatment" value="xxxFILLERxxx" />
+    </form>
+
+    <p>Search Results: <b id="countSearchResults-{{ options.subContext }}">0</b></p>
+
+    <ul id="resultsList-{{ options.subContext }}"></ul>
+</div>
+
+<script type="text/javascript">
+{% if options.context == 'destinations' %}
+    $('#sb_treatment').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path(options.autocompleteRoute) }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    destination_id: $('#destination_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
+                },
+                success: function(data) {
+                    response($.each(data, function(item) {
+                        return { label: item.label, value: item.value }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            alert('selected');
+            $(this).val( ui.item.label );
+            $("#treatment_id").val( ui.item.value );
+
+            return false;
+        },
+        change: function(event, ui) {
+            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0-0-0-0');
+        },
+        delay: 200,
+        minLength: 1
+    });
+
+{% endif %}
+
+/*
+var inputSbDestinationSelector = 'form[name="searchBox-{{ options.subContext }}"] input[name="sb_destination"]';
+var inputSbTreatmentSelector = 'form[name="searchBox-{{ options.subContext }}"] input[name="sb_treatment"]';
+var inputTreatmentIdSelector = 'form[name="searchBox-{{ options.subContext }}"] input[name="treatment_id"]';
+var inputDestinationIdSelector = 'form[name="searchBox-{{ options.subContext }}"] input[name="destination_id"]';
+var resultsListSelector = '#resultsList-{{ options.subContext }}';
+var countSearchResultsSelector = '#countSearchResults-{{ options.subContext }}';
+*/
+
+{% if options.context == 'treatments' %}
+    $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_destination"]').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path(options.autocompleteRoute) }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    treatment_id: $('form[name="searchBox-{{ options.subContext }}"] input[name="treatment_id"]').val(),
+                    sb_treatment: $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_treatment"]').val(),
+                    sb_destination: $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_destination"]').val()
+                },
+                success: function(data) {
+                    response( $.each(data, function(item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $(this).val( ui.item.label );
+            $('form[name="searchBox-{{ options.subContext }}"] input[name="destination_id"]').val( ui.item.value );
+            return false;
+        },
+        change: function(event, ui) {
+            $('form[name="searchBox-{{ options.subContext }}"] input[name="destination_id"]').val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+        },
+        delay: 200,
+        minLength: 1
+    })
+    .data('autocomplete')._renderMenu = function( ul, data ) {
+        //$(ul).css('width', settings.dropDownWidth);
+        $('#countSearchResults-{{ options.subContext }}').text(data.length);
+        $('#resultsList-{{ options.subContext }}').html('');
+
+        //var self = this;
+        $.each( data, function( index, item ) {
+            //self._renderItem( ul, item );
+            return $( "<li>" )
+                .data( "item.autocomplete", item )
+                .append( "<a data-value='" + item.value + "'>" + item.label + "</a>" )
+                .appendTo($('#resultsList-{{ options.subContext }}'));
+        });
+    };
+    /*
+    .data("autocomplete")._renderItem = function(ul, item) {
+        var count = $('#countSearchResults');
+        count.text(parseInt(count.text()) + 1);
+
+        return $( "<li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a>" + item.label + "</a>" )
+            .appendTo($('#resultsList'));
+    };
+    */
+{% endif %}
+
+$('#resultsList-{{ options.subContext }}').click(function(e) {
+    $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_destination"]').focus().val($(e.target).text());
+    $('form[name="searchBox-{{ options.subContext }}"] input[name="destination_id"]').val($(e.target).attr('data-value'));
+    e.stopPropagation();
+});
+
+</script>

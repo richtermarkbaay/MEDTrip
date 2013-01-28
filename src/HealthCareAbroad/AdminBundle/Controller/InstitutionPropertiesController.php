@@ -85,21 +85,104 @@ class InstitutionPropertiesController extends Controller
         
     }
      
-    public function addAncilliaryServiceAction(Request $request)
+    /**
+     * Add an ancillary service to institution
+     * Required parameters:
+     *     - institutionId
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Chaztin Blance
+     */
+    public function ajaxAddAncillaryServiceAction(Request $request)
     {
-        $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
-        if($request->get('imcId')) {
-            $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-            $imcProperty = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id')->getData();
-            $imcProperty->setValue($offeredServicesArray);
-            $this->get('services.institution_medical_center_property')->createInstitutionMedicalCenterPropertyByServices($imcProperty);
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+        ->find($request->get('asId', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // check if this institution already have this property value
+        if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $ancillaryService->getId())) {
+            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
         }
         else {
-            $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
-            $institutionProperty->setValue($offeredServicesArray);
-            $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
+            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
+            $property->setValue($ancillaryService->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $output = array(
+                                'html' => $this->renderView('AdminBundle:InstitutionProperties:row.ancillaryService.html.twig', array(
+                                                'institution' => $this->institution,
+                                                'ancillaryService' => $ancillaryService,
+                                                '_isSelected' => true
+                                )),
+                                'error' => 0
+                );
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+    
         }
-        return $this->_jsonResponse(array('success' => 1));
+    
+        return $response;
+    }
+    
+    /**
+     * Remove an ancillary service to institution
+     * Required parameters:
+     *     - institutionId
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author chaztine Blance
+     */
+    public function ajaxRemoveAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
+        ->find($request->get('asId', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // get property value for this ancillary service
+        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $ancillaryService->getId());
+    
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+    
+            $output = array(
+                            'html' => $this->renderView('AdminBundle:InstitutionProperties:row.ancillaryService.html.twig', array(
+                                            'institution' => $this->institution,
+                                            'ancillaryService' => $ancillaryService,
+                                            '_isSelected' => false
+                            )),
+                            'error' => 0
+            );
+            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+    
+        return $response;
     }
     
     public function addLanguageSpokenAction(Request $request)

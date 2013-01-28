@@ -10,16 +10,16 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
 
-class InstitutionGlobalAwardFormType extends AbstractType
-{
+// class InstitutionGlobalAwardFormType extends AbstractType
+// {
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+//     public function buildForm(FormBuilderInterface $builder, array $options)
+//     {
 
-        $builder->add('institutionGlobalAwards', new InstitutionGlobalAwardListType(), array('expanded' => true,'multiple' => true));
-    }
+//         $builder->add('institutionGlobalAwards', new InstitutionGlobalAwardListType(), array('expanded' => true,'multiple' => true));
+//     }
     
-    public function getName(){
-        return 'institutionGlobalAward';
-    }
-}
+//     public function getName(){
+//         return 'institutionGlobalAward';
+//     }
+// }

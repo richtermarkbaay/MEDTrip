@@ -8,6 +8,7 @@ services:
         arguments: [@doctrine]
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
+            - [setInstitutionPropertyService, [@services.institution_property]]
             
     services.institution.factory:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
@@ -44,6 +45,7 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService
         calls:
             - [setDoctrine, [@doctrine]]
+            - [setInstitutionMedicalCenterPropertyService, [@services.institution_medical_center_property]]
     
     services.institution_signup:
         class: HealthCareAbroad\InstitutionBundle\Services\SignUpService

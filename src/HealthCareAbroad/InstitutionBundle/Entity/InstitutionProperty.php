@@ -2,6 +2,13 @@
 namespace HealthCareAbroad\InstitutionBundle\Entity;
 class InstitutionProperty
 {
+    /* --- custom variables, retain when autogenerating class --- */
+    /**
+     * @var Mixed object representation of the value
+     */
+    private $valueObject;
+    /* --- end custom variables --- */
+    
     /**
      * @var bigint $id
      */
@@ -21,7 +28,11 @@ class InstitutionProperty
      * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType
      */
     private $institutionPropertyType;
-
+    
+    /**
+     * @var text $extraValue
+     */
+    private $extraValue;
 
     /**
      * Get id
@@ -98,4 +109,42 @@ class InstitutionProperty
     {
         return $this->institutionPropertyType;
     }
+    
+    /**
+     * Set extraValue
+     *
+     * @param text $extraValue
+     * @return InstitutionProperty
+     */
+    public function setExtraValue($extraValue)
+    {
+        $this->extraValue = $extraValue;
+        return $this;
+    }
+    
+    /**
+     * Get extraValue
+     *
+     * @return text
+     */
+    public function getExtraValue()
+    {
+        return $this->extraValue;
+    }
+    
+    /* ----- custom methods here, retain when autogenerating class ----- */
+    
+    public function setValueObject($v)
+    {
+        $this->valueObject = $v;
+        return $this;
+    }
+    
+    public function getValueObject()
+    {
+        return $this->valueObject;
+    }
+    
+    /* ----- end custom methods ----- */
+    
 }

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -80,6 +84,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
     
                 $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
                     'award' => $award,
+                    'property' => $property,
                     'institution' => $this->institution,
                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
                     'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
@@ -92,6 +97,89 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
             }
         }
     
+        return $response;
+    }
+    
+    /**
+     * Remove global award of an institution medical center
+     *
+     * @param Request $request
+     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
+     */
+    public function ajaxRemoveGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
+    
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+    
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        // get property value
+        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
+    
+        $form = $this->createForm(new CommonDeleteFormType(), $property);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+    
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($property);
+                $em->flush();
+    
+                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
+        }
+    
+        return $response;
+    }
+    
+    public function ajaxEditGlobalAwardAction()
+    {
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId', 0));
+        if (!$globalAward) {
+            throw $this->createNotFoundException('Invalid global award');
+        }
+        $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $imcProperty = $this->imcService->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId());
+        $imcProperty->setValueObject($globalAward);
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
+        if ($this->request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($this->request);
+            if ($editGlobalAwardForm->isValid()) {
+                try {
+                    $imcProperty = $editGlobalAwardForm->getData(); 
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($imcProperty);
+                    $em->flush();
+//                     $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
+//                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                         'award' => $globalAward,
+//                         'property' => $imcProperty
+//                     ));
+                    $extraValue = \json_decode($imcProperty->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                        'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
+                        'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
+        }
+        
         return $response;
     }
     

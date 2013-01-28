@@ -24,18 +24,25 @@ admin_institution_view:
 
 admin_institution_edit:
     pattern:  /admin/institution/{institutionId}/edit
-    defaults: { _controller: AdminBundle:Institution:editDetails}
+    defaults: { _controller: AdminBundle:Institution:view}
     requirements:
          institutionId: \d+
-         _method: GET|POST
+         _method: GET
          
 ##-----         
 ## institution property related routes
-admin_institution_addAncilliaryService:
+admin_institution_ajaxaddAncilliaryService:
     pattern:  /admin/institution/{institutionId}/add-ancilliary-service
-    defaults: { _controller: AdminBundle:InstitutionProperties:addAncilliaryService }
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddAncillaryService }
     requirements:
         institutionId: \d+
+        
+admin_ajaxRemoveAncillaryService:
+    pattern:  /admin/institution/ajaxRemoveAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
 
 admin_institution_viewGlobalAwards:
     pattern:  /admin/institution/{institutionId}/global-awards

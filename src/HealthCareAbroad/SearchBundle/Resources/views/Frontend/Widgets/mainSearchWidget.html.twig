@@ -1,21 +1,3 @@
-<!--
-<div class="search_box controls controls-row">
-    <form action="{{ path('search_frontend') }}" class="search form-inline" method="get" name="searchForm">
-        <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
-        <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
-
-        <label class="span1">Search</label>
-        <input type="text" class="span4" placeholder="Any Treatment" name="sb_treatment" id="sb_treatment" value="{{ options.treatmentLabel }}"/>
-        <label class="span1">Near</label>
-        <input type="text" class="span4" placeholder="Anywhere" name="sb_destination" id="sb_destination" value="{{ options.destinationLabel }}" />
-
-        <input type="button" onclick="document.forms['searchForm'].submit();" class="btn" value="Let's Go" name="submit" />
-
-        <button class="btn span2">Let's Go</button>
-    </form>
-</div>
- -->
-
 <form action="{{ path('search_frontend') }}" method="get" name="search_box" class="span12 search_box  form-inline">
     <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
     <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>

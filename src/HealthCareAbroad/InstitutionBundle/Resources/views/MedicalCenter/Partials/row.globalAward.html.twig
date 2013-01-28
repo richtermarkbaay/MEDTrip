@@ -1,9 +1,17 @@
-<tr id="award{{ award.id }}">
-	<td><h3 class="award_name">{{ award.name }}</h3><small class="awarding_body_name"> {{ award.awardingBody.name }} </small></td>
+{% set _extraValueArr = json_to_array(property.extraValue, true) %}
+{% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
+<tr id="globalAwardRow_{{ property.id }}">
 	<td>
+	    <h5 class="award_name">{{ award.name }}</h5><small class="awarding_body_name"> {{ award.awardingBody.name }} </small>
+	</td>
+	<td class="yearAcquired">{{ _yearAcquired }}</td>
+	<td>
+	    <i class="icon-edit" title="Edit date acquired"></i>
+        <a class="edit_global_award" href="{{ path('institution_medicalCenter_ajaxEditGlobalAward', {'imcId':institutionMedicalCenter.id} ) }}" data-propertyId="{{ property.id }}" data-label="{{ award.name }}" data-globalAwardId="{{ award.id }}" >
+            <small>Edit</small>
+        </a>
 		<i class="icon-trash" title="Delete"></i>
 		<a data-toggle="modal" data-id="{{award.id}}" data-target="#globalAwardModal"  onclick="InstitutionMedicalCenter.showCommonModalId(this); return false;" href="#">
             <small>Delete</small></a>
 	</td>
 </tr>
- 

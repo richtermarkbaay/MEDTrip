@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -196,6 +198,12 @@ class InstitutionMedicalCenterService
         return $ancilliaryServices;
     }
     
+    /**
+     * Get global awards of an institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array GlobalAward
+     */
     public function getMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter);
@@ -211,11 +219,16 @@ class InstitutionMedicalCenterService
             $globalAwards[$k] = array();
         }
         
-        foreach ($this->getMedicalCenterGlobalAwards($institutionMedicalCenter) as $_globalAward) {
-            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
-                'global_award' => $_globalAward,
-            );
+        $imcProperties = $this->institutionMedicalCenterPropertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($institutionMedicalCenter);
+        foreach ($imcProperties as $imcp) {
+            $_globalAward = $imcp->getValueObject();
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $imcp;
         }
+//         foreach ($this->getMedicalCenterGlobalAwards($institutionMedicalCenter) as $_globalAward) {
+//             $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = array(
+//                 'global_award' => $_globalAward,
+//             );
+//         }
         
         return $globalAwards;
     }

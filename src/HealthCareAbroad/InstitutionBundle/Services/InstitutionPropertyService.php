@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Services\GlobalAwardService;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -20,6 +22,12 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
+/**
+ * Service class for InstitutionProperty. Service id services.institution_property
+ * 
+ * @author Allejo Chris G. Velarde
+ *
+ */
 class InstitutionPropertyService
 {
     /**
@@ -127,5 +135,49 @@ class InstitutionPropertyService
     public function findById($id)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->find($id);
+    }
+    
+    public function getGlobalAwardPropertiesByInstitution(Institution $institution, array $options=array())
+    {
+        $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
+        $options = \array_merge($defaultOptions, $options);
+        $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $criteria = array(
+            'institution' => $institution,
+            'institutionPropertyType' => $propertyType
+        );
+        // get the properties
+        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->findBy($criteria);
+        $returnVal = $properties;
+    
+        if ($options['loadValuesEagerly']) {
+            $globalAwardIds = array();
+            $propertiesByValue = array();
+            foreach ($properties as $imp) {
+                $globalAwardIds[] = $imp->getValue();
+                // store the property with the value as the key
+                $propertiesByValue[$imp->getValue()][] = $imp;
+            }
+    
+            // find global awards with ids equal to the retrieve property values
+            $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findByIds($globalAwardIds);
+            $returnVal = array();
+            // get the property from the stored list
+            foreach ($globalAwards as $_award) {
+                if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
+                    foreach ($propertiesByValue[$_award->getId()] as $imp) {
+                        // set the value object to GlobalAward
+                        $imp->setValueObject($_award);
+                        $returnVal[] = $imp;
+                    }
+                }
+            }
+        }
+        
+        if ($options['groupByType']) {
+            $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
+        }
+    
+        return $returnVal;
     }
 }

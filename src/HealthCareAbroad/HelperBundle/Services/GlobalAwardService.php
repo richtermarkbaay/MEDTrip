@@ -19,6 +19,19 @@ class GlobalAwardService
         $this->doctrine = $v;
     }
     
+    public function findById($id, $loadEager=true)
+    {
+        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
+            ->select('g, ga')
+            ->from('HelperBundle:GlobalAward', 'g')
+            ->innerJoin('g.awardingBody', 'ga')
+            ->where('g.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+        
+        return $query->getResult();
+    }
+    
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */
@@ -40,5 +53,23 @@ class GlobalAwardService
         }
         
         return $autocompleteSource;
-    }    
+    }
+    
+    static public function groupGlobalAwardPropertiesByType(array $properties)
+    {
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
+        
+        // initialize holder for awards
+        foreach ($globalAwards as $k => $v) {
+            $globalAwards[$k] = array();
+        }
+        
+        foreach ($properties as $_property) {
+            $_globalAward = $_property->getValueObject();
+            $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $_property;
+        }
+        
+        return $globalAwards;
+    }
 }

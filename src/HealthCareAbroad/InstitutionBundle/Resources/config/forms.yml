@@ -6,10 +6,10 @@ services:
         tags:
             - { name: form.type, alias: institution_list }
             
-    form.offeredService_list:
-        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType
+    form.institutionGlobalAwardExtraValue.field:
+        class: HealthCareAbroad\InstitutionBundle\Form\FieldType\InstitutionGlobalAwardExtraValueFieldType
         tags:
-            - { name: form.type, alias: offeredService_list }
+            - { name: form.type, alias: institution_global_award_extra_value }
     
     form.doctor_list:
         class: "%services.doctor_list%"
@@ -22,11 +22,6 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionTreatmentListType
         tags:
             - { name: form.type, alias: institutionTreatment_list }
-
-    form.institution_global_award_list:
-        class: HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionGlobalAwardListType
-        tags:
-          - { name: form.type, alias: institution_global_award_list }
     
     form.medical_provider_group_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType

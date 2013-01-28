@@ -64,18 +64,18 @@ class PagerHelper extends Helper
      */
     public function path($route, $page, array $parameters = array())
     {
+        //TODO: this is just a quick fix and is a temporary workaround for
+        //routes that are not known at runtime
+        if (isset($parameters['hasNoRouteName'])) {
+            return $this->generateUri($route, $page);
+        }
+
         if (isset($parameters['_page'])) {
             $parameters[$parameters['_page']] = $page;
 
             unset($parameters['_page']);
         } else {
             $parameters['page'] = $page;
-        }
-
-        //TODO: this is just a quick fix and is a temporary workaround for
-        //routes that are not known at runtime
-        if (isset($parameters['hasNoRouteName'])) {
-            return $this->generateRoute($route, $page);
         }
 
         return $this->router->generate($route, $parameters);
@@ -86,9 +86,9 @@ class PagerHelper extends Helper
         return 'pager';
     }
 
-    private function generateRoute($uri, $page)
+    private function generateUri($uri, $page)
     {
-        //normalize the route
+        //normalize the uri
         $uriParts = explode('?', $uri);
 
         return $uriParts[0] . '?page=' . $page;

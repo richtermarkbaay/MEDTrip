@@ -13,6 +13,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty:
         value:
             type: text
             nullable: false
+        extraValue:
+            type: text
+            nullable: true
+            column: extra_value
     manyToOne:
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
