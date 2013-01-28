@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -63,7 +65,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
     {
         $this->options = $options;
         $medicalCenter = $this->options['data'];
-        
+        $status = InstitutionMedicalCenterStatus::getStatusList();
         if (!$medicalCenter instanceof InstitutionMedicalCenter) {
             throw new \Exception(__CLASS__.' expects data to be instance of InstitutionMedicalCenter');
         }
@@ -80,7 +82,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
-        $this->_add($builder,'status', 'choice', array('label' => 'Status'));
+        $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         if (!$medicalCenter->getId()) {
             $medicalCenter->setWebsites($this->institution->getWebsites());
         }

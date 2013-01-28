@@ -15,7 +15,8 @@
                         {link: isSingleCenter ? [] : 
                                 path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
                                 label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
-                                'icon' : 'icon-ok' }
+                                'icon' : 'icon-ok',
+                                class : 'edit-status'}
                     ]
                  } 
          %}
@@ -42,6 +43,11 @@
                         
                     </div>
                     {% include 'AdminBundle:Widgets:medicalCenter.medicalSpecialist.html.twig'%}
+                    
+                    <!-- Modal Medical Center Status -->
+                    	{% include 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig' 
+                    	     with {modalId: 'status_medicalCenter_modal_form', modalTitle: 'Edit Status'} 
+                    	%} <!-- end Modal Medical Center Status -->
                 </div>
             {% endblock %}
     
@@ -238,6 +244,10 @@
     			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
     			$(this).parent().removeClass('ui-state-disabled'); 
     		});
+            $('a.edit-status').click(function(){
+            	$('div#status_medicalCenter_modal_form').modal('show');
+                return false;
+            });
 
         });
         
