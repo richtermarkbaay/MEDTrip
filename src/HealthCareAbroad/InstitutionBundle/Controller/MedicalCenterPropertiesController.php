@@ -108,18 +108,11 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
      */
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
-    
-        if (!$award) {
-            throw $this->createNotFoundException();
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id'));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
-        // get property value
-        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
-    
         $form = $this->createForm(new CommonDeleteFormType(), $property);
     
         if ($request->isMethod('POST'))  {
@@ -129,8 +122,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-    
-                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+                $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);

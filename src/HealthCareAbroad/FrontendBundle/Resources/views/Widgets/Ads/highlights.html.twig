@@ -9,7 +9,7 @@
         {% if highlight.institution.logo %}
             {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo', thumbnail: true}) | raw }}
         {% else %}
-            <img src="" alt="logo"/>
+            <img src="{{ imageplaceholder.institutionLogo }}" alt="logo"/>
         {% endif %}
 	</a>
 
@@ -33,36 +33,24 @@
 				    <a data-to="{{ loop.index }}" href="#feature_carousel" class="carousel-pills {{ i==0 ? 'pager-active' : '' }}"><span>&nbsp;</span></a>
 			    {% endfor %}
 			</div>
-			<a class="btn white feature-btn"> <span class="icon-search icon-orange"></span> Learn More </a>
+			<a href="{{ get_institution_frontend_url(highlight.institution) }}" class="btn white feature-btn"> <span class="icon-search icon-orange"></span> Learn More </a>
 		</div> <!--End of carousel slide-->
 	</div> <!--End of carousel row-->
 
-	<div class="lower_box row">
-		<!-- div class="span4">
-			<div class="media">
-				<span class="about-icon media-object img-circle pull-left"></span>
-				<div class="media-body">
-					<p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues.</p>
-				</div>
-			</div>
-		</div -->
-
-		<!-- div class="span4">
-			<div class="media">
-				<img alt="clinic logo" src="images/frontend/featured_doctor1.png" class="media-object img-circle pull-left">
-				<div class="media-body">
-					<h5 class="media-heading">Dr. Alex Ponakotanapoulis</h5>
-					<p>Some awesome specialties of this doctor.</p>
-				</div>
-			</div>
-		</div-->
-		
+	<div class="lower_box row">		
         {% set highlights = json_decode(highlight.highlights) %}
-
         {% for each in highlights %}
             <div class="span4">
                 <div class="media">
-                    <img class="media-object img-circle pull-left" src="{{ each.icon ? each.icon.src_thumbnail : '/images/frontend/default-doctor-logo-orange.png' }}" alt="doctor logo" width="50"/>
+                    {% if each.icon %}
+                        <img class="media-object img-circle pull-left" src="{{ each.icon.src_thumbnail }}" alt="doctor logo" width="50"/>
+                    {% else %}
+                        {% if each.type == 3 %}
+                            <img alt="clinic logo" src="{{ imageplaceholder.doctorIconOrange }}" class="media-object img-circle pull-left">
+                        {% else %}
+                            <span class="{{ ad_highlight_placeholder_class(each.type) }} media-object img-circle pull-left"></span>
+                        {% endif %}
+                    {% endif %}
                     <div class="media-body">
                         {% if each.header %}
                             <h5 class="media-heading">{{ each.header }}</h5>

@@ -28,6 +28,12 @@ admin_institution_medicalCenter_edit:
         institutionId: \d+
         imcId: \d+
         _method: GET|POST
+        
+admin_institution_medicalCenter_updateStatus:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/edit-status
+    defaults: { _controller: AdminBundle:InstitutionTreatments:editMedicalCenterStatus }
+    requirements:
+        _method: POST|GET
              
 admin_institution_medicalCenter_update:
     pattern:  /admin/institution/{institutionId}/medical-center/update/{imcId}
@@ -139,3 +145,11 @@ admin_institution_medicalCenter_updateStatus:
         imcId: \d+
         status: \d+
         _method: POST
+        
+admin_medicalCenter_ajaxEditGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxEditGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+        imcId: \d+

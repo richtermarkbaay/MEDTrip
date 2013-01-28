@@ -23,7 +23,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     {
         $statuses = InstitutionMedicalCenterStatus::getStatusList();
         
-        return $statuses[$institutionMedicalCenter->getStatus()];
+        return \array_key_exists($institutionMedicalCenter->getStatus(), $statuses) ?  $statuses[$institutionMedicalCenter->getStatus()] : '';
     }
     
     public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array())

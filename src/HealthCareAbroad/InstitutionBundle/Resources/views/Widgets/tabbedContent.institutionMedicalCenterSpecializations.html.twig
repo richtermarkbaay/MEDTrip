@@ -9,7 +9,7 @@
         
         <!-- add specialization modal form -->
 		<div id="addspecialization" class="modal hide fade modal_form_container" tabindex="-1" role="dialog" aria-hidden="true">
-		    <div class="modal-body">
+		    <div style="max-height: 400px;"class="modal-body">
 	            <form class="modal_form" action="{{ path('institution_medicalCenter_ajaxSaveSpecializations', {'imcId': institutionMedicalCenter.id} ) }}">
 	                <label>Search and add a specialty </label>
         	        <input type="text" name="" class="autocomplete_specialization_selector" />

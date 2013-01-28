@@ -4,7 +4,7 @@
 var InstitutionMedicalCenter = {
         
     removePropertyUri: '',
-        
+    _updateStatusUri: '',  
     _modals: {
         'name': null,
         'description': null
@@ -39,7 +39,10 @@ var InstitutionMedicalCenter = {
         
         return this;
     },
-    
+    setUpdateStatusUri: function (_val) {
+    	this._updateStatusUri = _val;
+        return this;
+    },
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -137,6 +140,7 @@ var InstitutionMedicalCenter = {
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {
+    	
         _button = _formElement.find('button.delete-button');
         _button.attr('disabled', true)
             .html('Processing...');
@@ -166,7 +170,23 @@ var InstitutionMedicalCenter = {
             }
          });
     },
-    
+    updateMedicalCenterStatus: function(_button) {
+    	_button = $(_button);
+    	_formElement = $(_button.attr('data-formId'));
+    	_modal = $(_button.attr('data-modalId'));
+    	_button.attr('disabled', true)
+            .html('Processing...');
+        var href = _formElement.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: href,
+            data: _formElement.serialize(),
+            success: function(response) {
+            	_modal.modal('hide');
+            }
+        });
+        	
+    },
     removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);
         $.ajax({
@@ -244,20 +264,32 @@ var InstitutionGlobalAwardAutocomplete = {
             }
 	    },
 	    
-	    removeGlobalAward: function(_linkElement) {
+	    showCommonModalId: function (_linkElement) {
 	        _linkElement = $(_linkElement);
-	        _id = _linkElement.attr('id').split('_')[1];
-	        $.ajax({
-	           type: 'POST',
-	           url: _linkElement.attr('href'),
-	           data: {id: _id},
-	           success: function(response) {
-	               _linkElement.parents('tr').remove();
-	           },
-	           error: function(response) {
-	               console.log(response);
-	           }
-	        });
+	        _id = _linkElement.data('id');
+	        _name = $('#globalAwardRow_'+_id).find('h5').html();
+	        _modal = $(_linkElement.attr('data-target'));
+	        $('#id').val(_id);
+	        $(".modal-body p strong").text(_name+'?');
+	        
+	        return false;
+	    },
+	    
+	    removeGlobalAward: function(_domButtonElement) {
+		  	 _button = $(_domButtonElement);
+		  	_form = _button.parents('.modal').find('form');
+		    _button.html("Processing...").attr('disabled', true);
+
+		    $.ajax({
+		        url: _form.attr('action'),
+		        data: _form.serialize(),
+		        type: 'POST',
+		        success: function(response){
+		        	_form.parents('div.modal').modal('hide');
+		        	_button.html("Delete").attr('disabled', false);
+		        	$('#globalAwardRow_'+response.id).remove();
+		        }
+		     });
 	    },
 	    
 	    setAutocompleteOptions: function (_type, _options) {
@@ -295,7 +327,9 @@ var InstitutionGlobalAwardAutocomplete = {
 	            type: 'POST',
 	            dataType: 'json',
 	            success: function(response) {
-	                _option.selectedDataContainer.append(response.html);
+	            	_new_row = $(response.html); 
+	            	_new_row.find('a.edit_global_award').bind('click', $.globalAward._clickEdit);
+	                _option.selectedDataContainer.append(_new_row);
 	                _option.target.find('option[value='+_val+']').hide();
 	                _option.loader.hide();
 	            },

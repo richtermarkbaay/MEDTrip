@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -40,7 +42,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
         'contactNumber',
         'address',
         'timezone',
-        'websites'
+        'websites',
+        'status'
     );
     
     function __construct(Institution $institution = null)
@@ -62,7 +65,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
     {
         $this->options = $options;
         $medicalCenter = $this->options['data'];
-        
+        $status = InstitutionMedicalCenterStatus::getStatusList();
         if (!$medicalCenter instanceof InstitutionMedicalCenter) {
             throw new \Exception(__CLASS__.' expects data to be instance of InstitutionMedicalCenter');
         }
@@ -72,12 +75,14 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'name','text', array('label' => 'Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short description of the clinic', 'attr' => array('rows' => 5)));
         $this->_add($builder, 'businessHours', 'hidden');
+        
         $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
         $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
         $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
+        $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         if (!$medicalCenter->getId()) {
             $medicalCenter->setWebsites($this->institution->getWebsites());
         }

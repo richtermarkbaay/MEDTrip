@@ -10,6 +10,8 @@ use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -30,7 +32,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
 
-use HealthCareAbroad\AdminBundle\Controller\CommonDeleteFormType;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHourFormType;
 
@@ -173,28 +175,24 @@ class InstitutionTreatmentsController extends Controller
         foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         
-        //get doctors
-        //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
-        //$doctorArr = array();
-        //foreach ($doctors as $each) {
-        //    $doctorArr[] = array("value" => ($each['first_name'] .' '. $each['last_name']), "id" => $each['id'], "path" => $this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist', array('doctorId' =>  $each['id'], 'imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
-        //}
-        //var_dump(\json_encode($doctorArr, JSON_HEX_QUOT)); exit;
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionSpecializations' => $institutionSpecializations,
+            'institutionMedicalCenterForm' => $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')))->createView(),
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
-            //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' =>\json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
             'currentGlobalAwards' => $currentGlobalAwards,
+            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),         
             'ancillaryServicesData' => $ancillaryServicesData,
@@ -408,7 +406,8 @@ class InstitutionTreatmentsController extends Controller
                 'institution' => $this->institution,
                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                 'selectedSubMenu' => 'centers',
-                'isNew' => true
+                'isNew' => true,
+                'formAction' => $this->generateUrl('admin_institution_medicalCenter_add')
             );
     
             return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
@@ -441,10 +440,8 @@ class InstitutionTreatmentsController extends Controller
     
     public function editMedicalCenterAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
-        $template = 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig';
-        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
+        $template = 'AdminBundle:InstitutionTreatments:form.MedicalCenter.html.twig';
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
         
@@ -458,6 +455,8 @@ class InstitutionTreatmentsController extends Controller
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,
                         'form' => $form->createView(),
+                        'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(), 
+                                        'institutionId' => $this->institution->getId()))
         ));
     }
 
@@ -496,34 +495,30 @@ class InstitutionTreatmentsController extends Controller
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
-    public function updateMedicalCenterStatusAction()
+    public function editMedicalCenterStatusAction(Request $request)
     {
-        $request = $this->getRequest();
-        $status = $request->get('status');
-
-        $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
-
-        if(!InstitutionMedicalCenterStatus::isValid($status)) {
-            $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
-
-            return $this->redirect($redirectUrl);
+        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        //$form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
+        $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
+        $output = array();
+        if ($request->isMethod('POST')) {
+            $form->bind($this->request);
+            if ($form->isValid()) {
+                $this->get('services.institution_medical_center')->save($form->getData());
+                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
+            }
         }
-
-        $this->institutionMedicalCenter->setStatus($status);
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalCenter);
-        $em->flush($this->institutionMedicalCenter);
-
-        // dispatch EDIT institutionMedicalCenter event
-        $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-        $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-        $this->get('event_dispatcher')->dispatch($actionEvent, $event);
-
-        $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
-
-
-        return $this->redirect($redirectUrl);
+        else {
+            $output['html'] =  $this->renderView($template, array(
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'institution' => $this->institution,
+                            'institutionMedicalCenterForm' => $form->createView()
+            ));
+        }
+                                // \json_encode($output),200, array('content-type' => 'application/json'));
+        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return $response;
     }
 
     /**
@@ -887,8 +882,10 @@ class InstitutionTreatmentsController extends Controller
     
                 $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:row.globalAward.html.twig', array(
                     'award' => $award,
+                    'property' => $property,
                     'institution' => $this->institution,
-                    'institutionMedicalCenter' => $this->institutionMedicalCenter
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -903,33 +900,67 @@ class InstitutionTreatmentsController extends Controller
     
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id'));
         
-        if (!$award) {
-            throw $this->createNotFoundException();
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
-        
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        
-        // get property value
-        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
-        if ($property) {
-            try {
+
+        $form = $this->createForm(new CommonDeleteFormType(), $property);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+    
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-            
-                $response = new Response('Award property removed', 200);
+                
+                $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
+            else{
+                $response = new Response("Invalid form", 400);
             }
-
-            return $response;
         }
-        else {
-            throw $this->createNotFoundException('Global award does not exist.');
+    
+        return $response;
+    }
+    
+    public function ajaxEditGlobalAwardAction()
+    {
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId', 0));
+        if (!$globalAward) {
+            throw $this->createNotFoundException('Invalid global award');
         }
+        $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $imcProperty = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId());
+        $imcProperty->setValueObject($globalAward);
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
+        if ($this->request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($this->request);
+            if ($editGlobalAwardForm->isValid()) {
+                try {
+                    $imcProperty = $editGlobalAwardForm->getData();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($imcProperty);
+                    $em->flush();
+                    $extraValue = \json_decode($imcProperty->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                                    'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
+                                    'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
+        }
+    
+        return $response;
     }
 }
