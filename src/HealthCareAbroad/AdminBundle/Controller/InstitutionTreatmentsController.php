@@ -181,12 +181,12 @@ class InstitutionTreatmentsController extends Controller
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionSpecializations' => $institutionSpecializations,
+            'institutionMedicalCenterForm' => $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')))->createView(),
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
-            //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
             'certificatesSourceJSON' =>\json_encode($autocompleteSource['certificate']),
             'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
@@ -501,45 +501,24 @@ class InstitutionTreatmentsController extends Controller
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
         //$form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
-        
+        $output = array();
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
-        
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
                 $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
             }
         }
-        return $this->render($template, array(
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institution' => $this->institution,
-                        'form' => $form->createView(),
-        ));
-        //$request = $this->getRequest();
-        //$status = $request->get('status');
-//         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
-
-//         if(!InstitutionMedicalCenterStatus::isValid($status)) {
-//             $request->getSession()->setFlash('error', "Unable to update status. $status is invalid status value!");
-
-//             return $this->redirect($redirectUrl);
-//         }
-
-//         $this->institutionMedicalCenter->setStatus($status);
-
-//         $em = $this->getDoctrine()->getEntityManager();
-//         $em->persist($this->institutionMedicalCenter);
-//         $em->flush($this->institutionMedicalCenter);
-
-//         // dispatch EDIT institutionMedicalCenter event
-//         $actionEvent = InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER;
-//         $event = $this->get('events.factory')->create($actionEvent, $this->institutionMedicalCenter, array('institutionId' => $request->get('institutionId')));
-//         $this->get('event_dispatcher')->dispatch($actionEvent, $event);
-
-//         $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
-
-
-//         return $this->redirect($redirectUrl);
+        else {
+            $output['html'] =  $this->renderView($template, array(
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'institution' => $this->institution,
+                            'institutionMedicalCenterForm' => $form->createView()
+            ));
+        }
+                                // \json_encode($output),200, array('content-type' => 'application/json'));
+        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return $response;
     }
 
     /**

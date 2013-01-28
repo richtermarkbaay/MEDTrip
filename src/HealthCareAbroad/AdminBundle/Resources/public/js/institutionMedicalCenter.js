@@ -4,7 +4,7 @@
 var InstitutionMedicalCenter = {
         
     removePropertyUri: '',
-        
+    _updateStatusUri: '',  
     _modals: {
         'name': null,
         'description': null
@@ -39,7 +39,10 @@ var InstitutionMedicalCenter = {
         
         return this;
     },
-    
+    setUpdateStatusUri: function (_val) {
+    	this._updateStatusUri = _val;
+        return this;
+    },
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -137,6 +140,7 @@ var InstitutionMedicalCenter = {
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {
+    	
         _button = _formElement.find('button.delete-button');
         _button.attr('disabled', true)
             .html('Processing...');
@@ -166,7 +170,23 @@ var InstitutionMedicalCenter = {
             }
          });
     },
-    
+    updateMedicalCenterStatus: function(_button) {
+    	_button = $(_button);
+    	_formElement = $(_button.attr('data-formId'));
+    	_modal = $(_button.attr('data-modalId'));
+    	_button.attr('disabled', true)
+            .html('Processing...');
+        var href = _formElement.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: href,
+            data: _formElement.serialize(),
+            success: function(response) {
+            	_modal.modal('hide');
+            }
+        });
+        	
+    },
     removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);
         $.ajax({
