@@ -109,13 +109,6 @@ institution_load_doctor_specializations:
     requirements:
         _method: GET|POST
 
-institution_medicalCenter_loadAvailableSpecializations:
-    pattern: /medical-center/load-available-specializations/{imcId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableSpecializations }
-    requirements:
-        _method: GET
-        imcId: \d+
-
 institution_medicalCenter_loadAvailableTreatments:
     pattern: /medical-center/load-available-treatments/{imcId}
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableTreatments }
@@ -159,11 +152,7 @@ institution_medicalCenter_ajaxRemoveAncillaryService:
         imcId: \d+
         _method: POST
 
-institution_medical_center_ajaxLoadSpecializationAccordionEntry:
-    pattern: /medical-center/{imcId}/ajaxLoadSpecializationAccordionEntry
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
-    requirements:
-        _method: GET
+
         
         
 institution_medicalCenter_ajaxAddSpecialistService:

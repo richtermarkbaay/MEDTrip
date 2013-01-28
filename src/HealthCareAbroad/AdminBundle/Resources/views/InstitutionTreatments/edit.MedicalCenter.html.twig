@@ -11,11 +11,7 @@
                 <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
                     <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}" method="POST" class="basic-form" >
                         {{ form_errors(form) }}
-                        {{ form_row(form.name) }}
-                        {{ form_row(form.description, { 'attr': {style: "width: 70%", class: "tinymce"} } ) }}
-                        {{ form_row(form.address) }}
-                        {{ form_row(form.contactEmail) }}
-                        {{ form_row(form.websites) }}
+                        {{ form_row(form.status) }}
                         {{ form_rest(form) }}
                             <div class="clearfix"></div>
                             <input type="submit" name="submit" value="Submit" class="button-next btn-medium btn btn-info" />

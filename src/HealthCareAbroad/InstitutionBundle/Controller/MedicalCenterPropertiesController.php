@@ -113,7 +113,6 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
-    
         $form = $this->createForm(new CommonDeleteFormType(), $property);
     
         if ($request->isMethod('POST'))  {
@@ -123,7 +122,6 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-    
                 $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
             else{

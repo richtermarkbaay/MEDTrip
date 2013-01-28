@@ -7,3 +7,9 @@ services:
             - [setRouter, [@router]]
         tags:
             - { name: twig.extension }
+            
+    frontend.advertisement_twig_extension:
+        class: HealthCareAbroad\FrontendBundle\Twig\AdvertisementTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
