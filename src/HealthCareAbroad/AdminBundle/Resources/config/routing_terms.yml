@@ -1,0 +1,5 @@
+admin_terms_loadAutocompleteSource:
+    pattern: /ns-admin/terms/loadAutocompleteSource
+    defaults: { _controller: AdminBundle:Terms:loadAutocompleteSource }
+    requirements:
+        _method: GET

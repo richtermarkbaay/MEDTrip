@@ -39,6 +39,10 @@
     
     				{{ form_row(form.name) }}
     				{{ form_row(form.description) }}
+    				
+    				{{ form_row(form.treatmentTerms) }}
+    				<div class="autocompleteSelectedContainer"></div>
+    				
     				{{ form_row(form.status) }}
     				
     				{{ form_rest(form) }}
@@ -57,11 +61,17 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/admin/js/terms.js') }}"></script>
 	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
 	<script type="text/javascript">
 		$(function(){
 
 		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('input.autocompleteTerms').terms('autocomplete', {
+			    'remoteUrl': '{{ path("admin_terms_loadAutocompleteSource") }}',
+			    'type': 3
+		    });
 
 		    $('a.view-edit-history-link').click(function(){
 		        EntityVersionHistory.viewHistory($(this));
