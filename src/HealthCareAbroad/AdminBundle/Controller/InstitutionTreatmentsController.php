@@ -407,7 +407,8 @@ class InstitutionTreatmentsController extends Controller
                 'institution' => $this->institution,
                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                 'selectedSubMenu' => 'centers',
-                'isNew' => true
+                'isNew' => true,
+                'formAction' => $this->generateUrl('admin_institution_medicalCenter_add')
             );
     
             return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
@@ -440,10 +441,8 @@ class InstitutionTreatmentsController extends Controller
     
     public function editMedicalCenterAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
-        $template = 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig';
-        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
+        $template = 'AdminBundle:InstitutionTreatments:form.MedicalCenter.html.twig';
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
         
@@ -457,6 +456,8 @@ class InstitutionTreatmentsController extends Controller
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,
                         'form' => $form->createView(),
+                        'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(), 
+                                        'institutionId' => $this->institution->getId()))
         ));
     }
 
@@ -495,13 +496,12 @@ class InstitutionTreatmentsController extends Controller
      *
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
-    public function updateMedicalCenterStatusAction()
+    public function editMedicalCenterStatusAction(Request $request)
     {
-        //$request = $this->getRequest();
-        //$status = $request->get('status');
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
-        $template = 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig';
-        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
+        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        //$form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
+        $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
@@ -511,11 +511,13 @@ class InstitutionTreatmentsController extends Controller
                 $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
             }
         }
-        
         return $this->render($template, array(
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,
-                         
+                        'form' => $form->createView(),
+        ));
+        //$request = $this->getRequest();
+        //$status = $request->get('status');
 //         $redirectUrl = $this->generateUrl('admin_institution_manageCenters', array('institutionId' => $request->get('institutionId')));
 
 //         if(!InstitutionMedicalCenterStatus::isValid($status)) {

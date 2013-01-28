@@ -13,7 +13,7 @@
                                 label: 'Edit '~ institutionMedicalCenter.name | title, 
                                 'icon' : 'icon-ok' },
                         {link: isSingleCenter ? [] : 
-                                path('admin_institution_medicalCenter_editStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
                                 label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
                                 'icon' : 'icon-ok' }
                     ]
