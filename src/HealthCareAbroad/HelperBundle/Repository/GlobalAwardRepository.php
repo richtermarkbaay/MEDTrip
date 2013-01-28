@@ -17,15 +17,22 @@ class GlobalAwardRepository extends EntityRepository
 
     public function findByIds(array $ids, $loadEager=true)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $query = $qb->select('g, ga')
+        if (\count($ids)) {
+            $qb = $this->getEntityManager()->createQueryBuilder();
+            $query = $qb->select('g, ga')
             ->from('HelperBundle:GlobalAward', 'g')
             ->innerJoin('g.awardingBody', 'ga')
             ->where($qb->expr()->in('g.id', ':ids'))
             ->setParameter('ids', $ids)
             ->getQuery();
+            
+            $result = $query->getResult();
+        }
+        else {
+            $result = array();
+        }
         
-        return $query->getResult();
+        return $result;
     }
     
     
