@@ -3,7 +3,6 @@
 {% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institution.contactEmail %}
 {% set number = institutionMedicalCenter.contactNumber ? institutionMedicalCenter.contactNumber : institution.contactNumber  %}
 {% set number = json_decode(number) | join %}
-{% set address = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.address : institution.address1 %}
 {% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
@@ -14,7 +13,7 @@
         <div class="span9">
             <div class="media">
                 <div class="pull-left">
-                    <img class="media-object" alt="" src="images/frontend/clinic-logo6.png">
+                    <img class="media-object" alt="" src="{{ imageplaceholder.institutionLogo }}">
                 </div>
                 <div class="media-body">
                     <h1>{{ institution.name }}</h1>
@@ -35,15 +34,12 @@
 
             <div id="details" class="row">
                 <div id="main_content" class="span8">
+
                     <div class="clinicdetails content">
-    
-                    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' with { object: institutionMedicalCenter } %}
-    
-                        <div class="description">
-                            {{ institutionMedicalCenter.description | raw }}
-                        </div>
+                        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
+                        <div class="description">{{ institutionMedicalCenter.description | raw }}</div>
                     </div>
-    
+
                     {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
                         with { specializations: institutionMedicalCenter.institutionSpecializations } %}
     

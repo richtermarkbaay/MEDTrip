@@ -1,25 +1,16 @@
-{% extends 'AdminBundle::layout.institution.html.twig' %}
-
-{% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
-{% block content %}
-    <div class="span9">
-        {% embed 'HelperBundle:Widgets:section.html.twig' 
-            with {title: institutionMedicalCenter.name,
-                  actions: [{link: path('admin_institution_medicalCenter_view', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}), label: 'View '~ institutionMedicalCenter.name | title, 'icon' : 'icon-ok' }]  
-                 } %}
-            {% block sectionContent %} 
-                <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
-                    <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}" method="POST" class="basic-form" >
-                        {{ form_errors(form) }}
-                        {{ form_row(form.status) }}
-                        {{ form_rest(form) }}
-                            <div class="clearfix"></div>
-                            <input type="submit" name="submit" value="Submit" class="button-next btn-medium btn btn-info" />
-                    </form>
-                </div>
-            {% endblock %}
-        {% endembed %}
-    </div>
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
+    {% block modalBody %}
+    <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_updateStatus', {'imcId': institutionMedicalCenter.id, 'institutionId' : institution.id} ) }}" id="status_medicalCenter_form" method="POST" class="basic-form">        
+        {{ form_errors(institutionMedicalCenterForm) }}   
     
-{% endblock %}
-        
+        {{ form_row(institutionMedicalCenterForm.status) }}
+        </br>
+        {{ form_rest(institutionMedicalCenterForm) }}
+                            	                        	
+    </form>
+    {% endblock %}
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-modalId="#status_medicalCenter_modal_form" data-formId="#status_medicalCenter_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.updateMedicalCenterStatus(this); return false;" id="modal_status_medicalCenter_submitButton" class="btn btn-primary submit-button">Submit</button>
+    {% endblock %}
+{% endembed %}

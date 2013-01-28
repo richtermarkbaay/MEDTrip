@@ -27,3 +27,13 @@ parameters:
     memcached.servers:
         - { host: 127.0.0.1, port: 11211 }
     
+	imageplaceholder:
+		institutionLogo: /images/frontend/default-hospital-logo.png 
+	    clinicLogo: /images/frontend/default-clinic-logo.png
+	    doctorIcon: /images/frontend/default-doctor-logo.png
+	    doctorIconOrange: /images/frontend/default-doctor-logo-orange.png
+	    treatmentIcon:
+	    serviceIcon:
+	    awardIcon:
+	    destinationIcon:
+

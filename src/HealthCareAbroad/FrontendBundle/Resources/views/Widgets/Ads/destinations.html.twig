@@ -1,27 +1,29 @@
-<div class="travel_section_wrapper">
-    <div class="heading">
-    	<div class="heading_text"><h3>Destinations</h3></div>
-    </div>
-    
-	<div id="destination_carousel" class="image_carousel">
-		<div class="tooltip bottom in">
-			...
-		</div>
-		<div id="carousel-inner">
-		    {% for each in destinationAds %}
-			<div class="thumb span2">
-				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
-			        {% if each.media %}
-				        {{ media(each.media, each, 'default', {class: 'img-polaroid', thumbnail: true}) | raw }}
-				    {% else %}
-				        <img class="img-polaroid" src="" alt="featured_pic" />
-				    {% endif %}
-				</a>
-				<h6>{{ each.country.name }}</h6>
-			</div>
-			{% endfor %}
-		</div>
-		<a class="prev carousel-control" id="carousel_prev" href="#">&nbsp;</a>
-		<a class="next carousel-control" id="carousel_next" href="#">&nbsp;</a>
-	</div>
-</div><!--End of travel_section_wrapper-->
+{% if destinationAds|length %}
+    <div class="travel_section_wrapper">
+        <div class="heading">
+        	<div class="heading_text"><h3>Destinations</h3></div>
+        </div>
+        
+    	<div id="destination_carousel" class="image_carousel">
+    		<div class="tooltip bottom in">
+    			...
+    		</div>
+    		<div id="carousel-inner">
+    		    {% for each in destinationAds %}
+    			<div class="thumb span2">
+    				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
+    			        {% if each.media %}
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', thumbnail: true}) | raw }}
+    				    {% else %}
+    				        <img class="img-polaroid" src="{{ imageplaceholder.destinationIcon }}" alt="featured_pic" />
+    				    {% endif %}
+    				</a>
+    				<h6>{{ each.country.name }}</h6>
+    			</div>
+    			{% endfor %}
+    		</div>
+    		<a class="prev carousel-control" id="carousel_prev" href="#">&nbsp;</a>
+    		<a class="next carousel-control" id="carousel_next" href="#">&nbsp;</a>
+    	</div>
+    </div><!--End of travel_section_wrapper-->
+{% endif %}

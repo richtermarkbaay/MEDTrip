@@ -65,7 +65,13 @@ admin_institution_ajaxRemoveGlobalAward:
     requirements:
         _method: GET|POST
         institutionId: \d+
-        
+       
+admin_institution_ajaxEditGlobalAward:
+    pattern: /institution/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxEditGlobalAward}
+    requirements:
+        _method: POST 
+       
 # institutionId is included in request parameters since this is an unsecured request
 admin_ajaxGlobalAwardSource:
     pattern: /ns-admin/{institutionId}/awards-certificates-and-affiliations/search

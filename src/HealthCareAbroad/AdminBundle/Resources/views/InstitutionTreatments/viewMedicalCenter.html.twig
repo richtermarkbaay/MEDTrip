@@ -15,7 +15,8 @@
                         {link: isSingleCenter ? [] : 
                                 path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
                                 label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
-                                'icon' : 'icon-ok' }
+                                'icon' : 'icon-ok',
+                                class : 'edit-status'}
                     ]
                  } 
          %}
@@ -42,6 +43,11 @@
                         
                     </div>
                     {% include 'AdminBundle:Widgets:medicalCenter.medicalSpecialist.html.twig'%}
+                    
+                    <!-- Modal Medical Center Status -->
+                    	{% include 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig' 
+                    	     with {modalId: 'status_medicalCenter_modal_form', modalTitle: 'Edit Status'} 
+                    	%} <!-- end Modal Medical Center Status -->
                 </div>
             {% endblock %}
     
@@ -54,6 +60,7 @@
     <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
     <script src="{{ asset('bundles/admin/js/institutionTreatments.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/admin/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('bundles/admin/js/properties.js') }}" ></script>
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
@@ -92,6 +99,14 @@
                      return false;
             });
 
+            $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
+            
+            $('a.edit_global_award').globalAward('edit', {
+                'modal': $('div.edit_award_form_container'),
+                'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
+                'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
+            });
+            
             var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
 
         	InstitutionGlobalAwardAutocomplete
@@ -238,6 +253,10 @@
     			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
     			$(this).parent().removeClass('ui-state-disabled'); 
     		});
+            $('a.edit-status').click(function(){
+            	$('div#status_medicalCenter_modal_form').modal('show');
+                return false;
+            });
 
         });
         

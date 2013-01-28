@@ -1,0 +1,30 @@
+HealthCareAbroad\TermBundle\Entity\TermDocument:
+    type: entity
+    table: term_documents
+    repositoryClass: HealthCareAbroad\TermBundle\Repository\TermDocumentRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        documentId:
+            type: integer
+            unsigned: true
+            nullable: false
+            column: document_id
+        type:
+            type: integer
+            nullable: false
+    manyToOne:
+        term:
+            targetEntity: HealthCareAbroad\TermBundle\Entity\Term
+            cascade: {  }
+            mappedBy: null
+            inversedBy: termDocuments
+            joinColumns:
+                term_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

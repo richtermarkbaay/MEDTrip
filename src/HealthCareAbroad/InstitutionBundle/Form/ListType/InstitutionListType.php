@@ -21,10 +21,10 @@ class InstitutionListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
 			'class' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution',
-			'query_builder' => function(EntityRepository $er){ return $er->getQueryBuilderForApprovedInstitutions(); }
+			//'query_builder' => function(EntityRepository $er){ return $er->getQueryBuilderForApprovedInstitutions(); } // TODO - Temporarily Comm
         ));
     }
-   
+
     public function getParent()
     {
         return 'entity';

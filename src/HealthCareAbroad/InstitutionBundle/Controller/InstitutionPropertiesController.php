@@ -164,17 +164,11 @@ class InstitutionPropertiesController extends InstitutionAwareController
      */
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
-    
-        if (!$award) {
-            throw $this->createNotFoundException();
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
-        // get property value for this ancillary service
-        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $award->getId());
     
        $form = $this->createForm(new CommonDeleteFormType(), $property);
         
@@ -186,7 +180,7 @@ class InstitutionPropertiesController extends InstitutionAwareController
                 $em->remove($property);
                 $em->flush();
         
-                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+                $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);
