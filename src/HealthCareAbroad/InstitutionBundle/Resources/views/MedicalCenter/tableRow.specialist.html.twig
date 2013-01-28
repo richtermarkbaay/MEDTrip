@@ -1,6 +1,6 @@
 {% for doctor in doctors %}
 	<tr id="doctor_id_{{ doctor.id }}">
-		<td><h3>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</h3></td>
+		<td>{{ doctor.lastName }}, {{ doctor.firstName }}</td>
 		<td>
 		{% for specialization in doctor.specializations %}
 		    {{ specialization.name |title }} 

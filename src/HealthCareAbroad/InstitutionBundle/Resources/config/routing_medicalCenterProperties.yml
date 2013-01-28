@@ -14,7 +14,7 @@ institution_medicalCenter_ajaxEditGlobalAward:
         
 institution_medicalCenter_ajaxRemoveGlobalAward:
     pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
-    defaults: { _controller: InstitutionBundle:Unsecured:ajaxRemoveGlobalAward, imcId: ~}
+    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemoveGlobalAward, imcId: ~}
     requirements:
         _method: GET|POST
         imcId: \d+
