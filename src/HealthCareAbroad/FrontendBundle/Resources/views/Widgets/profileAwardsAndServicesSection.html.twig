@@ -3,29 +3,19 @@
 {% set class = hasAwards and hasAwards ? 'span4' : 'span4' %}
 
 {% if hasAwards or hasServices %}
-    <div class="awards-services row">
-        {% if hasServices %}
-            {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {_inlineStyle: hasAwards ? '' : 'width:100%;', title: 'Services', class: 'services ' ~ class} %}
-                {% block sectionContent %}
-        		<ul>
-        			{% for each in services %}
-        				<li>{{ each.name }}</li>
-        			{% endfor %}
-        		</ul>	
-                {% endblock %}
-           {% endembed %}
-       {% endif %}
-    
-        {% if hasAwards %}
-           {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {_inlineStyle: hasServices ? '' : 'width:100%;', title: 'Awards & Accreditations', class: 'awards ' ~ class } %}
-                {% block sectionContent %}
-        		<ul>
-        		    {% for each in awards %}
-        			<li>{{ each.name }}</li>
-        			{% endfor %}
-        		</ul>
-                {% endblock %}
-           {% endembed %}
-       {% endif %}
+    <div class="two-col-description row">
+    	{% if hasServices %}
+    	<div class="services span4">
+    		<h5 class="services-heading">Services</h5>
+    		<ul class="default-list">{% for each in services %}<li>{{ each.name }}</li>{% endfor %}</ul>
+    	</div>
+        {% endif %}
+
+    	{% if hasAwards %}
+            <div class="awards span4">
+            	<h5 class="awards-heading">Awards &amp; Accreditations</h5>
+            	<ul class="default-list">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
+            </div>
+        {% endif %}
     </div>
 {% endif %}

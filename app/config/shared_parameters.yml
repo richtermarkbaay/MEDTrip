@@ -68,3 +68,13 @@ parameters:
     cfe_site_url: http://www.chromedia.com
     cfe_site_name: www.Chromedia.com
     cfe_company_name: Chromedia Far East Inc.
+    
+    imageplaceholder:
+        institutionLogo: /images/frontend/default-hospital-logo.png 
+        clinicLogo: /images/frontend/default-clinic-logo.png
+        doctorIcon: /images/frontend/default-doctor-logo.png
+        doctorIconOrange: /images/frontend/default-doctor-logo-orange.png
+        treatmentIcon:
+        serviceIcon:
+        awardIcon:
+        destinationIcon:

@@ -1,41 +1,39 @@
 {% if doctors | length %}
 
-    {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors'} %}    
-        {% block sectionContent %}
+<div class="one-col-description content row">
+    <h5 class="doctors-heading">Doctors</h5>
+    
+	<ul class="thumbnails">
+	    {% for doctor in doctors %}
+		<li class="thumbnail">
+			{% if doctor.media %}
+			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
+			{% else %}
+			    <img src="" class="pull-left img-polaroid"/>
+			{% endif %}
+			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
+			<p class="media-body">
+			    {% for i, each in doctor.specializations %}
+			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
+			    {% endfor %}
+			</p>
+			<ul class="contact">
+			    {% if doctor.contactEmail %}
+				    <li class="email"><a href="mailto:{{ doctor.contactEmail }}">email</a></li>
+				{% endif %}
 
-    	<ul class="thumbnails">
-    	    {% for doctor in doctors %}
-    		<li class="thumbnail">
-    			{% if doctor.media %}
-    			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
-    			{% else %}
-    			    <img src="" class="pull-left img-polaroid"/>
-    			{% endif %}
-    			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
-    			<p class="media-body">
-    			    {% for i, each in doctor.specializations %}
-    			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
-    			    {% endfor %}
-    			</p>
-    			<ul class="contact">
-    			    {% if doctor.contactEmail %}
-    				    <li class="email"><a href="mailto:{{ doctor.contactEmail }}">email</a></li>
-    				{% endif %}
+                {% set contactNumbers = json_decode(doctor.contactNumber) %}
+				{% if contactNumbers and (contactNumbers | length) and (contactNumbers[0].number)  %}
+				    <li class="call"><a href="tel:{{ contactNumbers[0].number }}">contact</a></li>
+				{% endif %}
 
-                    {% set contactNumbers = json_decode(doctor.contactNumber) %}
-    				{% if contactNumbers and (contactNumbers | length) and (contactNumbers[0].number)  %}
-    				    <li class="call"><a href="tel:{{ contactNumbers[0].number }}">contact</a></li>
-    				{% endif %}
-
-    			    {% if doctor.website is defined %}
-    				<li class="web"><a href="">website</a></li>	
-    				{% endif %}
-    			</ul>
-    		</li>
-    		{% endfor %}
-    	</ul>
-    	
-        {% endblock %}	
-    {% endembed %}
+			    {% if doctor.website is defined %}
+				<li class="web"><a href="">website</a></li>	
+				{% endif %}
+			</ul>
+		</li>
+		{% endfor %}
+	</ul>
+</div>
 
 {% endif %}

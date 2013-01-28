@@ -7,7 +7,8 @@
             			{% if each.logo %}
             			    {{ media(each.logo, institution, 'default', {thumbnail: true}) | raw }}
             			{% else %}
-            			    <img src="" class="pull-left img-polaroid"/>
+            			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default"/>
+            			    <span>default clinic logo</span>
             			{% endif %}
     				</a>
     			</li>
