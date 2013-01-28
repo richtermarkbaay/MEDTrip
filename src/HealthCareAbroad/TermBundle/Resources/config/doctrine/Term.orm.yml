@@ -1,0 +1,21 @@
+HealthCareAbroad\TermBundle\Entity\Term:
+    type: entity
+    table: terms
+    repositoryClass: HealthCareAbroad\TermBundle\Repository\TermRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        term:
+            type: string
+            length: 250
+            unique: true
+    oneToMany:
+        termDocuments:
+            targetEntity: HealthCareAbroad\TermBundle\Entity\TermDocument
+            mappedBy: term
+
