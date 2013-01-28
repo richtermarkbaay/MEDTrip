@@ -1,0 +1,22 @@
+<div class="edit_award_form_container modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <form class="edit_award_form" action="#">
+    	<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+            <h3>Edit Award <span class="editAwardForm_awardName"></span></h3>
+        </div>
+        <div class="modal-body">
+            <div>
+                {{ form_row(editGlobalAwardForm.extraValueAutocomplete) }}
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
+            <button data-loading-text="Processing..." class="btn btn-danger submit" type="submit">Save</button>
+        </div>
+        <input type="hidden" name="globalAwardId" class="globalAwardId" />
+        <input type="hidden" name="propertyId" class="propertyId" />
+        {{ form_widget(editGlobalAwardForm.extraValue) }}
+        {{ form_widget(editGlobalAwardForm.value) }}
+        {{ form_widget(editGlobalAwardForm._token) }}
+    </form>
+</div>
