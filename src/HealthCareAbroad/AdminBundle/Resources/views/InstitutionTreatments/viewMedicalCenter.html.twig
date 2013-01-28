@@ -43,6 +43,7 @@
     <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
     <script src="{{ asset('bundles/admin/js/institutionTreatments.js') }}" type="text/javascript"></script>
     <script src="{{ asset('bundles/admin/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('bundles/admin/js/properties.js') }}" ></script>
     <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
     <script src="{{ asset('js/jquery/globalize.js') }}"></script>
     <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
@@ -81,6 +82,14 @@
                      return false;
             });
 
+            $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
+            
+            $('a.edit_global_award').globalAward('edit', {
+                'modal': $('div.edit_award_form_container'),
+                'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
+                'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
+            });
+            
             var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
 
         	InstitutionGlobalAwardAutocomplete

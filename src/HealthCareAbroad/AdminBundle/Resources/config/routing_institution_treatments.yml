@@ -139,3 +139,11 @@ admin_institution_medicalCenter_updateStatus:
         imcId: \d+
         status: \d+
         _method: POST
+        
+admin_medicalCenter_ajaxEditGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxEditGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+        imcId: \d+

@@ -115,7 +115,7 @@ var InstitutionMedicalCenter = {
     showCommonModalId: function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('#award'+_id).find('h3').html();
+        _name = $('#globalAwardRow_'+_id).find('h5').html();
         _modal = $(_linkElement.attr('data-target'));
         $('#id').val(_id);
         $(".modal-body p strong").text(_name+'?');
@@ -324,7 +324,7 @@ var InstitutionMedicalCenter = {
 	        success: function(response){
 	        	_form.parents('div.modal').modal('hide');
 	        	_button.html("Delete").attr('disabled', false);
-	        	$('#award'+response.id).remove();
+	        	$('#globalAwardRow_'+response.id).remove();
 	        }
 	     });
     },
@@ -429,7 +429,9 @@ var InstitutionGlobalAwardAutocomplete = {
 	            type: 'POST',
 	            dataType: 'json',
 	            success: function(response) {
-	                _option.selectedDataContainer.append(response.html);
+	            	_new_row = $(response.html); 
+	            	_new_row.find('a.edit_global_award').bind('click', $.globalAward._clickEdit);
+	                _option.selectedDataContainer.append(_new_row);
 	                _option.target.find('option[value='+_val+']').hide();
 	                _option.loader.hide();
 	            },
