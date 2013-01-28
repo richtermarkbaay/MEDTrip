@@ -12,7 +12,7 @@
                     <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_edit', { 'institutionId':institution.id, 'imcId': institutionMedicalCenter.id }) }}" method="POST" class="basic-form" >
                         {{ form_errors(form) }}
                         {{ form_row(form.name) }}
-                        {{ form_row(form.description, { 'attr': {style: "width: 70%"} } ) }}
+                        {{ form_row(form.description, { 'attr': {style: "width: 70%", class: "tinymce"} } ) }}
                         {{ form_row(form.address) }}
                         {{ form_row(form.contactEmail) }}
                         {{ form_row(form.websites) }}
