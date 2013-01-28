@@ -113,7 +113,8 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         ->select('a,b')
         ->from('HelperBundle:GlobalAward', 'a')
         ->innerJoin('a.awardingBody', 'b')
-        ->where('1=1');
+        ->where('a.status = :globalAwardActiveStatus' )
+        ->setParameter('globalAwardActiveStatus',GlobalAward::STATUS_ACTIVE);
     
         if ($options->has('globalAward.name')) {
             $qb->andWhere('a.name LIKE :globalAwardName')

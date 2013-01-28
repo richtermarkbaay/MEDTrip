@@ -121,6 +121,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId());
     
         $form = $this->createForm(new CommonDeleteFormType(), $property);
+        $propertyId = $property->getId();
     
         if ($request->isMethod('POST'))  {
             $form->bind($request);
@@ -130,7 +131,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $em->remove($property);
                 $em->flush();
     
-                $response = new Response(\json_encode(array('id' => $award->getId())), 200, array('content-type' => 'application/json'));
+                $response = new Response(\json_encode(array('id' => $propertyId)), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);

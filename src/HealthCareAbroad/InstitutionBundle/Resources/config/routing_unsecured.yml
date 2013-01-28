@@ -25,3 +25,18 @@ institution_medicalCenter_ajaxGlobalAwardSource:
     requirements:
         imcId: \d+
         _method: GET
+        
+        
+institution_medicalCenter_loadAvailableSpecializations:
+    pattern: /ns-institution/medical-center/load-available-specializations/{imcId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableSpecializations }
+    requirements:
+        _method: GET
+        imcId: \d+
+        
+        
+institution_medical_center_ajaxLoadSpecializationAccordionEntry:
+    pattern: /ns-institution/medical-center/{imcId}/ajaxLoadSpecializationAccordionEntry
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
+    requirements:
+        _method: GET
