@@ -5,6 +5,14 @@
         return val.split( /,\s*/ );
     }
     
+    function showModal(_modal) {
+        _modal.modal('show');
+    }
+    
+    function hideModal(_modal) {
+        _modal.modal('hide');
+    }
+    
     var Terms = {
         'options': {
             'autocomplete': {
@@ -12,6 +20,10 @@
                 'type': 0,
                 'remoteUrl': '',
                 'selectedContainer': '.autocompleteSelectedContainer'
+            },
+            'modalAddTerm': {
+                'form': 'form.addTermForm',
+                'submit_button': 'button.submit'
             }
         },
         // handler for autocomplete action
@@ -59,27 +71,50 @@
                         $(Terms.options.autocomplete.selectedContainer).append(_newSelected);
                     }
                     this.value = '';
-                    /**
-                    _currentTerms = split( this.value );
-                    // remove the current input
-                    _currentTerms.pop();
-                    // value has not been pushed yet
-                    if (_currentTerms.indexOf(ui.item.value)< 0) {
-                        // add the selected item
-                        _currentTerms.push( ui.item.value );
-                    }
-                    this.value = _currentTerms.join( ", " ).replace(/,\s*$/,'');
-                    **/
                     return false;
                 }
             });
             
             return _self;
-        }
+        }, // end _autocomplete
+        _add: function(_self) {
+            _form = $(Terms.options.modalAddTerm.form);
+            _button = $(Terms.options.modalAddTerm.submit_button);
+            
+            // bind button click
+            _button.click(function(){
+                _form.submit();
+                
+                return false;
+            });
+            
+            // bind form submit
+            _form.submit(function(){
+                _buttonHtml = _button.html();
+                _button.html(_button.attr('data-loading-text')).attr('disabled', true);
+                $.ajax({
+                    url: _form.attr('action'),
+                    data: _form.serialize(),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(json) {
+                        _button.html(_buttonHtml).attr('disabled', false);
+                        hideModal(_self);
+                    },
+                    error: function() {
+                        _button.html(_buttonHtml).attr('disabled', false);
+                    }
+                });
+                return false; 
+            });
+            
+            return _self;
+        }// end _add
     };
     
     Terms.actions = {
-        'autocomplete': Terms._autocomplete
+        'autocomplete': Terms._autocomplete,
+        'modalAddTerm': Terms._add 
     };
     
     // jquery extension for terms functionalities

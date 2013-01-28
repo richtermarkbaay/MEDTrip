@@ -1,0 +1,15 @@
+{% embed 'AdminBundle:Embed:modal.base.html.twig' with {modal: {'id': 'addTermModal', class: 'addTermModal', title: 'Add term/tag'}} %}
+    
+    {% block modalBody %}
+    <div>
+        <form action="{{ path('admin_terms_ajaxAdd') }}" id="addTermForm" class="addTermForm" method="POST">    
+            <input type="text" placeholder="New term/tag" />
+        </form>
+    </div>
+    {% endblock %}
+    
+    {% block footerBody %}
+        <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
+        <button data-loading-text="Processing..." class="btn btn-danger submit" type="submit">Create Term</button>
+    {% endblock %}
+{% endembed %}
