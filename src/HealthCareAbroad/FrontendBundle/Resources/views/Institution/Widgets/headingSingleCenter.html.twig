@@ -1,0 +1,29 @@
+<div class="span2">
+	<a href="">
+	    {% if institution.logo %}
+	        {{ media(institution.logo, institution, 'default') | raw }}
+	    {% else  %}
+	        <img src="{{ imageplaceholder.clinicLogo }}" alt="default logo" />
+	    {% endif %}
+	</a>
+    
+</div>
+<div class="span5 address-box">
+	<h1>{{ institution.name }}</h1>
+
+	<div class="media">
+		<div class="pull-left">
+			<img src="/images/frontend/address_icon2.png" class="media-object">
+		</div>
+		<div class="media-body">
+			<h6>{{ institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ') }}</h6>
+			<h4>{{ institution_address_to_array(institution, ['city', 'state', 'country']) | join(', ') }}</h4>
+		</div>
+	</div>
+
+	<div class="contact_clinic span6">
+    	{% if number %}<a href="tel:{{ number }}" class="call btn green">Call Us</a>{% endif %}
+    	{% if email %}<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
+    	{% if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif %}
+	</div>
+</div>

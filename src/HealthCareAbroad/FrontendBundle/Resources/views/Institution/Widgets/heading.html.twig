@@ -15,17 +15,12 @@
         {% else %}
             <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
         {% endif %}
-
         
-        {% if featuredImage is defined %}
-            {% set institutionLogo = media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) %}
-            {% if mainWebsites %} 
-                <a href="{{ mainWebsites }}" target="_link">{{ institutionLogo|raw }}</a>
-            {% else %}
-                {{ institutionLogo|raw }}
-            {% endif %}
+        {% if institution.logo %}
+            {% set institutionLogo = media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) %} 
+            <a {% if mainWebsites %} href="{{ mainWebsites }}" target="_link" {% endif %}>{{ institutionLogo|raw }}</a>
         {% else %}
-            <img class="institution_logo" src="" alt="institution"/>
+            <a><img class="institution_logo" src="{{ imageplaceholder.institutionLogo }}" alt="institution"/></a>
         {% endif %}
 
     </div>
