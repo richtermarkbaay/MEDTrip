@@ -1,22 +1,22 @@
 <div class="span2">
 	<a href="">
-	    {% if object.logo %}
-	        {{ media(object.logo, institution, 'default') | raw }}
+	    {% if institutionMedicalCenter.logo %}
+	        {{ media(institutionMedicalCenter.logo, institution, 'default') | raw }}
 	    {% else  %}
-	        <img src="" alt="default logo" />
+	        <img src="{{ imageplaceholder.clinicLogo }}" alt="default logo" />
 	    {% endif %}
 	</a>
     
 </div>
 <div class="span5 address-box">
-	<h1>{{ object.name }}</h1>
+	<h1>{{ institutionMedicalCenter.name }}</h1>
 	<div class="media">
 		<div class="pull-left">
 			<img src="/images/frontend/address_icon2.png" class="media-object">
 		</div>
 		<div class="media-body">
-		    {% set _institution_medical_center_address = medical_center_complete_address_to_array(object, ['address', 'zipCode']) %}
-            {% set _institution_address = medical_center_complete_address_to_array(object, ['city', 'state', 'country']) %}
+		    {% set _institution_medical_center_address = medical_center_complete_address_to_array(institutionMedicalCenter, ['address', 'zipCode']) %}
+            {% set _institution_address = medical_center_complete_address_to_array(institutionMedicalCenter, ['city', 'state', 'country']) %}
 			<h6>{{ _institution_medical_center_address | join(', ') }}</h6>
 			<h4>{{ _institution_address | join(', ') }}</h4>
 		</div>

@@ -1,7 +1,6 @@
 {% set email = institution.contactEmail %}
 {% set number = institution.contactNumber  %}
 {% set number = json_decode(number) | join %}
-{% set address = institution.address1 %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
@@ -9,9 +8,7 @@
 <div id="details" class="row">
 	<div id="main_content" class="span8">
 		<div class="clinicdetails content">
-            {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' 
-                with { object: institution, city: institution.city, country: institution.country } 
-            %}
+            {% include 'FrontendBundle:Institution/Widgets:headingSingleCenter.html.twig' %}
             <div class="description">
                 {{ institution.description | raw }}
             </div>

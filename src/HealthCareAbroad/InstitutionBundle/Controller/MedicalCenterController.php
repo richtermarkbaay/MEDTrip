@@ -282,7 +282,7 @@ class MedicalCenterController extends InstitutionAwareController
         $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
 
         $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        //$doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
+        $doctors = $this->institutionMedicalCenter->getDoctors();//$this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
 
         if ($request->isMethod('POST')) {
@@ -303,17 +303,17 @@ class MedicalCenterController extends InstitutionAwareController
             }
             
         }
-        //$doctorArr = array();
-        //foreach ($doctors as $each) {
-        //    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id']);
-        //}
+        $doctorArr = array();
+        foreach ($doctors as $each) {
+           $doctorArr[] = array('value' => $each->getFirstName() ." ". $each->getLastName(), 'id' => $each->getId());
+        }
 
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
                         'form' => $form->createView(),
                         'institution' => $this->institution,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'isSingleCenter' => $isSingleCenter,
-                        //'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS)
+                        'doctors' => $doctors//\json_encode($doctorArr, JSON_HEX_APOS)
         ));
     }
     
