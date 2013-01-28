@@ -104,7 +104,7 @@ class GlobalAwardController extends Controller
             $em->flush($global_award);
 
             // dispatch event
-            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_AFFILIATION, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_AFFILIATION, $global_award));
+            //$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_AFFILIATION, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_AFFILIATION, $global_award));
 
             $result = true;
         }

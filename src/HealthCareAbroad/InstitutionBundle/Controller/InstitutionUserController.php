@@ -68,7 +68,8 @@ class InstitutionUserController extends Controller
         // TODO: find a better approach
         if ($this->get('session')->get('accountId', null)) {
             // redirect to dashboard if there is an active session
-            return $this->redirect($this->generateUrl('institution_homepage'));
+            // redirecting to dashboard may cause infinite redirect, since session may have been saved
+            //return $this->redirect($this->generateUrl('institution_homepage'));
         }
         
         $request = $this->getRequest();
