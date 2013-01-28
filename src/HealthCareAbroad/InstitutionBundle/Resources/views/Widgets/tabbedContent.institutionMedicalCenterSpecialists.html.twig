@@ -61,7 +61,7 @@
             source: '',
             target: $('#institutionDoctorSearch_firstName'),
             selectedDataContainer: $('table.specialist_table tbody'),
-            loader: $('#loader_ajax'),
+            loader: $('table.specialist_table tbody tr.loader'),
             field: $('#institutionDoctorSearch_firstName')
         })
         .autocomplete();
