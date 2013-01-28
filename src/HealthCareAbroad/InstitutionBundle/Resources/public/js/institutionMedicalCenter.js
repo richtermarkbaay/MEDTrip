@@ -324,7 +324,7 @@ var InstitutionMedicalCenter = {
 	        success: function(response){
 	        	_form.parents('div.modal').modal('hide');
 	        	_button.html("Delete").attr('disabled', false);
-	        	$('#award'+response.id).remove();
+	        	$('#globalAwardRow_'+response.id).remove();
 	        }
 	     });
     },

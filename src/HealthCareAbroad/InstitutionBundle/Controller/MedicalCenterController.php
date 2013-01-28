@@ -674,9 +674,11 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         $currentGlobalAwards = $this->get('services.institution_medical_center')->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
         $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-        
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
             'form' => $form->createView(),
+            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
