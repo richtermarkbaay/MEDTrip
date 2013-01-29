@@ -1,10 +1,3 @@
-{% set ancilliaryServiceLabel = getClassLabel('ancilliary_service') %}
-<div id="ancilliaryServices" class="treatmentbox" >
-    <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="services">{{ ancilliaryServiceLabel.plural | title }}
-        <a href="{{ path('admin_institution_medicalCenter_port', { institutionId: institution.id, imcId: institutionMedicalCenter.id } ) }}" id="port_services_btn" class="port_services btn btn-mini pull-right">
-            <i class="icon-plus"></i>Port Institution Ancillary Services
-        </a>
-    </h5>
     <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
         <table class="table table-striped table-bordered bootstrap-datatable">
             <thead>
@@ -23,4 +16,3 @@
             </tbody>
         </table>
     </div>
-</div>

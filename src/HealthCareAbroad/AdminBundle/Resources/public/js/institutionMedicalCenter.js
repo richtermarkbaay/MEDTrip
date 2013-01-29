@@ -208,6 +208,28 @@ var InstitutionMedicalCenter = {
         return this._doAncillaryServiceAction(_linkElement);
     },
     
+    portInstitutionAncillaryServices: function(_button) {
+    	_button = $(_button);
+    	_divId = $(_button.attr('data-divId'));
+    	_button.attr('disabled',true).html('Processing...');
+    	_href = _button.attr('data-path');
+    	_modal = $(_button.attr('data-modalId'));
+    	$.ajax({
+            type: 'POST',
+            url: _href,
+            data: {'isCopy' : 1},
+            success: function(response) {
+            	_modal.modal('hide');
+            	_divId.find('.boxContent').remove();
+            	_divId.find('h5').after($(response.html))
+            	console.log('here');
+            	
+            }
+        });
+    	
+    	return false;
+    },
+    
     _doAncillaryServiceAction: function (_linkElement) {
         if (_linkElement.hasClass('disabled')) {
             return false;
