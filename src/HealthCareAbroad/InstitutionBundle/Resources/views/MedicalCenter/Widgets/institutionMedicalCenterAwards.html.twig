@@ -86,8 +86,7 @@
         });
         
     	var _nsUrl = '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}';
-        InstitutionGlobalAwardAutocomplete
-        .setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}') 
+    	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}') 
         .setAutocompleteOptions('award', {
             source: _nsUrl+'?type=award',
             target: $('input.award_selector'),

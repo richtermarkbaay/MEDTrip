@@ -106,10 +106,7 @@
             
         	var _nsUrl = '{{ path("admin_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
         	
-        	//InstitutionProfile.removePropertyUri = '{{ path("institution_ajaxRemovePropertyValue", {"institutionId" : institution.id} ) }}';
-        	
-            AutocompleteGlobalAwards
-            .setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
             .setAutocompleteOptions('award', {
             	source: _nsUrl+'?type=award',
                 target: $('input.award_selector'),
