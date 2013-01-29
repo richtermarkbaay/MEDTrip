@@ -35,7 +35,8 @@ class DoctorRepository extends EntityRepository
     {
         $connection = $this->getEntityManager()->getConnection();
         $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND b.specialization_id 
-                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId)";
+                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) GROUP BY a.id";
+        
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $imcId);
         $stmt->execute();
