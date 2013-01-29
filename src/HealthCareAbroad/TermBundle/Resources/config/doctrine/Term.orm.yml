@@ -5,17 +5,18 @@ HealthCareAbroad\TermBundle\Entity\Term:
     fields:
         id:
             id: true
-            type: integer
-            unsigned: true
+            type: bigint
             nullable: false
             generator:
                 strategy: IDENTITY
         term:
             type: string
             length: 250
+            fixed: false
             unique: true
+            nullable: false
     oneToMany:
         termDocuments:
             targetEntity: HealthCareAbroad\TermBundle\Entity\TermDocument
             mappedBy: term
-
+    lifecycleCallbacks: {  }
