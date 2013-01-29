@@ -20,12 +20,12 @@ class TermDocument
     private $documentId;
 
     /**
-     * @var boolean $type
+     * @var integer $type
      */
     private $type;
 
     /**
-     * @var HealthCareAbroad\TermBundle\Entity\Terms
+     * @var HealthCareAbroad\TermBundle\Entity\Term
      */
     private $term;
 
@@ -33,7 +33,7 @@ class TermDocument
     /**
      * Get id
      *
-     * @return bigint
+     * @return bigint 
      */
     public function getId()
     {
@@ -44,7 +44,7 @@ class TermDocument
      * Set documentId
      *
      * @param integer $documentId
-     * @return TermDocuments
+     * @return TermDocument
      */
     public function setDocumentId($documentId)
     {
@@ -55,7 +55,7 @@ class TermDocument
     /**
      * Get documentId
      *
-     * @return integer
+     * @return integer 
      */
     public function getDocumentId()
     {
@@ -65,8 +65,8 @@ class TermDocument
     /**
      * Set type
      *
-     * @param boolean $type
-     * @return TermDocuments
+     * @param integer $type
+     * @return TermDocument
      */
     public function setType($type)
     {
@@ -77,7 +77,7 @@ class TermDocument
     /**
      * Get type
      *
-     * @return boolean
+     * @return integer 
      */
     public function getType()
     {
@@ -88,7 +88,7 @@ class TermDocument
      * Set term
      *
      * @param HealthCareAbroad\TermBundle\Entity\Term $term
-     * @return TermDocuments
+     * @return TermDocument
      */
     public function setTerm(\HealthCareAbroad\TermBundle\Entity\Term $term = null)
     {
@@ -99,7 +99,7 @@ class TermDocument
     /**
      * Get term
      *
-     * @return HealthCareAbroad\TermBundle\Entity\Term
+     * @return HealthCareAbroad\TermBundle\Entity\Term 
      */
     public function getTerm()
     {

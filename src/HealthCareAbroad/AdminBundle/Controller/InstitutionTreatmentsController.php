@@ -162,6 +162,10 @@ class InstitutionTreatmentsController extends Controller
         $institutionMedicalSpecialistForm = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         //globalAwards Form
         
+        //services
+        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
+        
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         $currentGlobalAwards = $institutionMedicalCenterService->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
@@ -176,7 +180,6 @@ class InstitutionTreatmentsController extends Controller
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -185,6 +188,7 @@ class InstitutionTreatmentsController extends Controller
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
+            'institutionServices' => $institutionAncillaryServices,
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
             'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
@@ -499,14 +503,13 @@ class InstitutionTreatmentsController extends Controller
     {
         
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
-        //$form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone')));
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
-                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
+                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
             }
         }
         else {
@@ -516,8 +519,8 @@ class InstitutionTreatmentsController extends Controller
                             'institutionMedicalCenterForm' => $form->createView()
             ));
         }
-                                // \json_encode($output),200, array('content-type' => 'application/json'));
         $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        
         return $response;
     }
 
@@ -857,6 +860,65 @@ class InstitutionTreatmentsController extends Controller
     
         return $response;
     }
+    /**
+     * copy institution anciallary services to medical center
+     * Required parameters:
+     *     - institutionId
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function portInstitutionAncillaryServiceAction(Request $request)
+    {
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+        
+        if($request->get('isCopy')) {
+            foreach ($institutionAncillaryServices as $ancillaryService)
+            {
+                // check if this medical center already have this property value
+                if (!$this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService['id'])) {
+                    
+                    $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+                    $property->setValue($ancillaryService['id']);
+                    try {
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($property);
+                        $em->flush();
+                
+                    }
+                    catch (\Exception $e){
+                        $response = new Response($e->getMessage(), 500);
+                    }                
+                }
+            }
+        }
+        
+        // get global ancillary services
+        $ancillaryServicesData = array(
+            'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+            'selectedAncillaryServices' => array()
+        );
+        
+        foreach ($this->get('services.institution_medical_center')->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
+            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
+        }
+        
+        $output = array(
+                        'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:field.ancillaryServices.html.twig', array(
+                                        'institution' => $this->institution,
+                                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                        'ancillaryServicesData' => $ancillaryServicesData,
+                                        '_isSelected' => true
+                        )),
+                        'error' => 0
+        );
+        
+        return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
+    
     public function ajaxAddGlobalAwardAction(Request $request)
     {
         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
