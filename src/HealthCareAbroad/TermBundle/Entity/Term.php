@@ -15,42 +15,10 @@ class Term
     private $id;
 
     /**
-     * @var string $term
+     * @var string $name
      */
-    private $term;
+    private $name;
 
-
-    /**
-     * Get id
-     *
-     * @return bigint
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set term
-     *
-     * @param string $term
-     * @return Terms
-     */
-    public function setTerm($term)
-    {
-        $this->term = $term;
-        return $this;
-    }
-
-    /**
-     * Get term
-     *
-     * @return string
-     */
-    public function getTerm()
-    {
-        return $this->term;
-    }
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -61,6 +29,38 @@ class Term
         $this->termDocuments = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
+    /**
+     * Get id
+     *
+     * @return bigint 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Term
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
     /**
      * Add termDocuments
      *

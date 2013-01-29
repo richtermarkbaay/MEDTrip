@@ -9,7 +9,7 @@ HealthCareAbroad\TermBundle\Entity\Term:
             nullable: false
             generator:
                 strategy: IDENTITY
-        term:
+        name:
             type: string
             length: 250
             fixed: false
