@@ -84,8 +84,7 @@
             });
             
             var _nsUrl = '{{ path("institution_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
-        	InstitutionGlobalAwardAutocomplete
-            	.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+        	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
                 .setAutocompleteOptions('award', {
                     source: _nsUrl+'?type=award',
                     target: $('input.award_selector'),

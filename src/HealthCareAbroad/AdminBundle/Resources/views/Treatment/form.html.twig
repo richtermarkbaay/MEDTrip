@@ -39,6 +39,14 @@
     
     				{{ form_row(form.name) }}
     				{{ form_row(form.description) }}
+    				<div>
+    				    {{ form_label(form.treatmentTerms) }}
+    				    {{ form_widget(form.treatmentTerms) }}
+    				    <a href="#addTermModal" data-toggle="modal"><small>Create new term/tag</small></a>
+    				</div>
+    				
+    				<div class="autocompleteSelectedContainer"></div>
+    				
     				{{ form_row(form.status) }}
     				
     				{{ form_rest(form) }}
@@ -54,14 +62,23 @@
         {% endembed %}
     </div>
 
+    {% include 'AdminBundle:Terms/Widgets:modal.add.html.twig' %}
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/admin/js/terms.js') }}"></script>
 	<script src="{{ asset('bundles/log/js/EntityVersionHistory.js') }}"></script>
 	<script type="text/javascript">
 		$(function(){
 
 		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
+
+		    $('div.addTermModal').terms('modalAddTerm');
+		    
+		    $('input.autocompleteTerms').terms('autocomplete', {
+			    'remoteUrl': '{{ path("admin_terms_loadAutocompleteSource") }}',
+			    'type': 3
+		    });
 
 		    $('a.view-edit-history-link').click(function(){
 		        EntityVersionHistory.viewHistory($(this));
