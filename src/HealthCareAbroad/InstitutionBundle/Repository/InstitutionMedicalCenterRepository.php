@@ -84,6 +84,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
     public function getAvailableDoctorsByInstitutionMedicalCenter(InstitutionMedicalCenter $center, $searchKey)
     {
+        
         $ids = array();
         foreach ($center->getDoctors() as $each) {
             $ids[] = $each->getId();
@@ -93,7 +94,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
         $connection = $this->getEntityManager()->getConnection();
         $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
-                    AND (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey) AND b.specialization_id
+                    AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
                     IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $center->getId());
