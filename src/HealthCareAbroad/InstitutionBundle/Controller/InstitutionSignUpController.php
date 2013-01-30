@@ -74,10 +74,10 @@ class InstitutionSignUpController  extends Controller
 	 * @param Request $request
 	 */
 	public function signUpAction(Request $request)
-	{
+	{ 
 	    // checking for security context here does not work since this is not firewalled
 	    // TODO: find a better approach
-	    if ($this->get('session')->get('accountId', null)) {
+	    if ($this->get('session')->get('institutionId')) {
 	        // redirect to dashboard if there is an active session
 	        return $this->redirect($this->generateUrl('institution_homepage'));
 	    }

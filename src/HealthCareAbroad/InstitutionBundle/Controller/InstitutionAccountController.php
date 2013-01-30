@@ -82,7 +82,7 @@ class InstitutionAccountController extends InstitutionAwareController
 	 * @param Request $request
 	 */
     public function completeProfileAfterRegistrationAction(Request $request)
-    {
+    {        
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -129,18 +129,25 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationSingleCenter()
     {
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         $institutionService = $this->get('services.institution');
+        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+
+        if((int)$this->institution->getSignupStepStatus() === 0) {
+            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+            return $this->redirect($this->generateUrl($routeName));
+        }
+
         if (!$institutionService->isSingleCenter($this->institution)) {
             // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
-            
             return $this->redirect($this->generateUrl('institution_homepage'));
         }
-        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
-        
+
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             
@@ -170,6 +177,10 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationMultipleCenter()
     {
+        if((int)$this->institution->getSignupStepStatus() === 0) {
+            return $this->redirect($this->generateUrl('institution_account_profile'));
+        }
+
         $hiddenFields = array('name', 'description');
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => $hiddenFields));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
