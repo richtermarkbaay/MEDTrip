@@ -45,7 +45,8 @@
         	'remoteUrl': '',
         	'selectedDataContainer': '',
         	'minLength': 1,
-        	'loader' : 'tr.loader'
+        	'loader' : 'tr.loader',
+        	'field' : ''
         },
     };
     
@@ -152,10 +153,13 @@
 	        }).autocomplete({
 	        	'minLength': $.globalAward.options.autocompleteAward.minLength,
 	        	'source': function (request, res) {
+	        		_loader = $(_this.attr('data-fieldId'));
+	        		_loader.show();
 	    			$.ajax({
 	    				url: $.globalAward.options.autocompleteAward.remoteUrl,
 	    				data: {term: request.term, 'type': _this.attr('data-globalAwardType')},
 	    				success: function(response){
+	    					_loader.hide();
 	    					res($.ui.autocomplete.filter(response, extractLast( request.term ) ) );
 	    				}
 	    			});

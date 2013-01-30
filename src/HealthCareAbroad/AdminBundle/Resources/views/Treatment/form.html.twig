@@ -18,7 +18,7 @@
 
                 {% include '::notice.admin.html.twig' %}
                 
-                <form novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
+                <form id="treatmentForm" novalidate="novalidate" class="basic-form" action="{{ formAction }}" method="post" {{ form_enctype(form) }}>
 
     				{% if form.children.subSpecializations.vars.read_only %}
     				    <div>
@@ -73,11 +73,10 @@
 
 		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
 
-		    $('div.addTermModal').terms('modalAddTerm');
-		    
 		    $('input.autocompleteTerms').terms('autocomplete', {
 			    'remoteUrl': '{{ path("admin_terms_loadAutocompleteSource") }}',
-			    'type': 3
+			    'type': '{{ get_document_type_constant("treatment") }}',
+			    'form': 'form#treatmentForm'
 		    });
 
 		    $('a.view-edit-history-link').click(function(){

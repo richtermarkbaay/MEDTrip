@@ -72,7 +72,6 @@ class SpecializationController extends Controller
 
         $form = $this->createForm(new SpecializationType(), $specialization);
            $form->bind($request);
-
            if ($form->isValid()) {
                $em->persist($specialization);
                $em->flush($specialization);
@@ -129,6 +128,17 @@ class SpecializationController extends Controller
     {
         $service = $this->get('services.treatment_bundle');
         $specialization = $service->getSpecialization($request->get('id', 0));
+        if (!$specialization) {
+            // find if treatment is passed
+            $treatment = $service->getTreatment($request->get('treatmentId', 0));
+            if ($treatment) {
+                $specialization = $treatment->getSpecialization();
+            }
+            else {
+                throw $this->createNotFoundException('No specialization given');
+            }
+        }
+        
         $selectedSubSpecializationIds = $request->get('selectedSubSpecializationIds', array());
         $emptyValue = $request->get('empty_value', null);
         

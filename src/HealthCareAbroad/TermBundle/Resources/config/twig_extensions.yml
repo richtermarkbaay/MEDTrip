@@ -1,0 +1,6 @@
+services:
+    services.terms.twig_extension:
+        class: HealthCareAbroad\TermBundle\Twig\TermTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }

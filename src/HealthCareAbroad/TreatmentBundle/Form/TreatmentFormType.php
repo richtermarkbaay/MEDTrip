@@ -29,12 +29,13 @@ class TreatmentFormType extends AbstractType
 
 		    if ($hasInstitutionTreatment) {
 		        $builder->add('specialization', 'hidden', array('virtual' => 'true', 'label' => 'Specialization', 'read_only' => true));
-		        $builder->add('subSpecializations', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
+		        //$builder->add('subSpecializations', 'hidden', array('virtual' => 'true', 'label' => 'Sub Specialization', 'read_only' => true));
 		    }
 		    else {
 		        $builder->add('specialization', 'specialization_list');
 		        $builder->add('subSpecializations', 'subSpecialization_list', array('multiple' => true, 'attr' => array('style' => 'height:200px;width:300px;')));
 		    }
+		    $builder->add('subSpecializations', 'subSpecialization_list', array('multiple' => true, 'attr' => array('style' => 'height:200px;width:300px;')));
 		}
 		else {
 		    $builder->add('specialization', 'specialization_list');
@@ -45,6 +46,7 @@ class TreatmentFormType extends AbstractType
 		$builder->add('description', 'textarea', array(
             'label' => 'Details'
         ));
+		$builder->add('treatmentTerms', 'text', array('label' => 'Treatment Terms', 'virtual' => true, 'attr' => array('class' => 'autocompleteTerms')));
 		$builder->add('status', 'choice', array('choices' => $status));
 	}
 

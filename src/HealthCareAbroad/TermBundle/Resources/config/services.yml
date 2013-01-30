@@ -1,7 +1,4 @@
-parameters:
-#    term.example.class: HealthCareAbroad\TermBundle\Example
-
 services:
-#    term.example:
-#        class: %term.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    services.terms:
+        class: HealthCareAbroad\TermBundle\Services\TermsService
+        arguments: [@doctrine]

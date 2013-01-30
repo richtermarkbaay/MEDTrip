@@ -14,10 +14,11 @@
         {% endif %}
         
         {% block callout %}{% endblock %}
-        {% set _hasContentClass = _hasContentClass is defined ? _hasContentClass : true %}
-        <div id="content" class="container {{ _hasContentClass ? 'content': ''}}">
+        
+        <div id="content" class="container {{ class is defined ? class : '' }} {{ isHomePage is defined ? '' : 'content' }}">
             {% block content %}{% endblock %}
         </div>
+
         <div class="border_pattern_footer">&nbsp;</div>
 
         {% block footer %}

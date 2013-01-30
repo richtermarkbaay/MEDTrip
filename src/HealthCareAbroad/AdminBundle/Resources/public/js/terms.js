@@ -19,7 +19,9 @@
                 'minLength': 1,
                 'type': 0,
                 'remoteUrl': '',
-                'selectedContainer': '.autocompleteSelectedContainer'
+                'selectedContainer': '.autocompleteSelectedContainer',
+                'selectedInputName': 'selectedTerms', // this is the name for the input field that will be added to the form
+                'form': 'form'
             },
             'modalAddTerm': {
                 'form': 'form.addTermForm',
@@ -30,6 +32,7 @@
         _autocomplete: function(_self) {
             
             var _currentTerms = [];
+            var _xhr;
             
             _self.bind('keydown', function (event){
                 if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ){
@@ -38,9 +41,12 @@
             }).autocomplete({
                 minLength: Terms.options.autocomplete.source,
                 source: function (request, response) {
-                    $.ajax({
+                    if (_xhr && 4 != _xhr.readyState) {
+                        _xhr.abort();
+                    }
+                    _xhr = $.ajax({
                         url: Terms.options.autocomplete.remoteUrl,
-                        data: { type:Terms.options.autocomplete.type, 'selectedTems': _currentTerms },
+                        data: { term: _self.val(), type:Terms.options.autocomplete.type, 'selectedTems': _currentTerms },
                         type: 'get',
                         dataType: 'json',
                         success: function(json) {
@@ -49,7 +55,6 @@
                             }));
                         }
                     });
-                    
                 },
                 focus: function() {
                     // prevent value inserted on focus
@@ -60,17 +65,29 @@
                     if (_currentTerms.indexOf(ui.item.value)< 0) {
                         // add the selected item
                         _currentTerms.push( ui.item.value );
+                        
+                        // add the displayed selected item
                         _newSelected = $(ui.item.html);
                         _newSelected.bind('click', function(){
                             _index = _currentTerms.indexOf($(this).html());
                             if (_index >= 0 ){
                                 _currentTerms.splice(_index, 1); // remove from _currentTerms
+                                
+                                // remove hidden input
+                                $(Terms.options.autocomplete.form).find('input[value="'+$(this).attr('data-termId')+'"][type="hidden"]')
+                                    .remove();
                             }
+                            // remove the displayed content
                             $(this).remove();
                         });
                         $(Terms.options.autocomplete.selectedContainer).append(_newSelected);
+                        
+                        // create the input field for this selected item
+                        _termIdInput = $('<input type="hidden" name="' + Terms.options.autocomplete.selectedInputName + '[]" value="'+ui.item.id+'" />')
+                        $(Terms.options.autocomplete.form).append(_termIdInput);
                     }
                     this.value = '';
+                    
                     return false;
                 }
             });
@@ -113,7 +130,11 @@
     };
     
     Terms.actions = {
-        'autocomplete': Terms._autocomplete,
+        'autocomplete': function(_self){
+            return _self.each(function(){
+                Terms._autocomplete($(this));
+            });
+        },
         'modalAddTerm': Terms._add 
     };
     
