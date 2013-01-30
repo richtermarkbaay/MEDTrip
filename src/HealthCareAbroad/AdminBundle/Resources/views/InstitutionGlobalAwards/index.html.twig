@@ -14,47 +14,51 @@
         %}
             {% block sectionContent %}
                <form  action="#" method="POST" >
-                          {% set _awardsByType = {
+               {% set _awardsByType = {
                         'awards': {
+                            'fieldId': 'awards_field',
                             'containerId': 'awards',
                             'header': 'Awards',
                             'tableId': 'awards_table',
                             'selectorFieldLabel': form_label(form.awards_selector),
-                            'selectorFieldWidget': form_widget(form.awards_selector),
+                            'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody', 'data-fieldId' : '.awards_field'} }),
                             'list': currentGlobalAwards.award
                         },
                         'certifications': {
+                            'fieldId': 'certifications_field',
                             'containerId': 'certifications',
                             'header': 'Certifications',
                             'tableId': 'certificates_table',
                             'selectorFieldLabel': form_label(form.certifications_selector),
-                            'selectorFieldWidget': form_widget(form.certifications_selector),
+                            'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody', 'data-fieldId' : '.certifications_field'} }),
                             'list': currentGlobalAwards.certificate
                         },
                         'affiliations': {
+                            'fieldId': 'affiliations_field',
                             'containerId': 'affiliations',
                             'header': 'Affilliations',
                             'tableId': 'affiliations_table',
                             'selectorFieldLabel': form_label(form.affiliations_selector),
-                            'selectorFieldWidget': form_widget(form.affiliations_selector),
+                            'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody', 'data-fieldId' : '.affiliations_field'} }),
                             'list': currentGlobalAwards.affiliation
                         },
                         'accreditations': {
+                            'fieldId': 'accreditations_field',
                             'containerId': 'accreditations',
                             'header': 'Accreditations',
                             'tableId': 'accreditation_table',
                             'selectorFieldLabel': form_label(form.accreditations_selector),
-                            'selectorFieldWidget': form_widget(form.accreditations_selector),
+                            'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody', 'data-fieldId' : '.accreditations_field'} }),
                             'list': currentGlobalAwards.accreditation
                         }
                     }
                 %}
-                
-                {% for _awardsListData in _awardsByType %}
-                    {% include 'AdminBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
-                {% endfor %}
-                
-                {{ form_widget(form._token) }}
+            
+            {% for _awardsListData in _awardsByType %}
+                {% include 'AdminBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+            {% endfor %}
+            
+            {{ form_widget(form._token) }}
                 
             </form>
                 
@@ -74,7 +78,7 @@
                      {{ _commonDeleteCsrfTokenAwards | raw }}
                     <input type="hidden" name="id" id="id" value=""/>
                     <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
-            	    <button data-loading-text="Processing..." id="globalAward" class="btn btn-danger delete-button" type="button" onclick="InstitutionGlobalAwards.removeGlobalAward(this); return true;">Delete</button>
+            	    <button data-loading-text="Processing..." id="globalAward" class="btn btn-danger delete-button" type="button" onclick="$.GlobalAutocompleteAction.removeGlobalAward(this); return true;">Delete</button>
                 </form>
             </div>
     	</div>
@@ -103,35 +107,13 @@
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
                 'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
             });
+
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}');
+
+            $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+                'remoteUrl': '{{ path("admin_ajaxGlobalAwardSource", {institutionId: institution.id}) }}' 
+            });
             
-        	var _nsUrl = '{{ path("admin_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
-        	
-            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
-            .setAutocompleteOptions('award', {
-            	source: _nsUrl+'?type=award',
-                target: $('input.award_selector'),
-                selectedDataContainer: $('table.awards_table tbody'),
-                loader: $('table.awards_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('certificate', {
-            	source: _nsUrl+'?type=certificate',
-                target: $('input.certificate_selector'),
-                selectedDataContainer: $('table.certificates_table tbody'),
-                loader: $('table.certificates_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('affiliation', {
-            	source: _nsUrl+'?type=affiliation',
-                target: $('input.affiliation_selector'),
-                selectedDataContainer: $('table.affiliations_table tbody'),
-                loader: $('table.affiliations_table tbody tr.loader')
-            })
-            .setAutocompleteOptions('accreditation', {
-            	source: _nsUrl+'?type=accreditation',
-                target: $('input.accreditations_selector'),
-                selectedDataContainer: $('table.accreditation_table tbody'),
-                loader: $('table.accreditation_table tbody tr.loader')
-            })
-            .autocomplete();
         });
         
     </script>

@@ -72,6 +72,8 @@ class AdvertisementService
         $data['status'] = $advertisement->getStatus();
 
 
+        
+        // TODO - Enhance Saving Process. This can be done in 1 foreach.
         $collectionClasses = array();
         foreach($advertisement->getAdvertisementPropertyValues() as $each) {
             $property = $each->getAdvertisementPropertyName();

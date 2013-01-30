@@ -7,14 +7,12 @@
         {% embed 'HelperBundle:Widgets:section.html.twig' 
             with {
                     title: institutionMedicalCenter.name,
-                    actions:[
-                        {link: isSingleCenter ? [] : 
-                                path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
-                                label: 'Edit '~ institutionMedicalCenter.name | title, 
+                    actions: isSingleCenter ? [] : [
+                        {link:  path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Profile' | title, 
                                 'icon' : 'icon-ok' },
-                        {link: isSingleCenter ? [] : 
-                                path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
-                                label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
+                        {link:  path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Status' | title, 
                                 'icon' : 'icon-ok',
                                 class : 'edit-status'}
                     ]
@@ -113,36 +111,13 @@
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
                 'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
             });
+
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}');
+
+            $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+                'remoteUrl': '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}' 
+            });
             
-            var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
-
-            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
-             .setAutocompleteOptions('award', {
-             	source: _nsUrl+'?type=award',
-                 target: $('input.award_selector'),
-                 selectedDataContainer: $('table.awards_table tbody'),
-                 loader: $('table.awards_table tbody tr.loader')
-             })
-             .setAutocompleteOptions('certificate', {
-             	source: _nsUrl+'?type=certificate',
-                 target: $('input.certificate_selector'),
-                 selectedDataContainer: $('table.certificates_table tbody'),
-                 loader: $('table.certificates_table tbody tr.loader')
-             })
-             .setAutocompleteOptions('affiliation', {
-             	source: _nsUrl+'?type=affiliation',
-                 target: $('input.affiliation_selector'),
-                 selectedDataContainer: $('table.affiliations_table tbody'),
-                 loader: $('table.affiliations_table tbody tr.loader')
-             })
-             .setAutocompleteOptions('accreditation', {
-             	source: _nsUrl+'?type=accreditation',
-                 target: $('input.accreditations_selector'),
-                 selectedDataContainer: $('table.accreditation_table tbody'),
-                 loader: $('table.accreditation_table tbody tr.loader')
-             })
-             .autocomplete();
-
         	var LoadMedicalSpecialists = '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}';
         	InstitutionSpecialistAutocomplete
 	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
@@ -151,7 +126,7 @@
 	            source: LoadMedicalSpecialists,
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
-	            loader: $('#loader_ajax'),
+	            loader: $('table.specialist_table tbody tr.loader'),
                 field: $('#institutionDoctorSearch_firstName')
 	        })
 	        .autocomplete();
@@ -267,7 +242,6 @@
 
             $('a.port_services').click(function() {
             	$('div#institution_ancillaryServices_modal_form').modal('show');
-            	//alert('y');
                 return false;
             });
 

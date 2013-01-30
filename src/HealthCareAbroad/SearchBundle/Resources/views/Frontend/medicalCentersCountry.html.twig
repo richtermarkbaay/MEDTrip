@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+
     <div class="row">
         <div class="span8">
             <div class="main">
@@ -19,9 +20,7 @@
                     <ul>
                     {% for result in searchResults %}
                         <!-- Hardcode for now -->
-                        <li>
-                            <a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ country.slug }}/{{ result.slug }}" >{{ result.name }}</a>
-                        </li>
+                        <li><a href="/{% if(app.environment == 'dev') %}app_dev.php/{% endif %}{{ country.slug }}/{{ result.slug }}" >{{ result.name }}</a></li>
                     {% else %}
                         <li>No medical centers found.</li>
                     {% endfor %}
