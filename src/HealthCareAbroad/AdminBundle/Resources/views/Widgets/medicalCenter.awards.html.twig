@@ -67,7 +67,7 @@
                  {{ _commonDeleteCsrfTokenAwards | raw }}
                 <input type="hidden" name="id" id="id" value=""/>
                 <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
-        	    <button data-loading-text="Processing..." id="globalAward" class="btn btn-danger delete-button" type="button" onclick="InstitutionGlobalAwardAutocomplete.removeGlobalAward(this); return true;">Delete</button>
+        	    <button data-loading-text="Processing..." id="globalAward" class="btn btn-danger delete-button" type="button" onclick="$.GlobalAutocompleteAction.removeGlobalAward(this); return true;">Delete</button>
             </form>
         </div>
 	</div>
