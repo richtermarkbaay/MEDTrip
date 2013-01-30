@@ -101,6 +101,7 @@ doctrine:
                     SearchBundle: ~
                     TreatmentBundle: ~
                     UserBundle: ~
+                    TermBundle: ~
             logger:
                 connection: logger
                 mappings:

@@ -1,3 +1,8 @@
+# Routes for Admin TermsController #
+AdminBundle_terms:
+    resource: "@AdminBundle/Resources/config/routing_terms.yml"
+    prefix:   /
+
 # Routes for Admin SpecializationController #
 AdminBundle_specialization:
     resource: "@AdminBundle/Resources/config/routing_specialization.yml"

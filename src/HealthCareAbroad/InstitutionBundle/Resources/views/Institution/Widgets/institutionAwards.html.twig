@@ -44,8 +44,6 @@
         
         {{ form_widget(form._token) }}
         
-        {{ form_widget(form._token) }}
-        
     </form>
     
 	<div id="institutionGlobalAwardModal" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -86,8 +84,7 @@
             });
             
             var _nsUrl = '{{ path("institution_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
-        	InstitutionGlobalAwardAutocomplete
-            	.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
+        	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
                 .setAutocompleteOptions('award', {
                     source: _nsUrl+'?type=award',
                     target: $('input.award_selector'),

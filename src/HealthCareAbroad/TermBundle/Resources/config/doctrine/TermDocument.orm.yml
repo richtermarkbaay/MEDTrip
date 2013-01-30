@@ -5,8 +5,7 @@ HealthCareAbroad\TermBundle\Entity\TermDocument:
     fields:
         id:
             id: true
-            type: integer
-            unsigned: true
+            type: bigint
             nullable: false
             generator:
                 strategy: IDENTITY
@@ -14,15 +13,18 @@ HealthCareAbroad\TermBundle\Entity\TermDocument:
             type: integer
             unsigned: true
             nullable: false
+            column: document_id
         type:
             type: integer
-            unsigned: true
             nullable: false
     manyToOne:
         term:
             targetEntity: HealthCareAbroad\TermBundle\Entity\Term
-            mappedBy: ~
+            cascade: {  }
+            mappedBy: null
             inversedBy: termDocuments
-            joinColumn:
-                name: term_id
-                referencedColumnName: id
+            joinColumns:
+                term_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

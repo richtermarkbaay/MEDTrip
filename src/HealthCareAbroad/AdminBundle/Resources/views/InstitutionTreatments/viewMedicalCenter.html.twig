@@ -21,7 +21,7 @@
                  } 
          %}
   
-            {% block sectionContent %} 
+            {% block sectionContent %}
                 <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
                     {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
@@ -47,7 +47,14 @@
                     <!-- Modal Medical Center Status -->
                     	{% include 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig' 
                     	     with {modalId: 'status_medicalCenter_modal_form', modalTitle: 'Edit Status'} 
-                    	%} <!-- end Modal Medical Center Status -->
+                    	%} 
+                   <!-- end Modal Medical Center Status -->
+                   
+                   <!-- Modal Institution Ancillary Services -->
+                    	{% include 'AdminBundle:InstitutionTreatments/Modals:modal.institution_ancillary_services.html.twig' 
+                    	     with {modalId: 'institution_ancillaryServices_modal_form', modalTitle: 'Port Institution Ancillary Services'} 
+                    	%}
+                   <!-- end Modal Institution Ancillary Services -->
                 </div>
             {% endblock %}
     
@@ -109,8 +116,7 @@
             
             var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
 
-        	InstitutionGlobalAwardAutocomplete
-        	 .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
              .setAutocompleteOptions('award', {
              	source: _nsUrl+'?type=award',
                  target: $('input.award_selector'),
@@ -253,12 +259,21 @@
     			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
     			$(this).parent().removeClass('ui-state-disabled'); 
     		});
+
             $('a.edit-status').click(function(){
             	$('div#status_medicalCenter_modal_form').modal('show');
                 return false;
             });
 
+            $('a.port_services').click(function() {
+            	$('div#institution_ancillaryServices_modal_form').modal('show');
+            	//alert('y');
+                return false;
+            });
+
         });
+
+        
         
     	// initialize businesshours form
         ClinicBusinessHoursForm

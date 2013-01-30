@@ -128,7 +128,15 @@ admin_institution_medicalCenter_ajaxAddAncillaryService:
         institutionId: \d+
         imcId: \d+
         _method: POST
-        
+
+admin_institution_medicalCenter_port:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/portAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionTreatments:portInstitutionAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST|GET
+
 admin_institution_medicalCenter_ajaxRemoveAncillaryService:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveAncillaryService }

@@ -6,9 +6,11 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
+use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
-use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
@@ -66,9 +68,9 @@ class InstitutionPropertiesController extends Controller
         $propertyService = $this->get('services.institution_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards =$this->get('services.institution')->getGroupedGlobalAwardsByType($this->institution);
+        $currentGlobalAwards =$this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-         
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         // get the current property values
         $currentAwardPropertyValues = $this->get('services.institution')->getPropertyValues($this->institution, $propertyType);
         
@@ -81,6 +83,8 @@ class InstitutionPropertiesController extends Controller
                         'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
                         'currentGlobalAwards' => $currentGlobalAwards,
                         'institution' => $this->institution,
+                        'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                        'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
         ));
         
     }
@@ -241,8 +245,9 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
     
                 $html = $this->renderView('AdminBundle:Institution/Partials:row.globalAwards.html.twig', array(
-                                'institution' => $this->institution,
-                                'award' => $award
+                    'institution' => $this->institution,
+                    'award' => $award,
+                    'property' => $property
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -262,27 +267,70 @@ class InstitutionPropertiesController extends Controller
      */
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id', 0));
-    
-        if (!$award) {
-            throw $this->createNotFoundException();
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
     
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
-        // get property value for this ancillary service
-        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $award->getId());
-    
-        try {
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->remove($property);
-            $em->flush();
-    
-            $response = new Response('Award property removed', 200);
+       $form = $this->createForm(new CommonDeleteFormType(), $property);
+        
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+        
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($property);
+                $em->flush();
+        
+                $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
         }
-        catch (\Exception $e){
-            $response = new Response($e->getMessage(), 500);
+        
+        return $response;
+    }
+    
+    public function ajaxEditGlobalAwardAction()
+    {
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($this->request->get('propertyId', 0));
+        $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
+        }
+    
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
+        if (!$globalAward) {
+            throw $this->createNotFoundException('Invalid global award.');
+        }
+    
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $property);
+        if ($this->request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($this->request);
+            if ($editGlobalAwardForm->isValid()) {
+                try {
+                    $property = $editGlobalAwardForm->getData();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($property);
+                    $em->flush();
+                    $extraValue = \json_decode($property->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                                    'targetRow' => '#globalAwardRow_'.$property->getId(),
+                                    'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
         }
     
         return $response;
