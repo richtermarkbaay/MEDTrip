@@ -2,20 +2,16 @@
 
 {% block content %}
 
-    {% embed 'FrontendBundle:Embed:mainContentWrapper.html.twig' %}
-        {% block mainContent %}
+    {% if isSingleCenterInstitution %}
+    
+        {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
+            with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
+        %}
+        
+    {% else %}
+    
+        {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
 
-            {% if isSingleCenterInstitution %}
-
-                {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
-                    with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
-                %}
-
-            {% else %}
-                {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
-            {% endif %}
-
-        {% endblock %}
-    {% endembed %}
+    {% endif %}
 
 {% endblock %}

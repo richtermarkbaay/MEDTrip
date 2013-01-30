@@ -5,76 +5,72 @@
 {% endblock %}
 
 {% block content %}
+    <div id="details" class="row">
+        <div id="main_content" class="span8">
+            <header class="filters">
+                <div class="pull-left">
+                    <h2 class="total">{{ searchResults.getTotalResults }} <small>Results Found</small></h2>
+                </div>
+            </header>
 
-    <div id="content" class="container content">
-        <div id="details" class="row">
-            <div id="main_content" class="span8">
-                <header class="filters">
-                    <div class="pull-left">
-                        <h2 class="total">{{ searchResults.getTotalResults }} <small>Results Found</small></h2>
-                    </div>
-                </header>
+            {% for institution in searchResults %}
+                {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                       'searchResultItem' : {
+                           url: get_institution_frontend_url(institution),
+                           logo: institution.logo ? media(institution.logo, institution, 'frontendSearchResultLogo') | raw  : null,
+                           name: institution.name,
+                           mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
+                           streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
+                       } 
+                    } 
+                %}
+            {% endfor %}
+            
+            {% if searchResults.isPaginable %}
+                {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
+            {% endif %}
 
-                {% for institution in searchResults %}
-                    {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
-                           'searchResultItem' : {
-                               url: get_institution_frontend_url(institution),
-                               logo: institution.logo ? media(institution.logo, institution, 'frontendSearchResultLogo') | raw  : null,
-                               name: institution.name,
-                               mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
-                               streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
-                           } 
-                        } 
-                    %}
-                {% endfor %}
-                
-                {% if searchResults.isPaginable %}
-                    {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
-                {% endif %}
+        </div> <!--End of main_content-->
 
-            </div> <!--End of main_content-->
-
-            <aside id="aside_content" class="span4">
-                <section class="box-in">
-                    <h5 class="heading"><small>Narrow</small> Search </h5>
-                    <ul class="related">
-                        <li class="row">
-                            <h3>By Specialization</h3>
-                                <ul>
-                                    {% for item in topSpecializations %}
-                                        <li><a href="#">{{ item.specialization }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
-                                    {% endfor %}
-                                </ul>
-                        </li>
-                        <li class="row">
-                            <h3>By Treatment</h3>
-                                <ul>
-                                    {% for item in topTreatments %}
-                                        <li><a href="#">{{ item.treatment }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
-                                    {% endfor %}
-                                </ul>
-                        </li>
-                        <li class="row">
-                            <h3>Related Treatments</h1>
-                                <ul>
-                                    <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
-                                    <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
-                                    <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
-                                </ul>
-                        </li>
-                    </ul>
-                </section>
-                <section class="box-in">
-                    <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
-                    <ul class="ads">
-                        <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
-                        <li>When I grow up, I want to be an <b>NEWS</b>.</li>
-                    </ul>
-                </section>
-            </aside> <!--End of aside_content-->
-        </div>
-    </div> <!--End of content-->
+        <aside id="aside_content" class="span4">
+            <section class="box-in">
+                <h5 class="heading"><small>Narrow</small> Search </h5>
+                <ul class="related">
+                    <li class="row">
+                        <h3>By Specialization</h3>
+                            <ul>
+                                {% for item in topSpecializations %}
+                                    <li><a href="#">{{ item.specialization }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                    </li>
+                    <li class="row">
+                        <h3>By Treatment</h3>
+                            <ul>
+                                {% for item in topTreatments %}
+                                    <li><a href="#">{{ item.treatment }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                                {% endfor %}
+                            </ul>
+                    </li>
+                    <li class="row">
+                        <h3>Related Treatments</h1>
+                            <ul>
+                                <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
+                                <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
+                                <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
+                            </ul>
+                    </li>
+                </ul>
+            </section>
+            <section class="box-in">
+                <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
+                <ul class="ads">
+                    <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
+                    <li>When I grow up, I want to be an <b>NEWS</b>.</li>
+                </ul>
+            </section>
+        </aside> <!--End of aside_content-->
+    </div>
 
     {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
-
 {% endblock %}
