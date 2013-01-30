@@ -159,6 +159,8 @@
 	    			});
 	    		},
 	    		'select': function( event, ui) {
+	    			$(_this.attr('data-globalAwardContainer')).find('.loader').show();
+	    			
 	       	        $.ajax({
 	       	            url: $.GlobalAutocompleteAction._loadHtmlContentUri,
 	       	            data: {'id':ui.item.id},
@@ -169,9 +171,10 @@
 	       	            	_new_row.find('a.edit_global_award').bind('click', $.globalAward._clickEdit);
 	       	            	_table = $(_this.attr('data-globalAwardContainer'));
 	       	            	_table.append(_new_row);
+	       	            	_table.find('.loader').hide();
 	       	            },
 	       	            error: function(response) {
-//	       	            	$.globalAward.options.autocompleteAward.loader.hide();
+	       	            	$(_this.attr('data-globalAwardContainer')).find('.loader').hide();
 	       	            }
 	       	        });
 	              	
