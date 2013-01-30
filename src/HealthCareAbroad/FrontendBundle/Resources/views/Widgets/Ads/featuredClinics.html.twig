@@ -49,7 +49,7 @@
                                 <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src_thumbnail }}" alt="logo" width="50"/>
                             {% else %}
                                 {% if clinicHighlight.type == 3 %}
-                                    <img alt="clinic logo" src="{{ imageplaceholder.doctorIconOrange }}" class="media-object img-circle pull-left">
+                                    <img alt="clinic logo" src="{{ imageplaceholder.doctorIcon }}" class="media-object img-circle pull-left">
                                 {% else %}
                                     <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type, 'green') }} media-object img-circle pull-left"></span>
                                 {% endif %}
