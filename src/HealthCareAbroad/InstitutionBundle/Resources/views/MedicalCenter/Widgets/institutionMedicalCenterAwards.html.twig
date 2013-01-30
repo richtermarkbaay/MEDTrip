@@ -39,7 +39,7 @@
         %}
         
         {% for _awardsListData in _awardsByType %}
-            {% include 'InstitutionBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+            {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
         {% endfor %}
         
         {{ form_widget(form._token) }}

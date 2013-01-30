@@ -111,40 +111,13 @@
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
                 'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
             });
+
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}');
+
+            $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+                'remoteUrl': '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}' 
+            });
             
-            var _nsUrl = '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id , "imcId": institutionMedicalCenter.id}) }}';
-
-            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
-             .setAutocompleteOptions('award', {
-             	 source: _nsUrl+'?type=award',
-                 target: $('input.award_selector'),
-                 selectedDataContainer: $('table.awards_table tbody'),
-                 loader: $('table.awards_table tbody tr.loader'),
-                 url : _nsUrl+'?type=award'
-             })
-             .setAutocompleteOptions('certificate', {
-             	source: _nsUrl+'?type=certificate',
-                 target: $('input.certificate_selector'),
-                 selectedDataContainer: $('table.certificates_table tbody'),
-                 loader: $('table.certificates_table tbody tr.loader'),
-                 source: _nsUrl+'?type=certificate'
-             })
-             .setAutocompleteOptions('affiliation', {
-             	source: _nsUrl+'?type=affiliation',
-                 target: $('input.affiliation_selector'),
-                 selectedDataContainer: $('table.affiliations_table tbody'),
-                 loader: $('table.affiliations_table tbody tr.loader'),
-                 url: _nsUrl+'?type=affiliation',
-             })
-             .setAutocompleteOptions('accreditation', {
-             	source: _nsUrl+'?type=accreditation',
-                 target: $('input.accreditations_selector'),
-                 selectedDataContainer: $('table.accreditation_table tbody'),
-                 loader: $('table.accreditation_table tbody tr.loader'),
-                 url: _nsUrl+'?type=accreditation',
-             })
-             .autocomplete();
-
         	var LoadMedicalSpecialists = '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}';
         	InstitutionSpecialistAutocomplete
 	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
