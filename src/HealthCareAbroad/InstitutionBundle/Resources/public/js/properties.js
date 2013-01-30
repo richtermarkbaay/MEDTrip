@@ -45,7 +45,8 @@
         	'remoteUrl': '',
         	'selectedDataContainer': '',
         	'minLength': 1,
-        	'loader' : 'tr.loader'
+        	'loader' : 'tr.loader',
+        	'field' : ''
         },
 		'_loadHtmlContentUri' :'',
 		
@@ -150,10 +151,13 @@
 	        }).autocomplete({
 	        	'minLength': $.globalAward.options.autocompleteAward.minLength,
 	        	'source': function (request, res) {
+	        		console.log(_this.fieldId);
+	        		$(_this.attr('data-fieldId')).show();
 	    			$.ajax({
 	    				url: $.globalAward.options.autocompleteAward.remoteUrl,
 	    				data: {term: request.term, 'type': _this.attr('data-globalAwardType')},
 	    				success: function(response){
+	    					$(_this.attr('data-fieldId')).hide();
 	    					res($.ui.autocomplete.filter(response, extractLast( request.term ) ) );
 	    				}
 	    			});
