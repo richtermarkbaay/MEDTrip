@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TermDocument
 {
+    const TYPE_SPECIALIZATION = 1;
+    const TYPE_SUBSPECIALIZATION = 2;
+    const TYPE_TREATMENT = 3;
+
     /**
      * @var bigint $id
      */
@@ -33,7 +37,7 @@ class TermDocument
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -55,7 +59,7 @@ class TermDocument
     /**
      * Get documentId
      *
-     * @return integer 
+     * @return integer
      */
     public function getDocumentId()
     {
@@ -77,7 +81,7 @@ class TermDocument
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {
@@ -99,7 +103,7 @@ class TermDocument
     /**
      * Get term
      *
-     * @return HealthCareAbroad\TermBundle\Entity\Term 
+     * @return HealthCareAbroad\TermBundle\Entity\Term
      */
     public function getTerm()
     {
