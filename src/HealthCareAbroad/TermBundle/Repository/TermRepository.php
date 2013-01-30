@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\TermBundle\Repository;
 
+use HealthCareAbroad\TermBundle\Entity\Term;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOption;
+
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +18,41 @@ use Doctrine\ORM\EntityRepository;
  */
 class TermRepository extends EntityRepository
 {
+    public function findByName($name, QueryOptionBag $options = null) 
+    {
+        if (!$options) {
+            $options = new QueryOptionBag();
+        }
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a')
+            ->from('TermBundle:Term', 'a')
+            ->where('a.name LIKE :name')
+            ->setParameter('name', '%'.$name.'%');
+        
+        if ($options->has(QueryOption::LIMIT)) {
+            $qb->setMaxResults($options->get(QueryOption::LIMIT));
+        }
+        
+        $qb->orderBy('a.name', 'ASC');
+        
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Find term by exact name.
+     * 
+     * @param unknown_type $name
+     * @return Term
+     */
+    public function findOneByName($name)
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery();
+
+        return $query->getOneOrNullResult($name);
+    }
 }
