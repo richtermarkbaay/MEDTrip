@@ -1,13 +1,14 @@
 <div id="{{ awardsList.containerId }}">
     {{ awardsList.selectorFieldLabel | raw }}
     {{ awardsList.selectorFieldWidget | raw }}
-    
+    <img style="display:none; width:180px;margin:-25px 0px 0px 10px;" class="property {{ awardsList.fieldId }}" src="{{ asset('images/institution/loading2.gif') }}" />
     <table class="globalAwardsTable table table-striped table-bordered {{ awardsList.tableId }} ">
         <thead>
             <tr>
 				<th>{{ awardsList.header }}</th>
 				<th>Year</th>
 				<th>Actions</th>
+				<th>test</th>
 			</tr>
         </thead>
 		<tbody>

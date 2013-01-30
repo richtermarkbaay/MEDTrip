@@ -4,35 +4,39 @@
         
         {% set _awardsByType = {
                 'awards': {
+                    'fieldId': 'awards_field',
                     'containerId': 'awards',
                     'header': 'Awards',
                     'tableId': 'awards_table',
                     'selectorFieldLabel': form_label(form.awards_selector),
-                    'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody'} }),
+                    'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody', 'data-fieldId' : '.awards_field'} }),
                     'list': currentGlobalAwards.award
                 },
                 'certifications': {
+                    'fieldId': 'certifications_field',
                     'containerId': 'certifications',
                     'header': 'Certifications',
                     'tableId': 'certificates_table',
                     'selectorFieldLabel': form_label(form.certifications_selector),
-                    'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody'} }),
+                    'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody', 'data-fieldId' : '.certifications_field'} }),
                     'list': currentGlobalAwards.certificate
                 },
                 'affiliations': {
+                    'fieldId': 'affiliations_field',
                     'containerId': 'affiliations',
                     'header': 'Affilliations',
                     'tableId': 'affiliations_table',
                     'selectorFieldLabel': form_label(form.affiliations_selector),
-                    'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody'} }),
+                    'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody', 'data-fieldId' : '.affiliations_field'} }),
                     'list': currentGlobalAwards.affiliation
                 },
                 'accreditations': {
+                    'fieldId': 'accreditations_field',
                     'containerId': 'accreditations',
                     'header': 'Accreditations',
                     'tableId': 'accreditation_table',
                     'selectorFieldLabel': form_label(form.accreditations_selector),
-                    'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody'} }),
+                    'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody', 'data-fieldId' : '.accreditations_field'} }),
                     'list': currentGlobalAwards.accreditation
                 }
             }
