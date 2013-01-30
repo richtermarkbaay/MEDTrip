@@ -9,7 +9,7 @@
 			{% if doctor.media %}
 			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
 			{% else %}
-			    <img src="" class="pull-left img-polaroid"/>
+			    <img src="{{ imageplaceholder.doctorIcon }}" class="pull-left img-polaroid"/>
 			{% endif %}
 			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
 			<p class="media-body">
@@ -28,7 +28,7 @@
 				{% endif %}
 
 			    {% if doctor.website is defined %}
-				<li class="web"><a href="">website</a></li>	
+				<li class="web"><a href="">website</a></li>
 				{% endif %}
 			</ul>
 		</li>
