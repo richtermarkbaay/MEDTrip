@@ -8,7 +8,7 @@
                     'header': 'Awards',
                     'tableId': 'awards_table',
                     'selectorFieldLabel': form_label(form.awards_selector),
-                    'selectorFieldWidget': form_widget(form.awards_selector),
+                    'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody'} }),
                     'list': currentGlobalAwards.award
                 },
                 'certifications': {
@@ -16,7 +16,7 @@
                     'header': 'Certifications',
                     'tableId': 'certificates_table',
                     'selectorFieldLabel': form_label(form.certifications_selector),
-                    'selectorFieldWidget': form_widget(form.certifications_selector),
+                    'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody'} }),
                     'list': currentGlobalAwards.certificate
                 },
                 'affiliations': {
@@ -24,7 +24,7 @@
                     'header': 'Affilliations',
                     'tableId': 'affiliations_table',
                     'selectorFieldLabel': form_label(form.affiliations_selector),
-                    'selectorFieldWidget': form_widget(form.affiliations_selector),
+                    'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody'} }),
                     'list': currentGlobalAwards.affiliation
                 },
                 'accreditations': {
@@ -32,7 +32,7 @@
                     'header': 'Accreditations',
                     'tableId': 'accreditation_table',
                     'selectorFieldLabel': form_label(form.accreditations_selector),
-                    'selectorFieldWidget': form_widget(form.accreditations_selector),
+                    'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody'} }),
                     'list': currentGlobalAwards.accreditation
                 }
             }
@@ -75,6 +75,8 @@
     <script type="text/javascript">
         $(function() {
 
+        	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}');
+        	
             $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
             
             $('a.edit_global_award').globalAward('edit', {
@@ -82,34 +84,11 @@
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
                 'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
             });
+
+            $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+                'remoteUrl': '{{ path("institution_ajaxGlobalAwardSource", {institutionId: institution.id}) }}' 
+            });
             
-            var _nsUrl = '{{ path("institution_ajaxGlobalAwardSource", {institutionId: institution.id}) }}';
-        	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}') 
-                .setAutocompleteOptions('award', {
-                    source: _nsUrl+'?type=award',
-                    target: $('input.award_selector'),
-                    selectedDataContainer: $('table.awards_table tbody'),
-                    loader: $('table.awards_table tbody tr.loader')
-                })
-                .setAutocompleteOptions('certificate', {
-                    source: _nsUrl+'?type=certificate',
-                    target: $('input.certificate_selector'),
-                    selectedDataContainer: $('table.certificates_table tbody'),
-                    loader: $('table.certificates_table tbody tr.loader')
-                })
-                .setAutocompleteOptions('affiliation', {
-                    source: _nsUrl+'?type=affiliation',
-                    target: $('input.affiliation_selector'),
-                    selectedDataContainer: $('table.affiliations_table tbody'),
-                    loader: $('table.affiliations_table tbody tr.loader')
-                })
-                .setAutocompleteOptions('accreditation', {
-                    source: _nsUrl+'?type=accreditation',
-                    target: $('input.accreditations_selector'),
-                    selectedDataContainer: $('table.accreditation_table tbody'),
-                    loader: $('table.accreditation_table tbody tr.loader')
-                })
-                .autocomplete();
         });
         
     </script>

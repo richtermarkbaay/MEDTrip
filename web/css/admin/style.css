@@ -10,7 +10,10 @@
  {
 	font-size:12px;
  }
-
+.pull-right {
+  float: right;
+  margin-left: 10px;
+}
 [class^="icon-"], [class*=" icon-"]
 {
     background-image: url("/images/glyphicons-halflings.png");
@@ -710,6 +713,10 @@ list-style-type: none;
 margin-left: 0;
 margin-right: 5px;
 padding: 2px 5px;
+}
+.edit-status 
+{
+	margin-left: 10px;
 }
 .signupbox h3
 {
