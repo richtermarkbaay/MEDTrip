@@ -7,14 +7,12 @@
         {% embed 'HelperBundle:Widgets:section.html.twig' 
             with {
                     title: institutionMedicalCenter.name,
-                    actions:[
-                        {link: isSingleCenter ? [] : 
-                                path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
-                                label: 'Edit '~ institutionMedicalCenter.name | title, 
+                    actions: isSingleCenter ? [] : [
+                        {link:  path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Profile' | title, 
                                 'icon' : 'icon-ok' },
-                        {link: isSingleCenter ? [] : 
-                                path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
-                                label: 'Edit '~ institutionMedicalCenter.name ~ ' Status' | title, 
+                        {link:  path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Status' | title, 
                                 'icon' : 'icon-ok',
                                 class : 'edit-status'}
                     ]
@@ -118,28 +116,32 @@
 
             $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}') 
              .setAutocompleteOptions('award', {
-             	source: _nsUrl+'?type=award',
+             	 source: _nsUrl+'?type=award',
                  target: $('input.award_selector'),
                  selectedDataContainer: $('table.awards_table tbody'),
-                 loader: $('table.awards_table tbody tr.loader')
+                 loader: $('table.awards_table tbody tr.loader'),
+                 url : _nsUrl+'?type=award'
              })
              .setAutocompleteOptions('certificate', {
              	source: _nsUrl+'?type=certificate',
                  target: $('input.certificate_selector'),
                  selectedDataContainer: $('table.certificates_table tbody'),
-                 loader: $('table.certificates_table tbody tr.loader')
+                 loader: $('table.certificates_table tbody tr.loader'),
+                 source: _nsUrl+'?type=certificate'
              })
              .setAutocompleteOptions('affiliation', {
              	source: _nsUrl+'?type=affiliation',
                  target: $('input.affiliation_selector'),
                  selectedDataContainer: $('table.affiliations_table tbody'),
-                 loader: $('table.affiliations_table tbody tr.loader')
+                 loader: $('table.affiliations_table tbody tr.loader'),
+                 url: _nsUrl+'?type=affiliation',
              })
              .setAutocompleteOptions('accreditation', {
              	source: _nsUrl+'?type=accreditation',
                  target: $('input.accreditations_selector'),
                  selectedDataContainer: $('table.accreditation_table tbody'),
-                 loader: $('table.accreditation_table tbody tr.loader')
+                 loader: $('table.accreditation_table tbody tr.loader'),
+                 url: _nsUrl+'?type=accreditation',
              })
              .autocomplete();
 
@@ -151,7 +153,7 @@
 	            source: LoadMedicalSpecialists,
 	            target: $('#institutionDoctorSearch_firstName'),
 	            selectedDataContainer: $('table.specialist_table tbody'),
-	            loader: $('#loader_ajax'),
+	            loader: $('table.specialist_table tbody tr.loader'),
                 field: $('#institutionDoctorSearch_firstName')
 	        })
 	        .autocomplete();
@@ -267,7 +269,6 @@
 
             $('a.port_services').click(function() {
             	$('div#institution_ancillaryServices_modal_form').modal('show');
-            	//alert('y');
                 return false;
             });
 
