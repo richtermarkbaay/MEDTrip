@@ -2,13 +2,13 @@
     {% block tabbedContent %}
     <form id="modal_award_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
         
-        {% set _awardsByType = {
+         {% set _awardsByType = {
                 'awards': {
                     'containerId': 'awards',
                     'header': 'Awards',
                     'tableId': 'awards_table',
                     'selectorFieldLabel': form_label(form.awards_selector),
-                    'selectorFieldWidget': form_widget(form.awards_selector),
+                    'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody'} }),
                     'list': currentGlobalAwards.award
                 },
                 'certifications': {
@@ -16,7 +16,7 @@
                     'header': 'Certifications',
                     'tableId': 'certificates_table',
                     'selectorFieldLabel': form_label(form.certifications_selector),
-                    'selectorFieldWidget': form_widget(form.certifications_selector),
+                    'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody'} }),
                     'list': currentGlobalAwards.certificate
                 },
                 'affiliations': {
@@ -24,7 +24,7 @@
                     'header': 'Affilliations',
                     'tableId': 'affiliations_table',
                     'selectorFieldLabel': form_label(form.affiliations_selector),
-                    'selectorFieldWidget': form_widget(form.affiliations_selector),
+                    'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody'} }),
                     'list': currentGlobalAwards.affiliation
                 },
                 'accreditations': {
@@ -32,17 +32,18 @@
                     'header': 'Accreditations',
                     'tableId': 'accreditation_table',
                     'selectorFieldLabel': form_label(form.accreditations_selector),
-                    'selectorFieldWidget': form_widget(form.accreditations_selector),
+                    'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody'} }),
                     'list': currentGlobalAwards.accreditation
                 }
             }
         %}
         
         {% for _awardsListData in _awardsByType %}
-            {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+            {% include 'InstitutionBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
         {% endfor %}
         
         {{ form_widget(form._token) }}
+        
     </form>
     
     
@@ -84,34 +85,13 @@
             'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
             'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
         });
+
+        $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}');
+
+        $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+            'remoteUrl': '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}' 
+        });
         
-    	var _nsUrl = '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}';
-    	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}') 
-        .setAutocompleteOptions('award', {
-            source: _nsUrl+'?type=award',
-            target: $('input.award_selector'),
-            selectedDataContainer: $('table.awards_table tbody'),
-            loader: $('table.awards_table tbody tr.loader')
-        })
-        .setAutocompleteOptions('certificate', {
-            source: _nsUrl+'?type=certificate',
-            target: $('input.certificate_selector'),
-            selectedDataContainer: $('table.certificates_table tbody'),
-            loader: $('table.certificates_table tbody tr.loader')
-        })
-        .setAutocompleteOptions('affiliation', {
-            source: _nsUrl+'?type=affiliation',
-            target: $('input.affiliation_selector'),
-            selectedDataContainer: $('table.affiliations_table tbody'),
-            loader: $('table.affiliations_table tbody tr.loader')
-        })
-        .setAutocompleteOptions('accreditation', {
-            source: _nsUrl+'?type=accreditation',
-            target: $('input.accreditations_selector'),
-            selectedDataContainer: $('table.accreditation_table tbody'),
-            loader: $('table.accreditation_table tbody tr.loader')
-        })
-        .autocomplete();
     });
     
 })(jQuery);
