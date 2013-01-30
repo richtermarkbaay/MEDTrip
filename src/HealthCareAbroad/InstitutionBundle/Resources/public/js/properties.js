@@ -151,7 +151,6 @@
 	        }).autocomplete({
 	        	'minLength': $.globalAward.options.autocompleteAward.minLength,
 	        	'source': function (request, res) {
-	        		console.log(_this.fieldId);
 	        		$(_this.attr('data-fieldId')).show();
 	    			$.ajax({
 	    				url: $.globalAward.options.autocompleteAward.remoteUrl,
