@@ -44,7 +44,7 @@ class AdminController extends Controller
 		if(!$searchCriteria){
 		    
 		    $searchCriteria['category'] = $request->get('category');
-		    $searchCriteria['term'] = $request->get('term');
+		    $searchCriteria['term'] = \trim($request->get('term', ''));
 		}
 		
 		if($request->get('page')){
