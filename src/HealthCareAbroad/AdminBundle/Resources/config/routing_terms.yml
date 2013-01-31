@@ -1,3 +1,9 @@
+admin_terms_index:
+    pattern:  /admin/terms
+    defaults: { _controller: AdminBundle:Terms:index }
+    requirements:    
+        _method:  GET
+        
 admin_terms_ajaxAdd:
     pattern: /admin/terms/ajaxAdd
     defaults: { _controller: AdminBundle:Terms:ajaxAdd }

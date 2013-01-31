@@ -10,6 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TermsController extends Controller
 {
+    public function indexAction()
+    {
+        $terms = $this->getDoctrine()->getEntityManager()->getRepository('TermBundle:Term')->findAll();
+        $data = array('terms'=>$terms);
+        return $this->render('AdminBundle:Terms:index.html.twig', $data);
+    }
+    
     public function loadAutocompleteSourceAction(Request $request)
     {
         $type = $request->get('type', 3);
