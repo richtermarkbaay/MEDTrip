@@ -48,8 +48,7 @@
             <div class="span5 box pull-right">
             
                 {% set helptext = get_help_text_by_route('institution_login')%}
-                {{ helptext | raw }}
-                
+                    {{ helptext | raw }}
                 <a class="btn btn-large btn-primary" href="{{ path('institution_signUp') }}">Join Now!</a>
                     
             </div><!--End of span5-->
