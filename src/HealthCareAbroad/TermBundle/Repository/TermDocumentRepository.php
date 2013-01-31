@@ -13,4 +13,27 @@ use Doctrine\ORM\EntityRepository;
 class TermDocumentRepository extends EntityRepository
 {
     
+    public function saveBulkTerms(array $termIds, $documentId, $type)
+    {
+        if (!\count($termIds) || !$documentId || !$type) {
+            // do we have to throw exception here? maybe.. 
+            throw new \Exception('Cannot save bulk terms if termIds is empty or documentId and type are undefined');
+        }
+        $sql = "INSERT INTO `term_documents` (`term_id`, `document_id`, `type`) VALUES ";
+        $params = array(
+            'documentId' => $documentId,
+            'documentType' => $type,
+        );
+        $valuesClause = array();
+        foreach ($termIds as $_termId) {
+            $_paramName = 'termId_'.$_termId;
+            $params[$_paramName] = $_termId;
+            $valuesClause[] = "(:{$_paramName}, :documentId, :documentType)";
+            
+        }
+        $sql = $sql.\implode(', ', $valuesClause);
+        
+        $statement = $this->getEntityManager()->getConnection()->prepare($sql);
+        $statement->execute($params);    
+    }
 }

@@ -26,6 +26,10 @@
             'modalAddTerm': {
                 'form': 'form.addTermForm',
                 'submit_button': 'button.submit'
+            },
+            'loadCurrentTerms': {
+                'url': '',
+                'removeCurrentTermUrl': ''
             }
         },
         // handler for autocomplete action
@@ -126,7 +130,40 @@
             });
             
             return _self;
-        }// end _add
+        },// end _add
+        // handler for loading current terms of an object thru AJAX
+        _loadCurrentTerms: function(_self)
+        {
+            $.ajax({
+                url: Terms.options.loadCurrentTerms.url,
+                type: 'get',
+                dataType: 'json',
+                success: function(json) {
+                    _self.html(json.html).find('.autocompleteSelected').bind('click', function(){
+                        _el = $(this);
+                        _el.hide();
+                        $.ajax({
+                            url: Terms.options.loadCurrentTerms.removeCurrentTermUrl,
+                            data: {'termId': _el.attr('data-termId') },
+                            type: 'post',
+                            success: function (){
+                                _el.remove();
+                            },
+                            error: function(response) {
+                                _el.show();
+                                console.log(response);
+                            }
+                        });
+                    });
+                },
+                // failed loading the list
+                error: function() {
+                    _self.html('<span style="color:red;" class="error"><small>Error in loading current list of terms</small></span>');
+                }
+            });
+            
+            return _self;
+        }
     };
     
     Terms.actions = {
@@ -135,7 +172,12 @@
                 Terms._autocomplete($(this));
             });
         },
-        'modalAddTerm': Terms._add 
+        'modalAddTerm': Terms._add,
+        'loadCurrentTerms': function (_self) {
+            return _self.each(function(){
+                Terms._loadCurrentTerms($(this));
+            });
+        }
     };
     
     // jquery extension for terms functionalities

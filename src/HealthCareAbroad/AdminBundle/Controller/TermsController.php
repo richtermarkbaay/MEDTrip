@@ -17,6 +17,58 @@ class TermsController extends Controller
         return $this->render('AdminBundle:Terms:index.html.twig', $data);
     }
     
+    public function ajaxListAction(Request $request)
+    {
+        $documentId = $request->get('documentId', 0);
+        $documentType = $request->get('documentType', 0);
+        $terms = $this->get('services.terms')->findByDocumentIdAndType($documentId, $documentType, true);
+        $html = $this->renderView('AdminBundle:Terms:selectedTermContainer.html.twig', array('terms' => $terms));
+        
+        return new Response(\json_encode(array('html' => $html)), '200', array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Delete term document
+     * @param Request $request
+     */
+    public function ajaxDeleteByDocumentIdAction(Request $request)
+    {
+        $documentId = $request->get('documentId', 0);
+        $documentType = $request->get('documentType', 0);
+        $termId = $request->get('termId', 0);
+        
+        $termDocument = $this->getDoctrine()->getRepository('TermBundle:TermDocument')
+            ->findOneBy(array('documentId' => $documentId, 'type' => $documentType, 'term' => $termId));
+        
+        if (!$termDocument) {
+            throw $this->createNotFoundException('Invalid TermDocument');
+        }
+        
+        $documentObject = $this->get('services.terms')->createDocumentObject($termDocument);
+        if (!$documentObject) {
+            // why arrive at this action if the subject document does not exist?
+            throw $this->createNotFoundException('Target document object does not exist');
+        }
+        
+        // extra check that term name should not be equal to document object's name since we do not allow to modify automatically tagged from document object name
+        if ($documentObject->getName() == $termDocument->getTerm()->getName()) {
+            $response = new Response('Cannot delete term document pointing to the automatically tagged term from document object name', 400);
+        }else {
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($termDocument);
+                $em->flush();
+                
+                $response = new Response('Term document deleted', 200);
+            }
+            catch(\Exception $e) {
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+        
+        return $response;
+    }
+    
     public function loadAutocompleteSourceAction(Request $request)
     {
         $type = $request->get('type', 3);

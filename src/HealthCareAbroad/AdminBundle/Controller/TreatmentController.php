@@ -111,7 +111,9 @@ class TreatmentController extends Controller
 
             if(!$treatment) throw $this->createNotFoundException("Invalid Treatment.");
             
-        } else $treatment = new Treatment();
+        } else {
+            $treatment = new Treatment();
+        }
 
 
         $treatmentForm = new TreatmentFormType();
@@ -121,6 +123,10 @@ class TreatmentController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            
+            $this->get('services.terms')->saveTreatmentTerms($treatment, $request->get('selectedTerms'));
+            exit;
+            
             $em->persist($treatment);
             $em->flush($treatment);
 
