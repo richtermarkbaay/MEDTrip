@@ -12,9 +12,9 @@ class MedicalCenterSearchResultBuilder extends SearchResultBuilder
     	$this->queryBuilder->innerJoin('a.institutionSpecializations', 'c');
     	$this->queryBuilder->innerJoin('c.specialization', 'd');
     	$this->queryBuilder->where('a.name LIKE :name OR d.name LIKE :specializationName OR b.name LIKE :institutionName');
-    	$this->queryBuilder->setParameter('name', '%'.$criteria['term'].'%');
-    	$this->queryBuilder->setParameter('specializationName', '%'.$criteria['term'].'%');
-    	$this->queryBuilder->setParameter('institutionName', '%'.$criteria['term'].'%');
+    	$this->queryBuilder->setParameter('name', '%'.\trim($criteria['term']).'%');
+    	$this->queryBuilder->setParameter('specializationName', '%'.\trim($criteria['term']).'%');
+    	$this->queryBuilder->setParameter('institutionName', '%'.\trim($criteria['term']).'%');
     	
     	return $this->queryBuilder;
     	exit;

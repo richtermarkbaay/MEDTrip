@@ -9,7 +9,7 @@ class DoctorSearchResultBuilder extends SearchResultBuilder
     	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();//doctrine->getEntityManager()->createQueryBuilder();
     	$this->queryBuilder->select('a')->from('DoctorBundle:Doctor', 'a');
     	$this->queryBuilder->andWhere('a.firstName LIKE :seachTerm OR a.middleName LIKE :seachTerm OR a.lastName LIKE :seachTerm');
-    	$this->queryBuilder->setParameter('seachTerm', '%'.$criteria['term'].'%');
+    	$this->queryBuilder->setParameter('seachTerm', '%'.\trim($criteria['term']).'%');
     	
     	return $this->queryBuilder;
     }

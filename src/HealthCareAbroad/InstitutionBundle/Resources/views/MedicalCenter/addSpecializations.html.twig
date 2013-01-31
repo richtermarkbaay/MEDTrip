@@ -40,7 +40,8 @@
         	</div>
         	{% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
                 {% block sidebarWrappedContent %}
-                    {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                    {% set helptext = get_help_text_by_route('add_specializations_treatments')%}
+                     {{ helptext | raw }}
                 {% endblock %}
             {% endembed %}
         	

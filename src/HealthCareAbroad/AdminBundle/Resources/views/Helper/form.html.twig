@@ -1,13 +1,11 @@
-   
-		{% block wrappedContent %}
-                {% include '::notice.admin.html.twig' %}
-			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-                {{ form_errors(form) }}
-                {{ form_row(form.route) }}
-				{{ form_row(form.details) }}
-				{{ form_rest(form) }}
-
-				 <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
-			</form>
-		{% endblock %}
-			
+{% extends 'AdminBundle::layout.html.twig' %}
+   {% block body %}
+    <form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+        {{ form_errors(form) }}
+        {{ form_row(form.route) }}
+    	{{ form_row(form.details)}}
+    	{{ form_rest(form) }}
+    
+    	 <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
+    </form>
+{% endblock %}
