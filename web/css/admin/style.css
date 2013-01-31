@@ -851,7 +851,22 @@ background-color: #cccccc;
 .stepsbox li > .active > a {
     background-color: #E5E5E5;
 }
-
+.quadLi
+{ 
+     border: 1px solid #CCCCCC;
+    display: inline;
+    float: left;
+    line-height: 1.2em;
+    min-height: 90px;
+    padding: 5px 5px 0;
+    width: 22%;
+}
+ .quad{
+    list-style: none outside none;
+    margin-bottom: 20px;
+    min-width: 100%;
+    overflow: hidden;
+}
 
 
 
