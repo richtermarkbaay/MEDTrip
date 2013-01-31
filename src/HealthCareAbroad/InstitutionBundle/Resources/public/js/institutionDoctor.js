@@ -118,15 +118,15 @@ var InstitutionDoctor = {
      * 
      * @param DOMElement button
      */
-    submitInstitutionSidebarForms: function(domButtonElement) {
-        _button = $(domButtonElement);
-        _buttonHtml = _button.html();
-        _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.modal-content').find('form');
-        _data = _form.serialize();
+    submitInstitutionSidebarForms: function(_domButtonElement) {
+    	
+		_button = $(_domButtonElement);
+   	  	_form = _button.parents('.modal').find('form');
+   	    _button.html("Processing...").attr('disabled', true);
+    	
         $.ajax({
             url: _form.attr('action'),
-            data: _data,
+            data: _form.serialize(),
             type: 'POST',
             dataType: 'json',
             success: function(response) {
@@ -140,11 +140,11 @@ var InstitutionDoctor = {
                         $('#doctorDescriptionText').html(response.info.details);
                         break;
                 } 
-                _form.parents('.modal').modal('hide');
-                _button.html(_buttonHtml).attr('disabled', false);
+                _form.parents('div.modal').modal('hide');
+                _button.html("Submit").attr('disabled', false);
             },
             error: function(response) {
-                _button.html(_buttonHtml).attr('disabled', false);
+                _button.html("Submit").attr('disabled', false);
                 _responseJson = $.parseJSON(response.responseText);
                 if (_responseJson.form_error) {
                     _form.prepend($(_responseJson.form_error_html));
