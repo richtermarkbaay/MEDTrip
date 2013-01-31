@@ -81,12 +81,13 @@ class AdminController extends Controller
 				break;
 		}
 		$p = new SearchAdminPagerService();
+		$searchTerm = \trim($searchCriteria['term']);
 		$params = array(
 						"data" => $this->get('services.admin_search')->search($searchCriteria, $p),
 						"pager" => $p->getPager(),
 		                "isDoctor" => $isDoctor,
 		                "category" => $searchCriteria['category'],
-						"term" => $searchCriteria['term'],
+						"term" => $searchTerm
 		);
 		
 		return $this->render('SearchBundle:Admin:searchResult.html.twig',$params);
