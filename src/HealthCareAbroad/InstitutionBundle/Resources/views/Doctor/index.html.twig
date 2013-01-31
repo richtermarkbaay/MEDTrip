@@ -26,7 +26,7 @@
 								<div class="maincontentblock">
 									<p> <h5 id="doctorDescriptionText">{{ doctor.details |raw }} </h5>
 										<i class="icon-pencil" title="Edit"></i>
-										<a href="#biography" role="button" data-toggle="modal">Add Doctor's Biography</a>
+										<a href="#biography" role="button" data-toggle="modal" class="descriptionLabel">{{ doctor.details | length ? 'Edit':'Add'}} Doctor's Biography</a>
 									</p>
 								</div>
 							</div><!-- End span7-->
