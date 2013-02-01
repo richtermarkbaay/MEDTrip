@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\TermBundle\Entity\Term;
+
+use HealthCareAbroad\TermBundle\Form\TermFormType;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -58,6 +62,7 @@ class TreatmentController extends Controller
         $form = $this->createForm($treatmentForm, $treatment);
 
         $params['form'] = $form->createView();
+        $params['addTagForm'] = $this->createForm(new TermFormType(), new Term())->createView();
         $params['formAction'] = $this->generateUrl('admin_treatment_create', $formActionParams);
         return $this->render('AdminBundle:Treatment:form.html.twig', $params);
     }
@@ -84,6 +89,7 @@ class TreatmentController extends Controller
 
         $params['form'] = $form->createView();
         $params['formAction'] = $this->generateUrl('admin_treatment_update', array('id' => $treatment->getId()));
+        $params['addTagForm'] = $this->createForm(new TermFormType(), new Term())->createView();
         $params['selectedSubSpecializationIds'] = array();
         foreach ($treatment->getSubSpecializations() as $eachSub) {
             $params['selectedSubSpecializationIds'][] = $eachSub->getId();
@@ -124,11 +130,11 @@ class TreatmentController extends Controller
 
         if ($form->isValid()) {
             
-            $this->get('services.terms')->saveTreatmentTerms($treatment, $request->get('selectedTerms'));
-            exit;
-            
             $em->persist($treatment);
             $em->flush($treatment);
+            
+            // save added terms
+            $this->get('services.terms')->saveTreatmentTerms($form->getData(), $request->get('selectedTerms'));
 
             // dispatch event
             $eventName = $id ? AdminBundleEvents::ON_EDIT_TREATMENT : AdminBundleEvents::ON_ADD_TREATMENT;
@@ -162,6 +168,7 @@ class TreatmentController extends Controller
 
             $params['form'] = $form->createView();
             $params['formAction'] = $formAction;
+            $params['addTagForm'] = $this->createForm(new TermFormType(), new Term())->createView();
             $params['hasInstitutionTreatments'] = false; // TODO SELECT InstitutionTreatments count(*)
             
             return $this->render('AdminBundle:Treatment:form.html.twig', $params);

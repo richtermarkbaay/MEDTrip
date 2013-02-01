@@ -1,0 +1,8 @@
+HealthCareAbroad\TermBundle\Entity\Term:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [name]
+            message: This tag already exists!
+    properties:
+        name:
+            - NotBlank: {message: 'Tag name is required.'}
