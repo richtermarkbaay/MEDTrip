@@ -1,12 +1,13 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
 
-{% block aside %}
-    {% if app.session.hasFlash('callout_message') %}
-        {{ app.session.flash('callout_message') | raw }}
-    {% endif %}
-{% endblock %}
 
-<section id="content">
+<!-- callout -->
+{% set callout = app.session.flashbag.get('callout_message') %}
+{% if callout[0] is defined %}
+    {% include 'InstitutionBundle:Widgets:callout.html.twig' with {callout: callout} %}
+{% endif %}
+
+<div id="content">
     <div class="container">
         <div class="row">
             
@@ -15,4 +16,4 @@
             
         </div>
     </div>
-</section>        
+</div>        

@@ -125,6 +125,27 @@ class InstitutionMedicalCenterRepository extends EntityRepository
     }
 
     /**
+     * Get single medicaCenter by institutionId
+     *
+     * @param int $institutionId
+     * @return InstitutionMedicalCenter or NULL
+     */
+    public function getFirstByInstitutionId($institutionId = null)
+    {
+        if(!$institutionId) return null;
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->where('a.institution = :institutionId')
+            ->orderBy('a.id','asc')
+            ->setParameter('institutionId', $institutionId)
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult(); 
+    }
+
+    /**
      * Get medicaCenter count by Institution
      *
      * @param Institution $institution

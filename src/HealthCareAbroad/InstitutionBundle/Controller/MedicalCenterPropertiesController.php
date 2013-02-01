@@ -89,8 +89,10 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
                     'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
                 ));
+                
+                $calloutView = $this->_getEditMedicalCenterCalloutView();
     
-                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                $response = new Response(\json_encode(array('html' => $html, 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
@@ -122,7 +124,9 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-                $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
+
+                $responseContent = array('id' => $request->get('id'), 'calloutView' => $this->_getEditMedicalCenterCalloutView());
+                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);
@@ -159,7 +163,8 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                     $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
                     $output = array(
                         'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
-                        'html' => $yearAcquired
+                        'html' => $yearAcquired,
+                        'calloutView' => $this->_getEditMedicalCenterCalloutView()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
@@ -201,12 +206,24 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
     
         foreach ($awards as $_award) {
             $output[] = array(
-                            'id' => $_award->getId(),
-                            'label' => $_award->getName(),
-                            'awardingBody' => $_award->getAwardingBody()->getName()
+                'id' => $_award->getId(),
+                'label' => $_award->getName(),
+                'awardingBody' => $_award->getAwardingBody()->getName()
             );
         }
     
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+
+    private function _getEditMedicalCenterCalloutView()
+    {
+        $calloutParams = array(
+            '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
+            '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
+        );
+        $calloutMessage = $this->get('services.institution.callouts')->get('success_edit_center', $calloutParams);
+        $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
+    
+        return $calloutView;
     }
 }

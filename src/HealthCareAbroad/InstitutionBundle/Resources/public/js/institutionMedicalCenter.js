@@ -252,6 +252,9 @@ var InstitutionMedicalCenter = {
                 } 
                 _form.parents('.modal').modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
+
+                // Display Callout Message
+                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
@@ -274,6 +277,7 @@ var InstitutionMedicalCenter = {
             success: function(response){
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_block_'+response.id).remove();
+                InstitutionMedicalCenter.displayCallout(response);
             }
          });
     },
@@ -290,6 +294,7 @@ var InstitutionMedicalCenter = {
             	_form.parents('div.modal').modal('hide');
             	_button.html("Delete").attr('disabled', false);
             	$('#treatment_id_'+response.id).remove();
+            	InstitutionMedicalCenter.displayCallout(response);
             }
          });
     },
@@ -308,6 +313,7 @@ var InstitutionMedicalCenter = {
 	        	_form.parents('div.modal').modal('hide');
 	        	_button.html("Delete").attr('disabled', false);
 	        	$('#doctor_id_'+response.id).remove();
+	        	InstitutionMedicalCenter.displayCallout(response);
 	        }
 	     });
     },
@@ -348,6 +354,7 @@ var InstitutionMedicalCenter = {
             dataType: 'json',
             success: function(response) {
                 _linkElement.parents('tr.ancillaryancillaryServices_row').html($(response.html).html());
+                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
                 console.log(response);
@@ -355,6 +362,18 @@ var InstitutionMedicalCenter = {
         });
         
         return false;
+    },
+    
+    displayCallout: function(response) {
+        if(typeof response.calloutView !== "undefined") {
+            if($('#content').prev().attr('id') == 'featured') {
+            	$('#content').prev().html(response.calloutView);
+            } else {
+                $(response.calloutView).insertBefore($('#content'));
+            }                	
+        }
+
+        $('#featured').hide().fadeIn(2000);
     }
 }
 
@@ -542,6 +561,7 @@ var ClinicBusinessHoursForm = {
                 ClinicBusinessHoursForm._ajaxContentElement.html(response.html);
                 ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);
                 _modal.modal('hide');
+                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
                 ClinicBusinessHoursForm._inputElements.submitButton.html(_oldButtonHtml).attr('disabled', false);

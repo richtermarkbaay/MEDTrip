@@ -9,6 +9,10 @@ parameters:
     services.institution_user_provider_class: HealthCareAbroad\UserBundle\Services\InstitutionUserProvider
 
 services:
+    institution_authentication_handler:
+        class: HealthCareAbroad\UserBundle\Handler\InstitutionAuthenticationHandler
+        arguments: [@router, @services.institution_medical_center, %callouts%]
+
     services.user:
         class: %services.user_class%
         abstract: true
