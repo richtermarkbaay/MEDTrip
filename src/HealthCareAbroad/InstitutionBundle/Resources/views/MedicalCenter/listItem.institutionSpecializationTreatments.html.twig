@@ -1,21 +1,20 @@
 <div class="specializations_block" id="specialization_block_{{ institutionSpecialization.id }}">
-    {% set _deleteSpecializationModalId = 'deletespecializationmodal_' ~ institutionSpecialization.id %}
     {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
     {% set _editSpecializationUri = path('institution_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id} ) %}
      <div class="maincontentblock">
-        <h4 class="pull-left">{{ institutionSpecialization.specialization.name }}</h4>
+        <h4 class="pull-left specialization_name_{{ institutionSpecialization.id }}">{{ institutionSpecialization.specialization.name }}</h4>
         <div class="editname2 pull-left">
             <i class="icon-pencil" title="Edit"></i>
             <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
         </div>
         <div class="editname2 pull-left">
             <i title="Delete" class="icon-trash"></i>
-			<a data-target="#{{ _deleteSpecializationModalId }}" onclick="InstitutionMedicalCenter.showCommonModal(this); return false;" role="button" title="" href="#">
+			<a data-target="#deleteSpecialization{{ institutionSpecialization.id }}" data-id="{{ institutionSpecialization.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
 			    <small>Delete</small>
 		    </a>
 		</div>
 		
-		<div id="{{ _deleteSpecializationModalId }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div id="deleteSpecialization{{ institutionSpecialization.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		    {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
 		    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
 		            'institutionSpecialization' : institutionSpecialization

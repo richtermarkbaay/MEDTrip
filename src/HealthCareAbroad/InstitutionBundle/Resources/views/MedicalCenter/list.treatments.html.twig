@@ -1,7 +1,7 @@
 {# --- this will be the list of institution specialization treatments in table format --- #}
 {% for _treatment in institutionSpecialization.treatments %}
 <tr id="treatment_id_{{ _treatment.id }}" >
-	<td class="treatment_name">{{ _treatment.name }}</td>
+	<td class="treatment_name_{{ _treatment.id }}">{{ _treatment.name }}</td>
     <td> <i class="icon-trash" title="Delete"></i><a data-toggle="modal" data-id="{{ _treatment.id }}" data-target="#treatmentModal"  onclick="InstitutionMedicalCenter.showCommonTreatmentModal(this); return false;" href="#">
 	    <small>Delete</small></a>
     </td>

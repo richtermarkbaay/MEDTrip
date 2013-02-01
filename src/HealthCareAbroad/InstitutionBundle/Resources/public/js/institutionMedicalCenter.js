@@ -112,10 +112,22 @@ var InstitutionMedicalCenter = {
         return false;
     },
     
+    showCommonSpecializationModal:  function (_linkElement) {
+    	
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('.specialization_name_'+ _id).html();
+        _modal = $(_linkElement.attr('data-target'));
+        $(".modal-body p strong").text(_name+'?');
+        _modal.modal('show');
+        
+        return false;
+    },
+    
     showCommonTreatmentModal:  function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('.treatment_name').html();
+        _name = $('.treatment_name_'+ _id).html();
         _modal = $(_linkElement.attr('data-target'));
         $('#tId').val(_id);
         $(".modal-body p strong").text(_name+'?');
@@ -126,7 +138,7 @@ var InstitutionMedicalCenter = {
     showSpecialistCommonModalId: function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('.specialist_name').html();
+        _name = $('.specialist_name_'+ _id).html();
         $('.doctorHiddenId').val(_id);
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');

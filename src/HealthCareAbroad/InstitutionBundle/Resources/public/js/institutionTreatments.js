@@ -112,7 +112,7 @@ var InstitutionSpecialization = {
                 // insert new content after last specialization block
             	//$('#specializationList').html(response.html);
             	$(response.html).insertBefore($('#addAnotherSpecialization').parent());
-            	_modal.find('#specializationAccordion').remove();
+            	_modal.find('#specializationAccordion div').remove();
                 _modal.modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
             },
