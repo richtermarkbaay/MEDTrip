@@ -62,50 +62,19 @@ class SearchService
         return $this->transformResults($this->searchStrategy->search($searchParams));
     }
 
+    public function getTermDocuments(SearchParameterBag $searchParams)
+    {
+        return $this->searchStrategy->getTermDocuments($searchParams);
+    }
+
     private function transformResults(array $results)
     {
         if ($this->searchStrategy->isViewReadyResults()) {
             return $results;
         }
 
-        $label = $value = '';
-        $transformedResults = array();
-
-        //TODO: optimize this loop
-        $prevTreatmentId = -1;
-        $prevSubSpecializatioId = -1;
-        foreach ($results as $result) {
-            switch (get_class($result)) {
-                case 'HealthCareAbroad\HelperBundle\Entity\Country':
-                    $label = $result->getName();
-                    $value = $result->getId().'-0';
-                    break;
-
-                case 'HealthCareAbroad\HelperBundle\Entity\City':
-                    $label = $result->getName().', '.$result->getCountry()->getName();
-                    $value = $result->getCountry()->getId().'-'.$result->getId();
-                    break;
-
-                case 'HealthCareAbroad\TreatmentBundle\Entity\Specialization':
-                    $label = $result->getName();
-                    $value = $result->getId().'-0-0-specialization';
-                    break;
-
-                case 'HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization':
-                    $label = $result->getName();
-                    $value = $result->getSpecialization()->getId().'-'.$result->getId().'-0-subSpecialization';
-                    break;
-
-                case 'HealthCareAbroad\TreatmentBundle\Entity\Treatment':
-                    $label = $result->getName();
-                    $value = $result->getSpecialization()->getId().'-0-'.$result->getId().'-treatment';
-                    break;
-
-                default:
-            }
-
-            $transformedResults[] = array('label' => $label, 'value' => $value);
-        }
+        //TODO: implementation
+        $transformedResults = $results;
 
         return $transformedResults;
     }
