@@ -112,6 +112,17 @@ var InstitutionMedicalCenter = {
         return false;
     },
     
+    showCommonTreatmentModal:  function (_linkElement) {
+        _linkElement = $(_linkElement);
+        _id = _linkElement.data('id');
+        _name = $('.treatment_name').html();
+        _modal = $(_linkElement.attr('data-target'));
+        $('#tId').val(_id);
+        $(".modal-body p strong").text(_name+'?');
+        
+        return false;
+    },
+    
     showSpecialistCommonModalId: function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
@@ -265,7 +276,7 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             success: function(response){
             	_form.parents('div.modal').modal('hide');
-            	_button.html("Processing").attr('disabled', false);
+            	_button.html("Delete").attr('disabled', false);
             	$('#treatment_id_'+response.id).remove();
             }
          });

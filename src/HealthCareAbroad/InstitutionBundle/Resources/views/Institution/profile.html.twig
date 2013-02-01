@@ -59,6 +59,11 @@
 <!--
 (function($){
     $(function(){
+        $('#institution_profile_form_contactEmail').bind('keypress', function(e) {
+     	   if( e.which === 13 )
+     	       return false;
+     	});
+        
         Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('#institution_profile_form_country').change();
 

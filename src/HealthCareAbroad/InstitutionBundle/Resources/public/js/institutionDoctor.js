@@ -138,6 +138,13 @@ var InstitutionDoctor = {
     
                     case 'biography':
                         $('#doctorDescriptionText').html(response.info.details);
+                        
+                      	if(response.info.details){
+                    		$('.descriptionLabel').html('Edit Doctor\'s Biography');
+                    	}else{
+                    		$('.descriptionLabel').html('Add Doctor\'s Biography');
+                    	}
+                        
                         break;
                 } 
                 _form.parents('div.modal').modal('hide');

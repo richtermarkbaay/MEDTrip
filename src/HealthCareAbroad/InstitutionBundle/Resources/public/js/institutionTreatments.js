@@ -22,7 +22,7 @@ var InstitutionSpecialization = {
         }
         _href = _linkElement.attr('href');
         _html = _linkElement.html();
-        _linkElement.html('Processing...').addClass('disabled');
+        _linkElement.html(_processing).addClass('disabled');
         
         $.ajax({
             url: _href,
@@ -109,9 +109,10 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-                _lastSpecializationBlock = InstitutionSpecialization.specializationsListContainer.find('div.specializations_block').last();
                 // insert new content after last specialization block
-                _lastSpecializationBlock.after(response.html);
+            	//$('#specializationList').html(response.html);
+            	$(response.html).insertBefore($('#addAnotherSpecialization').parent());
+            	_modal.find('#specializationAccordion').remove();
                 _modal.modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
             },
