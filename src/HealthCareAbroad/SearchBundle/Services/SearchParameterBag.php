@@ -34,7 +34,7 @@ class SearchParameterBag extends ParameterBag
             throw new Exception('Argument $parameters is empty.');
         }
 
-        $term = null;
+        $searchedTerm = null;
         $treatment = null;
         $destination = null;
         $treatmentLabel = '';
@@ -48,7 +48,7 @@ class SearchParameterBag extends ParameterBag
             } else if ('destination' === $key) {
                 $destination = $value;
             } else if ('term' === $key) {
-                $term = $value;
+                $searchedTerm = $value;
             } else if ('treatmentLabel' === $key) {
                 $treatmentLabel = $parameters['treatmentLabel'];
             } else if ('destinationLabel' === $key) {
@@ -60,61 +60,49 @@ class SearchParameterBag extends ParameterBag
             }
         }
 
-        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term, $filter);
+        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $searchedTerm, $filter);
     }
 
-    private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $term, $filter)
+    private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $searchedTerm, $filter)
     {
-        $treatmentType = '';
         $context = '';
-        $specializationId = 0;
-        $subSpecializationId = 0;
-        $treatmentId = 0;
         $countryId = 0;
         $cityId = 0;
-
-        if (!empty($treatment)) {
-            list($specializationId, $subSpecializationId, $treatmentId, $treatmentType) = explode('-', $treatment);
-        }
+        $treatmentType = '';
 
         if (!empty($destination)) {
             list($countryId, $cityId) = explode('-', $destination);
         }
 
-        if (!is_numeric($cityId) && !is_numeric($countryId) &&
-                        !is_numeric($specializationId) &&
-                        !is_numeric($subSpecializationId) &&
-                        !is_numeric($treatmentId)) {
+        if (!is_numeric($cityId) && !is_numeric($countryId) && !is_numeric($treatment)) {
             throw new \Exception('Invalid id');
         }
 
-        if ($term) {
+        if ($searchedTerm) {
             //TODO: first condition is not enough
             if ($treatmentLabel && $destinationLabel) {
                 $context = self::SEARCH_TYPE_COMBINATION;
-            } elseif ($treatmentLabel === $term || ($countryId || $cityId)) {
+            } elseif ($treatmentLabel === $searchedTerm || ($countryId || $cityId)) {
                 $context = self::SEARCH_TYPE_TREATMENTS;
-            } elseif ($destinationLabel === $term || ($specializationId || $subSpecializationId || $treatmentId)) {
+            } elseif ($destinationLabel === $searchedTerm || ($treatment)) {
                 $context = self::SEARCH_TYPE_DESTINATIONS;
             }
         } else {
             if ($countryId || $cityId) {
                 $context = $context | self::SEARCH_TYPE_DESTINATIONS;
             }
-            if ($specializationId || $subSpecializationId || $treatmentId) {
+            if ($treatment) {
                 $context = $context | self::SEARCH_TYPE_TREATMENTS;
             }
         }
 
         return array(
-                        'term' => $term,
+                        'searchedTerm' => $searchedTerm,
                         'context' => $context,
                         'cityId' => $cityId,
                         'countryId' => $countryId,
+                        'treatmentId' => $treatment,
                         'treatmentType' => $treatmentType,
-                        'treatmentId' => $treatmentId,
-                        'specializationId' => $specializationId,
-                        'subSpecializationId' => $subSpecializationId,
                         'treatmentParameter' => $treatment,
                         'destinationParameter' => $destination,
                         'treatmentLabel' => $treatmentLabel,
@@ -123,6 +111,8 @@ class SearchParameterBag extends ParameterBag
         );
     }
 
+
+    //This won't work anymore
     public function getDynamicRouteParams()
     {
         $includedKeys = array('countryId', 'cityId', 'specializationId', 'subSpecializationId', 'treatmentId');

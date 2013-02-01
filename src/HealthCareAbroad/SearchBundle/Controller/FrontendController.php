@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\HelperBundle\Entity\City;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use HealthCareAbroad\HelperBundle\Repository\CountryRepository;
@@ -32,7 +34,7 @@ class FrontendController extends Controller
 
         $options['destinationId'] = '0-0';
         $options['destinationLabel'] = '';
-        $options['treatmentId'] = '0-0-0-0';
+        $options['treatmentId'] = '0';
         $options['treatmentLabel'] = '';
 
         switch ($options['context']) {
@@ -92,15 +94,23 @@ class FrontendController extends Controller
                 break;
 
             case SearchParameterBag::SEARCH_TYPE_TREATMENTS:
-                $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'))->getSlug();
-                $route = 'search_frontend_results_specializations';
+                $termDocuments = $this->get('services.search')->getTermDocuments($searchParams);
 
-                if ($searchParams->get('treatmentId')) {
-                    $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'))->getSlug();
-                    $route = 'search_frontend_results_treatments';
-                } elseif ($searchParams->get('subSpecializationId')) {
-                    $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'))->getSlug();
-                    $route = 'search_frontend_results_subSpecializations';
+                if (count($termDocuments) == 1) {
+                    $termDocument = $termDocuments[0];
+                    $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id'])->getSlug();
+                    $route = 'search_frontend_results_specializations';
+                    if ($termDocument['treatment_id']) {
+                        $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug();
+                        $route = 'search_frontend_results_treatments';
+                    } elseif ($termDocument['sub_specialization_id']) {
+                        $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
+                        $route = 'search_frontend_results_subSpecializations';
+                    }
+                } elseif ($termDocuments) {
+                    throw NotFoundHttpException('No implementation yet');
+                } else {
+                    throw NotFoundHttpException();
                 }
 
                 break;
