@@ -73,6 +73,16 @@
 
 		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
 
+		    $('div.modalAddTerm').terms('modalAddTerm');
+		    
+		    {% if form.vars.value.id %}
+		    // load current terms tagged to this treatment
+		    $('div.autocompleteSelectedContainer').terms('loadCurrentTerms', {
+			    'url': '{{ path("admin_treatments_ajaxLoadByDocumentId", {"documentId": form.vars.value.id, "documentType": get_document_type_constant("treatment")}) }}',
+			    'removeCurrentTermUrl': '{{ path("admin_treatments_ajaxDeleteByDocumentId", {"documentId": form.vars.value.id, "documentType": get_document_type_constant("treatment")}) }}'
+		    });
+		    {% endif %}
+
 		    $('input.autocompleteTerms').terms('autocomplete', {
 			    'remoteUrl': '{{ path("admin_terms_loadAutocompleteSource") }}',
 			    'type': '{{ get_document_type_constant("treatment") }}',

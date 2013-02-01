@@ -29,7 +29,11 @@ class HelpTextTwigExtension extends \Twig_Extension
      public function getHelpTextByRoute($routeName)
      {
          $value =  $this->repository->findOneBy(array('route' => $routeName));
-         $returnValue = $value->getDetails();
+         if($value){
+             $returnValue = $value->getDetails();
+         }else{
+             $returnValue = '';
+         }
          
          return $returnValue;
      }

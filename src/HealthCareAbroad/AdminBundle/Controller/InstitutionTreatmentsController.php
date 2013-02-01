@@ -355,18 +355,20 @@ class InstitutionTreatmentsController extends Controller
      */
     public function addMedicalCenterAction()
     {
+        
         $institutionService = $this->get('services.institution');
         $isSingleCenter = $institutionService->isSingleCenter($this->institution);
         
         // if this is a single center institution , we will not allow to add another medical center
         if($isSingleCenter && $institutionService->getFirstMedicalCenter($this->institution)) {
-            
             return $this->redirect($this->generateUrl('admin_institution_manageCenters',array('institutionId' => $this->institution->getId())));
         }
         else {
+            
             $service = $this->get('services.institution_medical_center');
             $request = $this->request;
             if (is_null($this->institutionMedicalCenter)) {
+                
                 $this->institutionMedicalCenter = new institutionMedicalCenter();
                 $this->institutionMedicalCenter->setInstitution($this->institution);
             }
@@ -379,14 +381,14 @@ class InstitutionTreatmentsController extends Controller
                     return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
                 }
             }
-    
+            
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false));
      
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
                 
                 if ($form->isValid()) {
-    
+                    
                     $form->getData()->setAddress('');
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
     
@@ -404,16 +406,16 @@ class InstitutionTreatmentsController extends Controller
                     )));
                 }
             }
-    
+            
             $params = array(
                 'form' => $form->createView(),
                 'institution' => $this->institution,
                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                 'selectedSubMenu' => 'centers',
                 'isNew' => true,
-                'formAction' => $this->generateUrl('admin_institution_medicalCenter_add')
+                'formAction' => $this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId()))
             );
-    
+
             return $this->render('AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig', $params);
         }
     }

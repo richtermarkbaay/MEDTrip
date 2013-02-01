@@ -95,8 +95,7 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
-            cascade: 
-                - "persist"
+            cascade: {  }
             mappedBy: null
             inversedBy: null
             joinColumns:

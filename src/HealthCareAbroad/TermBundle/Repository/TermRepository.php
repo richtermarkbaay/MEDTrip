@@ -53,6 +53,6 @@ class TermRepository extends EntityRepository
             ->setParameter('name', $name)
             ->getQuery();
 
-        return $query->getOneOrNullResult($name);
+        return $query->getOneOrNullResult();
     }
 }

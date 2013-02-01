@@ -51,7 +51,8 @@
         	
         	{% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
                 {% block sidebarWrappedContent %}
-                    {% include 'InstitutionBundle:Widgets:sidebar.benefitsShowcase.html.twig' %}
+                     {% set helptext = get_help_text_by_route('add_ancillary_services')%}
+                     {{ helptext | raw }}
                 {% endblock %}
             {% endembed %}
 

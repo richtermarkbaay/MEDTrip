@@ -1,8 +1,28 @@
+admin_terms_index:
+    pattern:  /admin/terms
+    defaults: { _controller: AdminBundle:Terms:index }
+    requirements:    
+        _method:  GET
+        
 admin_terms_ajaxAdd:
     pattern: /admin/terms/ajaxAdd
     defaults: { _controller: AdminBundle:Terms:ajaxAdd }
     requirements:
         _method: GET
+        
+admin_treatments_ajaxDeleteByDocumentId:
+    pattern: /admin/terms/ajaxDelete/{documentId}/{documentType}
+    defaults: { _controller: AdminBundle:Terms:ajaxDeleteByDocumentId }
+    requirements:
+        _method: POST
+        
+admin_treatments_ajaxLoadByDocumentId:
+    pattern: /ns-admin/terms/list/{documentId}/{documentType}
+    defaults: { _controller: AdminBundle:Terms:ajaxList }
+    requirements:
+        _method: GET
+        documentId: \d+
+        documentType: \d+
 
 admin_terms_loadAutocompleteSource:
     pattern: /ns-admin/terms/loadAutocompleteSource
