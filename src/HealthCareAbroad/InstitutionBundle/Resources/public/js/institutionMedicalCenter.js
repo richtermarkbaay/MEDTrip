@@ -126,7 +126,7 @@ var InstitutionMedicalCenter = {
     showSpecialistCommonModalId: function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('#doctor_id_'+_id).find('h3').html();
+        _name = $('.specialist_name').html();
         $('.doctorHiddenId').val(_id);
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
