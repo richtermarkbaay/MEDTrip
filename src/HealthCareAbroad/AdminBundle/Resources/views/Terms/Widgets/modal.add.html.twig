@@ -1,9 +1,16 @@
-{% embed 'AdminBundle:Embed:modal.base.html.twig' with {modal: {'id': 'addTermModal', class: 'modalAddTerm', title: 'Add term/tag'}} %}
+{% embed 'AdminBundle:Embed:modal.base.html.twig' with {modal: {'id': 'modalAddTerm', class: 'modalAddTerm', title: 'Add term/tag'}} %}
     
     {% block modalBody %}
     <div>
-        <form action="{{ path('admin_terms_ajaxAdd') }}" id="addTermForm" class="addTermForm" method="POST">    
-            <input type="text" placeholder="New term/tag" />
+        <form action="{{ path('admin_terms_ajaxAdd') }}" id="addTermForm" class="addTermForm" method="POST">
+            <div class="control-group">
+                {{ form_label(addTagForm.name) }}
+                {{ form_widget(addTagForm.name, {attr: {'class': 'input-xxlarge', 'required': 'required'}}) }}
+                <span class="help-inline"></span>    
+            </div>
+            
+            
+            {{ form_rest(addTagForm)}}
         </form>
     </div>
     {% endblock %}

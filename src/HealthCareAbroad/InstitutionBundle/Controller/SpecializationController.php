@@ -65,7 +65,7 @@ class SpecializationController extends InstitutionAwareController
     public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
         $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
+        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($_POST['tId']);
     
         if (!$this->institutionSpecialization) {
             throw $this->createNotFoundException("Invalid institution specialization {$this->institutionSpecialization->getId()}.");
@@ -73,7 +73,7 @@ class SpecializationController extends InstitutionAwareController
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-        
+        $this->institutionSpecialization->removeTreatment($treatment);
         $form = $this->createForm(new CommonDeleteFormType(), $this->institutionSpecialization);
         
         if ($request->isMethod('POST'))  {
@@ -81,6 +81,7 @@ class SpecializationController extends InstitutionAwareController
             if ($form->isValid()) {
                 $this->institutionSpecialization->removeTreatment($treatment);
                 $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($this->institutionSpecialization);
                 $em->flush();
                 $responseContent = array('calloutView' => $this->_getEditMedicalCenterCalloutView(), 'id' => $treatment->getId());
                 $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));

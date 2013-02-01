@@ -8,7 +8,7 @@ admin_terms_ajaxAdd:
     pattern: /admin/terms/ajaxAdd
     defaults: { _controller: AdminBundle:Terms:ajaxAdd }
     requirements:
-        _method: GET
+        _method: POST
         
 admin_treatments_ajaxDeleteByDocumentId:
     pattern: /admin/terms/ajaxDelete/{documentId}/{documentType}
