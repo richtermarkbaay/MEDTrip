@@ -1,0 +1,3 @@
+{% for _term in terms %}
+<span data-termId="{{ _term.id }}" style="border: 1px inset; padding: 3px 5px; margin-right: 3px; cursor: pointer;" class="autocompleteSelected">{{ _term.name }}</span>
+{% endfor %}

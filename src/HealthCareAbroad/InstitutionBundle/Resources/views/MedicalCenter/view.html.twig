@@ -58,6 +58,12 @@
     (function($){
 
         $(function(){
+
+            $('#institutionMedicalCenter_contactEmail').bind('keypress', function(e) {
+           	   if( e.which === 13 )
+           	       return false;
+           	});
+            
             Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
             InstitutionMedicalCenter.initializeTabs({
                 'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id,"content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},

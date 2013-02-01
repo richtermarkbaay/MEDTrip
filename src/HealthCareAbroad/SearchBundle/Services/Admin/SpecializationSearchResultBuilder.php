@@ -9,7 +9,7 @@ class SpecializationSearchResultBuilder extends SearchResultBuilder
     	$this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
     	$this->queryBuilder->select('a')->from('TreatmentBundle:Specialization', 'a');
         $this->queryBuilder->andWhere('a.name LIKE :name');
-        $this->queryBuilder->setParameter('name', '%'.$criteria['term'].'%');
+        $this->queryBuilder->setParameter('name', '%'.\trim($criteria['term']).'%');
     	
     	return $this->queryBuilder;
     }

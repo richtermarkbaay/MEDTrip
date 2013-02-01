@@ -84,7 +84,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
     public function getAvailableDoctorsByInstitutionMedicalCenter(InstitutionMedicalCenter $center, $searchKey)
     {
-        
+
         $ids = array();
         foreach ($center->getDoctors() as $each) {
             $ids[] = $each->getId();
@@ -299,6 +299,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
                 LEFT JOIN a.institution d
                 WHERE c.id = :treatment
                 AND d.country = :country
+                AND d.status = :institutionStatus
                 AND a.status = :imcStatus')
             ->setParameter('treatment', $treatment)
             ->setParameter('country', $country)
