@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -70,9 +72,14 @@ class InstitutionUserService extends UserService
     }
 
     public function setSessionVariables(SiteUser $user) {
+ 
         $this->session->set('accountId', $user->getAccountId());
         $this->session->set('institutionId', $user->getInstitution()->getId());
         $this->session->set('institutionName', $user->getInstitution()->getName());
+        $this->session->set('isSingleCenterInstitution', InstitutionTypes::SINGLE_CENTER == $user->getInstitution()->getType());
+        $this->session->set('institutionSignupStepStatus', $user->getInstitution()->getSignupStepStatus());
+        $this->session->set('userFirstName', $user->getFirstName());
+        $this->session->set('userLastName', $user->getLastName());
 
         //$this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
     }

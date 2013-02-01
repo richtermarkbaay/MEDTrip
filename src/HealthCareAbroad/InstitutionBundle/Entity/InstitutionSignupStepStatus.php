@@ -18,10 +18,10 @@ final class InstitutionSignupStepStatus {
     protected static $routeNames = array(
         self::FINISH => 'institution_homepage',
         self::STEP1 => 'institution_signup_complete_profile',
-        self::STEP2 => 'institution_medicalCenter_addSpecializations',
-        self::STEP3 => 'institution_medicalCenter_addAncilliaryServices',
-        self::STEP4 => 'institution_medicalCenter_addGlobalAwards',
-        self::STEP5 => 'institution_add_medical_specialist'
+        self::STEP2 => 'institution_medicalCenter_addSpecializations', // requires imcId params
+        self::STEP3 => 'institution_medicalCenter_addAncilliaryServices', // requires imcId params
+        self::STEP4 => 'institution_medicalCenter_addGlobalAwards', // requires imcId params
+        self::STEP5 => 'institution_add_medical_specialist' // requires imcId params
     );
 
     public static function getRouteNames()
@@ -58,7 +58,7 @@ final class InstitutionSignupStepStatus {
     public static function getMultipleCenterRouteNames()
     {
         return array(
-            self::FINISH => 'institution_medicalCenter_index',
+            self::FINISH => 'institution_medicalCenter_edit', // requires imcId params
             self::STEP1 => 'institution_signup_complete_profile'
         );
     }

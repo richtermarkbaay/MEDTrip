@@ -1,10 +1,10 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
 {% set asideContent = asideContent is defined ? asideContent : {title: 'Welcome!', 'content': 'Please tell us more about your clinic.'}%}
 
-<section id="content">
+<div id="content">
     <div class="container">
         <div class="row">
             {% block wrappedContent %}{% endblock %}
         </div>
     </div>
-</section>        
+</div>        

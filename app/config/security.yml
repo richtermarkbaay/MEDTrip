@@ -90,6 +90,8 @@ security:
                 default_target_path: /institution/dashboard
                 remember_me: false
                 failure_path: /institution/login
+                success_handler: institution_authentication_handler
+                failure_handler: institution_authentication_handler
 
             #remember_me:
             #   key:  %secret%

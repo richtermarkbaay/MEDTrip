@@ -79,11 +79,11 @@ class SpecializationController extends InstitutionAwareController
         if ($request->isMethod('POST'))  {
             $form->bind($request);
             if ($form->isValid()) {
-                $_id = $treatment->getId();
                 $this->institutionSpecialization->removeTreatment($treatment);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->flush();
-                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+                $responseContent = array('calloutView' => $this->_getEditMedicalCenterCalloutView(), 'id' => $treatment->getId());
+                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
             }
             else {
                 $response = new Response("Invalid form", 400);
@@ -91,5 +91,17 @@ class SpecializationController extends InstitutionAwareController
         }
 
         return $response;
+    }
+    
+    private function _getEditMedicalCenterCalloutView()
+    {
+        $calloutParams = array(
+                        '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
+                        '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
+        );
+        $calloutMessage = $this->get('services.institution.callouts')->get('success_edit_center', $calloutParams);
+        $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
+    
+        return $calloutView;
     }
 }

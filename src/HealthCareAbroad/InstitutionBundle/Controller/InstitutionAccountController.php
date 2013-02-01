@@ -189,16 +189,13 @@ class InstitutionAccountController extends InstitutionAwareController
             $form->bind($this->request);
             
             if ($form->isValid()) {
-                
+
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
-                
-                $calloutMessage = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array(
-                    'callout' => $this->get('services.institution.callouts')->get('signup_multiple_center_success')
-                ));
-                
-                $this->get('session')->setFlash('callout_message', $calloutMessage);
-                
+
+                $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
+                $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
         }

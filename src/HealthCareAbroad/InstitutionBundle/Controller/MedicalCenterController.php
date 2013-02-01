@@ -162,9 +162,9 @@ class MedicalCenterController extends InstitutionAwareController
                         
                         $output['institutionMedicalCenter'][$key] = $value;
                     }
-                    
-                    
+
                     $output['form_error'] = 0;
+                    $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
                 }
                 else {
                     // construct the error message
@@ -205,8 +205,9 @@ class MedicalCenterController extends InstitutionAwareController
         try {
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-            
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+
+            $responseContent = array('html' => $html, 'calloutView' => $this->_getEditMedicalCenterCalloutView());
+            $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e) {
             $response = new Response($e->getMessage(), 500);
@@ -261,7 +262,7 @@ class MedicalCenterController extends InstitutionAwareController
                 
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
                     ->saveAsDraft($form->getData());
-                
+
                 // TODO: fire event
                 
                 // redirect to step 2;
@@ -286,34 +287,41 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
 
         if ($request->isMethod('POST')) {
-    
+            
             $form->bind($request);
             if ($form->isValid()) {
-
-                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
+                $params = array();
+                if ($isSingleCenter) {
                     // Update SignupStepStatus
                     $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
+                    $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                } else {
+                    $calloutParams = array(
+                        '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
+                        '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
+                    );
+                    $calloutMessage = $this->get('services.institution.callouts')->get('success_add_center', $calloutParams);
+                    $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+                    
+                    $params['imcId'] = $this->institutionMedicalCenter->getId();
+                    $routeName = InstitutionSignupStepStatus::getMultipleCenterRouteNameByStatus($this->institution->getSignupStepStatus());
                 }
 
-                $routeName =  $isSingleCenter 
-                    ? InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus())
-                    : InstitutionSignupStepStatus::getMultipleCenterRouteNameByStatus($this->institution->getSignupStepStatus());
-                
-                return $this->redirect($this->generateUrl($routeName));
+                return $this->redirect($this->generateUrl($routeName, $params));
             }
-            
         }
+
         $doctorArr = array();
         foreach ($doctors as $each) {
            $doctorArr[] = array('value' => $each->getFirstName() ." ". $each->getLastName(), 'id' => $each->getId());
         }
 
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'isSingleCenter' => $isSingleCenter,
-                        'doctors' => $doctors//\json_encode($doctorArr, JSON_HEX_APOS)
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'isSingleCenter' => $isSingleCenter,
+            'doctors' => $doctors//\json_encode($doctorArr, JSON_HEX_APOS)
         ));
     }
     
@@ -399,6 +407,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response('<ul><li>'.\implode('</li><li>', $errors).'</li></ul>',400);
             }
             else {
+                $ajaxOutput['calloutView'] = $this->_getEditMedicalCenterCalloutView();
                 $response = new Response(\json_encode($ajaxOutput),200, array('content-type' => 'application/json'));
             }
         }
@@ -645,8 +654,8 @@ class MedicalCenterController extends InstitutionAwareController
         catch (\Exception $e) {
         
         }
-        
-        return new Response(\json_encode(array()),200, array('content-type' => 'application/json'));
+        $responseContent['calloutView'] = $this->_getEditMedicalCenterCalloutView();
+        return new Response(\json_encode($responseContent),200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -730,7 +739,9 @@ class MedicalCenterController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($institutionSpecialization);
                 $em->flush();
-                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+                
+                $responseContent = array('id' => $_id, 'calloutView' => $this->_getEditMedicalCenterCalloutView());
+                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
             }
             else {
                 $response = new Response("Invalid form", 400);
@@ -781,14 +792,16 @@ class MedicalCenterController extends InstitutionAwareController
             $em->flush();
     
             $output = array(
-                            'html' => $this->renderView('InstitutionBundle:Widgets:row.ancillaryService.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                            'ancillaryService' => $ancillaryService,
-                                            '_isSelected' => false
-                            )),
-                            'error' => 0
+                'html' => $this->renderView('InstitutionBundle:Widgets:row.ancillaryService.html.twig', array(
+                    'institution' => $this->institution,
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'ancillaryService' => $ancillaryService,
+                    '_isSelected' => false
+                )),
+                'error' => 0,
+                'calloutView' => $this->_getEditMedicalCenterCalloutView()
             );
+
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e){
@@ -810,8 +823,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function ajaxAddAncillaryServiceAction(Request $request)
     {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        ->find($request->get('asId', 0));
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($request->get('asId', 0));
     
         if (!$ancillaryService) {
             throw $this->createNotFoundException('Invalid ancillary service id');
@@ -839,8 +851,10 @@ class MedicalCenterController extends InstitutionAwareController
                                                 'ancillaryService' => $ancillaryService,
                                                 '_isSelected' => true
                                 )),
-                                'error' => 0
+                                'error' => 0,
+                                'calloutView' => $this->_getEditMedicalCenterCalloutView()
                 );
+
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
@@ -878,6 +892,7 @@ class MedicalCenterController extends InstitutionAwareController
                                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                 'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
                             ));
+
                         }catch (\Exception $e) {
                             $errors[] = $e->getMessage();
                         }
@@ -892,6 +907,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response('Errors: '.implode('\n',$errors), 400);
             }
             else {
+                $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
         }
@@ -978,7 +994,8 @@ class MedicalCenterController extends InstitutionAwareController
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
             
             $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist) , 'institutionMedicalCenter' => $this->institutionMedicalCenter));
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            $calloutView = $this->_getEditMedicalCenterCalloutView();
+            $response = new Response(\json_encode(array('html' => $html, 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
         }
         
         return $response;
@@ -1001,8 +1018,9 @@ class MedicalCenterController extends InstitutionAwareController
                 
                 $this->institutionMedicalCenter->removeDoctor($doctor);
                 $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-        
-                $response = new Response(\json_encode(array('id' => $doctor->getId())), 200, array('content-type' => 'application/json'));
+                $calloutView = $this->_getEditMedicalCenterCalloutView();
+
+                $response = new Response(\json_encode(array('id' => $doctor->getId(), 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);
@@ -1030,5 +1048,17 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
+    }
+
+    private function _getEditMedicalCenterCalloutView()
+    {
+        $calloutParams = array(
+            '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
+            '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
+        );
+        $calloutMessage = $this->get('services.institution.callouts')->get('success_edit_center', $calloutParams);
+        $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
+        
+        return $calloutView; 
     }
 }

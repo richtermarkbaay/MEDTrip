@@ -80,6 +80,7 @@ var InstitutionSpecialization = {
                 // replace the treatments list
                 _modal.parents('div.specializations_block').find('.institution_specialization_treatments_container').html(response.html);
                 _modal.modal('hide');
+                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function (response) {
                 _modal.find('div.ajax_content_container').html('');
@@ -114,6 +115,7 @@ var InstitutionSpecialization = {
                 _lastSpecializationBlock.after(response.html);
                 _modal.modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
+                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
                 console.log(response);
