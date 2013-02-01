@@ -42,7 +42,7 @@
     				<div>
     				    {{ form_label(form.treatmentTerms) }}
     				    {{ form_widget(form.treatmentTerms) }}
-    				    <a href="#addTermModal" data-toggle="modal"><small>Create new term/tag</small></a>
+    				    <a href="#modalAddTerm" data-toggle="modal"><small>Create new term/tag</small></a>
     				</div>
     				
     				<div class="autocompleteSelectedContainer"></div>
@@ -73,7 +73,8 @@
 
 		    EntityVersionHistory.setCommonDialog($('#dialog-container'), {});
 
-		    $('div.modalAddTerm').terms('modalAddTerm');
+		    Terms.options.documentObjectForm = 'form#treatmentForm';
+		    $('div#modalAddTerm').terms('modalAddTerm');
 		    
 		    {% if form.vars.value.id %}
 		    // load current terms tagged to this treatment
@@ -86,7 +87,7 @@
 		    $('input.autocompleteTerms').terms('autocomplete', {
 			    'remoteUrl': '{{ path("admin_terms_loadAutocompleteSource") }}',
 			    'type': '{{ get_document_type_constant("treatment") }}',
-			    'form': 'form#treatmentForm'
+			    'documentNameInput': '#treatment_name'
 		    });
 
 		    $('a.view-edit-history-link').click(function(){
