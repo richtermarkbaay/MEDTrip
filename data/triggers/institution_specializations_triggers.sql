@@ -52,8 +52,12 @@ DROP TRIGGER IF EXISTS institution_specializations_ad $$
 CREATE TRIGGER institution_specializations_ad AFTER DELETE ON `institution_specializations`
 FOR EACH ROW
 BEGIN
+    DECLARE DOCUMENT_TYPE_SPECIALIZATION tinyint(3);
+    SET DOCUMENT_TYPE_SPECIALIZATION = 1;
+
     -- delete search terms that are pointing to this institution specialization
     DELETE FROM `search_terms` WHERE document_id = OLD.`specialization_id`
+    AND type = DOCUMENT_TYPE_SPECIALIZATION
     AND institution_medical_center_id = OLD.`institution_medical_center_id`;
 END; $$
 ### end institution_specializations_ad
