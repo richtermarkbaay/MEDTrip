@@ -3,6 +3,9 @@
  */
 
 (function($){
+	
+	var isMedicalCenterEditPage = false;
+	
     function split( val ) {
         return val.split( /,\s*/ );
     }
@@ -73,7 +76,11 @@
 	   	        	_form.parents('div.modal').modal('hide');
 	   	        	_button.html("Delete").attr('disabled', false);
 	   	        	$('#globalAwardRow_'+response.id).remove();
-	   	        	InstitutionMedicalCenter.displayCallout(response);
+	   	        	
+	   	        	// Display Message Callout
+	   	        	if(InstitutionMedicalCenter.isEditView) {
+	   	        		InstitutionMedicalCenter.displayCallout(response);
+	   	        	}
 	   	        }
 	   	     });
 	       },
@@ -179,7 +186,12 @@
 	       	            	_table = $(_this.attr('data-globalAwardContainer'));
 	       	            	_table.append(_new_row);
 	       	            	_table.find('.loader').hide();
-	       	            	InstitutionMedicalCenter.displayCallout(response);
+
+	       	            	// Display Message Callout
+	       	            	if(InstitutionMedicalCenter.isEditView) {
+	       	            		InstitutionMedicalCenter.displayCallout(response);
+	       	            	}
+
 	       	            },
 	       	            error: function(response) {
 	       	            	$(_this.attr('data-globalAwardContainer')).find('.loader').hide();
@@ -237,7 +249,11 @@
                 _currentRow.find($.globalAward.options.edit.year_acquired_column).html(response.html);
                 _button.html(_buttonHtml).attr('disabled', false);
                 _hideModal($.globalAward.options.edit.modal);
-                InstitutionMedicalCenter.displayCallout(response);
+
+                // Display Message Callout
+                if(InstitutionMedicalCenter.isEditView) {
+                	InstitutionMedicalCenter.displayCallout(response);
+                }
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);

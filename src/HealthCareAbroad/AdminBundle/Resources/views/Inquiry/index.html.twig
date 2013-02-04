@@ -12,13 +12,19 @@
         %}
     
           {% block sectionContent %}
+          
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} 
+            {% endautoescape %}
 
+            {% set sortBy = app.request.get('sortBy') %}
+            {% set sortOrder = app.request.get('sortOrder') %}
+            {% set default = sortBy | length ? '' : 'sort-asc' %}
             {% include '::notice.admin.html.twig' %}
 
             <table id="inquiries-list" class="table table-bordered sortable-list">
             <tr>
-                <th><a href="#">Inquirer</a></th>
-                <th><a href="#">Inquiry Subject</a></th>
+                <th> <a id="column-name"><a href="#">Inquirer</a></th>
+                <th><a href="#">Subject</a></th>
                 <th><a href="#">Message</a></th>
                 <th><a href="#">Email</a></th>
                 <th><a href="#">Date Created</a></th>
@@ -26,9 +32,9 @@
 	
 			{% for each in inquiries %}
                 <tr>
-                    <td>{{ each.firstName }} {{ each.lastName }}</td>
-                    <td>{{ each.inquirySubject.name }}</td>
-                    <td>{{ each.message }}</td>
+                    <td class="name">{{ each.firstName | title }} {{ each.lastName | title }}</td>
+                    <td>{{ each.inquirySubject.name | title }}</td>
+                    <td>{{ each.message | capitalize }}</td>
                     <td>{{ each.email }}</td>
                     <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
                 </tr>
@@ -38,3 +44,12 @@
         {% endembed %}
     </div>
 {% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function(){
+    	$('#filter-dateCreated').datepicker();
+    });
+</script>
+{% endblock %}
+    

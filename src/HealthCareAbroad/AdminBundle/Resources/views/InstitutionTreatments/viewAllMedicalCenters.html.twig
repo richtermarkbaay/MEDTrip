@@ -15,32 +15,38 @@
                 actions:  isSingleCenter ? [] : [{link: path('admin_institution_medicalCenter_add', {institutionId:institution.id}), label: 'Add ' ~ centerLabel, 'icon' : 'icon-plus' }]  
             }
         %}
+        
             {% block sectionContent %}
                 {% if institutionMedicalCenters is not empty %}
                 <div id="centersAccordion" class="hca-accordion">
                     {% for center in institutionMedicalCenters %}
-                        <h5 class="medical-centers">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
                             <a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
                                 <i class="icon-share"></i><span>view</span>
                             </a>
-                            <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-name" style="font-size:13px;font-weight:normal;">
-                                <i class="icon-edit"></i><span>edit</span>
+                           
+                            <a id="center-id-{{ center.id }}" data-hidden-field="#center-hidden-{{center.id}}" onclick="viewMedicalCenterManager.showSpecialization(this); return false;" class="accordion-toggle" data-toggle="collapse" data-parent="#centersAccordion" data-specialization-div="#specializations-{{center.id}}" data-target="#collapse-{{center.id}}" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">
+                            {{center.name}}
                             </a>
-                            <a class="url" href="{{ path('admin_institution_centerSpecializations', {imcId: center.id, institutionId: institution.id}) }}">{{ center.name }}</a>
-                            <input type="text" value="{{ center.name }}" style="margin:0;display:none" onclick="return false"/>
-                        </h5>
-                        <div class="content">
-                            <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
-                                <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
-                                    <i class="icon-edit"></i> <span>edit</span>
-                                </a>
-                                <div class="center-description">{{ center.description | raw }}</div>
-                                
-                                <textarea style="width:90%;display:none;" rows="5" required="required" class="edit-center-textarea">{{ center.description }}</textarea>
-                            </div>
-                            <div class="center-status">Status: {{ get_medical_center_status_label(center) }}</div>
-                            <div class="specializations"></div>
+                            <input id="center-hidden-{{center.id}}" value="0" type="hidden" style="margin:0;display:none"/>
                         </div>
+                        
+                        <div id="collapse-{{center.id}}" class="accordion-body collapse in">
+                            <div class="accordion-inner">
+                                <div style="border: 1px dashed #ddd;margin-bottom: 20px;padding: 5px 10px;">
+                                    <a href="{{ path('admin_institution_medicalCenter_update', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                                        <i class="icon-edit"></i> <span>edit</span>
+                                    </a>
+                                    <div class="center-description">{{ center.description | raw }}</div>
+                                    
+                                    <textarea style="width:90%;display:none;" rows="5" required="required" class="edit-center-textarea">{{ center.description }}</textarea>
+                                </div>
+                                <div class="center-status">Status: {{ get_medical_center_status_label(center) }}</div>
+                            </div>
+                            <div id="specializations-{{center.id}}"></div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </div>
                 {% else %}
@@ -53,11 +59,13 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/admin/js/viewMedicalCenterManager.js') }}"></script>
 <script type="text/javascript">
     $(function(){
-        $('#centersAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});
-
-        $('.medical-centers').click(function(){
+        /*$('#centersAccordion').accordion({active: false, collapsible: true, heightStyle: "content"});*/
+        $(".collapse").collapse();
+        
+        /*$('.medical-centers').click(function(){
             var url = $(this).find('.url').attr('href');
             var specializationElem = $(this).next().find('.specializations:first');
 
@@ -67,7 +75,7 @@
                 	specializationElem.html(result);
                 });
             }
-        });
+        });*/
 
         $('.view-center').click(function(){
             window.location = $(this).attr('href');
@@ -120,5 +128,33 @@
 		});
 
     });
+
+    /*$('a.accordion-toggle').click(function () {
+        var div_id = $(this).attr('data-target');
+        var _url = $(this).attr('href');
+        var _hiddenInputField = $(this).attr('data-hidden-field');
+        var specializationDiv = $($(this).attr('data-specialization-div'));
+        var specializationElem = $('div.specializations');
+        if($(_hiddenInputField).val() == 1) {
+        	$(div_id).collapse('hide');
+        	$(_hiddenInputField).val(0);
+        }
+        else {
+            $('div.accordion-body.in').collapse('hide');
+        	$(div_id).collapse('toggle');
+        	$(_hiddenInputField).val(1);
+        	if($.trim(specializationDiv.html()) == '') {
+        		specializationDiv.html('<div class="ajax-loading">loading...</div>');
+            	$.ajax({
+                    url: _url,
+                    type: 'GET',
+                    success: function(response) {
+                    	specializationDiv.html(response);
+                    }
+                });
+            }
+        }
+        return false;
+    })*/
 </script>
 {% endblock %}

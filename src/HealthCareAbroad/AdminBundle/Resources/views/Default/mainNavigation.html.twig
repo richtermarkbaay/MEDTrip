@@ -93,7 +93,6 @@
         </ul>
     </li>
     {% endif %}
-    {# ---
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
     <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Inquiries <b class="caret"></b></a>
@@ -104,8 +103,6 @@
         </ul>
     </li>
     {% endif %}
-    --- #}
-
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
     <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Settings <b class="caret"></b></a>

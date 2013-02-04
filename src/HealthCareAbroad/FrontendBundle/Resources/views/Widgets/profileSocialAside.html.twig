@@ -1,18 +1,23 @@
-{% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Social', class: 'heading', headingClass: 'network'} %}
+{% set hasGoogleSite = (urls.google is defined) and urls.google %}
+{% set hasFbSite = (urls.facebook is defined) and urls.facebook %}
+{% set hasTwitterSite = (urls.twitter is defined) and urls.twitter %}
 
-    {% block asideContent %}
-		<ul class="network">
-		    {% if urls.google is defined %}
-			    <li><a href="{{ urls.google }}" target="_blank"><img src="/images/frontend/g+_icon-dark.png" alt="facebook"/></a></li>
-		    {% endif %}
-		    {% if urls.facebook is defined %}
-			    <li><a href="{{ urls.facebook }}" target="_blank"><img src="/images/frontend/facebook_icon-dark.png" alt="facebook"/></a></li>
-		    {% endif %}
-		    {% if urls.twitter is defined %}
-			    <li><a href="{{ urls.twitter }}" target="_blank"><img src="/images/frontend/twitter_icon-dark.png" alt="facebook"/></a></li>
-		    {% endif %}
-		</ul>
-	{% endblock %}
+{% if hasGoogleSite or hasFbSite or hasTwitterSite %}
+    {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Social', class: 'heading', headingClass: 'network'} %}
 
-{% endembed %}
+        {% block asideContent %}
+    		<ul class="network">
+    		    {% if hasGoogleSite %}
+    			    <li><a href="{{ urls.google }}" target="_blank"><img src="/images/frontend/g+_icon-dark.png" alt="facebook"/></a></li>
+    		    {% endif %}
+    		    {% if hasFbSite %}
+    			    <li><a href="{{ urls.facebook }}" target="_blank"><img src="/images/frontend/facebook_icon-dark.png" alt="facebook"/></a></li>
+    		    {% endif %}
+    		    {% if hasTwitterSite %}
+    			    <li><a href="{{ urls.twitter }}" target="_blank"><img src="/images/frontend/twitter_icon-dark.png" alt="facebook"/></a></li>
+    		    {% endif %}
+    		</ul>
+    	{% endblock %}
 
+    {% endembed %}
+{% endif %}
