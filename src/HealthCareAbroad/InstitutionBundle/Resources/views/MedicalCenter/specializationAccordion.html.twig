@@ -14,7 +14,8 @@
                  <hr/>
                 {% for treatment in treatments %}
                     <div class="span4">
-                        <input  style="width: auto;!important" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> {{ treatment.name }}
+                        <input  id="{{ treatment.id }}" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
+                         <label class="required labelCheckbox" for="{{ treatment.id }}" >{{ treatment.name }}</label>
                     </div>
                 {% endfor %}
             
