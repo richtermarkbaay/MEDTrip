@@ -64,7 +64,8 @@ final class ListFilterFactory
             'admin_userType_index' => 'AdminUserTypeListFilter',
             'admin_userRole_index' => 'AdminUserRoleListFilter',
         	'admin_awardingBody_index' => 'AwardingBodyListFilter',
-        	'admin_global_award_index' => 'GlobalAwardListFilter'
+        	'admin_global_award_index' => 'GlobalAwardListFilter',
+            'admin_inquire' => 'InquiryListFilter'
         );
     }
 

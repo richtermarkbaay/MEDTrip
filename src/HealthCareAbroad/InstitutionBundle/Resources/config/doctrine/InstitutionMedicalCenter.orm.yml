@@ -35,6 +35,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             length: 100
             nullable: false
             column: address
+        coordinates:
+            type: string
+            length: 100
+            column: coordinates
         contactNumber:
             type: string
             length: 100

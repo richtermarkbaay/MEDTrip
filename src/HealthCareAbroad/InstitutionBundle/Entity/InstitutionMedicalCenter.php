@@ -12,7 +12,7 @@ class InstitutionMedicalCenter
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-    
+
     /**
      * @var bigint $id
      */
@@ -37,6 +37,11 @@ class InstitutionMedicalCenter
      * @var string $address
      */
     private $address;
+
+    /**
+     * @var string $coordinates
+     */
+    private $coordinates;
 
     /**
      * @var string $contactNumber
@@ -92,7 +97,7 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $media;
-    
+
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
@@ -207,6 +212,28 @@ class InstitutionMedicalCenter
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Set coordinates
+     *
+     * @param string $coordinates
+     * @return InstitutionMedicalCenter
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+        return $this;
+    }
+
+    /**
+     * Get coordinates
+     *
+     * @return string 
+     */
+    public function getCoordinates()
+    {
+        return $this->coordinates;
     }
 
     /**
