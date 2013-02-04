@@ -77,27 +77,18 @@ class FrontendController extends Controller
         return $this->render($template, array('options' => $options));
     }
 
-    /**
-     * TODO: refactor
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
     public function searchAction(Request $request)
     {
         $searchParams = $this->getSearchParams($request);
-        $sessionVariables = array();
 
         switch ($searchParams->get('context')) {
             case SearchParameterBag::SEARCH_TYPE_DESTINATIONS:
                 $routeParameters['country'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'))->getSlug();
                 $route = 'search_frontend_results_countries';
-                $sessionVariables['countryId'] = $searchParams->get('countryId');
 
                 if ($searchParams->get('cityId')) {
                     $routeParameters['city'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'))->getSlug();
                     $route = 'search_frontend_results_cities';
-                    $sessionVariables['cityId'] = $searchParams->get('cityId');
                 }
 
                 break;
@@ -109,48 +100,31 @@ class FrontendController extends Controller
                     $termDocument = $termDocuments[0];
                     $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id'])->getSlug();
                     $route = 'search_frontend_results_specializations';
-                    $sessionVariables['specializationId'] = $termDocument['specialization_id'];
-
                     if ($termDocument['treatment_id']) {
                         $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug();
                         $route = 'search_frontend_results_treatments';
-                        $sessionVariables['treatmentId'] = $termDocument['treatment_id'];
                     } elseif ($termDocument['sub_specialization_id']) {
                         $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
                         $route = 'search_frontend_results_subSpecializations';
-                        $sessionVariables['subSpecializationId'] = $termDocument['sub_specialization_id'];
                     }
-                } elseif ($termDocuments) {
-                    throw new NotFoundHttpException('No implementation yet');
-                } else {
-                    throw new NotFoundHttpException();
-                }
-
-                break;
-
-            case SearchParameterBag::SEARCH_TYPE_COMBINATION:
-
-                //TODO: underlying query still needs finetuning
-                $termDocuments = $this->get('services.search')->getTermDocuments($searchParams);
-
-                if (count($termDocuments) == 1) {
-                    $termDocument = $termDocuments[0];
-
-                    //we don't have configured routes for this type of search so we need to generate the url manually
-                    $url = $this->buildUrl($termDocument);
-
                 } elseif ($termDocuments) {
                     throw NotFoundHttpException('No implementation yet');
                 } else {
                     throw NotFoundHttpException();
                 }
 
+                break;
+
+            case SearchParameterBag::SEARCH_TYPE_COMBINATION:
+                //we don't have configured routes for this type of search so we need to generate the url manually
+                $url = $this->buildUrl($searchParams);
+
                 //This code is needed when working in dev environment
                 if (get_class($this->container) === 'appDevDebugProjectContainer') {
                     $url = '/app_dev.php'.$url;
                 }
                 //will be used by our router listener
-                $request->getSession()->set(md5($url), json_encode($this->transformParams($termDocument)));
+                $request->getSession()->set(md5($url), json_encode($searchParams->getDynamicRouteParams()));
 
                 return $this->redirect($url);
 
@@ -160,14 +134,17 @@ class FrontendController extends Controller
         }
 
         // this is used to avoid using slugs after redirection
-        $request->getSession()->set('search_terms', json_encode($sessionVariables));
+        //TODO: this won't work as we have shifted to using the term_id instead of the specifix specialization, subspecialization and treatment ids
+        $request->getSession()->set('search_terms', json_encode($searchParams->all()));
 
         return $this->redirect($this->generateUrl($route, $routeParameters));
     }
 
     public function searchResultsCountriesAction(Request $request)
     {
+        //TODO: we can no longer get the ids from the session
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        $searchTerms = array();
 
         $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry(isset($searchTerms['countryId']) ? $searchTerms['countryId'] : $request->get('country'));
 
@@ -188,7 +165,9 @@ class FrontendController extends Controller
 
     public function searchResultsCitiesAction(Request $request)
     {
+        //TODO: we can no longer get the ids from the session
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        $searchTerms = array();
 
         $city = $this->getDoctrine()->getRepository('HelperBundle:City')->getCity(isset($searchTerms['cityId']) ? $searchTerms['cityId'] : $request->get('city'));
 
@@ -209,7 +188,9 @@ class FrontendController extends Controller
 
     public function searchResultsSpecializationsAction(Request $request)
     {
+        //TODO: we can no longer get the ids from the session
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        $searchTerms = array();
 
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
 
@@ -230,7 +211,9 @@ class FrontendController extends Controller
 
     public function searchResultsSubSpecializationsAction(Request $request)
     {
+        //TODO: we can no longer get the ids from the session
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        $searchTerms = array();
 
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->getSubSpecialization(isset($searchTerms['subSpecializationId']) ? $searchTerms['subSpecializationId'] : $request->get('subSpecialization'));
@@ -252,7 +235,9 @@ class FrontendController extends Controller
 
     public function searchResultsTreatmentsAction(Request $request)
     {
+        //TODO: we can no longer get the ids from the session
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        $searchTerms = array();
 
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'));
@@ -287,27 +272,25 @@ class FrontendController extends Controller
     }
 
     //TODO: create a dedicated class for this
-    private function buildUrl($termDocument)
+    private function buildUrl(SearchParameterBag $searchParams)
     {
-        $sessionParams = array();
-
         $combinationPrefix = 'country';
 
-        if ($termDocument['city_id']) {
+        if ($searchParams->get('cityId')) {
             $combinationPrefix = 'city';
-            $city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($termDocument['city_id']);
+            $city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'));
         }
 
         $combinationSuffix = '_specialization';
 
-        if ($termDocument['treatment_id']) {
+        if ($searchParams->get('treatmentId')) {
             $combinationSuffix = '_treatment';
-        } elseif ($termDocument['sub_specialization_id']) {
+        } elseif ($searchParams->get('subSpecializationId')) {
             $combinationSuffix = '_subSpecialization';
         }
 
-        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($termDocument['country_id']);
-        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id']);
+        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'));
+        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($searchParams->get('specializationId'));
 
         switch ($combinationPrefix . $combinationSuffix) {
             case 'country_specialization':
@@ -318,13 +301,13 @@ class FrontendController extends Controller
             case 'country_subSpecialization':
                 $url = '/'.$country->getSlug().
                 '/'.$specialization->getSlug().
-                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
+                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'))->getSlug();
                 break;
 
             case 'country_treatment':
                 $url = '/'.$country->getSlug().
                 '/'.$specialization->getSlug().
-                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug().
+                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'))->getSlug().
                 '/treatment';
                 break;
 
@@ -338,41 +321,19 @@ class FrontendController extends Controller
                 $url = '/'.$country->getSlug().
                 '/'.$city->getSlug().
                 '/'.$specialization->getSlug().
-                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
+                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParams->get('subSpecializationId'))->getSlug();
                 break;
 
             case 'city_treatment':
                 $url = '/'.$country->getSlug().
                 '/'.$city->getSlug().
                 '/'.$specialization->getSlug().
-                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug().
+                '/'.$this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($searchParams->get('treatmentId'))->getSlug().
                 '/treatment';
                 break;
         }
 
         return $url;
-    }
-
-    private function transformParams($params) {
-        $routeParams = array();
-
-        if (!empty($params['specialization_id'])) {
-            $routeParams['specializationId'] = $params['specialization_id'];
-        }
-        if (!empty($params['sub_specialization_id'])) {
-            $routeParams['subSpecializationId'] = $params['sub_specialization_id'];
-        }
-        if (!empty($params['treatment_id'])) {
-            $routeParams['treatmentId'] = $params['treatment_id'];
-        }
-        if (!empty($params['country_id'])) {
-            $routeParams['countryId'] = $params['country_id'];
-        }
-        if (!empty($params['city_id'])) {
-            $routeParams['cityId'] = $params['city_id'];
-        }
-
-        return $routeParams;
     }
 
     private function getSearchParams(Request $request, $isAutoComplete = false)
