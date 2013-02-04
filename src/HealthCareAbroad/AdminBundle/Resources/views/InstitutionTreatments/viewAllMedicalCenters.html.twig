@@ -17,6 +17,7 @@
         %}
         
             {% block sectionContent %}
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
                 {% if institutionMedicalCenters is not empty %}
                 <div id="centersAccordion" class="hca-accordion">
                     {% for center in institutionMedicalCenters %}
@@ -129,32 +130,5 @@
 
     });
 
-    /*$('a.accordion-toggle').click(function () {
-        var div_id = $(this).attr('data-target');
-        var _url = $(this).attr('href');
-        var _hiddenInputField = $(this).attr('data-hidden-field');
-        var specializationDiv = $($(this).attr('data-specialization-div'));
-        var specializationElem = $('div.specializations');
-        if($(_hiddenInputField).val() == 1) {
-        	$(div_id).collapse('hide');
-        	$(_hiddenInputField).val(0);
-        }
-        else {
-            $('div.accordion-body.in').collapse('hide');
-        	$(div_id).collapse('toggle');
-        	$(_hiddenInputField).val(1);
-        	if($.trim(specializationDiv.html()) == '') {
-        		specializationDiv.html('<div class="ajax-loading">loading...</div>');
-            	$.ajax({
-                    url: _url,
-                    type: 'GET',
-                    success: function(response) {
-                    	specializationDiv.html(response);
-                    }
-                });
-            }
-        }
-        return false;
-    })*/
 </script>
 {% endblock %}

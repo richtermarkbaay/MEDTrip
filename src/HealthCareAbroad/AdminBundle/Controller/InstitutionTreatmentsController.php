@@ -116,7 +116,7 @@ class InstitutionTreatmentsController extends Controller
                 
         }
         else {
-            $institutionMedicalCenters = $institutionService->getAllMedicalCenters($this->institution);
+            $institutionMedicalCenters = $this->filteredResult;//$institutionService->getAllMedicalCenters($this->institution);
             
             // get global ancillary services
             $ancillaryServicesData = array(
@@ -537,7 +537,6 @@ class InstitutionTreatmentsController extends Controller
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         $params = array('specializations' => $specializations);
-
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
     }
     
