@@ -14,7 +14,7 @@
                         {link:  path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
                                 label: 'Edit Clinic Status' | title, 
                                 'icon' : 'icon-ok',
-                                class : 'edit-status'}
+                                class : 'edit-status' }
                     ]
                  } 
          %}
@@ -60,7 +60,7 @@
     </div>
     
 {% endblock %}
-
+{#dpat bootstrap implementation na,karon is jquer-ui man#}
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
     <script src="{{ asset('bundles/admin/js/institutionTreatments.js') }}" type="text/javascript"></script>
