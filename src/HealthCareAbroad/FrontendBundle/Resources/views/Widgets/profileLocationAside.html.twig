@@ -1,7 +1,7 @@
 {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Location'} %}
 
     {% block asideContent %}
-	    <img class="map" src="/../../images/frontend/map.png" alt="">
+	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}">
 	{% endblock %}
 	
 {% endembed %}
