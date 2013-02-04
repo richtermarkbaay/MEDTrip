@@ -2,7 +2,7 @@
  * @author Allejo Chris G. Velarde
  */
 var InstitutionMedicalCenter = {
-        
+    isEditView: false,
     removePropertyUri: '',
     _processing: 'Processing...',
         
@@ -313,7 +313,11 @@ var InstitutionMedicalCenter = {
 	        	_form.parents('div.modal').modal('hide');
 	        	_button.html("Delete").attr('disabled', false);
 	        	$('#doctor_id_'+response.id).remove();
-	        	InstitutionMedicalCenter.displayCallout(response);
+
+   	        	// Display Message Callout
+   	        	if(InstitutionMedicalCenter.isEditView) {
+   	        		InstitutionMedicalCenter.displayCallout(response);
+   	        	}
 	        }
 	     });
     },
@@ -435,7 +439,7 @@ var InstitutionSpecialistAutocomplete = {
                             	response($.each(json, function(item){
                             		return { label: item.label, value: item.value }
                             	}));
-                            	
+
                             },
                             error: function(response) {
                             	$('#loader_ajax').hide();
@@ -463,6 +467,11 @@ var InstitutionSpecialistAutocomplete = {
                 _option.target.find('option[value='+_val+']').hide();
                 _option.loader.hide();
                 _option.field.val('');
+                
+                // Display Callout in editMode
+   	        	if(InstitutionMedicalCenter.isEditView) {
+   	        		InstitutionMedicalCenter.displayCallout(response);
+   	        	}
             },
             error: function(response) {
                 _option.loader.hide();

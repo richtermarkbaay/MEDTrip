@@ -321,6 +321,7 @@ class MedicalCenterController extends InstitutionAwareController
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $isSingleCenter,
+           'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'doctors' => $doctors//\json_encode($doctorArr, JSON_HEX_APOS)
         ));
     }
