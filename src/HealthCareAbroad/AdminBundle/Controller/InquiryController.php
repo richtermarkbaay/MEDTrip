@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * 
+ * @author Chaztine Blance
+ *
+ */
+
 namespace HealthCareAbroad\AdminBundle\Controller;
 
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
@@ -18,8 +24,9 @@ class InquiryController extends Controller
      */
     public function indexAction()
     {
-		$inquiries = $this->getDoctrine()->getEntityManager()->getRepository('AdminBundle:Inquiry')->findAll();
-    	$data = array('inquiries'=>$inquiries);
-    	return $this->render('AdminBundle:Inquiry:index.html.twig', $data);
+    	return $this->render('AdminBundle:Inquiry:index.html.twig', array(
+            'inquiries' => $this->filteredResult,
+            'pager' => $this->pager
+        ));
     }
 }

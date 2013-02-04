@@ -3,11 +3,18 @@
 	{% for name, filter in filters %}
 		<div>
 			<label>{{ filter.label }}:</label>
+			
+			{% if filter.options is defined %}
+			
 			<select name="{{ name }}" id="filter-{{ name }}" class="filter-params styledselect_form_1">
 				{% for value, label in filter.options %}
 					<option value="{{ value }}" {{ value == filter.selected ? 'selected' : ''}}>{{ label }}</option>
+					
 				{% endfor %}
 			</select>
+			{% else %}
+			    <input type="text" id="filter-{{ name }}" class="filter-params styledselect_form_1" name ="{{ name }}" data-date-format="mm/dd/yy" value="{{ filter.value }}">
+			{% endif %}
 		</div>
 	{% endfor %}
 
