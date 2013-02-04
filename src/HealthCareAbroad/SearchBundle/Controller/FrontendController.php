@@ -139,18 +139,18 @@ class FrontendController extends Controller
                     //we don't have configured routes for this type of search so we need to generate the url manually
                     $url = $this->buildUrl($termDocument);
 
+                    //This code is needed when working in dev environment
+                    if (get_class($this->container) === 'appDevDebugProjectContainer') {
+                        $url = '/app_dev.php'.$url;
+                    }
+                    //will be used by our router listener
+                    $request->getSession()->set(md5($url), json_encode($this->transformParams($termDocument)));
+
                 } elseif ($termDocuments) {
                     throw NotFoundHttpException('No implementation yet');
                 } else {
                     throw NotFoundHttpException();
                 }
-
-                //This code is needed when working in dev environment
-                if (get_class($this->container) === 'appDevDebugProjectContainer') {
-                    $url = '/app_dev.php'.$url;
-                }
-                //will be used by our router listener
-                $request->getSession()->set(md5($url), json_encode($this->transformParams($termDocument)));
 
                 return $this->redirect($url);
 
@@ -210,7 +210,6 @@ class FrontendController extends Controller
     public function searchResultsSpecializationsAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
-
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
 
         //TODO: This is temporary; use OrmAdapter

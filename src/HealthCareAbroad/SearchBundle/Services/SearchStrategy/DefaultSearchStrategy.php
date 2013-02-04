@@ -73,7 +73,8 @@ class DefaultSearchStrategy extends SearchStrategy
         return $results;
     }
 
-    //TODO: query will not give correct results in all cases
+    //TODO: query will not give correct results in all cases; this should probably be
+    //renamed to be more specific.
     public function getTermDocuments(SearchParameterBag $searchParams, $options = array())
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
@@ -103,7 +104,7 @@ class DefaultSearchStrategy extends SearchStrategy
 //             $sql .= " GROUP BY = {$options['group_by']} ";
 //         }
 
-
+        $sql .= " GROUP BY term_document_id ";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('termId', $searchParams->get('treatmentId'));
