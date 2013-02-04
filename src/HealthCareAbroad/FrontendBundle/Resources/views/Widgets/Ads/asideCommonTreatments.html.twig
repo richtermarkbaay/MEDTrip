@@ -12,6 +12,8 @@
             <a class="pull-left" href="#">
                 {% if (each.media is defined) and each.media %}
                     {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
+                {% else %}
+                    <span class="treatment-icon media-object img-circle pull-left"></span>
                 {% endif %}
                 <span class="more-icon"></span>
             </a>
