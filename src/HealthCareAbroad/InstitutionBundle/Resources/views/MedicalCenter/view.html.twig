@@ -59,6 +59,8 @@
 
         $(function(){
 
+            InstitutionMedicalCenter.isEditView = true;
+
             $('#institutionMedicalCenter_contactEmail').bind('keypress', function(e) {
            	   if( e.which === 13 )
            	       return false;
