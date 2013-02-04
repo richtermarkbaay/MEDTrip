@@ -159,7 +159,9 @@ var Terms = {
                 _self.html(json.html).find('.autocompleteSelected').bind('click', function(){
                     _el = $(this);
                     _el.hide();
-                    $.ajax({
+                    // remove term id hidden input field
+                    $(Terms.options.documentObjectForm).find('input[value="'+_el.attr('data-termId')+'"][type="hidden"]').remove();
+                    /**$.ajax({
                         url: Terms.options.loadCurrentTerms.removeCurrentTermUrl,
                         data: {'termId': _el.attr('data-termId') },
                         type: 'post',
@@ -170,7 +172,7 @@ var Terms = {
                             _el.show();
                             console.log(response);
                         }
-                    });
+                    });**/
                 }).each(function(){
                    _termIdInput = $('<input type="hidden" name="' + Terms.options.selectedTermsInputName + '[]" value="'+$(this).attr('data-termId')+'" />')
                    $(Terms.options.documentObjectForm).append(_termIdInput);
