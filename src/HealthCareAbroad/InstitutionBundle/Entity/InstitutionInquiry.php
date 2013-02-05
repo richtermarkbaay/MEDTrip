@@ -150,7 +150,7 @@ class InstitutionInquiry
      * @param tinyint $status
      * @return InstitutionInquiry
      */
-    public function setStatus(\tinyint $status)
+    public function setStatus($status)
     {
         $this->status = $status;
         return $this;

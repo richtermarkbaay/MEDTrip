@@ -28,7 +28,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
             nullable: false
             column: date_created
         status:
-            type: tinyint
+            type: integer
             length: 3
     manyToOne:
         institution:
