@@ -2,7 +2,7 @@
 {% set hasServices = services | length > 0 %}
 {% set class = hasAwards and hasAwards ? 'span4' : 'span4' %}
 
-{% if hasAwards or hasServices %}
+{% if hasAwards and hasServices %}
     <div class="two-col-description row">
     	{% if hasServices %}
     	<div class="services span4">
@@ -13,6 +13,22 @@
 
     	{% if hasAwards %}
             <div class="awards span4">
+            	<h5 class="awards-heading">Awards &amp; Accreditations</h5>
+            	<ul class="default-list">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
+            </div>
+        {% endif %}
+    </div>
+{% else %}
+    <div class="one-col-description row">
+    	{% if hasServices %}
+    	<div class="services">
+    		<h5 class="services-heading">Services</h5>
+    		<ul class="default-list">{% for each in services %}<li>{{ each.name }}</li>{% endfor %}</ul>
+    	</div>
+        {% endif %}
+
+    	{% if hasAwards %}
+            <div class="awards">
             	<h5 class="awards-heading">Awards &amp; Accreditations</h5>
             	<ul class="default-list">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
             </div>
