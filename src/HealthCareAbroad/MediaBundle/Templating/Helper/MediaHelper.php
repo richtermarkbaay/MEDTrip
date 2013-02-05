@@ -29,7 +29,7 @@ class MediaHelper extends Helper
             'format' => $format,
             'options' => $options,
             'src' => $this->filesystemManager->getWebPath() . '/' . $media->getName(),
-            'src_thumb' => $this->filesystemManager->getWebPath() . '/thumbnail-' . $media->getName()
+            'src_thumb' => $this->filesystemManager->getWebPath() . '/' . $media->getName()
         ));
     }
 
