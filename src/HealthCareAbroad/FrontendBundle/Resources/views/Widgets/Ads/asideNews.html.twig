@@ -8,7 +8,7 @@
 				<div class="image_preview">
 					<a class="pull-left" href="#">
 					    {% if each.media %}
-					        {{ media(each.media, each, 'default', {class: 'media-object img-circle', thumbnail: true}) | raw }}
+					        {{ media(each.media, each, 'default', {class: 'media-object img-circle'}) | raw }}
 					    {% else %}
 					        <span class="news-icon media-object img-circle pull-left"></span>
 					    {% endif %}
