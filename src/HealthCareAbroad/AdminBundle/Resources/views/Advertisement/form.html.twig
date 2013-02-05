@@ -254,6 +254,24 @@
         $('.highlights > div > a.remove-highlight').click(function(){
             $(this).parent().fadeOut(function(){$(this).remove()});
         });
+
+
+        // TODO - Temporary Sort Institution
+        $('#advertisement_institution').each(function() {
+            // Keep track of the selected option.
+           var selectedValue = $(this).val();
+
+           // sort it out
+           $(this).html($("option", $(this)).sort(function(a, b) {
+               var aVal = $(a).html();
+               var bVal = $(b).html();
+               return aVal == bVal ? 0 : aVal < bVal ? -1 : 1 
+           }));
+
+           // Select one option.
+           $(this).val(selectedValue);
+        });
+
     });
 </script>
 {% endblock %}

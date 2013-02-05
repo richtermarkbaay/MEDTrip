@@ -307,8 +307,8 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $_id = $doctor->getId();
-                //$this->institutionMedicalCenter->removeDoctor($doctor);
-                //$this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                $this->institutionMedicalCenter->removeDoctor($doctor);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
             }
             else {
@@ -676,7 +676,7 @@ class InstitutionTreatmentsController extends Controller
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
     
-        $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);
+        $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:specializationAccordion.html.twig', $params);
         //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
     
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
