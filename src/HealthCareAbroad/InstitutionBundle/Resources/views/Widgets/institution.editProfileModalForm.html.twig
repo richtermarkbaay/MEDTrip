@@ -1,43 +1,46 @@
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height: 400px;' }} %}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, customBodyStyle: 'width: 400px'}} %}
     {% block modalBody %}
+    
+        {% set isEditAddress = false %}
 
-        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" style="min-width: 400px; padding: 0px 20px;">
-        
+        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+
             {% for each in fields %}
 
                 {% if each == 'description' %}
                     {{ form_row(institutionForm[each], { 'attr': { class: 'tinymce'} })  }}
                 {% elseif each == 'name' %}
                     {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
-                {% elseif each == 'address' %}
-                   
-                    {{ form_widget(institutionForm.address1) }}
-                        
-                        <div class="address2">
-                            <span>
-                                {{ form_label(institutionForm.country) }}
-                                {{ form_widget(institutionForm.country, {attr: {class: 'country_dropdown'} } )}}
-                                {{ form_errors(institutionForm.country) }}
-                            </span> 
-                            <span>
-                                {{ form_label(institutionForm.city)}}
-                                {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'city_dropdown'} } )}}
-                                {{ form_errors(institutionForm.city) }}
-                            </span>
-                        </div>
-                        
-                        <div class="address2">
-                            <span>
-                                {{ form_label(institutionForm.state) }}
-                                {{ form_widget(institutionForm.state, { attr: {class: ''} } )}}
-                                {{ form_errors(institutionForm.state) }}
-                            </span>
-                            <span>
-                                {{ form_label(institutionForm.zipCode)}}
-                                {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: ''} } )}}
-                                {{ form_errors(institutionForm.zipCode) }}
-                            </span>
-                        </div>
+                {% elseif each == 'address1' %}
+                    <div>       
+                        {{ form_widget(institutionForm.address1) }}
+                            <div class="address2">
+                                <span>
+                                    {{ form_label(institutionForm.country) }}
+                                    {{ form_widget(institutionForm.country, {attr: {class: 'country_dropdown'} } )}}
+                                    {{ form_errors(institutionForm.country) }}
+                                </span> 
+                                <span>
+                                    {{ form_label(institutionForm.city)}}
+                                    {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'city_dropdown'} } )}}
+                                    {{ form_errors(institutionForm.city) }}
+                                </span>
+                            </div>
+                            
+                            <div class="address2">
+                                <span>
+                                    {{ form_label(institutionForm.state) }}
+                                    {{ form_widget(institutionForm.state, { attr: {class: ''} } )}}
+                                    {{ form_errors(institutionForm.state) }}
+                                </span>
+                                <span>
+                                    {{ form_label(institutionForm.zipCode)}}
+                                    {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: ''} } )}}
+                                    {{ form_errors(institutionForm.zipCode) }}
+                                </span>
+                            </div>
+                    </div>                    
+                    
                 {% elseif each == 'contactNumber' or each == 'websites' %}
                     {{ form_widget(institutionForm[each]) }}
                 {% else %}
@@ -47,12 +50,13 @@
             {% endfor %}
             
             {{ _csrf_token_widget | raw}}
-    
+
         </form>
-          
+        
     {% endblock %}
-     {% block footerBody %}
-        		<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        		<button class="btn btn-primary submit-button" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
-  {% endblock %}
+
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button class="btn btn-primary submit-button" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
+    {% endblock %}
 {% endembed %}

@@ -8,7 +8,8 @@ var InstitutionProfile = {
     ajaxUrls: {
         'loadActiveMedicalCenters': '', 
         'loadInstitutionServices':'',
-        'loadInstitutionAwards': ''
+        'loadInstitutionAwards': '',
+        'updateCoordinates': ''
     },
     
     modals: {
@@ -259,6 +260,8 @@ var InstitutionProfile = {
                         });
                         if (_street_address.length) {
                             address.push(_street_address.join(', '));
+                        } else {
+                        	_street_address = '';
                         }
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
@@ -267,11 +270,15 @@ var InstitutionProfile = {
                             }
                         });
                         
-                		$('.addressLabel').html('Edit Contact Address');
+                		$('.addressLabel').html('Edit Address');
                         _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
                         
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').prepend(_html);
+                        
+                        if(HCAGoogleMap.map) { 
+                            HCAGoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
+                        }
                         
                         break;
     
@@ -322,9 +329,7 @@ var InstitutionProfile = {
             }
         });
         return false;
-    }
-    
- 
+    },
 };
 
 var InstitutionProfileEvents = {

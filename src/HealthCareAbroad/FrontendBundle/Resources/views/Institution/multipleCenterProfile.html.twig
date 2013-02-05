@@ -14,7 +14,7 @@
 
 	<aside id="aside_content" class="span4">
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institution.coordinates} %}
 
 	    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
 
