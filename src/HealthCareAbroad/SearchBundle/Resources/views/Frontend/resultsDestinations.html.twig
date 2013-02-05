@@ -21,56 +21,18 @@
                            name: institution.name,
                            mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
                            streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
-                       } 
-                    } 
+                       }
+                    }
                 %}
             {% endfor %}
-            
+
             {% if searchResults.isPaginable %}
                 {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
             {% endif %}
 
         </div> <!--End of main_content-->
 
-        <aside id="aside_content" class="span4">
-            <section class="box-in">
-                <h5 class="heading"><small>Narrow</small> Search </h5>
-                <ul class="related">
-                    <li class="row">
-                        <h3>By Specialization</h3>
-                            <ul>
-                                {% for item in topSpecializations %}
-                                    <li><a href="#">{{ item.specialization }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
-                                {% endfor %}
-                            </ul>
-                    </li>
-                    <li class="row">
-                        <h3>By Treatment</h3>
-                            <ul>
-                                {% for item in topTreatments %}
-                                    <li><a href="#">{{ item.treatment }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
-                                {% endfor %}
-                            </ul>
-                    </li>
-                    <li class="row">
-                        <h3>Related Treatments</h1>
-                            <ul>
-                                <li><a href="#">Face Lift <span class="right label label-inverse">535</span></a></li>
-                                <li><a href="#">Eye Surgery <span class="right label label-inverse">321</span></a></li>
-                                <li><a href="#">Lorem ipsum <span class="right label label-inverse">153</span></a></li>
-                            </ul>
-                    </li>
-                </ul>
-            </section>
-            <section class="box-in">
-                <h5 class="heading">ADS <br><small> or </small> <br> NEWS </h5>
-                <ul class="ads">
-                    <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
-                    <li>When I grow up, I want to be an <b>NEWS</b>.</li>
-                </ul>
-            </section>
-        </aside> <!--End of aside_content-->
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'destinations', id: destinationId} %}
     </div>
 
-    {{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }}
 {% endblock %}

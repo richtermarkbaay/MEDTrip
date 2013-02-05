@@ -64,7 +64,29 @@ class SearchService
 
     public function getTermDocuments(SearchParameterBag $searchParams)
     {
-        return $this->searchStrategy->getTermDocuments($searchParams);
+        $filters = array();
+
+//         if ($searchParams->get('specializationId', 0)) {
+//             $filters['specialization_id'] = $searchParams->get('specializationId');
+//         }
+
+//         if ($searchParams->get('subSpecializationId', 0)) {
+//             $filters['sub_specialization_id'] = $searchParams->get('subSpecializationId');
+//         }
+
+//         if ($searchParams->get('treatmentId', 0)) {
+//             $filters['treatment_id'] = $searchParams->get('treatmentId');
+//         }
+
+        if ($searchParams->get('countryId', 0)) {
+            $filters['country_id'] = $searchParams->get('countryId');
+        }
+
+        if ($searchParams->get('cityId', 0)) {
+            $filters['city_id'] = $searchParams->get('cityId');
+        }
+
+        return $this->searchStrategy->getTermDocuments($searchParams, array('filters' => $filters));
     }
 
     private function transformResults(array $results)
@@ -107,5 +129,9 @@ class SearchService
     public function getMedicalCentersByTerm($term, $type = null)
     {
         return $this->searchStrategy->getMedicalCentersByTerm($term, $type);
+    }
+
+    public function getTerm($value, $options) {
+        return $this->searchStrategy->getTerm($value, $options);
     }
 }

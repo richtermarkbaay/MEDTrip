@@ -112,7 +112,7 @@ class SearchParameterBag extends ParameterBag
     }
 
 
-    //TODO: refactor
+    //TODO: not used
     public function getDynamicRouteParams($doctrine = null)
     {
         $routeParams = array('countryId' => $this->parameters['countryId'], 'cityId' => $this->parameters['cityId']);

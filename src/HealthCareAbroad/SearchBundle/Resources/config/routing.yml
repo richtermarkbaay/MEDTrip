@@ -25,6 +25,7 @@ search_frontend:
     pattern: /search
     defaults: { _controller: SearchBundle:Frontend:search }
 
+## AUTOCOMPLETE ROUTES #########################################################
 search_frontend_ajaxLoadTreatments:
     pattern: /search/ajaxLoadTreatments
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
@@ -43,12 +44,18 @@ search_frontend_ajaxLoadCities:
 
 search_frontend_ajaxLoadSpecializations:
     pattern: /search/ajaxLoadSpecializations
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadSpecializations }
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'specialization' }
+
+search_frontend_ajaxLoadSubSpecializations:
+    pattern: /search/ajaxLoadSubSpecializations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'subSpecialization' }
 
 #TODO: rename this route
 search_frontend_ajaxLoadTreatments2:
     pattern: /search/ajaxLoadTreatments2
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments2 }
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'treatment' }
+
+## END AUTOCOMPLETE ROUTES #####################################################
 
 search_frontend_results_countries:
     pattern: /destination/{country}/{page}
