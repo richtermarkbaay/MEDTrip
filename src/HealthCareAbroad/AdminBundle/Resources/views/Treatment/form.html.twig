@@ -40,9 +40,9 @@
     				{{ form_row(form.name) }}
     				{{ form_row(form.description) }}
     				<div>
-    				    {{ form_label(form.treatmentTerms) }}
+    				    {{ form_label(form.treatmentTerms, getClassLabel('term').plural|title) }}
     				    {{ form_widget(form.treatmentTerms) }}
-    				    <a href="#modalAddTerm" data-toggle="modal"><small>Create new term/tag</small></a>
+    				    <a href="#modalAddTerm" data-toggle="modal"><small>Create new {{ getClassLabel('term').singular }}</small></a>
     				</div>
     				
     				<div class="autocompleteSelectedContainer"></div>
