@@ -1,0 +1,45 @@
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
+    type: entity
+    table: institution_inquiries
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionInquiryRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        inquirer_name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        inquirer_email:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        message:
+            type: text
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: tinyint
+            length: 3
+    manyToOne:
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            inversedBy: institutionInquiries
+            joinColumn:
+                name: institution_id
+                referencedColumnName: id
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: institutionInquiries
+            joinColumn:
+                name: institution_medical_center_id
+                referencedColumnName: id

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
+use HealthCareAbroad\PagerBundle\Pager;
+
 use HealthCareAbroad\TermBundle\Entity\Term;
 
 use HealthCareAbroad\TermBundle\Form\TermFormType;
@@ -14,10 +18,26 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TermsController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $terms = $this->getDoctrine()->getEntityManager()->getRepository('TermBundle:Term')->findAll();
-        $data = array('terms'=>$terms);
+        $searchTerm = \trim($request->get('q', ''));
+        $page = $request->get('page', 1);
+        
+        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder()
+            ->select('a, b')
+            ->from('TermBundle:Term', 'a')
+            ->innerJoin('a.termDocuments', 'b')
+            ->orderBy('a.name');
+        if ('' != $searchTerm) {
+            $qb->where('a.name LIKE :searchQuery')
+            ->setParameter('searchQuery', '%'.$searchTerm.'%');
+        }
+        
+        $pager = new Pager(new DoctrineOrmAdapter($qb));
+        $pager->setLimit('25');
+        $pager->setPage($page);
+        
+        $data = array('pager'=>$pager);
         return $this->render('AdminBundle:Terms:index.html.twig', $data);
     }
     

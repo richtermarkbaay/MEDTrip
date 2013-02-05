@@ -47,7 +47,6 @@ class InstitutionController extends Controller
                ->leftJoin('a.country', 'f')
                ->leftJoin('a.city', 'g')
                ->leftJoin('a.logo', 'h')
-
                ->where('a.slug = :institutionSlug')
                ->setParameter('institutionSlug', $criteria['slug']);
 

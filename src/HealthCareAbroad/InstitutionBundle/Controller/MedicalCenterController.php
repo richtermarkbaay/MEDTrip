@@ -523,7 +523,11 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-        //$institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        //check if center doesnt have address yet, if so temp set address from institution
+        if(is_null($this->institutionMedicalCenter->getAddress())) {
+            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
+        }
+
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();

@@ -51,13 +51,15 @@ var InstitutionProfile = {
     
     openModal: function(_name) {
         //InstitutionProfile.modals[_name].dialog("open");
-        
         return this;
     },
     
     closeModal: function(_name) {
-        InstitutionProfile.modals[_name].dialog('close');
-        
+        //InstitutionProfile.modals[_name].dialog('close');
+    	_name.reset();	
+    	_formId = $('#'+_name.id); 
+    	_formId.find('ul.text-error').remove();
+    		
         return this;
     },
     
