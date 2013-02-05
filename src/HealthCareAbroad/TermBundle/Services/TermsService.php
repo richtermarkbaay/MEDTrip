@@ -122,8 +122,15 @@ class TermsService
         // delete current term documents except for the one that is pointing to the name of this specialization
         $this->_deleteTermDocumentsExceptForCurrentTerm($currentTerm, $treatment->getId(), TermDocument::TYPE_TREATMENT);
         
+        if (empty($termIds)) {
+        
+            return false;
+        }
+        
         // add the termIds to this document
         $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms($termIds, $treatment->getId(), TermDocument::TYPE_TREATMENT);
+        
+        return true;
     }
     
     private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)

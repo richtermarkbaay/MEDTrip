@@ -144,15 +144,6 @@ admin_institution_medicalCenter_ajaxRemoveAncillaryService:
         institutionId: \d+
         imcId: \d+
         _method: POST
-
-admin_institution_medicalCenter_updateStatus:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/update-status
-    defaults: { _controller: AdminBundle:InstitutionTreatments:updateMedicalCenterStatus }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        status: \d+
-        _method: POST
         
 admin_medicalCenter_ajaxEditGlobalAward:
     pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit

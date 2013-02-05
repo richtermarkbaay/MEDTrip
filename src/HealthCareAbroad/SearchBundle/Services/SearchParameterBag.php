@@ -112,19 +112,36 @@ class SearchParameterBag extends ParameterBag
     }
 
 
-    //This won't work anymore
-    public function getDynamicRouteParams()
+    //TODO: refactor
+    public function getDynamicRouteParams($doctrine = null)
     {
-        $includedKeys = array('countryId', 'cityId', 'specializationId', 'subSpecializationId', 'treatmentId');
+        $routeParams = array('countryId' => $this->parameters['countryId'], 'cityId' => $this->parameters['cityId']);
 
-        $sessionParams = array();
-        foreach ($this->parameters as $key => $value) {
-            if ($value !== 0 && in_array($key, $includedKeys)) {
-                $sessionParams['key'] = $value;
+        if ($this->parameters['context'] == self::SEARCH_TYPE_TREATMENTS || $this->parameters['context'] == self::SEARCH_TYPE_COMBINATION) {
+            if (is_null($doctrine)) {
+                throw new \Exception('Doctrine is required.');
             }
+
+            $connection = $doctrine->getConnection();
+
+            // This should only return one row??? or we shouldn't be here if there are more than one type
+            $sql = "SELECT * FROM search_terms WHERE term_id = :termId GROUP BY type";
+
+            $stmt = $connection->prepare($sql);
+            $stmt->bindValue('termId', $this->parameters['treatmentId']);
+            $stmt->execute();
+
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $result = $result[0];
+
+            $routeParams = array_merge($routeParams, array(
+                'specializationId' => $result['specialization_id'],
+                'subSpecializationId' => $result['sub_specialization_id'],
+                'treatmentId' => $result['treatment_id']
+            ));
         }
 
-        return $sessionParams;
+        return $routeParams;
     }
 
     ////////////////////////////////////////////

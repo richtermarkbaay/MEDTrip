@@ -64,22 +64,22 @@ class SpecializationController extends InstitutionAwareController
      */
     public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
-        $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($_POST['tId']);
-    
+        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId'));
         if (!$this->institutionSpecialization) {
             throw $this->createNotFoundException("Invalid institution specialization {$this->institutionSpecialization->getId()}.");
         }
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-        $this->institutionSpecialization->removeTreatment($treatment);
-        $form = $this->createForm(new CommonDeleteFormType(), $this->institutionSpecialization);
-        
+
         if ($request->isMethod('POST'))  {
+            
+            $this->institutionSpecialization->removeTreatment($treatment);
+            $form = $this->createForm(new CommonDeleteFormType(), $this->institutionSpecialization);
+            
             $form->bind($request);
             if ($form->isValid()) {
-                $this->institutionSpecialization->removeTreatment($treatment);
+                
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($this->institutionSpecialization);
                 $em->flush();

@@ -20,6 +20,11 @@ class Term
     private $name;
 
     /**
+     * @var string $slug
+     */
+    private $slug;
+
+    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $termDocuments;
@@ -28,11 +33,11 @@ class Term
     {
         $this->termDocuments = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -54,11 +59,33 @@ class Term
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     * @return Term
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
     }
 
     /**
@@ -86,7 +113,7 @@ class Term
     /**
      * Get termDocuments
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getTermDocuments()
     {
