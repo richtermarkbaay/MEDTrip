@@ -10,19 +10,59 @@
     
     <div id="content" class="span9">
 
-           {% embed 'HelperBundle:Widgets:section.html.twig' 
+       {% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
                 title: termLabel.plural | title,
             }  
         %}
             {% block sectionContent %}
+            
+            <form action="{{ path('admin_terms_index') }}">
+                <input type="text" name="q" placeholder="Search for {{ termLabel.singular}}" class=".input-xxlarge" />
+                <button class="btn btn-primary" type="submit">Go</button>
+            </form>
+            
+            <table class="table table-bordered">
+                <tr>
+                    <th>Name</th>
+                    <th>Linked Items</th>
+                    <th>Actions</th>
+                </tr>
+            
+            
+            {% for each in pager.results %}
+                <tr>
+                    <td>{{ each.name}}</td>
+                    <td>
+                        <ul>
+                        
+                        {% for _termDocument in each.termDocuments %}
+                            <li>
+                                {% set _tdVo = term_document_vo(_termDocument) %}
+                                <a href="{{ _tdVo.url }}">{{ _tdVo.name }}</a>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            
+            </table>
+            {# 
             <ul class="quad">
 			     {% for each in terms %}
                     <li class="quadLi" >{{ each.name }}</li>
                 {% endfor %}
             </ul>
+            #}
        {% endblock %}
     {% endembed %}
+    
+    {% if pager.isPaginable %}
+       {{ paginate(pager, 'admin_terms_index', app.request.query.all) }}
+    {% endif %}
+    
 </div>
     
 {% endblock %}

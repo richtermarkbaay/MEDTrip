@@ -10,14 +10,14 @@
             {% set _subSpecialization = _data.subSpecialization %}
             {% if _subSpecialization %}
                 <h5>{{ _subSpecialization.name | length ? _subSpecialization.name :"Other treatments"  }}</h5>
-                <hr/>
             {% endif %}
-            
+              <ul>
             {% for _treatment in _data.treatments %}
-                <div class="span4">
+                <li style="list-style:none;">
                     <input  style="width: auto;!important" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ _treatment.id }}" /> {{ _treatment.name }}
-                </div>
+                </li>
             {% endfor %}
+            </ul>
         
         {% endfor %}
         </div>

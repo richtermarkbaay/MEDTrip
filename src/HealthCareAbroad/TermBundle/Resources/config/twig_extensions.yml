@@ -4,3 +4,6 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+        calls:
+            - [setTreatmentBundleService, [@services.treatment_bundle]]
+            - [setRouter, [@router]]

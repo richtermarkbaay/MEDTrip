@@ -7,7 +7,7 @@
 <div id="highlight"> <!--Highighted Institution-->
 	<a href="{{ institutionUrl }}" class="clinic span2 offset6">
         {% if highlight.institution.logo %}
-            {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo', thumbnail: true}) | raw }}
+            {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo'}) | raw }}
         {% else %}
             <img src="{{ imageplaceholder.institutionLogo }}" alt="logo"/>
         {% endif %}
@@ -43,7 +43,7 @@
             <div class="span4">
                 <div class="media">
                     {% if each.icon %}
-                        <img class="media-object img-circle pull-left" src="{{ each.icon.src_thumbnail }}" alt="doctor logo" width="50"/>
+                        <img class="media-object img-circle pull-left" src="{{ each.icon.src }}" alt="doctor logo" width="50"/>
                     {% else %}
                         {% if each.type == 3 %}
                             <img alt="clinic logo" src="{{ imageplaceholder.doctorIconOrange }}" class="media-object img-circle pull-left">

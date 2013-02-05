@@ -215,7 +215,13 @@ var InstitutionMedicalCenter = {
                             ? _street_address.join(', ')+', '
                             : ''
                         );
-                        $('.addressLabel').html('Edit Contact Address');
+                        $('.addressLabel').html('Edit Address');
+                        
+                        //HCAGoogleMap.updateMap();
+                        if(HCAGoogleMap.map) { 
+                            HCAGoogleMap.updateMap(_street_address + ',' + HCAGoogleMap.defaultAddress);
+                        }
+
                         break;
     
                     case 'numberModalForm':

@@ -18,7 +18,7 @@
             with { specializations: institutionMedicalCenter ? institutionMedicalCenter.institutionSpecializations : [] } %}
 
     	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' 
-    	    with { awards: institutionAwards, services: institution.institutionOfferedServices} %}
+    	    with { awards: institutionAwards, services: institutionServices} %}
     	
     	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
     	    with { doctors: institutionDoctors} %}
@@ -27,7 +27,7 @@
 
 	<aside id="aside_content" class="span4">
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: []} %}
+	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: [], coordinates: institution.coordinates} %}
 
 	    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
 	        with { businessHours: institutionMedicalCenter ? institutionMedicalCenter.businessHours : '' } %}

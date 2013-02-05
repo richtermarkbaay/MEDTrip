@@ -186,6 +186,24 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /**
+     * Ajax handler for updating institution coordinates field.
+     *
+     * @param Request $request
+     * @author Adelbert D. Silla
+     */
+    public function ajaxUpdateCoordinatesAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $this->institutionMedicalCenter->setCoordinates($request->get('coordinates'));
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($this->institutionMedicalCenter);
+            $em->flush($this->institutionMedicalCenter);
+
+            return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        }
+    }
+    
+    /**
      * Save clinic business hours
      * 
      * @param Request $request
@@ -505,7 +523,11 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function editAction(Request $request)
     {
-        //$institutionSpecializations = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        //check if center doesnt have address yet, if so temp set address from institution
+        if(is_null($this->institutionMedicalCenter->getAddress())) {
+            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
+        }
+
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
