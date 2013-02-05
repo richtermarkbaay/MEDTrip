@@ -57,9 +57,9 @@ class ListFilterBeforeController
         $params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {
-
-            if($request->getSession()->get('institutionId')) {
-                $params['institutionId'] = $request->getSession()->get('institutionId');
+            // client admin filter
+            if (\preg_match('/^$routeName/', $routeName)) {
+                $params['institutionId'] = $request->getSession()->get('institutionId', 0);
                 $params['isInstitutionContext'] = true;
             }
 
