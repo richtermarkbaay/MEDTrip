@@ -83,7 +83,8 @@ class InstitutionRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('a')
             ->where('a.status = :approved_status')
-            ->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus());
+            ->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus())
+            ->orderBy('a.name', 'ASC');
 
         return $qb;
     }

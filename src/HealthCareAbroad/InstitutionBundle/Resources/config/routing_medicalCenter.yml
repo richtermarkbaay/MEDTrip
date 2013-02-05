@@ -5,12 +5,19 @@ institution_medicalCenter_ajaxUpdateProfileByField:
         _method: GET|POST
         imcId: \d+
 
+institution_medicalCenter_ajaxUpdateCoordinates:
+    pattern: /medical-center/{imcId}/ajax/update-coordinates
+    defaults: {_controller: InstitutionBundle:MedicalCenter:ajaxUpdateCoordinates }
+    requirements:
+        imcId: \d+
+        _method:  POST
+
 institution_medicalCenter_ajaxUpdateBusinessHours:
     pattern: /medical-center/{imcId}/ajax/update-by-business-hours
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
     requirements:
         imcId: \d+
-        _method: POST
+        _method: GET|POST
 
 institution_medicalCenter_loadTabbedContents:
     pattern: /medical-center/{imcId}/ajax/loadTabbedContents
@@ -65,7 +72,7 @@ institution_medicalCenter_ajaxEditSpecialization:
     pattern: /medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddInstitutionSpecializationTreatments }
     requirements:
-        _method: GET|POST
+        _method: POST
         imcId: \d+
         isId: \d+
 
