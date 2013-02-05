@@ -1,0 +1,22 @@
+{# This delete modal is used in Complete Profile Step 4 and in Medical Center Global Awards Tab #}
+
+<div id="globalAwardModal" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>Delete Award</h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to remove
+        	<strong></strong>
+        </p>
+    </div>
+    <div class="modal-footer">
+    {% set _commonDeleteCsrfTokenAwards = form_widget(commonDeleteForm._token) %}
+       <form action="{{ path('institution_medicalCenter_ajaxRemoveGlobalAward', {'imcId':institutionMedicalCenter.id, 'institutionId' : institution.id} ) }}">
+             {{ _commonDeleteCsrfTokenAwards | raw }}
+            <input type="hidden" name="id" id="id" value=""/>
+            <button class="btn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel </button>
+    	    <button data-loading-text="Processing..." id="globalAward" class="btn btn-danger delete-button" type="button" onclick="$.GlobalAutocompleteAction.removeGlobalAward(this); return true;">Delete</button>
+        </form>
+    </div>
+</div>

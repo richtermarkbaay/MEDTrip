@@ -51,7 +51,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
     manyToMany:
         treatments:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
-            cascade: {  }
+            cascade:
+                - "remove"
+                - "persist"
             mappedBy: null
             joinTable:
                 name: institution_treatments

@@ -127,9 +127,9 @@ var InstitutionMedicalCenter = {
     showCommonTreatmentModal:  function (_linkElement) {
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('.treatment_name_'+ _id).html();
+        _name = $('.treatment_name_'+_id).html();
         _modal = $(_linkElement.attr('data-target'));
-        $('#tId').val(_id);
+        _modal.find('#tId').val(_id);
         $(".modal-body p strong").text(_name+'?');
         
         return false;
