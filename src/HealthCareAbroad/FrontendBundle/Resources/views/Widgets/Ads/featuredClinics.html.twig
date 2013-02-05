@@ -13,7 +13,7 @@
 				<div class="clinic-box span2">
 					<a href="{{ clinicUrl }}">
     				    {% if each.institutionMedicalCenter.logo %}
-    				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo', thumbnail: true}) | raw }}
+    				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo'}) | raw }}
     				    {% else %}
     				        <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo" alt="clinic logo"/>
     				    {% endif %}
@@ -25,15 +25,15 @@
 				</div>
 				<div class="description-box span4">
 					<a href="{{ clinicUrl }}">
-					    <h3>{{ each.institutionMedicalCenter.name }}</h3>
+					    <h3>{{ each.title }}</h3>
 					</a>
 					<h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
-					<div>{{ each.institutionMedicalCenter.description | raw }}</div>
+					<div>{{ each.description | raw }}</div>
 				</div>
 				<div class="thumb-box span2">
 					<div class="img-background">
     				    {% if each.media %}
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo', thumbnail: true}) | raw }}
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
     				    {% else %}
     				        <img class="img-polaroid" src="" alt="featured_pic" />
     				    {% endif %}
@@ -47,7 +47,7 @@
                     <div class="span4">
                         <div class="media">
                             {% if clinicHighlight.icon %}
-                                <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src_thumbnail }}" alt="logo" width="50"/>
+                                <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
                             {% else %}
                                 {% if clinicHighlight.type == 3 %}
                                     <img alt="clinic logo" src="{{ imageplaceholder.doctorIcon }}" class="media-object img-circle pull-left">
