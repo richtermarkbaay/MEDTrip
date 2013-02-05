@@ -307,8 +307,8 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $_id = $doctor->getId();
-                //$this->institutionMedicalCenter->removeDoctor($doctor);
-                //$this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                $this->institutionMedicalCenter->removeDoctor($doctor);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
             }
             else {
