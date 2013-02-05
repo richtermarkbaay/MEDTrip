@@ -103,4 +103,9 @@ class SearchService
     {
         return $this->searchStrategy->searchMedicalCentersByTreatment($treatment);
     }
+
+    public function getMedicalCentersByTerm($term, $type = null)
+    {
+        return $this->searchStrategy->getMedicalCentersByTerm($term, $type);
+    }
 }

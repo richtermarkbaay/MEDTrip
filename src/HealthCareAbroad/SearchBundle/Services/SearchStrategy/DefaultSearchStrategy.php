@@ -73,16 +73,38 @@ class DefaultSearchStrategy extends SearchStrategy
         return $results;
     }
 
-    public function getTermDocuments(SearchParameterBag $searchParams)
+    //TODO: query will not give correct results in all cases; this should probably be
+    //renamed to be more specific.
+    public function getTermDocuments(SearchParameterBag $searchParams, $options = array())
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
+        //TODO: We join to the terms table to support getting documents by term name
         $sql ="
             SELECT a.*
-            FROM term_frontend_documents AS a
+            FROM search_terms AS a
             INNER JOIN terms AS b ON b.id = a.term_id
             WHERE b.id = :termId
         ";
+
+        if (isset($options['filters'])) {
+            $supportedFilters = array('specialization_id', 'sub_specialization_id', 'treatment_id', 'country_id', 'city_id', 'type');
+
+            foreach ($options['filters'] as $filter => $value) {
+                if (!in_array($filter, $supportedFilters)) {
+                    throw new \Exception('Unsupported filter: '. $filter);
+                }
+
+                $sql .= " AND a.{$filter} = $value ";
+            }
+        }
+
+        //This should always be placed somewhere at the end
+//         if (isset($options['group_by'])) {
+//             $sql .= " GROUP BY = {$options['group_by']} ";
+//         }
+
+        $sql .= " GROUP BY term_document_id ";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('termId', $searchParams->get('treatmentId'));
@@ -115,7 +137,7 @@ class DefaultSearchStrategy extends SearchStrategy
         $sql = "
             SELECT a.id AS value, a.name AS label
             FROM terms AS a
-            INNER JOIN term_frontend_documents AS b ON a.id = b.term_id
+            INNER JOIN search_terms AS b ON a.id = b.term_id
             WHERE a.name LIKE :name
             $optionalWhereClause
             GROUP BY a.name
@@ -138,25 +160,20 @@ class DefaultSearchStrategy extends SearchStrategy
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-        $optionalWhereClause = ($termId = $searchParams->get('treatmentId', 0)) ? ' AND a.id = :treatmentId ' : ' ';
+        $optionalWhereClause = ($termId = $searchParams->get('treatmentId', 0)) ? ' AND term_id = :treatmentId ' : ' ';
 
         //TODO: test if cast really helps speed up query?
         $sql = "
-            SELECT CONCAT(c.name, ', ', d.name) AS label, CONCAT(CAST(d.id AS CHAR), '-', CAST(c.id AS CHAR)) AS value
-            FROM terms AS a
-            INNER JOIN term_frontend_documents AS b ON b.term_id = a.id
-            INNER JOIN cities AS c ON c.id = b.city_id
-            LEFT JOIN countries AS d ON d.id = c.country_id
-            WHERE c.name LIKE :name OR d.name LIKE :name
+            SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
+            FROM search_terms
+            WHERE (country_name LIKE :name OR city_name LIKE :name)
             $optionalWhereClause
 
             UNION
 
-            SELECT d.name AS label, CONCAT(CAST(d.id AS CHAR), '-0') AS value
-            FROM terms AS a
-            INNER JOIN term_frontend_documents AS b ON b.term_id = a.id
-            LEFT JOIN countries AS d ON d.id = b.country_id
-            WHERE a.name LIKE :name
+            SELECT country_name AS label, CONCAT(CAST(country_id AS CHAR), '-0') AS value
+            FROM search_terms
+            WHERE country_name LIKE :name
             $optionalWhereClause
 
             GROUP BY label
@@ -164,6 +181,7 @@ class DefaultSearchStrategy extends SearchStrategy
         ";
 
         $stmt = $connection->prepare($sql);
+
         $stmt->bindValue('name', '%'.$searchParams->get('searchedTerm').'%');
         if ($termId) {
             $stmt->bindValue('treatmentId', $termId);
@@ -416,5 +434,13 @@ class DefaultSearchStrategy extends SearchStrategy
         $query = preg_replace($keys, $values, $query, 1, $count);
 
         return $query;
+    }
+
+    //TODO: implementation
+    public function getMedicalCentersByTerm($term)
+    {
+        $isPhrase = is_string($term) && !is_numeric($term);
+
+        $repository = $this->container->get('doctrine')->getRepository('InstitutionBundle:InstitutionMedicalCenter');
     }
 }

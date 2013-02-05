@@ -134,7 +134,7 @@ class TreatmentController extends Controller
             $em->flush($treatment);
             
             // save added terms
-            $this->get('services.terms')->saveTreatmentTerms($form->getData(), $request->get('selectedTerms'));
+            $this->get('services.terms')->saveTreatmentTerms($form->getData(), $request->get('selectedTerms', array()));
 
             // dispatch event
             $eventName = $id ? AdminBundleEvents::ON_EDIT_TREATMENT : AdminBundleEvents::ON_ADD_TREATMENT;
