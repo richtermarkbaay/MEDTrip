@@ -13,7 +13,17 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
 class GlobalOnKernelController
 {
-    
+    /**
+     * 
+     * @param Twig_Environment
+     */
+    protected $twig;
+
+    public function setTwig(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
+    }
+
     /**
      * kernel.response listener method
      *
