@@ -165,16 +165,18 @@ class MedicalCenterController extends InstitutionAwareController
 
                     $output['form_error'] = 0;
                     $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
+                    $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
                 }
                 else {
                     // construct the error message
-                    $html ="<ul class='errors'>";
+                    $html ="<ul class='text-error'>";
                     foreach ($form->getErrors() as $err){
                         $html .= '<li>'.$err->getMessage().'</li>';
                     }
                     $html .= '</ul>';
                     $output['form_error'] = 1;
                     $output['form_error_html'] = $html;
+                    $response = new Response(\json_encode($output),400, array('content-type' => 'application/json'));
                 }
             }
             catch (\Exception $e) {
@@ -182,7 +184,7 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return $response;
     }
     
     /**
