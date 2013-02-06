@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Form\EventSubscriber\InstitutionTreatmentChoiceSubscriber;
+
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionTreatmentChoiceDataTransformer;
+
 use HealthCareAbroad\TreatmentBundle\Form\DataTransformer\TreatmentIdentityTransformer;
 
 use HealthCareAbroad\InstitutionBundle\Form\FieldType\InstitutionTreatmentChoiceType;
@@ -24,12 +28,18 @@ class InstitutionSpecializationFormType extends AbstractType
 {
     const NAME = 'institutionSpecialization';
     
+    private $institutionTreatmentSubscriber;
+    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'em' => null,
-            'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization'
+            'default_choices' => array()
         ));
+    }
+    
+    public function setInstitutionTreatmentEventSubscriber(InstitutionTreatmentChoiceSubscriber $s)
+    {
+        $this->institutionTreatmentSubscriber = $s;
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -38,20 +48,9 @@ class InstitutionSpecializationFormType extends AbstractType
         
         if (!$institutionSpecialization instanceof InstitutionSpecialization) {
             throw new \Exception('Expected InstitutionSpecialization as data.');
-        }        
-            
-        /**$builder->add('description', 'textarea', array(
-            'label' => 'Details',
-            'constraints' => array(new NotBlank())
-        ));**/
-
-        $builder->add($builder->create('specialization', 'hidden', array('error_bubbling' => true))
-            ->addModelTransformer(new SpecializationIdentityTransformer($options['em']))
-        );
+        }     
         
-        $builder->add($builder->create('treatments', new InstitutionTreatmentChoiceType(), array('error_bubbling' => true, 'virtual' => false))
-            //->addModelTransformer(new TreatmentIdentityTransformer($options['em']))
-        );
+        $builder->add($builder->create('treatments', 'choice', array('choices' => $options['default_choices'],'multiple' => true, 'error_bubbling' => true, 'virtual' => true)));
     }
     
     public function getName(){

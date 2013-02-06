@@ -129,6 +129,17 @@ class TreatmentBundleService
     {
         return $this->entityManager->getRepository('TreatmentBundle:Treatment')->find($id);
     }
+    
+    public function findTreatmentsByIds(array $ids)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('a')
+            ->from('TreatmentBundle:Treatment', 'a')
+            ->where($qb->expr()->in('a.id', ':ids'))
+            ->setParameter('ids', $ids)->getQuery();
+        
+        return $query->getResult();
+    }
 
     public function saveTreatment(Treatment $entity)
     {
