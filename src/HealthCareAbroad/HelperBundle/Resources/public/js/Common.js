@@ -1,6 +1,8 @@
 var HCA = {
 
 	tinymceConfig: null,
+	date: null,
+	current: null,
 		
 	init : function(params)
 	{
@@ -12,10 +14,21 @@ var HCA = {
 	filterResult: function(url) {
 		var params = '';
 		$('#filter-wrapper .filter-params').each(function(){
+			
+			if($(this).attr('name') == 'dateCreated'){
+				HCA.current = $(this).val();
+				HCA.date = HCA.getTimestamp($(this).val());
+				$(this).val(HCA.date);
+			}
 			params += "&" + $(this).attr('name') +"="+ $(this).val();
 		});
-		
 		window.location = url + '?' + params.substr(1); 
+		$('input[name="dateCreated"]').val(HCA.current);
+	},
+	getTimestamp: function(strDate) {
+		var date = new Date();
+		var datum = Date.parse(strDate);
+		return datum/1000;
 	}
 };
 

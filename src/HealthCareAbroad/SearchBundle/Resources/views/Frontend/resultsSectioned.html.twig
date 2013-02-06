@@ -1,0 +1,527 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block callout %}
+    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
+{% endblock %}
+
+{% block content %}
+    <div id="details" class="row">
+        <div id="main_content" class="span8">
+            <header class="filters">
+                <div class="pull-left">
+                    <h2 class="total">
+                        We have found the following matches:
+                    </h2>
+                </div>
+            </header>
+            <div class="media search-matches">
+                <div class="matches">
+                    <ul class="match">
+                        <li><h5><a href="#">Specialization 01</a></h5></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Some Treatment</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li>
+                            <ul class="match">
+                                <li><h5><a href="#">Another Sub</a></h5></li>
+                                <li><a href="#">Facelift</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                                <li><a href="#">Facelift</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                                <li><a href="#">Facelift</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="match">
+                        <li><h5><a href="#">Some Specialization</a></h5></li>
+                        <li>
+                            <ul>
+                                <li><h5><a href="#">Sub Specialization</a></h5></li>
+                                <li><a href="#">Facelift</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <ul>
+                                <li><h5><a href="#">Sub Specialization</a></h5></li>
+                                <li><a href="#">Facelift</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                                <li><a href="#">Knee Surgery</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="match">
+                        <li><h5><a href="#">Specialization</a></h5></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Facelift</a></li>
+                    </ul>
+                    <ul class="match">
+                        <li><h5><a href="#">Some Specialization1</a></h5></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Some Treatment</a></li>
+                    </ul>
+                    <ul class="match">
+                        <li><h5><a href="#">The Specialization</a></h5></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Some Treatment</a></li>
+                    </ul>
+                    <ul class="match">
+                        <li><h5><a href="#">Some Specialization</a></h5></li>
+                        <li><a href="#">Facelift</a></li>
+                        <li><a href="#">Knee Surgery</a></li>
+                        <li><a href="#">Some Treatment</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo5.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo4.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo3.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo2.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#">
+                    <span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo1.png) center center no-repeat; background-size: 100% 100%"></span>
+                </a>
+                    <fieldset class="rating">
+                        <legend>
+                            USER RATINGS
+                        </legend>
+                        <label for="star1" title="Sucks big time">
+                            <input type="radio" id="star1" name="rating" value="1" />
+                            1
+                        </label>
+                        <label for="star2" title="Kinda bad">
+                            <input type="radio" id="star2" name="rating" value="2" />
+                            2
+                        </label>
+                        <label for="star3" title="Meh">
+                            <input type="radio" id="star3" name="rating" value="3" />
+                            3
+                        </label>
+                        <label for="star4" title="Pretty good">
+                            <input type="radio" id="star4" name="rating" value="4" />
+                            4
+                        </label>
+                        <label for="star5" title="Rocks!">
+                            <input type="radio" id="star5" name="rating" value="5" />
+                            5
+                        </label>
+                    </fieldset>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">
+                        Some Awesome Clinic
+                    </h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2">
+                            </span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450
+                                <br>
+                                <b>
+                                    Kuala Lumpur, Malaysia
+                                </b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+            <div class="pagination">
+                <ul>
+                    <li>
+                        <a href="#">Prev</a>
+                    </li>
+                    <li>
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">Next</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--End of main_content-->
+        <aside id="aside_content" class="span4">
+            <section class="box-in">
+                <ul class="related">
+                    <li class="row">
+                        <h3>Not what your're looking for?</h1>
+                        <ul>
+                            <li>
+                                <form>
+                                    <fieldset>
+                                        <h4>
+                                            Search Again
+                                        </h4>
+                                        <label>
+                                            <b>
+                                                Specialization or Treatment
+                                            </b>
+                                        </label>
+                                        <input type="text" placeholder="i.e: Facelift">
+                                        <label>
+                                            <b>
+                                                Destination
+                                            </b>
+                                        </label>
+                                        <input type="text" placeholder="i.e: Thailand, Hawaii">
+                                        <button type="submit" class="btn orange">
+                                            <i class="icon-search icon-white">
+                                            </i>
+                                            Search
+                                        </button>
+                                    </fieldset>
+                                </form>
+                                <h4>
+                                    Or Simply
+                                </h4>
+                                <div>
+                                    <a href="#" class="btn green">Go back to search page</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+        </aside>
+        <!--End of aside_content-->
+    </div>
+<!--End of content-->
+{% endblock %}

@@ -131,7 +131,8 @@ class SearchService
         return $this->searchStrategy->getMedicalCentersByTerm($term, $type);
     }
 
-    public function getTerm($value, $options) {
+    public function getTerm($value, $options = array())
+    {
         return $this->searchStrategy->getTerm($value, $options);
     }
 }

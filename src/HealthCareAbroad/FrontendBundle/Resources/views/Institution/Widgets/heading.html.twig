@@ -45,6 +45,12 @@
             {% if mainWebsites %}
                 <li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li>
             {% endif %}
+            
+            <!-- Modal Medical Center Status -->
+            	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+            	     with { modalId: 'modal_institution_inquiry_form', modalTitle: 'Emai ' ~ institution.name } 
+            	%}
+           <!-- end Modal Medical Center Status -->
         </ul>    
     </div>
 </div>
