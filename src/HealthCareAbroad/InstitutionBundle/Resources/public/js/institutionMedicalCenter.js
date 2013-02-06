@@ -101,7 +101,12 @@ var InstitutionMedicalCenter = {
     },
     
     closeModal: function(_name) {
-        this._modals[_name].dialog("close");
+        /*this._modals[_name].dialog("close");*/
+        _name.reset();	
+    	_formId = $('#'+_name.id); 
+    	_formId.find('ul.text-error').remove();
+    		
+        return this;
     },
     
     showCommonModal: function (_linkElement) {
@@ -263,7 +268,11 @@ var InstitutionMedicalCenter = {
                 InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
-                _button.html(_buttonHtml).attr('disabled', false);
+            	_button.html(_buttonHtml).attr('disabled', false);
+                _responseJson = $.parseJSON(response.responseText);
+                if (_responseJson.form_error) {
+                    _form.prepend($(_responseJson.form_error_html));
+                }
             }
         });
         return false;
