@@ -103,6 +103,7 @@
         </ul>
     </li>
     {% endif %}
+    {# Temporary hide the Viewing of feedbacks
     <li class="dropdown {{ selectedTab == 'feedback' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Feedbacks <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -111,6 +112,7 @@
             </li>
         </ul>
     </li>
+    #}
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
     <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Settings <b class="caret"></b></a>
