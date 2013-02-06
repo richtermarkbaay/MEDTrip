@@ -117,6 +117,7 @@ class FrontendController extends Controller
                     $termDocument = $termDocuments[0];
                     $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id'])->getSlug();
                     $route = 'search_frontend_results_specializations';
+
                     $sessionVariables = array('specializationId' => $termDocument['specialization_id'], 'termId' => $termDocument['term_id']);
 
                     if ($termDocument['treatment_id']) {
@@ -237,8 +238,8 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
 
-        if (isset($searchTerms['term_id'])) {
-            $termId = $searchTerms['term_id'];
+        if (isset($searchTerms['termId'])) {
+            $termId = $searchTerms['termId'];
         } else {
             $term = $this->get('services.search')->getTerm($request->get('specialization'), array('column' => 'slug'));
             $termId = $term['id'];
@@ -281,8 +282,8 @@ class FrontendController extends Controller
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->getSubSpecialization(isset($searchTerms['subSpecializationId']) ? $searchTerms['subSpecializationId'] : $request->get('subSpecialization'));
 
-        if (isset($searchTerms['term_id'])) {
-            $termId = $searchTerms['term_id'];
+        if (isset($searchTerms['termId'])) {
+            $termId = $searchTerms['termId'];
         } else {
             $term = $this->get('services.search')->getTerm($request->get('subSpecialization'), array('column' => 'slug'));
             $termId = $term['id'];
@@ -316,8 +317,8 @@ class FrontendController extends Controller
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'));
 
-        if (isset($searchTerms['term_id'])) {
-            $termId = $searchTerms['term_id'];
+        if (isset($searchTerms['termId'])) {
+            $termId = $searchTerms['termId'];
         } else {
             $term = $this->get('services.search')->getTerm($request->get('treatment'), array('column' => 'slug'));
             $termId = $term['id'];
