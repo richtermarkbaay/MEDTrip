@@ -5,32 +5,30 @@
                 <div class="span3">
                     <div class="photo-group">
                         <div class="institution-logo">
-                            {% if institution.logo is not sameas(NULL) %}
-                                {{ media(institution.logo, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
-                            {% else %}
-                                <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                              {% if institutionMedicalCenter.logo is not sameas(NULL) %}
+                                    {{ media(institutionMedicalCenter.logo, institutionMedicalCenter, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER_LOGO'), {alt: 'institution medical center logo'}) | raw }}
+                                {% else %}
+                                <img id="institution-medical-center-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                             {% endif %}
                         </div>
                         <span class="label photo-label" >
-                            <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionLogoModal" href="#"> 
+                            <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionMedicalCenterLogoModal" href="#"> 
                                 <i class="icon-picture"></i>
                             </a>
                         </span>
                     </div>
                 </div>
                 <div class="span9">
-                    <h3>{{ institution.name }}</h3>
-                    <a href="#"><h5>Manage Your Accreditations, GlobalAwards and Awards</h5></a>
-                    <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
+                    <h3>{{ institutionMedicalCenter.name }}</h3>
+                    <p>{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</p>
+                    <p>{{ json_decode(institutionMedicalCenter.address) | join(' ') }} </p>
+                    <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
                 </div>
             </div>
-            <div class="span6">
-                <a href="{{ path('admin_institution_edit', {'institutionId': institution.id } ) }}"><h5>Manage Your Institution Profile</h5></a>
-
-                <p>{{ json_decode(institution.contactNumber) | join('-') }}</p>
-                <p>{{ json_decode(institution.address1) | join(' ') }} </p>
-                <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
-                {# -- sites here <p></p> #}
+            <div class="span6" >
+                <a href="{{ path('admin_institution_manageCenters', {'institutionId': institution.id} ) }}" class="pull-right">
+                 <i class="icon-list"></i> Back To Clinics
+               </a>
             </div>
         </div>
     </div>
@@ -47,7 +45,7 @@
 </div>
 
 <!-- Modal Institution Logo -->
-{% include 'AdminBundle:Institution/Modals:modal.institutionLogo.html.twig'
+{% include 'AdminBundle:InstitutionTreatments/Modals:modal.institutionMedicalCenter.html.twig'
 %} <!-- end Modal Institution name -->
 
 <!-- Old upload logo. TODO: Change this to bootstrap dialog upload.

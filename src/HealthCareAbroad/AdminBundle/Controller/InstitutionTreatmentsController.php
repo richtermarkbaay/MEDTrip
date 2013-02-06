@@ -1026,4 +1026,24 @@ class InstitutionTreatmentsController extends Controller
     
         return $response;
     }
+    
+    /**
+     * Upload logo for Institution Medical Center
+     * @param Request $request
+     */
+    public function uploadAction(Request $request)
+    {
+        $fileBag = $request->files;
+    
+        if ($fileBag->get('file')) {
+             
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionMedicalCenter);
+            if(is_object($result)) {
+    
+                $this->institutionMedicalCenter->setLogo($result);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+            }
+        }
+        return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId(),'institutionId' => $this->institution->getId())));
+    }
 }

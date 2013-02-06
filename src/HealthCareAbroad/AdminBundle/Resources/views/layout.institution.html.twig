@@ -7,13 +7,15 @@
 
 {% block body %}
 {% set sideBarUsed = sideBarUsed is defined ? sideBarUsed : 'AdminBundle:Institution:sidebar.html.twig' %}
+{% set profileHeader = institutionMedicalCenter.id is not defined or institutionMedicalCenter.id is empty ? 'AdminBundle:Institution:profileHeader.html.twig' : 'AdminBundle:Widgets/MedicalCenter:profileHeader.html.twig' %}
+
 <body data-target=".bs-docs-sidebar" data-spy="scroll">
 
     {% include 'AdminBundle:Embed:header.layout.html.twig' %}
 
     <div id="main-content">
         <div class="row-fluid">
-            {% include 'AdminBundle:Institution:profileHeader.html.twig' %}
+            {% include profileHeader %}
     	</div>
 
     	<div class="container maincontent" style="margin-top:20px;">
