@@ -19,7 +19,7 @@
         </form>
     {% endblock %}
     {% block footerBody %}
-			<button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+			<button aria-hidden="true" onclick="InstitutionMedicalCenter.closeModal({{formId}});" data-dismiss="modal" class="btn">Cancel</button>
 			<button class="btn btn-primary submit-button" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
     {% endblock %}
 {% endembed %}
