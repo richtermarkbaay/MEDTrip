@@ -103,6 +103,14 @@
         </ul>
     </li>
     {% endif %}
+    <li class="dropdown {{ selectedTab == 'feedback' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Feedbacks <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'feedback_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_feedback') }}">View all</a>
+            </li>
+        </ul>
+    </li>
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
     <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Settings <b class="caret"></b></a>
