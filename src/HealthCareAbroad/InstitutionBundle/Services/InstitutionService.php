@@ -280,6 +280,14 @@ class InstitutionService
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
     }
     
+    
+    /** TODO - Improved!
+     * Get Filtered/Unique Institution Doctors
+     * 
+     * @author Adelbert Silla
+     * @param Institution $institution
+     * @return array Doctor
+     */
     public function getAllDoctors(Institution $institution)
     {
         $institutionDoctors = array();
@@ -291,7 +299,8 @@ class InstitutionService
                     $institutionDoctors[$doctor->getId()] = $doctor;                    
                 }
             }
-        }        
+        }
+
         return $institutionDoctors;
     }
     

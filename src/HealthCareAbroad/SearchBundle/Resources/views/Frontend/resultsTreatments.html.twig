@@ -15,11 +15,11 @@
         {% for center in searchResults %}
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
-                       url: get_institution_medical_center_frontend_url(center),
-                       logo: center.logo ? media(center.logo, center.institution, 'frontendSearchResultLogo') | raw  : null,
-                       name: center.name,
-                       mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
-                       streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+                          url: get_institution_medical_center_frontend_url(center),
+                          logo: center.logo ? media(center.logo, center.institution, 'frontendSearchResultLogo') | raw  : null,
+                          name: center.name,
+                          mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                          streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }
                }
            %}

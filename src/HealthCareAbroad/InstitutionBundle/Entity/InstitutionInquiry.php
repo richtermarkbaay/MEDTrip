@@ -4,7 +4,7 @@ namespace HealthCareAbroad\InstitutionBundle\Entity;
 
 class InstitutionInquiry
 {
-    
+    const STATUS_SAVE = 1;
     /**
      * @var bigint $id
      */

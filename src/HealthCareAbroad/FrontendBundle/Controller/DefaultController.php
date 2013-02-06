@@ -53,6 +53,18 @@ class DefaultController extends Controller
         //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
+    
+    public function renderBreadcrumbAction()
+    {
+        $request = $this->getRequest();
+        $institution = $request->get('institution');
+        $route = $request->get('route');
+        $routeParams = $request->get('routeParams');
+        
+        //var_dump($request->get('routeParams'));
+        
+        return $this->render('FrontendBundle:Widgets:breadcrumbs.html.twig');
+    }
 
     /*
      * Newsletter subscribe
