@@ -48,11 +48,11 @@ class FrontendController extends Controller
                 $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
 
                 if ($request->get('subContext', '') == 'specialization') {
-                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadSpecializations';
+                    $options['autocompleteRoute'] = 'frontend_search_ajaxLoadSpecializations';
                 } elseif ($request->get('subContext') == 'subSpecialization') {
-                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadSubSpecializations';
+                    $options['autocompleteRoute'] = 'frontend_search_ajaxLoadSubSpecializations';
                 } elseif ($request->get('subContext') == 'treatment') {
-                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadTreatments';
+                    $options['autocompleteRoute'] = 'frontend_search_ajaxLoadTreatments';
                 }
 
                 break;
@@ -62,9 +62,9 @@ class FrontendController extends Controller
                 $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
 
                 if ($request->get('subContext', '') == 'country') {
-                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadCountries';
+                    $options['autocompleteRoute'] = 'frontend_search_ajaxLoadCountries';
                 } elseif ($request->get('subContext') == 'city') {
-                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadCities';
+                    $options['autocompleteRoute'] = 'frontend_search_ajaxLoadCities';
                 }
 
                 break;
@@ -99,12 +99,12 @@ class FrontendController extends Controller
         switch ($searchParams->get('context')) {
             case SearchParameterBag::SEARCH_TYPE_DESTINATIONS:
                 $routeParameters['country'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'))->getSlug();
-                $route = 'search_frontend_results_countries';
+                $route = 'frontend_search_results_countries';
                 $sessionVariables['countryId'] = $searchParams->get('countryId');
 
                 if ($searchParams->get('cityId')) {
                     $routeParameters['city'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'))->getSlug();
-                    $route = 'search_frontend_results_cities';
+                    $route = 'frontend_search_results_cities';
                     $sessionVariables['cityId'] = $searchParams->get('cityId');
                 }
 
@@ -116,23 +116,23 @@ class FrontendController extends Controller
                 if (count($termDocuments) == 1) {
                     $termDocument = $termDocuments[0];
                     $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id'])->getSlug();
-                    $route = 'search_frontend_results_specializations';
+                    $route = 'frontend_search_results_specializations';
                     $sessionVariables = array('specializationId' => $termDocument['specialization_id'], 'termId' => $termDocument['term_id']);
 
                     if ($termDocument['treatment_id']) {
                         $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug();
-                        $route = 'search_frontend_results_treatments';
+                        $route = 'frontend_search_results_treatments';
                         $sessionVariables['treatmentId'] = $termDocument['treatment_id'];
                     } elseif ($termDocument['sub_specialization_id']) {
                         $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
-                        $route = 'search_frontend_results_subSpecializations';
+                        $route = 'frontend_search_results_subSpecializations';
                         $sessionVariables['subSpecializationId'] = $termDocument['sub_specialization_id'];
                     }
                 } elseif ($termDocuments) {
                     $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
 
                     $routeParameters = array('tag' => $term['slug']);
-                    $route = 'search_frontend_results_related';
+                    $route = 'frontend_search_results_related';
                     $sessionVariables = array('termId' => $term['id']);
 
                 } else {
@@ -189,7 +189,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName(),
-            'routeName' => 'search_frontend_results_countries',
+            'routeName' => 'frontend_search_results_countries',
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0'
         );
@@ -216,7 +216,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getName().', '.$city->getCountry()->getName(),
-            'routeName' => 'search_frontend_results_cities',
+            'routeName' => 'frontend_search_results_cities',
             'paginationParameters' => array('city' => $city->getSlug(), 'country' => $city->getCountry()->getSlug()),
             'destinationId' => $city->getCountry()->getId() . '-' . $city->getId()
         );
@@ -249,7 +249,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName(),
-            'routeName' => 'search_frontend_results_specializations',
+            'routeName' => 'frontend_search_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId
         );
@@ -293,7 +293,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $subSpecialization->getName(),
-            'routeName' => 'search_frontend_results_subSpecializations',
+            'routeName' => 'frontend_search_results_subSpecializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
             'treatmentId' => $termId
         );
@@ -328,7 +328,7 @@ class FrontendController extends Controller
         $parameters = array(
             'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $treatment->getName(),
-            'routeName' => 'search_frontend_results_treatments',
+            'routeName' => 'frontend_search_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId
         );

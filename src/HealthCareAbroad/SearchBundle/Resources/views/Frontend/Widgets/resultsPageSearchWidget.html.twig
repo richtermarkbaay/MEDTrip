@@ -3,7 +3,7 @@
 </button>
 
 <div role="menu" class="input-append dropdown-menu">
-    <form action="{{ path('search_frontend') }}" method="get" name="searchBox-{{ options.subContext }}">
+    <form action="{{ path('frontend_search') }}" method="get" name="searchBox-{{ options.subContext }}">
         <input type="hidden" name="treatment_id" value="{{ options.treatmentId }}"/>
         <input type="hidden" name="destination_id" value="{{ options.destinationId }}"/>
 

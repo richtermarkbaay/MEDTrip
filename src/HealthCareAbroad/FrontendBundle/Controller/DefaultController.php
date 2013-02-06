@@ -74,7 +74,7 @@ class DefaultController extends Controller
     {
         if($this->getRequest()->attributes->get('_route_params')){
 
-            return $this->redirect($this->generateUrl('main_homepage_index_html'));
+            return $this->redirect($this->generateUrl('frontend_main_homepage_index_html'));
         }
 
         //get IP Address
@@ -101,7 +101,7 @@ class DefaultController extends Controller
                 catch (\Exception $e) {
 
                     $request->getSession()->setFlash("error", "Failed. Please try again.");
-                    $redirectUrl = $this->generateUrl("main_homepage_index_html");
+                    $redirectUrl = $this->generateUrl("frontend_main_homepage_index_html");
                 }
             }
         }
