@@ -241,7 +241,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         }
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS country_slug, COUNT(DISTINCT c.id) AS count
             FROM institutions a
             LEFT JOIN countries b ON a.country_id = b.id
             INNER JOIN institution_medical_centers c ON a.id = c.institution_id
@@ -262,12 +262,13 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topCountries = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS city_slug, COUNT(DISTINCT c.id) AS count, z.slug AS country_slug
             FROM institutions a
             LEFT JOIN cities b ON a.city_id = b.id
             INNER JOIN institution_medical_centers c ON a.id = c.institution_id
             INNER JOIN institution_specializations d ON c.id = d.institution_medical_center_id
             LEFT JOIN specializations e ON d.specialization_id = e.id
+            LEFT JOIN countries z ON b.country_id = z.id
             WHERE e.id = :specialization
             AND a.city_id IS NOT NULL
             AND a.status = :institutionStatus
@@ -297,7 +298,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         }
 
         $sql = "
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS country_slug, COUNT(DISTINCT c.id) AS count
             FROM institutions a
             LEFT JOIN countries b ON a.country_id = b.id
             LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
@@ -321,7 +322,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topCountries = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS city_slug, COUNT(DISTINCT c.id) AS count, z.slug AS country_slug
             FROM institutions a
             LEFT JOIN cities b ON a.city_id = b.id
             LEFT JOIN institution_medical_centers c ON a.id = c.institution_id
@@ -329,6 +330,7 @@ class InstitutionSpecializationRepository extends EntityRepository
             LEFT JOIN `institution_treatments` e on d.`id` = e.`institution_specialization_id`
             INNER JOIN `treatments` f ON e.`treatment_id` = f.`id`
             INNER JOIN `treatment_sub_specializations` g ON f.`id` = g.`treatment_id`
+            LEFT JOIN countries z ON b.country_id = z.id
             WHERE g.sub_specialization_id = :subSpecialization
             AND a.status = :institutionStatus
             AND a.city_id IS NOT NULL
@@ -359,7 +361,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         }
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS country_slug, COUNT(DISTINCT c.id) AS count
             FROM institutions a
             LEFT JOIN countries b ON a.country_id = b.id
             INNER JOIN institution_medical_centers c ON a.id = c.institution_id
@@ -381,13 +383,14 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topCountries = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT c.id) AS count
+            SELECT b.id, b.name AS name, b.slug AS city_slug, COUNT(DISTINCT c.id) AS count, z.slug AS country_slug
             FROM institutions a
             LEFT JOIN cities b ON a.city_id = b.id
             INNER JOIN institution_medical_centers c ON a.id = c.institution_id
             INNER JOIN institution_specializations d ON c.id = d.institution_medical_center_id
             INNER JOIN institution_treatments e ON d.id = e.institution_specialization_id
             LEFT JOIN treatments f ON e.treatment_id = f.id
+            LEFT JOIN countries z ON b.country_id = z.id
             WHERE f.id = :treatment
             AND a.status = :institutionStatus
             AND a.city_id IS NOT NULL
@@ -423,7 +426,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         }
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT d.country_id) AS count
+            SELECT b.id, b.name AS name, b.slug AS specialization_slug, COUNT(DISTINCT d.country_id) AS count
             FROM institution_specializations a
             LEFT JOIN specializations b ON a.specialization_id = b.id
             INNER JOIN institution_medical_centers c ON a.institution_medical_center_id = c.id
@@ -443,12 +446,13 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topSpecializations = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT c.id, c.name AS name, COUNT(DISTINCT e.country_id) AS count
+            SELECT c.id, c.name AS name, c.slug AS treatment_slug, COUNT(DISTINCT e.country_id) AS count, z.slug AS specialization_slug
             FROM institution_specializations a
             INNER JOIN institution_treatments b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments c ON b.treatment_id = c.id
             INNER JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
             LEFT JOIN institutions AS e ON d.institution_id = e.id
+            LEFT JOIN specializations AS z ON a.specialization_id = z.id
             WHERE e.country_id = :country
             AND c.id IS NOT NULL
             AND e.status = :institutionStatus
@@ -484,7 +488,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         }
 
         $stmt = $connection->prepare('
-            SELECT b.id, b.name AS name, COUNT(DISTINCT d.city_id) AS count
+            SELECT b.id, b.name AS name, b.slug AS specialization_slug, COUNT(DISTINCT d.city_id) AS count
             FROM institution_specializations a
             LEFT JOIN specializations b ON a.specialization_id = b.id
             INNER JOIN institution_medical_centers c ON a.institution_medical_center_id = c.id
@@ -504,12 +508,13 @@ class InstitutionSpecializationRepository extends EntityRepository
         $topSpecializations = $stmt->fetchAll();
 
         $stmt = $connection->prepare('
-            SELECT c.id, c.name AS name, COUNT(DISTINCT e.city_id) AS count
+            SELECT c.id, c.name AS name, c.slug AS treatment_slug, COUNT(DISTINCT e.city_id) AS count, z.slug AS specialization_slug
             FROM institution_specializations a
             INNER JOIN institution_treatments b ON a.id = b.institution_specialization_id
             LEFT JOIN treatments c ON b.treatment_id = c.id
             INNER JOIN institution_medical_centers d ON a.institution_medical_center_id = d.id
             LEFT JOIN institutions AS e ON d.institution_id = e.id
+            LEFT JOIN specializations AS z ON a.specialization_id = z.id
             WHERE e.city_id = :city
             AND c.id IS NOT NULL
             AND e.status = :institutionStatus
