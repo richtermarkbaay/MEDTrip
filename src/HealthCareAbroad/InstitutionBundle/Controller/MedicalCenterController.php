@@ -391,16 +391,29 @@ class MedicalCenterController extends InstitutionAwareController
         $errors = array();
         $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
         if (\count($submittedSpecializations) > 0) {
+            
             foreach ($submittedSpecializations as $specializationId => $_data) {
+                
+                $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
                 $_institutionSpecialization = new InstitutionSpecialization();
+                $_institutionSpecialization->setSpecialization($specialization);
                 $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
                 $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
-                
                 $_institutionSpecialization->setDescription('');
-                $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('em' => $em));
+                
+                // set passed treatments as choices
+                $default_choices = array();
+                $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
+                foreach ($_treatment_choices as $_t) {
+                    $default_choices[$_t->getId()] = $_t->getName();
+                    // add the treatment
+                    $_institutionSpecialization->addTreatment($_t);
+                }
+                
+                $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('default_choices' => $default_choices));
                 $form->bind($_data);
                 if ($form->isValid()) {
-                    $em->persist($form->getData());
+                    $em->persist($_institutionSpecialization);
                     $em->flush();
                     
                     if ($request->isXmlHttpRequest()) {
@@ -412,7 +425,9 @@ class MedicalCenterController extends InstitutionAwareController
                     }
                 }
                 else {
-            
+                    foreach ($form->getErrors() as $_error) {
+                        $errors[] = $_error->getMessage();
+                    }
                 }
             }    
         }
@@ -1013,7 +1028,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         $groupBySubSpecialization = true;
-        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
         $params['formName'] = InstitutionSpecializationFormType::NAME;
         $params['form'] = $form->createView();
         $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
