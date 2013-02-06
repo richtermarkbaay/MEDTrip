@@ -73,7 +73,9 @@ class InstitutionController extends Controller
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $institutionService->isSingleCenter($this->institution),
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
-            'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView()		
+            'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
+            'formId' => 'institution_inquiry_form'	
+                        	
 //            'institutionBranches' => $institutionService->getBranches($this->institution)
         );
 
@@ -100,23 +102,29 @@ class InstitutionController extends Controller
     public function ajaxSaveInstitutionInquiryAction(Request $request)
     {
         $institutionInquiry = new InstitutionInquiry();
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
+        $institutionInquiry->setInstitution($institution);
         $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
         
-        if ($request->isMethod('POST')) {
-             
-            $form->bindRequest($request);
-             
-            if ($form->isValid()) {
-                $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($institutionInquiry);
-                $em->flush();                
-                
-                $this->get('session')->setFlash('notice', "Successfully saved!");
-                 
-            }
+        $form->bindRequest($request);
+        if ($form->isValid()) {
+            $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($institutionInquiry);
+            $em->flush();                
+            
+            $this->get('session')->setFlash('notice', "Successfully saved!");
+            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
         }
-        $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
+        else {
+            $errors = array();
+            $form_errors = $this->get('validator')->validate($form);
+            foreach ($form_errors as $_err) {
+                $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
+            }
+            $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+        }
+        
         return $response;
     }
 

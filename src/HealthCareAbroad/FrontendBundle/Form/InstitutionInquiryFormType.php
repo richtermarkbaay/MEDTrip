@@ -15,9 +15,9 @@ class InstitutionInquiryFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
     {
     	$builder
-    	    ->add('inquirerName', 'text', array('constraints' => array(new NotBlank()), 'label' => 'Your Name' ))
-    		->add('inquirerEmail','email', array('constraints' => array(new Email(), new NotBlank()), 'label' => 'Your Email Address'))
-    		->add('message', 'textarea', array('constraints' => new NotBlank(), 'label' => 'Enter Your Message'))
+    	    ->add('inquirer_name', 'text', array('label' => 'Your Name' ))
+    		->add('inquirer_email','email', array('label' => 'Your Email Address'))
+    		->add('message', 'textarea', array('label' => 'Enter Your Message'))
     		;
     }
     
