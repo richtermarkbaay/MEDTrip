@@ -1,6 +1,6 @@
 <header id="header"> <!--Header-->
     <div class="container">
-        <a class="logo span5" href="{{ path('main_homepage') }}">
+        <a class="logo span5" href="{{ path('frontend_main_homepage') }}">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
         <!-- nav class="menu">
@@ -14,7 +14,7 @@
     </div>
 </header> <!--End of header-->
 
-{% if app.request.attributes.get('_route') == 'main_homepage' %}
+{% if app.request.attributes.get('_route') == 'frontend_main_homepage' %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
         <div id="hero_unit" class="row">
             <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>
