@@ -890,6 +890,10 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
     {
+        $debugMode = isset($_GET['hcaDebug']) && $_GET['hcaDebug'] == 1;
+        
+        $start = \microtime(true);
+        
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
         if (!$institutionSpecialization ) {
             throw $this->createNotFoundException('Invalid institution specialization');
@@ -935,27 +939,48 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         else {
+            
             $specialization = $institutionSpecialization->getSpecialization();
             $availableTreatments = $this->get('services.institution_medical_center')
                 ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
             
             try {
-                $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
-                    'availableTreatments' => $availableTreatments,
-                    'form' => $form->createView(),
-                    'formName' => InstitutionSpecializationFormType::NAME,
-                    'specialization' => $specialization,
-                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                    'institutionSpecialization' => $institutionSpecialization,
-                    'currentTreatments' => $institutionSpecialization->getTreatments()
-                ));
                 
-                $response = new Response(\json_encode(array('html' => $html)));
+                if ($debugMode) {
+                    $response = $this->render('::base.ajaxDebugger.html.twig', array(
+                        'availableTreatments' => $availableTreatments,
+                        'form' => $form->createView(),
+                        'formName' => InstitutionSpecializationFormType::NAME,
+                        'specialization' => $specialization,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institutionSpecialization' => $institutionSpecialization,
+                        'currentTreatments' => $institutionSpecialization->getTreatments()
+                    ));
+                }
+                else {
+                    $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
+                                    'availableTreatments' => $availableTreatments,
+                                    'form' => $form->createView(),
+                                    'formName' => InstitutionSpecializationFormType::NAME,
+                                    'specialization' => $specialization,
+                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'institutionSpecialization' => $institutionSpecialization,
+                                    'currentTreatments' => $institutionSpecialization->getTreatments()
+                    ));
+                    
+                    $response = new Response(\json_encode(array('html' => $html)));
+                }
             }
             catch (\Exception $e) {
                 $response = new Response($e->getMessage(), 500);
             }
             
+        }
+        $end = \microtime(true);
+        
+        if ($debugMode) {
+            $diff = $end - $start;
+            echo  "{$diff} ms"; exit;
         }
         
         return $response;   
