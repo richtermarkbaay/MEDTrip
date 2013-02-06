@@ -43,7 +43,7 @@ class InstitutionController extends Controller
             $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneBy($criteria);
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h')->from('InstitutionBundle:Institution', 'a')
+            $qb->select('a, b, c, d, e, f, g, h, i, j')->from('InstitutionBundle:Institution', 'a')
                ->leftJoin('a.institutionMedicalCenters', 'b')
                ->leftJoin('b.institutionSpecializations', 'c')
                ->leftJoin('c.specialization', 'd')
@@ -51,6 +51,8 @@ class InstitutionController extends Controller
                ->leftJoin('a.country', 'f')
                ->leftJoin('a.city', 'g')
                ->leftJoin('a.logo', 'h')
+               ->leftJoin('b.doctors', 'i')
+               ->leftJoin('i.specializations', 'j')
                ->where('a.slug = :institutionSlug')
                ->setParameter('institutionSlug', $criteria['slug']);
 

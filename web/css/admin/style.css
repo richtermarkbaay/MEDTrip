@@ -204,6 +204,10 @@ a:hover
     font-weight: normal;
     padding: 5px;
 }
+
+.institution-logo img , .institution-logo-image img {
+  height:100px;
+  }
 /*
 ==================== Feature ===========
 */

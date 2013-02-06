@@ -333,4 +333,29 @@ class InstitutionController extends Controller
    	    );
    	    return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
    	}
+   	
+   	/**
+   	 * Upload logo for Institution
+   	 * @param Request $request
+   	 * @author Chaztine Blance
+   	 */
+   	public function uploadAction(Request $request)
+   	{
+   	    $response = new Response();
+   	
+   	    $fileBag = $request->files;
+   	
+   	    if ($fileBag->get('file')) {
+   	
+   	        $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
+   	
+   	        if(is_object($result)) {
+   	             
+   	            $media = $result;
+   	            $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
+   	        }
+   	    }
+   	
+   	    return $this->redirect($this->generateUrl('admin_institution_view' , array('institutionId' => $this->institution->getId())));
+   	}
 }
