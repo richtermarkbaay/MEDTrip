@@ -3,7 +3,7 @@
 		<ul class="thumbnails">
 		    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
-    				<a href="{{ path('page_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
+    				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
             			{% if each.logo %}
             			    {{ media(each.logo, institution, 'default', {thumbnail: true}) | raw }}
             			{% else %}

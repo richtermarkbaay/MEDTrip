@@ -8,11 +8,16 @@
         {% block header %}
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
-        
-        {% if 'main_homepage' != app.request.attributes.get('_route') %}
-            {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
+
+        {% if (renderFrontendBreadcrumb is defined) and renderFrontendBreadcrumb %}
+            {% set breadcrumbParams = {
+                institution: institution is defined ? institution : null,
+                route: app.request.get('_route'),
+                routeParams: app.request.get('_route_params')
+            } %}
+            {% render 'FrontendBundle:Default:renderBreadcrumb' with breadcrumbParams%}
         {% endif %}
-        
+
         {% block callout %}{% endblock %}
         
         <div id="content" class="container {{ class is defined ? class : '' }} {{ isHomePage is defined ? '' : 'content' }}">

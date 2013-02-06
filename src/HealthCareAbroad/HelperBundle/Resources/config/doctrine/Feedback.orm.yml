@@ -11,9 +11,12 @@ HealthCareAbroad\HelperBundle\Entity\Feedback:
             generator:
                 strategy: IDENTITY
         accountId:
+            id: true
             type: bigint
             nullable: false
             column: account_id
+            generator:
+                strategy: NONE
         subject:
             type: string
             length: 50

@@ -23,8 +23,8 @@
 
             <table id="inquiries-list" class="table table-bordered sortable-list">
             <tr>
+                <th> <a id="column-name"><a href="#">Institution</a></th>
                 <th> <a id="column-name"><a href="#">Inquirer</a></th>
-                <th><a href="#">Subject</a></th>
                 <th><a href="#">Message</a></th>
                 <th><a href="#">Email</a></th>
                 <th><a href="#">Date Created</a></th>
@@ -32,10 +32,10 @@
 	
 			{% for each in inquiries %}
                 <tr>
-                    <td class="name">{{ each.firstName | title }} {{ each.lastName | title }}</td>
-                    <td>{{ each.inquirySubject.name | title }}</td>
+                    <td class="name">{{ each.institution.name | title }}</td>
+                    <td class="name">{{ each.inquirerName | title }}</td>
                     <td>{{ each.message | capitalize }}</td>
-                    <td>{{ each.email }}</td>
+                    <td>{{ each.inquirerEmail }}</td>
                     <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
                 </tr>
            {% endfor %}
