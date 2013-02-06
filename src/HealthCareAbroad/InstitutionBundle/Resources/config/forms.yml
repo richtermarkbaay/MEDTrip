@@ -1,4 +1,12 @@
 services:
+
+    form.institution_specialization:
+        class: HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType
+        #calls:
+        #    - [setInstitutionTreatmentEventSubscriber, [@form_subscriber.institutionTreatmentChoice]]
+        tags:
+            - { name: form.type, alias: institutionSpecialization }
+        
     form.institution_list:
         class: "%services.institution_list%"
         calls:

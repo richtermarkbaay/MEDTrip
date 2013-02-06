@@ -3,61 +3,57 @@ FrontendBundle_institution:
     resource: "@FrontendBundle/Resources/config/routing.institution.yml"
     prefix:   /
 
-newsletter_new:
+frontend_newsletter_new:
     pattern:  /
     defaults: { _controller: FrontendBundle:Default:new}
     requirements:
         _method: GET|POST
 
-temp_homepage_index.html:
-    pattern: /temp.html
-    defaults: { _controller: FrontendBundle:Default:indexTemp }
-
-main_homepage_index_html:
+frontend_main_homepage_index_html:
     pattern:  /index.html
     defaults: { _controller: FrontendBundle:Default:new}
         
-main_homepage:
+frontend_main_homepage:
     pattern:  /frontend/index.html
     defaults: { _controller: FrontendBundle:Default:index}
 
-page_inquire:
+frontend_page_inquire:
     pattern:  /inquire
     defaults: { _controller: FrontendBundle:Inquiry:index }
     requirements:
        _method:  GET|POST
 
-page_popular_sidebar:
-    pattern: /popular
-    defaults: { _controller: FrontendBundle:Sidebar:popular }
-    requirements:
-        _method: GET|POST
-
-page_recent_sidebar:
-    pattern: /recent
-    defaults: { _controller: FrontendBundle:Sidebar:recent }
-    requirements:
-        _method: GET|POST
-
-page_comments_sidebar:
-    pattern: /comments
-    defaults: { _controller: FrontendBundle:Sidebar:comments }
-    requirements:
-        _method: GET|POST
-
-page_tags_sidebar:
-    pattern: /tags
-    defaults: { _controller: FrontendBundle:Sidebar:tags }
-    requirements:
-        _method: GET|POST
-
-page_exception_report_create:
+frontend_page_exception_report_create:
     pattern: /error
     defaults: { _controller: FrontendBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
 
-splash_page:
+page_popular_sidebar: # Currently Not Being used! - This might be depcrecated!
+    pattern: /popular
+    defaults: { _controller: FrontendBundle:Sidebar:popular }
+    requirements:
+        _method: GET|POST
+
+page_recent_sidebar: # Currently Not Being used! - This might be depcrecated!
+    pattern: /recent
+    defaults: { _controller: FrontendBundle:Sidebar:recent }
+    requirements:
+        _method: GET|POST
+
+page_comments_sidebar: # Currently Not Being used! - This might be depcrecated!
+    pattern: /comments
+    defaults: { _controller: FrontendBundle:Sidebar:comments }
+    requirements:
+        _method: GET|POST
+
+page_tags_sidebar: # Currently Not Being used! - This might be depcrecated!
+    pattern: /tags
+    defaults: { _controller: FrontendBundle:Sidebar:tags }
+    requirements:
+        _method: GET|POST
+
+splash_page: # Currently Not Being used! - This might be depcrecated!
     pattern:  /{url}
     defaults: { _controller: FrontendBundle:Default:new, url: /}
     requirements:

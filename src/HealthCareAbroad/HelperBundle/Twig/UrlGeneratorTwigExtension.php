@@ -34,7 +34,7 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
 
     public function get_treatment_url(Treatment $treatment)
     {
-        return $this->generator->generate('search_frontend_results_treatments', array(
+        return $this->generator->generate('frontend_search_results_treatments', array(
             'specialization' => $treatment->getSpecialization()->getSlug(),
             'treatment' => $treatment->getSlug()
         ), true);
@@ -44,14 +44,14 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
     {
         $params = array('country' => $country->getSlug());
 
-        return $this->generator->generate('search_frontend_results_countries', $params, true);
+        return $this->generator->generate('frontend_search_results_countries', $params, true);
     }
 
     public function get_city_url(City $city)
     {
         $params = array('country' => $city->getCountry()->getSlug(), 'city' => $city->getSlug());
 
-        return $this->generator->generate('search_frontend_results_cities', $params, true);
+        return $this->generator->generate('frontend_search_results_cities', $params, true);
     }
 
     public function getName()
