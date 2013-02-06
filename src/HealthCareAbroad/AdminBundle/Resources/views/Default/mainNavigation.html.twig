@@ -69,7 +69,7 @@
                 <a href="{{ path('admin_helper_text_index') }}">Manage Helper Text</a>
             </li>
              <li class="{{ selectedSubTab == 'manage_term' ? 'active' : '' }}">
-                <a href="{{ path('admin_terms_index') }}">Manage Terms</a>
+                <a href="{{ path('admin_terms_index') }}">Manage {{ getClassLabel('term').plural }}</a>
             </li>
         
         </ul>

@@ -21,6 +21,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy;
+use HealthCareAbroad\TermBundle\Entity\TermDocument;
 
 /**
  * DefaultSearchStrategy
@@ -75,7 +76,7 @@ class DefaultSearchStrategy extends SearchStrategy
 
     //TODO: query will not give correct results in all cases; this should probably be
     //renamed to be more specific.
-    public function getTermDocuments(SearchParameterBag $searchParams, $options = array())
+    public function getTermDocuments(SearchParameterBag $searchParams, $options = array(), $uniqueTermDocument = true)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
@@ -104,9 +105,14 @@ class DefaultSearchStrategy extends SearchStrategy
 //             $sql .= " GROUP BY = {$options['group_by']} ";
 //         }
 
-        $sql .= " GROUP BY term_document_id ";
+        if ($uniqueTermDocument) {
+            $sql .= " GROUP BY term_document_id ";
+        }
 
         $stmt = $connection->prepare($sql);
+
+//print_r($stmt->getWrappedStatement()); exit;
+
         $stmt->bindValue('termId', $searchParams->get('treatmentId'));
         $stmt->execute();
 
@@ -134,6 +140,16 @@ class DefaultSearchStrategy extends SearchStrategy
             $optionalWhereClause .= " AND b.country_id = :countryId ";
         }
 
+        if ($filter = $searchParams->get('filter', '')) {
+            if ($filter == 'specialization') {
+                $optionalWhereClause .= ' AND b.type = ' . TermDocument::TYPE_SPECIALIZATION . ' ';
+            } elseif ($filter == 'subSpecialization') {
+                $optionalWhereClause .= ' AND b.type = ' . TermDocument::TYPE_SUBSPECIALIZATION . ' ';
+            } elseif ($filter == 'treatment') {
+                $optionalWhereClause .= ' AND b.type = ' . TermDocument::TYPE_TREATMENT . ' ';
+            }
+        }
+
         $sql = "
             SELECT a.id AS value, a.name AS label
             FROM terms AS a
@@ -156,13 +172,10 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function getDestinationsByName(SearchParameterBag $searchParams)
-    {
-        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-        $optionalWhereClause = ($termId = $searchParams->get('treatmentId', 0)) ? ' AND term_id = :treatmentId ' : ' ';
-
-        //TODO: test if cast really helps speed up query?
+    /**
+     * COMBINED QUERY:
+     *
         $sql = "
             SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
             FROM search_terms
@@ -179,6 +192,41 @@ class DefaultSearchStrategy extends SearchStrategy
             GROUP BY label
             ORDER BY label ASC
         ";
+     * @param SearchParameterBag $searchParams
+     */
+    private function getDestinationsByName(SearchParameterBag $searchParams)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+        $sql = "INVALID SQL";
+
+        $optionalWhereClause = ($termId = $searchParams->get('treatmentId', 0)) ? ' AND term_id = :treatmentId ' : ' ';
+
+        //TODO: test if cast really helps speed up query?
+        $sqlCountry = "
+            SELECT country_name AS label, CONCAT(CAST(country_id AS CHAR), '-0') AS value
+            FROM search_terms
+            WHERE country_name LIKE :name
+            $optionalWhereClause
+        ";
+
+        $sqlCity = "
+            SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
+            FROM search_terms
+            WHERE (country_name LIKE :name OR city_name LIKE :name) AND city_id IS NOT NULL
+            $optionalWhereClause
+        ";
+
+        if ($filter = $searchParams->get('filter', '')) {
+            if ($filter == 'country') {
+                $sql = $sqlCountry;
+            } elseif ($filter == 'city') {
+                $sql = $sqlCity;
+            }
+        } else {
+            $sql = $sqlCountry . ' UNION ' . $sqlCity;
+        }
+
+        $sql .= ' GROUP BY label ORDER BY label ASC ';
 
         $stmt = $connection->prepare($sql);
 
@@ -187,7 +235,8 @@ class DefaultSearchStrategy extends SearchStrategy
             $stmt->bindValue('treatmentId', $termId);
         }
         $stmt->execute();
-
+//         echo  $termId;
+// print_r($stmt->getWrappedStatement()); exit;
         return $stmt->fetchAll();
     }
 
@@ -437,10 +486,34 @@ class DefaultSearchStrategy extends SearchStrategy
     }
 
     //TODO: implementation
-    public function getMedicalCentersByTerm($term)
+    public function getTerm($term, $options = array())
     {
-        $isPhrase = is_string($term) && !is_numeric($term);
+        $connection = $this->container->get('doctrine')->getConnection();
 
-        $repository = $this->container->get('doctrine')->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+        $sql = "SELECT id, name, slug FROM terms ";
+
+        if (empty($options)) {
+            $options['column'] = 'id';
+        }
+
+        switch ($options['column']) {
+            case 'id':
+                $sql .= ' WHERE id = :term ';
+                break;
+            case 'slug':
+                $sql .= ' WHERE name = :term ';
+                break;
+            case 'name':
+                $sql .= ' WHERE slug = :term ';
+                break;
+        }
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', $term);
+        $stmt->execute();
+
+
+        //all columns are unique
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 }

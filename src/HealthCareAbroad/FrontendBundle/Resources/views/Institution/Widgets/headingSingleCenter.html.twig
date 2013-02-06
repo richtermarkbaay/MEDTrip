@@ -1,9 +1,9 @@
 <div class="span2">
-	<a href="">
+	<a href="#">
 	    {% if institution.logo %}
 	        {{ media(institution.logo, institution, 'default') | raw }}
 	    {% else  %}
-	        <img src="{{ imageplaceholder.clinicLogo }}" alt="default logo" />
+	        <img src="{{ imageplaceholder.clinicLogo }}" class="default" alt="logo"/>
 	    {% endif %}
 	</a>
     

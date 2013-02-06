@@ -56,6 +56,7 @@ class SignUpService
         $institutionMedicalCenter->setDescription($institution->getDescription());
         $institutionMedicalCenter->setInstitution($institution);
         $institutionMedicalCenter->setAddress($institution->getAddress1());
+        $institutionMedicalCenter->setCoordinates($institution->getCoordinates());
         
         // save institution medical center as draft
         $this->institutionMedicalCenterService->saveAsDraft($institutionMedicalCenter);

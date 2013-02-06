@@ -8,7 +8,7 @@
 
 <ul class="nav pull-right" id="right-nav">
     <li class="dropdown {{ selectedTab == 'myaccount' ? 'active' : '' }}">
-        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-user"></i> <strong>My Account</strong></a>
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#"><i class="icon-user"></i></a>
         <ul class="dropdown-menu">
             <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_edit_account') }}">Edit account</a></li>
             <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="{{ path('admin_change_password') }}">Change password</a></li>

@@ -123,11 +123,6 @@ class Institution
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
-    private $institutionOfferedServices;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
     private $institutionLanguagesSpoken;
 
     /**
@@ -139,7 +134,6 @@ class Institution
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionOfferedServices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
         $this->medicalProviderGroups = new \Doctrine\Common\Collections\ArrayCollection();
     }
@@ -634,38 +628,6 @@ class Institution
     public function getLogo()
     {
         return $this->logo;
-    }
-
-    /**
-     * Add institutionOfferedServices
-     *
-     * @param HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices
-     * @return Institution
-     */
-    public function addInstitutionOfferedService(\HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices)
-    {
-        $this->institutionOfferedServices[] = $institutionOfferedServices;
-        return $this;
-    }
-
-    /**
-     * Remove institutionOfferedServices
-     *
-     * @param HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices
-     */
-    public function removeInstitutionOfferedService(\HealthCareAbroad\AdminBundle\Entity\OfferedService $institutionOfferedServices)
-    {
-        $this->institutionOfferedServices->removeElement($institutionOfferedServices);
-    }
-
-    /**
-     * Get institutionOfferedServices
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionOfferedServices()
-    {
-        return $this->institutionOfferedServices;
     }
 
     /**

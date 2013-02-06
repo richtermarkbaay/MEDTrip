@@ -31,7 +31,7 @@ BEGIN
         INSERT INTO `term_documents` SET `term_id` = termID, `document_id` = NEW.id, `type` = DOCUMENT_TYPE_TREATMENT;
     ELSE
         -- NEW.name does not exist, insert it to terms
-        INSERT INTO `terms` SET `name` = NEW.name;
+        INSERT INTO `terms` SET `name` = NEW.name, `terms`.slug = NEW.slug;
         -- insert into `terms_documents`, it maybe unsafe to use LAST_INSERT_ID here
         -- for now using select query of persisted NEW.name, consider perfomance impact
         INSERT INTO `term_documents` (`term_id`, `document_id`, `type`)
@@ -79,11 +79,11 @@ BEGIN
                     DELETE FROM `terms` WHERE `terms`.name = OLD.name;
                 ELSE
                     -- NEW.name does not exist yet in terms, let's just update terms.term to NEW.name
-                    UPDATE `terms` SET `terms`.`name` = NEW.name WHERE `terms`.`name` = OLD.name;
+                    UPDATE `terms` SET `terms`.`name` = NEW.name, `terms`.slug = NEW.slug WHERE `terms`.`name` = OLD.name;
                 END IF;
             ELSE
                 -- other term_documents are using OLD.name, create a new row in `terms` with `terms`.`name` = NEW.name
-                INSERT INTO `terms` SET `terms`.`name` = NEW.name ON DUPLICATE KEY UPDATE `terms`.`name` = NEW.name;
+                INSERT INTO `terms` SET `terms`.`name` = NEW.name, `terms`.slug = NEW.slug ON DUPLICATE KEY UPDATE `terms`.`name` = NEW.name;
                 -- update the term_id of term_documents to the new term
                 UPDATE `term_documents` SET `term_id` = (SELECT `terms`.`id` FROM `terms` WHERE `terms`.`name` = NEW.name LIMIT 1)
                 WHERE `term_documents`.`document_id` = NEW.id
@@ -94,7 +94,7 @@ BEGIN
             -- this will only be executed if OLD.name and it's term_documents has been manually deleted, or has not been persisted yet 
             -- OLD.name term does not exist, create term with NEW.name, 
             -- then create a row term_documents
-            INSERT INTO `terms` SET `terms`.`name` = NEW.name ON DUPLICATE KEY UPDATE `terms`.`name` = NEW.`name`;
+            INSERT INTO `terms` SET `terms`.`name` = NEW.name, `terms`.slug = NEW.slug ON DUPLICATE KEY UPDATE `terms`.`name` = NEW.`name`;
             INSERT INTO `term_documents` (`term_id`, `document_id`, `type`)
                 SELECT a.`id`, NEW.id, DOCUMENT_TYPE_TREATMENT FROM `terms` a WHERE a.`name` = NEW.name LIMIT 1;
         END IF;
