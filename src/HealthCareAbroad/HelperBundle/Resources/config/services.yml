@@ -128,3 +128,9 @@ services:
             - [setMailer, [@mailer]]
         tags:
             - { name: kernel.event_listener, event: event.errorReport.create, method: onCreate }
+
+
+    listener.helper.globalOnKernelResponse:
+        class: HealthCareAbroad\HelperBundle\Listener\GlobalOnKernelController
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
