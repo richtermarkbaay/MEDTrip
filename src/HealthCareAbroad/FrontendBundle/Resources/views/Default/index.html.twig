@@ -1,9 +1,8 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 {% set isHomePage = true %}
 {% block content %}
-    {% include 'FrontendBundle:Widgets:breadcrumbs.html.twig' %}
-	<div id="main_content" class="row">
 
+	<div id="main_content" class="row" style="margin-top: 40px;"> <!-- TODO: Remove Inline style -->
 	    <!-- Main Content -->
 		<div id="content" class="span8">
             {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}

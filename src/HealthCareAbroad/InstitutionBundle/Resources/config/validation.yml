@@ -26,6 +26,16 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
             - NotBlank: ~
             - Email: ~
             
+HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
+    properties:
+        inquirer_name:
+            - NotBlank: {message: 'Inquirer Name is required.'}
+        inquirer_email:
+            - NotBlank: {message: 'Inquirer Email is required.'}
+            - Email: {message: 'Please supply a valid email.'}   
+        message:
+            - NotBlank: {message: 'Inquirer Message is required.'}
+        
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
     properties:
         firstName:

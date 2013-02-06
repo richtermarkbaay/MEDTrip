@@ -128,3 +128,11 @@ services:
             - [setMailer, [@mailer]]
         tags:
             - { name: kernel.event_listener, event: event.errorReport.create, method: onCreate }
+
+
+    listener.helper.globalOnKernelController:
+        class: HealthCareAbroad\HelperBundle\Listener\GlobalOnKernelController
+        calls:
+            - [setTwig, [@twig]]
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

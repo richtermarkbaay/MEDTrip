@@ -128,7 +128,13 @@ admin_inquire:
     defaults: { _controller: AdminBundle:Inquiry:index }
     requirements:
         _method:  GET
-
+        
+admin_feedback:
+    pattern: /admin/feedbacks
+    defaults: { _controller: AdminBundle:Feedback:index }
+    requirements:
+        _method:  GET
+        
 admin_tagHomepage:
     pattern:  /admin/tags
     defaults: { _controller: AdminBundle:Tag:index }
