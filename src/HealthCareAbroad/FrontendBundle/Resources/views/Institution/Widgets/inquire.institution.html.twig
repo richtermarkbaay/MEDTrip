@@ -1,0 +1,17 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:400px;'}} %}
+    {% block modalBody %}
+    <form novalidate="novalidate" action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="institution_inquiry_form" method="POST" class="basic-form">        
+        {{ form_errors(form) }}   
+        {{ form_row(form.inquirerName) }}
+        {{ form_row(form.inquirerEmail) }}
+        {{ form_row(form.message) }}
+        </br>
+        {{ form_rest(form) }}
+                            	                        	
+    </form>
+    {% endblock %}
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-loader-text="Processing..." onclick="Institution.saveInquiry(this); return false;" id="modal_institution_inquiry_submitButton" data-modalId="{{modalId}}" data-formId="#institution_inquiry_form" class="btn btn-primary orange">Submit</button>
+    {% endblock %}
+{% endembed %}

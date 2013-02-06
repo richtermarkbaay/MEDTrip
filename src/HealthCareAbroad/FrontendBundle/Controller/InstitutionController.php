@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
+
+use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -72,6 +76,7 @@ class InstitutionController extends Controller
             'isSingleCenterInstitution' => $institutionService->isSingleCenter($this->institution),
             'institutionAwards' => $institutionService->getAllGlobalAwards($this->institution), 
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
+            'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView()		
 //            'institutionBranches' => $institutionService->getBranches($this->institution)
         );
 
@@ -82,6 +87,29 @@ class InstitutionController extends Controller
         
 
         return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
+    }
+    
+    public function ajaxSaveInstitutionInquiryAction(Request $request)
+    {
+        $institutionInquiry = new InstitutionInquiry();
+        $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
+        
+        if ($request->isMethod('POST')) {
+             
+            $form->bindRequest($request);
+             
+            if ($form->isValid()) {
+                $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($institutionInquiry);
+                $em->flush();                
+                
+                $this->get('session')->setFlash('notice', "Successfully saved!");
+                 
+            }
+        }
+        $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
+        return $response;
     }
 
     public function listingAction()
