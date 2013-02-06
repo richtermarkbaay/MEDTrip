@@ -10,6 +10,12 @@ institution_ajaxUpdateProfileByField:
     requirements:
         _method:  GET|POST
 
+institution_ajaxUpdateCoordinates:
+    pattern: /institution/ajax/update-coordinates
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:ajaxUpdateCoordinates }
+    requirements:
+        _method:  POST
+
 institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }

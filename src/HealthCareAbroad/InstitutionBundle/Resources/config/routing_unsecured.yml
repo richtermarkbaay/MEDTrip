@@ -17,7 +17,15 @@ institution_medicalCenter_loadMedicalSpecialist:
     requirements:
         _method: GET
         imcId: \d+
-        
+
+#TODO - Check this routing if being use
+institution_medicalCenter_ajaxGetUpdateBusinessHours:
+    pattern: /medical-center/{imcId}/ajax/update-by-business-hours
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
+    requirements:
+        imcId: \d+
+        _method: GET
+
 # institutionId is included in request parameters since this is an unsecured request
 institution_medicalCenter_ajaxGlobalAwardSource:
     pattern: /ns-institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search
@@ -40,3 +48,12 @@ institution_medical_center_ajaxLoadSpecializationAccordionEntry:
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
     requirements:
         _method: GET
+        
+
+institution_medicalCenter_ajaxGetEditSpecialization:
+    pattern: /ns-institution/medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddInstitutionSpecializationTreatments }
+    requirements:
+        _method: GET
+        imcId: \d+
+        isId: \d+

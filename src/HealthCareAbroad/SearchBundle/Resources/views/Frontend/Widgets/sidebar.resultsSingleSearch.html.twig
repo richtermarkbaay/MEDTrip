@@ -3,26 +3,47 @@
         <h5 class="heading"><small>Narrow</small> Search </h5>
         <ul class="related">
 
+            {% if context == 'treatments' %}
+                {% set subContext = 'country' %}
+                {% set widgetParameters = { context: context, subContext: subContext, treatmentId: id } %}
+                {% set items = topCountries %}
+            {% elseif context == 'destinations' %}
+                {% set subContext = 'specialization' %}
+                {% set widgetParameters = { context: context, subContext: subContext, destinationId: id } %}
+                {% set items = topSpecializations %}
+            {% endif %}
+
             <li class="row">
                 <div class="pull-right btn-group">
-                    {% render "SearchBundle:Frontend:showWidget" with { context: context, subContext: 'country', treatmentId: treatmentId } %}
+                    {% render "SearchBundle:Frontend:showWidget" with widgetParameters %}
                 </div>
-                <h3>By Country</h3>
+
+                <h3>By {{ subContext | capitalize }}</h3>
                 <ul>
-                    {% for item in topCountries %}
-                        <li><a href="#">{{ item.country }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
+                    {% for item in items %}
+                        <li><a href="#">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
                     {% endfor %}
                 </ul>
             </li>
 
+            {% if context == 'treatments' %}
+                {% set subContext = 'city' %}
+                {% set widgetParameters = { context: context, subContext: subContext, treatmentId: id } %}
+                {% set items = topCities %}
+            {% elseif context == 'destinations' %}
+                {% set subContext = 'treatment' %}
+                {% set widgetParameters = { context: context, subContext: subContext, destinationId: id } %}
+                {% set items = topTreatments %}
+            {% endif %}
+
             <li class="row">
                 <div class="pull-right btn-group">
-                    {% render "SearchBundle:Frontend:showWidget" with { context: context, subContext: 'city', treatmentId: treatmentId } %}
+                    {% render "SearchBundle:Frontend:showWidget" with widgetParameters %}
                 </div>
-                <h3>By City</h3>
+                <h3>By {{ subContext | capitalize }}</h3>
                 <ul>
-                    {% for item in topCities %}
-                        <li><a href="#">{{ item.city }} <span class="right label label-inverse">{{ item.institution_count }}</span></a></li>
+                    {% for item in items %}
+                        <li><a href="#">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
                     {% endfor %}
                 </ul>
             </li>

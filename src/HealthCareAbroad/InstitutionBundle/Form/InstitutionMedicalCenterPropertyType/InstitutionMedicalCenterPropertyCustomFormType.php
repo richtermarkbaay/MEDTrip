@@ -4,8 +4,6 @@ namespace HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterProper
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServicesFormType;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;

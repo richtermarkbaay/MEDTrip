@@ -351,6 +351,24 @@ class InstitutionAccountController extends InstitutionAwareController
     }
     
     /**
+     * Ajax handler for updating institution coordinates field.
+     *
+     * @param Request $request
+     * @author Adelbert D. Silla
+     */
+    public function ajaxUpdateCoordinatesAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $this->institution->setCoordinates($request->get('coordinates'));
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($this->institution);
+            $em->flush($this->institution);
+
+            return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        }
+    }
+    
+    /**
      *
      * @param unknown_type $institutionId
      */

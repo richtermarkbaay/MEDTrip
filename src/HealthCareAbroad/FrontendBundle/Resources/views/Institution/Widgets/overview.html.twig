@@ -3,7 +3,7 @@
 	    {{ institution.description | raw }}
 	</div>
 
-	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institution.institutionOfferedServices} %}
+	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
 	
 	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with {doctors: institutionDoctors} %}
 

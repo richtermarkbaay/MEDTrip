@@ -45,7 +45,15 @@ class FrontendController extends Controller
 
             case 'destinations':
                 $options['destinationId'] = $request->get('destinationId');
-                $template = 'SearchBundle:Frontend/Widgets:mainSearchWidget.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
+
+                if ($request->get('subContext', '') == 'specialization') {
+                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadSpecializations';
+                } elseif ($request->get('subContext') == 'subSpecialization') {
+                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadSubSpecializations';
+                } elseif ($request->get('subContext') == 'treatment') {
+                    $options['autocompleteRoute'] = 'search_frontend_ajaxLoadTreatments';
+                }
 
                 break;
 
@@ -109,7 +117,7 @@ class FrontendController extends Controller
                     $termDocument = $termDocuments[0];
                     $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id'])->getSlug();
                     $route = 'search_frontend_results_specializations';
-                    $sessionVariables['specializationId'] = $termDocument['specialization_id'];
+                    $sessionVariables = array('specializationId' => $termDocument['specialization_id'], 'termId' => $termDocument['term_id']);
 
                     if ($termDocument['treatment_id']) {
                         $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug();
@@ -137,7 +145,7 @@ class FrontendController extends Controller
                     $termDocument = $termDocuments[0];
 
                     //we don't have configured routes for this type of search so we need to generate the url manually
-                    $url = $this->buildUrl($termDocument);
+                    $url = $this->buildUrl($searchParams, $termDocument);
 
                     //This code is needed when working in dev environment
                     if (get_class($this->container) === 'appDevDebugProjectContainer') {
@@ -212,6 +220,13 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
 
+        if (isset($searchTerms['term_id'])) {
+            $termId = $searchTerms['term_id'];
+        } else {
+            $term = $this->get('services.search')->getTerm($request->get('specialization'), array('column' => 'slug'));
+            $termId = $term['id'];
+        }
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchBySpecialization($specialization));
         $parameters = array(
@@ -219,7 +234,7 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName(),
             'routeName' => 'search_frontend_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
-            'treatmentId' => $specialization->getId().'-0-0-specialization'
+            'treatmentId' => $termId
         );
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSpecializationTopDestinations($specialization);
@@ -234,6 +249,13 @@ class FrontendController extends Controller
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->getSubSpecialization(isset($searchTerms['subSpecializationId']) ? $searchTerms['subSpecializationId'] : $request->get('subSpecialization'));
 
+        if (isset($searchTerms['term_id'])) {
+            $termId = $searchTerms['term_id'];
+        } else {
+            $term = $this->get('services.search')->getTerm($request->get('subSpecialization'), array('column' => 'slug'));
+            $termId = $term['id'];
+        }
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchBySubSpecialization($searchTerms['subSpecializationId']));
         $parameters = array(
@@ -241,7 +263,7 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $subSpecialization->getName(),
             'routeName' => 'search_frontend_results_subSpecializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
-            'treatmentId' => $specialization->getId().'-'.$subSpecialization->getId().'-0-subSpecialization'
+            'treatmentId' => $termId
         );
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSubSpecializationTopDestinations($subSpecialization);
@@ -256,6 +278,13 @@ class FrontendController extends Controller
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'));
 
+        if (isset($searchTerms['term_id'])) {
+            $termId = $searchTerms['term_id'];
+        } else {
+            $term = $this->get('services.search')->getTerm($request->get('treatment'), array('column' => 'slug'));
+            $termId = $term['id'];
+        }
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTreatment($treatment));
         $parameters = array(
@@ -263,7 +292,7 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $treatment->getName(),
             'routeName' => 'search_frontend_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
-            'treatmentId' => $specialization->getId().'-0-'.$treatment->getId().'-treatment'
+            'treatmentId' => $termId
         );
         list($parameters['topCountries'], $parameters['topCities']) =
             $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment);
@@ -286,27 +315,24 @@ class FrontendController extends Controller
     }
 
     //TODO: create a dedicated class for this
-    private function buildUrl($termDocument)
+    private function buildUrl($searchParams, $termDocument)
     {
-        $sessionParams = array();
-
         $combinationPrefix = 'country';
+        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'));
 
-        if ($termDocument['city_id']) {
+        if ($searchParams->get('cityId')) {
             $combinationPrefix = 'city';
-            $city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($termDocument['city_id']);
+            $city = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'));
         }
 
         $combinationSuffix = '_specialization';
+        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id']);
 
         if ($termDocument['treatment_id']) {
             $combinationSuffix = '_treatment';
         } elseif ($termDocument['sub_specialization_id']) {
             $combinationSuffix = '_subSpecialization';
         }
-
-        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($termDocument['country_id']);
-        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id']);
 
         switch ($combinationPrefix . $combinationSuffix) {
             case 'country_specialization':

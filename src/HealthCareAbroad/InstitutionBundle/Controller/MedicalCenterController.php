@@ -186,6 +186,24 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /**
+     * Ajax handler for updating institution coordinates field.
+     *
+     * @param Request $request
+     * @author Adelbert D. Silla
+     */
+    public function ajaxUpdateCoordinatesAction(Request $request)
+    {
+        if ($request->isMethod('POST')) {
+            $this->institutionMedicalCenter->setCoordinates($request->get('coordinates'));
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($this->institutionMedicalCenter);
+            $em->flush($this->institutionMedicalCenter);
+
+            return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        }
+    }
+    
+    /**
      * Save clinic business hours
      * 
      * @param Request $request

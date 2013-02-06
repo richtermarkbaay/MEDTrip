@@ -1,10 +1,13 @@
 <div class="box-content">
-    <h4>Basic Profile</h4>            
-        
+    <h4>Basic Profile</h4>        
+        <div class="mapbox" id="map_canvas" style="width: 180px; height: 170px;"></div>            
         <p class="address_column">
             <span class="address_part">{% set _address = institution_address_to_array(institution) %}</span>
-            <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part pull-left">') | raw}}&nbsp;</span>
-            <a href="#addressModal" data-toggle="modal" role="button"><i class="icon-pencil" title="Edit"></i><small class="addressLabel">Edit Address</small></a>
+            <span class="address_part"> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+            <br/>
+            <a href="#addressModal" role="button" data-toggle="modal">
+                <i class="icon-pencil" title="Edit"></i><small class="addressLabel">Edit Address</small>
+            </a>
         </p>
         <p>
             {% set contact = json_to_array(institution.contactNumber, false) %}
@@ -49,3 +52,28 @@
 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
      with {formId: 'websitesModalForm', fields: ['websites'], modalId: 'websitesModal', modalTitle: 'Edit Websites'} 
 %}
+<script src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+$(function(){
+	var coordinates = "{{ institution.coordinates }}";
+	var mapParams = {
+		address: "{{ _address|join(',') }}",
+		defaultAddress: "{{ institution.city.name }}, {{ institution.city.country }}",
+		mapOnChangeCallback: function(){
+			if(HCAGoogleMap && HCAGoogleMap.latLngString != coordinates) {
+		        $.ajax({
+		            url: "{{ path('institution_ajaxUpdateCoordinates') }}",
+		            type: 'post',
+		            data: { coordinates: HCAGoogleMap.latLngString },
+		            dataType: 'json',
+		            success: function(response){},
+			        error: function(){}
+		        });
+			}
+		}
+	};
+
+    HCAGoogleMap.initialize(mapParams);
+});
+</script>
