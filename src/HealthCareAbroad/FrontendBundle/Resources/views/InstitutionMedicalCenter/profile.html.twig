@@ -16,7 +16,7 @@
                     <img class="media-object" alt="" src="{{ imageplaceholder.institutionLogo }}">
                 </div>
                 <div class="media-body">
-                    <h1>{{ institution.name }}</h1>
+                    <h1><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h1>
                 </div>
             </div>
         </div>
