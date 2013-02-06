@@ -129,7 +129,12 @@ class FrontendController extends Controller
                         $sessionVariables['subSpecializationId'] = $termDocument['sub_specialization_id'];
                     }
                 } elseif ($termDocuments) {
-                    throw new NotFoundHttpException('No implementation yet');
+                    $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
+
+                    $routeParameters = array('tag' => $term['slug']);
+                    $route = 'search_frontend_results_related';
+                    $sessionVariables = array('termId' => $term['id']);
+
                 } else {
                     throw new NotFoundHttpException();
                 }
@@ -188,8 +193,14 @@ class FrontendController extends Controller
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0'
         );
-        list($parameters['topSpecializations'], $parameters['topTreatments']) =
-            $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCountryTopTreatments($country);
+
+        $prefix = $this->getPrefix();
+
+        list($parameters['topSpecializations'], $parameters['topTreatments']) = array_map(
+            function($treatments) use ($country, $prefix) {
+                return FrontendController::appendTreatmentUrls($treatments, array('country' => $country), $prefix);
+             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCountryTopTreatments($country)
+        );
 
         return  $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
     }
@@ -209,8 +220,14 @@ class FrontendController extends Controller
             'paginationParameters' => array('city' => $city->getSlug(), 'country' => $city->getCountry()->getSlug()),
             'destinationId' => $city->getCountry()->getId() . '-' . $city->getId()
         );
-        list($parameters['topSpecializations'], $parameters['topTreatments']) =
-            $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCityTopTreatments($city);
+
+        $prefix = $this->getPrefix();
+
+        list($parameters['topSpecializations'], $parameters['topTreatments']) = array_map(
+            function($treatments) use ($city, $prefix) {
+                return FrontendController::appendTreatmentUrls($treatments, array('city' => $city, 'country' => $city->getCountry()), $prefix);
+             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getCityTopTreatments($city)
+        );
 
         return $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
     }
@@ -236,10 +253,25 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId
         );
-        list($parameters['topCountries'], $parameters['topCities']) =
-            $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSpecializationTopDestinations($specialization);
+
+        $prefix = $this->getPrefix();
+
+        list($parameters['topCountries'], $parameters['topCities']) = array_map(
+            function($destinations) use ($specialization, $prefix) {
+                return FrontendController::appendDestinationUrls($destinations, array('specialization' => $specialization), $prefix);
+             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSpecializationTopDestinations($specialization)
+         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+    }
+
+    private function getPrefix()
+    {
+        $prefix = '';
+        if (get_class($this->container) === 'appDevDebugProjectContainer') {
+            $prefix = '/app_dev.php';
+        }
+        return $prefix;
     }
 
     public function searchResultsSubSpecializationsAction(Request $request)
@@ -265,8 +297,14 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
             'treatmentId' => $termId
         );
-        list($parameters['topCountries'], $parameters['topCities']) =
-            $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSubSpecializationTopDestinations($subSpecialization);
+
+        $prefix = $this->getPrefix();
+
+        list($parameters['topCountries'], $parameters['topCities']) = array_map(
+            function($destinations) use ($specialization, $subSpecialization, $prefix) {
+                return FrontendController::appendDestinationUrls($destinations, array('specialization' => $specialization, 'subSpecialization' => $subSpecialization), $prefix);
+             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getSubSpecializationTopDestinations($subSpecialization)
+        );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
     }
@@ -294,10 +332,21 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId
         );
-        list($parameters['topCountries'], $parameters['topCities']) =
-            $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment);
+
+        $prefix = $this->getPrefix();
+
+        list($parameters['topCountries'], $parameters['topCities']) = array_map(
+            function($destinations) use ($specialization, $treatment, $prefix) {
+                return FrontendController::appendDestinationUrls($destinations, array('specialization' => $specialization, 'treatment' => $treatment), $prefix);
+             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment)
+        );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+    }
+
+    public function searchResultsRelatedAction(Request $request)
+    {
+        return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array('searchLabel' => $request->get('tag')));
     }
 
     public function ajaxLoadTreatmentsAction(Request $request)
@@ -398,6 +447,59 @@ class FrontendController extends Controller
         }
 
         return $routeParams;
+    }
+
+    public static function appendDestinationUrls($locations, $treatment, $prefix = '')
+    {
+        $modifiedLocations = array();
+
+        $treatmentUrlSegment = '/'.$treatment['specialization']->getSlug();
+
+        if (isset($treatment['treatment'])) {
+            $treatmentUrlSegment .= '/'.$treatment['treatment']->getSlug().'/treatment';
+        } elseif (isset($treatment['subSpecialization'])) {
+            $treatmentUrlSegment .= '/'.$treatment['subSpecialization']->getSlug();
+        }
+
+        foreach ($locations as $location) {
+            $modifiedLocation = $location;
+
+            if (isset($modifiedLocation['city_slug'])) {
+                $modifiedLocation['url'] = $prefix.'/'.$modifiedLocation['country_slug'].'/'.$modifiedLocation['city_slug'].$treatmentUrlSegment;
+            } else {
+                $modifiedLocation['url'] = $prefix.'/'.$modifiedLocation['country_slug'].$treatmentUrlSegment;
+            }
+
+            $modifiedLocations[] = $modifiedLocation;
+        }
+
+        return $modifiedLocations;
+    }
+
+    public static function appendTreatmentUrls($treatments, $destination, $prefix = '')
+    {
+        $modifiedTreatments = array();
+
+        $urlSegment = '/'.$destination['country']->getSlug();
+        if (isset($destination['city'])) {
+            $urlSegment .= '/'.$destination['city']->getSlug();
+        }
+
+        foreach ($treatments as $treatment) {
+            $modifiedTreatment = $treatment;
+
+            $url = $prefix.$urlSegment.'/'.$modifiedTreatment['specialization_slug'];
+            if (isset($modifiedTreatment['treatment_slug'])) {
+                $url .= '/'.$modifiedTreatment['treatment_slug'].'/treatment';
+            } elseif (isset($modifiedTreatment['sub_specialization_slug'])) {
+                $url .= '/'.$modifiedTreatment['sub_specialization_slug'];
+            }
+
+            $modifiedTreatment['url'] = $url;
+            $modifiedTreatments[] = $modifiedTreatment;
+        }
+
+        return $modifiedTreatments;
     }
 
     private function getSearchParams(Request $request, $isAutoComplete = false)

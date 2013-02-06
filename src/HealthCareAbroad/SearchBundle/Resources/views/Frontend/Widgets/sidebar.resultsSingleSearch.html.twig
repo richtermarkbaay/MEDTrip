@@ -21,7 +21,7 @@
                 <h3>By {{ subContext | capitalize }}</h3>
                 <ul>
                     {% for item in items %}
-                        <li><a href="#">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                        <li><a href="{{ item.url }}">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
                     {% endfor %}
                 </ul>
             </li>
@@ -43,7 +43,7 @@
                 <h3>By {{ subContext | capitalize }}</h3>
                 <ul>
                     {% for item in items %}
-                        <li><a href="#">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
+                        <li><a href="{{ item.url }}">{{ item.name }} <span class="right label label-inverse">{{ item.count }}</span></a></li>
                     {% endfor %}
                 </ul>
             </li>

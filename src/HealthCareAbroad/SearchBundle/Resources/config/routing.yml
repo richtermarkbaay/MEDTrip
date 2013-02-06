@@ -20,12 +20,12 @@ institution_medicalCenter_search:
         _method: GET|POST
 
 
-## FRONTEND BUNDLE
+## FRONTEND BUNDLE #############################################################
 search_frontend:
     pattern: /search
     defaults: { _controller: SearchBundle:Frontend:search }
 
-## AUTOCOMPLETE ROUTES #########################################################
+###### AUTOCOMPLETE ROUTES #####################################################
 search_frontend_ajaxLoadTreatments:
     pattern: /search/ajaxLoadTreatments
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
@@ -55,7 +55,13 @@ search_frontend_ajaxLoadTreatments2:
     pattern: /search/ajaxLoadTreatments2
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'treatment' }
 
-## END AUTOCOMPLETE ROUTES #####################################################
+#### END AUTOCOMPLETE ROUTES ###################################################
+
+search_frontend_results_related:
+    pattern: /treatment/related-search/{tag}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    requirements:
+        page: \d+
 
 search_frontend_results_countries:
     pattern: /destination/{country}/{page}
