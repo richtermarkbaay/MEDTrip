@@ -152,3 +152,11 @@ admin_medicalCenter_ajaxEditGlobalAward:
         _method: POST
         institutionId: \d+
         imcId: \d+
+        
+admin_medicalCenter_logo_upload:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/logo/upload/
+    defaults: { _controller: AdminBundle:InstitutionTreatments:upload }
+    requirements:
+        _method: POST
+        imcId: \d+
+        institutionId: \d+

@@ -100,3 +100,10 @@ admin_addInstitutionLanguages:
     requirements:
          institutionId: \d+
          _method: GET|POST   
+
+admin_logo_upload:
+    pattern: /admin/institution/{institutionId}/logo/upload/
+    defaults: { _controller: AdminBundle:Institution:upload }
+    requirements:
+        _method: POST
+        institutionId: \d+
