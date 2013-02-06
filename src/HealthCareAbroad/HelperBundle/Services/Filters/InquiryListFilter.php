@@ -14,7 +14,7 @@ class InquiryListFilter extends ListFilter
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
-    $this->addValidCriteria('subject');
+    $this->addValidCriteria('field');
     $this->addValidCriteria('dateCreated');
     
     }
@@ -26,23 +26,19 @@ class InquiryListFilter extends ListFilter
     
     function setInquiryFilterOption()
     {
-        $subjects = $this->doctrine->getEntityManager()->getRepository('AdminBundle:InquirySubject')->findBy(array('status' => InquirySubject::STATUS_ACTIVE),array('name' => 'ASC'));
-    
-        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
-        foreach($subjects as $each) {
-            $options[$each->getId()] = $each->getName();
-        }
-    
-        $this->filterOptions['subject'] = array(
-                        'label' => 'Subject',
-                        'selected' => $this->queryParams['subject'],
-                        'options' => $options
+        $this->filterOptions['field'] = array(
+                        'label' => 'Search for keyword',
+                        'value' => '',
         );
     }
     function setDateCreatedFilterOption()
     {
-        $dateOptions = date("m/d/y");
-    
+        if($this->queryParams['dateCreated'] == 'all' ){
+            $dateOptions = date("m/d/Y");
+        }else{
+           $dateOptions = date("m/d/Y", $this->queryParams['dateCreated']);
+        }
+            
         $this->filterOptions['dateCreated'] = array(
                         'label' => 'Date Created',
                         'value' => $dateOptions
@@ -51,24 +47,21 @@ class InquiryListFilter extends ListFilter
     
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('AdminBundle:Inquiry', 'a');
-    
+        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
+        
+        if ($this->queryParams['field'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->innerJoin('a.institution', 'b'); 
+            $this->queryBuilder->where('b.name LIKE :searchKey');
+            $this->queryBuilder->setParameter('searchKey', '%'.$this->queryParams['field'].'%' );
+        }
+        
         if ($this->queryParams['dateCreated'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('a.dateCreated >= :dateCreated');
-            $this->queryBuilder->setParameter('dateCreated', date("Y-m-d", strtotime($this->queryParams['dateCreated'])) );
+            $this->queryBuilder->andWhere('a.dateCreated >= :dateCreated');
+            $this->queryBuilder->setParameter('dateCreated', date("Y-m-d H:i:s", $this->queryParams['dateCreated']) );
         }
-        if ($this->queryParams['subject'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.inquirySubject = :subject');
-            $this->queryBuilder->setParameter('subject', $this->queryParams['subject']);
-        }
-
-        if($this->sortBy == 'firstName') {
-        		$sortBy = $this->sortBy ? $this->sortBy : 'firstName';
-        	$sort = "a.$sortBy " . $this->sortOrder;
-        } else {
-        	$sortBy = $this->sortBy ? $this->sortBy : 'dateCreated';
-        	$sort = "a.$sortBy " . $this->sortOrder;
-        }            
+        
+    	$sortBy = 'inquirer_name  ';
+    	$sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
     }

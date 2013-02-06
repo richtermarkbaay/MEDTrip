@@ -1,13 +1,13 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'inquire' %}
+{% set selectedTab = 'feedback' %}
 {% set selectedSubTab = 'inquire_index'%}
-{% set inquiryLabel = getClassLabel('inquiry') %}
+{% set feedbackLabel = getClassLabel('feedback') %}
 {% block content %}
     <div id="content">
 
     	{% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
-                title: inquiryLabel.plural | title
+                title: feedbackLabel.plural | title
             }  
         %}
     
@@ -21,21 +21,17 @@
             {% set default = sortBy | length ? '' : 'sort-asc' %}
             {% include '::notice.admin.html.twig' %}
 
-            <table id="inquiries-list" class="table table-bordered sortable-list">
+            <table id="feedback-list" class="table table-bordered sortable-list">
             <tr>
-                <th> <a id="column-name"><a href="#">Institution</a></th>
-                <th> <a id="column-name"><a href="#">Inquirer</a></th>
+                <th><a href="#">Subject</a></th>
                 <th><a href="#">Message</a></th>
-                <th><a href="#">Email</a></th>
                 <th><a href="#">Date Created</a></th>
             </tr>
 	
-			{% for each in inquiries %}
+			{% for each in feedbacks %}
                 <tr>
-                    <td class="name">{{ each.institution.name | title }}</td>
-                    <td class="name">{{ each.inquirerName | title }}</td>
+                    <td>{{ each.subject | title }}</td>
                     <td>{{ each.message | capitalize }}</td>
-                    <td>{{ each.inquirerEmail }}</td>
                     <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
                 </tr>
            {% endfor %}

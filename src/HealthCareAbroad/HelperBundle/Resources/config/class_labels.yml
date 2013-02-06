@@ -33,3 +33,4 @@ parameters:
         medical_provider_group: {singular: "medical provider group", plural: "medical providers group"}
         clinic: {singular: "clinic", plural: "clinics"}
         term: {singular: "related search word", plural: "related search words"}
+        feedback: {singular: "feedback", plural: "feedbacks"}
