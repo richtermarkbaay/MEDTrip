@@ -52,6 +52,7 @@
 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
      with {formId: 'websitesModalForm', fields: ['websites'], modalId: 'websitesModal', modalTitle: 'Edit Websites'} 
 %}
+
 <script src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
@@ -60,6 +61,7 @@ $(function(){
 	var mapParams = {
 		address: "{{ _address|join(',') }}",
 		defaultAddress: "{{ institution.city.name }}, {{ institution.city.country }}",
+
 		mapOnChangeCallback: function(){
 			if(HCAGoogleMap && HCAGoogleMap.latLngString != coordinates) {
 		        $.ajax({

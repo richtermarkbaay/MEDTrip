@@ -8,3 +8,13 @@
 	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with {doctors: institutionDoctors} %}
 
 </div> <!--End of main_content-->
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
+    <script type="text/javascript">
+        $('a.email').click(function(){
+        	$('div#modal_institution_inquiry_form').modal('show');
+            return false;
+        });
+    </script>
+{% endblock %}
