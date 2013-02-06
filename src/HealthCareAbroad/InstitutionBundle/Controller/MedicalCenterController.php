@@ -891,29 +891,38 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
     {
         $debugMode = isset($_GET['hcaDebug']) && $_GET['hcaDebug'] == 1;
-        
-        $start = \microtime(true);
-        
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
         if (!$institutionSpecialization ) {
             throw $this->createNotFoundException('Invalid institution specialization');
         }
         
-        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization(), array('em' => $this->getDoctrine()->getEntityManager()));
         if ($request->isMethod('POST')) {
             $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
+            
             $em = $this->getDoctrine()->getEntityManager();
             $errors = array();
             $output = array('html' => '');
             foreach ($submittedSpecializations as $_isId => $_data) {
                 if ($_isId == $institutionSpecialization->getSpecialization()->getId()) {
                     
-                    $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization, array('em' => $em));
+                    // set passed treatments as choices
+                    $default_choices = array();
+                    $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
+                    foreach ($_treatment_choices as $_t) {
+                        $default_choices[$_t->getId()] = $_t->getName();
+                        // add the treatment
+                        $institutionSpecialization->addTreatment($_t);
+                    }
+                    
+                    $form = $this->createForm('institutionSpecialization', $institutionSpecialization, array('default_choices' =>$default_choices ));
                     $form->bind($_data);
                     if ($form->isValid()) {
                         try {
-                            $em->persist($form->getData());
+                            
+                            //$institutionSpecialization = $form->getData();
+                            $em->persist($institutionSpecialization);
                             $em->flush();
+                            
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
                                 'institutionSpecialization' => $institutionSpecialization,
                                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -925,6 +934,7 @@ class MedicalCenterController extends InstitutionAwareController
                         }
                     }
                     else {
+                        var_dump($form->getErrorsAsString()); exit;
                         $errors[] = 'Failed form validation';
                     }
                 }
@@ -939,7 +949,13 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         else {
-            
+            $start = \microtime(true);
+            $form = $this->createForm('institutionSpecialization', new InstitutionSpecialization());
+            $end =  \microtime(true);
+            if ($debugMode) {
+                $diff = $end - $start;
+                //echo  "{$diff} ms"; exit;
+            }
             $specialization = $institutionSpecialization->getSpecialization();
             $availableTreatments = $this->get('services.institution_medical_center')
                 ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
@@ -954,7 +970,7 @@ class MedicalCenterController extends InstitutionAwareController
                         'specialization' => $specialization,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institutionSpecialization' => $institutionSpecialization,
-                        'currentTreatments' => $institutionSpecialization->getTreatments()
+                        //'currentTreatments' => $institutionSpecialization->getTreatments()
                     ));
                 }
                 else {
@@ -967,6 +983,7 @@ class MedicalCenterController extends InstitutionAwareController
                                     'institutionSpecialization' => $institutionSpecialization,
                                     'currentTreatments' => $institutionSpecialization->getTreatments()
                     ));
+                    //echo $html; exit;
                     
                     $response = new Response(\json_encode(array('html' => $html)));
                 }
@@ -976,12 +993,7 @@ class MedicalCenterController extends InstitutionAwareController
             }
             
         }
-        $end = \microtime(true);
         
-        if ($debugMode) {
-            $diff = $end - $start;
-            echo  "{$diff} ms"; exit;
-        }
         
         return $response;   
     }
