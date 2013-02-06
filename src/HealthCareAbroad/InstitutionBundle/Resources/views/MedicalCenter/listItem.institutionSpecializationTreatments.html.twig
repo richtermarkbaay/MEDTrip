@@ -1,6 +1,6 @@
 <div class="specializations_block" id="specialization_block_{{ institutionSpecialization.id }}">
     {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
-    {% set _editSpecializationUri = path('institution_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id} ) %}
+    {% set _editSpecializationUri = path('institution_medicalCenter_ajaxGetEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id} ) %}
      <div class="maincontentblock">
         <h4 class="pull-left specialization_name_{{ institutionSpecialization.id }}">{{ institutionSpecialization.specialization.name }}</h4>
         <div class="editname2 pull-left">
