@@ -1,6 +1,14 @@
+{% if breadcrumbs is defined %}
 <div id="breadcrumbs" class="container">
 	<ul class="breadcrumb row">
 		<li><a href="{{ path('frontend_main_homepage')}}"><img src="/images/frontend/home_icon.png" /></a></li>
-		<!-- li class="active"><a href="#">Austin Lakes Hospital</a></li -->
+		{% for each in breadcrumbs %}
+    		{% if not loop.last %}
+                <li class="active"><a href="{{ each.url }}">{{ each.label }}</a></li>
+    		{% else %}
+    		    <li><a>{{ each.label }}</a></li>
+		    {% endif %}
+		{% endfor %}
 	</ul>
 </div>
+{% endif %}
