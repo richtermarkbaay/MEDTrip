@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+        <!-- [if IE]><![endif]-->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <link rel="shortcut icon" type="image/x-icon" href="/images/frontend/favicon.ico">
+        
+        {% javascripts
+            'js/jquery/jquery-1.8.2.js'
+            'js/bootstrap.min.js'
+            output='js/compiled-error.js'
+        %}
+
+            <script src="{{ asset_url }}" type="text/javascript"></script>
+        {% endjavascripts %}
+        
+        {% stylesheets 
+            'css/bootstrap.min.css'
+            'css/frontend/hca.min.css'
+            output='css/compiled-error.css'
+        %}
+        <link href="{{ asset_url }}" rel="stylesheet" type="text/css" media="screen"/>
+        {% endstylesheets %}
+        
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+                                    
+            </script>
+        <![endif]-->
+        <title>
+            HealthCareAbroad - The Resource for Global Healthcare
+        </title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+                        
+        </script>
+        <script src="js/bootstrap.min.js">
+                        
+        </script>
+    </head>
+    
+    <body>
+        <div id="fixed_container">
+            <header id="header">
+                <!--Header-->
+                <div class="container">
+                    <a class="logo span5" href="index.html">
+                        <h1 class="title">HealthcareAbroad</h1>
+                    </a>
+                    <nav class="menu">
+                        <ul>
+                            <li>
+                                <a href="#">Search</a>
+                            </li>
+                            <li>
+                                <a href="#">Procedures</a>
+                            </li>
+                            <li class="active">
+                                <a href="#">Destination</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <!--End of header-->
+            <div id="content" class="container content error-page">
+                <!--End of highlight-->
+                <div id="details" class="row">
+                    <div class="error">
+                        <div class="pull-left error-code">
+                            <h1>
+                                {{ status_code }}
+                            </h1>
+                        </div>
+                        
+                        <h2 class="error-description">
+                            {{ status_text }}
+                        </h2>
+                        {% if status_text_details is defined and status_text_details | length %}
+                        <h2>
+                            {{ status_text_details }}
+                        </h2>
+                        {% endif %}
+                        <div class="helper row-fluid">
+                            <div class="message span12">
+                                <p class="message">
+                                    <strong>
+                                        Worry not my friend!
+                                    </strong>
+                                    <br>
+                                    The buttons below shall help you find what you're looking for.
+                                    <br><br>
+                                </p>
+                            </div>
+                            <div class="links">
+                                <div class="span4">
+                                    <a href="" class="btn green btn-large span8 offset3">
+                                         <i class="icon-chevron-left icon-white"></i>  PREVIOUS PAGE
+                                     </a>
+                                </div>
+                                <div class="span4">
+                                    <a href="#report" data-toggle="modal" class="btn orange btn-large span8 offset2">
+                                         <i class="icon-envelope icon-white"></i>  SUBMIT A REPORT
+                                     </a>
+                                    <div id="report" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                                    aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                x
+                                            </button>
+                                            <h3 id="myModalLabel">
+                                                Submit Report
+                                            </h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="reportData">
+                                                <strong>
+                                                    What seems to be the problem?
+                                                </strong>
+                                            </label>
+                                            <textarea class="span12" name="reportData" id="reportData" cols="30" rows="10">
+                                            </textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">
+                                                Cancel
+                                            </button>
+                                            <button class="btn orange">
+                                                Send Now
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="span4">
+                                    <a href="" class="btn green btn-large span8 offset1">
+                                         <i class="icon-search icon-white"></i> SEARCH HCA
+                                     </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End of content-->
+            <div class="border_pattern_footer">
+                &nbsp;
+            </div>
+            <!--Jagged border below the content-->
+            <div id="footer_wrapper">
+                <div class="container">
+                    <div class="upper_part row">
+                        <!--This is for the upper part of footer-->
+                        <div class="site_map span4">
+                            <!--This is for Site Map-->
+                            <h4>
+                                Site Map
+                            </h4>
+                            <div class="row">
+                                <div class="span2">
+                                    <h5>
+                                        <a href="">Home</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">All Listings</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Search</a>
+                                        </li>
+                                    </ul>
+                                    <h5>
+                                        <a href="">Hospital</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Popular</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Highest Rated</a>
+                                        </li>
+                                    </ul>
+                                    <h5>
+                                        <a href="">FAQ</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">TOS</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Privacy Policy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="span2">
+                                    <h5>
+                                        <a href="">Links</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">All Listings</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Search</a>
+                                        </li>
+                                    </ul>
+                                    <h5>
+                                        <a href="">Some Link</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">Popular</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Highest Rated</a>
+                                        </li>
+                                    </ul>
+                                    <h5>
+                                        <a href="">Nice</a>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <a href="#">TOS</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Privacy Policy</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="facepile span4">
+                            <!--This is for the Facebook API-->
+                            <h4>
+                                HCA on Facebook
+                            </h4>
+                            <div>
+                                <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=295&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false"
+                                scrolling="no" frameborder="0" style="border:none; overflow:visible; width:295px; height:410px !important; margin-left: -8px;"
+                                allowTransparency="true">
+                                </iframe>
+                            </div>
+                        </div>
+                        <div class="subscription span4">
+                            <!--This is for the Subscriptions-->
+                            <div class="subscribe_item row">
+                                <h5>
+                                    Subscribe To Our Newsletter
+                                </h5>
+                                <form action="get" class="subscribe_form">
+                                    <input type="text" class="span4" placeholder="email@domain.com" name="email"
+                                    />
+                                    <div class="form-inline">
+                                        <input type="checkbox" />
+                                        <label>
+                                            Unsubscribe
+                                        </label>
+                                        <button type="submit" class="btn">
+                                            Submit Now
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="register">
+                                <h5>
+                                    Want to register an Institution?
+                                </h5>
+                                <a href="#" class="sign-up">Sign Up</a>
+                                <span class="or-option">
+                                </span>
+                                <a href="#" class="sign-up">Sign In</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lower_footer row">
+                        <!--This is for the lower part of footer-->
+                        <div class="span5 navbar">
+                            <p>
+                                Copyright 2012. Healthcareabroad.com. All rights reserved
+                            </p>
+                            <ul class="nav">
+                                <li>
+                                    <a href="#">TOS</a>
+                                </li>
+                                <li class="divider">
+                                    /
+                                </li>
+                                <li>
+                                    <a href="#">Privacy Policy</a>
+                                </li>
+                                <li class="divider">
+                                    /
+                                </li>
+                                <li>
+                                    <a href="#">History</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="social span6">
+                            <ul class="socials-nav">
+                                <li>
+                                    <a href="#"><span class="g-icon"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#"><span class="facebook-icon"></span></a>
+                                </li>
+                                <li>
+                                    <a href="#"><span class="twitter-icon"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--End of class container-->
+            </div>
+            <!--End of footer_wrapper-->
+        </div>
+    </body>
+
+</html>
