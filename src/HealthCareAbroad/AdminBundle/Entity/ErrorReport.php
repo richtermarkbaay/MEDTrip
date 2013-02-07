@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ErrorReport
 {
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
+    
+    const FRONTEND_REPORT = 1;
+    const COMMON_REPORT = 0;
     /**
      * @var integer $id
      */
@@ -34,6 +39,11 @@ class ErrorReport
      */
     private $dateCreated;
 
+    /**
+     * @var smallint $flag
+     */
+    private $flag;
+    
     /**
      * @var smallint $status
      */
@@ -139,6 +149,28 @@ class ErrorReport
     }
 
     /**
+     * Set flag
+     *
+     * @param smallint $flag
+     * @return ErrorReport
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+        return $this;
+    }
+    
+    /**
+     * Get flag
+     *
+     * @return smallint
+     */
+    public function getFlag()
+    {
+        return $this->flag;
+    }
+    
+    /**
      * Set status
      *
      * @param smallint $status
@@ -159,4 +191,5 @@ class ErrorReport
     {
         return $this->status;
     }
+    
 }

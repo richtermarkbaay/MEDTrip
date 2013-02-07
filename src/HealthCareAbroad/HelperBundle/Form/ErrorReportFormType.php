@@ -15,7 +15,7 @@ class ErrorReportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
     	
-        $builder->add('reporterName','text', array('constraints' => new NotBlank()));
+//         $builder->add('reporterName','text', array('constraints' => new NotBlank()));
         $builder->add('details','textarea', array('constraints' => new NotBlank()));          
     
     }

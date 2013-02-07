@@ -127,6 +127,9 @@
             <li class="{{ selectedSubTab == 'settings_user_permissions' ? 'active' : '' }}">
                 <a href="{{ path('admin_userRole_index') }}">User permissions</a>
             </li>
+            <li class="{{ selectedSubTab == 'error_reports' ? 'active' : '' }}">
+                <a href="{{ path('admin_error_reports') }}">Error Reports</a>
+            </li>
         </ul>
     </li>
     {% endif %}

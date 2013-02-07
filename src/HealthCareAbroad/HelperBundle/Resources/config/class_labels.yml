@@ -34,3 +34,4 @@ parameters:
         clinic: {singular: "clinic", plural: "clinics"}
         term: {singular: "related search word", plural: "related search words"}
         feedback: {singular: "feedback", plural: "feedbacks"}
+        errorReport: {singular: "error report", plural: "errror reports"}        
