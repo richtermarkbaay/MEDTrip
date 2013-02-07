@@ -63,7 +63,10 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchMedicalCentersBySpecialization($specialization)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findBySpecialization($specialization);
+        //var_dump($result); exit;
+        return $result;
     }
 
     public function searchMedicalCentersBySubSpecialization($subSpecialization)
@@ -73,6 +76,9 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchMedicalCentersByTreatment($treatment)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByTreatment($treatment);
+        
+        return $result;
     }
 }
