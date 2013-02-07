@@ -1,0 +1,75 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+{% set selectedTab = 'institutions' %}
+{% set selectedSubMenu = 'gallery' %}
+
+{% block content %}
+
+    <div class="span9 title">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with {
+            title: 'Media Gallery',
+            actions: [{link: path('admin_institution_medicalCenter_view', {institutionId: institution.id, imcId: imc.id}), label: 'Back Clinic Profile', 'icon' : 'icon-picture' }]
+       }%}
+
+            {% block sectionContent %}
+
+                <div id="table-content">
+
+                    <div id="dialog-form" title="Add media">
+                            {% include 'MediaBundle:Partials:multiUploadForm.html.twig' with {routes: routes} %}
+                    </div>
+                </div>
+            {% endblock %}
+        {% endembed %}
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<!-- Load Queue widget CSS and jQuery -->
+<style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
+
+<!-- Third party script for BrowserPlus runtime (Google Gears included in Gears runtime now) -->
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+
+<!-- Load plupload and all it's runtimes and finally the jQuery UI queue widget -->
+
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js') }}"></script>
+
+<script type="text/javascript">
+
+// Convert divs to queue widgets when the DOM is ready
+$(function() {
+    $("#uploader").plupload({
+        // General settings
+        /*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
+        runtimes : 'html5',
+        url : '{{ path('admin_institutionMedicalCenter_media_upload', {imcId: imc.id }) }}',
+        max_file_size : '10mb',
+        /*chunk_size : '1mb',*/
+        unique_names : true,
+
+        // Resize images on clientside if we can
+        //resize : {width : 320, height : 240, quality : 90},
+
+        // Specify what files to browse for
+        filters : [
+            {title : "Image files", extensions : "jpg,gif,png"},
+            {title : "Zip files", extensions : "zip"},
+            {title : "Pdf files", extensions : "pdf"},
+            {title : "Video files", extensions : "avi,mov,flv"}
+        ],
+
+        // Flash settings
+        flash_swf_url : '/plupload/js/plupload.flash.swf',
+        //http://www.youtube.com/watch?v=kPIM6V9eeRE
+        // Silverlight settings
+        //silverlight_xap_url : '/plupload/js/plupload.silverlight.xap'
+    });
+
+    $('#uploader_start').click(function(){
+        $(this).parents('form:first').submit();
+        
+        return false;
+    })
+});
+</script>
+{% endblock %}
