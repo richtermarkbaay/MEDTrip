@@ -1,11 +1,7 @@
+{% set contents = json_decode(adsTypeObj) %}
+
 {% include 'HelperBundle:Widgets:subMenu.html.twig'
     with {
-        links: [
-            {name: 'premierHomepageFeature', url: '#', label: 'Premier Home Page Feature', icon: 'icon-list'},
-            {name: 'featuredInstitutions', url: '#', label: 'Featured Institutions', icon: 'icon-list'},
-            {name: 'featuredListings', url: '#', label: 'Featured ' ~ getClassLabel('institution_medical_center').plural | title, icon: 'icon-list'},
-            {name: 'popularTreatments', url: '#', label: 'Popular Treatments', icon: 'icon-list'},
-            {name: 'newsTicker', url: '#', label: 'News Ticker', icon: 'icon-list'}
-        ]
+        links: contents
     }
 %}
