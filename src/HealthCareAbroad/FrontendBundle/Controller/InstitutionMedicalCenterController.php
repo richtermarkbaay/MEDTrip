@@ -70,6 +70,7 @@ class InstitutionMedicalCenterController extends Controller
         $params = array(
             'awards' => $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter),
             'services' => $centerService->getMedicalCenterServices($this->institutionMedicalCenter),
+            'institutionMedicalCenter' => $this->institutionMedicalCenter
         );
 
         return $this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params);

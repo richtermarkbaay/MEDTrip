@@ -109,6 +109,19 @@ class InstitutionService
     }
     
     /**
+     * Get Institution Route Name
+     *
+     * @param Institution $institution
+     * @return route name
+     */
+    public function getInstitutionRouteName(Institution $institution)
+    {
+        return $this->isMultipleCenter($institution)
+            ? 'frontend_multiple_center_institution_profile'
+            : 'frontend_single_center_institution_profile';
+    }
+    
+    /**
      * 
      * @param Institution $institution
      * @return boolean
