@@ -24,7 +24,7 @@
 	
 			{% for each in reports %}
                 <tr>
-                    <td class="name">{{ each.details | title }}</td>
+                    <td class="name">{{ each.details | raw }}</td>
                     {% set flag = each.flag ? {label: 'Front end'} : {label: 'Institution / Admin'} %}
                     <td align="center">{{ flag.label }}</td>
                     <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
