@@ -338,7 +338,7 @@ class FrontendController extends Controller
         list($parameters['topCountries'], $parameters['topCities']) = array_map(
             function($destinations) use ($specialization, $treatment, $prefix) {
                 return FrontendController::appendDestinationUrls($destinations, array('specialization' => $specialization, 'treatment' => $treatment), $prefix);
-             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment)
+            }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment)
         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
@@ -359,9 +359,9 @@ class FrontendController extends Controller
         }
 
         $relatedTreatments = array();
-        foreach($this->get('services.search')->getRelatedTreatments($term['id']) as $t) {
+        foreach($this->get('services.search')->getRelatedTreatments($term['id'], $this->getPrefix()) as $t) {
             $treatment = $t;
-            $treatment['url'] = $this->generateUrl('search_frontend_results_related');
+            $treatment['url'] = $this->generateUrl('frontend_search_results_related', array('tag' => $request->get('tag')));
         }
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array('searchLabel' => $request->get('tag')));
