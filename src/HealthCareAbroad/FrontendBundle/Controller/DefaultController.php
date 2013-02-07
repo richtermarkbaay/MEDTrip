@@ -464,6 +464,12 @@ class DefaultController extends Controller
                         'reportSubmitted' => true
         ));
     }
+    /**
+     * Call a 404 page
+     */
+    public function call404ExcemptionAction(){
+        throw $this->createNotFoundException("Only supports AJAX request");
+    }
     
     public function ajaxSendErrorReportAction(){
         $output = array();

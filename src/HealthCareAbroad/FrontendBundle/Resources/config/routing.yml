@@ -73,7 +73,11 @@ frontend_search_combined_countries_cities_specializations_treatments:
     defaults: { _controller: FrontendBundle:Default:listCityTreatment, page: 1 }
     requirements:
         page: \d+
-
+        
+frontend_404:
+    pattern: /404
+    defaults: { _controller: FrontendBundle:Default:call404Excemption }
+    
 splash_page: # this is used for splash page
     pattern:  /{url}
     defaults: { _controller: FrontendBundle:Default:new, url: /}
