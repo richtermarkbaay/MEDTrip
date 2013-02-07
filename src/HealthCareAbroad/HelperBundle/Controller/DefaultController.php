@@ -3,6 +3,8 @@
 namespace HealthCareAbroad\HelperBundle\Controller;
 
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
@@ -77,16 +79,69 @@ class DefaultController extends Controller
         
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
-
-
-    public function searchTagsAction($term)
+    
+    private function _rename($sqlTableName, $tableName)
     {
-        $data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
+        echo "<br />{$sqlTableName} ================ <br /><br />";
+        
+        $sql = 'SELECT id FROM `'.$sqlTableName.'` WHERE name NOT IN (SELECT name from terms) ORDER BY name ASC';
+        $em = $this->getDoctrine()->getEntityManager();
+        $statement = $em->getConnection()->prepare($sql);
+        $statement->execute();
+        $ids = array();
+        
+        while ($row = $statement->fetch(Query::HYDRATE_ARRAY)){
+            $ids[] = $row['id'];
+        }
+        
+        echo "FOUND ".\count($ids). " rows <br />";
+        
+        if (\count($ids) <=0 ) {
+            return false;
+        }
+        
+        $qb = $em->createQueryBuilder();
+        $results = $qb->select('a')
+            ->from($tableName, 'a')
+            ->where($qb->expr()->in('a.id', ':ids'))
+            ->setParameter('ids', $ids)
+            ->orderBy('a.name', 'ASC')
+            ->getQuery()->getResult();
+        
+        foreach ($results as $_obj) {
+            $oldName = $_obj->getName();
+            $newName = $oldName.time();
+            echo "Renaming {$oldName} to {$newName} ... ";
+        
+            $_obj->setName($newName);
+            $em->persist($_obj);
+            $em->flush();
+            echo "Reverting to {$oldName}";
+        
+            $_obj->setName($oldName);
+                $em->persist($_obj);
+                $em->flush();
+        
+                echo "<br />";
+        }   
+    }
 
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
 
-        return $response;
+    public function searchTagsAction()
+    {
+        $this->_rename('treatments', 'TreatmentBundle:Treatment');
+        
+        $this->_rename('sub_specializations', 'TreatmentBundle:SubSpecialization');
+        
+        $this->_rename('specializations', 'TreatmentBundle:Specialization');
+        
+        exit;
+//         $data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
+
+//         $response = new Response(json_encode($data));
+//         $response->headers->set('Content-Type', 'application/json');
+
+//         return $response;
     }
     
     // TODO: DEPRECATED ??
