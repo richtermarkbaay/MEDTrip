@@ -68,18 +68,26 @@ class DefaultController extends Controller
         $route = $request->get('route');
         $routeParams = $request->get('routeParams');
         $templateParams = array();
-        
+
         switch($route) {
+
             case 'frontend_single_center_institution_profile' :
             case 'frontend_multiple_center_institution_profile' :
                 $institution = $request->get('institution');
                 $country = $institution->getCountry();
-                $city = $institution->getCity();
-                $templateParams['breadcrumbs'] = array(
-                    array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName()),
-                    array('url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())), 'label' => $city->getName()),
-                    array('label' => $institution->getName())
+                $templateParams['breadcrumbs'][] = array(
+                    'url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 
+                    'label' => $country->getName()
                 );
+
+                if($city = $institution->getCity()) {
+                    $templateParams['breadcrumbs'][] = array(
+                        'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
+                        'label' => $city->getName());                    
+                }
+
+                $templateParams['breadcrumbs'][] = array('label' => $institution->getName());
+
                 break;
 
             case 'frontend_institutionMedicaCenter_profile' :
@@ -87,15 +95,17 @@ class DefaultController extends Controller
                 $institution = $institutionMedicalCenter->getInstitution();
                 $institutionRoute = $this->get('services.institution')->getInstitutionRouteName($institution);
                 $country = $institution->getCountry();
-                $city = $institution->getCity();
 
-                $templateParams['breadcrumbs'] = array(
-                    array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName()),
-                    array('url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(), 'city' => $city->getSlug())), 'label' => $city->getName()),
-                    array('url' => $this->generateUrl($institutionRoute, array('institutionSlug' => $institution->getSlug())), 'label' => $institution->getName()),
-                    array('label' => $institutionMedicalCenter->getName())
-                );
+                $templateParams['breadcrumbs'][] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
+                
+                if($city = $institution->getCity()) {
+                    $templateParams['breadcrumbs'][] = array(
+                        'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
+                        'label' => $city->getName());
+                }
 
+                $templateParams['breadcrumbs'][] = array('url' => $this->generateUrl($institutionRoute, array('institutionSlug' => $institution->getSlug())), 'label' => $institution->getName());
+                $templateParams['breadcrumbs'][] = array('label' => $institutionMedicalCenter->getName());
                 break;
 
             case 'frontend_search_results_countries' :
