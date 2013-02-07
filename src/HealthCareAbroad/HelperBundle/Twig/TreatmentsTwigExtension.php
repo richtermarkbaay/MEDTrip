@@ -22,6 +22,7 @@ class TreatmentsTwigExtension extends \Twig_Extension
     public function group_treatments_by_subspecialization($treatments)
     {
         $grouped = array();
+        $noSubspecializations = array('treatments' => array(), 'subSpecialization' => null);
         foreach ($treatments as $_treatment) {
             if (!$_treatment instanceof Treatment) {
                 continue;
@@ -30,22 +31,20 @@ class TreatmentsTwigExtension extends \Twig_Extension
             $subSpecializations = $_treatment->getSubSpecializations();
             if (count($subSpecializations)) {
                 foreach ($subSpecializations as $_subSpecialization) {
-                    if (!\array_key_exists($_subSpecialization->getId(), $grouped)) {
-                        $grouped[$_subSpecialization->getId()] = array('treatments' => array(), 'subSpecialization' => $_subSpecialization);
+                    $_key = $_subSpecialization->getName();
+                    if (!\array_key_exists($_key, $grouped)) {
+                        $grouped[$_key] = array('treatments' => array(), 'subSpecialization' => $_subSpecialization);
                     }
-                    $grouped[$_subSpecialization->getId()]['treatments'][] = $_treatment;
+                    $grouped[$_key]['treatments'][] = $_treatment;
                 }   
             }
             // treatment has no subspecializations
             else {
-                if (!\array_key_exists(0, $grouped)) {
-                    $grouped[0] = array('treatments' => array(), 'subSpecialization' => null);
-                }
-                $grouped[0]['treatments'][] = $_treatment;
+                
+                $noSubspecializations['treatments'][] = $_treatment;
             }
         }
-        
-        
+        $grouped['Other treatments'] = $noSubspecializations;
         
         return $grouped;
     }

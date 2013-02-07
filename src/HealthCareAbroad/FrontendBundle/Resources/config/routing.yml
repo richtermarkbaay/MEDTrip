@@ -29,30 +29,6 @@ frontend_page_exception_report_create:
     requirements:
         _method:  GET|POST
 
-page_popular_sidebar: # Currently Not Being used! - This might be depcrecated!
-    pattern: /popular
-    defaults: { _controller: FrontendBundle:Sidebar:popular }
-    requirements:
-        _method: GET|POST
-
-page_recent_sidebar: # Currently Not Being used! - This might be depcrecated!
-    pattern: /recent
-    defaults: { _controller: FrontendBundle:Sidebar:recent }
-    requirements:
-        _method: GET|POST
-
-page_comments_sidebar: # Currently Not Being used! - This might be depcrecated!
-    pattern: /comments
-    defaults: { _controller: FrontendBundle:Sidebar:comments }
-    requirements:
-        _method: GET|POST
-
-page_tags_sidebar: # Currently Not Being used! - This might be depcrecated!
-    pattern: /tags
-    defaults: { _controller: FrontendBundle:Sidebar:tags }
-    requirements:
-        _method: GET|POST
-         
 
 # Combined Search routes
 frontend_search_combined_counties_specializations:
@@ -92,8 +68,7 @@ frontend_search_combined_counties_cities_specializations_treatments:
     requirements:
         page: \d+
 
-        
-splash_page: # Currently Not Being used! - This might be depcrecated!
+splash_page: # this is used for splash page
     pattern:  /{url}
     defaults: { _controller: FrontendBundle:Default:new, url: /}
     requirements:

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType;
+
 use HealthCareAbroad\HelperBundle\Services\AlertService;
 
 use HealthCareAbroad\HelperBundle\Listener\Alerts\AlertTypes;
@@ -29,14 +31,25 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
+        
+        $advertisementTypes = $this->getDoctrine()->getEntityManager()->getRepository('AdvertisementBundle:AdvertisementType')->findByStatus(AdvertisementType::STATUS_ACTIVE);
+        
         $accountId = $this->getRequest()->getSession()->get('accountId');
         $alerts = $this->container->get('services.alert')->getAdminAlerts($accountId);
 
+        $adsTypeObj = array();
+        foreach($advertisementTypes as $adsType)
+        {
+            $adsTypeObj[] = array('name' => $adsType->getName(), 'url' => $this->generateUrl('admin_advertisement_index',array('advertisementType' => $adsType->getId(), 'status' => 'all')), 'label' => $adsType->getName(), 'icon' => 'icon-list');
+        }
+        
         //$pendingListingAlerts = isset($alerts[AlertTypes::PENDING_LISTING]) ? $alerts[AlertTypes::PENDING_LISTING] : array();
         //$expiredListingAlerts = isset($alerts[AlertTypes::EXPIRED_LISTING]) ? $alerts[AlertTypes::EXPIRED_LISTING] : array();
 
         $params = array(
-            'alerts' => $alerts
+            'alerts' => $alerts,
+            'adsTypeObj' => \json_encode($adsTypeObj)
+            
         );
 
         return $this->render('AdminBundle:Default:index.html.twig', $params);
