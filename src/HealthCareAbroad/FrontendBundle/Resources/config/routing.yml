@@ -52,7 +52,47 @@ page_tags_sidebar: # Currently Not Being used! - This might be depcrecated!
     defaults: { _controller: FrontendBundle:Sidebar:tags }
     requirements:
         _method: GET|POST
+         
 
+# Combined Search routes
+frontend_search_combined_counties_specializations:
+    pattern: /{country}/{specialization}/{page}
+    defaults: { _controller: FrontendBundle:Default:listCountrySpecialization, page: 1 }
+    requirements:
+        page: \d+
+
+frontend_search_combined_counties_specializations__subSpecializations:
+    pattern: /{country}/{specialization}/{subSpecializations}/{page}
+    defaults: { _controller: FrontendBundle:Default:listCountrySubSpecialization, page: 1 }
+    requirements:
+        page: \d+
+        
+frontend_search_combined_counties_specializations_treatments:
+    pattern: /{country}/{specialization}/{treatment}/treatment/{page}
+    defaults: { _controller: FrontendBundle:Default:listCountryTreatment, page: 1 }
+    requirements:
+        page: \d+
+
+# with city        
+frontend_search_combined_counties_cities_specializations:
+    pattern: /{country}/{city}/{specialization}/{page}
+    defaults: { _controller: FrontendBundle:Default:listCitySpecialization, page: 1 }
+    requirements:
+        page: \d+
+ 
+frontend_search_combined_counties_cities_specializations__subSpecializations:
+    pattern: /{country}/{city}/{specialization}/{subSpecializations}/{page}
+    defaults: { _controller: FrontendBundle:Default:listCitySubSpecialization, page: 1 }
+    requirements:
+        page: \d+
+        
+frontend_search_combined_counties_cities_specializations_treatments:
+    pattern: /{country}/{city}/{specialization}/{treatment}/treatment/{page}
+    defaults: { _controller: FrontendBundle:Default:listCityTreatment, page: 1 }
+    requirements:
+        page: \d+
+
+        
 splash_page: # Currently Not Being used! - This might be depcrecated!
     pattern:  /{url}
     defaults: { _controller: FrontendBundle:Default:new, url: /}
