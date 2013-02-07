@@ -9,14 +9,24 @@
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
 
+
+        <!-- TODO - Breadcrumb Params should not need to specify here one by one. -->
         {% if (renderFrontendBreadcrumb is defined) and renderFrontendBreadcrumb %}
             {% set breadcrumbParams = {
+                city: city is defined ? city : null,
+                country: country is defined ? country : null,
+                treatment: treatment is defined ? treatment : null,
+                specialization: specialization is defined ? specialization : null,
+                subSpecialization: subSpecialization is defined ? subSpecialization : null,
                 institution: institution is defined ? institution : null,
+                institutionMedicalCenter: institutionMedicalCenter is defined ? institutionMedicalCenter : null,
                 route: app.request.get('_route'),
-                routeParams: app.request.get('_route_params')
+                routeParams: app.request.get('_route_params') 
             } %}
-            {% render 'FrontendBundle:Default:renderBreadcrumb' with breadcrumbParams%}
+            {% render 'FrontendBundle:Default:renderBreadcrumb' with breadcrumbParams %}
         {% endif %}
+        <!-- End of Breadcrumb -->
+
 
         {% block callout %}{% endblock %}
         
@@ -35,5 +45,3 @@
     {{ outputInlineJavascript() | raw }}
 
 {% endblock %}
-
-

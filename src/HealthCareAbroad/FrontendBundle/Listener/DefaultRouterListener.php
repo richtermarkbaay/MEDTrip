@@ -48,6 +48,11 @@ class DefaultRouterListener
             $variables = \json_decode($routeObj->getVariables(), true);
             $request->attributes->set('_controller', $controller);
             $request->attributes->set('_route_params', $variables);
+
+            // TODO - This route does not exists! should be change when error occur!
+            // Added by: Adelbert Silla 
+            // Being used in breadcrumbs for combined search.
+            $request->attributes->set('_route', 'frontend_search_combined');
         }
     }
 }
