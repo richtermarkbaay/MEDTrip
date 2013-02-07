@@ -2,7 +2,7 @@
 	<div class="span2">
 		<a href="#medicalCenterLogoModal" class="gallerypic" title="" role="button" data-toggle="modal">
             {% if institutionMedicalCenter.logo is not sameas(NULL) %}
-                {{ media(institutionMedicalCenter.logo, institutionMedicalCenter, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER_LOGO'), {alt: 'institution medical center logo'}) | raw }}
+                {{ media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw }}
             {% else %}
                  <img class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
             {% endif %}
