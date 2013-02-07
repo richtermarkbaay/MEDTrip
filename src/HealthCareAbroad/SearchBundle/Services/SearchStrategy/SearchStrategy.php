@@ -53,19 +53,25 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchInstitutionsByCountry($country)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCountry($country);
+        
+        return $result;
     }
 
     public function searchInstitutionsByCity($city)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCity($city);
+        
+        return $result;
     }
 
     public function searchMedicalCentersBySpecialization($specialization)
     {
         //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
         $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findBySpecialization($specialization);
-        //var_dump($result); exit;
+        
         return $result;
     }
 
