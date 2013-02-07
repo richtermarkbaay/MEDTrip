@@ -35,7 +35,9 @@ BEGIN
     INNER JOIN `countries` co ON co.`id` = inst.`country_id`
     LEFT JOIN `cities` ci ON ci.id = inst.`country_id`
     WHERE ins_sp.`id` = NEW.`institution_specialization_id`
-    AND tr.id = NEW.`treatment_id`;
+    AND tr.id = NEW.`treatment_id`
+    AND imc.status = 2
+    AND inst.status = 9;
     
 END; $$
 ### end institution_treatments_ai trigger definition

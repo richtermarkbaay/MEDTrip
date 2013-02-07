@@ -183,7 +183,7 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
         $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry(isset($searchTerms['countryId']) ? $searchTerms['countryId'] : $request->get('country'));
-
+        
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByCountry($country));
         $parameters = array(
@@ -191,7 +191,8 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName(),
             'routeName' => 'frontend_search_results_countries',
             'paginationParameters' => array('country' => $country->getSlug()),
-            'destinationId' => $country->getId() . '-0'
+            'destinationId' => $country->getId() . '-0',
+            'country' => $country
         );
 
         $prefix = $this->getPrefix();
@@ -218,7 +219,9 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getName().', '.$city->getCountry()->getName(),
             'routeName' => 'frontend_search_results_cities',
             'paginationParameters' => array('city' => $city->getSlug(), 'country' => $city->getCountry()->getSlug()),
-            'destinationId' => $city->getCountry()->getId() . '-' . $city->getId()
+            'destinationId' => $city->getCountry()->getId() . '-' . $city->getId(),
+            'city' => $city,
+            'country' => $city->getCountry()
         );
 
         $prefix = $this->getPrefix();
@@ -236,7 +239,7 @@ class FrontendController extends Controller
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
-
+        
         if (isset($searchTerms['termId'])) {
             $termId = $searchTerms['termId'];
         } else {
@@ -251,7 +254,8 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName(),
             'routeName' => 'frontend_search_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
-            'treatmentId' => $termId
+            'treatmentId' => $termId,
+            'specialization' => $specialization
         );
 
         $prefix = $this->getPrefix();
@@ -295,7 +299,9 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $subSpecialization->getName(),
             'routeName' => 'frontend_search_results_subSpecializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
-            'treatmentId' => $termId
+            'treatmentId' => $termId,
+            'specialization' => $specialization,
+            'subSpecialization' => $subSpecialization
         );
 
         $prefix = $this->getPrefix();
@@ -330,7 +336,8 @@ class FrontendController extends Controller
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $treatment->getName(),
             'routeName' => 'frontend_search_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
-            'treatmentId' => $termId
+            'treatmentId' => $termId,
+            'treatment' => $treatment
         );
 
         $prefix = $this->getPrefix();
@@ -338,7 +345,7 @@ class FrontendController extends Controller
         list($parameters['topCountries'], $parameters['topCities']) = array_map(
             function($destinations) use ($specialization, $treatment, $prefix) {
                 return FrontendController::appendDestinationUrls($destinations, array('specialization' => $specialization, 'treatment' => $treatment), $prefix);
-             }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment)
+            }, $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getTreatmentTopDestinations($treatment)
         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
@@ -346,6 +353,24 @@ class FrontendController extends Controller
 
     public function searchResultsRelatedAction(Request $request)
     {
+        $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+
+        if (isset($searchTerms['termId'])) {
+            $term = $this->get('services.search')->getTerm($searchTerms['termId']);
+        } else {
+            $term = $this->get('services.search')->getTerm($searchTerms['termId'], array('column' => $request->get('tag')));
+        }
+
+        if (empty($term)) {
+            throw new NotFoundHttpException();
+        }
+
+        $relatedTreatments = array();
+        foreach($this->get('services.search')->getRelatedTreatments($term['id'], $this->getPrefix()) as $t) {
+            $treatment = $t;
+            $treatment['url'] = $this->generateUrl('frontend_search_results_related', array('tag' => $request->get('tag')));
+        }
+
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array('searchLabel' => $request->get('tag')));
     }
 

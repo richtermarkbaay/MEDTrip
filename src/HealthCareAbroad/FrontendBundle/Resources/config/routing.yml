@@ -28,6 +28,51 @@ frontend_page_exception_report_create:
     defaults: { _controller: FrontendBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
+        
+frontend_page_exception_report_send:
+    pattern: /error404
+    defaults: { _controller: FrontendBundle:Default:ajaxSendErrorReport }
+    requirements:
+        _method:  GET|POST
+
+
+# Combined Search routes
+frontend_search_combined_countries_specializations:
+    pattern: /{country}/{specialization}
+    defaults: { _controller: FrontendBundle:Default:listCountrySpecialization, page: 1 }
+    requirements:
+        page: \d+
+
+frontend_search_combined_countries_specializations__subSpecializations:
+    pattern: /{country}/{specialization}/{subSpecializations}
+    defaults: { _controller: FrontendBundle:Default:listCountrySubSpecialization, page: 1 }
+    requirements:
+        page: \d+
+        
+frontend_search_combined_countries_specializations_treatments:
+    pattern: /{country}/{specialization}/{treatment}/treatment
+    defaults: { _controller: FrontendBundle:Default:listCountryTreatment, page: 1 }
+    requirements:
+        page: \d+
+
+# with city        
+frontend_search_combined_countries_cities_specializations:
+    pattern: /{country}/{city}/{specialization}
+    defaults: { _controller: FrontendBundle:Default:listCitySpecialization, page: 1 }
+    requirements:
+        page: \d+
+ 
+frontend_search_combined_countries_cities_specializations__subSpecializations:
+    pattern: /{country}/{city}/{specialization}/{subSpecializations}
+    defaults: { _controller: FrontendBundle:Default:listCitySubSpecialization, page: 1 }
+    requirements:
+        page: \d+
+        
+frontend_search_combined_countries_cities_specializations_treatments:
+    pattern: /{country}/{city}/{specialization}/{treatment}/treatment
+    defaults: { _controller: FrontendBundle:Default:listCityTreatment, page: 1 }
+    requirements:
+        page: \d+
 
 splash_page: # this is used for splash page
     pattern:  /{url}
