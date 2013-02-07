@@ -81,3 +81,9 @@ admin_exception_report_create:
     defaults: { _controller: AdminBundle:Default:errorReport }
     requirements:    
         _method:  GET|POST
+
+admin_error_reports:
+    pattern: /admin/error-reports  
+    defaults: { _controller: AdminBundle:ErrorReport:index }
+    requirements:    
+        _method:  GET

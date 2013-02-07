@@ -28,6 +28,12 @@ frontend_page_exception_report_create:
     defaults: { _controller: FrontendBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
+        
+frontend_page_exception_report_send:
+    pattern: /error404
+    defaults: { _controller: FrontendBundle:Default:ajaxSendErrorReport }
+    requirements:
+        _method:  GET|POST
 
 
 # Combined Search routes

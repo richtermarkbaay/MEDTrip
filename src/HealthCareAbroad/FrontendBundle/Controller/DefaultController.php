@@ -193,7 +193,7 @@ class DefaultController extends Controller
     {
         if($this->getRequest()->attributes->get('_route_params')){
 
-            return $this->redirect($this->generateUrl('frontend_main_homepage_index_html'));
+            return $this->redirect($this->generateUrl('main_homepage_index_html'));
         }
 
         //get IP Address
@@ -220,7 +220,7 @@ class DefaultController extends Controller
                 catch (\Exception $e) {
 
                     $request->getSession()->setFlash("error", "Failed. Please try again.");
-                    $redirectUrl = $this->generateUrl("frontend_main_homepage_index_html");
+                    $redirectUrl = $this->generateUrl("main_homepage_index_html");
                 }
             }
         }
@@ -453,5 +453,43 @@ class DefaultController extends Controller
                         'form' => $form->createView(),
                         'reportSubmitted' => true
         ));
+    }
+    
+    public function ajaxSendErrorReportAction(){
+        $output = array();
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getEntityManager();
+        
+        $errorReport = new ErrorReport();
+        $form = $this->createForm(new ErrorReportFormType(), $errorReport);
+        
+        if ($request->isMethod('POST')) {
+             $form->bind($request);
+             if ($form->isValid()) {
+                try {
+                    $errorReport->setLoggedUserId(0);
+                    $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
+                    $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
+                    $em->persist($errorReport);
+                    $em->flush();
+                    
+                    //// create event on sendEmail and dispatch
+                    $event = new CreateErrorReportEvent($errorReport);
+                    $this->get('event_dispatcher')->dispatch(ErrorReportEvent::ON_CREATE_REPORT, $event);
+                    
+                    $output = "Successfully sent error report to HealthCareAbroad";
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                    
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
+        }
+        
+        return $response;
     }
 }
