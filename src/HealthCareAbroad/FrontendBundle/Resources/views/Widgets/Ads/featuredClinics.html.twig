@@ -8,7 +8,7 @@
 
 		{% for each in featuredClinicAds %}
 		<div class="featured_item">
-		    {% set clinicUrl = path('page_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
+		    {% set clinicUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
 			<div class="general row">
 				<div class="clinic-box span2">
 					<a href="{{ clinicUrl }}">

@@ -20,7 +20,7 @@
         </div>
         <div class="media-body">
             <!--
-            <a href="{#{ path('search_frontend', {treatment_id: each.treatmentId}) }#}"><h4 class="media-heading">{{ each.title }}</h4></a>
+            <a href="{#{ path('frontend_search', {treatment_id: each.treatmentId}) }#}"><h4 class="media-heading">{{ each.title }}</h4></a>
             -->
             <a href="{{ get_treatment_url(each.treatment) }}"><h4 class="media-heading">{{ each.title }}</h4></a>
             <p>{{ each.description }}</p>

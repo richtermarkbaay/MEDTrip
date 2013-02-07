@@ -60,7 +60,7 @@ class InstitutionTwigExtension extends \Twig_Extension
     
     public function getInstitutionMedicalCenterFrontendUrl(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        return $this->router->generate('page_institutionMedicaCenter_profile', array(
+        return $this->router->generate('frontend_institutionMedicaCenter_profile', array(
             'institutionSlug' => $institutionMedicalCenter->getInstitution()->getSlug(),
             'imcSlug' => $institutionMedicalCenter->getSlug()
         ));

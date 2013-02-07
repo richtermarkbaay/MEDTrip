@@ -22,7 +22,7 @@ var Institution = {
                     // invalid form
                 	_json = $.parseJSON(json.responseText);
                 	$.each(_json.html, function(key, item){
-                		$(_formId).find('.'+item.field).addClass('error').find('.help-inline').html(item.error)
+                		$(_formId).find('.'+item.field).addClass('error').find('.help-inline').html(item.error);
                 	});
                     
                 }

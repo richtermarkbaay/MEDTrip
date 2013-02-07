@@ -31,7 +31,7 @@
     		<div id="signup">
     			<span class="signup-heading">Do you want to be notified when we launch HealthcareAbroad?</span>
     			
-                <form id="newsletterForm" action="{{ path('newsletter_new') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                <form id="newsletterForm" action="{{ path('frontend_newsletter_new') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                  {{ form_errors(form) }}
                   {{ form_widget(form.email, {attr: {'placeholder':'Enter your email address'}}) }}
                   <button class="btn" id="newsletterButton">Notify Me</button>
