@@ -1,6 +1,5 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
-
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -45,7 +44,8 @@ class SearchService
     {
         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
-        return $this->transformResults($this->searchStrategy->search($searchParams));
+        return $this
+            ->transformResults($this->searchStrategy->search($searchParams));
     }
 
     /**
@@ -59,24 +59,25 @@ class SearchService
     {
         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
-        return $this->transformResults($this->searchStrategy->search($searchParams));
+        return $this
+            ->transformResults($this->searchStrategy->search($searchParams));
     }
 
     public function getTermDocuments(SearchParameterBag $searchParams)
     {
         $filters = array();
 
-//         if ($searchParams->get('specializationId', 0)) {
-//             $filters['specialization_id'] = $searchParams->get('specializationId');
-//         }
+        //         if ($searchParams->get('specializationId', 0)) {
+        //             $filters['specialization_id'] = $searchParams->get('specializationId');
+        //         }
 
-//         if ($searchParams->get('subSpecializationId', 0)) {
-//             $filters['sub_specialization_id'] = $searchParams->get('subSpecializationId');
-//         }
+        //         if ($searchParams->get('subSpecializationId', 0)) {
+        //             $filters['sub_specialization_id'] = $searchParams->get('subSpecializationId');
+        //         }
 
-//         if ($searchParams->get('treatmentId', 0)) {
-//             $filters['treatment_id'] = $searchParams->get('treatmentId');
-//         }
+        //         if ($searchParams->get('treatmentId', 0)) {
+        //             $filters['treatment_id'] = $searchParams->get('treatmentId');
+        //         }
 
         if ($searchParams->get('countryId', 0)) {
             $filters['country_id'] = $searchParams->get('countryId');
@@ -86,7 +87,8 @@ class SearchService
             $filters['city_id'] = $searchParams->get('cityId');
         }
 
-        return $this->searchStrategy->getTermDocuments($searchParams, array('filters' => $filters));
+        return $this->searchStrategy
+            ->getTermDocuments($searchParams, array('filters' => $filters));
     }
 
     private function transformResults(array $results)
@@ -113,17 +115,20 @@ class SearchService
 
     public function searchBySpecialization($specialization)
     {
-        return $this->searchStrategy->searchMedicalCentersBySpecialization($specialization);
+        return $this->searchStrategy
+            ->searchMedicalCentersBySpecialization($specialization);
     }
 
     public function searchBySubSpecialization($subSpecialization)
     {
-        return $this->searchStrategy->searchMedicalCentersBySubSpecialization($subSpecialization);
+        return $this->searchStrategy
+            ->searchMedicalCentersBySubSpecialization($subSpecialization);
     }
 
     public function searchByTreatment($treatment)
     {
-        return $this->searchStrategy->searchMedicalCentersByTreatment($treatment);
+        return $this->searchStrategy
+            ->searchMedicalCentersByTreatment($treatment);
     }
 
     public function getMedicalCentersByTerm($term, $type = null)
@@ -135,4 +140,79 @@ class SearchService
     {
         return $this->searchStrategy->getTerm($value, $options);
     }
+
+    public function getRelatedTreatments($termId, $urlPrefix = '')
+    {
+        $categorized = array();
+
+        //TODO: merge/optimize loops
+        $sId = 0;
+        $loopCounter = 1;
+        $results = $this->searchStrategy->getRelatedTreatments($termId);
+        $countItems = count($results);
+        foreach ($results as $row) {
+            if ($sId != $row['specialization_id']) {
+                if ($sId != 0) {
+                    $specialization['subCategories'] = $temps;
+                    $categorized[] = $specialization;
+                    $temps = array();
+                }
+
+                $specialization = array();
+                $specialization['id'] = $row['specialization_id'];
+                $specialization['name'] = $row['specialization_name'];
+                $specialization['slug'] = $row['specialization_slug'];
+//                 $specialization['subSpecialization'] = array();
+//                 $specialization['treatments'] = array();
+
+                $sId = $row['specialization_id'];
+            }
+
+            $temp = array();
+            if (isset($row['sub_specialization_id'])) {
+                $temp['subSpecializationId'] = $row['sub_specialization_id'];
+                $temp['subSpecializationName'] = $row['sub_specialization_name'];
+                $temp['subSpecializationSlug'] = $row['sub_specialization_slug'];
+            }
+
+            if (isset($row['treatment_id'])) {
+                $temp['treatmentId'] = $row['treatment_id'];
+                $temp['treatmentName'] = $row['treatment_name'];
+                $temp['treatmentSlug'] = $row['treatment_slug'];
+            }
+
+            $temps[] = $temp;
+
+            if ($loopCounter++ == $countItems) {
+                $specialization['subCategories'] = $temps;
+                $categorized[] = $specialization;
+                $temps = array();
+            }
+        }
+
+        return $categorized;
+    }
+
+    //         specialization 1
+    //             TREATMENTS
+    //                 treatment 1
+    //                 treatment 2
+    //             SUBSPECIALIZATIONS
+    //                 subspecialization 1
+    //                     TREATMENTS
+    //                         treatment 3
+    //                 subspecialization 2
+    //                     TREATMENTS
+    //                         treatment 4
+    //                         treatment 5
+    //         specialization 2
+    //             SUBSPECIALIZATION
+    //                 subspecialization 3
+    //                     TREATMENTS
+    //                         treatment 6
+    //         specialization 3
+    //             TREATMENTS
+    //                 treatment 7
+    //                 treatment 8
+
 }
