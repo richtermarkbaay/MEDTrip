@@ -18,6 +18,7 @@ class InquiryController extends Controller
 {
     public function indexAction()
     {
+        throw $this->createNotFoundException("Only supports AJAX request");
     	$form = $this->createForm(new InquiryType());
     	
     	if ($this->getRequest()->isMethod('POST')) {

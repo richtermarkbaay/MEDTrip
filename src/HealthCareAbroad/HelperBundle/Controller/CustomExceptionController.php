@@ -46,9 +46,18 @@ class CustomExceptionController extends ExceptionController
             403 => 'Access to this page is forbidden!',
             500 => 'Oops! Something is broken'
         );
-        
+        if($this->request->server->has('HTTP_REFERER')){
+            
+            if (\preg_match('/healthcareabroad/i', $this->request->server->get('HTTP_REFERER'))) {
+                $referer = $this->request->server->get('HTTP_REFERER');
+            }
+            
+        }else{
+            $referer = null;
+        }
+		
         return $templating->renderResponse(
-            $this->findTemplate($templating, $format, $code, $isDebug),
+            $this->findTemplate($templating, $format, $code, $isDebug, $referer ),
         	array(
                 'status_code'    => $code,
                 'status_text'    => isset(Response::$statusTexts[$code]) && Response::$statusTexts[$code]  ? Response::$statusTexts[$code] : 'Error',
@@ -57,6 +66,7 @@ class CustomExceptionController extends ExceptionController
                 'logger'         => $logger,
                 'currentContent' => $currentContent,
         		'form'			 => $form->createView(),
+    	        'referer'        => $referer
             )
         );
     }
@@ -90,10 +100,10 @@ class CustomExceptionController extends ExceptionController
             }
             else {
                 // render 404 page
-                
+                $template = new TemplateReference('FrontendBundle', 'Exception', 'error404', 'html', 'twig');
             }   
         }
-        
+ 
         if ($templating->exists($template)) {
             return $template;
         }
