@@ -54,11 +54,11 @@
                 <li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li>
             {% endif %}
             
-            <!-- Modal Medical Center Status -->
+            <!-- Modal Multiple Institution Inquiry -->
             	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-            	     with { modalId: 'modal_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+            	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
             	%}
-           <!-- end Modal Medical Center Status -->
+           <!-- end Modal Multiple Institution Inquiry -->
         </ul>    
     </div>
 </div>
@@ -66,8 +66,9 @@
     <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
     <script type="text/javascript">
         $('#email_multiple').click(function(){
-        	$('div#modal_institution_inquiry_form').modal('show');
+        	$('div#modal_multiple_institution_inquiry_form').modal('show');
             return false;
         });
+
     </script>
 {% endblock %}

@@ -12,7 +12,13 @@ frontend_single_center_institution_profile:
 
 frontend_multiple_center_ajaxSaveInstitutionInquiry:
     pattern: /hospital/{institutionId}/inquiry
-    defaults: {_controller: FrontendBundle:Institution:ajaxSaveInstitutionInquiry }
+    defaults: {_controller: FrontendBundle:Inquiry:ajaxSaveInquiry }
+    requirements:
+        _method:  GET|POST
+
+frontend_institutionMedicaCenter_ajaxSaveImcInquiry:
+    pattern: /hospital/{institutionId}/medical-center/{imcId}/inquiry
+    defaults: {_controller: FrontendBundle:Inquiry:ajaxSaveInquiry }
     requirements:
         _method:  GET|POST
         
