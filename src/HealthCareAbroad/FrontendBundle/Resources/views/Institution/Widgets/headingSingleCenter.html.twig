@@ -22,7 +22,15 @@
 	</div>
 
 	<div class="contact_clinic span6">
-    	{% if number %}<a href="tel:{{ number }}" class="call btn green">Call Us</a>{% endif %}
+    	{% if number %}
+    	    <a id="institution-call" href="javascript:void(0)" class="call btn green">Call Us</a>
+            <script type="text/javascript">
+				$('#institution-call').tooltip({
+					title: '<h5><small>Landline: </small>{{ number }}</h5>',
+					html: true, delay: 0, animation: true, trigger: 'click'
+				});
+			</script>    
+    	{% endif %}
     	{% if email %}<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
     	{% if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif %}
 	</div>

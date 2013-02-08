@@ -25,18 +25,18 @@
     		    {% for _day, _data in decodedBusinessHours %}
     		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
                     {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
-        		    <tr>
-                        <td>{{ _day | upper }}</td>
-                        {% if _isClosed %}
-                            <td>Closed</td>
-                        {% elseif _isWholeDayOpen %}
-                            <td>Open 24 Hours</td>
-                        {% else %}
-                            <td>{{ _data.from }}</td>
-                            <td>-</td>
-                            <td>{{ _data.to }}</td>
-                        {% endif %}
-                    </tr>
+                    {% if not _isClosed %}
+            		    <tr>
+                            <td>{{ _day | upper }}</td>
+                            {% if _isWholeDayOpen %}
+                                <td colspan="3" style="text-align:left">Open 24 Hours</td>
+                            {% else %}
+                                <td>{{ _data.from }}</td>
+                                <td>-</td>
+                                <td>{{ _data.to }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
     			{% endfor %}
     		{% endif %}
 
