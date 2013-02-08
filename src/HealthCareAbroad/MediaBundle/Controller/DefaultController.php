@@ -18,10 +18,9 @@ class DefaultController extends Controller
     public function addAction(Request $request)
     {
         $imc = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('id'));
-
         return $this->render('MediaBundle:Default:addImcMedia.html.twig', array(
                         'institution' => $imc->getInstitution(),
-                        'imc' => $imc,
+                        'institutionMedicalCenter' => $imc,
                         'multiUpload' => $request->get('multiUpload'),
                         'context' => $request->get('context'),
                         'contextId' => $request->get('contextId'),
@@ -83,16 +82,24 @@ class DefaultController extends Controller
         $fileBag = $request->files;
         
         if ($fileBag->get('file')) {
-             
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $imc);
+            $multiUpload = $request->get('multiUpload');
+            $isLogo = $request->get('isLogo', false);
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $imc->getInstitution());
             if(is_object($result)) {
         
-                //$this->institutionMedicalCenter->setLogo($result);
-                $imc->addMedia($result);
-                $this->get('services.institution')->saveMediaToGallery($imc->getInstitution(), $result);
+                $media = $result;
+                $isLogo ? $imc->setLogo($media) : '';
+                $imc->addMedia($media);
+                $this->get('services.institution')->saveMediaToGallery($imc->getInstitution(), $media);
                 $this->get('services.institution_medical_center')->save($imc);
+                $response->create('File saved to Medical Center', 200);
             }
-            $response->create('File saved to Medical Center', 200);
+            
+            if (isset($multiUpload) && $multiUpload === '0') {
+                $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
+                $response = $this->redirect($this->generateUrl('admin_media_add',array('context' => constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'),'id' => $imc->getId())));
+            }
+            
         }
         else {
             $response->create('File not detected', 415);
