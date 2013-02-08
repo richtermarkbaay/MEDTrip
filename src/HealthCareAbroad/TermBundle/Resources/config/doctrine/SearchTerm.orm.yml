@@ -1,0 +1,54 @@
+HealthCareAbroad\TermBundle\Entity\SearchTerm:
+    type: entity
+    table: search_terms
+    repositoryClass: HealthCareAbroad\TermBundle\Repository\SearchTermRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        documentId:
+            type: bigint
+            nullable: false
+            column: document_id
+        type:
+            type: integer
+            length: 2
+            nullable: false
+        status:
+            type: integer
+            length: 2
+            nullable: false
+    manyToOne:
+        term:
+            targetEntity: HealthCareAbroad\TermBundle\Entity\Term
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                term_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_medical_center_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        institution:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    
+        
+    
