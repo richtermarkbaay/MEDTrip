@@ -16,17 +16,19 @@
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
             {# do this to save query #}
+            {# set institution = searchResultVo.institution #}
             
-            {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+            {# get_institution_medical_center_frontend_url(center, institution) #}
+            {# include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
-                          url: get_institution_medical_center_frontend_url(center),
+                          url: get_institution_medical_center_frontend_url(center, institution),
                           logo: center.logo ? media(center.logo, center.institution, 'default', {'class': 'search-entry-thumb'}) : null,
                           name: center.name,
                           mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                           streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }
                }
-           %}
+           #}
         {% endfor %}
 
         {% if searchResults.isPaginable %}

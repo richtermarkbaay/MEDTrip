@@ -91,6 +91,7 @@ class InstitutionRepository extends EntityRepository
 
     public function getInstitutionsByCountry($country)
     {
+        // FIXME: This query does not consider institutions that have no institution specializations, if this will be used in search strategy
         $dql = "SELECT a
                 FROM InstitutionBundle:Institution a
                 INNER JOIN a.institutionMedicalCenters b

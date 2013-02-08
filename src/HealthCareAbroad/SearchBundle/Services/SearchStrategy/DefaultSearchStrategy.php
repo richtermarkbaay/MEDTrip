@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services\SearchStrategy;
 
+use HealthCareAbroad\SearchBundle\Services\Admin\TreatmentsSearchResultBuilder;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use Doctrine\DBAL\Connection;
@@ -75,7 +77,7 @@ class DefaultSearchStrategy extends SearchStrategy
     }
 
     //TODO: query will not give correct results in all cases; this should probably be
-    //renamed to be more specific.
+    //renamed to something more specific.
     public function getTermDocuments(SearchParameterBag $searchParams, $options = array(), $uniqueTermDocument = true)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
@@ -100,20 +102,148 @@ class DefaultSearchStrategy extends SearchStrategy
             }
         }
 
-        //This should always be placed somewhere at the end
-//         if (isset($options['group_by'])) {
-//             $sql .= " GROUP BY = {$options['group_by']} ";
-//         }
-
         if ($uniqueTermDocument) {
             $sql .= " GROUP BY term_document_id ";
         }
 
         $stmt = $connection->prepare($sql);
-
-//print_r($stmt->getWrappedStatement()); exit;
-
         $stmt->bindValue('termId', $searchParams->get('treatmentId'));
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getRelatedTreatments($termId)
+    {
+
+//         specialization 1
+//             TREATMENTS
+//                 treatment 1
+//                 treatment 2
+//             SUBSPECIALIZATIONS
+//                 subspecialization 1
+//                     TREATMENTS
+//                         treatment 3
+//                 subspecialization 2
+//                     TREATMENTS
+//                         treatment 4
+//                         treatment 5
+//         specialization 2
+//             SUBSPECIALIZATION
+//                 subspecialization 3
+//                     TREATMENTS
+//                         treatment 6
+//         specialization 3
+//             TREATMENTS
+//                 treatment 7
+//                 treatment 8
+/*
+        return array(
+            array(
+                'specialization_id' => 1,
+                'specialization_name' => 'Specialization 1',
+                'specialization_slug' => 'specialization-1',
+                'sub_specialization_id' => null,
+                'sub_specialization_name' => null,
+                'sub_specialization_slug' => null,
+                'treatment_id' => 1,
+                'treatment_name' => 'Treatment 1',
+                'treatment_slug' => 'treatment-1'
+            ),
+            array(
+                'specialization_id' => 1,
+                'specialization_name' => 'Specialization 1',
+                'specialization_slug' => 'specialization-1',
+                'sub_specialization_id' => null,
+                'sub_specialization_name' => null,
+                'sub_specialization_slug' => null,
+                'treatment_id' => 2,
+                'treatment_name' => 'Treatment 2',
+                'treatment_slug' => 'treatment-2'
+             ),
+            array(
+                'specialization_id' => 1,
+                'specialization_name' => 'Specialization 1',
+                'specialization_slug' => 'specialization-1',
+                'sub_specialization_id' => 1,
+                'sub_specialization_name' => 'SubSpecialization 1',
+                'sub_specialization_slug' => 'subspecialization-1',
+                'treatment_id' => 3,
+                'treatment_name' => 'Treatment 3',
+                'treatment_slug' => 'treatment-3'
+            ),
+            array(
+                'specialization_id' => 1,
+                'specialization_name' => 'Specialization 1',
+                'specialization_slug' => 'specialization-1',
+                'sub_specialization_id' => 2,
+                'sub_specialization_name' => 'SubSpecialization 2',
+                'sub_specialization_slug' => 'subspecialization-2',
+                'treatment_id' => 4,
+                'treatment_name' => 'Treatment 4',
+                'treatment_slug' => 'treatment-4'
+            ),
+            array(
+                'specialization_id' => 1,
+                'specialization_name' => 'Specialization 1',
+                'specialization_slug' => 'specialization-1',
+                'sub_specialization_id' => 2,
+                'sub_specialization_name' => 'SubSpecialization 2',
+                'sub_specialization_slug' => 'subspecialization-2',
+                'treatment_id' => 5,
+                'treatment_name' => 'Treatment 5',
+                'treatment_slug' => 'treatment-5'
+            ),
+            array(
+                'specialization_id' => 2,
+                'specialization_name' => 'Specialization 2',
+                'specialization_slug' => 'specialization-2',
+                'sub_specialization_id' => 3,
+                'sub_specialization_name' => 'SubSpecialization 3',
+                'sub_specialization_slug' => 'subspecialization-3',
+                'treatment_id' => 6,
+                'treatment_name' => 'Treatment 6',
+                'treatment_slug' => 'treatment-6'
+            ),
+            array(
+                'specialization_id' => 3,
+                'specialization_name' => 'Specialization 3',
+                'specialization_slug' => 'specialization-3',
+                'sub_specialization_id' => null,
+                'sub_specialization_name' => null,
+                'sub_specialization_slug' => null,
+                'treatment_id' => 7,
+                'treatment_name' => 'Treatment 7',
+                'treatment_slug' => 'treatment-7'
+            ),
+            array(
+                'specialization_id' => 3,
+                'specialization_name' => 'Specialization 3',
+                'specialization_slug' => 'specialization-3',
+                'sub_specialization_id' => null,
+                'sub_specialization_name' => null,
+                'sub_specialization_slug' => null,
+                'treatment_id' => 8,
+                'treatment_name' => 'Treatment 8',
+                'treatment_slug' => 'treatment-8'
+            )
+        );
+*/
+        $connection = $this->container->get('doctrine')->getConnection();
+
+        $sql ="
+            SELECT b.id specialization_id, b.name specialization_name, b.slug specialization_slug, c.id sub_specialization_id, c.name sub_specialization_name, c.slug sub_specialization_slug, d.id treatment_id, d.name treatment_name, d.slug treatment_slug
+            FROM search_terms AS a
+            LEFT JOIN specializations AS b ON a.specialization_id = b.id
+            LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
+            LEFT JOIN treatments AS d ON a.treatment_id = d.id
+            WHERE a.term_id = :termId
+            ORDER BY b.id, c.id, d.id
+
+        ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('termId', $termId);
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -485,7 +615,6 @@ class DefaultSearchStrategy extends SearchStrategy
         return $query;
     }
 
-    //TODO: implementation
     public function getTerm($term, $options = array())
     {
         $connection = $this->container->get('doctrine')->getConnection();
@@ -500,10 +629,10 @@ class DefaultSearchStrategy extends SearchStrategy
             case 'id':
                 $sql .= ' WHERE id = :term ';
                 break;
-            case 'slug':
+            case 'name':
                 $sql .= ' WHERE name = :term ';
                 break;
-            case 'name':
+            case 'slug':
                 $sql .= ' WHERE slug = :term ';
                 break;
         }
@@ -511,7 +640,6 @@ class DefaultSearchStrategy extends SearchStrategy
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', $term);
         $stmt->execute();
-
 
         //all columns are unique
         return $stmt->fetch(\PDO::FETCH_ASSOC);

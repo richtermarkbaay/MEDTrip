@@ -183,7 +183,7 @@ class FrontendController extends Controller
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
         $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry(isset($searchTerms['countryId']) ? $searchTerms['countryId'] : $request->get('country'));
-        
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByCountry($country));
         $parameters = array(
@@ -239,7 +239,7 @@ class FrontendController extends Controller
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'));
-        
+
         if (isset($searchTerms['termId'])) {
             $termId = $searchTerms['termId'];
         } else {
@@ -365,13 +365,10 @@ class FrontendController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $relatedTreatments = array();
-        foreach($this->get('services.search')->getRelatedTreatments($term['id'], $this->getPrefix()) as $t) {
-            $treatment = $t;
-            $treatment['url'] = $this->generateUrl('frontend_search_results_related', array('tag' => $request->get('tag')));
-        }
-
-        return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array('searchLabel' => $request->get('tag')));
+        return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
+                        'searchLabel' => $request->get('tag'),
+                        'results' => $this->get('services.search')->getRelatedTreatments($term['id'])
+        ));
     }
 
     public function ajaxLoadTreatmentsAction(Request $request)
