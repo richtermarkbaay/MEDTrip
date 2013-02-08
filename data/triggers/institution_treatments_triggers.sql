@@ -7,8 +7,6 @@
 # @date: February 4, 2013
 #
 
-DELIMITER $$
-
 ##----------------------
 # AFTER INSERT institution_treatments trigger.
 #
@@ -27,7 +25,7 @@ BEGIN
     
     -- insert search terms for this added institution treatment
     INSERT INTO `search_terms` (`term_id`, `institution_id`, `institution_medical_center_id`, `term_document_id`, `document_id`, `type`, `specialization_id`, `sub_specialization_id`, `treatment_id`, `country_id`, `city_id`, `specialization_name`, `sub_specialization_name`, `treatment_name`, `country_name`, `city_name`, `status`)
-    SELECT td.`term_id`, inst.`id` as institution_id, imc.`id` as institution_medical_center_id, td.`id` as term_document_id, td.`document_id`, td.`type`,  sp.`id` as specialization_id, NULL as sub_specialization_id, tr.id as treatment_id, inst.`country_id`, inst.`city_id`, sp.`name` as specialization, NULL as sub_specialization, tr.`name` as treatment, co.`name` as country, ci.`name` as city, 1 as status  
+    SELECT td.`term_id`, inst.`id` as institution_id, imc.`id` as institution_medical_center_id, td.`id` as term_document_id, td.`document_id`, td.`type`,  sp.`id` as specialization_id, NULL as sub_specialization_id, tr.id as treatment_id, inst.`country_id`, inst.`city_id`, sp.`name` as specialization, NULL as sub_specialization, tr.`name` as treatment, co.`name` as country, ci.`name` as city, (IF(imc.status = @ACTIVE_IMC_STATUS AND inst.status = @ACTIVE_INSTITUTION_STATUS, 1, 0)) as status  
     FROM `term_documents` td
     INNER JOIN `treatments` tr ON td.`document_id` = tr.`id` AND td.`type` = @DOCUMENT_TYPE_TREATMENT 
     INNER JOIN `specializations` sp ON tr.`specialization_id` = sp.`id`
@@ -38,11 +36,10 @@ BEGIN
     LEFT JOIN `cities` ci ON ci.id = inst.`country_id`
     WHERE ins_sp.`id` = NEW.`institution_specialization_id`
     AND tr.id = NEW.`treatment_id`
-    AND imc.status = 2
-    AND inst.status = 9
+    
     -- union subspecializations of this added treatment
     UNION
-    SELECT td.`term_id`, inst.`id` as institution_id, imc.`id` as institution_medical_center_id, td.`id` as term_document_id, td.`document_id`, td.`type`,  sp.`id` as specialization_id, sub_sp.id as sub_specialization_id, tr.id as treatment_id, inst.`country_id`, inst.`city_id`, sp.`name` as specialization, sub_sp.`name` as sub_specialization, tr.`name` as treatment, co.`name` as country, ci.`name` as city, 1 as status
+    SELECT td.`term_id`, inst.`id` as institution_id, imc.`id` as institution_medical_center_id, td.`id` as term_document_id, td.`document_id`, td.`type`,  sp.`id` as specialization_id, sub_sp.id as sub_specialization_id, tr.id as treatment_id, inst.`country_id`, inst.`city_id`, sp.`name` as specialization, sub_sp.`name` as sub_specialization, tr.`name` as treatment, co.`name` as country, ci.`name` as city, (IF(imc.status = @ACTIVE_IMC_STATUS AND inst.status = @ACTIVE_INSTITUTION_STATUS, 1, 0)) as status
     FROM `term_documents` td
     INNER JOIN `sub_specializations` sub_sp ON td.`document_id` = sub_sp.`id` AND td.`type` = @DOCUMENT_TYPE_SUB_SPECIALIZATION
     INNER JOIN `treatment_sub_specializations` tr_sub_sp ON sub_sp.`id` = tr_sub_sp.`sub_specialization_id`
@@ -55,9 +52,7 @@ BEGIN
     LEFT JOIN `cities` ci ON ci.id = inst.`country_id`
     WHERE 1
     AND ins_sp.`id` = NEW.`institution_specialization_id`
-    AND tr.id = NEW.`treatment_id`
-    AND imc.status = @ACTIVE_IMC_STATUS
-    AND inst.status = @ACTIVE_INSTITUTION_STATUS;
+    AND tr.id = NEW.`treatment_id`;
 END; $$
 ### end institution_treatments_ai trigger definition
 
