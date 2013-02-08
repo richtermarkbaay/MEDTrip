@@ -8,11 +8,6 @@
         
         {% block wrappedContent %}
         
-        <div class="span12">
-            <h1>Sign-in</h1>
-        </div>
-        
-        <div class="maincontent">
             <div class="span6">
                 <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
                 
@@ -52,7 +47,6 @@
                 <a class="btn btn-large btn-primary" href="{{ path('institution_signUp') }}">Join Now!</a>
                     
             </div><!--End of span5-->
-        </div>
              
         {% endblock %}
         
