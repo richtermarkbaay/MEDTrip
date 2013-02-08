@@ -1,4 +1,4 @@
-{% set number = institution.contactNumber  %}
+{% set number = institution.contactNumber %}
 {% set number = json_decode(number) | join %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
@@ -35,22 +35,40 @@
         </div>
         <ul class="contact_now span5">
             {% if number %}
-                <li><a class="call btn orange" href="tel:{{ number }}">Call Us</a></li>
+                <li>
+                    <a id="institution-call" class="call btn orange" href="javascript:void(0)">Call Us</a>
+                    <script type="text/javascript">
+						$('#institution-call').tooltip({
+							title: '<h5><small>Landline: </small>{{ number }}</h5>',
+							html: true, delay: 0, animation: true, trigger: 'click'
+						});
+					</script>
+                </li>
             {% endif %}
 
             {% if institution.contactEmail %}
-                <li><a class="email btn orange" href="mailto:{{ institution.contactEmail }}">Email</a></li>
+                <li><a class="email btn orange" id="email_multiple" href="mailto:{{ institution.contactEmail }}">Email</a></li>
             {% endif %}
 
             {% if mainWebsites %}
                 <li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li>
             {% endif %}
             
-            <!-- Modal Medical Center Status -->
+            <!-- Modal Multiple Institution Inquiry -->
             	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-            	     with { modalId: 'modal_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+            	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
             	%}
-           <!-- end Modal Medical Center Status -->
+           <!-- end Modal Multiple Institution Inquiry -->
         </ul>    
     </div>
 </div>
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
+    <script type="text/javascript">
+        $('#email_multiple').click(function(){
+        	$('div#modal_multiple_institution_inquiry_form').modal('show');
+            return false;
+        });
+
+    </script>
+{% endblock %}
