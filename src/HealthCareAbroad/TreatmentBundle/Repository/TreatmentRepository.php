@@ -121,7 +121,8 @@ class TreatmentRepository extends EntityRepository
                "LEFT JOIN specializations AS b ON a.specialization_id = b.id " .
                "LEFT JOIN treatment_sub_specializations AS c ON a.id = c.treatment_id " .
                "LEFT JOIN sub_specializations AS d ON c.sub_specialization_id = d.id ".
-               "WHERE a.specialization_id = :specializationId AND a.status = :treatmentStatus";
+               "WHERE a.specialization_id = :specializationId AND a.status = :treatmentStatus ".
+                "ORDER BY d.name, a.name";
 
         $params = array(
             'specializationId' => $specializationId,

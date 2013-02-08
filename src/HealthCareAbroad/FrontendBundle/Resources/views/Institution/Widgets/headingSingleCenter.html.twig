@@ -31,7 +31,24 @@
 				});
 			</script>    
     	{% endif %}
-    	{% if email %}<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
+    	{% if email %}<a href="mailto:{{ email }}" id="email_single" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
     	{% if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif %}
+    	
+    	<!-- Modal Medical Center Status -->
+        	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+        	     with { modalId: 'modal_single_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+        	%}
+       <!-- end Modal Medical Center Status -->
 	</div>
 </div>
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
+    <script type="text/javascript">
+        $('#email_single').click(function(){
+        	$('div#modal_single_institution_inquiry_form').modal('show');
+            return false;
+        });
+
+    </script>
+{% endblock %}
