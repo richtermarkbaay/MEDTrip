@@ -8,9 +8,7 @@
     <div id="details" class="row">
         <div id="main_content" class="span8">
             <header class="filters">
-                <div class="pull-left">
-                    <h2 class="total">{{ searchResults.getTotalResults }} <small>Results Found</small></h2>
-                </div>
+                <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> Results Found</h2>
             </header>
             {% for center in searchResults %}
                 {% set rating = random(5) %}
