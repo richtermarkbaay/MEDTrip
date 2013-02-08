@@ -7,9 +7,17 @@
 <div class="aside_wrapper">
     {% for each in commonTreatments %}
 
+	    {% if each.externalUrl %}
+	        {% set link = each.externalUrl %}
+	        {% set target = '_blank' %}
+	    {% else %}
+	        {% set link = get_treatment_url(each.treatment) %}
+	        {% set target = '' %}
+	    {% endif %}
+    
     <div class="media">
         <div class="image_preview">
-            <a class="pull-left" href="#">
+            <a class="pull-left" href="{{ link }}" target="{{ target }}">
                 {% if (each.media is defined) and each.media %}
                     {{ media(each.media, each, 'default', {class: 'media-object img-circle'}) | raw }}
                 {% else %}
@@ -19,10 +27,7 @@
             </a>
         </div>
         <div class="media-body">
-            <!--
-            <a href="{#{ path('frontend_search', {treatment_id: each.treatmentId}) }#}"><h4 class="media-heading">{{ each.title }}</h4></a>
-            -->
-            <a href="{{ get_treatment_url(each.treatment) }}"><h4 class="media-heading">{{ each.title }}</h4></a>
+            <a href="{{ link }}" target="{{ target }}"><h4 class="media-heading" target="_blank">{{ each.title }}</h4></a>
             <p>{{ each.description }}</p>
         </div>
     </div>

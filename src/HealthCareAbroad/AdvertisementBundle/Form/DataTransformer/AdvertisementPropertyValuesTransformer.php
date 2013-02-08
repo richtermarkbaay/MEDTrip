@@ -164,9 +164,12 @@ class AdvertisementPropertyValuesTransformer implements DataTransformerInterface
             $property = $each->getAdvertisementPropertyName();
             $advertisementType = $property->getDataType();
 
+            if(is_null($each->getValue())) {
+                $each->setValue('');
+            }
 
-            // If value is null OR empty array OR empty string with columnType collection
-            if(is_null($each->getValue()) || (is_array($each->getValue()) && !count($each->getValue())) || (is_string($each->getValue()) && $advertisementType->getColumnType() == 'collection')) {
+            // If value is empty array OR empty string with columnType collection
+            if((is_array($each->getValue()) && !count($each->getValue())) || (is_string($each->getValue()) && $advertisementType->getColumnType() == 'collection')) {
                 $advertisementPropertyValues->remove($i); continue;
 
             } elseif (is_object($each->getValue()) || is_array($each->getValue())) { // If value is object

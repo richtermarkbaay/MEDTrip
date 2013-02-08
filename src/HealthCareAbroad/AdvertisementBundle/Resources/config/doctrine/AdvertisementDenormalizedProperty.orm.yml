@@ -57,6 +57,12 @@ HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty:
             fixed: false
             nullable: false
             column: video_url
+        externalUrl:
+            type: string
+            length: 200
+            fixed: false
+            nullable: false
+            column: external_url
         highlights:
             type: text
             nullable: false
