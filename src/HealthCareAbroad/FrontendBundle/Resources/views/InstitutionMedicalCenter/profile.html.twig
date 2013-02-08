@@ -6,7 +6,8 @@
 {% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
-{% set coordinates = institutionMedicalCenter.coordinates ? institutionMedicalCenter.coordinates : institution.coordinates %}
+
+
 {% block callout %}
     {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
         {% block calloutContent %}
@@ -33,6 +34,14 @@
 {% endblock %}
 
 {% block content %}
+
+    <!-- Set map coordinates by LatLong or Address -->
+    {% if institutionMedicalCenter.coordinates %}
+        {% set coordinates = institutionMedicalCenter.coordinates %}
+    {% else %}
+        {% set coordinates = medical_center_complete_address_to_array(institutionMedicalCenter, ['address'])|join(',') ~ ',' ~ institution_address_to_array(institutionMedicalCenter.institution, ['city', 'country'])|join(',') %}
+    {% endif %}
+
     <div id="details" class="row">
         <div id="main_content" class="span8">
 
@@ -53,7 +62,7 @@
 
         <aside id="aside_content" class="span4">
 
-            {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: [] } %}
+            {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
             {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
                 with { businessHours: institutionMedicalCenter.businessHours } %}
