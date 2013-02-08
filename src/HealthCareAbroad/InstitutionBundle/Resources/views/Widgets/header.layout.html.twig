@@ -1,44 +1,27 @@
-<header id="banner">
-	<div class="container">
-		<div class="row">
-			<div class="span4">
-				<div class="logo">
-					<a href="{{ path('institution_homepage') }}"><img alt="healthcareabroad" src="{{ asset('images/institution/logo.png') }}"></a>
-				</div>
-			</div>
-			<div class="pull-right">
-				<form action="{{ path('institution_medicalCenter_search') }}" class="navbar-search pull-left">
-					<input id="searchKey" name="searchKey" type="text" placeholder="Search" class="search-query">
-				</form>
-				
-				<div class="pull-left">
-                    <div class="dropdown"> 
-                        <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#help"> Help <b class="caret"></b> </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li><a href="{{ path('institution_feedback_add')}}">Feedback</a></li>
-                            <li><a href="faq.html">FAQ</a></li>
-                        </ul>
-                    </div>
-                </div>
-                
-				<div class="pull-left">
-					<p>you are logged in as</p>
-				</div>
-				<div class="pull-right">
-                    <div class="dropdown"> 
-                        <a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#"> {{ app.user.username }} <b class="caret"></b> </a>
-                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <li><a href="{{ path('institution_editAccount') }}">Manage Account Profile</a></li>
-                            <li><a href="#">Invite User</a></li>
-                            <li><a href="{{ path('institution_logout')}}">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-			</div>
-		</div>
-	</div>
-	<!--End of container -->
-	
+ <header>
+    <div class="container toolbar">
+        <div class="row-fluid">
+            <div class="span4">
+                <a href="#"><i class="logo"></i></a>
+            </div>
+            <div class="btn-group pull-right">
+                <a class="btn btn-misc" href="#"><i class="icon-user"></i></a>
+                <a class="btn btn-misc dropdown-toggle" data-toggle="dropdown" href="#"><i class="caret"></i></a>
+                <ul class="dropdown-menu">
+                    <li class="nav-header"> Manage Account</li>
+                    <li><a href="{{ path('institution_editAccount') }}"><i class="icon-eye-open"></i> View Account</a> </li>
+                    <li><a href="#"><i class="icon-edit"></i> Edit Account</a></li>
+                    <li class="divider">
+                    <li class="nav-header">Logged in as: </li>
+                        <li class="text">{{ app.user.email }}</li>
+                        <li class="divider"></li>
+                    </li>
+                    <li><a href="{{ path('institution_logout')}}"><i class="icon-share-alt"></i> Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    	<!--End of container -->
 	{% set disableMainNavigation = disableMainNavigation is defined and disableMainNavigation %}
     {% if not disableMainNavigation %}
         {% include 'InstitutionBundle:Widgets:navigation.main.html.twig' %}
