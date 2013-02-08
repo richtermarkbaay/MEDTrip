@@ -13,24 +13,24 @@
 
                 <div id="table-content">
                     {% include '::notice.admin.html.twig' %}
-
-                    <div id="filter-wrapper" style="width: 100%;">
-                        <span class="caption">Search</span>
-                        <div style="float: left">
-                            <input type="text" value="" style="margin-left: 10px; margin-top: 2px;" size="30"/>
+                {# Temporary hide filter
+                    <div id="filter-wrapper" >
+                        <div>
+                        <label>Search</label>
+                            <input type="text" value="" class="filter-params styledselect_form_1"/>
                         </div>
                         <div>
                             <label>Media type: </label>
-                            <select class="styledselect_form_1">
+                            <select class="filter-params styledselect_form_1">
                                 <option value="1">All</option>
                                 <option value="2">Images</option>
                                 <option value="3">Videos</option>
                                 <option value="4">Pdfs</option>
                             </select>
                         </div>
-                        <a href="#" class="button-type">GO</a>
+                        <a href="#" class="btn btn-success">GO</a>
                     </div>
-
+                #}
                     {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedia} %}
                 </div>
 
