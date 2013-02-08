@@ -2,8 +2,16 @@
 
 {% block content %}
 
+    <!-- Set map coordinates by LatLong or Address -->
+    {% if institution.coordinates %}
+        {% set coordinates = institution.coordinates %}
+    {% else %}
+        {% set coordinates = institution_address_to_array(institution, ['address1', 'city', 'country'])|join(',') %}
+    {% endif %}
+
+
     {% if isSingleCenterInstitution %}
-    
+
         {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
             with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
         %}

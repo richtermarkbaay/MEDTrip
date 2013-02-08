@@ -27,7 +27,7 @@
 
 	<aside id="aside_content" class="span4">
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with { media: [], coordinates: institution.coordinates} %}
+	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' } %}
 
 	    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
 	        with { businessHours: institutionMedicalCenter ? institutionMedicalCenter.businessHours : '' } %}
