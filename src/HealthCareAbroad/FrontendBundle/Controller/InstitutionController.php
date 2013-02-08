@@ -54,7 +54,9 @@ class InstitutionController extends Controller
                ->leftJoin('b.doctors', 'i')
                ->leftJoin('i.specializations', 'j')
                ->where('a.slug = :institutionSlug')
-               ->setParameter('institutionSlug', $criteria['slug']);
+               ->andWhere('a.status = :status')
+               ->setParameter('institutionSlug', $criteria['slug'])
+               ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus());
 
             $this->institution = $qb->getQuery()->getOneOrNullResult();
 
