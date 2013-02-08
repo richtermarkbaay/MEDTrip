@@ -66,6 +66,7 @@ final class ListFilterFactory
         	'admin_awardingBody_index' => 'AwardingBodyListFilter',
         	'admin_global_award_index' => 'GlobalAwardListFilter',
             'admin_inquire' => 'InquiryListFilter',
+            'admin_error_reports' => 'ErrorReportListFilter',
             'admin_feedback' => 'FeedbackListFilter'
         );
     }

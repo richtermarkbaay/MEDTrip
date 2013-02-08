@@ -95,11 +95,11 @@ class FrontendRouteService
         }
 
         $route = null;
-        if (is_null($route = $this->matchFromSession($uri))) {
-            if (is_null($route = $this->matchFromCookie($uri))) {
+//         if (is_null($route = $this->matchFromSession($uri))) {
+//             if (is_null($route = $this->matchFromCookie($uri))) {
                 $route = $this->matchFromDatabase($uri);
-            }
-        }
+//             }
+//         }
 
         if ($route) {
             // save in local storage
@@ -149,6 +149,7 @@ class FrontendRouteService
         $controller = '';
 //var_dump($variables); exit;
         switch (count($variables)) {
+
             case 2:
                 $controller = 'FrontendBundle:Default:listCountrySpecialization';
 
@@ -167,7 +168,11 @@ class FrontendRouteService
 
             case 4:
                 if (isset($variables['treatmentId'])) {
-                    $controller = 'FrontendBundle:Default:listCountryTreatment';
+                    if (isset($variables['cityId']))
+                        $controller = 'FrontendBundle:Default:listCityTreatment';
+                    else 
+                        $controller = 'FrontendBundle:Default:listCountryTreatment';
+
                 } else if (isset($variables['cityId'])) {
                     $controller = 'FrontendBundle:Default:listCitySubSpecialization';
                 }
@@ -333,6 +338,7 @@ class FrontendRouteService
     {
         $routeObj = null;
         if ($vars = $this->session->get(\md5($uri), null)) {
+            
             $routeObj = new FrontendRoute();
             $routeObj->setUri($uri);
             $routeObj->setController($this->extrapolateControllerFromVariables(json_decode($vars, true)));

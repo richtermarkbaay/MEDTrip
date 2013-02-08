@@ -42,7 +42,13 @@ institution_media_add:
     requirements:
         _method: GET
         id: \d+
-
+        
+admin_institutionMedicalCenter_media_upload:
+    pattern: /admin/media/upload/{imcId}
+    defaults: { _controller: MediaBundle:Default:uploadImcMedia }
+    requirements:
+        _method: POST|GET
+        
 admin_media_upload:
     pattern: /admin/media/upload/{institutionId}
     defaults: { _controller: MediaBundle:Default:upload }

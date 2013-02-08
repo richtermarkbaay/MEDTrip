@@ -4,12 +4,12 @@
     <div class="pull-left thumb">
         <a href="{{ searchResultItem.url }}">
             {% if searchResultItem.logo %}
-                {{ searchResultItem.logo }}
+                {{ searchResultItem.logo | raw}}
             {% else %}
-                 <span style="background: url(/images/frontend/defaultLogo.png) center center no-repeat; background-size: 100% 100%" class="search-entry-thumb"></span>
+                <img src="{{ imageplaceholder.clinicLogo}}" class="default"/>
             {% endif %}
-	    </a>
-	</div>
+        </a>
+    </div>
 
     <div class="media-body">
         <h3 class="media-heading">{{ searchResultItem.name }}</h3>
@@ -23,7 +23,7 @@
                         {{ searchResultItem.streetAddress }}
                         <br />
                     {% endif %}
-                                        
+
                     <b>{{ searchResultItem.mainAddress }}</b>
                 </small>
             </div>

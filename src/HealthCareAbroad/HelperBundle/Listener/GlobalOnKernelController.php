@@ -37,8 +37,9 @@ class GlobalOnKernelController
 
 
         // Set Frontend Breadcrumb
-        //var_dump($route);
+
         if(substr($route, 0, 8) == 'frontend') {
+            //var_dump($request->attributes->get('_route_params'));
             //var_dump($request->attributes);
             //var_dump($route);
             //var_dump("IN! " . $route);

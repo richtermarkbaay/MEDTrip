@@ -35,7 +35,9 @@ BEGIN
         INNER JOIN `countries` co ON co.`id` = inst.`country_id`
         LEFT JOIN `cities` ci ON ci.id = inst.`country_id`
         WHERE sp.`id` = NEW.`specialization_id`
-        AND imc.id = NEW.`institution_medical_center_id`;
+        AND imc.id = NEW.`institution_medical_center_id`
+        AND imc.status = 2
+        AND inst.status = 9;
     END IF;
     
 END; $$

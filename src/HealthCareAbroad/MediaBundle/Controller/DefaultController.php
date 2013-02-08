@@ -17,8 +17,12 @@ class DefaultController extends Controller
 {
     public function addAction(Request $request)
     {
-        return $this->render('MediaBundle:Default:addMedia.html.twig', array(
-                        'institution' => $institution,
+        $imc = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('id'));
+
+        return $this->render('MediaBundle:Default:addImcMedia.html.twig', array(
+                        'institution' => $imc->getInstitution(),
+                        'imc' => $imc,
+                        'multiUpload' => $request->get('multiUpload'),
                         'context' => $request->get('context'),
                         'contextId' => $request->get('contextId'),
                         'routes' => $this->getRoutes($request->getPathInfo())
@@ -71,6 +75,31 @@ class DefaultController extends Controller
         return new Response(json_encode($response), 200, array('content-type', 'application/json'));
     }
 
+    //upload media to medicalCenter
+    public function uploadImcMediaAction(Request $request)
+    {
+        $response = new Response();
+        $imc = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
+        $fileBag = $request->files;
+        
+        if ($fileBag->get('file')) {
+             
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $imc);
+            if(is_object($result)) {
+        
+                //$this->institutionMedicalCenter->setLogo($result);
+                $imc->addMedia($result);
+                $this->get('services.institution')->saveMediaToGallery($imc->getInstitution(), $result);
+                $this->get('services.institution_medical_center')->save($imc);
+            }
+            $response->create('File saved to Medical Center', 200);
+        }
+        else {
+            $response->create('File not detected', 415);
+        }
+        return $response;
+    }
+    
     //TODO: refactor
     public function uploadAction(Request $request)
     {
@@ -91,6 +120,7 @@ class DefaultController extends Controller
                 $isLogo 
                     ? $this->get('services.institution')->saveMediaAsLogo($institution, $media)
                     : $this->get('services.institution')->saveMediaToGallery($institution, $media);
+                
             }
 
             if (isset($multiUpload) && $multiUpload === '0') {

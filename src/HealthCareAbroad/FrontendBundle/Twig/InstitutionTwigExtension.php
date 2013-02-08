@@ -47,20 +47,15 @@ class InstitutionTwigExtension extends \Twig_Extension
      */
     public function getInstitutionFrontendUrl(Institution $institution)
     {
-        $uri = $this->router->generate(
-            $this->institutionService->isSingleCenter($institution)
-                ? 'frontend_single_center_institution_profile'
-                : 'frontend_multiple_center_institution_profile', 
-            array('institutionSlug' => $institution->getSlug()), 
-            true
-        );
-        
+        $routeName = $this->institutionService->getInstitutionRouteName($institution);
+        $uri = $this->router->generate($routeName, array('institutionSlug' => $institution->getSlug()), true);
+
         return $uri;
     }
     
     public function getInstitutionMedicalCenterFrontendUrl(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        return $this->router->generate('page_institutionMedicaCenter_profile', array(
+        return $this->router->generate('frontend_institutionMedicaCenter_profile', array(
             'institutionSlug' => $institutionMedicalCenter->getInstitution()->getSlug(),
             'imcSlug' => $institutionMedicalCenter->getSlug()
         ));

@@ -11,7 +11,7 @@
 			{% else %}
 			    <img src="{{ imageplaceholder.doctorIcon }}" class="pull-left img-polaroid"/>
 			{% endif %}
-			<a class="doctor-name" href="">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
+			<a class="doctor-name" >Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
 			<p class="media-body">
 			    {% for i, each in doctor.specializations %}
 			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}

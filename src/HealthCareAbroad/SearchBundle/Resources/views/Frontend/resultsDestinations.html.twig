@@ -13,11 +13,13 @@
                 </div>
             </header>
 
-            {% for institution in searchResults %}
+            {% for searchResultVo in searchResults %}
+                {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
+                
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'searchResultItem' : {
                            url: get_institution_frontend_url(institution),
-                           logo: institution.logo ? media(institution.logo, institution, 'frontendSearchResultLogo') | raw  : null,
+                           logo: institution.logo ? media(institution.logo, institution, 'default', {'class': 'search-entry-thumb'}) : null,
                            name: institution.name,
                            mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
                            streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')

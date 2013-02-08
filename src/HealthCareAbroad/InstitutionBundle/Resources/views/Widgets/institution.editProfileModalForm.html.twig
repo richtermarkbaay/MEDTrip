@@ -5,8 +5,8 @@
 
         <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
             {{ form_errors(institutionForm) }}   
+            
             {% for each in fields %}
-
                 {% if each == 'description' %}
                     {{ form_row(institutionForm[each], { 'attr': { class: 'tinymce'} })  }}
                 {% elseif each == 'name' %}

@@ -31,39 +31,53 @@ class CustomExceptionController extends ExceptionController
     {
     	$isDebug = $this->container->get('kernel')->isDebug();
     	$this->request =  $this->container->get('request');
-    	
-        // we will only customize the exception page for Non-debug environment
-        if ($isDebug = $this->container->get('kernel')->isDebug()) {
-             return parent::showAction($exception, $logger, $format);   
-         }
-       else {
+        //TODO: there might be a case in the future that we will use other formats, but right now let's make this simple and always use an html template
+        $this->request->setRequestFormat('html');
+        $currentContent = $this->getAndCleanOutputBuffering();
+        
+        $templating = $this->container->get('templating');
+        $code = $exception->getStatusCode();
+
+		$factory = $this->container->get('form.factory');
+		$form = $factory->create(new ErrorReportFormType());
+		
+		$statusTextDescriptions = array(
+            401 => 'Access to this page is forbidden!',
+            403 => 'Access to this page is forbidden!',
+            500 => 'Oops! Something is broken'
+        );
+        if($this->request->server->has('HTTP_REFERER')){
             
-            //TODO: there might be a case in the future that we will use other formats, but right now let's make this simple and always use an html template
-            $this->request->setRequestFormat('html');
-            $currentContent = $this->getAndCleanOutputBuffering();
+            if (\preg_match('/healthcareabroad/i', $this->request->server->get('HTTP_REFERER'))) {
+                $referer = $this->request->server->get('HTTP_REFERER');
+            }
             
-            $templating = $this->container->get('templating');
-            $code = $exception->getStatusCode();
-  
-			$factory = $this->container->get('form.factory');
-			$form = $factory->create(new ErrorReportFormType());
-            
-            return $templating->renderResponse(
-                $this->findTemplate($templating, $format, $code, $isDebug),
-            	array(
-                    'status_code'    => $code,
-                    'status_text'    => isset(Response::$statusTexts[$code]) ? Response::$statusTexts[$code] : '',
-                    'exception'      => $exception,
-                    'logger'         => $logger,
-                    'currentContent' => $currentContent,
-            		'form'			 => $form->createView(),
-                )
-            );
+        }else{
+            $referer = null;
         }
+		
+        return $templating->renderResponse(
+            $this->findTemplate($templating, $format, $code, $isDebug, $referer ),
+        	array(
+                'status_code'    => $code,
+                'status_text'    => isset(Response::$statusTexts[$code]) && Response::$statusTexts[$code]  ? Response::$statusTexts[$code] : 'Error',
+                'status_text_details' => isset($statusTextDescriptions[$code]) ? $statusTextDescriptions[$code] : '',
+                'exception'      => $exception,
+                'logger'         => $logger,
+                'currentContent' => $currentContent,
+        		'form'			 => $form->createView(),
+    	        'referer'        => $referer
+            )
+        );
     }
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
+        if ($debug) {
+            // debug 
+            return parent::findTemplate($templating, $format, $code, $debug);
+        }
+        
         if ($this->request->server->has('PATH_INFO')) {
             $pathInfo = $this->request->server->get('PATH_INFO');
         }
@@ -74,20 +88,25 @@ class CustomExceptionController extends ExceptionController
         // check if this path is /admin/
         if (\preg_match('/^\/admin\//', $pathInfo)) {
         	$template = new TemplateReference('AdminBundle', 'Exception', 'error', 'html', 'twig');
-             if ($templating->exists($template)) {
-                return $template;
-             }
         }
         // check if path is /institution/
         elseif (\preg_match('/^\/institution\//', $pathInfo)){
             $template = new TemplateReference('InstitutionBundle', 'Exception', 'error', 'html', 'twig');
-            
-            if ($templating->exists($template)) {
-                return $template;
+        }
+        else {
+            // assume we are in frontend
+            if ($code != 404) {
+                $template = new TemplateReference('FrontendBundle', 'Exception', 'error', 'html', 'twig');
             }
+            else {
+                // render 404 page
+                $template = new TemplateReference('FrontendBundle', 'Exception', 'error404', 'html', 'twig');
+            }   
+        }
+ 
+        if ($templating->exists($template)) {
+            return $template;
         }
         
-        // not in /admin and /institution or the specific template was not found, use default error template
-        return parent::findTemplate($templating, $format, $code, $debug);
     }
 }

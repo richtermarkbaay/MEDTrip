@@ -115,7 +115,6 @@ class InstitutionController extends Controller
             $em->persist($institutionInquiry);
             $em->flush();                
             
-            $this->get('session')->setFlash('notice', "Successfully saved!");
             $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
         }
         else {

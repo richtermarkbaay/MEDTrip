@@ -53,17 +53,26 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchInstitutionsByCountry($country)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCountry($country);
+        
+        return $result;
     }
 
     public function searchInstitutionsByCity($city)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCity($city);
+        
+        return $result;
     }
 
     public function searchMedicalCentersBySpecialization($specialization)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findBySpecialization($specialization);
+        
+        return $result;
     }
 
     public function searchMedicalCentersBySubSpecialization($subSpecialization)
@@ -73,6 +82,9 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchMedicalCentersByTreatment($treatment)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
+        $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByTreatment($treatment);
+        
+        return $result;
     }
 }

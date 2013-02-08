@@ -12,11 +12,15 @@
                 <h2 class="total">{{ searchResults.getTotalResults }} <small>Results Found</small></h2>
             </div>
         </header>
-        {% for center in searchResults %}
+        {% for searchResultVo in searchResults %}
+            {# BC for old search results whose result item is a medical center #}
+            {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
+            {# do this to save query #}
+            
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
                           url: get_institution_medical_center_frontend_url(center),
-                          logo: center.logo ? media(center.logo, center.institution, 'frontendSearchResultLogo') | raw  : null,
+                          logo: center.logo ? media(center.logo, center.institution, 'default', {'class': 'search-entry-thumb'}) : null,
                           name: center.name,
                           mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                           streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')

@@ -65,5 +65,5 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
                     -
                         name: treatment_id
                         referencedColumnName: id
-            orderBy: null
+            orderBy: {name: "ASC"}
     lifecycleCallbacks: {  }

@@ -1,21 +1,21 @@
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:400px;'}} %}
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:400px;'}} %}
     {% block modalBody %}
-    <form novalidate="novalidate" {{ form_enctype(form) }} action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="{{formId}}" method="POST" class="basic-form">        
+    <form novalidate="novalidate" {{ form_enctype(form) }} action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="{{formId}}" method="POST" class="form-horizontal">        
         <div class="inquirer_name control-group">
             {{ form_label(form.inquirer_name) }}
-            {{ form_widget(form.inquirer_name) }}
+            {{ form_widget(form.inquirer_name, { 'attr': {'class': 'span4'} }) }}
             <span class="help-inline"></span>    
         </div>
         
         <div class="inquirer_email control-group">
             {{ form_label(form.inquirer_email) }}
-            {{ form_widget(form.inquirer_email) }}
+            {{ form_widget(form.inquirer_email, { 'attr': {'class': 'span4'} }) }}
             <span class="help-inline"></span>    
         </div>
         
         <div class="message control-group">
             {{ form_label(form.message) }}
-            {{ form_widget(form.message) }}
+            {{ form_widget(form.message, { 'attr': {'class': 'span6', 'rows' : 9} }) }}
             <span class="help-inline"></span>    
         </div>
         
@@ -26,6 +26,6 @@
     {% endblock %}
     {% block footerBody %}
         <button aria-hidden="true" onclick="Institution.clearForm({{formId}}); return false;" data-dismiss="modal" class="btn">Cancel</button>
-        <button data-loader-text="Processing..." onclick="Institution.saveInquiry(this); return false;" id="modal_institution_inquiry_submitButton" data-modalId="{{modalId}}" data-formId="#institution_inquiry_form" class="btn btn-primary orange">Submit</button>
+        <button data-loader-text="Processing..." onclick="Institution.saveInquiry(this); return false;" id="modal_institution_inquiry_submitButton" data-modalId="{{modalId}}" data-formId="#institution_inquiry_form" class="btn btn-primary orange">Send Message</button>
     {% endblock %}
 {% endembed %}
