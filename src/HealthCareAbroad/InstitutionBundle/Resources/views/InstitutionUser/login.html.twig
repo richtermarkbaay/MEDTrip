@@ -7,52 +7,63 @@
     %}
         
         {% block wrappedContent %}
-        
-        <div class="span12">
-            <h1>Sign-in</h1>
-        </div>
-        
-        <div class="maincontent">
-            <div class="span6">
-                <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
-                
-                   <fieldset>
-                        <label for="username">Email</label>
-                        
-                        <div class="input-prepend">
-    						<span class="add-on"><i class="icon-envelope"></i></span>
-    						<input name="_username" type="text" id="username" value="{{ last_username }}"  class="username span8" />
-    					</div>
-    					
-    					{% if error %}
-    						<ul class="alert-error">
-                                <li>
-                                    {{ error.message }}
-                                </li>
-    		  				</ul>
-    				 	 {% endif %}
-    				 	 
-                        <label for="password">Password</label>
-                        
-                        <div class="input-prepend">
-    						<span class="add-on"><i class="icon-lock"></i></span>
-    						<input name="_password" type="password" id="password" class="password span8" />
-    					</div>
-                        <label class="pull-right"><a href="#">Forogt Password</a>.</label>
-					    <button type="submit" class="btn btn-large btn-primary pull-left" >Login</button>
-                              
-                     </fieldset>
-    		    </form>
-            </div><!-- end .span6 -->
-            
-            <div class="span5 box pull-right">
-            
-                {% set helptext = get_help_text_by_route('institution_login')%}
-                    {{ helptext | raw }}
-                <a class="btn btn-large btn-primary" href="{{ path('institution_signUp') }}">Join Now!</a>
-                    
-            </div><!--End of span5-->
-        </div>
+            <section id="content" class="container">
+                <div class="row">
+                    <div class="span8">
+                        <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
+                            <section class="section account-info">
+                                <h2>
+                                    Client Admin Log-in
+                                    <br>
+                                    <small>Log-in to manage your Institution</small>
+                                </h2>
+                                <div class="row-fluid">
+                                    <div class="span8">
+                                        <div class="row-field">
+                                            <label for="email">
+                                                Enter your email address
+                                            </label>
+                                            <input name="_username" type="text" id="username" value="{{ last_username }}" placeholder="i.e you@some-domain.com" class="span12">
+                                        </div>
+                                        <div class="row-field">
+                                            <label for="password">
+                                                Enter your password
+                                            </label>
+                                            <input type="password" name="_password" id="password" class="span12">
+                                        </div>
+                                        <button class="btn pull-left btn-primary btn-large">
+                                            Login
+                                        </button> 
+                                        <button class="btn pull-left btn-link btn-large">
+                                            Forgot your password?
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </form>
+                    </div><!--End of span6-->
+
+                    <div class="span4">
+                        <section class="aside-box default">
+                            <h3>Want to register an Institution?</h3>
+                            <p class="info-txt">
+                                Every day, thousands of patients use the Internet to look for medical treatments.
+                            </p>
+                            <p class="info-text"><a href="http://www.healthcareabroad.com/"><strong>www.healthcareAbroad.com</strong></a> helps these patients find the clinic that's right for them.</p>
+                        </section>
+                        <section class="aside-box default">
+                        	<button class="btn btn-inverse btn-large">
+                                Create an Account
+                            </button>
+                            <br><br>
+                            <p>
+                                Need some help? <a href="#"><strong>Click Here</strong></a>
+                            </p>
+                        </section>    
+                    </div><!--End of span6-->
+
+                </div><!--End of row-->
+            </section>
              
         {% endblock %}
         
