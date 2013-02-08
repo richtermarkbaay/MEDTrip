@@ -1,22 +1,26 @@
 {% extends '::base.institution.html.twig' %}
 {% block body %}
-<div id="main-wrap">
-    <header id="banner">
-        <div class="container toolbar">
-            <div class="row-fluid">
-                <div class="span4">
-                    <a href="{{ path('frontend_main_homepage_index_html') }}">
-                        <i class="logo"></i>
-                    </a>
-                </div>
-                
-                <div class="pull-right">
-                    <a class="btn btn-misc" href="/blog"><i class="logo-black2 pull-left"></i>Healthcare Abroad Blog</a>
+<header id="banner">
+    <div class="container">
+        <div class="row">
+            <div class="span4">
+                <div class="logo">
+                    <a href="{{ path('frontend_main_homepage_index_html') }}"> <img src="{{ asset('images/institution/logo.png') }}" alt="healthcareabroad" /> </a>
                 </div>
             </div>
-        </div><!--End of container -->
-    </header>
-</div>
+            
+            <div class="span5 offset3">
+                <nav class="links">
+                    <ul>
+                        <li> <img src="{{ asset('images/institution/blog.png') }}" alt="blog" /> <a href="/blog">BLOG</a> </li>
+                        <li> <img src="{{ asset('images/institution/contact.png') }}" alt="contact" /> <a href="{{ path('frontend_main_homepage') }} ">BACK TO MAINSITE</a> </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div><!--End of container -->
+</header>
+
 <!-- Page content here -->
 {% block content %}{% endblock %}
 
