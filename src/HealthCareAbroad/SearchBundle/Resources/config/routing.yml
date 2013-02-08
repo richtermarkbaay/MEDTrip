@@ -58,7 +58,7 @@ frontend_search_ajaxLoadTreatments2:
 #### END AUTOCOMPLETE ROUTES ###################################################
 
 frontend_search_results_related:
-    pattern: /treatment/related-search/{tag}
+    pattern: /treatment/related-search/{tag}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
