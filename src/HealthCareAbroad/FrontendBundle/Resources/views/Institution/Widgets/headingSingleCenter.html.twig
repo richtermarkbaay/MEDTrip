@@ -34,11 +34,11 @@
     	{% if email %}<a href="mailto:{{ email }}" id="email_single" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
     	{% if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif %}
     	
-    	<!-- Modal Medical Center Status -->
+    	<!-- Modal Single Institution Inquiry -->
         	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
         	     with { modalId: 'modal_single_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
         	%}
-       <!-- end Modal Medical Center Status -->
+       <!-- end Modal Single Institution Inquiry -->
 	</div>
 </div>
 
