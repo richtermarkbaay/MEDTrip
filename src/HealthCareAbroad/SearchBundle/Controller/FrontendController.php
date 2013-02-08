@@ -38,14 +38,21 @@ class FrontendController extends Controller
         $options['treatmentLabel'] = '';
 
         switch ($options['context']) {
-            case 'homepage':
-                $template = 'SearchBundle:Frontend/Widgets:mainSearchWidget.html.twig';
+            case 'main':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetMain.html.twig';
+                break;
 
+            case 'homepage':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetHomepage.html.twig';
+                break;
+
+            case 'sidebar':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetSidebar.html.twig';
                 break;
 
             case 'destinations':
                 $options['destinationId'] = $request->get('destinationId');
-                $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetResultsPage.html.twig';
 
                 if ($request->get('subContext', '') == 'specialization') {
                     $options['autocompleteRoute'] = 'frontend_search_ajaxLoadSpecializations';
@@ -59,7 +66,7 @@ class FrontendController extends Controller
 
             case 'treatments':
                 $options['treatmentId'] = $request->get('treatmentId');
-                $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetResultsPage.html.twig';
 
                 if ($request->get('subContext', '') == 'country') {
                     $options['autocompleteRoute'] = 'frontend_search_ajaxLoadCountries';
@@ -69,16 +76,26 @@ class FrontendController extends Controller
 
                 break;
 
-            case 'sidebar':
-                $template = 'SearchBundle:Frontend/Widgets:sidebarSearchWidget.html.twig';
-
-                break;
-
             default:
                 throw new \Exception('Undefined context');
         }
 
         return $this->render($template, array('options' => $options));
+    }
+
+    /**
+     * Search page
+     *
+     * @param Request $request
+     */
+    public function searchAction(Request $request)
+    {
+        $parameters = array();
+
+        $parameters['topDestinations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopCountries();
+        $parameters['topTreatments'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopTreatments();
+
+        return  $this->render('SearchBundle:Frontend:search.html.twig', $parameters);
     }
 
     /**
@@ -480,6 +497,7 @@ class FrontendController extends Controller
         return $routeParams;
     }
 
+    //TODO: use route names instead
     public static function appendDestinationUrls($locations, $treatment, $prefix = '')
     {
         $modifiedLocations = array();
@@ -507,6 +525,7 @@ class FrontendController extends Controller
         return $modifiedLocations;
     }
 
+    //TODO: use route names instead
     public static function appendTreatmentUrls($treatments, $destination, $prefix = '')
     {
         $modifiedTreatments = array();
