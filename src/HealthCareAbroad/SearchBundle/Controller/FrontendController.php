@@ -87,7 +87,7 @@ class FrontendController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function searchAction(Request $request)
+    public function searchProcessAction(Request $request)
     {
         $searchParams = $this->getSearchParams($request, true);
 
@@ -372,7 +372,7 @@ class FrontendController extends Controller
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTag($term['id']));
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1)),
+                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $request->get('tag', ''),
                         'routeName' => 'frontend_search_results_related',
                         'paginationParameters' => array('tag' => $request->get('tag', '')),
