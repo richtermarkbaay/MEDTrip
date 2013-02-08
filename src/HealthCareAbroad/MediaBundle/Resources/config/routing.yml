@@ -48,7 +48,14 @@ admin_institutionMedicalCenter_media_upload:
     defaults: { _controller: MediaBundle:Default:uploadImcMedia }
     requirements:
         _method: POST|GET
-        
+
+admin_institutionMedicalCenter_gallery_add:
+    pattern: /admin/gallery/add/{context}/{id}/{multiUpload}
+    defaults: { _controller: MediaBundle:Default:add, multiUpload: 1 }
+    requirements:
+        _method: GET
+        institutionId: \d+
+
 admin_media_upload:
     pattern: /admin/media/upload/{institutionId}
     defaults: { _controller: MediaBundle:Default:upload }
