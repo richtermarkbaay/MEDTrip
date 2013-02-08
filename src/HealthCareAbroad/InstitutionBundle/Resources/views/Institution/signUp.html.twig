@@ -6,80 +6,81 @@
     {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
         with {'pageTitle': 'Create an Account', 'contentSpanClass': 'span8 marginleft0'} 
     %}
-        
         {% block wrappedContent %}
             
-        <div class="span12">
-			<h6 style="">
-				<span>Thank you for your interest in being a part of HealthcareAbroad.com!</span>
-			</h6>
-		</div>
-		
-		<div class="maincontent2">
-		    <div class="span7">
-		        <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
-                    <fieldset>
-                        <div>
-                            <label for="institution_name"><b>Hospital / Clinic / Company Name:</b></label>
-                            {{ form_errors(form.name) }}
-                            {{ form_widget(form.name, { 'attr': {'class': 'institution_name span11'} }) }}
-                        </div>
-                        
-                        <div>
-                            <label for="password">Please select which best describes the healthcare provider you are adding:</label>
-                            {% for _key, _typeChoice in form.type.vars.choices %}
-                                <div>
-                                    {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
-                                    <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
-                                    <label class="required" for="{{ _inputId }}">{{ _typeChoice.label }}</label>
+         <div id="content" class="container">
+            <div class="row">
+                <div class="span8">
+                    <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
+                        <section class="section account-info">
+                            <h2>Login Credentials</h2>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="row-field">
+                                        {{ form_row(form.email, { 'attr': {'class': 'span8', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                                    </div>
+                                    <div class="row-field">
+                                        <label for="password">
+                                            Choose a password
+                                            <small>( Must be atleast 6 characters long ) </small>
+                                        </label>
+                                       {{ form_widget(form.password, { 'attr': {'class': 'span8'} }) }}
+                                    </div>
+                                        {{ form_row(form.confirm_password, { 'label': 'Confirm your password', 'attr': {'class': 'span8'} }) }}
                                 </div>
-                            {% endfor %}
-                            {{ form_errors(form.type) }}
-                        </div>
-                        <hr>
-                        <div>
-                            <input type="checkbox" name="medicalGroupBox" id="medicalGroupBox" >
-                            <label for="medicalGroupBox">The healthcare provider I am adding belongs to a group. network or cluster</label>
-                         </div>
-                        <div id="medicalProviderGroupsInput">
-                            {{ form_row(form.medicalProviderGroups) }}
-                        </div>
-                        <hr>
-                        <h5>Now, please tell us a bit about you:</h5>
-                        <div>
-                        <label for="username">Your email address 
-                            <span>
-                                <br/><small>&nbsp;(Please indicate YOUR own email address, you will be asked to add your clinic/company's email address later.)</small>
-                            </span>
-                        </label>
-                            {{ form_widget(form.email, { 'attr': {'class': 'span9'} }) }}
-                        </div>
-                        
-                        
-                        {{ form_row(form.password, { 'attr': {'class': 'span8'} }) }}
-                                
-                        {{ form_row(form.confirm_password, { 'label': 'Verify Password', 'attr': {'class': 'span8'} }) }}
-            
-                        <label>
-                            {{ form_errors(form.agree_to_terms) }}
-                            {{ form_widget(form.agree_to_terms) }} I have read and agree with the <a href="#">Terms and Conditions</a>.
-                        </label>
-                        {{ form_widget(form._token) }}
-                            
-                        <button type="submit" class="btn-large btn-primary">Submit</button>
-                    </fieldset>
-                    
-                    
-                </form>
-		    </div> <!-- end .span6 -->
-		    <div class="span4 box pull-right">
-            
-                {% set helptext = get_help_text_by_route('institution_signUp')%}
-                {{ helptext | raw }}
-                    
-            </div><!--End of span5-->
-		</div>
-        
+                            </div>
+                        </section>
+                        <section class="section institution-info">
+                            <h2> Clinic / Hospital Details </h2>
+                            <div class="row-fluid">
+                                <div class="span12">
+                                    <div class="row-field">
+                                        <label for="institution-name">
+                                            Name of the Clinic / Hospital
+                                        </label>
+                                        {{ form_errors(form.name) }}
+                                        {{ form_widget(form.name, { 'attr': {'class': 'institution_name span12'} }) }}
+                                    </div>
+                                    <div class="row-field">
+                                        <label>
+                                            Please select which best describes the healthcare provider you are adding:
+                                        </label>
+                                       {% for _key, _typeChoice in form.type.vars.choices %}
+                                            {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
+                                            <label class="radio" for="{{ _inputId }}">
+                                            <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
+                                            {{ _typeChoice.label }}</label>
+                                        {% endfor %}
+                                        {{ form_errors(form.type) }}
+                                    </div>
+                                    <div class="row-field">
+                                        <label for="network-group">
+                                            Medical Provider Group / Network
+                                            <small>( Optional )</small>
+                                        </label>
+                                            {{ form_widget(form.medicalProviderGroups, { 'attr': {'class': 'span12', 'placeholder': 'Leave blank if none'} }) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="section footer">
+                            <div class="row-fluid terms">
+                                <div class="span12">
+                                    <label class="checkbox pull-left">
+                                        {{ form_errors(form.agree_to_terms) }}
+                                        {{ form_widget(form.agree_to_terms) }} I have read and agree with the <a href="#">Terms and Conditions</a>.
+                                    </label>
+                                    <button type="submit" class="btn pull-right btn-primary btn-large"> Sign Up</button>
+                                    <button class="btn pull-right btn-large btn-link">Cancel</button>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+                {% include 'InstitutionBundle:Widgets/Sidebars:sidebar.signup.html.twig' %}
+            </div>
+        </div>
+		
         {% endblock %}
     {% endembed %}
  
@@ -88,18 +89,6 @@
 {% block inlineJavascriptCode %}
 	<script language="javascript" type="text/javascript">
 
-    $('#medicalProviderGroupsInput').hide();
-    	$('#medicalGroupBox').click(function(){
-        	
-    	    if ($('#medicalGroupBox').attr('checked')) {
-
-    	    	$('#medicalProviderGroupsInput').show();
-    	    	
-    	    }else{
-        	    $('#medicalProviderGroupsInput').hide();
-        	}
-    	}) 
-	
     <!-- AutoComplete for Institution Medical Group Input Field -->
         $(function() {
         	var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
