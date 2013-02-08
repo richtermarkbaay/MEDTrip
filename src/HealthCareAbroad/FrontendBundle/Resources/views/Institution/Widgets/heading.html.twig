@@ -47,7 +47,7 @@
             {% endif %}
 
             {% if institution.contactEmail %}
-                <li><a class="email btn orange" href="mailto:{{ institution.contactEmail }}">Email</a></li>
+                <li><a class="email btn orange" id="email_multiple" href="mailto:{{ institution.contactEmail }}">Email</a></li>
             {% endif %}
 
             {% if mainWebsites %}
@@ -62,3 +62,12 @@
         </ul>    
     </div>
 </div>
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
+    <script type="text/javascript">
+        $('#email_multiple').click(function(){
+        	$('div#modal_institution_inquiry_form').modal('show');
+            return false;
+        });
+    </script>
+{% endblock %}
