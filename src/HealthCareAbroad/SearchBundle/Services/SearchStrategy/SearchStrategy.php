@@ -55,7 +55,7 @@ abstract class SearchStrategy extends ContainerAware
     {
         //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCountry($country);
         $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCountry($country);
-        
+
         return $result;
     }
 
@@ -63,7 +63,7 @@ abstract class SearchStrategy extends ContainerAware
     {
         //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:Institution')->getInstitutionsByCity($city);
         $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByCity($city);
-        
+
         return $result;
     }
 
@@ -71,7 +71,7 @@ abstract class SearchStrategy extends ContainerAware
     {
         //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecialization($specialization);
         $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findBySpecialization($specialization);
-        
+
         return $result;
     }
 
@@ -84,7 +84,14 @@ abstract class SearchStrategy extends ContainerAware
     {
         //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatment($treatment);
         $result = $this->container->get('doctrine')->getEntityManager()->getRepository('TermBundle:SearchTerm')->findByTreatment($treatment);
-        
+
+        return $result;
+    }
+
+    public function searchMedicalCentersByTerm($term)
+    {
+        $result = $this->container->get('doctrine')->getRepository('TermBundle:SearchTerm')->findByTerm($term);
+
         return $result;
     }
 }
