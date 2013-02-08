@@ -9,9 +9,7 @@
 	<div id="main_content" class="span8">
 		<div class="clinicdetails content">
             {% include 'FrontendBundle:Institution/Widgets:headingSingleCenter.html.twig' %}
-            <div class="description">
-                {{ institution.description | raw }}
-            </div>
+            <div class="description"><p>{{ institution.description | raw }}</p></div>
 		</div>
 
         {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
@@ -27,7 +25,7 @@
 
 	<aside id="aside_content" class="span4">
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' } %}
+	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
 	    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
 	        with { businessHours: institutionMedicalCenter ? institutionMedicalCenter.businessHours : '' } %}

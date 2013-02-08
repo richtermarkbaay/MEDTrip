@@ -1,4 +1,4 @@
-{% set number = institution.contactNumber  %}
+{% set number = institution.contactNumber %}
 {% set number = json_decode(number) | join %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
@@ -35,7 +35,15 @@
         </div>
         <ul class="contact_now span5">
             {% if number %}
-                <li><a class="call btn orange" href="tel:{{ number }}">Call Us</a></li>
+                <li>
+                    <a id="institution-call" class="call btn orange" href="javascript:void(0)">Call Us</a>
+                    <script type="text/javascript">
+						$('#institution-call').tooltip({
+							title: '<h5><small>Landline: </small>{{ number }}</h5>',
+							html: true, delay: 0, animation: true, trigger: 'click'
+						});
+					</script>
+                </li>
             {% endif %}
 
             {% if institution.contactEmail %}
