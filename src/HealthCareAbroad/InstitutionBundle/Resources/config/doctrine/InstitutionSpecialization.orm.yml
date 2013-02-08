@@ -52,7 +52,6 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
         treatments:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Treatment
             cascade:
-                - "remove"
                 - "persist"
             mappedBy: null
             joinTable:
