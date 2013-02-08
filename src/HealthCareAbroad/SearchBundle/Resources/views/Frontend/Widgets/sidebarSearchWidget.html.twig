@@ -1,0 +1,106 @@
+<form action="{{ path('frontend_search') }}" method="get" name="searchBox">
+    <input type="hidden" name="treatment_id" value="{{ options.treatmentId }}"/>
+    <input type="hidden" name="destination_id" value="{{ options.destinationId }}"/>
+
+    <fieldset>
+        <h4>Search Again</h4>
+        <label><b>Specialization or Treatment</b></label>
+        <input type="text" placeholder="i.e: Facelift" name="sb_treatment">
+        <label><b>Destination</b></label>
+        <input type="text" placeholder="i.e: Thailand, Hawaii" name="sb_destination">
+
+        <button type="submit" class="btn orange">
+            <i class="icon-search icon-white"></i>Search
+        </button>
+
+    </fieldset>
+</form>
+
+<!-- TODO: remove invalid markup -->
+<style>
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+}
+</style>
+
+<script type="text/javascript">
+$(function() {
+    $('form[name="searchBox"] input[name="sb_treatment"]').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('frontend_search_ajaxLoadTreatments') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    destination_id: $('form[name="searchBox"] input[name="destination_id"]').val(),
+                    sb_treatment: $('form[name="searchBox"] input[name="sb_treatment"]').val(),
+                    sb_destination: $('form[name="searchBox"] input[name="sb_destination"]').val()
+                },
+                success: function(data) {
+                    response($.each(data, function(item) {
+                        return { label: item.label, value: item.value }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $(this).val( ui.item.label );
+            $('form[name="searchBox"] input[name="treatment_id"]').val( ui.item.value );
+
+            return false;
+        },
+        change: function(event, ui) {
+            $('form[name="searchBox"] input[name="treatment_id"]').val(ui.item && ui.item.value ? ui.item.value : '0');
+        },
+        delay: 200,
+        minLength: 1
+    });
+
+    $('form[name="searchBox"] input[name="sb_destination"]').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('frontend_search_ajaxLoadDestinations') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    treatment_id: $('form[name="searchBox"] input[name="treatment_id"]').val(),
+                    sb_treatment: $('form[name="searchBox"] input[name="sb_treatment"]').val(),
+                    sb_destination: $('form[name="searchBox"] input[name="sb_destination"]').val()
+                },
+                success: function(data) {
+                    response( $.each(data, function(item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $(this).val( ui.item.label );
+            $('form[name="searchBox"] input[name="destination_id"]').val( ui.item.value );
+
+            return false;
+        },
+        change: function(event, ui) {
+            $('form[name="searchBox"] input[name="destination_id"]').val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+        },
+        delay: 200,
+        minLength: 1
+    });
+
+});
+
+</script>
