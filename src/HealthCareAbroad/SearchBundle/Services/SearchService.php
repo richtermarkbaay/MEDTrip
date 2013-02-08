@@ -131,6 +131,16 @@ class SearchService
             ->searchMedicalCentersByTreatment($treatment);
     }
 
+    /**
+     * Search by tag/term
+     *
+     * @param unknown $tag
+     */
+    public function searchByTag($tag)
+    {
+        return $this->searchStrategy->searchMedicalCentersByTerm($tag);
+    }
+
     public function getMedicalCentersByTerm($term, $type = null)
     {
         return $this->searchStrategy->getMedicalCentersByTerm($term, $type);

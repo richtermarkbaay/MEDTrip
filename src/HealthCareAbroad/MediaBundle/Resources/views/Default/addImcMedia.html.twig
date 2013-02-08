@@ -1,4 +1,5 @@
 {% extends 'AdminBundle::layout.institution.html.twig' %}
+
 {% set selectedTab = 'institutions' %}
 {% set selectedSubMenu = 'gallery' %}
 
@@ -7,15 +8,18 @@
     <div class="span9 title">
         {% embed 'HelperBundle:Widgets:section.html.twig' with {
             title: 'Media Gallery',
-            actions: [{link: path('admin_institution_medicalCenter_view', {institutionId: institution.id, imcId: imc.id}), label: 'Back Clinic Profile', 'icon' : 'icon-picture' }]
+            actions: [{link: path('admin_institution_medicalCenter_view', {institutionId: institution.id, imcId: institutionMedicalCenter.id}), label: 'Back To Clinic Profile', 'icon' : 'icon-picture' }]
        }%}
 
             {% block sectionContent %}
 
                 <div id="table-content">
-
                     <div id="dialog-form" title="Add media">
-                            {% include 'MediaBundle:Partials:multiUploadForm.html.twig' with {routes: routes} %}
+                        {% if multiUpload %}
+                            {% include 'MediaBundle:Partials/InstitutionMedicalCenter:multiUploadForm.html.twig' with {routes: routes} %}
+                        {% else %}
+                            {% include 'MediaBundle:Partials/InstitutionMedicalCenter:singleUploadForm.html.twig' with {routes: routes} %}
+                        {% endif %}
                     </div>
                 </div>
             {% endblock %}
@@ -42,7 +46,7 @@ $(function() {
         // General settings
         /*runtimes : 'gears,flash,silverlight,browserplus,html5',*/
         runtimes : 'html5',
-        url : '{{ path('admin_institutionMedicalCenter_media_upload', {imcId: imc.id }) }}',
+        url : '{{ path('admin_institutionMedicalCenter_media_upload', {imcId: institutionMedicalCenter.id }) }}',
         max_file_size : '10mb',
         /*chunk_size : '1mb',*/
         unique_names : true,

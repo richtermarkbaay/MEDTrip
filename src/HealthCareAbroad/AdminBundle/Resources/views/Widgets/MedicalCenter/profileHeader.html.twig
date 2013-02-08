@@ -6,7 +6,7 @@
                     <div class="photo-group">
                         <div class="institution-logo">
                               {% if institutionMedicalCenter.logo is not sameas(NULL) %}
-                                    {{ media(institutionMedicalCenter.logo, institutionMedicalCenter, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER_LOGO'), {alt: 'institution medical center logo'}) | raw }}
+                                    {{ media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw }}
                                 {% else %}
                                 <img id="institution-medical-center-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                             {% endif %}

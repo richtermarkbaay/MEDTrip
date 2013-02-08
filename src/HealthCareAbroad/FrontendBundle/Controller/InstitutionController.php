@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
 use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
@@ -44,7 +48,7 @@ class InstitutionController extends Controller
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f, g, h, i, j')->from('InstitutionBundle:Institution', 'a')
-               ->leftJoin('a.institutionMedicalCenters', 'b')
+               ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
                ->leftJoin('b.institutionSpecializations', 'c')
                ->leftJoin('c.specialization', 'd')
                ->leftJoin('c.treatments', 'e')
@@ -54,7 +58,10 @@ class InstitutionController extends Controller
                ->leftJoin('b.doctors', 'i')
                ->leftJoin('i.specializations', 'j')
                ->where('a.slug = :institutionSlug')
-               ->setParameter('institutionSlug', $criteria['slug']);
+               ->andWhere('a.status = :status')
+               ->setParameter('institutionSlug', $criteria['slug'])
+               ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus())
+               ->setParameter('medicalCenterStatus', InstitutionMedicalCenterStatus::APPROVED);
 
             $this->institution = $qb->getQuery()->getOneOrNullResult();
 

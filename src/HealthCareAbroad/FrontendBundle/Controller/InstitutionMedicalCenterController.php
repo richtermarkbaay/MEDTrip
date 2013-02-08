@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -43,7 +45,10 @@ class InstitutionMedicalCenterController extends Controller
                ->leftJoin('e.treatments', 'g')
                ->leftJoin('g.subSpecializations', 'h')
                ->where('a.slug = :centerSlug')
-               ->setParameter('centerSlug', $criteria['slug']);
+               ->andWhere('a.status = :status')
+               ->setParameter('centerSlug', $criteria['slug'])
+               ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
+            
             $this->institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
 
             if(!$this->institutionMedicalCenter) {

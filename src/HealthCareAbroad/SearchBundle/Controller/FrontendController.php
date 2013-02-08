@@ -69,12 +69,8 @@ class FrontendController extends Controller
 
                 break;
 
-            case 'combination':
-                //unused
-                $options['destinationId'] = $request->get('destinationId');
-                $options['destinationLabel'] = $request->get('destinationLabel');
-                $options['treatmentId'] = $request->get('treatmentId');
-                $options['treatmentLabel'] = $request->get('treatmentLabel');
+            case 'sidebar':
+                $template = 'SearchBundle:Frontend/Widgets:sidebarSearchWidget.html.twig';
 
                 break;
 
@@ -93,7 +89,8 @@ class FrontendController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $searchParams = $this->getSearchParams($request);
+        $searchParams = $this->getSearchParams($request, true);
+
         $sessionVariables = array();
 
         switch ($searchParams->get('context')) {
@@ -160,16 +157,22 @@ class FrontendController extends Controller
                     $request->getSession()->set(md5($url), json_encode($this->transformParams($termDocument)));
 
                 } elseif ($termDocuments) {
-                    throw NotFoundHttpException('No implementation yet');
+                    $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
+
+                    $routeParameters = array('tag' => $term['slug']);
+                    $route = 'frontend_search_results_related';
+                    $sessionVariables = array('termId' => $term['id']);
+
                 } else {
-                    throw NotFoundHttpException();
+                    throw new NotFoundHttpException();
                 }
 
                 return $this->redirect($url);
 
             default:
 
-                return new RedirectResponse($request->headers->get('referer'));
+                throw new NotFoundHttpException();
+                //return new RedirectResponse($request->headers->get('referer'));
         }
 
         // this is used to avoid using slugs after redirection
@@ -365,9 +368,15 @@ class FrontendController extends Controller
             throw new NotFoundHttpException();
         }
 
+        //TODO: This is temporary; use OrmAdapter
+        $adapter = new ArrayAdapter($this->get('services.search')->searchByTag($term['id']));
+
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchLabel' => $request->get('tag'),
-                        'results' => $this->get('services.search')->getRelatedTreatments($term['id'])
+                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1)),
+                        'searchLabel' => $request->get('tag', ''),
+                        'routeName' => 'frontend_search_results_related',
+                        'paginationParameters' => array('tag' => $request->get('tag', '')),
+                        'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($term['id'])
         ));
     }
 

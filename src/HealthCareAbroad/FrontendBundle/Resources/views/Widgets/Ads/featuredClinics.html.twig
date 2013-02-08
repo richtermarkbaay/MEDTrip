@@ -30,13 +30,11 @@
     					<div>{{ each.description | raw }}</div>
     				</div>
     				<div class="thumb-box span2">
-    					<div class="img-background">
-        				    {% if each.media %}
+                        {% if each.media %}
+    					    <div class="img-background">
         				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
-        				    {% else %}
-        				        <img class="img-polaroid" src="" alt="featured_pic" />
-        				    {% endif %}
-    					</div>
+    					    </div>
+                        {% endif %}
     					<a href="{{ clinicUrl }}" class="btn orange"> <span class="icon-search icon-white"></span> Learn More </a>
     				</div>
     			</div>

@@ -4,7 +4,7 @@ var Institution = {
 		_buttonHtml = _button.html();
 		_button.attr('disabled', true)
 		.html('Processing...');
-		_modal = $(_button.attr('data-modalId'));
+		_modal = $('#'+_button.attr('data-modalId'));
 		_formId = $(_button).attr('data-formId');
 		_href = $(_formId).attr('action')
 		$.ajax({
@@ -13,7 +13,9 @@ var Institution = {
             dataType: "json",
             data: $(_formId).serialize(),
             success: function(response) {
+            	button.html(_buttonHtml).attr('disabled', false);
             	_modal.modal('hide');
+            	Institution.removeErrors(_formId);
             },
             error: function(json) {
             	Institution.removeErrors(_formId);
@@ -29,6 +31,8 @@ var Institution = {
                 
             }
         });
+		
+		return this;
 	},
 	
 	removeErrors: function(_formId) {

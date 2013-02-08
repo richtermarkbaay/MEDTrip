@@ -1,24 +1,47 @@
-{% set businessHours = json_decode(businessHours) %}
+{% set decodedBusinessHours = json_decode_business_hours(institutionMedicalCenter) %}
 
-{% if businessHours %}
+{% if decodedBusinessHours %}
 
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Schedule'} %}    
         {% block asideContent %}
+
+            {% set isOpen24_7 = true %}
         
-    
-    		<table>
-    		    
-    		    {% for day, time in businessHours %}
-        		    {% if time.from is defined and time.to is defined %}
-        			<tr>
-        				<td>{{ day }}</td>
-        				<td>{{ time.from }}</td>
-        				<td>-</td>
-        				<td>{{ time.to }}</td>
-        			</tr>
-        			{% endif %}
+		    {% for _day, _data in decodedBusinessHours %}
+		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
+		        
+		        {% if not _isWholeDayOpen %}
+		            {% set isOpen24_7 = false %}
+		        {% endif %}
+
+		    {% endfor %}
+
+    		<table width="100%">
+
+    		{% if isOpen24_7 %}
+                <td style="text-align:center">We are open</td>
+                <td style="text-align:left"><b>24</b> <span style="color:#CCCCCC;font-size: 17px">/</span> <b>7</b></td>
+    		{% else %}
+    		    {% for _day, _data in decodedBusinessHours %}
+    		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
+                    {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
+        		    <tr>
+                        <td>{{ _day | upper }}</td>
+                        {% if _isClosed %}
+                            <td>Closed</td>
+                        {% elseif _isWholeDayOpen %}
+                            <td>Open 24 Hours</td>
+                        {% else %}
+                            <td>{{ _data.from }}</td>
+                            <td>-</td>
+                            <td>{{ _data.to }}</td>
+                        {% endif %}
+                    </tr>
     			{% endfor %}
+    		{% endif %}
+
     		</table>
+
     	{% endblock %}
     {% endembed %}
 

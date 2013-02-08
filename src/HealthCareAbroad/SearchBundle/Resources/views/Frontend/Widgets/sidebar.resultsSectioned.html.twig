@@ -5,22 +5,8 @@
                 <h3>Not what your're looking for?</h1>
                 <ul>
                     <li>
-                        <form>
-                            <fieldset>
-                                <h4>Search Again</h4>
-                                <label>
-                                    <b>Specialization or Treatment</b>
-                                </label>
-                                <input type="text" placeholder="i.e: Facelift">
-                                <label>
-                                    <b>Destination</b>
-                                </label>
-                                <input type="text" placeholder="i.e: Thailand, Hawaii">
-                                <button type="submit" class="btn orange">
-                                    <i class="icon-search icon-white"></i>Search
-                                </button>
-                            </fieldset>
-                        </form>
+                        {% render "SearchBundle:Frontend:showWidget" with {context: 'sidebar' } %}
+
                         <h4>Or Simply</h4>
                         <div>
                             <a href="#" class="btn green">Go back to search page</a>
