@@ -7,8 +7,6 @@
 # @date: February 1, 2013
 #
 
-DELIMITER $$
-
 ##----------------------
 # AFTER INSERT institution_specializations trigger.
 #
