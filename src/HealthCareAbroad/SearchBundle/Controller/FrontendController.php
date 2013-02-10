@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\TermBundle\Entity\TermDocument;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -276,7 +278,8 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city')
+            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         );
 
         $prefix = $this->getPrefix();
@@ -409,6 +412,7 @@ class FrontendController extends Controller
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
+        var_dump($this->getSearchParams($request, true)); exit;
         $results = $this->get('services.search')->getDestinations($this->getSearchParams($request, true));
 
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
@@ -423,7 +427,8 @@ class FrontendController extends Controller
     {
         $results = array();
         
-        $results[] = array('id' => 1, 'label' => 'wata');
+        $results[] = array('id' => 1, 'value' => 1, 'label' => 'wata');
+        $results[] = array('id' => 2, 'value' => 2, 'label' => 'test');
         //sleep(1);
         return new Response(\json_encode($results), 200, array('content-type' => 'application/json'));
     }

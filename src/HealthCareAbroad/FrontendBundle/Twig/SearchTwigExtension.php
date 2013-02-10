@@ -2,8 +2,15 @@
 
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+
 class SearchTwigExtension extends \Twig_Extension
 {
+    /**
+     * @var Router
+     */
+    private $router;
+    
     public function getFunctions()
     {
         return array(
@@ -14,6 +21,11 @@ class SearchTwigExtension extends \Twig_Extension
     public function getName()
     {
         return 'frontendSearchExtension';
+    }
+    
+    public function setRouter($v)
+    {
+        $this->router = $v;
     }
     
     public function get_narrow_search_widgets_configuration($widgets, $commonAutocompleteOptions=array())
