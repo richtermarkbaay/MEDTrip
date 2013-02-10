@@ -1,0 +1,54 @@
+{% set _narrowSearchAutocompleteSource = path('frontend_narrowSearch_autocomplete') %}
+{% set _commonAutocompleteOptions = {
+    'field': 'input.search-field',
+    'selected_value_container': '.autocomplete_selected_value_container',
+    'autocomplete_list_container': '.autocomplete_list_container',
+    'source': _narrowSearchAutocompleteSource
+}%}
+
+{% embed 'SearchBundle:Frontend/Widgets:base.narrowDownSearch.html.twig' with {
+    widgets: {
+        'treatment': {
+            'widget_container': 'li.narrow_search_widget_treatment', 
+            'autocomplete': _commonAutocompleteOptions
+        },
+        'country': {
+            'widget_container': 'li.narrow_search_widget_country', 
+            'autocomplete': _commonAutocompleteOptions
+        },
+        'city': {
+            'widget_container': 'li.narrow_search_widget_city', 
+            'autocomplete': _commonAutocompleteOptions
+        }
+    }
+} %}
+
+    {% block narrowDownSearchWidgets %}
+        <li class="narrow-description">
+            Specific Treatment
+        </li>
+        <li class="row-fluid combo-box narrow_search_widget_treatment">
+            {% include 'SearchBundle:Frontend/Widgets:form.narrowSearchByType.html.twig' with { widget: {
+                'type': 'treatment',
+                'searchTypeLabel': 'treatment'
+            }}%}
+        </li>
+        
+        <li class="narrow-description">
+            Specific location
+        </li>
+        <li class="row-fluid combo-box narrow_search_widget_country">
+            {% include 'SearchBundle:Frontend/Widgets:form.narrowSearchByType.html.twig' with { widget: {
+                'type': 'country',
+                'searchTypeLabel': 'country'
+            }}%}
+        </li>
+        <li class="row-fluid combo-box narrow_search_widget_city">
+            {% include 'SearchBundle:Frontend/Widgets:form.narrowSearchByType.html.twig' with { widget: {
+                'type': 'city',
+                'searchTypeLabel': 'city'
+            }}%}
+        </li>
+    {% endblock %}
+    
+{% endembed %}

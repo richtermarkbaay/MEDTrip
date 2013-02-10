@@ -1,0 +1,93 @@
+<button data-toggle="dropdown" class="btn tiny orange dropdown-toggle btn-inverse">
+    <span class="icon-search icon-white"> </span> <span class="caret"></span>
+</button>
+
+<div role="menu" class="input-append dropdown-menu">
+    <form action="{{ path('frontend_search_process') }}" method="get" name="searchBox-{{ options.subContext }}">
+        <input type="hidden" name="treatment_id" value="{{ options.treatmentId }}"/>
+        <input type="hidden" name="destination_id" value="{{ options.destinationId }}"/>
+
+        {% if options.context == 'treatments' %}
+        <input type="text" placeholder="Enter destination" class="search-field" name="sb_destination"/>
+        <input type="hidden" value="xxxFILLERxxx" name="sb_treatment"/>
+        {% elseif options.context == 'destinations' %}
+        <input type="text" placeholder="Enter treatment" class="search-field" name="sb_treatment"/>
+        <input type="hidden" value="xxxFILLERxxx" name="sb_destination"/>
+        {% endif %}
+    </form>
+
+    <p>Search Results: <b id="countSearchResults-{{ options.subContext }}">0</b></p>
+
+    <ul id="resultsList-{{ options.subContext }}"></ul>
+</div>
+
+<script type="text/javascript">
+{% if options.context == 'treatments' %}
+var autocompleteInputSelector = 'input[name="sb_destination"]';
+var hiddenInputSelector = 'input[name="destination_id"]';
+{% elseif options.context == 'destinations' %}
+var autocompleteInputSelector = 'input[name="sb_treatment"]';
+var hiddenInputSelector = 'input[name="treatment_id"]';
+{% endif %}
+
+$('form[name="searchBox-{{ options.subContext }}"] ' + autocompleteInputSelector).autocomplete({
+    source: function(request, response) {
+        $.ajax({
+            url: "{{ path(options.autocompleteRoute) }}",
+            dataType: "json",
+            data: {
+                term: request.term,/*we don't need this???*/
+                {% if options.context == 'treatments' %}
+                treatment_id: $('form[name="searchBox-{{ options.subContext }}"] input[name="treatment_id"]').val(),
+                {% elseif options.context == 'destinations' %}
+                destination_id: $('form[name="searchBox-{{ options.subContext }}"] input[name="destination_id"]').val(),
+                {% endif %}
+                sb_treatment: $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_treatment"]').val(),
+                sb_destination: $('form[name="searchBox-{{ options.subContext }}"] input[name="sb_destination"]').val()
+            },
+            success: function(data) {
+                response( $.each(data, function(item) {
+                    return {
+                        label: item.label,
+                        value: item.value
+                    }
+                }));
+            }
+        });
+    },
+    delay: 200,
+    minLength: 1
+})
+.data('autocomplete')._renderMenu = function( ul, data ) {
+    //$(ul).css('width', settings.dropDownWidth);
+    $('#countSearchResults-{{ options.subContext }}').text(data.length);
+    $('#resultsList-{{ options.subContext }}').html('');
+
+    //var self = this;
+    $.each( data, function( index, item ) {
+        //self._renderItem( ul, item );
+        return $( "<li>" )
+            .data( "item.autocomplete", item )
+            .append( "<a data-value='" + item.value + "'>" + item.label + "</a>" )
+            .appendTo($('#resultsList-{{ options.subContext }}'));
+    });
+};
+/*
+.data("autocomplete")._renderItem = function(ul, item) {
+    var count = $('#countSearchResults');
+    count.text(parseInt(count.text()) + 1);
+
+    return $( "<li>" )
+        .data( "item.autocomplete", item )
+        .append( "<a>" + item.label + "</a>" )
+        .appendTo($('#resultsList'));
+};
+*/
+
+$('#resultsList-{{ options.subContext }}').click(function(e) {
+    $('form[name="searchBox-{{ options.subContext }}"] ' + autocompleteInputSelector).focus().val($(e.target).text());
+    $('form[name="searchBox-{{ options.subContext }}"] ' + hiddenInputSelector).val($(e.target).attr('data-value'));
+    e.stopPropagation();
+});
+
+</script>

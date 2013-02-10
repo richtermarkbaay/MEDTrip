@@ -1,0 +1,42 @@
+<aside id="aside_content" class="span4">
+    <section class="box-in">
+        <h5 class="heading"><small>Narrow</small>Search</h5>
+        <ul class="related">
+            <li class="row">
+                <h3>
+                    Narrow down search results
+                </h3>
+                <ul>
+                    {% block narrowDownSearchWidgets %}{% endblock %}
+                    {% block narrowDownSearchForm %}
+                    <li class="row-fluid combo-box">
+                        <form action="{{ path('frontend_search_process') }}" method="post">
+                            <button class="btn span8 offset4 orange btn-pop" data-toggle="dropdown">
+                                <i class="icon-refresh icon-white">
+                                </i>
+                                Filter Results
+                            </button>
+                        </form>
+                        
+                    </li>
+                    {% endblock %}
+                </ul>
+                
+            </li>
+        </ul>
+    </section>
+</aside>
+<!--End of aside_content-->
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        var _widgets = window.JSON.parse('{{ json_encode(widgets) | raw }}');
+        NarrowSearchWidgetManager.initializeWidgets(_widgets);
+        //$('li.narrow_search_widget_treatment').narrowSearchWidget({});
+    });
+})(jQuery);
+//-->
+</script>    
+{% endblock%}

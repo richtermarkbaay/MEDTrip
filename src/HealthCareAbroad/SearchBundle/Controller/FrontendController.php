@@ -410,6 +410,20 @@ class FrontendController extends Controller
 
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
     }
+    
+    /**
+     * AJAX handler for narrow search results widget
+     * 
+     * @param Request $request
+     */
+    public function ajaxLoadNarrowSearchAction(Request $request)
+    {
+        $results = array();
+        
+        $results[] = array('id' => 1, 'label' => 'wata');
+        //sleep(1);
+        return new Response(\json_encode($results), 200, array('content-type' => 'application/json'));
+    }
 
     //TODO: create a dedicated class for this
     private function buildUrl($searchParams, $termDocument)

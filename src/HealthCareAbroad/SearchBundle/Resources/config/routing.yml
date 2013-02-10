@@ -54,6 +54,10 @@ frontend_search_ajaxLoadSubSpecializations:
     pattern: /search/ajaxLoadSubSpecializations
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'subSpecialization' }
 
+frontend_narrowSearch_autocomplete:
+    pattern: /search/ajaxNarrowSearch
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadNarrowSearch }
+    
 #TODO: rename this route
 frontend_search_ajaxLoadTreatments2:
     pattern: /search/ajaxLoadTreatments2
