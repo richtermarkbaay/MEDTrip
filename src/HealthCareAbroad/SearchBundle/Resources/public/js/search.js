@@ -26,7 +26,12 @@ var NarrowSearchWidgetManager = {
         var _xhr;
         var _self = $(_widget);
         
-        _self.autocomplete({
+        _self
+            .click(function(e){
+                e.stopPropagation();
+            })
+            .autocomplete({
+            minLength: 0,
             source: function(request, response) {
                 if (_xhr && 4 != _xhr.readyState) {
                     _xhr.abort();

@@ -275,7 +275,8 @@ class FrontendController extends Controller
             'routeName' => 'frontend_search_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
-            'specialization' => $specialization
+            'specialization' => $specialization,
+            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city')
         );
 
         $prefix = $this->getPrefix();
@@ -321,7 +322,8 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'subSpecialization' => $subSpecialization
+            'subSpecialization' => $subSpecialization,
+            'includedNarrowSearchWidgets' => array('country', 'city')
         );
 
         $prefix = $this->getPrefix();
@@ -357,7 +359,8 @@ class FrontendController extends Controller
             'routeName' => 'frontend_search_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId,
-            'treatment' => $treatment
+            'treatment' => $treatment,
+            'includedNarrowSearchWidgets' => array('country', 'city')
         );
 
         $prefix = $this->getPrefix();

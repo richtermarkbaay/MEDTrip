@@ -33,7 +33,8 @@
 
     </div> <!--End of main_content-->
 
-    {% include 'SearchBundle:Frontend/Widgets:sidebar.specializationResults.html.twig'  %}
+    {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
+    
     {% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %}
     
 </div>

@@ -32,9 +32,8 @@
 <!--
 (function($){
     $(function(){
-        var _widgets = window.JSON.parse('{{ json_encode(widgets) | raw }}');
+        var _widgets = window.JSON.parse('{{ json_encode(narrowSearchWidgets) | raw }}');
         NarrowSearchWidgetManager.initializeWidgets(_widgets);
-        //$('li.narrow_search_widget_treatment').narrowSearchWidget({});
     });
 })(jQuery);
 //-->
