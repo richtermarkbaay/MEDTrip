@@ -1,0 +1,51 @@
+<aside id="aside_content" class="span4">
+    <section class="box-in">
+        <h5 class="heading"><small>Narrow</small>Search</h5>
+        <ul class="related">
+            <li class="row">
+                <h3>
+                    Narrow down search results
+                </h3>
+                <ul>
+                    {% block narrowDownSearchWidgets %}{% endblock %}
+                    {% block narrowDownSearchForm %}
+                    <li class="row-fluid combo-box">
+                        <form id="narrowSearchForm" action="{{ path('frontend_search_process') }}" method="post">
+                            <button class="btn span8 offset4 orange " type="submit">
+                                <i class="icon-refresh icon-white">
+                                </i>
+                                Filter Results
+                            </button>
+                            
+                            {% set narrowSearchParameters = narrowSearchParameters is defined ? narrowSearchParameters : [] %}
+                            {#-- create input field for autocomplete narrow search paramters #}
+                            {% for _paramName, _paramValue in narrowSearchParameters %}
+                            <input type="hidden" name="searchParameter[{{ _paramName }}]" value="{{ _paramValue }}" />
+                            {% endfor %}
+                            <input type="hidden" name="filter" />
+                            <input type="hidden" name="term" />
+                            
+                        </form>
+                        
+                    </li>
+                    {% endblock %}
+                </ul>
+                
+            </li>
+        </ul>
+    </section>
+</aside>
+<!--End of aside_content-->
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        var _widgets = window.JSON.parse('{{ json_encode(narrowSearchWidgets) | raw }}');
+        NarrowSearchWidgetManager.form = $('form#narrowSearchForm');
+        NarrowSearchWidgetManager.initializeWidgets(_widgets);
+    });
+})(jQuery);
+//-->
+</script>    
+{% endblock%}

@@ -1,20 +1,14 @@
-<form action="{{ path('frontend_search') }}" method="get" name="searchBox">
-    <input type="hidden" name="treatment_id" value="{{ options.treatmentId }}"/>
-    <input type="hidden" name="destination_id" value="{{ options.destinationId }}"/>
+<form action="{{ path('frontend_search_process') }}" method="get" name="search_box" class="span12 search_box  form-inline">
+    <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
+    <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
 
-    <fieldset>
-        <h4>Search Again</h4>
-        <label><b>Specialization or Treatment</b></label>
-        <input type="text" placeholder="i.e: Facelift" name="sb_treatment">
-        <label><b>Destination</b></label>
-        <input type="text" placeholder="i.e: Thailand, Hawaii" name="sb_destination">
-
-        <button type="submit" class="btn orange">
-            <i class="icon-search icon-white"></i>Search
-        </button>
-
-    </fieldset>
+    <label>Search</label>
+    <input type="text" placeholder="Specialization or Treatment" name="sb_treatment" id="sb_treatment"/>
+    <label>Near</label>
+    <input type="text" placeholder="City, Country or Zip" name="sb_destination" id="sb_destination"/>
+    <button class="btn">Let's Go</button>
 </form>
+
 
 <!-- TODO: remove invalid markup -->
 <style>
@@ -27,17 +21,18 @@
 </style>
 
 <script type="text/javascript">
+
 $(function() {
-    $('form[name="searchBox"] input[name="sb_treatment"]').autocomplete({
+    $('#sb_treatment').autocomplete({
         source: function(request, response) {
             $.ajax({
                 url: "{{ path('frontend_search_ajaxLoadTreatments') }}",
                 dataType: "json",
                 data: {
                     term: request.term,
-                    destination_id: $('form[name="searchBox"] input[name="destination_id"]').val(),
-                    sb_treatment: $('form[name="searchBox"] input[name="sb_treatment"]').val(),
-                    sb_destination: $('form[name="searchBox"] input[name="sb_destination"]').val()
+                    destination_id: $('#destination_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
                 },
                 success: function(data) {
                     response($.each(data, function(item) {
@@ -52,27 +47,27 @@ $(function() {
         },
         select: function( event, ui ) {
             $(this).val( ui.item.label );
-            $('form[name="searchBox"] input[name="treatment_id"]').val( ui.item.value );
+            $("#treatment_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $('form[name="searchBox"] input[name="treatment_id"]').val(ui.item && ui.item.value ? ui.item.value : '0');
+            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0');
         },
         delay: 200,
         minLength: 1
     });
 
-    $('form[name="searchBox"] input[name="sb_destination"]').autocomplete({
+    $('#sb_destination').autocomplete({
         source: function(request, response) {
             $.ajax({
                 url: "{{ path('frontend_search_ajaxLoadDestinations') }}",
                 dataType: "json",
                 data: {
                     term: request.term,
-                    treatment_id: $('form[name="searchBox"] input[name="treatment_id"]').val(),
-                    sb_treatment: $('form[name="searchBox"] input[name="sb_treatment"]').val(),
-                    sb_destination: $('form[name="searchBox"] input[name="sb_destination"]').val()
+                    treatment_id: $('#treatment_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
                 },
                 success: function(data) {
                     response( $.each(data, function(item) {
@@ -90,12 +85,12 @@ $(function() {
         },
         select: function( event, ui ) {
             $(this).val( ui.item.label );
-            $('form[name="searchBox"] input[name="destination_id"]').val( ui.item.value );
+            $("#destination_id").val( ui.item.value );
 
             return false;
         },
         change: function(event, ui) {
-            $('form[name="searchBox"] input[name="destination_id"]').val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+            $("#destination_id").val((ui.item && ui.item.value) ? ui.item.value : '0-0');
         },
         delay: 200,
         minLength: 1

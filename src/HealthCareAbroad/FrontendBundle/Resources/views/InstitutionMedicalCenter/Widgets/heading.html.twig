@@ -34,11 +34,26 @@
         {% endif %}
     
     	{% if email %}
-    		<a href="mailto:{{ email }}" class="email btn green" title="send email to {{email}}">Email</a>
+    		<a href="mailto:{{ email }}" id="email" class="email btn green" title="send email to {{email}}">Email</a>
         {% endif %}
         
     	{% if mainWebsites %}
     		<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>
         {% endif %}
+        
+        <!-- Modal InstitutionMedicalCenter Inquiry -->
+        	{% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:inquire.imc.html.twig' 
+        	     with { modalId: 'modal_imc_inquiry_form', modalTitle: 'Email ' ~ institutionMedicalCenter.name } 
+        	%}
+       <!-- end Modal InstitutionMedicalCenter Inquiry -->
 	</div>
 </div>
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
+    <script type="text/javascript">
+        $('#email').click(function(){
+        	$('div#modal_imc_inquiry_form').modal('show');
+            return false;
+        });
+    </script>
+{% endblock %}

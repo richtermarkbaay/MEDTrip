@@ -165,4 +165,47 @@ class SearchTermRepository extends EntityRepository
 
         return $qb;
     }
+
+    public function getTopCountries($limit = 6)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $status = SearchTerm::STATUS_ACTIVE;
+        //TODO: revisit code; the returned result may not be what we want
+        $stmt = $connection->prepare("
+            SELECT b.id, b.name, b.slug AS slug, COUNT(a.country_id) AS count
+            FROM search_terms a
+            LEFT JOIN countries b ON a.country_id = b.id
+            WHERE a.status = $status
+            GROUP BY b.id
+            ORDER BY count DESC
+            LIMIT :limit
+       ");
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getTopTreatments($limit = 6)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $status = SearchTerm::STATUS_ACTIVE;
+        //TODO: revisit code; the returned result may not be what we want
+        $stmt = $connection->prepare("
+            SELECT b.id, b.name, b.slug AS slug, COUNT(a.treatment_id) AS count, c.id AS specialization_id, c.name AS specialization_name, c.slug AS specialization_slug
+            FROM search_terms a
+            INNER JOIN treatments b ON a.treatment_id = b.id
+            LEFT JOIN specializations c ON a.specialization_id = c.id
+            WHERE a.status = $status
+            GROUP BY b.id
+            ORDER BY count DESC
+            LIMIT :limit
+        ");
+        $stmt->bindValue('limit', $limit, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
