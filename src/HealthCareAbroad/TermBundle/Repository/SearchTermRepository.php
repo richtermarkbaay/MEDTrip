@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\TermBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
 use HealthCareAbroad\HelperBundle\Entity\City;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
@@ -207,5 +209,12 @@ class SearchTermRepository extends EntityRepository
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function findBySubSpecialization(SubSpecialization $subSpecialization)
+    {
+        $qb = $this->getQueryBuilderByDocumentIdAndType($subSpecialization->getId(), TermDocument::TYPE_SUBSPECIALIZATION);
+
+        return $qb->getQuery()->getResult();
     }
 }

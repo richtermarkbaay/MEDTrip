@@ -38,8 +38,8 @@ class DefaultController extends Controller
         $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
         $news = $advertisementRepo->getActiveNews();
         $commonTreatments = $advertisementRepo->getCommonTreatments();
-        $featuredDestinations = $advertisementRepo->getFeaturedDestinations(); 
-        
+        $featuredDestinations = $advertisementRepo->getFeaturedDestinations();
+
         $params = array(
             'highlightAds' => $highlightAds,
             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
@@ -56,9 +56,9 @@ class DefaultController extends Controller
 
     /**
      * TODO - Improved Implementation!
-     * 
-     * Generate Frontend Breadcrumbs based on route name 
-     * 
+     *
+     * Generate Frontend Breadcrumbs based on route name
+     *
      * @author Adelbert D. Silla
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -76,14 +76,14 @@ class DefaultController extends Controller
                 $institution = $request->get('institution');
                 $country = $institution->getCountry();
                 $templateParams['breadcrumbs'][] = array(
-                    'url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 
+                    'url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())),
                     'label' => $country->getName()
                 );
 
                 if($city = $institution->getCity()) {
                     $templateParams['breadcrumbs'][] = array(
                         'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
-                        'label' => $city->getName());                    
+                        'label' => $city->getName());
                 }
 
                 $templateParams['breadcrumbs'][] = array('label' => $institution->getName());
@@ -97,7 +97,7 @@ class DefaultController extends Controller
                 $country = $institution->getCountry();
 
                 $templateParams['breadcrumbs'][] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
-                
+
                 if($city = $institution->getCity()) {
                     $templateParams['breadcrumbs'][] = array(
                         'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
@@ -156,20 +156,20 @@ class DefaultController extends Controller
                 if($treatment && !$specialization) { $specialization = $treatment->getSpecialization(); }
 
                 $breadcrumbs[] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
-                
+
                 if($city) {
                     $breadcrumbs[] = array(
-                        'url' => $this->generateUrl('frontend_search_results_cities', 
-                            array('country' => $country->getSlug(), 'city' => $city->getSlug())), 
+                        'url' => $this->generateUrl('frontend_search_results_cities',
+                            array('country' => $country->getSlug(), 'city' => $city->getSlug())),
                         'label' => $city->getName()
                     );
-                    
+
                     $breadcrumbs[] = array(
                         'url' => $this->generateUrl('frontend_search_combined_countries_cities_specializations',
                                         array('country' => $country->getSlug(), 'city' => $city->getSlug(), 'specialization' => $specialization->getSlug())),
                         'label' => $specialization->getName(),
                     );
-                    
+
                 } else {
                     $breadcrumbs[] = array(
                         'url' => $this->generateUrl('frontend_search_combined_countries_specializations',
@@ -189,9 +189,9 @@ class DefaultController extends Controller
                 //$templateParams['breadcrumbs'] = array(array('label' => 'Test'));
                 break;
         }
-        
+
         //var_dump($route); var_dump($request->get('routeParams'));
-        
+
         return $this->render('FrontendBundle:Widgets:breadcrumbs.html.twig', $templateParams);
     }
 
@@ -264,7 +264,7 @@ class DefaultController extends Controller
 
     /**
      * TODO: Should this be on the search bundle?
-     * 
+     *
      * @param Request $request
      */
     public function listCountrySpecializationAction(Request $request)
@@ -481,15 +481,15 @@ class DefaultController extends Controller
     public function call404ExcemptionAction(){
         throw $this->createNotFoundException("Only supports AJAX request");
     }
-    
+
     public function ajaxSendErrorReportAction(){
         $output = array();
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getEntityManager();
-        
+
         $errorReport = new ErrorReport();
         $form = $this->createForm(new ErrorReportFormType(), $errorReport);
-        
+
         if ($request->isMethod('POST')) {
              $form->bind($request);
              if ($form->isValid()) {
@@ -499,14 +499,14 @@ class DefaultController extends Controller
                     $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
                     $em->persist($errorReport);
                     $em->flush();
-                    
+
                     //// create event on sendEmail and dispatch
                     $event = new CreateErrorReportEvent($errorReport);
                     $this->get('event_dispatcher')->dispatch(ErrorReportEvent::ON_CREATE_REPORT, $event);
-                    
+
                     $output = "Your report has been submitted. Thank you.";
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-                    
+
                 }
                 catch(\Exception $e) {
                     $response = new Response('Error: '.$e->getMessage(), 500);
@@ -516,7 +516,7 @@ class DefaultController extends Controller
                 $response = new Response('Form error'.$e->getMessage(), 400);
             }
         }
-        
+
         return $response;
     }
 }

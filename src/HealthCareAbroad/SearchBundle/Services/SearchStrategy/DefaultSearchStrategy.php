@@ -76,6 +76,108 @@ class DefaultSearchStrategy extends SearchStrategy
         return $results;
     }
 
+    public function loadCountries($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.id, a.id AS value, a.name AS label
+            FROM countries AS a
+            INNER JOIN search_terms b ON a.id = b.country_id
+            WHERE a.name LIKE :term
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['treatment'])) {
+                $sql .= " AND b.treatment_id = {$searchParameter['treatment']} ";
+            } elseif (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function loadCities($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.id AS id, a.id AS value, a.name AS label
+            FROM cities AS a
+            INNER JOIN search_terms b ON a.id = b.city_id
+            WHERE a.name LIKE :term
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['treatment'])) {
+                $sql .= " AND b.treatment_id = {$searchParameter['treatment']} ";
+            } elseif (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function loadTreatments($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.id AS id, a.id AS value, a.name AS label
+            FROM treatments AS a
+            INNER JOIN search_terms b ON a.id = b.treatment_id
+            WHERE a.name LIKE :term
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['city'])) {
+                $sql .= " AND b.city_id = {$searchParameter['city']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
     //TODO: query will not give correct results in all cases; this should probably be
     //renamed to something more specific.
     public function getTermDocuments(SearchParameterBag $searchParams, $options = array(), $uniqueTermDocument = true)

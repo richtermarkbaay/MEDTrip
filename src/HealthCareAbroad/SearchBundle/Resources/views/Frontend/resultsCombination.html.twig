@@ -11,12 +11,11 @@
                 <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> Results Found</h2>
             </header>
             {% for center in searchResults %}
-                {% set rating = random(5) %}
                 <article class="media search-entry">
                     <a class="pull-left" href="{{ get_institution_medical_center_frontend_url(center) }}">
                         <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
                     </a>
-    
+
                     <div class="media-body">
                         <h3 class="media-heading">{{ center.name }}</h3>
                         <div class="media">
@@ -38,13 +37,13 @@
                     </div>
                 </article>
             {% endfor %}
-    
+
             {% if searchResults.isPaginable %}
                 {{ paginate(searchResults, app.request.uri, {hasNoRouteName: 1}, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
             {% endif %}
-    
+
         </div> <!--End of main_content-->
-    
+
         {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
     </div>
 {% endblock %}
