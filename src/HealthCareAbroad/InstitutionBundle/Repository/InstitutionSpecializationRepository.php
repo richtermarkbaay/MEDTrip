@@ -2,6 +2,10 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -78,6 +82,17 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $query->getResult();
     }
 
+    public function getAvailableTreatmentsBySpecializationId(Specialization $specialization, InstitutionMedicalCenter $institutionMedicalCenter, QueryOptionBag $queryOptions=null)
+    {
+ 
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionSpecialization a WHERE a.specialization = :specialization AND a.institutionMedicalCenter = :institutionMedicalCenter ";
+        $query = $this->_em->createQuery($dql)
+        ->setParameter('specialization', $specialization)
+        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter);
+    
+       return $query->getResult();
+        
+    }
     public function getMedicalCentersList($institutionId)
     {
         $qb = $this->_em->createQueryBuilder()
@@ -93,7 +108,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
     public function getByInstitutionMedicalCenter($institutionMedicalCenter)
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
+         $qb = $this->_em->createQueryBuilder();
 
         $qb->select('a','b', 'c')
            ->from('InstitutionBundle:InstitutionSpecialization', 'a')
