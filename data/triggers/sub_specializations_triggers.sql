@@ -7,8 +7,6 @@
 # @date: January, 29, 2013
 #
 
-DELIMITER $$
-
 ##----------------------
 # INSERT sub_specialization trigger. Insert corresponding row to terms and term_documents
 #
@@ -130,8 +128,3 @@ BEGIN
         DELETE FROM `terms` WHERE `terms`.`name` = OLD.name; 
     END IF;
 END; $$
-
-DELIMITER ;
-
-
-

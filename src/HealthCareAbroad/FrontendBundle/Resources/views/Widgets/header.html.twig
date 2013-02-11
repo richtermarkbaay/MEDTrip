@@ -3,14 +3,20 @@
         <a class="logo span5" href="{{ path('frontend_main_homepage') }}">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
-        <!-- nav class="menu">
+
+        <nav class="menu">
             <ul>
-                <li><a href="#">Search</a></li>
-                <li><a href="#">Procedures</a></li>
-                <li><span class="inset"></span></li>
-                <li class="active"><a href="#">Destination</a></li>
+                <!-- li><a href="#">Search</a></li -->
+                <li class="{{ app.request.get('_route') == 'frontend_treatment_list' ? 'active' : '' }}">
+                    <a href="{{ path('frontend_treatment_list') }}">Treatments</a>
+                </li>
+
+                <li class="{{ app.request.get('_route') == 'frontend_destination_list' ? 'active' : '' }}">
+                    <a href="{{ path('frontend_destination_list') }}">Destinations</a>
+                </li>
             </ul>
-        </nav  -->
+        </nav>
+        
     </div>
 </header> <!--End of header-->
 
@@ -18,23 +24,12 @@
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
         <div id="hero_unit" class="row">
             <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>
-            <small>the resource for global <strong>healthcare</strong><br>a comprehensive, <strong>unbiased</strong> directory</small>
+                <small>the resource for global <strong>healthcare</strong><br>a comprehensive, <strong>unbiased</strong> directory</small>
             </h1>
-
             {% block searchBox %}
                 {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
                 {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
             {% endblock %}
-
-            <!--
-            <form action="get" name="search_box" class="span12 search_box  form-inline">
-                <label>Search</label>
-                <input type="text" placeholder="Specialization or Treatment" name="procedure"/>
-                <label>Near</label>
-                <input type="text" placeholder="City, Country or Zip" name="location"/>
-                <button class="btn">Let's Go</button>
-            </form>
-             -->
         </div>
     </div> <!--End of hero unit-->
 {% endif %}

@@ -206,6 +206,15 @@ class LocationService
 	{
 		return $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->getQueryBuilderForCountries();
 	}
+
+	public function getActiveCountriesWithCities()
+	{
+	    $qb = $this->getQueryBuilderForCountries();
+	    $qb->addSelect('b');
+	    $qb->leftJoin('c.cities', 'b');
+
+        return $qb->getQuery()->getResult();
+	}
 	
 	/**
 	 * Hackish way to use this service without injecting it on other services.

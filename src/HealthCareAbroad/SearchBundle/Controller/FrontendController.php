@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\TermBundle\Entity\TermDocument;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -38,14 +40,21 @@ class FrontendController extends Controller
         $options['treatmentLabel'] = '';
 
         switch ($options['context']) {
-            case 'homepage':
-                $template = 'SearchBundle:Frontend/Widgets:mainSearchWidget.html.twig';
+            case 'main':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetMain.html.twig';
+                break;
 
+            case 'homepage':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetHomepage.html.twig';
+                break;
+
+            case 'sidebar':
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetSidebar.html.twig';
                 break;
 
             case 'destinations':
                 $options['destinationId'] = $request->get('destinationId');
-                $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetResultsPage.html.twig';
 
                 if ($request->get('subContext', '') == 'specialization') {
                     $options['autocompleteRoute'] = 'frontend_search_ajaxLoadSpecializations';
@@ -59,18 +68,13 @@ class FrontendController extends Controller
 
             case 'treatments':
                 $options['treatmentId'] = $request->get('treatmentId');
-                $template = 'SearchBundle:Frontend/Widgets:resultsPageSearchWidget.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:searchWidgetResultsPage.html.twig';
 
                 if ($request->get('subContext', '') == 'country') {
                     $options['autocompleteRoute'] = 'frontend_search_ajaxLoadCountries';
                 } elseif ($request->get('subContext') == 'city') {
                     $options['autocompleteRoute'] = 'frontend_search_ajaxLoadCities';
                 }
-
-                break;
-
-            case 'sidebar':
-                $template = 'SearchBundle:Frontend/Widgets:sidebarSearchWidget.html.twig';
 
                 break;
 
@@ -82,12 +86,27 @@ class FrontendController extends Controller
     }
 
     /**
+     * Search page
+     *
+     * @param Request $request
+     */
+    public function searchAction(Request $request)
+    {
+        $parameters = array();
+
+        $parameters['topDestinations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopCountries();
+        $parameters['topTreatments'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopTreatments();
+
+        return  $this->render('SearchBundle:Frontend:search.html.twig', $parameters);
+    }
+
+    /**
      * TODO: refactor
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function searchAction(Request $request)
+    public function searchProcessAction(Request $request)
     {
         $searchParams = $this->getSearchParams($request, true);
 
@@ -258,7 +277,9 @@ class FrontendController extends Controller
             'routeName' => 'frontend_search_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
-            'specialization' => $specialization
+            'specialization' => $specialization,
+            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         );
 
         $prefix = $this->getPrefix();
@@ -304,7 +325,8 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'subSpecialization' => $subSpecialization
+            'subSpecialization' => $subSpecialization,
+            'includedNarrowSearchWidgets' => array('country', 'city')
         );
 
         $prefix = $this->getPrefix();
@@ -340,7 +362,8 @@ class FrontendController extends Controller
             'routeName' => 'frontend_search_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId,
-            'treatment' => $treatment
+            'treatment' => $treatment,
+            'includedNarrowSearchWidgets' => array('country', 'city')
         );
 
         $prefix = $this->getPrefix();
@@ -372,7 +395,7 @@ class FrontendController extends Controller
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTag($term['id']));
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => 1)),
+                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $request->get('tag', ''),
                         'routeName' => 'frontend_search_results_related',
                         'paginationParameters' => array('tag' => $request->get('tag', '')),
@@ -389,9 +412,25 @@ class FrontendController extends Controller
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
+        var_dump($this->getSearchParams($request, true)); exit;
         $results = $this->get('services.search')->getDestinations($this->getSearchParams($request, true));
 
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
+    }
+    
+    /**
+     * AJAX handler for narrow search results widget
+     * 
+     * @param Request $request
+     */
+    public function ajaxLoadNarrowSearchAction(Request $request)
+    {
+        $results = array();
+        
+        $results[] = array('id' => 1, 'value' => 1, 'label' => 'wata');
+        $results[] = array('id' => 2, 'value' => 2, 'label' => 'test');
+        //sleep(1);
+        return new Response(\json_encode($results), 200, array('content-type' => 'application/json'));
     }
 
     //TODO: create a dedicated class for this
@@ -480,6 +519,7 @@ class FrontendController extends Controller
         return $routeParams;
     }
 
+    //TODO: use route names instead
     public static function appendDestinationUrls($locations, $treatment, $prefix = '')
     {
         $modifiedLocations = array();
@@ -507,6 +547,7 @@ class FrontendController extends Controller
         return $modifiedLocations;
     }
 
+    //TODO: use route names instead
     public static function appendTreatmentUrls($treatments, $destination, $prefix = '')
     {
         $modifiedTreatments = array();

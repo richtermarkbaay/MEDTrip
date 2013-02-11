@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
+
 use HealthCareAbroad\PagerBundle\Pager;
 
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
@@ -39,7 +41,7 @@ class DefaultController extends Controller
         $news = $advertisementRepo->getActiveNews();
         $commonTreatments = $advertisementRepo->getCommonTreatments();
         $featuredDestinations = $advertisementRepo->getFeaturedDestinations(); 
-        
+
         $params = array(
             'highlightAds' => $highlightAds,
             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
@@ -52,6 +54,21 @@ class DefaultController extends Controller
         );
         //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
+    }
+    
+    public function treatmentListAction()
+    {
+        $institutionSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
+
+        return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
+    }
+
+    public function destinationListAction()
+    {
+        $params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+
+        return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
     }
 
     /**
@@ -184,8 +201,13 @@ class DefaultController extends Controller
 
                 $templateParams['breadcrumbs'] = $breadcrumbs;
                 break;
-
+            
             default :
+
+                if(isset($routeParams['breadcrumbLabel'])) {
+                    $templateParams['breadcrumbs'] = array(array('label' => $routeParams['breadcrumbLabel']));                    
+                }
+                
                 //$templateParams['breadcrumbs'] = array(array('label' => 'Test'));
                 break;
         }
@@ -262,6 +284,11 @@ class DefaultController extends Controller
         exit;
     }
 
+    /**
+     * TODO: Should this be on the search bundle?
+     * 
+     * @param Request $request
+     */
     public function listCountrySpecializationAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -276,7 +303,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $specialization->getName(),
                         'country' => $country,
-                        'specialization' => $specialization
+                        'specialization' => $specialization,
+                        'includedNarrowSearchWidgets' => array('treatment', 'city')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -298,7 +326,8 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName()
+                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName(),
+                        'includedNarrowSearchWidgets' => array('city')
 
         ));
 
@@ -324,7 +353,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $treatment->getName(),
                         'country' => $country,
-                        'treatment' => $treatment
+                        'treatment' => $treatment,
+                        'includedNarrowSearchWidgets' => array('city')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -348,7 +378,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName(),
                         'specialization' => $specialization,
-                        'city' => $city
+                        'city' => $city,
+                        'includedNarrowSearchWidgets' => array('treatment')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -401,7 +432,9 @@ class DefaultController extends Controller
                     'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                     'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName(),
                     'treatment' => $treatment,
-                    'city' => $city
+                    'city' => $city,
+                    'includedNarrowSearchWidgets' => array(),
+                        // broaden search only
         ));
 
         $response->headers->setCookie($this->buildCookie(array(

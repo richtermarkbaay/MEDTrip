@@ -245,11 +245,6 @@ class InstitutionAccountController extends InstitutionAwareController
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
 
-            $globalSpecializationsJson = array();
-            foreach ($this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations() as $e) {
-                $globalSpecializationsJson[] = array('value' => $e->getName(), 'id' => $e->getId());
-            } 
-            $templateVariables['specializationsJSON'] = \json_encode($globalSpecializationsJson);
             // load medical center specializations
             $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
             $templateVariables['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
