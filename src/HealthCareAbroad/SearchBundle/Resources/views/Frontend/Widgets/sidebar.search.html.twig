@@ -1,0 +1,44 @@
+        <aside id="aside_content" class="span4">
+            <section class="box-in">
+                <h5 class="heading">
+                    <small>Trending</small> Now
+                </h5>
+                <ul class="related">
+                    <li class="row">
+                        <h3>Top Destinations</h3>
+                        <ul>
+                            {% for country in topDestinations %}
+                            <li>
+                                <a href="{{ path('frontend_search_results_countries', {country: country.slug}) }}">
+                                    <i class="icon-ok-sign"></i> {{ country.name }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="row">
+                        <h3>Popular Treatments</h3>
+                        <ul>
+                            {% for treatment in topTreatments %}
+                            <li>
+                                <a href="{{ path('frontend_search_results_treatments', {specialization: treatment.specialization_slug, treatment: treatment.slug}) }}">
+                                    <i class="icon-ok-sign"></i> {{ treatment.name }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section class="box-in">
+                <h5 class="heading">
+                    <small>AWESOME</small><br>
+                    ADS
+                </h5>
+                <ul class="ads">
+                    <li>When I grow up, I want to be an <b>ADVERTISEMENT</b>.</li>
+                    <li>When I grow up, I want to be a <b>NEWS</b>.</li>
+                </ul>
+            </section>
+        </aside>
+        <!--End of aside_content-->

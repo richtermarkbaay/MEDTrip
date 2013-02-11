@@ -1,0 +1,19 @@
+{#----
+NOTE: this twig is reused and has crucial class names used in JS functions. Please don't modify the following element class names
+ * autocomplete_selected_value_container
+ * autocomplete_list_container
+#}
+
+<button class="btn span12 text-left default btn-pop" data-toggle="dropdown">
+    <span class="btn-label autocomplete_selected_value_container">
+        Select a {{ widget.type }}
+    </span>
+    <span class="icon-chevron-down pull-right">
+    </span>
+</button>
+<div class="input-append dropdown-menu" role="menu">
+    {% set _listContainerId = widget.type ~ '_listContainer' %}
+    <input class="search-field" type="text" data-listContainer="#{{ _listContainerId }}" data-filter="{{ widget.type }}" />
+    <p class="test search-help-text" style="">Please select a {{ widget.type }}</p>
+    <ul id="{{ _listContainerId }}" class="popup-list {{ widget.type }} autocomplete_list_container"></ul>
+</div>
