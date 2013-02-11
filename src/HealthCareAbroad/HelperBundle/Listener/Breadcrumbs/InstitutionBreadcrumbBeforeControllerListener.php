@@ -19,6 +19,6 @@ class InstitutionBreadcrumbBeforeControllerListener extends BreadcrumbBeforeCont
             return false;
         }
     
-        return true;
+        return false;
     }
 }

@@ -23,10 +23,14 @@ class DefaultController extends InstitutionAwareController
     
     public function indexAction()
     {
-        
         $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
-        $news = $newsRepository->getLatestNews();
+        
+        // TODO - Deprecated?? 
+        //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
+        //$news = $newsRepository->getLatestNews();
+        $news = array();
+        
+
         $signupStepStatus = $this->institution->getSignupStepStatus();
         
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {

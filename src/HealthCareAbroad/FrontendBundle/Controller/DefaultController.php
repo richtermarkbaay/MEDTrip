@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
+
 use HealthCareAbroad\PagerBundle\Pager;
 
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
@@ -52,6 +54,21 @@ class DefaultController extends Controller
         );
         //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
+    }
+
+    public function treatmentListAction()
+    {
+        $institutionSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
+
+        return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
+    }
+
+    public function destinationListAction()
+    {
+        $params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+
+        return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
     }
 
     /**
@@ -186,6 +203,11 @@ class DefaultController extends Controller
                 break;
 
             default :
+
+                if(isset($routeParams['breadcrumbLabel'])) {
+                    $templateParams['breadcrumbs'] = array(array('label' => $routeParams['breadcrumbLabel']));
+                }
+
                 //$templateParams['breadcrumbs'] = array(array('label' => 'Test'));
                 break;
         }

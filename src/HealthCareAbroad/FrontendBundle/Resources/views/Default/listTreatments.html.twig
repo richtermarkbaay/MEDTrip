@@ -1,0 +1,40 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block content %}
+    <div id="details" class="row">
+        <div id="main_content" class="span12">
+            <header class="filters">
+                <h2 class="total">Treatments</h2>
+            </header>
+            <div class="media search-matches treatments">
+                <div class="matches">
+
+                        {% for each in specializations %}
+                        {% set specialization = each.specialization %}
+                            <ul class="match" style="width:200px;">
+                                <li><h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+
+                                {% set groupedSpecializations = group_treatments_by_subspecialization(each.treatments) %}
+
+                                {% for subSpecializationName,each in groupedSpecializations %}
+
+                                    {% if each.subSpecialization %}
+                                        <li><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: each.subSpecialization.slug}) }}">{{ subSpecializationName }}</a></li>
+                                    {% endif %}
+
+                                    {% for treatment in each.treatments %}
+                                        <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.slug }) }}">{{ treatment.name }}</a></li>
+                                    {% endfor %}
+                                {% endfor %}    
+                            </ul>
+                        {% endfor %}
+
+
+                </div>
+            </div>
+
+        </div><!--End of main_content-->
+
+    </div>
+<!--End of content-->
+{% endblock %}
