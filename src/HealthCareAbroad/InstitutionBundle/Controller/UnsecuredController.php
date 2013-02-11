@@ -243,6 +243,12 @@ class UnsecuredController extends Controller
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
     
+    /**
+     * Load available specialization for autocomplete field.
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function ajaxSpecializationSourceAction(Request $request)
     {
         $output = array();

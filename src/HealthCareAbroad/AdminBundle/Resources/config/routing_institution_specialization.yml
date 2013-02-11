@@ -15,3 +15,11 @@ admin_medicalCenter_ajaxEditSpecialization:
         institutionId: \d+
         imcId: \d+
         isId: \d+
+        
+admin_medicalCenter_ajaxSpecializationSource:
+    pattern: /ns-admin/{institutionId}/medical-center/{imcId}/specialization/search
+    defaults: { _controller: AdminBundle:Unsecured:ajaxSpecializationSource}
+    requirements:
+        imcId: \d+
+        institutionId: \d+
+        _method: GET    
