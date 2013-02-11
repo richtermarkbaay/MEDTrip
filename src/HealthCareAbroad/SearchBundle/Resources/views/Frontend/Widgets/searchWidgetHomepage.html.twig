@@ -1,0 +1,101 @@
+<form action="{{ path('frontend_search_process') }}" method="get" name="search_box" class="span12 search_box  form-inline">
+    <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
+    <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
+
+    <label>Search</label>
+    <input type="text" placeholder="Specialization or Treatment" name="sb_treatment" id="sb_treatment"/>
+    <label>Near</label>
+    <input type="text" placeholder="City, Country or Zip" name="sb_destination" id="sb_destination"/>
+    <button class="btn">Let's Go</button>
+</form>
+
+
+<!-- TODO: remove invalid markup -->
+<style>
+.ui-autocomplete {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+}
+</style>
+
+<script type="text/javascript">
+
+$(function() {
+    $('#sb_treatment').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('frontend_search_ajaxLoadTreatments') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    destination_id: $('#destination_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
+                },
+                success: function(data) {
+                    response($.each(data, function(item) {
+                        return { label: item.label, value: item.value }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $(this).val( ui.item.label );
+            $("#treatment_id").val( ui.item.value );
+
+            return false;
+        },
+        change: function(event, ui) {
+            $("#treatment_id").val(ui.item && ui.item.value ? ui.item.value : '0');
+        },
+        delay: 200,
+        minLength: 1
+    });
+
+    $('#sb_destination').autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "{{ path('frontend_search_ajaxLoadDestinations') }}",
+                dataType: "json",
+                data: {
+                    term: request.term,
+                    treatment_id: $('#treatment_id').val(),
+                    sb_treatment: $('#sb_treatment').val(),
+                    sb_destination: $('#sb_destination').val()
+                },
+                success: function(data) {
+                    response( $.each(data, function(item) {
+                        return {
+                            label: item.label,
+                            value: item.value
+                        }
+                    }));
+                }
+            });
+        },
+        focus: function( event, ui ) {
+            $(this).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $(this).val( ui.item.label );
+            $("#destination_id").val( ui.item.value );
+
+            return false;
+        },
+        change: function(event, ui) {
+            $("#destination_id").val((ui.item && ui.item.value) ? ui.item.value : '0-0');
+        },
+        delay: 200,
+        minLength: 1
+    });
+
+});
+
+</script>

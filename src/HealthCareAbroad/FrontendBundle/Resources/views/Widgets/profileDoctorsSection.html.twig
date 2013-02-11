@@ -17,7 +17,9 @@
 			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
 			    {% endfor %}
 			</p>
-			<ul class="contact">
+			
+
+			{# <ul class="contact">
 			    {% if doctor.contactEmail %}
 				    <li class="email"><a href="mailto:{{ doctor.contactEmail }}">email</a></li>
 				{% endif %}
@@ -30,7 +32,7 @@
 			    {% if doctor.website is defined %}
 				<li class="web"><a href="">website</a></li>
 				{% endif %}
-			</ul>
+			</ul> #}
 		</li>
 		{% endfor %}
 	</ul>

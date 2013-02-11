@@ -6,7 +6,7 @@
 
         {% for each in specializations %}
     		<ul class="specializations-list">
-    			<li class="first"><a href="#">{{ each.specialization.name }}</a></li>
+    			<li class="first"><a>{{ each.specialization.name }}</a></li>
                 {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
                 
                 {% for _subName, _groupedData in _groupedTreatments %}
@@ -15,15 +15,15 @@
                     <li class="second">
         				<ul>
         				    {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
-        				    <li><a href="#">{{ _groupedData.subSpecialization.name }}</a></li>
+        				    <li><a>{{ _groupedData.subSpecialization.name }}</a></li>
         				    {% else %}
-        				    <li><a href="#">Other treatments</a></li>
+        				    <li><a>Other treatments</a></li>
         				    {% endif %}
                         	    
                     	    {% for treatment in _groupedData.treatments %}
         			 	    <li class="third">
         						<ul>
-        							<li><a href="#">{{ treatment.name }}</a></li>
+        							<li><a>{{ treatment.name }}</a></li>
         						</ul>
         					</li>
         			        {% endfor %}

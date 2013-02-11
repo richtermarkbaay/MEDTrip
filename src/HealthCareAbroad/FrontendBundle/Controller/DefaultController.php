@@ -262,6 +262,11 @@ class DefaultController extends Controller
         exit;
     }
 
+    /**
+     * TODO: Should this be on the search bundle?
+     * 
+     * @param Request $request
+     */
     public function listCountrySpecializationAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -276,7 +281,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $specialization->getName(),
                         'country' => $country,
-                        'specialization' => $specialization
+                        'specialization' => $specialization,
+                        'includedNarrowSearchWidgets' => array('treatment', 'city')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -298,7 +304,8 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName()
+                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName(),
+                        'includedNarrowSearchWidgets' => array('city')
 
         ));
 
@@ -324,7 +331,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $treatment->getName(),
                         'country' => $country,
-                        'treatment' => $treatment
+                        'treatment' => $treatment,
+                        'includedNarrowSearchWidgets' => array('city')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -348,7 +356,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName(),
                         'specialization' => $specialization,
-                        'city' => $city
+                        'city' => $city,
+                        'includedNarrowSearchWidgets' => array('treatment')
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -401,7 +410,9 @@ class DefaultController extends Controller
                     'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                     'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName(),
                     'treatment' => $treatment,
-                    'city' => $city
+                    'city' => $city,
+                    'includedNarrowSearchWidgets' => array(),
+                        // broaden search only
         ));
 
         $response->headers->setCookie($this->buildCookie(array(

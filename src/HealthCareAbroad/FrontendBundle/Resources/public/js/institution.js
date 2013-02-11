@@ -6,7 +6,8 @@ var Institution = {
 		.html('Processing...');
 		_modal = $('#'+_button.attr('data-modalId'));
 		_formId = $(_button).attr('data-formId');
-		_href = $(_formId).attr('action')
+		_href = $(_formId).attr('action');
+		_fieldParent = $(_button).attr('data-divParent');
 		$.ajax({
             type: 'POST',
             url: _href,
@@ -24,7 +25,9 @@ var Institution = {
                     // invalid form
                 	_json = $.parseJSON(json.responseText);
                 	$.each(_json.html, function(key, item){
-                		$(_formId).find('.'+item.field).addClass('error').find('.help-inline').html(item.error);
+                		_field = _fieldParent+item.field;
+                		$(_formId).find(_field).addClass('error');
+                		$('div.alert-error').addClass('alert').append(item.error+"<br>");
                 	});
                     
                 }
@@ -36,16 +39,18 @@ var Institution = {
 	
 	removeErrors: function(_formId) {
 		_formId = $(_formId);
-		_formId.find('.help-inline').html('');
-		_formId.find('.control-group').removeClass('error');	
+		_formId.find('.control-group').removeClass('error');
+		_formId.find('.error').removeClass('error');
+		$('div.alert-error').removeClass('alert').html('');
 	},
 	
 	clearForm: function(_name) {
 		_name.reset();
 		_formId = $('#'+_name.id); 
-		_formId.find('.help-inline').html('');
 		_formId.find('.control-group').removeClass('error');
-        
-        return this;
+		_formId.find('.error').removeClass('error');
+		$('div.alert-error').removeClass('alert').html('');
+
+		return this;
     },
 }

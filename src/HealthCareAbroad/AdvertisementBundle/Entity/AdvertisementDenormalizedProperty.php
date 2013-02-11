@@ -66,6 +66,11 @@ class AdvertisementDenormalizedProperty
     private $videoUrl;
 
     /**
+     * @var string $externalUrl
+     */
+    private $externalUrl;
+
+    /**
      * @var text $highlights
      */
     private $highlights;
@@ -376,6 +381,28 @@ class AdvertisementDenormalizedProperty
     public function getVideoUrl()
     {
         return $this->videoUrl;
+    }
+
+    /**
+     * Set externalUrl
+     *
+     * @param string $externalUrl
+     * @return AdvertisementDenormalizedProperty
+     */
+    public function setExternalUrl($externalUrl)
+    {
+        $this->externalUrl = $externalUrl;
+        return $this;
+    }
+
+    /**
+     * Get externalUrl
+     *
+     * @return string 
+     */
+    public function getExternalUrl()
+    {
+        return $this->externalUrl;
     }
 
     /**

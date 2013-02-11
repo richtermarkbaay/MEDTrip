@@ -1,0 +1,13 @@
+<div id="{{ modal.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: auto">
+    <div class="modal-header">
+        <button type="button" onclick="Institution.clearForm({{formId}}); return false;" class="close" data-dismiss="modal" aria-hidden="true">x</button> 
+        <h3 id="myModalLabel">{{ modal.title }}</h3> 
+    </div>
+
+    <div class="modal-content modal-body" style="{{ modal.customBodyStyle is defined ? modal.customBodyStyle : '' }}">{% block modalBody %}{% endblock %}</div> 
+     <div class="modal-footer button-wrapper">
+    {% block footerBody %}{% endblock %}
+    </div>
+    <!-- end modal-body -->
+</div>
+ <!-- End Modal Clinic Address -->
