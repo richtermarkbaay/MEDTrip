@@ -22,7 +22,19 @@ class InstitutionUserRepository extends EntityRepository
 {
     public function findActiveUserById($id)
     {
-        return $this->findOneBy(array('accountId' => $id, 'status' => SiteUser::STATUS_ACTIVE));
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a,b,c')
+            ->from('UserBundle:InstitutionUser', 'a')
+            ->innerJoin('a.institutionUserType', 'b')
+            ->innerJoin('b.institutionUserRoles', 'c')
+            ->where('a.accountId = :accountId')
+            ->andWhere('a.status = :activeStatus')
+                ->setParameter('accountId', $id)
+            ->setParameter('activeStatus', SiteUser::STATUS_ACTIVE);
+        
+        return $qb->getQuery()->getOneOrNullResult();
+        
+        //return $this->findOneBy(array('accountId' => $id, 'status' => SiteUser::STATUS_ACTIVE));
     }
     
     public function findByInstitutionId(Institution $institution, $status=null)

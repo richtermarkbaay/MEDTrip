@@ -1023,6 +1023,12 @@ class MedicalCenterController extends InstitutionAwareController
         
         $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
         
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+        ->getAvailableTreatmentsBySpecializationId($params['specialization'], $this->institutionMedicalCenter );
+        $specialization = $institutionSpecialization[0];
+        
+        $availableTreatments = $this->get('services.institution_medical_center')->getAvailableTreatmentsByInstitutionSpecialization($specialization);
+
         if(!$params['specialization']) {
             $result = array('error' => 'Invalid Specialization');
         
@@ -1035,7 +1041,7 @@ class MedicalCenterController extends InstitutionAwareController
         $params['form'] = $form->createView();
         $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
-        $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
+        $params['treatments'] = $availableTreatments;
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
         
         $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);

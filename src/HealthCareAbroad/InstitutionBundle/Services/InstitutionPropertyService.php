@@ -47,7 +47,7 @@ class InstitutionPropertyService
         $this->doctrine = $doctrine;
         $this->memcache = $memcache;
         
-        $this->_setupAvailablePropertyTypes();
+        //$this->_setupAvailablePropertyTypes();
     }
     
     /**
@@ -111,6 +111,12 @@ class InstitutionPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
+        static $isLoadedAvailableTypes = false;
+        if (!$isLoadedAvailableTypes) {
+            $this->_setupAvailablePropertyTypes();
+            $isLoadedAvailableTypes = true;
+        }
+        
         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
         }
