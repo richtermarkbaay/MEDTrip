@@ -412,7 +412,6 @@ class FrontendController extends Controller
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
-        var_dump($this->getSearchParams($request, true)); exit;
         $results = $this->get('services.search')->getDestinations($this->getSearchParams($request, true));
 
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
