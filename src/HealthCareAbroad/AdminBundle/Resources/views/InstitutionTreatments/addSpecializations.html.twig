@@ -45,10 +45,11 @@
 <!--
 (function($){
     $(function(){
+    	var _nsUrl = '{{ path("admin_medicalCenter_ajaxSpecializationSource", {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}';
         
         InstitutionSpecializationAutocomplete
         .setAutocompleteOptions({
-            source : $.parseJSON('{{ specializationsJSON | raw}}'),
+            source : _nsUrl,
             target: $('input.autocomplete_specialization_selector'),
             selectedDataContainer: $('#specializationAccordion') 
         })

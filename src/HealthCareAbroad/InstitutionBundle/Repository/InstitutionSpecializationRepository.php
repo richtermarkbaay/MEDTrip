@@ -4,6 +4,10 @@ namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 use Doctrine\ORM\Query\Expr\Join;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
