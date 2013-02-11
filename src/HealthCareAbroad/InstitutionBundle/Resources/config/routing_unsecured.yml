@@ -56,3 +56,12 @@ institution_medicalCenter_ajaxGetEditSpecialization:
         _method: GET
         imcId: \d+
         isId: \d+
+        
+institution_medicalCenter_ajaxSpecializationSource:
+    pattern: /ns-institution/{institutionId}/medical-center/{imcId}/specialization/search
+    defaults: { _controller: InstitutionBundle:Unsecured:ajaxSpecializationSource}
+    requirements:
+        imcId: \d+
+        institutionId: \d+
+        _method: GET       
+ 

@@ -43,12 +43,6 @@ class InstitutionMedicalCenterService
     private $doctrine;
     
     /**
-     * 
-     * @var InstitutionSpecialization
-     */
-    private $institutionSpecialization;
-    
-    /**
      * @var InstitutionMedicalCenterPropertyService
      */
     private $institutionMedicalCenterPropertyService;
@@ -254,7 +248,7 @@ class InstitutionMedicalCenterService
         
         return $result;
     }
-    
+
     /**
      * Check if specialist exist
      *

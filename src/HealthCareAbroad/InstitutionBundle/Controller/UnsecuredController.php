@@ -242,4 +242,14 @@ class UnsecuredController extends Controller
     
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
+    
+    public function ajaxSpecializationSourceAction(Request $request)
+    {
+        $output = array();
+        $term = \trim($request->get('term', ''));
+        
+        $output = $this->get('services.institution_specialization')->getSpecializationSearchResult($this->institution , $term);
+
+       return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
 }

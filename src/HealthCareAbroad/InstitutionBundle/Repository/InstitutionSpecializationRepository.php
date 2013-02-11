@@ -82,17 +82,6 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getAvailableTreatmentsBySpecializationId(Specialization $specialization, InstitutionMedicalCenter $institutionMedicalCenter, QueryOptionBag $queryOptions=null)
-    {
- 
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionSpecialization a WHERE a.specialization = :specialization AND a.institutionMedicalCenter = :institutionMedicalCenter ";
-        $query = $this->_em->createQuery($dql)
-        ->setParameter('specialization', $specialization)
-        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter);
-    
-       return $query->getResult();
-        
-    }
     public function getMedicalCentersList($institutionId)
     {
         $qb = $this->_em->createQueryBuilder()
@@ -108,7 +97,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
     public function getByInstitutionMedicalCenter($institutionMedicalCenter)
     {
-         $qb = $this->_em->createQueryBuilder();
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('a','b', 'c')
            ->from('InstitutionBundle:InstitutionSpecialization', 'a')

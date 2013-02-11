@@ -8,13 +8,13 @@
                 {{ specialization.description }}
             {% endif %}
             <div class="accordion-inner">
-            {% for treatment in treatments %}
+            {% for subSpecializationName, treatments in subSpecializations %}
             
-                 <h5>{{ treatment.name | length ? treatment.name :"Other treatments"  }}</h5>
+                 <h5>{{ subSpecializationName | length ? subSpecializationName :"Other treatments"  }}</h5>
                  <hr/>
                 {% for treatment in treatments %}
                     <div class="span4">
-                        <input  id="{{ treatment.id }}" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ treatment.id }}" />
+                        <input  id="{{ treatment.id }}" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/>
                          <label class="required labelCheckbox" for="{{ treatment.id }}" >{{ treatment.name }}</label>
                     </div>
                 {% endfor %}
