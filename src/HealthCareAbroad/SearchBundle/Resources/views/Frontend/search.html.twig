@@ -1,0 +1,66 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block content %}
+    <div id="details" class="row">
+        <div id="main_content" class="span8">
+
+            {% include 'SearchBundle:Frontend/Widgets:searchWidgetMain.html.twig' %}
+
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#"><span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span></a>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">Some Featured Institution</h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2"></span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450<br>
+                                <b>Kuala Lumpur, Malaysia</b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="media search-entry">
+                <div class="pull-left thumb">
+                    <a href="#"><span class="search-entry-thumb" style="background: url(images/frontend/clinic-logo5.png) center center no-repeat; background-size: 100% 100%"></span></a>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading">Some Featured Institution</h3>
+                    <div class="media">
+                        <div class="pull-left">
+                            <span class="address-icon2"></span>
+                        </div>
+                        <div class="media-body">
+                            <small>
+                                Gleneagles Hospital Sdn. Bhd. 282 Jalan Ampang 50450<br>
+                                <b>Kuala Lumpur, Malaysia</b>
+                            </small>
+                        </div>
+                        <a href="#" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
+                    </div>
+                </div>
+            </article>
+
+            <div class="pagination">
+                <ul>
+                    <li><a href="#">Prev</a></li>
+                    <li><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">Next</a></li>
+                </ul>
+            </div>
+        </div>
+        <!--End of main_content-->
+
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.search.html.twig' %}
+    </div>
+{% endblock %}

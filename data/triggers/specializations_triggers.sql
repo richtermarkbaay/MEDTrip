@@ -7,9 +7,6 @@
 # @date: January, 29, 2013
 #
 
-
-DELIMITER $$
-
 ##----------------------
 # INSERT specialization trigger. Insert corresponding row to terms and term_documents
 #
@@ -134,6 +131,3 @@ BEGIN
 END; $$
         
 ## end specializations_ad trigger definition
-        
-        
-DELIMTER ;
