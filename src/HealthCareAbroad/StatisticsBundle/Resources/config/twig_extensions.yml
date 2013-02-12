@@ -1,0 +1,6 @@
+services:
+    statistics.frontend_twig_extension:
+        class: HealthCareAbroad\StatisticsBundle\Twig\StatisticsFrontendTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }

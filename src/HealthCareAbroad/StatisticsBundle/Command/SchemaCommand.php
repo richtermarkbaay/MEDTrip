@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\StatisticsBundle\Command;
+namespace HealthCareAbroad\StatisticsBundle\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 

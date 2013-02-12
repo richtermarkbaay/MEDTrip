@@ -8,11 +8,18 @@
 
 	{% for each in featuredClinicAds %}
 	    {% if each.institution and each.institutionMedicalCenter %}
-	        <div class="featured_item">
+	    
+	        {#-- set statistic parameters for this advertisement --#}
+	        {% set _impressionStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_advertisement_impressions_parameters(each)  %}
+            {% set _clickThroughStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_advertisement_clickthrough_parameters(each)  %}
+	        {#-----------------------------------------------------#}
+	        
+	        {#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
+	        <div class="featured_item {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
     		    {% set clinicUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
     			<div class="general row">
     				<div class="clinic-box span2">
-    					<a href="{{ clinicUrl }}">
+    					<a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
         				    {% if each.institutionMedicalCenter.logo %}
         				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo'}) | raw }}
         				    {% else %}
@@ -25,7 +32,11 @@
     
     				</div>
     				<div class="description-box span4">
-    				    <h3><a href="{{ clinicUrl }}">{{ each.title }}</a></h3>
+    				    <h3>
+    				        <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
+    				            {{ each.title }}
+				            </a>
+				        </h3>
     					<h5>{{ each.institution.city.name }}, {{ each.institution.country.name }}</h5>
     					<div>{{ each.description | raw }}</div>
     				</div>
@@ -35,7 +46,9 @@
         				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
     					    </div>
                         {% endif %}
-    					<a href="{{ clinicUrl }}" class="btn orange"> <span class="icon-search icon-white"></span> Learn More </a>
+    					<a href="{{ clinicUrl }}" class="btn orange {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }}> 
+    					    <span class="icon-search icon-white"></span> Learn More 
+					    </a>
     				</div>
     			</div>
      			<div class="details row">

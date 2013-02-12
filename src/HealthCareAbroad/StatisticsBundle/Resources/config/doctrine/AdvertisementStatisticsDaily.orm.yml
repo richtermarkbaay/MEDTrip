@@ -1,0 +1,30 @@
+HealthCareAbroad\StatisticsBundle\Entity\AdvertisementStatisticsDaily:
+    type: entity
+    table: advertisement_statistics_daily
+    repositoryClass: HealthCareAbroad\StatisticsBundle\Repository\AdvertisementStatisticsDailyRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        date:
+            type: date
+            nullable: false
+        advertisementId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: advertisement_id
+        institutionId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: institution_id
+        categoryId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: category_id

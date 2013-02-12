@@ -161,6 +161,14 @@ class DefaultSearchStrategy extends SearchStrategy
             if (isset($searchParameter['city'])) {
                 $sql .= " AND b.city_id = {$searchParameter['city']} ";
             }
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
         }
         $sql .= " GROUP BY a.id ";
 

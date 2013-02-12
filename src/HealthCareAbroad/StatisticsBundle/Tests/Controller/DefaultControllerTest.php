@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\StatisticsBundle\Tests\Controller;
+namespace HealthCareAbroad\StatisticsBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
