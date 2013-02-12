@@ -112,7 +112,7 @@ class FrontendController extends Controller
 
         $requestParams = $request->request->all();
 
-        //TODO: change to if POST request
+        //TODO: change to if POST request or move to a different action
         if (isset($requestParams['searchParameter']) && !empty($requestParams['searchParameter'])) {
             $searchParameters = $requestParams['searchParameter'];
 
