@@ -37,7 +37,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
         $qb->select('a,b,c,d')
            ->leftJoin('a.institution', 'b')
-           ->leftJoin('a.institutionMedicalCenter', 'c')
+           ->innerJoin('a.institutionMedicalCenter', 'c')
            ->leftJoin('a.media', 'd')
            ->where('a.advertisementType = :type')
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')

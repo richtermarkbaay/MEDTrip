@@ -217,4 +217,104 @@ class SearchTermRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+//     public function findBySpecializationAndCountry(Specialization $specialization, Country $country)
+//     {
+//         return $this->getQueryBuilderFilteredBy(array($specialization, $country))->getQuery()->getResult();
+//     }
+
+//     public function findBySpecializationAndCity(Specialization $specialization, City $city)
+//     {
+//         return $this->getQueryBuilderFilteredBy(array($specialization, $city))->getQuery()->getResult();
+//     }
+
+//     public function findBySubSpecializationAndCountry(SubSpecialization $subSpecialization, Country $country, Specialization $specialization = null)
+//     {
+//         $filters = array($subSpecialization, $country);
+//         if ($specialization) {
+//             $filters[] = $specialization;
+//         }
+
+//         return $this->getQueryBuilderFilteredBy($filters)->getQuery()->getResult();
+//     }
+
+//     public function findBySubSpecializationAndCity(SubSpecialization $subSpecialization, City $city, Specialization $specialization)
+//     {
+//         $filters = array($subSpecialization, $country);
+//         if ($specialization) {
+//             $filters[] = $specialization;
+//         }
+
+//         return $this->getQueryBuilderFilteredBy(array($subSpecialization, $city))->getQuery()->getResult();
+//     }
+
+//     public function findByTreatmentAndCountry(Treatment $treatment, Country $country)
+//     {
+//         return $this->getQueryBuilderFilteredBy(array($treatment, $country))->getQuery()->getResult();
+//     }
+
+//     public function findByTreatmentAndCity(Treatment $treatment, City $city)
+//     {
+//         return $this->getQueryBuilderFilteredBy(array($treatent, $city))->getQuery()->getResult();
+//     }
+
+    public function findByFilters(array $filters = array()) {
+        return $this->getQueryBuilderFilteredBy($filters)->getQuery()->getResult();
+    }
+
+    private function getQueryBuilderFilteredBy(array $filters = array()) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('a, imc, inst, co, ci, ga')
+            ->from('TermBundle:SearchTerm', 'a')
+            ->innerJoin('a.institutionMedicalCenter', 'imc')
+            ->innerJoin('a.institution', 'inst')
+            ->innerJoin('inst.country', 'co')
+            ->leftJoin('inst.city', 'ci')
+            ->leftJoin('inst.gallery', 'ga')
+            ->where('a.status = :searchTermActiveStatus')
+            ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
+
+        foreach ($filters as $filter) {
+            switch (get_class($filter)) {
+                case 'HealthCareAbroad\TreatmentBundle\Entity\Specialization':
+                    $qb->andWhere('a.documentId = :documentId')
+                    ->andWhere('a.type = :type')
+                    ->setParameter('documentId', $filter->getId())
+                    ->setParameter('type', TermDocument::TYPE_SPECIALIZATION);
+                    break;
+
+                case 'HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization':
+                    $qb->andWhere('a.documentId = :documentId')
+                    ->andWhere('a.type = :type')
+                    ->setParameter('documentId', $filter->getId())
+                    ->setParameter('type', TermDocument::TYPE_SUBSPECIALIZATION);
+                    break;
+
+                case 'HealthCareAbroad\TreatmentBundle\Entity\Treatment':
+                    $qb->andWhere('a.documentId = :documentId')
+                    ->andWhere('a.type = :type')
+                    ->setParameter('documentId', $filter->getId())
+                    ->setParameter('type', TermDocument::TYPE_TREATMENT);
+                    break;
+
+                case 'HealthCareAbroad\HelperBundle\Entity\Country':
+                    $qb->andWhere('co.id = :countryId')
+                    ->setParameter('countryId', $filter->getId());
+                    break;
+
+                case 'HealthCareAbroad\HelperBundle\Entity\City':
+                    $qb->andWhere('ci.id = :cityId')
+                    ->setParameter('cityId', $filter->getId());
+                    break;
+                default:
+                    throw new Exception('Unsupported filter');
+            }
+        }
+
+        // we may not need this?
+        $qb->groupBy('imc.id');
+
+        return $qb;
+    }
 }

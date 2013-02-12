@@ -5,7 +5,7 @@
 
 <div>Select a file to upload:</div>
 
-<form action="{{ path('admin_institutionMedicalCenter_media_upload', {'imcId': institutionMedicalCenter.id, isLogo: isLogo is defined ? isLogo : false}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
+<form action="{{ path('admin_institutionMedicalCenter_media_upload', {'institutionId': institution.id, 'imcId': institutionMedicalCenter.id, isLogo: isLogo is defined ? isLogo : false}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
     <input type="file" name="file" />
     <input type="hidden" name="multiUpload" value="0"/>
 
@@ -13,7 +13,7 @@
 </form>
 
 <div>
-    Switch to the <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), 'id': institutionMedicalCenter.id}) }}">multi-file uploader</a>.
+    Switch to the <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), 'institutionId': institution.id, 'id': institutionMedicalCenter.id}) }}">multi-file uploader</a>.
 </div>
 
 <script type="text/javascript">

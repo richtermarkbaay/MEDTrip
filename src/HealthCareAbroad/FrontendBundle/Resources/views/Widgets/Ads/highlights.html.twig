@@ -4,14 +4,24 @@
 {% set institutionUrl = get_institution_frontend_url(highlight.institution) %}
 {% set featuredImages = json_decode(highlight.highlightFeaturedImages) %} 
 
-<div id="highlight"> <!--Highighted Institution-->
-	<a href="{{ institutionUrl }}" class="clinic span2 offset6">
-        {% if highlight.institution.logo %}
-            {{ media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo'}) | raw }}
-        {% else %}
-            <img src="{{ imageplaceholder.institutionLogo }}" alt="logo"/>
-        {% endif %}
-	</a>
+{#-- set statistic parameters for this advertisement --#}
+{% set _impressionStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_advertisement_impressions_parameters(highlight)  %}
+{#-----------------------------------------------------#}
+
+{#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
+<div id="highlight" class="{{ get_impression_tracker_class() }}" {{ _impressionStatisticParametersAttribute }} > <!--Highighted Institution-->
+    <!-- institution logo link -->
+    {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+	        statisticsDataObject: highlight,
+	        link: {
+	            url: institutionUrl,
+			    class: 'clinic span2 offset6',
+			    html: highlight.institution.logo 
+			        ? media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo'})
+			        : '<img src="' ~ imageplaceholder.institutionLogo ~ '" alt="logo"/>'
+	        }
+	    }
+	%}
 
     <div class="upper_box row">
         <h3 class="span6">{{ highlight.institution.name }}</h3><br>
@@ -33,7 +43,19 @@
 				    <a data-to="{{ loop.index }}" href="#feature_carousel" class="carousel-pills {{ i==0 ? 'pager-active' : '' }}"><span>&nbsp;</span></a>
 			    {% endfor %}
 			</div>
-			<a href="{{ get_institution_frontend_url(highlight.institution) }}" class="btn white feature-btn"> <span class="icon-search icon-orange"></span> Learn More </a>
+			
+			<!-- Learn more orange button -->
+			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+			        statisticsDataObject: highlight,
+			        link: {
+			            url: institutionUrl,
+        			    class: 'btn white feature-btn',
+        			    html: '<span class="icon-search icon-orange"></span> Learn More'
+			        }
+			    }
+			%}
+			     
+		    
 		</div> <!--End of carousel slide-->
 	</div> <!--End of carousel row-->
 

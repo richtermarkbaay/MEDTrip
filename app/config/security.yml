@@ -70,11 +70,11 @@ security:
             logout:
                 path:   /admin/logout
                 target: /admin/login
-                
+
         institution.signup:
             pattern: ^/institution/register.html$
             security: false
-                
+
         institution_login:
             pattern:  ^/institution/login$
             security: false
@@ -91,7 +91,7 @@ security:
                 remember_me: false
                 failure_path: /institution/login
                 success_handler: institution_authentication_handler
-                failure_handler: institution_authentication_handler
+                #failure_handler: institution_authentication_handler
 
             #remember_me:
             #   key:  %secret%

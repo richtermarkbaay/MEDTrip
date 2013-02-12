@@ -1,7 +1,4 @@
-parameters:
-#    statistics.example.class: HealthcareAbroad\StatisticsBundle\Example
-
 services:
-#    statistics.example:
-#        class: %statistics.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]
+    factory.statistics.dailyTracker:
+        class: HealthCareAbroad\StatisticsBundle\Services\TrackerFactory
+        arguments: [@doctrine]
