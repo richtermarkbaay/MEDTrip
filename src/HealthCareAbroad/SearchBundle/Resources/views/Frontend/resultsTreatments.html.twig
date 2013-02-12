@@ -14,7 +14,7 @@
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
             {# do this to save query #}
-            
+
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
                           url: get_institution_medical_center_frontend_url(center),
@@ -34,9 +34,9 @@
     </div> <!--End of main_content-->
 
     {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
-    
-    {% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %}
-    
+
+    {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %#}
+
 </div>
 {% endblock %}
 

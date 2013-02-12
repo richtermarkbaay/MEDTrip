@@ -12,8 +12,7 @@ class Country
 	const STATUS_ACTIVE = 1;
 	
 	const STATUS_INACTIVE = 0;
-	
-	
+
     /**
      * @var integer $id
      */
@@ -44,7 +43,16 @@ class Country
      */
     private $status;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $cities;
 
+    public function __construct()
+    {
+        $this->cities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Set id
      *
@@ -175,6 +183,38 @@ class Country
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add cities
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\City $cities
+     * @return Country
+     */
+    public function addCities(\HealthCareAbroad\HelperBundle\Entity\City $cities)
+    {
+        $this->cities[] = $cities;
+        return $this;
+    }
+
+    /**
+     * Remove cities
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\City $cities
+     */
+    public function removeCities(\HealthCareAbroad\HelperBundle\Entity\City $cities)
+    {
+        $this->cities->removeElement($cities);
+    }
+
+    /**
+     * Get cities
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getCities()
+    {
+        return $this->cities;
     }
     
     public function __toString()

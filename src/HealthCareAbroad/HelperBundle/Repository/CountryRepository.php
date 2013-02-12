@@ -30,7 +30,8 @@ class CountryRepository extends EntityRepository
         ->add('select', 'c')
         ->add('from', 'HelperBundle:Country c')
         ->add('where', 'c.status = :status')
-        ->setParameter('status', Country::STATUS_ACTIVE);
+        ->setParameter('status', Country::STATUS_ACTIVE)
+        ->orderBy('c.name', 'ASC');
     }
 
     //Get by slug or id

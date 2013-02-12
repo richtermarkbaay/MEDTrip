@@ -7,8 +7,12 @@
     <label>Near</label>
     <input type="text" placeholder="City, Country or Zip" name="sb_destination" id="sb_destination"/>
     <button class="btn">Let's Go</button>
+    
+    <div class="helper-link">
+        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"><i class=" icon-share"></i> View all treatments</a>
+        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"><i class="icon-share"></i> View all destinations</a>
+    </div>
 </form>
-
 
 <!-- TODO: remove invalid markup -->
 <style>

@@ -320,6 +320,7 @@ var InstitutionProfile = {
                         break;
                 } 
                 _form.parents('.modal').modal('hide');
+                _form.find('ul.text-error').remove();
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {

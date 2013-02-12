@@ -34,7 +34,7 @@ class SearchService
     }
 
     /**
-     * Short description
+     * TODO: rename to loadDestinations
      *
      * @param SearchParameterBag $searchParams Strategy class to use
      *
@@ -49,7 +49,7 @@ class SearchService
     }
 
     /**
-     *  Short description
+     *  TODO: rename to loadTreatments
      *
      * @param SearchParameterBag $searchParams Strategy class to use
      *
@@ -61,6 +61,36 @@ class SearchService
 
         return $this
             ->transformResults($this->searchStrategy->search($searchParams));
+    }
+
+    public function loadSuggestions($parameters)
+    {
+        /*
+        'searchParameter' =>
+            array (size=1)
+                'specialization' => string '3' (length=1)
+        'filter' => string 'country' (length=7)
+        'term' => string 'e' (length=1)
+        */
+//         /var_dump($parameters); exit;
+
+        switch ($parameters['filter']) {
+            case 'country';
+                $results = $this->searchStrategy->loadCountries($parameters);
+                break;
+
+            case 'city';
+                $results = $this->searchStrategy->loadCities($parameters);
+                break;
+
+            case 'treatment':
+                $results = $this->searchStrategy->loadTreatments($parameters);
+                break;
+
+            default:
+        }
+
+        return $results;
     }
 
     public function getTermDocuments(SearchParameterBag $searchParams)
