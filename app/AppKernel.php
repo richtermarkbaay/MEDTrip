@@ -69,7 +69,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\MemcacheBundle\MemcacheBundle(),
             new HealthCareAbroad\DoctorBundle\DoctorBundle(),
             new HealthCareAbroad\TermBundle\TermBundle(),
-            new HealthcareAbroad\StatisticsBundle\StatisticsBundle(),
+            new HealthCareAbroad\StatisticsBundle\StatisticsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
