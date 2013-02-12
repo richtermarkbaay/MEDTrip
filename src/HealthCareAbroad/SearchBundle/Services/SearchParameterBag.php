@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  * This adds special processing and transformation of the passed in parameters.
  *
  * It will also disable several inherited functions.
+ *
  */
 class SearchParameterBag extends ParameterBag
 {
@@ -19,6 +20,7 @@ class SearchParameterBag extends ParameterBag
     const FILTER_COUNTRY = 'country';
     const FILTER_CITY = 'city';
     const FILTER_SPECIALIZATION = 'specialization';
+    const FILTER_SUBSPECIALIZATION = 'subSpecialization';
     const FILTER_TREATMENT = 'treatment';
 
     /**
@@ -28,39 +30,38 @@ class SearchParameterBag extends ParameterBag
      *
      * @api
      */
-    public function __construct(array $parameters)
+    public function __construct(array $parameters = array())
     {
-        if (empty($parameters)) {
-            throw new Exception('Argument $parameters is empty.');
-        }
+        if (!empty($parameters)) {
 
-        $searchedTerm = null;
-        $treatment = null;
-        $destination = null;
-        $treatmentLabel = '';
-        $destinationLabel = '';
-        $filter = '';
+            $searchedTerm = null;
+            $treatment = null;
+            $destination = null;
+            $treatmentLabel = '';
+            $destinationLabel = '';
+            $filter = '';
 
-        // Allow only these keys
-        foreach ($parameters as $key => $value) {
-            if ('treatment' === $key) {
-                $treatment = $value;
-            } else if ('destination' === $key) {
-                $destination = $value;
-            } else if ('term' === $key) {
-                $searchedTerm = $value;
-            } else if ('treatmentLabel' === $key) {
-                $treatmentLabel = $parameters['treatmentLabel'];
-            } else if ('destinationLabel' === $key) {
-                $destinationLabel = $parameters['destinationLabel'];
-            } else if ('filter' === $key) {
-                $filter = $parameters['filter'];
-            } else {
-                throw new \Exception('Invalid parameter: ' . $key);
+            // Allow only these keys
+            foreach ($parameters as $key => $value) {
+                if ('treatment' === $key) {
+                    $treatment = $value;
+                } else if ('destination' === $key) {
+                    $destination = $value;
+                } else if ('term' === $key) {
+                    $searchedTerm = $value;
+                } else if ('treatmentLabel' === $key) {
+                    $treatmentLabel = $parameters['treatmentLabel'];
+                } else if ('destinationLabel' === $key) {
+                    $destinationLabel = $parameters['destinationLabel'];
+                } else if ('filter' === $key) {
+                    $filter = $parameters['filter'];
+                } else {
+                    throw new \Exception('Invalid parameter: ' . $key);
+                }
             }
-        }
 
-        $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $searchedTerm, $filter);
+            $this->parameters = $this->processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $searchedTerm, $filter);
+        }
     }
 
     private function processParameters($treatment, $treatmentLabel, $destination, $destinationLabel, $searchedTerm, $filter)
@@ -170,10 +171,11 @@ class SearchParameterBag extends ParameterBag
      * (non-PHPdoc)
      * @see \Symfony\Component\HttpFoundation\ParameterBag::set()
      */
-    public function set($key, $value)
-    {
-        throw new \Exception('Method disabled.');
-    }
+    //TODO: temporarily enable this
+//     public function set($key, $value)
+//     {
+//         throw new \Exception('Method disabled.');
+//     }
 
     /**
      * (non-PHPdoc)

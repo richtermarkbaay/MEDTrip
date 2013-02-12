@@ -13,7 +13,7 @@
 
             {% for searchResultVo in searchResults %}
                 {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
-                
+
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'searchResultItem' : {
                            url: get_institution_frontend_url(institution),
@@ -32,7 +32,8 @@
 
         </div> <!--End of main_content-->
 
-        {% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'destinations', id: destinationId} %}
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
+        {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'destinations', id: destinationId} %#}
     </div>
 
 {% endblock %}

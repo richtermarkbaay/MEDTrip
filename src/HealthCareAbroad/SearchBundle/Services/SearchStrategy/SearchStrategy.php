@@ -77,7 +77,10 @@ abstract class SearchStrategy extends ContainerAware
 
     public function searchMedicalCentersBySubSpecialization($subSpecialization)
     {
-        return $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecialization($subSpecialization);
+        //$result = $this->container->get('doctrine')->getEntityManager()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecialization($subSpecialization);
+        $result = $this->container->get('doctrine')->getRepository('TermBundle:SearchTerm')->findBySubSpecialization($subSpecialization);
+
+        return $result;
     }
 
     public function searchMedicalCentersByTreatment($treatment)
