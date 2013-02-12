@@ -87,6 +87,10 @@ class SearchService
                 $results = $this->searchStrategy->loadTreatments($parameters);
                 break;
 
+            case 'subSpecialization':
+                $results = $this->searchStrategy->loadSubSpecializations($parameters);
+                break;
+
             default:
         }
 

@@ -144,11 +144,12 @@ class DefaultSearchStrategy extends SearchStrategy
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-        $sql ="
+        $sql = "
             SELECT a.id AS id, a.id AS value, a.name AS label
             FROM treatments AS a
             INNER JOIN search_terms b ON a.id = b.treatment_id
             WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+            AND b.type = :type
         ";
 
         if (isset($parameters['searchParameter'])) {
@@ -174,14 +175,12 @@ class DefaultSearchStrategy extends SearchStrategy
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->bindValue('type', TermDocument::TYPE_TREATMENT);
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-
-    //TODO: query will not give correct results in all cases; this should probably be
-    //renamed to something more specific.
     public function getTermDocuments(SearchParameterBag $searchParams, $options = array(), $uniqueTermDocument = true)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
@@ -192,6 +191,7 @@ class DefaultSearchStrategy extends SearchStrategy
             FROM search_terms AS a
             INNER JOIN terms AS b ON b.id = a.term_id
             WHERE b.id = :termId AND a.status = {$this->searchTermActiveStatus}
+            AND a.status = 1
         ";
 
         if (isset($options['filters'])) {
