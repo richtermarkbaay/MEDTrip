@@ -50,12 +50,9 @@ abstract class Tracker
     final public function batchSave()
     {
         $em = $this->doctrine->getEntityManager('statistics');
-        //var_dump($this->data);
         foreach ($this->data as $_each) {
-            echo "Persisting ".\serialize($each)."... ";
-            //$em->persist($_each);
-            
+            $em->persist($_each);
         }
-        //$em->flush();
+        $em->flush();
     }
 }

@@ -26,7 +26,7 @@ class AdvertisementTracker extends Tracker
         
         $data = new AdvertisementStatisticsDaily();
         $data->setAdvertisementId($parameters->get(StatisticParameters::ADVERTISEMENT_ID, 0));
-        $data->setCategoryId(StatisticParameters::CATEGORY_ID, 0);
+        $data->setCategoryId($parameters->get(StatisticParameters::CATEGORY_ID, 0));
         $data->setDate(new \DateTime(\date('Y-m-d')));
         $data->setInstitutionId($parameters->get(StatisticParameters::INSTITUTION_ID));
         

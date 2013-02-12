@@ -64,14 +64,6 @@ class TrackerController extends Controller
             $tracker = $trackersUsed[$decodedImpression->get(StatisticParameters::TYPE)]; 
             
             if ($data = $tracker->createDataFromParameters($decodedImpression)){
-                
-                $em = $this->getDoctrine()->getEntityManager('statistics');
-                $em->persist($data);
-                $em->flush();
-                
-                return $this->render('::base.ajaxDebugger.html.twig');
-                var_dump($data); exit;
-                
                 $tracker->add($data);
             }
         }

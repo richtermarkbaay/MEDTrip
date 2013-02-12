@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Twig;
 
+use HealthCareAbroad\StatisticsBundle\Entity\StatisticCategories;
+
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticTypes;
 
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticParameters;
@@ -16,7 +18,8 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension
     {
         return array(
             'statistics_store_impressions' => new \Twig_Function_Method($this, 'storeImpressions'),
-            'encode_advertisement_statistics_parameters' => new \Twig_Function_Method($this, 'encode_advertisement_statistics_parameters'),
+            'encode_advertisement_impressions_parameters' => new \Twig_Function_Method($this, 'encode_advertisement_impressions_parameters'),
+            'encode_advertisement_clickthrough_parameters' => new \Twig_Function_Method($this, 'encode_advertisement_clickthrough_parameters'),
             'get_statistics_parameter_attribute_name' => new \Twig_Function_Method($this, 'get_statistics_parameter_attribute_name'),
             'get_clickthrough_tracker_class' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_class'),
             'get_impression_tracker_class' => new \Twig_Function_Method($this, 'get_impression_tracker_class'),
@@ -49,21 +52,36 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension
         return 'data-statistic_parameters';
     }
     
-    public function encode_advertisement_statistics_parameters(AdvertisementDenormalizedProperty $advertisement)
+    /** advertisement statistic parameters encoders **/
+    
+    public function encode_advertisement_impressions_parameters(AdvertisementDenormalizedProperty $advertisement)
     {
-        $parameters = array(
-            StatisticParameters::ADVERTISEMENT_ID => $advertisement->getId(),
-            StatisticParameters::INSTITUTION_ID => $advertisement->getInstitution()->getId(),
-            StatisticParameters::TYPE => StatisticTypes::ADVERTISEMENT
-        );
+        $parameters = $this->_getCommonAdvertisementStatisticParameters($advertisement);
+        $parameters[StatisticParameters::CATEGORY_ID] = StatisticCategories::ADVERTISEMENT_IMPRESSIONS;
         
         return StatisticParameters::encodeParameters($parameters);
     }
     
-    public function storeImpressions()
+    public function encode_advertisement_clickthrough_parameters(AdvertisementDenormalizedProperty $advertisement)
     {
+        $parameters = $this->_getCommonAdvertisementStatisticParameters($advertisement);
+        $parameters[StatisticParameters::CATEGORY_ID] = StatisticCategories::ADVERTISEMENT_CLICKTHROUGHS;
         
+        return StatisticParameters::encodeParameters($parameters);
     }
+    
+    private function _getCommonAdvertisementStatisticParameters(AdvertisementDenormalizedProperty $advertisement)
+    {
+        return $parameters = array(
+            StatisticParameters::ADVERTISEMENT_ID => $advertisement->getId(),
+            StatisticParameters::INSTITUTION_ID => $advertisement->getInstitution()->getId(),
+            StatisticParameters::TYPE => StatisticTypes::ADVERTISEMENT,
+        );
+    }
+    
+    /** end advertisement statistic parameters encoders **/
+    
+    
     
     public function getName()
     {
