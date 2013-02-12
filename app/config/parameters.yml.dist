@@ -5,6 +5,12 @@ parameters:
     database_name:     @DATABASE_NAME@
     database_user:     @DATABASE_USER@
     database_password: @DATABASE_PASSWORD@
+    
+    #statistics
+    statistics_db_name: healthcareabroad_stats
+    statistics_db_user: @STATISTICS_DATABASE_USER@
+    statistics_db_password: @STATISTICS_DATABASE_PASSWORD@
+     
 
     couchDbBaseUrl: @COUCHDB_URL@
     couchDbAlert: @COUCHDB_DOCUMENT@

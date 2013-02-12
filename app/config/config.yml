@@ -84,9 +84,9 @@ doctrine:
                 driver:   %database_driver%
                 host:     %database_host%
                 port:     %database_port%
-                dbname:   healthcareabroad_stats
-                user:     %database_user%
-                password: %database_password%
+                dbname:   %statistics_db_name%
+                user:     %statistics_db_user%
+                password: %statistics_db_password%
                 charset:  UTF8
                 
     orm:
