@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\StatisticsBundle\DependencyInjection;
+namespace HealthCareAbroad\StatisticsBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

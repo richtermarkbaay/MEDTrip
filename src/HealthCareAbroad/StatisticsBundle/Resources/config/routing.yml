@@ -1,5 +1,5 @@
-statistics_track_frontend:
-    pattern:  /statistics/track
-    defaults: { _controller: StatisticsBundle:saveTrackAction }
+frontend_save_impressions:
+    pattern:  /statistics/impressions
+    defaults: { _controller: StatisticsBundle:Tracker:saveImpressions }
     requirements:
         _method:  POST

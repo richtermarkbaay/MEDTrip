@@ -22,6 +22,7 @@
             'js/jquery/jquery-1.8.2.js'
             'js/jquery/jquery-ui-1.9.0.custom.min.js'
             'js/bootstrap.min.js'
+            'bundles/statistics/js/frontend.js'
             output='js/compiled-frontend.js'
         %}
         <script src="{{ asset_url }}"></script>
@@ -30,7 +31,22 @@
 
     <body>
         {% block body %}{% endblock %}
+    
+    
+    {% render 'StatisticsBundle:Tracker:showForm' %}
         
     {% block inlineJavascriptCode %}{% endblock %}
+    <script type="text/javascript">
+    <!-- 
+    (function($){
+        $(function(){
+            /* track impressions */
+            FrontendStatsTracker
+                .setImpressionTrackerForm('form#{{ get_impression_tracker_form_id() }}')
+                .trackImpressions();
+        });
+    })(jQuery);
+    //-->
+    </script>
     </body>
 </html>

@@ -1,0 +1,60 @@
+HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsDaily:
+    type: entity
+    table: institution_medical_center_statistics_daily
+    repositoryClass: HealthCareAbroad\StatisticsBundle\Repository\InstitutionMedicalCenterStatisticsDailyRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        date:
+            type: date
+            nullable: false
+        categoryId:
+            type: integer
+            unsigned: false
+            nullable: false
+            column: category_id
+        advertisementId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: advertisement_id
+        institutionId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: institution_id
+        institutionMedicalCenterId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: institution_medical_center_id
+        countryId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: country_id
+        cityId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: city_id
+        specializationId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: specialization_id
+        subSpecializationId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: sub_specialization_id
+        treatmentId:
+            type: bigint
+            unsigned: false
+            nullable: false
+            column: treatment_id
