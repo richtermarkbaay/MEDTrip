@@ -14,11 +14,7 @@ var NarrowSearchWidgetManager = {
         }
     },
 
-    _widgets: null,
-
     initializeWidgets: function(_widgets) {
-        NarrowSearchWidgetManager._widgets = _widgets;
-
         $.each(_widgets, function(_k, _v){
             var _widgetOptions = $.extend(NarrowSearchWidgetManager._defaultWidgetOptions, _v);
             NarrowSearchWidgetManager._autocomplete($(_v.widget_container).find(_v.autocomplete.field), _v);
@@ -66,7 +62,7 @@ var NarrowSearchWidgetManager = {
             _listContainer.html('');
             $.each(data, function(index, item){
                 var _itemLink = $('<a data-value="'+item.id+'">'+item.label+'</a>')
-                    .bind('click', function(event){
+                    .bind('click', function(){
                         // replace value of selected value container
                         $(_options.widget_container).find(_options.autocomplete.selected_value_container).html($(this).html());
                         _searchInputName = NarrowSearchWidgetManager.searchParameterName+'['+_options.type+']';
@@ -79,7 +75,7 @@ var NarrowSearchWidgetManager = {
                             $('<input type="hidden" name="'+_searchInputName+'" value="'+$(this).attr('data-value')+'"/>')
                                 .appendTo(NarrowSearchWidgetManager.form);
                         }
-                        NarrowSearchWidgetManager._resetDependentWidgets(event);
+
                     });
 
                 return $('<li>').append(_itemLink)
@@ -90,6 +86,7 @@ var NarrowSearchWidgetManager = {
         return this;
     },
 
+    /*TODO*/
     _resetDependentWidgets: function(event) {
         alert(event.target);
     }
