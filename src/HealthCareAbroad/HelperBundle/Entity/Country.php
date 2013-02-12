@@ -191,7 +191,7 @@ class Country
      * @param HealthCareAbroad\HelperBundle\Entity\City $cities
      * @return Country
      */
-    public function addCitie(\HealthCareAbroad\HelperBundle\Entity\City $cities)
+    public function addCities(\HealthCareAbroad\HelperBundle\Entity\City $cities)
     {
         $this->cities[] = $cities;
         return $this;
@@ -202,7 +202,7 @@ class Country
      *
      * @param HealthCareAbroad\HelperBundle\Entity\City $cities
      */
-    public function removeCitie(\HealthCareAbroad\HelperBundle\Entity\City $cities)
+    public function removeCities(\HealthCareAbroad\HelperBundle\Entity\City $cities)
     {
         $this->cities->removeElement($cities);
     }
@@ -215,5 +215,10 @@ class Country
     public function getCities()
     {
         return $this->cities;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }

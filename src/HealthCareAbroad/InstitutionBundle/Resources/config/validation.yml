@@ -8,6 +8,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         name:
             - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
             - NotBlank: {message: 'Institution name is required.', groups: [institutionRegistration, editInstitutionInformation]}
+        description:
+            - NotBlank: {message: 'Institution description is required.', groups: [editInstitutionInformation]}
         country:
             - NotBlank: {message: 'Country is required.', groups: [editInstitutionInformation]}
         address1:
