@@ -238,15 +238,18 @@ class FrontendController extends Controller
                         $route = 'frontend_search_results_specializations';
                         $sessionVariables = array('specializationId' => $termDocument['specialization_id'], 'termId' => $termDocument['term_id']);
 
-                        if ($termDocument['treatment_id']) {
-                            $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['treatment_id'])->getSlug();
-                            $route = 'frontend_search_results_treatments';
-                            $sessionVariables['treatmentId'] = $termDocument['treatment_id'];
-                        } elseif ($termDocument['sub_specialization_id']) {
-                            $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['sub_specialization_id'])->getSlug();
-                            $route = 'frontend_search_results_subSpecializations';
-                            $sessionVariables['subSpecializationId'] = $termDocument['sub_specialization_id'];
+                        switch ($termDocument['type']) {
+                            case TermDocument::TYPE_TREATMENT:
+                                $routeParameters['treatment'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($termDocument['document_id'])->getSlug();
+                                $route = 'frontend_search_results_treatments';
+                                $sessionVariables['treatmentId'] = $termDocument['treatment_id'];
+                                break;
+                            case TermDocument::TYPE_SUBSPECIALIZATION:
+                                $routeParameters['subSpecialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($termDocument['document_id'])->getSlug();
+                                $route = 'frontend_search_results_subSpecializations';
+                                $sessionVariables['subSpecializationId'] = $termDocument['sub_specialization_id'];
                         }
+
                     } elseif ($termDocuments) {
                         $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
 
@@ -555,10 +558,14 @@ class FrontendController extends Controller
         $combinationSuffix = '_specialization';
         $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($termDocument['specialization_id']);
 
-        if ($termDocument['treatment_id']) {
-            $combinationSuffix = '_treatment';
-        } elseif ($termDocument['sub_specialization_id']) {
-            $combinationSuffix = '_subSpecialization';
+
+        switch ($termDocument['type']) {
+            case TermDocument::TYPE_TREATMENT:
+                $combinationSuffix = '_treatment';
+                break;
+            case TermDocument::TYPE_SUBSPECIALIZATION:
+                $combinationSuffix = '_subSpecialization';
+                break;
         }
 
         switch ($combinationPrefix . $combinationSuffix) {

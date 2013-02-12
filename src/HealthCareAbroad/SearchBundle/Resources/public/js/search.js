@@ -1,9 +1,9 @@
 var NarrowSearchWidgetManager = {
-      
+
     form: null,
-    
+
     searchParameterName: 'searchParameter',
-    
+
     _defaultWidgetOptions: {
         'widget_container': '',
         'autocomplete': {
@@ -13,20 +13,24 @@ var NarrowSearchWidgetManager = {
             'source': ''
         }
     },
-        
+
+    _widgets: null,
+
     initializeWidgets: function(_widgets) {
+        NarrowSearchWidgetManager._widgets = _widgets;
+
         $.each(_widgets, function(_k, _v){
             var _widgetOptions = $.extend(NarrowSearchWidgetManager._defaultWidgetOptions, _v);
-            NarrowSearchWidgetManager._autocomplete($(_v.widget_container).find(_v.autocomplete.field), _v); 
+            NarrowSearchWidgetManager._autocomplete($(_v.widget_container).find(_v.autocomplete.field), _v);
         });
-        
+
         return this;
     },
-    
+
     _autocomplete: function(_widget, _options) {
         var _xhr;
         var _self = $(_widget);
-        
+
         _self
             .click(function(e){
                 e.stopPropagation();
@@ -39,7 +43,7 @@ var NarrowSearchWidgetManager = {
                 }
                 NarrowSearchWidgetManager.form.find('input[name="filter"]').val(_options.type);
                 NarrowSearchWidgetManager.form.find('input[name="term"]').val(request.term);
-                
+
                 _xhr = $.ajax({
                     url: _options.autocomplete.source,
                     type: 'post',
@@ -62,7 +66,7 @@ var NarrowSearchWidgetManager = {
             _listContainer.html('');
             $.each(data, function(index, item){
                 var _itemLink = $('<a data-value="'+item.id+'">'+item.label+'</a>')
-                    .bind('click', function(){
+                    .bind('click', function(event){
                         // replace value of selected value container
                         $(_options.widget_container).find(_options.autocomplete.selected_value_container).html($(this).html());
                         _searchInputName = NarrowSearchWidgetManager.searchParameterName+'['+_options.type+']';
@@ -75,23 +79,18 @@ var NarrowSearchWidgetManager = {
                             $('<input type="hidden" name="'+_searchInputName+'" value="'+$(this).attr('data-value')+'"/>')
                                 .appendTo(NarrowSearchWidgetManager.form);
                         }
+                        NarrowSearchWidgetManager._resetDependentWidgets(event);
                     });
-                
+
                 return $('<li>').append(_itemLink)
                     .appendTo(_listContainer);
             })
         };
-        
+
         return this;
+    },
+
+    _resetDependentWidgets: function(event) {
+        alert(event.target);
     }
 };
-
-//(function($){
-//    $.fn.narrowSearchAutocomplete = function(_options){
-//        _options = $.extend({source: ''}, _options);
-//        
-//
-//        return this;  
-//    };
-//})(jQuery);
-
