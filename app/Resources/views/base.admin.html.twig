@@ -8,17 +8,15 @@
             'js/jquery/jquery-1.8.2.js'
             'js/jquery/jquery-ui-1.9.0.custom.js'
             'js/bootstrap.min.js'
-            'js/main/bootstrap-editable.js'
             'bundles/helper/js/Common.js'
             output='js/compiled-admin.js'
         %}
 
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-          {#  <script type="text/javascript">
+           <script type="text/javascript">
             $(function(){
                 HCA.init({
-                    autocompleteSearchUrl: "{{ path('helper_autoCompleteSearch') }}",
                     tinymceConfig: {
                         textarea_class: "{{ tinymce.textarea_class }}",
                         themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),
@@ -30,7 +28,7 @@
             })
 
             </script>
-        #}
+        
             {% stylesheets 
 				'css/bootstrap.css'
 				'css/bootstrap-responsive.min.css'
