@@ -308,7 +308,7 @@ class SearchTermRepository extends EntityRepository
                     ->setParameter('cityId', $filter->getId());
                     break;
                 default:
-                    throw new Exception('Unsupported filter');
+                    throw new \Exception('Unsupported filter');
             }
         }
 
