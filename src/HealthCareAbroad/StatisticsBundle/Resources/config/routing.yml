@@ -1,3 +1,8 @@
+frontend_save_clickthrough:
+    pattern:  /statistics/clickthrough
+    defaults: { _controller: StatisticsBundle:Tracker:saveClickthrough }
+    requirements:
+        _method:  POST
 frontend_save_impressions:
     pattern:  /statistics/impressions
     defaults: { _controller: StatisticsBundle:Tracker:saveImpressions }
