@@ -33,20 +33,6 @@
         {% block body %}{% endblock %}
     
     
-    {% render 'StatisticsBundle:Tracker:showForm' %}
-        
     {% block inlineJavascriptCode %}{% endblock %}
-    <script type="text/javascript">
-    <!-- 
-    (function($){
-        $(function(){
-            /* track impressions */
-            FrontendStatsTracker
-                .setImpressionTrackerForm('form#{{ get_impression_tracker_form_id() }}')
-                .trackImpressions();
-        });
-    })(jQuery);
-    //-->
-    </script>
     </body>
 </html>
