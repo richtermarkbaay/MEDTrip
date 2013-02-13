@@ -10,8 +10,8 @@
 {% set groupedWidgets = {
     'treatments': {
         'specialization': narrowSearchWidgets.specialization is defined ? narrowSearchWidgets.specialization : null,
-        'treatment':  narrowSearchWidgets.treatment is defined ? narrowSearchWidgets.treatment : null,
         'sub_specialization':  narrowSearchWidgets.sub_specialization is defined ? narrowSearchWidgets.sub_specialization : null,
+        'treatment':  narrowSearchWidgets.treatment is defined ? narrowSearchWidgets.treatment : null,
     },
     'destinations': {
         'country': narrowSearchWidgets.country is defined ? narrowSearchWidgets.country : null,
@@ -21,22 +21,22 @@
 {% embed 'SearchBundle:Frontend/Widgets:base.narrowDownSearch.html.twig'  %}
 
     {% block narrowDownSearchWidgets %}
-    
+
         {% for _treatmentWidget in groupedWidgets.treatments  %}
             {% if _treatmentWidget %}
             <li class="narrow-description">Specific {{ _treatmentWidget.type | title}}</li>
-            <li class="row-fluid combo-box narrow_search_widget_treatment">
+            <li class="row-fluid combo-box narrow_search_widget_{{ _treatmentWidget.type  }}">
                 {% include 'SearchBundle:Frontend/Widgets:form.narrowSearchByType.html.twig' with { widget: _treatmentWidget } %}
             </li>
             {% endif %}
         {% endfor %}
-        
-        {% if groupedWidgets.destinations.country and groupedWidgets.destinations.country  %}
+
+        {% if groupedWidgets.destinations.country and groupedWidgets.destinations.city  %}
             <li class="narrow-description">Specific Destination</li>
         {% else %}
             <li class="narrow-description">Specific {{ groupedWidgets.destinations.country ? 'Country' : 'City' }}</li>
         {% endif %}
-        
+
         {% for _destinationWidget in groupedWidgets.destinations  %}
             {% if _destinationWidget %}
             <li class="row-fluid combo-box narrow_search_widget_{{ _destinationWidget.type }}">
@@ -44,7 +44,7 @@
             </li>
             {% endif %}
         {% endfor %}
-        
+
     {% endblock %}
-    
+
 {% endembed %}
