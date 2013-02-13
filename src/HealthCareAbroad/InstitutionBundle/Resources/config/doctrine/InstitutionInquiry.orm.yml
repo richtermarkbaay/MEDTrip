@@ -33,13 +33,13 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     manyToOne:
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            inversedBy: institutionInquiries
+            inversedBy: null
             joinColumn:
                 name: institution_id
                 referencedColumnName: id
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            inversedBy: institutionInquiries
+            inversedBy: null
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id

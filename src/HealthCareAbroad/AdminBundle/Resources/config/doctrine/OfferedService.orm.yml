@@ -22,12 +22,4 @@ HealthCareAbroad\AdminBundle\Entity\OfferedService:
             type: datetime
             nullable: false
             column: date_created
-    manyToMany:
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            cascade: {}
-            mappedBy: institutionOfferedServices
-            inversedBy: null
-            joinTable: null
-            orderBy: null
     lifecycleCallbacks: {  }
