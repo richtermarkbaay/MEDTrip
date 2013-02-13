@@ -102,7 +102,8 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
             return $user;
         }
         else  {
-            return $this->loadUserByUsername($user->getUsername());
+            return $user;
+            //return $this->loadUserByUsername($user->getUsername());
         }
     }
 
