@@ -1,0 +1,166 @@
+.ph-alternative, .ph-cardiology, .ph-colon, .ph-derma, .ph-endocrine, .ph-familymed, .ph-gastro, .ph-internalmed, .ph-liver, .ph-mens, .ph-neurology, .ph-oncology, .ph-optical, .ph-orthopedic, .ph-pedia, .ph-pills, .ph-plasticsurgery, .ph-pulmonary, .ph-radiology, .ph-surgery, .ph-syringe, .ph-transplant, .ph-urology, .ph-womens, .ph-dental, .ph-hospital, .ph-clinic{
+	background: url(../../images/frontend/medical-sprites.png) no-repeat;
+}
+
+.ph-alternative{
+	background-position: 0 -1px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-cardiology{
+	background-position: -83px -3px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-colon{
+	background-position: -169px -3px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-derma{
+	background-position: -260px 0;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-endocrine{
+	background-position: -361px -8px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-familymed{
+	background-position: -461px -6px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-gastro{
+	background-position: -555px -8px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-internalmed{
+	background-position: -7px -109px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-liver{
+	background-position: -111px -111px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-mens{
+	background-position: -209px -104px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-neurology{
+	background-position: -310px -109px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-oncology{
+	background-position: -410px -109px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-optical{
+	background-position: -508px -108px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-orthopedic{
+	background-position: -8px -210px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-pedia{
+	background-position: -109px -209px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-pills{
+	background-position: -212px -204px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-plasticsurgery{
+	background-position: -311px -207px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-pulmonary{
+	background-position: -408px -207px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-radiology{
+	background-position: -499px -194px ;
+	width: 102px;
+	height: 110px;
+}
+
+.ph-surgery{
+	background-position: -8px -309px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-syringe{
+	background-position: -108px -308px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-transplant{
+	background-position: -210px -306px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-urology{
+	background-position: -309px -307px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-womens{
+	background-position: -410px -305px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-dental{
+	background-position: -507px -308px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-hospital{
+	background-position: -5px -410px ;
+	width: 83px;
+	height: 83px;
+}
+
+.ph-clinic{
+	background-position: -111px -406px ;
+	width: 83px;
+	height: 83px;
+}
+

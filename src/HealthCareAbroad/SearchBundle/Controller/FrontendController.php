@@ -257,7 +257,6 @@ class FrontendController extends Controller
                         $route = 'frontend_search_results_related';
                         $sessionVariables = array('termId' => $term['id']);
 
-                        break;
                     } else {
                         throw new NotFoundHttpException();
                     }
@@ -291,20 +290,17 @@ class FrontendController extends Controller
                         $route = 'frontend_search_results_related';
                         $sessionVariables = array('termId' => $term['id']);
 
-                        break;
-
                     } else {
                         throw new NotFoundHttpException();
                     }
-                    break;
 
+                    break;
 
                 default:
                     throw new NotFoundHttpException();
             }
 
         }
-        //var_dump($this->generateUrl($route, $routeParameters)); exit;
 
         // this is used to avoid using slugs after redirection
         $request->getSession()->set('search_terms', json_encode($sessionVariables));
