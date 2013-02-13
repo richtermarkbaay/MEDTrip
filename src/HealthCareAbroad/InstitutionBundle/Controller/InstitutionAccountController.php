@@ -132,7 +132,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $institutionService = $this->get('services.institution');
         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
 
-        if((int)$this->institution->getSignupStepStatus() === 0) {
+        if((int)$this->institution->getSignupStepStatus() === 0 && $institutionMedicalCenter) {
             $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
             return $this->redirect($this->generateUrl($routeName));
         }
@@ -234,13 +234,20 @@ class InstitutionAccountController extends InstitutionAwareController
             // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-
+            
             $signupStepStatus = $this->institution->getSignupStepStatus();
             if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
                 $params = InstitutionSignupStepStatus::isStep1($signupStepStatus) ? array() : array('imcId' => $this->institutionMedicalCenter->getId());
                 return $this->redirect($this->generateUrl($routeName, $params));
             }
+            else {
+                if (!$templateVariables['institutionMedicalCenter']) {
+                    // this must have been created from HCA Admin since this single institution does not have a medical center
+                    return $this->redirect($this->generateUrl(InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP1)));
+                }    
+            } 
+                
 
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
