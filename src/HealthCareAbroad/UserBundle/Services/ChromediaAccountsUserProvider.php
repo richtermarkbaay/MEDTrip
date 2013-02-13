@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUser;
+
 use HealthCareAbroad\UserBundle\Services\Exception\FailedAccountRequestException;
 
 use Guzzle\Http\Exception\CurlException;
@@ -93,7 +95,15 @@ abstract class ChromediaAccountsUserProvider implements UserProviderInterface
 
         //TODO: use some strategy to avoid calling the chromedia account service
         // for every request
-        return $this->loadUserByUsername($user->getUsername());
+        
+        // quick fix for now just to help admin users with slow load time
+        // FIXME 
+        if ($user instanceof AdminUser) {
+            return $user;
+        }
+        else  {
+            return $this->loadUserByUsername($user->getUsername());
+        }
     }
 
 }

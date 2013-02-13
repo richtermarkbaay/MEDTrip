@@ -257,6 +257,7 @@ class FrontendController extends Controller
                         $route = 'frontend_search_results_related';
                         $sessionVariables = array('termId' => $term['id']);
 
+                        break;
                     } else {
                         throw new NotFoundHttpException();
                     }
@@ -290,16 +291,20 @@ class FrontendController extends Controller
                         $route = 'frontend_search_results_related';
                         $sessionVariables = array('termId' => $term['id']);
 
+                        break;
+
                     } else {
                         throw new NotFoundHttpException();
                     }
+                    break;
+
 
                 default:
                     throw new NotFoundHttpException();
-
             }
 
         }
+        //var_dump($this->generateUrl($route, $routeParameters)); exit;
 
         // this is used to avoid using slugs after redirection
         $request->getSession()->set('search_terms', json_encode($sessionVariables));
@@ -389,7 +394,7 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         );
 
