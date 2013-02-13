@@ -167,7 +167,13 @@ class DefaultController extends Controller
 
             case 'frontend_search_combined' :
                 $country = $request->get('country');
-                $specialization = $request->get('specialization');
+                if ($request->get('specialization')) {
+                    $specialization = $request->get('specialization');
+                }
+                elseif ($subSpecialization = $request->get('subSpecialization')) {
+                    $specialization = $subSpecialization->getSpecialization();
+                }
+                
                 $city = $request->get('city');
                 $treatment = $request->get('treatment');
 
@@ -333,6 +339,8 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName(),
                         'includedNarrowSearchWidgets' => array('city'),
+                        'country' => $country,
+                        'subSpecialization' => $subSpecialization,
                         'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId())
         ));
 
