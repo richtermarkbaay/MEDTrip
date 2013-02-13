@@ -31,7 +31,7 @@
                     <div id="media" class="treatmentbox">
                         <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                             Media
-                            <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                            <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'),institutionId: institution.id, id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
                                 <i class="icon-plus"></i>Add
                             </a>
                         </h5>

@@ -1,0 +1,109 @@
+# Elasticsearch Configuration
+#foq_elastica:
+#    clients:
+#        default: { host: localhost, port 9200 }
+#    indexes:
+#        destinations:
+#            client: default
+#            settings:
+#                index:
+#                    analysis:
+#                        analyzer:
+#                            full_name:
+#                                filter: [standard, lowercase, asciifolding]
+#                                type: custom
+#                                tokenizer: standard
+#                            partial_name:
+#                                filter: [standard, lowercase, asciifolding, name_ngram]
+#                                type: custom
+#                                tokenizer: standard
+#
+#                        filter:
+#                            name_ngram:
+#                                type: nGram
+#                                min_gram: 1
+#                                max_gram: 10
+#            finder:
+#            types:
+#                country:
+#                    mappings:
+#                        name:
+#                            fields:
+#                                partial:
+#                                    search_analyzer: full_name
+#                                    index_analyzer:  partial_name
+#                                    type: string
+#                                name:
+#                                    analyzer: full_name
+#                                    type: string
+#                            type: multi_field
+#                    persistence:
+#                        driver: orm
+#                        model: HealthCareAbroad\HelperBundle\Entity\Country
+#                        provider:
+#                            batch_size: 100
+#                        listener:
+#                city:
+#                    mappings:
+#                        name:
+#                            fields:
+#                                partial:
+#                                    search_analyzer: full_name
+#                                    index_analyzer:  partial_name
+#                                    type: string
+#                                name:
+#                                    analyzer: full_name
+#                                    type: string
+#                            type: multi_field
+#                    persistence:
+#                        driver: orm
+#                        model: HealthCareAbroad\HelperBundle\Entity\City
+#                        provider:
+#                            batch_size: 100
+#                        listener:
+
+
+
+
+
+#        treatments:
+#            client: default
+#            settings:
+#                index:
+#                    analysis:
+#                        analyzer :
+#                            destinationAnalyzer :
+#                                tokenizer : standard
+#                                filter : [standard, lowercase]
+#                        #tokenizer :
+#                        #    destinationTokenizer :
+#                        #        type : standard
+#            finder:
+#            types:
+#                specialization:
+#                    mappings:
+#                        name:
+#                    persistence:
+#                        driver: orm
+#                        model: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+#                        provider:
+#                            batch_size: 100
+#                        listener:
+#                subSpecialization:
+#                    mappings:
+#                        name:
+#                    persistence:
+#                        driver: orm
+#                        model: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
+#                        provider:
+#                            batch_size: 100
+#                        listener:
+#                treatment:
+#                    mappings:
+#                        name:
+#                    persistence:
+#                        driver: orm
+#                        model: HealthCareAbroad\TreatmentBundle\Entity\Treatment
+#                        provider:
+#                            batch_size: 100
+#                        listener:
