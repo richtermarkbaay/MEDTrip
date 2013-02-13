@@ -24,12 +24,18 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension
             'get_clickthrough_tracker_class' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_class'),
             'get_impression_tracker_class' => new \Twig_Function_Method($this, 'get_impression_tracker_class'),
             'get_impression_tracker_form_id' => new \Twig_Function_Method($this, 'get_impression_tracker_form_id'),
+            'get_clickthrough_tracker_form_id' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_form_id')
         );
     }
     
     public function get_impression_tracker_form_id()
     {
         return 'hca_impressions_tracker_form';
+    }
+    
+    public function get_clickthrough_tracker_form_id()
+    {
+        return 'hca_clickthrough_tracker_form';
     }
     
     public function get_clickthrough_tracker_class()
