@@ -10,24 +10,24 @@ class SearchTwigExtension extends \Twig_Extension
      * @var Router
      */
     private $router;
-    
+
     public function getFunctions()
     {
         return array(
             'get_narrow_search_widgets_configuration' => new \Twig_Function_Method($this, 'get_narrow_search_widgets_configuration')
         );
     }
-    
+
     public function getName()
     {
         return 'frontendSearchExtension';
     }
-    
+
     public function setRouter($v)
     {
         $this->router = $v;
     }
-    
+
     public function get_narrow_search_widgets_configuration($widgets, $commonAutocompleteOptions=array())
     {
         $grouping = array(
@@ -38,6 +38,11 @@ class SearchTwigExtension extends \Twig_Extension
             'specialization' => array(
                 'type' => 'specialization',
                 'widget_container' => 'li.narrow_search_widget_specialization',
+                'autocomplete' => $commonAutocompleteOptions
+            ),
+            'sub_specialization' => array(
+                'type' => 'sub-specialization',
+                'widget_container' => 'li.narrow_search_widget_sub-specialization',
                 'autocomplete' => $commonAutocompleteOptions
             ),
             'treatment' => array(
@@ -56,11 +61,9 @@ class SearchTwigExtension extends \Twig_Extension
                 'autocomplete' => $commonAutocompleteOptions
             )
         );
-        
-        
-        
+
         $widgetConfigurations = \array_intersect_key($availableWidgetsConfiguration, \array_flip($widgets));
-        
+
 //         if ($groupedByType) {
 //             $groupedWidgets = array('treatments' => array(), 'destinations' => array());
 //             foreach ($widgetConfigurations as $widgetKey => $conf) {
@@ -71,9 +74,9 @@ class SearchTwigExtension extends \Twig_Extension
 //                     $groupedWidgets['destinations'][] = $conf;
 //                 }
 //             }
-//             $widgetConfigurations = $groupedWidgets; 
+//             $widgetConfigurations = $groupedWidgets;
 //         }
-        
+
         return $widgetConfigurations;
     }
 }
