@@ -788,8 +788,8 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 -- Dumping data for table `institution_medical_centers`
 --
 INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `coordinates`, `business_hours`, `contact_number`, `contact_email`, `websites`, `description`, `logo_id`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', '', '', '', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
-(2, 1, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', '', '', '', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
+(1, 2, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', '', '', '', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
+(2, 2, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', '', '', '', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
 
 -- --------------------------------------------------------
 
@@ -836,6 +836,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_properties` (
   `institution_medical_center_id` bigint(20) unsigned NOT NULL,
   `institution_property_type_id` int(10) unsigned NOT NULL,
   `value` text NOT NULL,
+  `extra_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'extra property value. needed if value is restricted to be an id and there are optional property values',
   PRIMARY KEY (`id`),
   KEY `institution_property_type_id` (`institution_property_type_id`),
   KEY `institution_id` (`institution_id`),
@@ -855,11 +856,11 @@ CREATE TABLE IF NOT EXISTS `institution_properties` (
   `institution_id` int(10) unsigned NOT NULL,
   `institution_property_type_id` int(10) unsigned NOT NULL,
   `value` text NOT NULL,
+  `extra_value` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`),
   KEY `institution_property_type_id` (`institution_property_type_id`),
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -945,6 +946,11 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
   KEY `institution_user_type_id` (`institution_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_users`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES ('2', '1', '1', CURRENT_TIMESTAMP, '1');
 -- --------------------------------------------------------
 
 --
@@ -986,6 +992,18 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
 
 
 --
+-- Table structure for table `institution_user_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_user_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(250) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
 -- Dumping data for table `institution_user_roles`
 --
 
@@ -1000,7 +1018,6 @@ INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VAL
 (8, 'CAN_MANAGE_INSTITUTION', 'Add or Edit Institution Details', 2),
 (9, 'CAN_VIEW_PROCEDURE_TYPES', 'View all medical procedure types', 2),
 (10, 'CAN_MANAGE_PROCEDURE_TYPES', 'Add or Edit medical procedure types', 2);
-
 
 -- --------------------------------------------------------
 
@@ -1018,6 +1035,12 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_types`
+--
+
+INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
+(1, 1, 'ADMIN', 3);
 
 -- --------------------------------------------------------
 
@@ -1033,6 +1056,12 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
   KEY `institution_user_type_roles_ibfk_2` (`institution_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_type_roles`
+--
+
+INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
