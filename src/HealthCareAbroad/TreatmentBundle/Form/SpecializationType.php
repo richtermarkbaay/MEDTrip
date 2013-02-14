@@ -1,9 +1,8 @@
 <?php
 namespace HealthCareAbroad\TreatmentBundle\Form;
 
+use HealthCareAbroad\MediaBundle\Form\AdminMediaFileType;
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
@@ -20,9 +19,10 @@ class SpecializationType extends AbstractType
             Specialization::STATUS_ACTIVE => 'active',
             Specialization::STATUS_INACTIVE => 'inactive'
         );
-
+        
         $builder->add('name');
         $builder->add('description');
+        $builder->add('media', new AdminMediaFileType($specialization->getMedia()));
         $builder->add('status', 'choice', array('choices' => $status));
     }
 

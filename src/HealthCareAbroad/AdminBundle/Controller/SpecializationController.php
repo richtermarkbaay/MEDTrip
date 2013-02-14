@@ -18,7 +18,11 @@ class SpecializationController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('AdminBundle:Specialization:index.html.twig', array('specializations' => $this->filteredResult, 'pager' => $this->pager));
+        $activeStatus = Specialization::STATUS_ACTIVE;
+        
+        $params = array('activeStatus' => Specialization::STATUS_ACTIVE, 'specializations' => $this->filteredResult, 'pager' => $this->pager);
+        
+        return $this->render('AdminBundle:Specialization:index.html.twig', $params);
     }
 
     /**
@@ -69,24 +73,30 @@ class SpecializationController extends Controller
         $specialization = $id
                 ? $em->getRepository('TreatmentBundle:Specialization')->find($id)
                 : new Specialization();
-
+        
         $form = $this->createForm(new SpecializationType(), $specialization);
-           $form->bind($request);
-           if ($form->isValid()) {
-               $em->persist($specialization);
-               $em->flush($specialization);
+        $form->bind($request);
+
+        if ($form->isValid()) {
+
+            if($media = $this->saveMedia($request->files->get('specialization'), $specialization)) {
+                $specialization->setMedia($media);
+            }
+
+            $em->persist($specialization);
+            $em->flush($specialization);
 
             // dispatch event
-               $eventName = $id ? AdminBundleEvents::ON_EDIT_SPECIALIZATION : AdminBundleEvents::ON_ADD_SPECIALIZATION;
-               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $specialization));
+            $eventName = $id ? AdminBundleEvents::ON_EDIT_SPECIALIZATION : AdminBundleEvents::ON_ADD_SPECIALIZATION;
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $specialization));
 
-               $request->getSession()->setFlash('success', 'Specialization saved!');
+            $request->getSession()->setFlash('success', 'Specialization saved!');
 
-               if($request->get('submit') == 'Save')
-                   return $this->redirect($this->generateUrl('admin_specialization_edit', array('id' => $specialization->getId())));
-               else
-                   return $this->redirect($this->generateUrl('admin_specialization_add'));
-           }
+            if($request->get('submit') == 'Save')
+                return $this->redirect($this->generateUrl('admin_specialization_edit', array('id' => $specialization->getId())));
+            else
+                return $this->redirect($this->generateUrl('admin_specialization_add'));
+       }
 
         $formAction = $id
             ? $this->generateUrl('admin_specialization_update', array('id' => $id))
@@ -163,6 +173,17 @@ class SpecializationController extends Controller
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    private function saveMedia($fileBag, $specialization)
+    {
+        $media = null;
+
+        if($fileBag['media']) {
+            $media = $this->get('services.media')->upload($fileBag['media'], $specialization);
+        }
+
+        return $media;
     }
 
 }

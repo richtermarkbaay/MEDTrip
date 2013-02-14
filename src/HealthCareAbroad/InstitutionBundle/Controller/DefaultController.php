@@ -94,7 +94,7 @@ class DefaultController extends InstitutionAwareController
     		$errorReport = new ErrorReport();
     		$form = $this->createForm(new ErrorReportFormType(), $errorReport);   		
     		$form->bind($request);
-    		
+
     		if ($form->isValid()) {	
 
 		    	$errorReport->setLoggedUserId($userId);
@@ -119,5 +119,9 @@ class DefaultController extends InstitutionAwareController
 				'reportSubmitted' => true
 		));
 	}
-
+	
+	public function mediaAjaxDelete()
+	{
+	    
+	}
 }
