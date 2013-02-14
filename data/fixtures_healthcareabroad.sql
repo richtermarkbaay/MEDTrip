@@ -35,6 +35,15 @@ CREATE TABLE IF NOT EXISTS `admin_actions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `admin_actions`
+--
+
+INSERT INTO `admin_actions` (`id`, `name`, `description`, `status`) VALUES
+(1, 'index', 'View Admin Home Page', 1),
+(2, 'medical_centers.index', 'View All Medical Centers', 1),
+(3, 'medical_centers.add', 'Add new medical center', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -165,6 +174,12 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   KEY `advertisement_type_id` (`advertisement_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='advertisement table';
 
+--
+-- Dumping data for table `advertisements`
+--
+
+INSERT INTO `advertisements` (`id`, `institution_id`, `object_id`, `advertisement_type_id`, `title`, `description`, `date_created`, `date_expiry`, `status`) VALUES
+(1, 1, 0, 1, 'test', 'test', '2013-02-14 06:47:16', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -575,6 +590,12 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   UNIQUE KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `gallery`
+--
+
+INSERT INTO `gallery` (`id`, `institution_id`, `date_created`) VALUES
+(1, 1, '2013-02-14 06:50:55');
 
 -- --------------------------------------------------------
 
@@ -613,6 +634,12 @@ CREATE TABLE IF NOT EXISTS `global_awards` (
   KEY `awarding_body_id` (`awarding_body_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='awards, certificates and affiliations data';
 
+--
+-- Dumping data for table `global_awards`
+--
+
+INSERT INTO `global_awards` (`id`, `type`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
+(1, 2, 'test', 'test', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -629,6 +656,14 @@ CREATE TABLE IF NOT EXISTS `helper_text` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `helper_text`
+--
+
+INSERT INTO `helper_text` (`id`, `route`, `details`, `status`) VALUES
+(1, 'institution_signUp', 'Please provide the correct information below, and we will create an exclusive medical account listing for you.', 1),
+(2, 'institution_login', '<h4>Some Text here that urge medical institution to sign up for Health Care Abroad Medical Listing!</h4>\r\n                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>', 1),
+(3, 'test_route', 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -1286,6 +1321,11 @@ CREATE TABLE IF NOT EXISTS `medical_provider_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `medical_provider_groups`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES ('18', 'test', 'test', CURRENT_TIMESTAMP, '1');
 
 -- --------------------------------------------------------
 
