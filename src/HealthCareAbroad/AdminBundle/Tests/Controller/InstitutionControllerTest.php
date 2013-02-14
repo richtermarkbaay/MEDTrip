@@ -21,8 +21,8 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/admin/institutions');
 
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Institutions")')->count());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
 //     public function testView()
