@@ -60,3 +60,8 @@ services:
         class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType
         tags:
             - { name: form.type, alias: awarding_body_list }
+
+    form.admin_media_file:
+        class: HealthCareAbroad\MediaBundle\Form\AdminMediaFile
+        tags:
+            - { name: form.type, alias: admin_media_file }

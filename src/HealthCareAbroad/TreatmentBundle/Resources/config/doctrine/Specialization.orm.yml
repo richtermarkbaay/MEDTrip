@@ -53,4 +53,15 @@ HealthCareAbroad\TreatmentBundle\Entity\Specialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
             mappedBy: specialization
 
+    manyToOne:
+        media:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
     lifecycleCallbacks: {  }

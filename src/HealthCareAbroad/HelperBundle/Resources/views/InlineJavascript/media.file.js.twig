@@ -1,0 +1,23 @@
+<script style="text/javascript">
+    $('a.admin-remove-media, a.institution-remove-media').click(function(){
+    	var elem = $(this);
+        var url = elem.attr('href');
+        elem.attr('href', 'javascript:void(0)').html('removing image...');
+        
+    	$.post(url, $.parseJSON(elem.attr('data-params')), function(response){
+        	if(response) {
+            	elem.prev().fadeOut(function(){
+                	elem.hide();
+                	$(elem.attr('data-input-file')).insertAfter(elem).hide().fadeIn();
+            	});
+            } else {
+                elem.html('remove');
+                alert('Unable to remove image.');                            
+            }
+
+            elem.attr('href', url);
+        });
+
+        return;
+    })
+</script>

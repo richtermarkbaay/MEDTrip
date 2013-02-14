@@ -21,159 +21,159 @@ class InstitutionControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/admin/institutions');
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('#page-heading > h3')->text() == 'List of Institutions', 'No Output!');
-    }
-    
-    public function testView()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/view');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Institutions")')->count());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
-    public function testViewInvalidInstitution()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/10010/view');
-
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
-    }
-
-    public function testUpdateStatus()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $status = InstitutionStatus::ACTIVE;
-        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $status));
-
-        $response = $client->getResponse();
-
-        // check of redirect url /admin/institutions
-        $this->assertEquals('/admin/institutions', $client->getResponse()->headers->get('location'));
-        $this->assertEquals(302, $response->getStatusCode());
-
-        $crawler = $client->followRedirect(true);
-
-        $isValidStatus = $crawler->filter('#message-red')->count() == 0;
-        $this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
-
-//         $isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
-//         $this->assertTrue($isStatusUpdated, 'Unable to update status.');
-    }
+//     public function testView()
+//     {
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $crawler = $client->request('GET', '/admin/institution/1/view');
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//     }
     
-    public function testUpdateInvalidStatus()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $invalidStatus = 35;
-        $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $invalidStatus));
+//     public function testViewInvalidInstitution()
+//     {
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $crawler = $client->request('GET', '/admin/institution/10010/view');
 
-        $response = $client->getResponse();
+//         $this->assertEquals(404, $client->getResponse()->getStatusCode());
+//     }
+
+//     public function testUpdateStatus()
+//     {
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $status = InstitutionStatus::ACTIVE;
+//         $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $status));
+
+//         $response = $client->getResponse();
+
+//         // check of redirect url /admin/institutions
+//         $this->assertEquals('/admin/institutions', $client->getResponse()->headers->get('location'));
+//         $this->assertEquals(302, $response->getStatusCode());
+
+//         $crawler = $client->followRedirect(true);
+
+//         $isValidStatus = $crawler->filter('#message-red')->count() == 0;
+//         $this->assertTrue($isValidStatus, 'Invalid status value ' . $status);
+
+// //         $isStatusUpdated = $crawler->filter('#message-green')->count() > 0;
+// //         $this->assertTrue($isStatusUpdated, 'Unable to update status.');
+//     }
+    
+//     public function testUpdateInvalidStatus()
+//     {
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $invalidStatus = 35;
+//         $crawler = $client->request('POST', '/admin/institution/1/update-status', array('status' => $invalidStatus));
+
+//         $response = $client->getResponse();
         
-        $this->assertEquals('/admin/institutions', $response->headers->get('location'));
-        $this->assertEquals(302, $response->getStatusCode());
+//         $this->assertEquals('/admin/institutions', $response->headers->get('location'));
+//         $this->assertEquals(302, $response->getStatusCode());
 
-        $crawler = $client->followRedirect(true);
+//         $crawler = $client->followRedirect(true);
 
-        $response = $client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
+//         $response = $client->getResponse();
+//         $this->assertEquals(200, $response->getStatusCode());
 
-//         $isNotValidStatus = $crawler->filter('#message-red')->count() > 0;
-//         $this->assertTrue($isNotValidStatus, 'Invalid status value should not be saved!');
-    }
+// //         $isNotValidStatus = $crawler->filter('#message-red')->count() > 0;
+// //         $this->assertTrue($isNotValidStatus, 'Invalid status value should not be saved!');
+//     }
     
-    private $signupFormValues = array(
-    					'institutionSignUp[name]' => 'Institution Test',
-    					'institutionSignUp[email]' => 'testsignup@chromedia.com',
-    					'institutionSignUp[password]' => '123456',
-    					'institutionSignUp[confirm_password]' => '123456',
-    					'institutionType' => '1'
-    	);
+//     private $signupFormValues = array(
+//     					'institutionSignUp[name]' => 'Institution Test',
+//     					'institutionSignUp[email]' => 'testsignup@chromedia.com',
+//     					'institutionSignUp[password]' => '123456',
+//     					'institutionSignUp[confirm_password]' => '123456',
+//     					'institutionType' => '1'
+//     	);
     
-	public function testAddWithInvalidFields()
-	{
-		$invalidValues = array(
-			'institutionSignUp[name]' => '',
-			'institutionSignUp[email]' => '',
-			'institutionSignUp[password]' => '',
-			'institutionSignUp[confirm_password]' => '',
-		);
+// 	public function testAddWithInvalidFields()
+// 	{
+// 		$invalidValues = array(
+// 			'institutionSignUp[name]' => '',
+// 			'institutionSignUp[email]' => '',
+// 			'institutionSignUp[password]' => '',
+// 			'institutionSignUp[confirm_password]' => '',
+// 		);
     
-    		$client = $this->getBrowserWithActualLoggedInUser();
-    		$crawler = $client->request('GET','/admin/institution/add');
-    		$form = $crawler->selectButton('Next')->form();
-    		$crawler = $client->submit($form, $invalidValues);
-    		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+//     		$client = $this->getBrowserWithActualLoggedInUser();
+//     		$crawler = $client->request('GET','/admin/institution/add');
+//     		$form = $crawler->selectButton('Next')->form();
+//     		$crawler = $client->submit($form, $invalidValues);
+//     		$this->assertEquals(200, $client->getResponse()->getStatusCode());
     
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Institution name is required")')->count());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Institution name is required")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required")')->count());
     
-    		// test not matching passwords
-    		$invalidValues['institutionSignUp[password]'] = '654321';
-    		$invalidValues['institutionSignUp[confirm_password]'] = '123456';
-    		$form = $crawler->selectButton('Next')->first()->form();
-    		$crawler = $client->submit($form, $invalidValues);
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+//     		// test not matching passwords
+//     		$invalidValues['institutionSignUp[password]'] = '654321';
+//     		$invalidValues['institutionSignUp[confirm_password]'] = '123456';
+//     		$form = $crawler->selectButton('Next')->first()->form();
+//     		$crawler = $client->submit($form, $invalidValues);
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
     
-    		// test existing email
-    		$invalidValues['institutionSignUp[email]'] = 'test.institutionuser@chromedia.com';
-    		$form = $crawler->selectButton('Next')->first()->form();
-    		$crawler = $client->submit($form, $invalidValues);
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists")')->count());
-   	}
+//     		// test existing email
+//     		$invalidValues['institutionSignUp[email]'] = 'test.institutionuser@chromedia.com';
+//     		$form = $crawler->selectButton('Next')->first()->form();
+//     		$crawler = $client->submit($form, $invalidValues);
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists")')->count());
+//    	}
     
-    public function testAdd()
-    {
+//     public function testAdd()
+//     {
     
-    		$client = $this->getBrowserWithActualLoggedInUser();
-    		$crawler = $client->request('GET', '/admin/institution/add');
+//     		$client = $this->getBrowserWithActualLoggedInUser();
+//     		$crawler = $client->request('GET', '/admin/institution/add');
     
-    		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name of the Institution")')->count());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password")')->count());
-    		$this->assertGreaterThan(0, $crawler->filter('html:contains("Re-type password")')->count());
+//     		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Name of the Institution")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Password")')->count());
+//     		$this->assertGreaterThan(0, $crawler->filter('html:contains("Re-type password")')->count());
     
-    		$form = $crawler->selectButton('Next')->first()->form();
-    		$crawler = $client->submit($form, $this->signupFormValues);
+//     		$form = $crawler->selectButton('Next')->first()->form();
+//     		$crawler = $client->submit($form, $this->signupFormValues);
     					
-    }
+//     }
     
-    public function testAddDetails()
-	{
-		$editAccountUrl = '/admin/institution/1/add-details';
+//     public function testAddDetails()
+// 	{
+// 		$editAccountUrl = '/admin/institution/1/add-details';
     
-		//---- test that this should not be accessed by anonymous user
-		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
-		$this->assertEquals(302, $client->getResponse()->getStatusCode());
-		$redirectLocation = $client->getResponse()->headers->get('location');
-		$this->assertTrue($redirectLocation=='http://localhost/admin/login');
+// 		//---- test that this should not be accessed by anonymous user
+// 		$client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
+// 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+// 		$redirectLocation = $client->getResponse()->headers->get('location');
+// 		$this->assertTrue($redirectLocation=='http://localhost/admin/login');
 
-		$client = $this->getBrowserWithActualLoggedInUser();
-		$crawler = $client->request('GET', $editAccountUrl);
-		$this->assertEquals(200, $client->getResponse()->getStatusCode());
+// 		$client = $this->getBrowserWithActualLoggedInUser();
+// 		$crawler = $client->request('GET', $editAccountUrl);
+// 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
 		
-		$formValues = array(	
-						'institutionDetail[description]' => 'TEST',
-						'institutionDetail[contactEmail]' => 'tetmail2@fdfewed.com',
-						'institutionDetail[country]' => '1',
-						'institutionDetail[city]' => '1',
-						'institutionDetail[address1]' => '3434',
-						'institutionDetail[state]' => '324',
-						'institutionDetail[zipCode]' => '34324'
-		);
+// 		$formValues = array(	
+// 						'institutionDetail[description]' => 'TEST',
+// 						'institutionDetail[contactEmail]' => 'tetmail2@fdfewed.com',
+// 						'institutionDetail[country]' => '1',
+// 						'institutionDetail[city]' => '1',
+// 						'institutionDetail[address1]' => '3434',
+// 						'institutionDetail[state]' => '324',
+// 						'institutionDetail[zipCode]' => '34324'
+// 		);
 		
-		//test for invalid description
-		$invalidFormValues = $formValues;
-		$invalidFormValues['institutionDetail[description]'] = null;
-		$form = $crawler->selectButton('submit')->form();
-		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description is required.")')->count(), 'Expecting the validation message "Description is required."');
+// 		//test for invalid description
+// 		$invalidFormValues = $formValues;
+// 		$invalidFormValues['institutionDetail[description]'] = null;
+// 		$form = $crawler->selectButton('submit')->form();
+// 		$crawler = $client->submit($form, $invalidFormValues); // test submission of invalid form values
+// 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Description is required.")')->count(), 'Expecting the validation message "Description is required."');
 	
-		//test valid values
-		$client = $this->getBrowserWithActualLoggedInUser();
-		$crawler = $client->request('GET', $editAccountUrl);
-		$crawler = $client->submit($form, $formValues);
-	}
+// 		//test valid values
+// 		$client = $this->getBrowserWithActualLoggedInUser();
+// 		$crawler = $client->request('GET', $editAccountUrl);
+// 		$crawler = $client->submit($form, $formValues);
+// 	}
     
 }
