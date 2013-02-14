@@ -953,6 +953,13 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `institution_specializations`
+--
+
+INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, '<p>asdfsdf asdf asdf asdf</p>', '2012-12-08 17:31:05', '2012-12-08 17:31:05', 1),
+(2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1);
 
 -- --------------------------------------------------------
 
@@ -1414,6 +1421,7 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `media_id` bigint(20) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
@@ -1421,6 +1429,13 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `specializations`
+--
+
+INSERT INTO `specializations` (`id`, `name`, `description`, `media_id`, `date_created`, `slug`, `status`) VALUES
+(1, 'Allergy and Immunology', 'Medical center or department specializing in immunological disorders (autoimmune diseases, hypersensitivities, immune deficiency, transplant rejection, etc.)', NULL, '2012-09-03 03:50:10', 'allergy-and-immunology', 1),
+(2, 'Pathology', 'Medical centers specialized in the diagnosis and characterization of disease in living patients by examining biopsies or bodily fluids.', NULL, '2012-09-03 06:54:38', 'pathology', 1);
 -- --------------------------------------------------------
 
 --
