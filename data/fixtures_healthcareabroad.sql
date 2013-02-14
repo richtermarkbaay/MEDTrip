@@ -467,6 +467,7 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `first_name` char(250) NOT NULL,
   `middle_name` char(250) DEFAULT NULL,
   `last_name` char(250) NOT NULL,
+  `suffix` varchar(50) DEFAULT NULL,
   `gender` smallint(1) unsigned DEFAULT NULL,
   `contact_email` varchar(100) DEFAULT NULL,
   `contact_number` text,
