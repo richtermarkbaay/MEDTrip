@@ -938,6 +938,14 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
   KEY `institution_user_type_id` (`institution_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_users`
+--
+
+INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
+(1, 1, 1, '2013-02-13 02:12:02', 1);
+
+
 -- --------------------------------------------------------
 
 --
@@ -1011,6 +1019,13 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_types`
+--
+
+INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
+(1, 1, 'ADMIN', 1);
+
 
 -- --------------------------------------------------------
 
@@ -1025,6 +1040,15 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
   PRIMARY KEY (`institution_user_type_id`,`institution_user_role_id`),
   KEY `institution_user_type_roles_ibfk_2` (`institution_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Dumping data for table `institution_user_type_roles`
+--
+
+INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
+(1, 1);
+
 
 
 -- --------------------------------------------------------
