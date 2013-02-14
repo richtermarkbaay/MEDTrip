@@ -9,6 +9,7 @@ parameters:
             doctor: doctors
             advertisement: ads/{objectId}
             advertisementDenormalizedProperty: ads/{objectId}
+            specialization: specializations
 
 services:
     services.media.pathgenerator:

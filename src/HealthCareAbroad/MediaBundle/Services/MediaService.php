@@ -267,28 +267,29 @@ class MediaService
     }
 
     /**
-     * TODO: delete the physical file itself?
+     * TODO: delete the physical file itself? - Currently deleting physical file.
      */
-    public function delete($mediaId, $institutionId)
+    public function delete($media, $objectOwner)
     {
-        $success = 0;
-
-        $media = $this->retrieveMedia($mediaId, $institutionId);
+        $result = false;
 
         if ($media) {
+            $filesystem = $this->filesystemManager->get($objectOwner, 'local');
+            $mediaName = $media->getName();
+            $this->entityManager->remove($media);
+            try {
+                $this->entityManager->flush();
+                unlink($this->filesystemManager->getUploadRootDir() . '/' . $mediaName);
+                unlink($this->filesystemManager->getUploadRootDir() . '/thumbnail-' . $mediaName);
 
-                $this->entityManager->remove($media);
-
-                try {
-
-                    $this->entityManager->flush();
-                    $success = 1;
-                } catch(\Exception $e) {
-                    var_dump($e);
-                }
+                $result = true;
+            } catch(\Exception $e) {
+                $result = false;
+                var_dump($e);
+            }
         }
 
-        return $success;
+        return $result;
     }
 
     public function deleteMedia(Media $media)

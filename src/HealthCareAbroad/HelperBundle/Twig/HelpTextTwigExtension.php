@@ -22,7 +22,8 @@ class HelpTextTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-                        'get_help_text_by_route' => new \Twig_Function_Method($this, 'getHelpTextByRoute'),
+            'get_help_text_by_route' => new \Twig_Function_Method($this, 'getHelpTextByRoute'),
+            'add_slashes' => new \Twig_Function_Method($this, 'addSlashes'), 
         );
      }
      
@@ -36,6 +37,11 @@ class HelpTextTwigExtension extends \Twig_Extension
          }
          
          return $returnValue;
+     }
+     
+     public function addSlashes($string)
+     {
+         return addslashes($string);
      }
      
      public function getName()

@@ -11,7 +11,7 @@ class Specialization
     const STATUS_ACTIVE = 1;
 
     const STATUS_INACTIVE = 0;
-    
+
     /**
      * @var integer $id
      */
@@ -51,6 +51,11 @@ class Specialization
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $subSpecializations;
+
+    /**
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
+     */
+    private $media;
 
     public function __construct()
     {
@@ -203,7 +208,7 @@ class Specialization
     /**
      * Get treatments
      *
-     * @return Doctrine\Common\Collections\Collection
+     * @return Doctrine\Common\Collections\Collection 
      */
     public function getTreatments()
     {
@@ -241,16 +246,26 @@ class Specialization
     {
         return $this->subSpecializations;
     }
-    
-    /** custom methods below **/
-    
-    public function isActive()
+
+    /**
+     * Set media
+     *
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @return Specialization
+     */
+    public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media = null)
     {
-        return $this->status == self::STATUS_ACTIVE;
+        $this->media = $media;
+        return $this;
     }
-    
-    public function __toString()
+
+    /**
+     * Get media
+     *
+     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     */
+    public function getMedia()
     {
-        return $this->name;
+        return $this->media;
     }
 }
