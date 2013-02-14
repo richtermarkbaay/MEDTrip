@@ -25,12 +25,36 @@ class TrackerController extends Controller
         return  $this->render('StatisticsBundle:Tracker:form.html.twig', array('statsTrackerForm' => $form->createView()));
     }
     
+    public function saveClickthroughAction(Request $request)
+    {
+        $this->_throwUnsupportedMethodIfNotPost($request);
+        
+        $form = $this->createForm(new TrackerFormType());
+        $form->bind($request);
+        
+        // invalid form. invalid token
+        if (!$form->isValid()) {
+            $this->_throwHttpException(400, 'Invalid form');
+        }
+        
+        $clickthroughData = \trim($request->get('clickthroughData', ''));
+        if ('' == $clickthroughData) {
+            $this->_throwHttpException(400, 'no click through data');
+        }
+        $trackerFactory = $this->get('factory.statistics.dailyTracker');
+        $decodedData = StatisticParameters::decodeParameters($clickthroughData);
+        $tracker = $trackerFactory->getTrackerByType($decodedData->get(StatisticParameters::TYPE));
+        if ($data = $tracker->createDataFromParameters($decodedData)) {
+            $tracker->add($data);
+            $tracker->batchSave();
+        }
+        
+        return new Response('Clickthrough ok', 200);
+    }
+    
     public function saveImpressionsAction(Request $request)
     {
-        if (!$request->isMethod('POST')) {
-            // extra check that this should be POST only
-            $this->_throwHttpException(405, 'Unsupported method '.$request->getMethod());
-        }
+        $this->_throwUnsupportedMethodIfNotPost($request);
         
         $form = $this->createForm(new TrackerFormType());
         $form->bind($request);
@@ -88,6 +112,13 @@ class TrackerController extends Controller
         }
         
         return new Response('Impressions saved', 200);
+    }
+    
+    private function _throwUnsupportedMethodIfNotPost(Request $request)
+    {
+        if (!$request->isMethod('POST')) {
+            $this->_throwHttpException(405, 'Unsupported method '.$request->getMethod()); 
+        }
     }
     
     private function _throwHttpException($errorCode, $message)

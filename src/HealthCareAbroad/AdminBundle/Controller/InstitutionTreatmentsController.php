@@ -135,7 +135,7 @@ class InstitutionTreatmentsController extends Controller
                 'isSingleCenter' => false
             );
             
-            $response = $this->render('AdminBundle:InstitutionTreatments:viewAllMedicalCenters.html.twig', $params);
+            $response = $this->render('AdminBundle:InstitutionTreatments:tabular.medicalCenters.html.twig', $params);
         }
         
         return $response;

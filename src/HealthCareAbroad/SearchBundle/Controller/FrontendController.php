@@ -294,9 +294,10 @@ class FrontendController extends Controller
                         throw new NotFoundHttpException();
                     }
 
+                    break;
+
                 default:
                     throw new NotFoundHttpException();
-
             }
 
         }
@@ -389,7 +390,7 @@ class FrontendController extends Controller
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         );
 

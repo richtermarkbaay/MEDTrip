@@ -43,5 +43,29 @@
     </div>
 
     {{ outputInlineJavascript() | raw }}
+    
+    {# -- stats tracker stuff -- #}
+    
+    {% render 'StatisticsBundle:Tracker:showForm' %}
+    <script type="text/javascript">
+    <!-- 
+    (function($){
+        $(function(){
 
+            {# -- set trackers --#}
+            FrontendStatsTracker
+                .setImpressionTrackerForm('form#{{ get_impression_tracker_form_id() }}')
+                .setClickthroughTrackerForm('form#{{ get_clickthrough_tracker_form_id() }}');
+            FrontendStatsTracker.clickthroughTrackerClass = '{{ get_clickthrough_tracker_class() }}';
+            
+            {# -- track impressions --#}
+            FrontendStatsTracker.trackImpressions();
+
+            {## -- track clickthroughs -- #}
+            FrontendStatsTracker.trackClickthroughs();
+        });
+    })(jQuery);
+    //-->
+    </script>
+    {# -- end stats tracker stuff -- #}
 {% endblock %}
