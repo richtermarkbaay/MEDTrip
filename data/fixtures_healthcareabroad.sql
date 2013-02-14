@@ -938,6 +938,11 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
   KEY `institution_user_type_id` (`institution_user_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_users`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES ('2', '1', '1', CURRENT_TIMESTAMP, '1');
 -- --------------------------------------------------------
 
 --
@@ -979,6 +984,18 @@ CREATE TABLE IF NOT EXISTS `institution_user_roles` (
 
 
 --
+-- Table structure for table `institution_user_roles`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_user_roles` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(250) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
 -- Dumping data for table `institution_user_roles`
 --
 
@@ -993,7 +1010,6 @@ INSERT INTO `institution_user_roles` (`id`, `name`, `description`, `status`) VAL
 (8, 'CAN_MANAGE_INSTITUTION', 'Add or Edit Institution Details', 2),
 (9, 'CAN_VIEW_PROCEDURE_TYPES', 'View all medical procedure types', 2),
 (10, 'CAN_MANAGE_PROCEDURE_TYPES', 'Add or Edit medical procedure types', 2);
-
 
 -- --------------------------------------------------------
 
@@ -1011,6 +1027,12 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_types`
+--
+
+INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
+(1, 1, 'ADMIN', 3);
 
 -- --------------------------------------------------------
 
@@ -1026,6 +1048,12 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
   KEY `institution_user_type_roles_ibfk_2` (`institution_user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_user_type_roles`
+--
+
+INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
+(1, 1);
 
 -- --------------------------------------------------------
 
