@@ -1426,7 +1426,8 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
