@@ -30,7 +30,7 @@ class DoctorFormType extends AbstractType
      		->add('lastName', 'text', array('label' => 'Last name'))
      		->add('suffix', 'text', array('label' => 'Suffix'))
      		->add('gender', 'choice', array('choices'=>$gender))
-     		->add('country','globalCountry_list')
+     		->add('country','country_list')
      		->add('details', 'textarea')
      		->add('media', 'file', array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
