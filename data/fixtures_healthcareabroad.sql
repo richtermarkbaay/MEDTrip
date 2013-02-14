@@ -735,6 +735,25 @@ CREATE TABLE IF NOT EXISTS `institution_groups` (
   KEY `medical_provider_group_id` (`medical_provider_group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_inquiries`
+--
+
+CREATE TABLE IF NOT EXISTS `institution_inquiries` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Null if this was made in the hospital profile page',
+  `inquirer_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `inquirer_email` int(11) NOT NULL,
+  `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1153,6 +1172,50 @@ CREATE TABLE IF NOT EXISTS `mail_queue` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `search_terms`
+--
+
+CREATE TABLE IF NOT EXISTS `search_terms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `term_id` bigint(20) unsigned NOT NULL,
+  `institution_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_id` int(10) unsigned NOT NULL,
+  `term_document_id` bigint(20) unsigned NOT NULL COMMENT 'term_documents.id',
+  `document_id` int(10) unsigned NOT NULL,
+  `type` tinyint(1) unsigned NOT NULL COMMENT '1-SPECIALIZATION, 2-SUBSPECIALIZATION, 3-TREATMENT',
+  `status` tinyint(1) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned DEFAULT NULL,
+  `sub_specialization_id` int(10) unsigned DEFAULT NULL,
+  `treatment_id` int(10) unsigned DEFAULT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  `specialization_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sub_specialization_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `treatment_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `city_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`),
+  KEY `document_id` (`document_id`),
+  KEY `type` (`type`),
+  KEY `specialization_id` (`specialization_id`),
+  KEY `sub_specialization_id` (`sub_specialization_id`),
+  KEY `treatment_id` (`treatment_id`),
+  KEY `country_id` (`country_id`),
+  KEY `city_id` (`city_id`),
+  KEY `specialization_name` (`specialization_name`),
+  KEY `sub_specialization_name` (`sub_specialization_name`),
+  KEY `treatment_name` (`treatment_name`),
+  KEY `country_name` (`country_name`),
+  KEY `city_name` (`city_name`),
+  KEY `term_id` (`term_id`),
+  KEY `term_document_id` (`term_document_id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -1356,6 +1419,52 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments';
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tags`
+--
+
+CREATE TABLE IF NOT EXISTS `tags` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `type` smallint(1) unsigned NOT NULL,
+  `slug` char(100) NOT NULL,
+  `status` smallint(1) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `terms`
+--
+
+CREATE TABLE IF NOT EXISTS `terms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `slug` varchar(250) NOT NULL,
+  `internal` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `term` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `term_documents`
+--
+
+CREATE TABLE IF NOT EXISTS `term_documents` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `term_id` bigint(20) unsigned NOT NULL,
+  `document_id` int(10) unsigned NOT NULL,
+  `elements` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'specialization, subspecialization, treatment ids',
+  `type` tinyint(3) unsigned NOT NULL COMMENT '1-SPECIALIZATION, 2-SUBSPECIALIZATION, 3-TREATMENT',
+  PRIMARY KEY (`id`),
+  KEY `term_id` (`term_id`,`document_id`,`type`),
+  KEY `document_id` (`document_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
