@@ -1325,7 +1325,8 @@ CREATE TABLE IF NOT EXISTS `medical_provider_groups` (
 -- Dumping data for table `medical_provider_groups`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES ('18', 'test', 'test', CURRENT_TIMESTAMP, '1');
+INSERT INTO `fixtures_healthcareabroad`.`medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES
+('18', 'test', 'test', CURRENT_TIMESTAMP, '1');
 
 -- --------------------------------------------------------
 
@@ -1466,7 +1467,8 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
 --
