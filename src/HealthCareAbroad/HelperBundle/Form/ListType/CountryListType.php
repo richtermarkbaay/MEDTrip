@@ -29,14 +29,18 @@ class CountryListType extends AbstractType
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-
+	    
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
             'property' => 'name',
-            'class' => 'HealthCareAbroad\HelperBundle\Entity\Country'
+            'class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
+            'query_builder' => function(EntityRepository $er){
+                return $er->createQueryBuilder('u') ->orderBy('u.name', 'ASC');
+            }
+            
         ));
     }
 
