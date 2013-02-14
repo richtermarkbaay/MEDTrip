@@ -20,7 +20,8 @@ class InlineJavascriptTwigExtension extends \Twig_Extension
 		return array(
 			'getTemplateContents' => new \Twig_Function_Method($this, 'getTemplateContents'),
 			'outputInlineJavascript' => new \Twig_Function_Method($this, 'outputInlineJavascript'),
-			'addInlineJavascript' => new \Twig_Function_Method($this, 'addInlineJavascript')
+			'addInlineJavascript' => new \Twig_Function_Method($this, 'addInlineJavascript'),
+            'render_media_file_script'=> new \Twig_Function_Method($this, 'renderMediaFileScript')
 		);
 	}
 	
@@ -31,8 +32,16 @@ class InlineJavascriptTwigExtension extends \Twig_Extension
 	
 	public function addInlineJavascript($code)
 	{
-		
 		self::$inlineCode .= $code;
+	}
+	
+	public function renderMediaFileScript()
+	{
+	    static $hasRendered =false;
+	    if (!$hasRendered) {
+	        $hasRendered = true;
+	        return $this->twig->render('HelperBundle:InlineJavascript:media.file.js.twig');
+	    }
 	}
 	
 	public function outputInlineJavascript(){
