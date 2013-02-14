@@ -173,4 +173,39 @@ class DefaultController extends Controller
             'objectName' => $objectName
         ));
     }
+    
+    public function mediaAjaxDeleteAction(Request $request)
+    {
+        $result = false;
+
+        $parentId = $request->request->get('parent_id');
+        $parentClass = $request->request->get('parent_class');
+
+        $parentObject = $this->getDoctrine()->getRepository($parentClass)->find($parentId);
+        
+        $fieldNameArr = explode('_', $request->request->get('field_name'));
+        foreach($fieldNameArr as $i => $each) {
+            $fieldNameArr[$i] = ucfirst($each);
+        }
+        $setMethod = 'set' . implode('', $fieldNameArr);
+
+        if(method_exists($parentObject, $setMethod)) {
+            $parentObject->{$setMethod}(null);
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($parentObject);
+            $em->flush();
+
+            if($request->request->get('remove_file')) {
+                $media = $this->getDoctrine()->getRepository('MediaBundle:Media')->find($request->get('media_id'));
+                $this->get('services.media')->delete($media, $parentObject);
+            }
+
+            $result = true;
+        }
+
+        $response = new Response(json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 }

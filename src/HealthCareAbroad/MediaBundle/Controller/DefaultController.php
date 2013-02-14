@@ -148,11 +148,12 @@ class DefaultController extends Controller
         }
     }
 
+    // TODO - Not supported already! - Still being used?
     public function deleteAction(Request $request)
     {
-        $success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
+        //$success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
 
-        return new Response($success);
+        return new Response(true);
     }
 
     public function editCaptionAction(Request $request)

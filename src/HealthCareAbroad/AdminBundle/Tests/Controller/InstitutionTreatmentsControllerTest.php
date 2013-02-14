@@ -8,32 +8,42 @@ use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
 
 class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
 {
-    public function testPreExecute()
-    {
-        $uri = '/admin/institution/123123123123312312312312323231/medical-centers';
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $client->request('GET', $uri);
-        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expected not found after invalid institutionId');
-    }
+//     public function testPreExecute()
+//     {
+//         $uri = '/admin/institution/123123123123312312312312323231/medical-centers';
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $client->request('GET', $uri);
+//         $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expected not found after invalid institutionId');
+//     }
     
-    public function testViewAllMedicalCentersAction()
+//     public function testViewAllMedicalCentersAction()
+//     {
+//         $invalidMethods = array('POST', 'PUT', 'DELETE');
+//         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+//         $uri = "/admin/institution/{$institution->getId()}/medical-centers";
+//         $client = $this->getBrowserWithActualLoggedInUser();
+        
+//         // test invalid method access
+//         foreach ($invalidMethods as $method) {
+//             $client->request($method, $uri);
+//             $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Expected method '.$method.' is invalid');
+//         }
+        
+//         $crawler = $client->request('GET', $uri);
+//         //echo $client->getResponse(); exit;
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("' .$institution->getName(). ' Medical Centers")')->count(), '"Add Treatment" string not found!');
+        
+//     }
+    
+    public function testViewMedicalCenterAction()
     {
-        $invalidMethods = array('POST', 'PUT', 'DELETE');
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
-        $uri = "/admin/institution/{$institution->getId()}/medical-centers";
         $client = $this->getBrowserWithActualLoggedInUser();
-        
-        // test invalid method access
-        foreach ($invalidMethods as $method) {
-            $client->request($method, $uri);
-            $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Expected method '.$method.' is invalid');
-        }
-        
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
+        $uri = "/admin/institution/1/medical-center/view/2";
         $crawler = $client->request('GET', $uri);
-        //echo $client->getResponse(); exit;
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("' .$institution->getName(). ' Medical Centers")')->count(), '"Add Treatment" string not found!');
         
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
 //     public function testAddMedicalCenterDetailsAction()

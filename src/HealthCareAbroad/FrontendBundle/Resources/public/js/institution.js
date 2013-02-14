@@ -14,7 +14,7 @@ var Institution = {
             dataType: "json",
             data: $(_formId).serialize(),
             success: function(response) {
-            	button.html(_buttonHtml).attr('disabled', false);
+            	_button.html(_buttonHtml).attr('disabled', false);
             	_modal.modal('hide');
             	Institution.removeErrors(_formId);
             },
