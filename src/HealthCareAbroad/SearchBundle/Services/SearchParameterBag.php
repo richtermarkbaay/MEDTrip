@@ -95,6 +95,15 @@ class SearchParameterBag extends ParameterBag
             if ($treatment) {
                 $context = $context | self::SEARCH_TYPE_TREATMENTS;
             }
+            if (!$context) {
+                if ($treatmentLabel && $destinationLabel) {
+                    $context = self::SEARCH_TYPE_COMBINATION;
+                } elseif ($treatmentLabel) {
+                    $context = self::SEARCH_TYPE_TREATMENTS;
+                } elseif ($destinationLabel) {
+                    $context = self::SEARCH_TYPE_DESTINATIONS;
+                }
+            }
         }
 
         return array(
