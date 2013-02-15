@@ -23,6 +23,6 @@ helper_specializationAccordionEntry:
     requirements:
         _method: GET
         
-helper_searchTags:
-    pattern:  /tags/search
-    defaults: { _controller: HelperBundle:Default:searchTags }
+helper_populate_imc_highlight:
+    pattern:  /tools/populate_imc_highlight
+    defaults: { _controller: HelperBundle:Default:populateClinicDescriptionHighlight }

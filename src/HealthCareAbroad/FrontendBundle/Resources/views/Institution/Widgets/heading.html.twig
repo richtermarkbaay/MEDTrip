@@ -16,12 +16,8 @@
             <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
         {% endif %}
         
-        {% if institution.logo %}
-            {% set institutionLogo = media(institution.logo, institution, 'default', {class: 'institution_logo', thumbnail: true}) %} 
-            <a {% if mainWebsites %} href="{{ mainWebsites }}" target="_link" {% endif %}>{{ institutionLogo|raw }}</a>
-        {% else %}
-            <a><img class="institution_logo" src="{{ imageplaceholder.institutionLogo }}" alt="institution"/></a>
-        {% endif %}
+        {#-- institution logo #}
+        <a>{{ render_institution_logo(institution, {attr: {class: 'institution_logo', alt: institution.name}}) | raw }}</a>
 
     </div>
     <div class="bottom_box content span12">

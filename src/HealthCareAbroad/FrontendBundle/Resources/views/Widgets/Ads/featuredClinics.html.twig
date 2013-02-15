@@ -20,11 +20,7 @@
     			<div class="general row">
     				<div class="clinic-box span2">
     					<a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
-        				    {% if each.institutionMedicalCenter.logo %}
-        				        {{ media(each.institutionMedicalCenter.logo, each.institution, 'default', {class: 'clinic-logo', alt: 'clinic logo'}) | raw }}
-        				    {% else %}
-        				        <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo" alt="clinic logo"/>
-        				    {% endif %}
+    					    {{ render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}}) | raw }}       				    
     					</a>
     
     					<!-- User Ratings Temporarily Commented -->
@@ -43,7 +39,7 @@
     				<div class="thumb-box span2">
                         {% if each.media %}
     					    <div class="img-background">
-        				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic logo'}) | raw }}
+        				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
     					    </div>
                         {% endif %}
     					<a href="{{ clinicUrl }}" class="btn orange {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }}> 

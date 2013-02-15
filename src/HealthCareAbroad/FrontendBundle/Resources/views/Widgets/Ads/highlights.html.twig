@@ -16,9 +16,7 @@
 	        link: {
 	            url: institutionUrl,
 			    class: 'clinic span2 offset6',
-			    html: highlight.institution.logo 
-			        ? media(highlight.institution.logo, highlight.institution, 'default', {alt: 'logo'})
-			        : '<img src="' ~ imageplaceholder.institutionLogo ~ '" alt="logo"/>'
+			    html: render_institution_logo(highlight.institution)
 	        }
 	    }
 	%}
