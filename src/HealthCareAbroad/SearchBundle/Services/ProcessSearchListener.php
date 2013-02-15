@@ -21,7 +21,6 @@ class ProcessSearchListener
         $requestParams = $request->request->all();
 
         if (isset($requestParams['searchParameter']) && !empty($requestParams['searchParameter'])) {
-
             $event->setController(array($controller, 'searchProcessNarrowAction'));
 
             return;

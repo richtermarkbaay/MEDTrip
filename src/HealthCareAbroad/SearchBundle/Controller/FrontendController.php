@@ -151,20 +151,6 @@ class FrontendController extends Controller
     public function searchProcessNarrowAction(Request $request)
     {
         $requestParams = $request->request->all();
-//var_dump($requestParams); exit;
-
-/**
-
-array (size=3)
-  'searchParameter' =>
-    array (size=2)
-      'country' => string '7' (length=1)
-      'treatment' => string '23' (length=2)
-  'filter' => string 'treatment' (length=9)
-  'term' => string 'e' (length=1)
-
- */
-
 
         $searchParameters = $requestParams['searchParameter'];
 
@@ -263,16 +249,23 @@ array (size=3)
                 $sessionVariables['treatmentId'] = $treatment->getId();
                 $sessionVariables['specializationId'] = $treatment->getSpecialization()->getId();
 
-                $route = 'frontend_search_combined_countries_specializations_treatments';
-
+                if (isset($searchParameters['city'])) {
+                    $route = 'frontend_search_combined_countries_cities_specializations_treatments';
+                } else {
+                    $route = 'frontend_search_combined_countries_specializations_treatments';
+                }
             } elseif (isset($searchParameters['subSpecialization'])) {
                 $subSpecialization = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParameters['subSpecialization']);
-                $routeParameters['subSpecialization'] = $subSpecialization->getSlug();
+                $routeParameters['subSpecializations'] = $subSpecialization->getSlug();
                 $routeParameters['specialization'] = $subSpecialization->getSpecialization()->getSlug();
                 $sessionVariables['subSpecializationId'] = $subSpecialization->getId();
                 $sessionVariables['specializationId'] = $subSpecialization->getSpecialization()->getId();
 
-                $route = 'frontend_search_combined_countries_specializations_subSpecializations';
+                if (isset($searchParameters['city'])) {
+                    $route = 'frontend_search_combined_countries_cities_specializations__subSpecializations';
+                } else {
+                    $route = 'frontend_search_combined_countries_specializations__subSpecializations';
+                }
             }
 
         } elseif (isset($searchParameters['specialization'])) {
