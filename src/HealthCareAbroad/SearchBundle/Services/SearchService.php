@@ -59,25 +59,11 @@ class SearchService
      */
     public function getTreatments(SearchParameterBag $searchParams)
     {
-//         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
-
-//         return $this
-//             ->transformResults($this->searchStrategy->search($searchParams));
-
         return $this->searchStrategy->getTreatmentsByName($searchParams);
     }
 
     public function loadSuggestions($parameters)
     {
-        /*
-        'searchParameter' =>
-            array (size=1)
-                'specialization' => string '3' (length=1)
-        'filter' => string 'country' (length=7)
-        'term' => string 'e' (length=1)
-        */
-//         /var_dump($parameters); exit;
-
         switch ($parameters['filter']) {
             case 'country';
                 $results = $this->searchStrategy->loadCountries($parameters);
@@ -119,18 +105,6 @@ class SearchService
     public function getTermDocuments(SearchParameterBag $searchParams)
     {
         $filters = array();
-
-        //         if ($searchParams->get('specializationId', 0)) {
-        //             $filters['specialization_id'] = $searchParams->get('specializationId');
-        //         }
-
-        //         if ($searchParams->get('subSpecializationId', 0)) {
-        //             $filters['sub_specialization_id'] = $searchParams->get('subSpecializationId');
-        //         }
-
-        //         if ($searchParams->get('treatmentId', 0)) {
-        //             $filters['treatment_id'] = $searchParams->get('treatmentId');
-        //         }
 
         if ($searchParams->get('countryId', 0)) {
             $filters['country_id'] = $searchParams->get('countryId');
