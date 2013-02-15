@@ -14,12 +14,7 @@
         <div class="span9">
             <div class="media">
                 <div class="pull-left">
-                    {% if institution.logo %}
-                        {% set institutionLogo = media(institution.logo, institution, 'default', {class: 'media-object', thumbnail: false}) %} 
-                        {{ institutionLogo|raw }}
-                    {% else %}
-                        <img class="media-object" alt="" src="{{ imageplaceholder.institutionLogo }}">
-                    {% endif %}
+                    {{ render_institution_logo(institution, {attr: {class: 'media-object', alt: institution.name}}) | raw }}
                 </div>
                 <div class="media-body">
                     <h1><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h1>
