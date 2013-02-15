@@ -557,28 +557,23 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function getAllTreatments()
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-    /**
-     * COMBINED QUERY:
-     *
-        $sql = "
-            SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
-            FROM search_terms
-            WHERE (country_name LIKE :name OR city_name LIKE :name)
-            $optionalWhereClause
+        $stmt = $connection->query("
+            SELECT a.id AS value, a.name AS label
+            FROM terms AS a
+            INNER JOIN search_terms AS b ON a.id = b.term_id
+            WHERE b.status = {$this->searchTermActiveStatus}
+            GROUP BY a.name
+            ORDER BY a.name ASC");
 
-            UNION
+        $stmt->execute();
 
-            SELECT country_name AS label, CONCAT(CAST(country_id AS CHAR), '-0') AS value
-            FROM search_terms
-            WHERE country_name LIKE :name
-            $optionalWhereClause
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
-            GROUP BY label
-            ORDER BY label ASC
-        ";
-     * @param SearchParameterBag $searchParams
-     */
     public function getDestinationsByName(SearchParameterBag $searchParams)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
@@ -634,6 +629,57 @@ class DefaultSearchStrategy extends SearchStrategy
 
         return $stmt->fetchAll();
     }
+
+    public function getAllDestinations()
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $stmt = $connection->query("
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value
+            FROM search_terms AS a
+            WHERE a.status = {$this->searchTermActiveStatus}
+
+            UNION
+
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
+            FROM search_terms AS a
+            WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+        ");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function searchCountriesByNameWithTreatment(SearchParameterBag $searchParams)
     {

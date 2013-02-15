@@ -30,6 +30,14 @@ frontend_search_process:
     defaults: { _controller: SearchBundle:Frontend:searchProcess }
 
 ###### AUTOCOMPLETE ROUTES #####################################################
+frontend_search_ajaxLoadAllTreatments:
+    pattern: /search/ajaxLoadAllTreatments
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllTreatments }
+
+frontend_search_ajaxLoadAllDestinations:
+    pattern: /search/ajaxLoadAllDestinations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllDestinations }
+
 frontend_search_ajaxLoadTreatments:
     pattern: /search/ajaxLoadTreatments
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
