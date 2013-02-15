@@ -9,6 +9,10 @@ HealthCareAbroad\TermBundle\Entity\SearchTerm:
             nullable: false
             generator:
                 strategy: IDENTITY
+        termDocumentId:
+            type: bigint
+            nullable: false
+            column: term_document_id
         documentId:
             type: bigint
             nullable: false
