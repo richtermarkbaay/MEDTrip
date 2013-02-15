@@ -15,31 +15,18 @@
                 {% set center = searchResult.institutionMedicalCenter is defined ? searchResult.institutionMedicalCenter : searchResult %}
                 {# do this to save query #}
 
-                <article class="media search-entry">
-                    <a class="pull-left" href="{{ get_institution_medical_center_frontend_url(center) }}">
-                        <span class="search-entry-thumb" style="background: url(/images/frontend/clinic-logo6.png) center center no-repeat; background-size: 100% 100%"></span>
-                    </a>
-
-                    <div class="media-body">
-                        <h3 class="media-heading">{{ center.name }}</h3>
-                        <div class="media">
-                            <div class="pull-left">
-                                <img src="images/frontend/address_icon2.png" class="media-object">
-                            </div>
-                            <div class="media-body">
-                                <small>
-                                    {# -- center street/specific address -- #}
-                                    {% set _institution_medical_center_address = medical_center_complete_address_to_array(center, ['address', 'zipCode']) %}
-                                    {% set _institution_address = medical_center_complete_address_to_array(center, ['city', 'state', 'country']) %}
-                                    {{ _institution_medical_center_address | join(', ') }}
-                                    <br>
-                                    <b>{{ _institution_address | join(', ') }}</b>
-                                </small>
-                            </div>
-                            <a href="{{ get_institution_medical_center_frontend_url(center) }}" class="more-info btn pull-right green"> <span class="icon-search icon-white"></span> More Info </a>
-                        </div>
-                    </div>
-                </article>
+                {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'searchResultItem' : {
+                          url: get_institution_medical_center_frontend_url(center),
+                          logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}), 
+                          name: center.name,
+                          description: center.descriptionHighlight,
+                          mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                          streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+                   }
+               }
+           %}
+                
             {% endfor %}
 
             {% if searchResults.isPaginable %}

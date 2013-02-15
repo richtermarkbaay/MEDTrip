@@ -382,6 +382,7 @@ class DefaultController extends Controller
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $treatment->getName(),
                         'country' => $country,
+                        'specialization' => $treatment->getSpecialization(),
                         'treatment' => $treatment,
                         'includedNarrowSearchWidgets' => array('city'),
                         'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId())

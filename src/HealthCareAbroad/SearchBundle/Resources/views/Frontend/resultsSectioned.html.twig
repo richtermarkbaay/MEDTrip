@@ -49,8 +49,9 @@
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'searchResultItem' : {
                               url: get_institution_medical_center_frontend_url(center),
-                              logo: center.logo ? media(center.logo, center.institution, 'default', {'class': 'search-entry-thumb'}) : null,
+                              logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}),
                               name: center.name,
+                              description: center.descriptionHighlight,
                               mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                               streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                        }
