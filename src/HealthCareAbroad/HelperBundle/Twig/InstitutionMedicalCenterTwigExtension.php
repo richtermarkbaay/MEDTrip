@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -10,13 +12,60 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 {
+    /**
+     * @var MediaExtension
+     */
+    private $mediaExtension;
+    
+    private $imagePlaceHolders = array();
+    
+    public function setMediaExtension(MediaExtension $media)
+    {
+        $this->mediaExtension = $media;
+    }
+    
+    public function setImagePlaceHolders($v)
+    {
+        $this->imagePlaceHolders = $v;
+    }
+    
     public function getFunctions()
     {
         return array(
             'json_decode_business_hours' => new \Twig_Function_Method($this, 'jsonDecodeBusinessHours'),
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
+            'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
         );
+    }
+    
+    public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
+    {
+        $defaultOptions = array(
+            'attr' => array(),
+            'media_format' => 'default',
+            'placeholder' => ''
+        );
+        $options = \array_merge($defaultOptions, $options);
+        $html = '';
+        $institution = $institutionMedicalCenter->getInstitution();
+        // clinic has its own logo
+        if($imcLogo = $institutionMedicalCenter->getLogo()) {
+            $html = $this->mediaExtension->getMedia($imcLogo, $institution, $options['media_format'], $options['attr']);
+        }
+        else {
+            // check if the insitution has a logo
+            if ($institutionLogo = $institution->getLogo())
+            {
+                $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+            }
+            else {
+                // render default
+                $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). '" />'; 
+            }
+        }
+        
+        return $html;
     }
     
     public function getStatusLabel(InstitutionMedicalCenter $institutionMedicalCenter)

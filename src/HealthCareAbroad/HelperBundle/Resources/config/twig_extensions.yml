@@ -30,6 +30,9 @@ services:
     services.institutionMedicalCenter.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InstitutionMedicalCenterTwigExtension
         public: false
+        calls:
+            - [setMediaExtension, [@services.media.twig.extension]]
+            - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:
             - { name: twig.extension }
 
