@@ -31,14 +31,9 @@
             {% endif %}
         {% endfor %}
 
-        {% if groupedWidgets.destinations.country and groupedWidgets.destinations.city  %}
-            <li class="narrow-description">Specific Destination</li>
-        {% else %}
-            <li class="narrow-description">Specific {{ groupedWidgets.destinations.country ? 'Country' : 'City' }}</li>
-        {% endif %}
-
         {% for _destinationWidget in groupedWidgets.destinations  %}
             {% if _destinationWidget %}
+            <li class="narrow-description">Specific {{ _destinationWidget.type | title}}</li>
             <li class="row-fluid combo-box narrow_search_widget_{{ _destinationWidget.type }}">
                 {% include 'SearchBundle:Frontend/Widgets:form.narrowSearchByType.html.twig' with { widget: _destinationWidget } %}
             </li>
