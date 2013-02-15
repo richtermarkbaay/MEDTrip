@@ -1,0 +1,327 @@
+<style type="text/css">
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 20px;
+    }
+
+    .ui-combobox {
+		position: relative;
+		display: inline-block;
+	}
+	.ui-combobox-toggle {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin-left: -1px;
+		padding: 0;
+		/* support: IE7 */
+		*height: 1.7em;
+		*top: 0.1em;
+	}
+	.ui-combobox-input {
+	    box-shadow: none !important;
+	    border: 1px solid #AED0EA !important;
+		margin: 0 !important;
+		padding: 0.3em;
+	}
+	
+	.ui-widget.hca-combobox-autocomplete {
+	    width: 337px;
+	    border-radius: 5px;
+	    display:inline-block;
+	    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1) inset, 0 0 0 4px rgba(0, 37, 85, 0.09);
+	}
+	
+	#mainSearchForm .hca-combobox-autocomplete {
+	    margin-right: 50px;
+	}
+	
+	.helper-link a.treatment-link {
+	    left: 0 !important;;
+	}
+
+	.helper-link a.destination-link {
+	    left: 405px !important;
+	}
+</style>
+<script type="text/javascript">
+
+	(function($) {
+		$.widget( "ui.combobox", {
+			_create: function() {
+				var input,
+					that = this,
+					wasOpen = false,
+					select = this.element.hide(),
+					selected = select.children( ":selected" ),
+					value = selected.val() ? selected.text() : "",
+					wrapper = this.wrapper = $( "<span>" )
+						.addClass( "ui-combobox" )
+						.insertAfter( select );
+
+				function removeIfInvalid( element ) {
+					var value = $( element ).val(),
+						matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( value ) + "$", "i" ),
+						valid = false;
+					select.children( "option" ).each(function() {
+						if ( $( this ).text().match( matcher ) ) {
+							this.selected = valid = true;
+							return false;
+						}
+					});
+
+					if ( !valid ) {
+						// remove invalid value, as it didn't match anything
+						$( element )
+							.val( "" )
+							.attr( "title", value + " didn't match any item" )
+							.tooltip( "open" );
+						select.val( "" );
+						setTimeout(function() {
+							input.tooltip( "close" ).attr( "title", "" );
+						}, 2500 );
+						input.data( "ui-autocomplete" ).term = "";
+					}
+				}
+
+				input = $( "<input>" )
+					.appendTo( wrapper )
+					.val( value )
+					.attr( "title", "" )
+					.attr( "placeholder", wrapper.prev().attr('data-placeholder') )
+					.attr('data-is-loaded', false)
+					.addClass( "ui-state-default ui-combobox-input" )
+					.autocomplete({
+						delay: 0,
+						minLength: 0,
+						source: function( request, response ) {
+							var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+							response( select.children( "option" ).map(function() {
+								var text = $( this ).text();
+								if ( this.value && ( !request.term || matcher.test(text) ) )
+									return {
+										label: text.replace(
+											new RegExp(
+												"(?![^&;]+;)(?!<[^<>]*)(" +
+												$.ui.autocomplete.escapeRegex(request.term) +
+												")(?![^<>]*>)(?![^&;]+;)", "gi"
+											), "<strong>$1</strong>" ),
+										value: text,
+										option: this
+									};
+							}) );
+						},
+						select: function( event, ui ) {
+							ui.item.option.selected = true;
+							that._trigger( "selected", event, {
+								item: ui.item.option
+							});
+
+        					var selectElem = $(this).parent().prev();
+        					
+        					if(selectElem.attr('id') == 'treatment-select') { 
+        			            populateDestinationOptions(getSearchParams());
+        		            } else if(selectElem.attr('id') == 'destination-select') {
+        	                    populateTreatmentOptions(getSearchParams());
+                            }
+							
+						},
+						change: function( event, ui ) {
+							// If does not match!
+							if ( !ui.item ) {
+								//removeIfInvalid( this );
+							}
+						}
+					})
+					.addClass( "ui-widget ui-widget-content ui-corner-left" );
+
+				input.data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+					return $("<li>").append( "<a>" + item.label + "</a>").appendTo(ul);
+				};
+
+				input.blur(function(){
+				    //console.log('blur');
+				    
+					var selectElem = $(this).parent().prev();
+
+				    //console.log("isDestinationDataLoaded: " + selectElem.attr('data-is-loaded'));
+					
+					if(selectElem.attr('id') == 'treatment-select') {
+						//$('#destination-select').attr('data-is-loaded');
+			            //populateDestinationOptions(getSearchParams());
+		            } else if(selectElem.attr('id') == 'destination-select') {
+	                    //populateTreatmentOptions(getSearchParams());
+                    }
+				})
+				.focus(function(){
+					$(this).attr('data-is-loaded', false);
+			    });
+
+				$( "<a>" )
+					.attr( "tabIndex", -1 )
+					.tooltip()
+					.appendTo( wrapper )
+					.button({
+						icons: {primary: "ui-icon-triangle-1-s"},
+						text: false
+					})
+					.removeClass( "ui-corner-all" )
+					.addClass( "ui-corner-right ui-combobox-toggle" )
+					.mousedown(function() {
+						wasOpen = input.autocomplete( "widget" ).is( ":visible" );
+					})
+					.click(function() {
+						input.focus();
+
+						// close if already visible
+						if ( wasOpen ) {
+							return;
+						}
+
+						// pass empty string as value to search for, displaying all results
+						input.autocomplete( "search", "" );
+					});
+
+				input.tooltip({
+					tooltipClass: "ui-state-highlight"
+				});
+			},
+
+			_destroy: function() {
+				this.wrapper.remove();
+				this.element.show();
+			}
+		});
+
+	})(jQuery);
+
+	$(function(){
+		$( ".autocomplete-combobox" ).combobox();
+		$( "#toggle" ).click(function() {
+			$( "#combobox" ).toggle();
+		});
+
+		$('#mainSearchForm').submit(function(){		    
+		    setSearchData();
+		});
+
+
+	    // Intialized Treatments and Destinations
+		populateSearchOptions();
+    });
+
+	function populateSearchOptions(params) {
+	    $.getJSON("{{ path('frontend_search_ajaxLoadAllSearchOptions') }}", function(response){
+	    	// Load Treatment Options
+   			var treatments = response.treatments, treatmentOptions = '<option></option>';
+			for(i in treatments) {
+				treatmentOptions += '<option value="'+ treatments[i].value +'">'+ treatments[i].label +'</option>';
+			}
+			$('#treatment-select').append(treatmentOptions);		    
+
+	    	// Load Destination Options
+   			var destinations = response.destinations, destinationOptions = '<option></option>';
+			for(i in destinations) {
+				destinationOptions += '<option value="'+ destinations[i].value +'">'+ destinations[i].label +'</option>';
+			}
+			$('#destination-select').append(destinationOptions);
+		});
+	}
+
+    function setSearchData() {        
+		var treatmentSelectElem = $('#treatment-select');
+	    var destinationSelectElem = $('#destination-select');
+
+		var treatmentInputValue = treatmentSelectElem.next().find('input.ui-combobox-input:first').val();
+		var destinationInputValue = destinationSelectElem.next().find('input.ui-combobox-input:first').val();
+
+	    if($('#treatment-select :selected').text() != treatmentInputValue) {
+		    $('#treatment-select').val('');
+	    }
+
+	    if($('#destination-select :selected').text() != destinationInputValue) {
+	    	$('#destination-select').val('');
+	    }
+
+	    $('#sb-treatment').val(treatmentInputValue);
+	    $('#sb-destination').val(destinationInputValue);
+
+	    console.log('treatmentId: ' + $('#treatment-select').val());
+	    console.log('treatmentName: ' + treatmentInputValue);
+	    console.log('destinationId: ' + $('#destination-select').val());
+	    console.log('destinationName: ' + destinationInputValue);
+    }
+
+    function getSearchParams() {
+    	setSearchData();
+
+		var treatmentSelectElem = $('#treatment-select');
+	    var destinationSelectElem = $('#destination-select');
+
+		var treatmentInputValue = treatmentSelectElem.next().find('input.ui-combobox-input:first').val();
+		var destinationInputValue = destinationSelectElem.next().find('input.ui-combobox-input:first').val();
+
+    	return {
+        	treatment_id: $('#treatment-select').val(),
+        	sb_treatment: treatmentInputValue,
+        	destination_id: $('#destination-select').val(),
+            sb_destination: destinationInputValue
+        };
+    }
+
+
+	function populateTreatmentOptions(params) {
+	    var selectedOption = $('#treatment-select').val();
+		$('#treatment-select').html('<option></option>');
+	    $.post("{{ path('frontend_search_ajaxLoadTreatments') }}", params, function(response){
+
+   			var options = '';
+			for(i in response) {
+
+				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
+
+			    options += '<option value="'+ response[i].value +'"'+ selected +'>'+ response[i].label +'</option>';
+			}
+
+			$('#treatment-select').attr('data-is-loaded', true);
+			$('#treatment-select').append(options);		    
+		});
+	}
+
+	function populateDestinationOptions(params) {
+	    var selectedOption = $('#destination-select').val();
+		$('#destination-select').html('<option></option>');
+	    $.post("{{ path('frontend_search_ajaxLoadDestinations') }}", params, function(response){
+   			var options = '';
+			for(i in response) {
+				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
+
+			    options += '<option value="'+ response[i].value +'"'+ selected +'>'+ response[i].label +'</option>';
+			}
+
+			$('#destination-select').append(options);		    
+		});
+	}
+</script>
+	
+<form id="mainSearchForm" action="{{ path('frontend_search_process') }}" method="POST" name="search_box" class="span12 search_box" style="width:100%">
+    <input type="hidden" id="sb-treatment" name="sb_treatment" value=""/>
+    <input type="hidden" id="sb-destination" name="sb_destination" value=""/>
+
+    <div class="ui-widget hca-combobox-autocomplete">
+        <select id="treatment-select" class="autocomplete-combobox" name="treatment_id" data-placeholder="Search Treatments"></select>
+    </div>
+
+    <div class="ui-widget hca-combobox-autocomplete">
+        <select id="destination-select" class="autocomplete-combobox" name="destination_id" data-placeholder="Search Destinations"></select>
+    </div>
+
+    <button class="btn" style="float:right">Let's Go</button>
+    
+    <div class="helper-link">
+        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"><i class="icon-share"></i> View all treatments</a>
+        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"><i class="icon-share"></i> View all destinations</a>
+    </div>
+</form>

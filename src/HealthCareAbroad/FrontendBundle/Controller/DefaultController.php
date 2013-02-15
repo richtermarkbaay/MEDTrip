@@ -181,7 +181,7 @@ class DefaultController extends Controller
                 $treatment = $request->get('treatment');
 
                 if($city && !$country) { $country = $city->getCountry(); }
-                if($treatment && !$specialization) { $specialization = $treatment->getSpecialization(); }
+                if($treatment && !isset($specialization)) { $specialization = $treatment->getSpecialization(); }
 
                 $breadcrumbs[] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
 

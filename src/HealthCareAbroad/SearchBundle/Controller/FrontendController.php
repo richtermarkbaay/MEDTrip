@@ -44,7 +44,7 @@ class FrontendController extends Controller
                 break;
 
             case 'homepage':
-                $template = 'SearchBundle:Frontend/Widgets:searchWidgetHomepage.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:newSearchWidgetHomepage.html.twig';
                 break;
 
             case 'sidebar':
@@ -655,6 +655,15 @@ class FrontendController extends Controller
         return new Response(json_encode($this->get('services.search')->getAllDestinations()), 200, array('Content-Type'=>'application/json'));
     }
 
+    public function ajaxLoadAllSearchOptionsAction(Request $request)
+    {
+        $data = array(
+            'treatments' => $this->get('services.search')->getAllTreatments(),
+            'destinations' => $this->get('services.search')->getAllDestinations(),
+        );
+
+        return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
+    }
     /**
      * AJAX handler for narrow search results widget
      *
