@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class FrontendController extends Controller
@@ -14,7 +16,7 @@ class FrontendController extends Controller
         $advertisements = $this->get('services.advertisement.retriever')->getHomepageAdvertisementByType(5);
         
         if (!\count($advertisements)) {
-            return null;
+            return new Response('', 200);
         }
         
         // only one
