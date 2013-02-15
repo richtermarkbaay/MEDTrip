@@ -1,10 +1,6 @@
 <div class="span2">
 	<a href="">
-	    {% if institutionMedicalCenter.logo %}
-	        {{ media(institutionMedicalCenter.logo, institution, 'default') | raw }}
-	    {% else  %}
-	        <img src="{{ imageplaceholder.clinicLogo }}" class="default" alt="logo" />
-	    {% endif %}
+	    {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}}) | raw }}
 	</a>
     
 </div>
