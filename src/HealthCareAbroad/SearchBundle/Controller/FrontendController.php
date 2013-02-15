@@ -151,6 +151,20 @@ class FrontendController extends Controller
     public function searchProcessNarrowAction(Request $request)
     {
         $requestParams = $request->request->all();
+//var_dump($requestParams); exit;
+
+/**
+
+array (size=3)
+  'searchParameter' =>
+    array (size=2)
+      'country' => string '7' (length=1)
+      'treatment' => string '23' (length=2)
+  'filter' => string 'treatment' (length=9)
+  'term' => string 'e' (length=1)
+
+ */
+
 
         $searchParameters = $requestParams['searchParameter'];
 
@@ -240,6 +254,27 @@ class FrontendController extends Controller
                 $route = 'frontend_search_results_cities';
                 $sessionVariables['cityId'] = $searchParameters['city'];
             }
+
+            //COMBINED SEARCH
+            if (isset($searchParameters['treatment'])) {
+                $treatment = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($searchParameters['treatment']);
+                $routeParameters['treatment'] = $treatment->getSlug();
+                $routeParameters['specialization'] = $treatment->getSpecialization()->getSlug();
+                $sessionVariables['treatmentId'] = $treatment->getId();
+                $sessionVariables['specializationId'] = $treatment->getSpecialization()->getId();
+
+                $route = 'frontend_search_combined_countries_specializations_treatments';
+
+            } elseif (isset($searchParameters['subSpecialization'])) {
+                $subSpecialization = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:SubSpecialization')->find($searchParameters['subSpecialization']);
+                $routeParameters['subSpecialization'] = $subSpecialization->getSlug();
+                $routeParameters['specialization'] = $subSpecialization->getSpecialization()->getSlug();
+                $sessionVariables['subSpecializationId'] = $subSpecialization->getId();
+                $sessionVariables['specializationId'] = $subSpecialization->getSpecialization()->getId();
+
+                $route = 'frontend_search_combined_countries_specializations_subSpecializations';
+            }
+
         } elseif (isset($searchParameters['specialization'])) {
             $routeParameters['specialization'] = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Specialization')->find($searchParameters['specialization'])->getSlug();
             $route = 'frontend_search_results_specializations';
@@ -623,6 +658,8 @@ class FrontendController extends Controller
      */
     public function ajaxLoadNarrowSearchAction(Request $request)
     {
+        //var_dump($request->request->all()); exit;
+
         $results = $this->get('services.search')->loadSuggestions($request->request->all());
 
         return new Response(\json_encode($results), 200, array('content-type' => 'application/json'));
