@@ -19,9 +19,8 @@ class Retriever
     // FIXME: inappropriate, just quick implementation
     private $staticHomepageAdvertisementTypes = array(
         1 => 'Premier Home Page Feature',
-        2 => 'Home Page Clinic Feature',
         5 => 'Home Page Featured Video',
-        6 => 'Featured Post'
+        6 => 'Featured Post',
     );
     
     private $retrievedAdvertisementsByType = array();
@@ -32,6 +31,17 @@ class Retriever
         $this->doctrine = $v;
     }
     
+    public function getHomepageCommonTreatments()
+    {
+        return $this->doctrine->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getCommonTreatments();
+    }
+    
+    // this has a dedicated query
+    public function getHomepageFeaturedClinics()
+    {
+        return $this->doctrine->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->getActiveFeaturedClinic();
+    }
+    
     public function getHomepageAdvertisementByType($type)
     {
         $this->_retrieveHomepageAds();
@@ -39,13 +49,6 @@ class Retriever
         return \array_key_exists($type, $this->retrievedAdvertisementsByType)
             ? $this->retrievedAdvertisementsByType[$type]
             : array();
-    }
-    
-    public function getHomepageAdvertisements()
-    {
-        $this->_retrieveHomepageAds();
-        
-        //return $this->retrievedAdvertisementsByType;
     }
     
     private function _retrieveHomepageAds()

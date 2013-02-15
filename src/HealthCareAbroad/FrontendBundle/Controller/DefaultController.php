@@ -40,20 +40,13 @@ class DefaultController extends Controller
     {
         $advertisementRepo = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty');
 
-        $highlightAds = $advertisementRepo->getActiveHomepagePremier();
-        $featuredClinicAds = $advertisementRepo->getActiveFeaturedClinic();
-        $news = $advertisementRepo->getActiveNews();
-        $commonTreatments = $advertisementRepo->getCommonTreatments();
+        //$highlightAds = $advertisementRepo->getActiveHomepagePremier();
         $featuredDestinations = $advertisementRepo->getFeaturedDestinations();
 
         $params = array(
-            'highlightAds' => $highlightAds,
-            'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
-            //'highlight' => $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find(52),
-            'featuredClinicAds' => $featuredClinicAds,
-            'commonTreatments' => $commonTreatments,
+//             'highlightAds' => $highlightAds,
+//             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
             'destinationAds' => $featuredDestinations,
-            'news' => $news,
             'searchParams' => array()
         );
         //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
