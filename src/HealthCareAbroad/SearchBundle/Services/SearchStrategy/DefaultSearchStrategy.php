@@ -644,6 +644,8 @@ class DefaultSearchStrategy extends SearchStrategy
             SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
             FROM search_terms AS a
             WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+
+            GROUP BY label ORDER BY label ASC
         ");
 
         $stmt->execute();
