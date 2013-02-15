@@ -5,19 +5,19 @@
 	<div id="main_content" class="row" style="margin-top: 40px;"> <!-- TODO: Remove Inline style -->
 	    <!-- Main Content -->
 		<div id="content" class="span8">
-            {% include 'FrontendBundle:Widgets/Ads:highlights.html.twig' %}
+            {% render 'AdvertisementBundle:Frontend:renderHomepagePremierAdvertisements' %}
             
-            {% include 'FrontendBundle:Widgets/Ads:featuredClinics.html.twig' %}
+            {% render 'AdvertisementBundle:Frontend:renderHomepageFeaturedClinics' %}
 
-            {% include 'FrontendBundle:Widgets/Ads:destinations.html.twig' %}
+            {# include 'FrontendBundle:Widgets/Ads:destinations.html.twig' #}
 		</div> <!--End Main Content -->
 
 		
 		<!--Sidebar Content -->
 		<aside id="aside-content" class="span4">
-            {% include 'FrontendBundle:Widgets/Ads:asideNews.html.twig' %}
+            {% render 'AdvertisementBundle:Frontend:renderHomepageFeaturedPosts' %}
 
-            {% include 'FrontendBundle:Widgets/Ads:asideCommonTreatments.html.twig' %}
+            {% render 'AdvertisementBundle:Frontend:renderHomepageCommonTreatments' %}
 
             {% render 'AdvertisementBundle:Frontend:renderFeaturedHomepageVideo' %}
 		</aside> <!--End of Sidebar Content -->

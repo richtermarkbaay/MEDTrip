@@ -50,6 +50,11 @@ class SearchService
         return $this->searchStrategy->getDestinationsByName($searchParams);
     }
 
+    public function getAllDestinations()
+    {
+        return $this->searchStrategy->getAllDestinations();
+    }
+
     /**
      *  TODO: rename to loadTreatments
      *
@@ -60,6 +65,11 @@ class SearchService
     public function getTreatments(SearchParameterBag $searchParams)
     {
         return $this->searchStrategy->getTreatmentsByName($searchParams);
+    }
+
+    public function getAllTreatments()
+    {
+        return $this->searchStrategy->getAllTreatments();
     }
 
     public function loadSuggestions($parameters)
