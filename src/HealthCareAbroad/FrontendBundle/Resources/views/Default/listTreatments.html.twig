@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="details" class="row">
-        <div id="main_content" class="span12">
+        <div id="main_content" class="span10">
             <header class="filters">
                 <h2 class="total">Treatments</h2>
             </header>
@@ -11,7 +11,7 @@
 
                         {% for specialization in specializations %}
                         
-                            <ul class="match" style="width:200px;">
+                            <ul class="match" >
                                 <li>
                                     <h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5>
                                 </li>
@@ -20,11 +20,12 @@
 
                                 {% for subSpecializationName,each in groupedSpecializations %}
 
+                                <li>
                                     <ul>
                                     
                                     {% if each.subSpecialization %}
                                         <li>
-                                            <h5 style="font-size:14px;">
+                                            <h5>
                                             <a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: each.subSpecialization.slug}) }}">{{ subSpecializationName }}</a>
                                             </h5>
                                         </li>
@@ -35,6 +36,7 @@
                                     {% endfor %}
                                     
                                     </ul>
+                                </li>
                                 {% endfor %}    
                             </ul>
                         {% endfor %}
