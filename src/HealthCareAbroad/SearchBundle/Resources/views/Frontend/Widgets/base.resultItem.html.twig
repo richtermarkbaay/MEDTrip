@@ -3,11 +3,7 @@
 
     <div class="pull-left thumb">
         <a href="{{ searchResultItem.url }}">
-            {% if searchResultItem.logo %}
-                {{ searchResultItem.logo | raw}}
-            {% else %}
-                <img src="{{ imageplaceholder.clinicLogo}}" class="default"/>
-            {% endif %}
+            {{ searchResultItem.logo | raw }}
         </a>
     </div>
 

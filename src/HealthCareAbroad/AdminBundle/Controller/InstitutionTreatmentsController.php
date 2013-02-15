@@ -940,7 +940,7 @@ class InstitutionTreatmentsController extends Controller
     
         if ($fileBag->get('file')) {
              
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionMedicalCenter);
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
             if(is_object($result)) {
     
                 $this->institutionMedicalCenter->setLogo($result);

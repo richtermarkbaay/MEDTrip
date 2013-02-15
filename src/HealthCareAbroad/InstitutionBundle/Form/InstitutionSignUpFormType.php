@@ -35,11 +35,6 @@ use Symfony\Component\Form\AbstractType;
  */
 class InstitutionSignUpFormType extends AbstractType
 {
-    public function getName()
-    {
-        return 'institutionSignUp';
-    }
-    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -100,4 +95,8 @@ class InstitutionSignUpFormType extends AbstractType
         
     }
     
+    public function getName()
+    {
+        return 'institutionSignUp';
+    }
 }

@@ -42,10 +42,12 @@ class SearchService
      */
     public function getDestinations(SearchParameterBag $searchParams)
     {
-        $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
+//         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
-        return $this
-            ->transformResults($this->searchStrategy->search($searchParams));
+//         return $this
+//             ->transformResults($this->searchStrategy->search($searchParams));
+
+        return $this->searchStrategy->getDestinationsByName($searchParams);
     }
 
     /**
@@ -57,10 +59,12 @@ class SearchService
      */
     public function getTreatments(SearchParameterBag $searchParams)
     {
-        $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
+//         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
-        return $this
-            ->transformResults($this->searchStrategy->search($searchParams));
+//         return $this
+//             ->transformResults($this->searchStrategy->search($searchParams));
+
+        return $this->searchStrategy->getTreatmentsByName($searchParams);
     }
 
     public function loadSuggestions($parameters)
@@ -87,6 +91,7 @@ class SearchService
                 $results = $this->searchStrategy->loadTreatments($parameters);
                 break;
 
+            case 'subSpecialization':
             case 'sub-specialization':
                 $results = $this->searchStrategy->loadSubSpecializations($parameters);
                 break;
@@ -99,6 +104,16 @@ class SearchService
         }
 
         return $results;
+    }
+
+    public function getTermDocumentsFilteredOn(array $filters)
+    {
+        return $this->searchStrategy->getTermDocumentsFilteredOn($filters);
+    }
+
+    public function getTermDocumentsByTermName($searchParams)
+    {
+        return $this->searchStrategy->getTermDocumentsByTermName($searchParams);
     }
 
     public function getTermDocuments(SearchParameterBag $searchParams)
@@ -177,6 +192,16 @@ class SearchService
     public function searchByTag($tag)
     {
         return $this->searchStrategy->searchMedicalCentersByTerm($tag);
+    }
+
+    /**
+     * Search by terms
+     *
+     * @param array $termIds
+     */
+    public function searchByTerms(array $termIds = array(), array $filters = array())
+    {
+        return $this->searchStrategy->searchMedicalCentersByTerms($termIds, $filters);
     }
 
     public function getMedicalCentersByTerm($term, $type = null)

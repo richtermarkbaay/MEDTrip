@@ -26,10 +26,22 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.institution.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\InstitutionTwigExtension
+        public: false
+        calls:
+            - [setMediaExtension, [@services.media.twig.extension]]
+            - [setImagePlaceHolders, [%imageplaceholder%]]
+        tags:
+            - { name: twig.extension }
 
     services.institutionMedicalCenter.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InstitutionMedicalCenterTwigExtension
         public: false
+        calls:
+            - [setMediaExtension, [@services.media.twig.extension]]
+            - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:
             - { name: twig.extension }
 

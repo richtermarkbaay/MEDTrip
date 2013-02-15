@@ -22,12 +22,12 @@ admin_institution_view:
          institutionId: \d+
          _method: GET
 
-admin_institution_edit:
+admin_institution_edit_details:
     pattern:  /admin/institution/{institutionId}/edit
-    defaults: { _controller: AdminBundle:Institution:view}
+    defaults: { _controller: AdminBundle:Institution:editDetails}
     requirements:
          institutionId: \d+
-         _method: GET
+         _method: GET|POST
          
 ##-----         
 ## institution property related routes
