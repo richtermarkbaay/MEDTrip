@@ -12,6 +12,8 @@ framework:
         resource: "%kernel.root_dir%/config/routing_test.yml"
         #strict_parameters: %kernel.debug%
     form: true
+    csrf_protection: true
+    validation:      { enabled: true, enable_annotations: true }
     secret: %secret%
     test: ~
     session:
@@ -19,13 +21,21 @@ framework:
 
 # Twig Configuration
 twig:
+    form:
+        resources:
+            - 'HelperBundle:Form:fields.custom.html.twig'
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     globals:
-        site_name: HealthCareAbroad.com
+        site_url: %site_url%
+        site_name: %site_name%
+        cfe_site_url: %cfe_site_url%
+        cfe_site_name: %cfe_site_name%
+        cfe_company_name: %cfe_company_name%
+        imageplaceholder: %imageplaceholder%
         tinymce:
             textarea_class: %tinymce_textarea_class%
-            theme: 
+            theme:
                 simple: %tinymce_simple_theme%
                 advanced: %tinymce_advanced_theme%
                 medium: %tinymce_medium_theme%
