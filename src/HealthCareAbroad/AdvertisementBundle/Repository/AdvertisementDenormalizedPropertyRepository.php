@@ -11,6 +11,21 @@ use Doctrine\ORM\EntityRepository;
 
 class AdvertisementDenormalizedPropertyRepository extends EntityRepository
 {
+    public function getActiveAdvertisementsByType(array $types)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('a,b,c')
+        ->leftJoin('a.institution', 'b')
+        ->leftJoin('a.media', 'c')
+        ->where('a.status = :status')
+        ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
+        ->setParameter('advertisementTypes', $types)
+        ->setParameter('status', 1);
+        
+        return $qb->getQuery()->getResult();
+    }
+    
+    
     /**
      * Get active Advertisement by type discriminator column. Do not apply caching here, instead apply it in service class using this function.
      *
