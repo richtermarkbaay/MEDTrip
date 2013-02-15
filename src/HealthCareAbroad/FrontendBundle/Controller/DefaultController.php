@@ -63,7 +63,8 @@ class DefaultController extends Controller
     public function treatmentListAction()
     {
         $institutionSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
-        $params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
+        $params['specializations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization();
+        //$params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
 
         return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
     }

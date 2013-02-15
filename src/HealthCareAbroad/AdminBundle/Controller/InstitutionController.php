@@ -149,6 +149,7 @@ class InstitutionController extends Controller
 	    	    $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
 	    	}
 
+	    	
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
     					'institutionTypes' => InstitutionTypes::getFormChoices(),
@@ -171,7 +172,7 @@ class InstitutionController extends Controller
 	    
 	    if($this->get('services.institution')->isActive($this->institution)){
 	        
-	        return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+	        return $this->redirect($this->generateUrl('admin_institution_edit_details', array('institutionId' => $this->institution->getId())));
 	    }
 	    
 	    if ($request->isMethod('POST')) {
@@ -197,7 +198,6 @@ class InstitutionController extends Controller
 				'form' => $form->createView(),
 				'institution' => $this->institution,
 	    		'id' => $this->institution->getId()
-    										
 	    ));
     }
     
@@ -219,8 +219,6 @@ class InstitutionController extends Controller
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-    			
-    			return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
     		}
     	}
    
@@ -293,7 +291,7 @@ class InstitutionController extends Controller
     
    				//create event on editInstitution and dispatch
    				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-   				return $this->redirect($this->generateUrl('admin_institution_edit', array('institutionId' => $this->institution->getId())));
+   				return $this->redirect($this->generateUrl('admin_institution_edit_details', array('institutionId' => $this->institution->getId())));
     		}
     	}
     	

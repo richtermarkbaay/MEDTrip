@@ -35,6 +35,15 @@ CREATE TABLE IF NOT EXISTS `admin_actions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `admin_actions`
+--
+
+INSERT INTO `admin_actions` (`id`, `name`, `description`, `status`) VALUES
+(1, 'index', 'View Admin Home Page', 1),
+(2, 'medical_centers.index', 'View All Medical Centers', 1),
+(3, 'medical_centers.add', 'Add new medical center', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -165,6 +174,12 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   KEY `advertisement_type_id` (`advertisement_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='advertisement table';
 
+--
+-- Dumping data for table `advertisements`
+--
+
+INSERT INTO `advertisements` (`id`, `institution_id`, `object_id`, `advertisement_type_id`, `title`, `description`, `date_created`, `date_expiry`, `status`) VALUES
+(1, 1, 0, 1, 'test', 'test', '2013-02-14 06:47:16', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -467,6 +482,7 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `first_name` char(250) NOT NULL,
   `middle_name` char(250) DEFAULT NULL,
   `last_name` char(250) NOT NULL,
+  `suffix` varchar(50) DEFAULT NULL,
   `gender` smallint(1) unsigned DEFAULT NULL,
   `contact_email` varchar(100) DEFAULT NULL,
   `contact_number` text,
@@ -480,6 +496,13 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `doctors`
+--
+
+INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `gender`, `contact_email`, `contact_number`, `details`, `country_id`, `media_id`, `date_created`, `status`) VALUES
+(1, 'Arihant', NULL, 'Surana', NULL, NULL, NULL, '[{"number":"13241234324","type":"phone"}]', 'Dr Arihant Surana is a senior practicing cosmetic dermatologist and minimal invasive hair transplant surgeon. After his post graduate degree in dermatology, he has been practicing in the field of cosmetic dermatology and trichology and is the most sought after hair transplant surgeon in India.\r\nSurgical Expertise: Dr. Surana has done extensive research in the field of hair transplant and was first one to introduce customized hair transplant to all his clients.\r\nHonors &amp; Expertise: He specializes in minimal invasive painless hair transplant and many dermatological procedures like lasers, fillers, etc.', 1, NULL, '2013-01-17 03:43:25', 1),
+(2, 'Pankaj', NULL, 'Chaturvedi', NULL, NULL, NULL, '[{"number":"","type":"phone"}]', 'Surgical Expertise: He is known widely for his acne and acne scar treatments, laser treatments, Botox&reg;, filler and anti-ageing treatments and state of the art hair transplantation procedures. He currently holds the position of senior consultant and co-director of dermatology at Adiva aesthetics.\r\nHonors &amp; Expertise: He has an excellent academic career and has achieved many prestigious awards nationally and internationally for his path breaking researches on hair disorders and baldness treatments.\r\n&nbsp;', 1, NULL, '2013-01-17 03:43:25', 1);
 
 -- --------------------------------------------------------
 
@@ -567,6 +590,12 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   UNIQUE KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `gallery`
+--
+
+INSERT INTO `gallery` (`id`, `institution_id`, `date_created`) VALUES
+(1, 1, '2013-02-14 06:50:55');
 
 -- --------------------------------------------------------
 
@@ -605,6 +634,12 @@ CREATE TABLE IF NOT EXISTS `global_awards` (
   KEY `awarding_body_id` (`awarding_body_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='awards, certificates and affiliations data';
 
+--
+-- Dumping data for table `global_awards`
+--
+
+INSERT INTO `global_awards` (`id`, `type`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
+(1, 2, 'test', 'test', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -621,6 +656,14 @@ CREATE TABLE IF NOT EXISTS `helper_text` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `helper_text`
+--
+
+INSERT INTO `helper_text` (`id`, `route`, `details`, `status`) VALUES
+(1, 'institution_signUp', 'Please provide the correct information below, and we will create an exclusive medical account listing for you.', 1),
+(2, 'institution_login', '<h4>Some Text here that urge medical institution to sign up for Health Care Abroad Medical Listing!</h4>\r\n                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>', 1),
+(3, 'test_route', 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -835,7 +878,12 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
   KEY `doctor_id` (`doctor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
+--
+-- Dumping data for table `institution_medical_center_doctors`
+--
+INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
+(1, 1),
+(1, 2);
 -- --------------------------------------------------------
 
 --
@@ -940,6 +988,13 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `institution_specializations`
+--
+
+INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
+(1, 1, 1, '<p>asdfsdf asdf asdf asdf</p>', '2012-12-08 17:31:05', '2012-12-08 17:31:05', 1),
+(2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1);
 
 -- --------------------------------------------------------
 
@@ -1266,6 +1321,12 @@ CREATE TABLE IF NOT EXISTS `medical_provider_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `medical_provider_groups`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES
+('18', 'test', 'test', CURRENT_TIMESTAMP, '1');
 
 -- --------------------------------------------------------
 
@@ -1401,13 +1462,22 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `media_id` bigint(20) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`)
+  UNIQUE KEY `name` (`name`),
+  KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `specializations`
+--
+
+INSERT INTO `specializations` (`id`, `name`, `description`, `media_id`, `date_created`, `slug`, `status`) VALUES
+(1, 'Allergy and Immunology', 'Medical center or department specializing in immunological disorders (autoimmune diseases, hypersensitivities, immune deficiency, transplant rejection, etc.)', NULL, '2012-09-03 03:50:10', 'allergy-and-immunology', 1),
+(2, 'Pathology', 'Medical centers specialized in the diagnosis and characterization of disease in living patients by examining biopsies or bodily fluids.', NULL, '2012-09-03 06:54:38', 'pathology', 1);
 -- --------------------------------------------------------
 
 --

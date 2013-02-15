@@ -181,7 +181,7 @@ class InstitutionAccountController extends InstitutionAwareController
             return $this->redirect($this->generateUrl('institution_account_profile'));
         }
 
-        $hiddenFields = array('name', 'description');
+        $hiddenFields = array('name');
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => $hiddenFields));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
         
