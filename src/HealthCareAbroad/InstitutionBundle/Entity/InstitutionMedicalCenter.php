@@ -105,6 +105,11 @@ class InstitutionMedicalCenter
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionGlobalAwards;
+    
+    /**
+     * @var text $descriptionHighlight
+     */
+    private $descriptionHighlight;
 
     public function __construct()
     {
@@ -558,5 +563,27 @@ class InstitutionMedicalCenter
     public function getInstitutionGlobalAwards()
     {
         return $this->institutionGlobalAwards;
+    }
+
+    /**
+     * Set descriptionHighlight
+     *
+     * @param text $descriptionHighlight
+     * @return InstitutionMedicalCenter
+     */
+    public function setDescriptionHighlight($descriptionHighlight)
+    {
+        $this->descriptionHighlight = $descriptionHighlight;
+        return $this;
+    }
+
+    /**
+     * Get descriptionHighlight
+     *
+     * @return text 
+     */
+    public function getDescriptionHighlight()
+    {
+        return $this->descriptionHighlight;
     }
 }
