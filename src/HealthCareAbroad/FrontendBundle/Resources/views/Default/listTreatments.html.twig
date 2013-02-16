@@ -1,6 +1,53 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block content %}
+<style>
+<!--
+    .treatments-list div.matches {
+    
+    }
+
+    .treatments-list ul.level1 {
+        border-bottom: 1px solid #E6E6E6;
+        margin-bottom: 1.4em;
+    }
+
+    .treatments-list li {
+        margin: 0.5em 0;
+        list-style: none;
+    }
+    
+    .treatments-list li.level1 {
+        list-style: none;
+    }
+    
+    .treatments-list li.level2 {
+        list-style: none;
+    }
+    
+    .treatments-list li.level1 h5 {
+        font-size: 1.2em;
+    }
+    
+    .treatments-list li.level1 h5  a{
+        color: #4D4D4D;
+    }
+    
+    .treatments-list li.level2 h5 {
+        font-size: 1.0em;
+        font-weight: normal;
+    }
+    
+    .treatments-list li.level2 h5  a{
+        color: #4D4D4D;
+    }
+    
+    .treatments-list ul.level1:last-child {
+        border-bottom: none;
+    }
+-->
+</style>
+
     <div id="details" class="row">
         <div id="main_content" class="span10">
             <header class="filters">
@@ -50,51 +97,4 @@
 
     </div>
 <!--End of content-->
-    
- <style>
-<!--
-    .treatments-list div.matches {
-    
-    }
-
-    .treatments-list ul.level1 {
-        border-bottom: 1px solid #E6E6E6;
-        margin-bottom: 1.4em;
-    }
-
-    .treatments-list li {
-        margin: 0.5em 0;
-        list-style: none;
-    }
-    
-    .treatments-list li.level1 {
-        list-style: none;
-    }
-    
-    .treatments-list li.level2 {
-        list-style: none;
-    }
-    
-    .treatments-list li.level1 h5 {
-        font-size: 1.2em;
-    }
-    
-    .treatments-list li.level1 h5  a{
-        color: #4D4D4D;
-    }
-    
-    .treatments-list li.level2 h5 {
-        font-size: 1.0em;
-        font-weight: normal;
-    }
-    
-    .treatments-list li.level2 h5  a{
-        color: #4D4D4D;
-    }
-    
-    .treatments-list ul.level1:last-child {
-        border-bottom: none;
-    }
--->
-</style>
 {% endblock %}
