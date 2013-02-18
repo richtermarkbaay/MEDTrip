@@ -3,16 +3,17 @@
 
     <div class="pull-left thumb">
         <a href="{{ searchResultItem.url }}">
-            {% if searchResultItem.logo %}
-                {{ searchResultItem.logo | raw}}
-            {% else %}
-                <img src="{{ imageplaceholder.clinicLogo}}" class="default"/>
-            {% endif %}
+            {{ searchResultItem.logo | raw }}
         </a>
     </div>
 
     <div class="media-body">
         <h3 class="media-heading">{{ searchResultItem.name }}</h3>
+        {% if searchResultItem.description is defined %}
+        <div class="description-box" style="color:#657174; font-size:14px;" >
+            {{ searchResultItem.description }}...
+        </div>
+        {% endif %}
         <div class="media">
             <div class="pull-left">
                 <span class="address-icon2"></span>

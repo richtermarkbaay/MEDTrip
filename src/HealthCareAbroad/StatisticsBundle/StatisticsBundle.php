@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\StatisticsBundle;
+namespace HealthCareAbroad\StatisticsBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

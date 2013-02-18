@@ -41,8 +41,6 @@
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
-    
-    
     <div>
         <span >
             <label>Unit or Room #</label>
@@ -60,5 +58,42 @@
             <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
     </div>
     <div class="clearfix"></div>
+    {% endspaceless %}
+{% endblock %}
+
+<!-- Media File for Admin -->
+{% block admin_media_file_widget %}
+    {% set fieldName = fieldName is defined ? fieldName : 'media' %}
+    {% spaceless %}
+
+        {% set mediaParentObject = form.parent.vars.data %}
+        {% if fieldName == 'media' %} 
+            {% set mediaObject = mediaParentObject.media %}
+        {% elseif fieldName == 'logo' %}
+            {% set mediaObject = mediaParentObject.logo %} 
+        {% endif %}
+
+        {% if mediaObject %} 
+            {{ media(mediaObject, mediaParentObject, 'default', {width: '220', style: "border:1px solid #ddd"}) | raw }}
+            {% set mediaFileInput = '<input type="file" required="required" value="' ~ form.vars.value ~'" name="' ~ form.vars.full_name ~ '" id="' ~ form.parent.vars.name ~ '_' ~ form.vars.name ~ '">' %}
+
+            {% set deleteImageUrl = path('admin_media_ajaxDelete', {media_id: mediaObject.id}) %}
+            
+            {% set params = json_encode({   
+                field_name: fieldName, 
+                parent_id: mediaParentObject.id,
+                parent_class : getClass(mediaParentObject),
+                remove_file: true
+            }) %}
+
+            <a href="{{ deleteImageUrl }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
+
+            <!-- Load Js -->
+            {{ render_media_file_script() | raw }}
+
+        {% else %}
+            <input type="file" required="required" value="{{ form.vars.value }}" name="{{ form.vars.full_name }}" id="{{ form.parent.vars.name ~ '_' ~ form.vars.name }}">
+        {% endif %}
+
     {% endspaceless %}
 {% endblock %}

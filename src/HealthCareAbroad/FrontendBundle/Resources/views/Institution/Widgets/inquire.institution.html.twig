@@ -1,26 +1,31 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:400px;', 'formId': formId}} %}
     {% block modalBody %}
     <div class="alert-error"></div>
-    <form novalidate="novalidate" {{ form_enctype(form) }} action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="{{formId}}" method="POST" class="basic-form">        
+    <form novalidate="novalidate" {{ form_enctype(form) }} action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="{{formId}}" method="POST">
         <div class="inquirer_name control-group">
-            <strong>{{ form_label(form.inquirer_name) }}</strong>
-            {{ form_widget(form.inquirer_name, { 'attr': {'class': 'span4'} }) }}
+            <label for="{{ form.children.inquirer_name.vars.id }}">
+                <strong>{{ form.children.inquirer_name.vars.label }}</strong>
+            </label>
+            {{ form_widget(form.inquirer_name) }}
         </div>
-        
+
         <div class="inquirer_email control-group">
-            {{ form_label(form.inquirer_email) }}
-            {{ form_widget(form.inquirer_email, { 'attr': {'class': 'span4'} }) }}
+            <label for="{{ form.children.inquirer_email.vars.id }}">
+                <strong>{{ form.children.inquirer_email.vars.label }}</strong>
+            </label>
+            {{ form_widget(form.inquirer_email) }}
         </div>
         
         <div class="message control-group">
-            {{ form_label(form.message) }}
-            {{ form_widget(form.message, { 'attr': {'class': 'span6', 'rows': 6} }) }}
+            <label for="{{ form.children.message.vars.id }}">
+                <strong>{{ form.children.message.vars.label }}</strong>
+            </label>
+            {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
         </div>
-        
-        </br>
         {{ form_rest(form) }}
                             	                        	
-    </form>
+    </form>    
+    
     {% endblock %}
     {% block footerBody %}
         <button aria-hidden="true" onclick="Institution.clearForm({{formId}}); return false;" data-dismiss="modal" class="btn">Cancel</button>

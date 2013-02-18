@@ -4,17 +4,21 @@ FrontendBundle_institution:
     prefix:   /
 
 frontend_newsletter_new:
-    pattern:  /
+    pattern:  /subscribe-newswletter
     defaults: { _controller: FrontendBundle:Default:new}
     requirements:
         _method: GET|POST
 
-frontend_main_homepage_index_html:
-    pattern:  /index.html
-    defaults: { _controller: FrontendBundle:Default:new}
+#frontend_main_homepage_index_html:
+#    pattern:  /index.html
+#    defaults: { _controller: FrontendBundle:Default:new}
         
 frontend_main_homepage:
-    pattern:  /frontend/index.html
+    pattern:  /index.html
+    defaults: { _controller: FrontendBundle:Default:index}
+    
+frontend_main_homepage_php:
+    pattern:  /index.php
     defaults: { _controller: FrontendBundle:Default:index}
 
 frontend_page_inquire:
@@ -35,6 +39,18 @@ frontend_page_exception_report_send:
     requirements:
         _method:  GET|POST
 
+
+frontend_treatment_list:
+    pattern: /treatments
+    defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }
+    requirements:
+        _method:  GET
+
+frontend_destination_list:
+    pattern: /destinations
+    defaults: { _controller: FrontendBundle:Default:destinationList, breadcrumbLabel: Destinations }
+    requirements:
+        _method:  GET
 
 # Combined Search routes
 frontend_search_combined_countries_specializations:
@@ -78,8 +94,12 @@ frontend_404:
     pattern: /404
     defaults: { _controller: FrontendBundle:Default:call404Excemption }
     
-splash_page: # this is used for splash page
-    pattern:  /{url}
-    defaults: { _controller: FrontendBundle:Default:new, url: /}
-    requirements:
-         url: ".*"
+frontend_main_default:
+    pattern:  /
+    defaults: { _controller: FrontendBundle:Default:index}
+    
+#splash_page: # this is used for splash page
+#    pattern:  /{url}
+#    defaults: { _controller: FrontendBundle:Default:new, url: /}
+#    requirements:
+#         url: ".*"

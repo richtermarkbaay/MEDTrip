@@ -49,17 +49,7 @@
 			</div>
 
 			<div class="subscription span4"> <!--This is for the Subscriptions-->
-				<div class="subscribe_item row">
-					<h5>Subscribe To Our Newsletter</h5>
-					<form class="subscribe_form" action="get">
-						<input type="text" name="email" placeholder="email@domain.com" class="span4">
-						<div class="form-inline">
-							<input type="checkbox" class="checkbox">
-							<label>Unsubscribe</label>
-							<button class="btn" type="submit">Submit Now</button>
-						</div>
-					</form>
-				</div>
+				{% render 'FrontendBundle:Default:renderNewsletterForm' %}
 				<div class="register">
 					<h5>Want to register an Institution?</h5>
 					<a class="sign-up" href="#">Sign Up</a>

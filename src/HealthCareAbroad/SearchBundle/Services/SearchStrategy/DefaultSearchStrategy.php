@@ -4,26 +4,18 @@ namespace HealthCareAbroad\SearchBundle\Services\SearchStrategy;
 use HealthCareAbroad\SearchBundle\Services\Admin\TreatmentsSearchResultBuilder;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use Doctrine\DBAL\Connection;
-
 use Doctrine\DBAL\Statement;
-
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
-
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy;
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
+use HealthCareAbroad\TermBundle\Entity\SearchTerm;
 
 /**
  * DefaultSearchStrategy
@@ -33,6 +25,8 @@ use HealthCareAbroad\TermBundle\Entity\TermDocument;
  */
 class DefaultSearchStrategy extends SearchStrategy
 {
+    private $searchTermActiveStatus = SearchTerm::STATUS_ACTIVE;
+
     /**
      * Search
      *
@@ -76,8 +70,259 @@ class DefaultSearchStrategy extends SearchStrategy
         return $results;
     }
 
-    //TODO: query will not give correct results in all cases; this should probably be
-    //renamed to something more specific.
+    public function loadCountries($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT a.id, a.id AS value, a.name AS label
+            FROM countries AS a
+            INNER JOIN search_terms b ON a.id = b.country_id
+            WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['treatment'])) {
+                $sql .= " AND b.treatment_id = {$searchParameter['treatment']} ";
+            } elseif (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function loadCities($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.id AS id, a.id AS value, a.name AS label
+            FROM cities AS a
+            INNER JOIN search_terms b ON a.id = b.city_id
+            WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['treatment'])) {
+                $sql .= " AND b.treatment_id = {$searchParameter['treatment']} ";
+            } elseif (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //TODO: should we compare on entries on the terms table?
+    public function loadSpecializations($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT a.id AS id, a.id AS value, a.name AS label
+            FROM specializations AS a
+            INNER JOIN search_terms b ON a.id = b.specialization_id
+            WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+            AND b.type = :type
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['city'])) {
+                $sql .= " AND b.city_id = {$searchParameter['city']} ";
+            }
+        }
+
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->bindValue('type', TermDocument::TYPE_SPECIALIZATION);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //TODO: should we compare on entries on the terms table?
+    public function loadSubSpecializations($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql = "
+        SELECT a.id AS id, a.id AS value, a.name AS label
+        FROM sub_specializations AS a
+        INNER JOIN search_terms b ON a.id = b.sub_specialization_id
+        WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+        AND b.type = :type
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['city'])) {
+                $sql .= " AND b.city_id = {$searchParameter['city']} ";
+            }
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->bindValue('type', TermDocument::TYPE_SUBSPECIALIZATION);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    //TODO: should we compare on entries on the terms table?
+    public function loadTreatments($parameters)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT a.id AS id, a.id AS value, a.name AS label
+            FROM treatments AS a
+            INNER JOIN search_terms b ON a.id = b.treatment_id
+            WHERE a.name LIKE :term AND b.status = {$this->searchTermActiveStatus}
+            AND b.type = :type
+        ";
+
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['country'])) {
+                $sql .= " AND b.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['city'])) {
+                $sql .= " AND b.city_id = {$searchParameter['city']} ";
+            }
+
+            if (isset($searchParameter['specialization'])) {
+                $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['subSpecialization'])) {
+                $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+        }
+        $sql .= " GROUP BY a.id ";
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('term', '%'.$parameters['term'].'%');
+        $stmt->bindValue('type', TermDocument::TYPE_TREATMENT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getTermDocumentsFilteredOn(array $searchParams, $uniqueTermDocument = true) {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.*
+            FROM search_terms AS a
+            INNER JOIN terms AS b ON b.id = a.term_id
+            WHERE a.status = 1
+        ";
+
+        if ($termName = $searchParams['treatmentName']) {
+            $sql .= ' AND b.name LIKE :termName ';
+        }
+        if ($destinationName = $searchParams['destinationName']) {
+            $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
+        }
+
+        if ($uniqueTermDocument) {
+            $sql .= " GROUP BY term_document_id ";
+        }
+
+        $stmt = $connection->prepare($sql);
+        if ($termName) {
+            $stmt->bindValue('termName', '%'.$termName.'%');
+        }
+        if ($destinationName) {
+            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
+            //$stmt->bindValue('destinationName', '%'.$destinationName.'%');
+        }
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function getTermDocumentsByTermName(SearchParameterBag $searchParams, $uniqueTermDocument = true) {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $sql ="
+            SELECT a.*
+            FROM search_terms AS a
+            INNER JOIN terms AS b ON b.id = a.term_id
+            WHERE a.status = 1
+        ";
+
+        if ($termName = $searchParams->get('treatmentLabel')) {
+            $sql .= ' AND b.name LIKE :termName ';
+        }
+        if ($destinationName = $searchParams->get('destinationLabel')) {
+            $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
+        }
+
+        if ($uniqueTermDocument) {
+            $sql .= " GROUP BY term_document_id ";
+        }
+
+        $stmt = $connection->prepare($sql);
+        if ($termName) {
+            $stmt->bindValue('termName', '%'.$termName.'%');
+        }
+        if ($destinationName) {
+            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
+            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
+        }
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function getTermDocuments(SearchParameterBag $searchParams, $options = array(), $uniqueTermDocument = true)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
@@ -87,7 +332,7 @@ class DefaultSearchStrategy extends SearchStrategy
             SELECT a.*
             FROM search_terms AS a
             INNER JOIN terms AS b ON b.id = a.term_id
-            WHERE b.id = :termId
+            WHERE b.id = :termId AND a.status = {$this->searchTermActiveStatus}
         ";
 
         if (isset($options['filters'])) {
@@ -237,7 +482,7 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN specializations AS b ON a.specialization_id = b.id
             LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
             LEFT JOIN treatments AS d ON a.treatment_id = d.id
-            WHERE a.term_id = :termId
+            WHERE a.term_id = :termId AND a.status = {$this->searchTermActiveStatus}
             ORDER BY b.id, c.id, d.id
 
         ";
@@ -259,15 +504,21 @@ class DefaultSearchStrategy extends SearchStrategy
      *
      * @todo Use TermFrontendDocument entity
      */
-    private function getTreatmentsByName(SearchParameterBag $searchParams)
+    public function getTreatmentsByName(SearchParameterBag $searchParams)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $optionalWhereClause = ' ';
-        if ($cityId = $searchParams->get('cityId', 0)) {
-            $optionalWhereClause .= " AND b.city_id = :cityId ";
-        } elseif ($countryId = $searchParams->get('countryId', 0)) {
-            $optionalWhereClause .= " AND b.country_id = :countryId ";
+        $destinationName = '';
+
+        if ( ($cityId = $searchParams->get('cityId', 0)) || ($countryId = $searchParams->get('countryId', 0))) {
+            if ($cityId) {
+                $optionalWhereClause .= " AND b.city_id = :cityId ";
+            } elseif ($countryId) {
+                $optionalWhereClause .= " AND b.country_id = :countryId ";
+            }
+        } elseif ($destinationName = $searchParams->get('destinationLabel')) {
+            $optionalWhereClause .= ' AND ( b.country_name LIKE :destinationName OR b.city_name LIKE :destinationName) ';
         }
 
         if ($filter = $searchParams->get('filter', '')) {
@@ -284,7 +535,7 @@ class DefaultSearchStrategy extends SearchStrategy
             SELECT a.id AS value, a.name AS label
             FROM terms AS a
             INNER JOIN search_terms AS b ON a.id = b.term_id
-            WHERE a.name LIKE :name
+            WHERE a.name LIKE :name AND b.status = {$this->searchTermActiveStatus}
             $optionalWhereClause
             GROUP BY a.name
             ORDER BY a.name ASC
@@ -293,56 +544,65 @@ class DefaultSearchStrategy extends SearchStrategy
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('name', '%'.$searchParams->get('searchedTerm').'%');
         if ($cityId) {
-            $stmt->bindValue('cityId', $cityId);
+            $stmt->bindValue('cityId', $cityId, \PDO::PARAM_INT);
         } elseif ($countryId) {
-            $stmt->bindValue('countryId', $countryId);
+            $stmt->bindValue('countryId', $countryId, \PDO::PARAM_INT);
         }
+        if ($destinationName) {
+            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function getAllTreatments()
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
-    /**
-     * COMBINED QUERY:
-     *
-        $sql = "
-            SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
-            FROM search_terms
-            WHERE (country_name LIKE :name OR city_name LIKE :name)
-            $optionalWhereClause
+        $stmt = $connection->query("
+            SELECT a.id AS value, a.name AS label
+            FROM terms AS a
+            INNER JOIN search_terms AS b ON a.id = b.term_id
+            WHERE b.status = {$this->searchTermActiveStatus}
+            GROUP BY a.name
+            ORDER BY a.name ASC");
 
-            UNION
+        $stmt->execute();
 
-            SELECT country_name AS label, CONCAT(CAST(country_id AS CHAR), '-0') AS value
-            FROM search_terms
-            WHERE country_name LIKE :name
-            $optionalWhereClause
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
-            GROUP BY label
-            ORDER BY label ASC
-        ";
-     * @param SearchParameterBag $searchParams
-     */
-    private function getDestinationsByName(SearchParameterBag $searchParams)
+    public function getDestinationsByName(SearchParameterBag $searchParams)
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
         $sql = "INVALID SQL";
 
-        $optionalWhereClause = ($termId = $searchParams->get('treatmentId', 0)) ? ' AND term_id = :treatmentId ' : ' ';
+        $optionalWhereClause = ' ';
+        $optionalJoin = ' ';
+
+        if ($termId = $searchParams->get('treatmentId', 0)) {
+            $optionalWhereClause .= ' AND a.term_id = :treatmentId ';
+        } elseif ($termName = $searchParams->get('treatmentLabel')) {
+            $optionalJoin .= ' LEFT JOIN terms AS b ON a.term_id = b.id ';
+            $optionalWhereClause .= ' AND b.name LIKE :termName ';
+        }
 
         //TODO: test if cast really helps speed up query?
         $sqlCountry = "
-            SELECT country_name AS label, CONCAT(CAST(country_id AS CHAR), '-0') AS value
-            FROM search_terms
-            WHERE country_name LIKE :name
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value
+            FROM search_terms AS a
+            $optionalJoin
+            WHERE a.country_name LIKE :name AND a.status = {$this->searchTermActiveStatus}
             $optionalWhereClause
         ";
 
         $sqlCity = "
-            SELECT CONCAT(city_name, ', ', country_name) AS label, CONCAT(CAST(country_id AS CHAR), '-', CAST(city_id AS CHAR)) AS value
-            FROM search_terms
-            WHERE (country_name LIKE :name OR city_name LIKE :name) AND city_id IS NOT NULL
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
+            FROM search_terms AS a
+            $optionalJoin
+            WHERE (a.country_name LIKE :name OR a.city_name LIKE :name) AND a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
             $optionalWhereClause
         ";
 
@@ -359,16 +619,69 @@ class DefaultSearchStrategy extends SearchStrategy
         $sql .= ' GROUP BY label ORDER BY label ASC ';
 
         $stmt = $connection->prepare($sql);
-
         $stmt->bindValue('name', '%'.$searchParams->get('searchedTerm').'%');
         if ($termId) {
-            $stmt->bindValue('treatmentId', $termId);
+            $stmt->bindValue('treatmentId', $termId, \PDO::PARAM_INT);
+        } elseif ($termName) {
+            $stmt->bindValue('termName', '%'.$termName.'%');
         }
         $stmt->execute();
-//         echo  $termId;
-// print_r($stmt->getWrappedStatement()); exit;
+
         return $stmt->fetchAll();
     }
+
+    public function getAllDestinations()
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+        $stmt = $connection->query("
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value
+            FROM search_terms AS a
+            WHERE a.status = {$this->searchTermActiveStatus}
+
+            UNION
+
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
+            FROM search_terms AS a
+            WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+
+            GROUP BY label ORDER BY label ASC
+        ");
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function searchCountriesByNameWithTreatment(SearchParameterBag $searchParams)
     {

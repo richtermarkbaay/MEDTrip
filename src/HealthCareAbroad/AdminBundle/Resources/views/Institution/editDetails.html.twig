@@ -1,11 +1,8 @@
-{% extends 'AdminBundle::layout.html.twig' %}
+{% extends 'AdminBundle::layout.institution.html.twig' %}
 {% set selectedTab = 'institutions'%}
 {% set selectedSubTab = 'institutions_edit'%}
 {% set insitutionDetailLabels = getClassLabel('institution_detail') %}
 {% block content %}
-     <div class="span3">
-    {% include 'AdminBundle:Widgets:institution.subMenu.html.twig'%}
-	</div>
     <div class="span9"> 
     	 {% embed 'HelperBundle:Widgets:section.html.twig' with { 
                 title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ insitutionDetailLabels.singular | title ,
@@ -17,7 +14,7 @@
 			      {% include '::notice.admin.html.twig' %}
 				<h5>{# institution.typeLabel() #}</h5>
 				
-				<form novalidate="novalidate" action="{{ path('admin_institution_edit', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
+				<form novalidate="novalidate" action="{{ path('admin_institution_edit_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
 				    {{ form_errors(form) }}
 		            {{ form_row( form.name ) }}
                     {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}

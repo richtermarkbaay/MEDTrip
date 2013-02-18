@@ -41,4 +41,9 @@ HealthCareAbroad\HelperBundle\Entity\Country:
         status:
             type: smallint
             nullable: false
+
+    oneToMany:
+        cities:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\City
+            mappedBy: country
     lifecycleCallbacks: {  }

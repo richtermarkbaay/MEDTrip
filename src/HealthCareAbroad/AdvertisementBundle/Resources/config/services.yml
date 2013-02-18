@@ -7,6 +7,11 @@ services:
         class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementFactory
         arguments: [@service_container]
         
+    services.advertisement.retriever:
+        class: HealthCareAbroad\AdvertisementBundle\Services\Retriever
+        calls:
+            - [setDoctrine, [@doctrine]]
+        
     form.advertisement:
         class: HealthCareAbroad\AdvertisementBundle\Form\AdvertisementFormType
         arguments: [@service_container]

@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -155,25 +157,32 @@ class InstitutionSpecializationRepository extends EntityRepository
 
     public function getActiveSpecializations($institution)
     {
-//           $qb1 = $this->createQueryBuilder('a');
 
-                $qb = $this->_em->createQueryBuilder();
-                $qb->select('b')
-                    ->from('InstitutionBundle:InstitutionSpecialization', 'b')
-                    ->leftJoin('b.institutionMedicalCenter', 'c')
-                    ->leftJoin('b.specialization', 'd')
-                    ->where('c.institution = :institution')
-                    ->setParameter('institution', $institution)
-                    ->groupBy('b.specialization');
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('b')
+            ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+            ->leftJoin('b.institutionMedicalCenter', 'c')
+            ->leftJoin('b.specialization', 'd')
+            ->where('c.institution = :institution')
+            ->setParameter('institution', $institution)
+            ->groupBy('b.specialization');
 
-                return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult();
+    }
+    
+    public function getAllActiveSpecializations()
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('a, b, c, d')
+           ->from('InstitutionBundle:InstitutionSpecialization', 'a')
+           ->leftJoin('a.treatments', 'c')
+           ->leftJoin('a.specialization', 'b')
+           ->leftJoin('c.subSpecializations', 'd')
+           ->where('a.status = :institutionSpecializationStatus')
+           ->setParameter('institutionSpecializationStatus', InstitutionSpecialization::STATUS_ACTIVE)
+           ->groupBy('b')->orderBy('b.name', 'ASC');
 
-//         if (false === is_null($limit))
-//             $qb->setMaxResults($limit);
-
-//         return $qb->getQuery()
-//         ->getResult();
-
+        return $qb->getQuery()->getResult();
     }
 
 

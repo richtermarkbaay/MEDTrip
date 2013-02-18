@@ -1,4 +1,4 @@
-<form action="{{ path('frontend_search_process') }}" method="get" name="search_box" class="span12 search_box  form-inline">
+<form action="{{ path('frontend_search_process') }}" method="post" name="search_box" class="span12 search_box  form-inline">
     <input type="hidden" id="treatment_id" name="treatment_id" value="{{ options.treatmentId }}"/>
     <input type="hidden" id="destination_id" name="destination_id" value="{{ options.destinationId }}"/>
 
@@ -7,8 +7,12 @@
     <label>Near</label>
     <input type="text" placeholder="City, Country or Zip" name="sb_destination" id="sb_destination"/>
     <button class="btn">Let's Go</button>
-</form>
 
+    <div class="helper-link">
+        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"> View all treatments</a>
+        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
+    </div>
+</form>
 
 <!-- TODO: remove invalid markup -->
 <style>

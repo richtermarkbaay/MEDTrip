@@ -17,6 +17,7 @@ class DefaultController extends Controller
 {
     public function addAction(Request $request)
     {
+        //var_dump($request);exit;
         $imc = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('id'));
         return $this->render('MediaBundle:Default:addImcMedia.html.twig', array(
                         'institution' => $imc->getInstitution(),
@@ -97,7 +98,7 @@ class DefaultController extends Controller
             
             if (isset($multiUpload) && $multiUpload === '0') {
                 $this->get('session')->getFlashBag()->add('notice', 'File successfully uploaded!');
-                $response = $this->redirect($this->generateUrl('admin_media_add',array('context' => constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'),'id' => $imc->getId())));
+                $response = $this->redirect($this->generateUrl('admin_media_add',array('context' => constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), 'institutionId' => $imc->getInstitution()->getId(), 'id' => $imc->getId())));
             }
             
         }
@@ -147,11 +148,12 @@ class DefaultController extends Controller
         }
     }
 
+    // TODO - Not supported already! - Still being used?
     public function deleteAction(Request $request)
     {
-        $success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
+        //$success = $this->get('services.media')->delete($request->get('id'), $request->get('institutionId'));
 
-        return new Response($success);
+        return new Response(true);
     }
 
     public function editCaptionAction(Request $request)

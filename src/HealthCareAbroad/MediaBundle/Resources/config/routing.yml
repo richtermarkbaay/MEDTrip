@@ -30,7 +30,7 @@ institution_media_attach:
         mediaId: \d+
 
 admin_media_add:
-    pattern: /admin/media/add/{context}/{id}
+    pattern: /admin/institution/{institutionId}/{context}/{id}/addMedia
     defaults: { _controller: MediaBundle:Default:add }
     requirements:
         _method: GET
@@ -44,13 +44,13 @@ institution_media_add:
         id: \d+
         
 admin_institutionMedicalCenter_media_upload:
-    pattern: /admin/media/upload/{imcId}
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/uploadMedia
     defaults: { _controller: MediaBundle:Default:uploadImcMedia }
     requirements:
         _method: POST|GET
 
 admin_institutionMedicalCenter_gallery_add:
-    pattern: /admin/gallery/add/{context}/{id}/{multiUpload}
+    pattern: /admin/institution/{institutionId}/{context}/{id}/addGallery/{multiUpload}
     defaults: { _controller: MediaBundle:Default:add, multiUpload: 1 }
     requirements:
         _method: GET
@@ -92,6 +92,15 @@ institution_media_edit_caption:
     requirements:
         _method: POST
 
+institution_media_ajaxDelete:
+    pattern: /admin/media/ajax-delete
+    defaults: { _controller: InstitutionBundle:Default:mediaAjaxDelete }
+    requirements:
+        media_id: \d+
+        parent_id: \d+
+        parent_class: ".+"
+        _method: POST
+
 # END DEFAULT CONTROLLER ROUTES
 
 # ADMIN CONTROLLER ROUTES
@@ -110,6 +119,15 @@ admin_institution_gallery_add:
     requirements:
         _method: GET
         institutionId: \d+
+
+admin_media_ajaxDelete:
+    pattern: /admin/media/{media_id}/ajax-delete
+    defaults: { _controller: AdminBundle:Default:mediaAjaxDelete, media_id: ~, parent_id: ~, parent_class: ~, remove_file: false }
+    requirements:
+        media_id: \d+
+        parent_id: \d+
+        parent_class: ".+"
+        _method: POST
 
 # END ADMIN CONTROLLER ROUTES
 

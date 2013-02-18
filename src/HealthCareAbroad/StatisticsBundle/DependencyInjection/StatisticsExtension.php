@@ -1,6 +1,6 @@
 <?php
 
-namespace HealthcareAbroad\StatisticsBundle\DependencyInjection;
+namespace HealthCareAbroad\StatisticsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -24,5 +24,6 @@ class StatisticsExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('twig_extensions.yml');
     }
 }

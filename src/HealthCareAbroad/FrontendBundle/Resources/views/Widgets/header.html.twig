@@ -3,22 +3,25 @@
         <a class="logo span5" href="{{ path('frontend_main_homepage') }}">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
-        <!--
+
         <nav class="menu">
             <ul>
-                <li><a href="#">Search</a></li>
-                <li><a href="#">Procedures</a></li>
-                <li><span class="inset"></span></li>
-                <li class="active"><a href="#">Destination</a></li>
+                <!-- li><a href="#">Search</a></li -->
+                <li class="{{ app.request.get('_route') == 'frontend_treatment_list' ? 'active' : '' }}">
+                    <a href="{{ path('frontend_treatment_list') }}">Treatments</a>
+                </li>
+
+                <li class="{{ app.request.get('_route') == 'frontend_destination_list' ? 'active' : '' }}">
+                    <a href="{{ path('frontend_destination_list') }}">Destinations</a>
+                </li>
             </ul>
-        </nav
-        -->
+        </nav>
+        
     </div>
 </header> <!--End of header-->
-
-{% if app.request.attributes.get('_route') == 'frontend_main_homepage' %}
+{% if isHomePage is defined and isHomePage %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
-        <div id="hero_unit" class="row">
+        <div id="hero_unit">
             <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>
                 <small>the resource for global <strong>healthcare</strong><br>a comprehensive, <strong>unbiased</strong> directory</small>
             </h1>

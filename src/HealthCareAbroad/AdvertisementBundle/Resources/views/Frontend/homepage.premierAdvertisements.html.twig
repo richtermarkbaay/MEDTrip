@@ -1,0 +1,96 @@
+
+{% if highlight %}
+
+{% set institutionUrl = get_institution_frontend_url(highlight.institution) %}
+{% set featuredImages = json_decode(highlight.highlightFeaturedImages) %} 
+
+{#-- set statistic parameters for this advertisement --#}
+{% set _impressionStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_advertisement_impressions_parameters(highlight)  %}
+{#-----------------------------------------------------#}
+
+{#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
+<div id="highlight" class="{{ get_impression_tracker_class() }}" {{ _impressionStatisticParametersAttribute }} > <!--Highighted Institution-->
+    <!-- institution logo link -->
+    {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+	        statisticsDataObject: highlight,
+	        link: {
+	            url: institutionUrl,
+			    class: 'clinic span2 offset6',
+			    html: render_institution_logo(highlight.institution)
+	        }
+	    }
+	%}
+
+    <div class="upper_box row">
+        <h3 class="span6">{{ highlight.institution.name }}</h3><br>
+        <h5 class="span6">{{ highlight.institution.city.name }}, {{ highlight.institution.country.name }}</h5>
+    </div>
+	
+	
+	<div class="row"> <!--Bootstrap carousel-->
+		<div class="carousel slide span8" id="feature_carousel">
+			<div class="carousel-inner">			
+			    {% for i, image in featuredImages %}
+				<div class="{{ i==0 ? 'active' : '' }} item row">
+					<img alt="" src="/media/ads/{{ highlight.institution.id }}/{{ image.name }}" class="span8">
+				</div> <!--End of slider_item 1-->
+			    {% endfor %}
+			</div>
+			<div class="nav-pills">
+			    {% for i, image in featuredImages %}
+				    <a data-to="{{ loop.index }}" href="#feature_carousel" class="carousel-pills {{ i==0 ? 'pager-active' : '' }}"><span>&nbsp;</span></a>
+			    {% endfor %}
+			</div>
+			
+			<!-- Learn more orange button -->
+			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+			        statisticsDataObject: highlight,
+			        link: {
+			            url: institutionUrl,
+        			    class: 'btn white feature-btn',
+        			    html: '<span class="icon-search icon-orange"></span> Learn More'
+			        }
+			    }
+			%}
+			     
+		    
+		</div> <!--End of carousel slide-->
+	</div> <!--End of carousel row-->
+
+	<div class="lower_box row-fluid">		
+        {% set highlights = json_decode(highlight.highlights) %}
+        {% for each in highlights %}
+            <div class="span6">
+                <div class="media">
+                    {% if each.icon %}
+                        <img class="media-object img-circle pull-left" src="{{ each.icon.src }}" alt="doctor logo" width="50"/>
+                    {% else %}
+                        {% if each.type == 3 %}
+                            <img alt="clinic logo" src="{{ imageplaceholder.doctorIconOrange }}" class="media-object img-circle pull-left">
+                        {% else %}
+                            <span class="{{ ad_highlight_placeholder_class(each.type) }} media-object img-circle pull-left"></span>
+                        {% endif %}
+                    {% endif %}
+                    <div class="media-body">
+                        {% if each.header %}
+                            <h5 class="media-heading">{{ each.header }}</h5>
+                        {% endif %}
+                        <p>{{ each.label }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+	</div>
+</div>
+
+<!--This is for the javascript-->
+<script type="text/javascript">
+    $(document).ready(function () {
+        /*$('#highlight').carousel({
+            interval: 5000,
+            pause: "hover"
+        }); */
+    });
+</script>
+
+{% endif %}

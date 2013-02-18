@@ -1,6 +1,6 @@
 <aside id="aside_content" class="span4">
     <section class="box-in">
-        <h5 class="heading"><small>Narrow</small>Search</h5>
+        <h5 class="heading"><small> Narrow </small> Search </h5>
         <ul class="related">
             <li class="row">
                 <h3>
@@ -16,7 +16,7 @@
                                 </i>
                                 Filter Results
                             </button>
-                            
+
                             {% set narrowSearchParameters = narrowSearchParameters is defined ? narrowSearchParameters : [] %}
                             {#-- create input field for autocomplete narrow search paramters #}
                             {% for _paramName, _paramValue in narrowSearchParameters %}
@@ -24,17 +24,18 @@
                             {% endfor %}
                             <input type="hidden" name="filter" />
                             <input type="hidden" name="term" />
-                            
+
                         </form>
-                        
+
                     </li>
                     {% endblock %}
                 </ul>
-                
+
             </li>
         </ul>
     </section>
 </aside>
+
 <!--End of aside_content-->
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
@@ -47,5 +48,5 @@
     });
 })(jQuery);
 //-->
-</script>    
+</script>
 {% endblock%}

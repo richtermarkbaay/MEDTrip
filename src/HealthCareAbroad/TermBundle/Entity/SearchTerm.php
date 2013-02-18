@@ -13,6 +13,11 @@ class SearchTerm
     private $id;
 
     /**
+     * @var bigint $termDocumentId
+     */
+    private $termDocumentId;
+
+    /**
      * @var bigint $documentId
      */
     private $documentId;
@@ -51,6 +56,28 @@ class SearchTerm
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set termDocumentId
+     *
+     * @param bigint $termDocumentId
+     * @return SearchTerm
+     */
+    public function setTermDocumentId($termDocumentId)
+    {
+        $this->termDocumentId = $termDocumentId;
+        return $this;
+    }
+
+    /**
+     * Get termDocumentId
+     *
+     * @return bigint 
+     */
+    public function getTermDocumentId()
+    {
+        return $this->termDocumentId;
     }
 
     /**

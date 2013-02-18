@@ -23,6 +23,7 @@
                     <p>{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</p>
                     <p>{{ json_decode(institutionMedicalCenter.address) | join(' ') }} </p>
                     <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
+                    <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
                 </div>
             </div>
             <div class="span6" >

@@ -9,6 +9,7 @@ parameters:
             doctor: doctors
             advertisement: ads/{objectId}
             advertisementDenormalizedProperty: ads/{objectId}
+            specialization: specializations
 
 services:
     services.media.pathgenerator:
@@ -45,7 +46,7 @@ services:
             - @service_container
             - @services.media.filesystemmanager
 
-    services.media.twig.extension.:
+    services.media.twig.extension:
         class: HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
         public: false
         tags:
