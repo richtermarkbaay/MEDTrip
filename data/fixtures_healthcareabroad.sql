@@ -517,7 +517,13 @@ CREATE TABLE IF NOT EXISTS `doctor_specializations` (
   PRIMARY KEY (`doctor_id`,`specialization_id`),
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Dumping data for table `doctor_specializations`
+--
 
+INSERT INTO `doctor_specializations` (`doctor_id`, `specialization_id`) VALUES
+(1, 1),
+(2, 1);
 
 -- --------------------------------------------------------
 

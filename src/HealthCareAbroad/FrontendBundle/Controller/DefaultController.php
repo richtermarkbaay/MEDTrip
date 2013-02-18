@@ -239,7 +239,7 @@ class DefaultController extends Controller
     {
         if($this->getRequest()->attributes->get('_route_params')){
 
-            return $this->redirect($this->generateUrl('frontend_main_homepage_index_html'));
+            return $this->redirect($this->generateUrl('frontend_main_homepage'));
         }
 
         //get IP Address
@@ -263,11 +263,11 @@ class DefaultController extends Controller
 
                         $this->get('session')->setFlash('success', "Thank you for signing up!");
                         $referer = $request->server->has('HTTP_REFERER') ? $request->server->get('HTTP_REFERER') : '';
-                        $splashPageUrl = $this->generateUrl('splash_page', array(), true);
-                        $redirectUrl =  $splashPageUrl == $referer || $referer == ''
-                            ?  $splashPageUrl
-                            : $referer;
-                        
+//                         $splashPageUrl = $this->generateUrl('splash_page', array(), true);
+//                         $redirectUrl =  $splashPageUrl == $referer || $referer == ''
+//                             ?  $splashPageUrl
+//                             : $referer;
+                        $redirectUrl = $referer != '' ? $referer : $this->generateUrl('frontend_main_homepage');
                         return $this->redirect($redirectUrl);
                 }
                 catch (\Exception $e) {

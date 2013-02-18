@@ -19,8 +19,7 @@
         
     </div>
 </header> <!--End of header-->
-
-{% if app.request.attributes.get('_route') == 'frontend_main_homepage' %}
+{% if isHomePage is defined and isHomePage %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
         <div id="hero_unit">
             <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>

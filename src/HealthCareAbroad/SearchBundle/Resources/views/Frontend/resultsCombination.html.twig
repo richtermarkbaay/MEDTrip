@@ -8,7 +8,7 @@
     <div id="details" class="row">
         <div id="main_content" class="span8">
             <header class="filters">
-                <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> Results Found</h2>
+                <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
             </header>
             {% for searchResult in searchResults %}
                 {# BC for old search results whose result item is a medical center #}
