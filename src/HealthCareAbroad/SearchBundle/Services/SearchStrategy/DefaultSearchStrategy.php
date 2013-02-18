@@ -483,6 +483,7 @@ class DefaultSearchStrategy extends SearchStrategy
             LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
             LEFT JOIN treatments AS d ON a.treatment_id = d.id
             WHERE a.term_id = :termId AND a.status = {$this->searchTermActiveStatus}
+            GROUP BY b.id, c.id, d.id
             ORDER BY b.id, c.id, d.id
 
         ";
