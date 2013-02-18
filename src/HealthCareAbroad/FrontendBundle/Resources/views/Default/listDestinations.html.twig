@@ -19,8 +19,8 @@
                                 {% set _numCities = cities | length %}
                                 {% for city in cities %}
                                     <li>
-                                        <a href="{{ path('frontend_search_results_cities', {country: country.id, city: city.slug}) }}">{{ city.name }}</a>
-                                        {{ loop.index  != _numCities  ? ',':'' }}
+                                        <a href="{{ path('frontend_search_results_cities', {country: country.id, city: city.slug}) }}">{{ city.name }}</a>{{ loop.index  != _numCities  ? ',':'' }}
+                                        
                                     </li>
                                 {% endfor %}
 
