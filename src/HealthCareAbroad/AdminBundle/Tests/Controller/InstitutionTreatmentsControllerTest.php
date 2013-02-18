@@ -36,12 +36,18 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
         
 //     }
     
+    public function testViewAllMedicalCentersAction()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
+    
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+    
     public function testViewMedicalCenterAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
-        $uri = "/admin/institution/1/medical-center/view/2";
-        $crawler = $client->request('GET', $uri);
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/view/1');
         
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
