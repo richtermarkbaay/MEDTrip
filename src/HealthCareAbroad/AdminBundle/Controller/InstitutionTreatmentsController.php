@@ -771,12 +771,15 @@ class InstitutionTreatmentsController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author acgvelarde
+     * @author ajacobe
      */
     public function portInstitutionAncillaryServiceAction(Request $request)
     {
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+        
+        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
         
         if($request->get('isCopy')) {
             foreach ($institutionAncillaryServices as $ancillaryService)
