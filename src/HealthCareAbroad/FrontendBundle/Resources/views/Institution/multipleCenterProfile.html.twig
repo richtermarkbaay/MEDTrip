@@ -20,7 +20,7 @@
 
 	    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
 
-	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [] } %}
+	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
 
 	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
 
