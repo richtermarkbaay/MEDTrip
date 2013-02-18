@@ -57,10 +57,10 @@
 		</div> <!--End of carousel slide-->
 	</div> <!--End of carousel row-->
 
-	<div class="lower_box row">		
+	<div class="lower_box row-fluid">		
         {% set highlights = json_decode(highlight.highlights) %}
         {% for each in highlights %}
-            <div class="span4">
+            <div class="span6">
                 <div class="media">
                     {% if each.icon %}
                         <img class="media-object img-circle pull-left" src="{{ each.icon.src }}" alt="doctor logo" width="50"/>

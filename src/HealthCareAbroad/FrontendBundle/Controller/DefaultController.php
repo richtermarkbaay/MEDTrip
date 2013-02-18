@@ -52,6 +52,16 @@ class DefaultController extends Controller
         //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
         return $this->render('FrontendBundle:Default:index.html.twig', $params);
     }
+    
+    public function renderNewsletterFormAction()
+    {
+        $newsletterSubscriber = new NewsletterSubscriber();
+        $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+        
+        return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
+                        'subscribeNewsletterForm' => $form->createView()
+        ));
+    }
 
     public function treatmentListAction()
     {
@@ -252,6 +262,13 @@ class DefaultController extends Controller
                         $em->flush($newsletterSubscriber);
 
                         $this->get('session')->setFlash('success', "Thank you for signing up!");
+                        $referer = $request->server->has('HTTP_REFERER') ? $request->server->get('HTTP_REFERER') : '';
+                        $splashPageUrl = $this->generateUrl('splash_page', array(), true);
+                        $redirectUrl =  $splashPageUrl == $referer || $referer == ''
+                            ?  $splashPageUrl
+                            : $referer;
+                        
+                        return $this->redirect($redirectUrl);
                 }
                 catch (\Exception $e) {
 
