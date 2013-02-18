@@ -268,4 +268,9 @@ class Specialization
     {
         return $this->media;
     }
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
