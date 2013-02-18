@@ -14,8 +14,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getActiveAdvertisementsByType(array $types)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c')
+        $qb->select('a,b,c,gal,co,ci')
         ->leftJoin('a.institution', 'b')
+        ->leftJoin('b.country', 'co')
+        ->leftJoin('b.city', 'ci')
+        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->where('a.status = :status')
         ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
@@ -26,33 +29,16 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     }
     
     
-    /**
-     * Get active Advertisement by type discriminator column. Do not apply caching here, instead apply it in service class using this function.
-     *
-     * @return array Advertisement
-     */
-    public function getActiveHomepagePremier()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c')
-           ->leftJoin('a.institution', 'b')
-           ->leftJoin('a.media', 'c')
-           ->where('a.advertisementType = :type')
-           ->andWhere('a.status = :status')
-           ->setParameter('type', 1)
-           ->setParameter('status', 1);
-
-        $result = $qb->getQuery()->getResult();
-
-        return $result;
-    }
-
     public function getActiveFeaturedClinic()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c,d')
+        $qb->select('a,b,c,d,gal,co,ci, imcLogo')
            ->leftJoin('a.institution', 'b')
+           ->leftJoin('b.country', 'co')
+           ->leftJoin('b.city', 'ci')
+           ->leftJoin('b.gallery', 'gal')
            ->innerJoin('a.institutionMedicalCenter', 'c')
+           ->leftJoin('c.logo', 'imcLogo')
            ->leftJoin('a.media', 'd')
            ->where('a.advertisementType = :type')
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')
@@ -68,8 +54,9 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getFeaturedDestinations()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c', 'd')
+        $qb->select('a, b, c,d,gal')
         ->leftJoin('a.institution', 'b')
+        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
@@ -101,8 +88,9 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getCommonTreatments()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c', 'd')
+        $qb->select('a, b, c,d,gal')
         ->leftJoin('a.institution', 'b')
+        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
