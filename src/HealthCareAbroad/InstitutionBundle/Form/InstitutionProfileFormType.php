@@ -82,7 +82,6 @@ class InstitutionProfileFormType extends AbstractType
         if ($city = $this->institution->getCity()) {
             $cityId = $city->getId();
         }
-        
         // only add load cities subscriber if country is not hidden
         if (!$this->_isRemoved('country')) {
             $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());

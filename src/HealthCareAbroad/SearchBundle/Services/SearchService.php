@@ -42,10 +42,17 @@ class SearchService
      */
     public function getDestinations(SearchParameterBag $searchParams)
     {
-        $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
+//         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
-        return $this
-            ->transformResults($this->searchStrategy->search($searchParams));
+//         return $this
+//             ->transformResults($this->searchStrategy->search($searchParams));
+
+        return $this->searchStrategy->getDestinationsByName($searchParams);
+    }
+
+    public function getAllDestinations()
+    {
+        return $this->searchStrategy->getAllDestinations();
     }
 
     /**
@@ -57,23 +64,16 @@ class SearchService
      */
     public function getTreatments(SearchParameterBag $searchParams)
     {
-        $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
+        return $this->searchStrategy->getTreatmentsByName($searchParams);
+    }
 
-        return $this
-            ->transformResults($this->searchStrategy->search($searchParams));
+    public function getAllTreatments()
+    {
+        return $this->searchStrategy->getAllTreatments();
     }
 
     public function loadSuggestions($parameters)
     {
-        /*
-        'searchParameter' =>
-            array (size=1)
-                'specialization' => string '3' (length=1)
-        'filter' => string 'country' (length=7)
-        'term' => string 'e' (length=1)
-        */
-//         /var_dump($parameters); exit;
-
         switch ($parameters['filter']) {
             case 'country';
                 $results = $this->searchStrategy->loadCountries($parameters);
@@ -87,6 +87,7 @@ class SearchService
                 $results = $this->searchStrategy->loadTreatments($parameters);
                 break;
 
+            case 'subSpecialization':
             case 'sub-specialization':
                 $results = $this->searchStrategy->loadSubSpecializations($parameters);
                 break;
@@ -101,21 +102,19 @@ class SearchService
         return $results;
     }
 
+    public function getTermDocumentsFilteredOn(array $filters)
+    {
+        return $this->searchStrategy->getTermDocumentsFilteredOn($filters);
+    }
+
+    public function getTermDocumentsByTermName($searchParams)
+    {
+        return $this->searchStrategy->getTermDocumentsByTermName($searchParams);
+    }
+
     public function getTermDocuments(SearchParameterBag $searchParams)
     {
         $filters = array();
-
-        //         if ($searchParams->get('specializationId', 0)) {
-        //             $filters['specialization_id'] = $searchParams->get('specializationId');
-        //         }
-
-        //         if ($searchParams->get('subSpecializationId', 0)) {
-        //             $filters['sub_specialization_id'] = $searchParams->get('subSpecializationId');
-        //         }
-
-        //         if ($searchParams->get('treatmentId', 0)) {
-        //             $filters['treatment_id'] = $searchParams->get('treatmentId');
-        //         }
 
         if ($searchParams->get('countryId', 0)) {
             $filters['country_id'] = $searchParams->get('countryId');
@@ -177,6 +176,16 @@ class SearchService
     public function searchByTag($tag)
     {
         return $this->searchStrategy->searchMedicalCentersByTerm($tag);
+    }
+
+    /**
+     * Search by terms
+     *
+     * @param array $termIds
+     */
+    public function searchByTerms(array $termIds = array(), array $filters = array())
+    {
+        return $this->searchStrategy->searchMedicalCentersByTerms($termIds, $filters);
     }
 
     public function getMedicalCentersByTerm($term, $type = null)

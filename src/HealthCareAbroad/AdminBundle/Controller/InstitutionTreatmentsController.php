@@ -447,7 +447,7 @@ class InstitutionTreatmentsController extends Controller
     public function editMedicalCenterAction(Request $request)
     {
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
-        $template = 'AdminBundle:InstitutionTreatments:form.MedicalCenter.html.twig';
+        $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {
             $form->bind($this->request);
         
@@ -940,7 +940,7 @@ class InstitutionTreatmentsController extends Controller
     
         if ($fileBag->get('file')) {
              
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionMedicalCenter);
+            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
             if(is_object($result)) {
     
                 $this->institutionMedicalCenter->setLogo($result);

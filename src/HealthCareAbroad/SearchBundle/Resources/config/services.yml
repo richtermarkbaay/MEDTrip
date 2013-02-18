@@ -6,6 +6,14 @@ parameters:
     enableElasticSearch: true
 
 services:
+    services.search.listener:
+        class: HealthCareAbroad\SearchBundle\Services\ProcessSearchListener
+        tags:
+            -
+                name: kernel.event_listener
+                event: kernel.controller
+                priority: -10
+
     #services.search.provider.country:
     #    class: HealthCareAbroad\SearchBundle\ElasticSearch\Providers\CountryProvider
     #    tags: [foq_elastica.provider]

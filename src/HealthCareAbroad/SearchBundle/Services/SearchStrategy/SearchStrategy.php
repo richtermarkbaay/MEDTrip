@@ -97,4 +97,11 @@ abstract class SearchStrategy extends ContainerAware
 
         return $result;
     }
+
+    public function searchMedicalCentersByTerms($termIds = array(), array $filters = array())
+    {
+        $result = $this->container->get('doctrine')->getRepository('TermBundle:SearchTerm')->findByTerms($termIds, $filters);
+
+        return $result;
+    }
 }

@@ -25,6 +25,12 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             length: 250
             nullable: false
             column: business_hours
+        descriptionHighlight:
+            type: text
+            nullable: true
+            gedmo:
+                - versioned
+            column: description_highlight
         description:
             type: text
             nullable: false

@@ -1,6 +1,4 @@
-{% if featuredClinicAds %}
-
-
+{% if advertisements %}
 
 <div class="featured_wrapper">
 	<div class="heading">
@@ -8,7 +6,7 @@
 	</div>
 	<div id="featured_content">
 
-	{% for each in featuredClinicAds %}
+	{% for each in advertisements %}
 	    {% if each.institution and each.institutionMedicalCenter %}
 	    
 	        {#-- set statistic parameters for this advertisement --#}
@@ -51,10 +49,10 @@
 					    </a>
     				</div>
     			</div>
-     			<div class="details row">
+     			<div class="details row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% for clinicHighlight in clinicHighlights %}
-                        <div class="span4">
+                        <div class="span6">
                             <div class="media">
                                 {% if clinicHighlight.icon %}
                                     <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>

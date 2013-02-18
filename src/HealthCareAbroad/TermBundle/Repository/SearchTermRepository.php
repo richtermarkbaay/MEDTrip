@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\TermBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -22,6 +24,37 @@ use Doctrine\ORM\EntityRepository;
 
 class SearchTermRepository extends EntityRepository
 {
+    
+    public function findAllActiveTermsGroupedBySpecialization()
+    {
+        $parameters = array('treatmentType' => TermDocument::TYPE_TREATMENT, 'activeSearchTermStatus' => SearchTerm::STATUS_ACTIVE);
+        // get the treatment_ids that are available in search terms
+        $sql = "SELECT a.documentId FROM TermBundle:SearchTerm a 
+        WHERE a.type = :treatmentType AND a.status = :activeSearchTermStatus
+        GROUP BY a.documentId, a.type";
+        
+        $query = $this->getEntityManager()->createQuery($sql)
+            ->setParameters($parameters);
+        
+        // find a way to flatten this result without looping
+        $result = $query->getArrayResult();
+        $treatmentIds = array();
+        foreach ($result as $row) {
+            $treatmentIds[] = $row['documentId'];
+        }
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('sp, tr, sub_sp')
+            ->from('TreatmentBundle:Specialization', 'sp')
+            ->innerJoin('sp.treatments', 'tr')
+            ->leftJoin('tr.subSpecializations', 'sub_sp')
+            ->where($qb->expr()->in('tr.id', ':treatmentIds'))
+            ->orderBy('sp.name, tr.name')
+            ->setParameter('treatmentIds', $treatmentIds);
+        
+        return $qb->getQuery()->getResult();
+    }
+    
     public function findByCity(City $city)
     {
         $qb = $this->getQueryBuilderByDestination($city->getCountry(), $city);
@@ -218,45 +251,38 @@ class SearchTermRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-//     public function findBySpecializationAndCountry(Specialization $specialization, Country $country)
-//     {
-//         return $this->getQueryBuilderFilteredBy(array($specialization, $country))->getQuery()->getResult();
-//     }
+    public function findByTerms(array $termIds = array(), array $filters = array())
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
 
-//     public function findBySpecializationAndCity(Specialization $specialization, City $city)
-//     {
-//         return $this->getQueryBuilderFilteredBy(array($specialization, $city))->getQuery()->getResult();
-//     }
+        $qb->select('a, imc, inst, co, ci, ga')
+        ->from('TermBundle:SearchTerm', 'a')
+        ->innerJoin('a.institutionMedicalCenter', 'imc')
+        ->innerJoin('a.institution', 'inst')
+        ->innerJoin('inst.country', 'co')
+        ->leftJoin('inst.city', 'ci')
+        ->leftJoin('inst.gallery', 'ga')
+        ->leftJoin('a.term', 't')
+        ->where('a.status = :searchTermActiveStatus')
+        ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE)
+        ->andWhere($qb->expr()->in('t.id', $termIds));
 
-//     public function findBySubSpecializationAndCountry(SubSpecialization $subSpecialization, Country $country, Specialization $specialization = null)
-//     {
-//         $filters = array($subSpecialization, $country);
-//         if ($specialization) {
-//             $filters[] = $specialization;
-//         }
+        foreach ($filters as $filter => $value) {
+            if ($filter == 'treatmentName') {
+                //term id already takes care of this
+            }
 
-//         return $this->getQueryBuilderFilteredBy($filters)->getQuery()->getResult();
-//     }
+            if ($filter == 'destinationName') {
+                $qb->andWhere('(co.name LIKE :destinationName OR ci.name LIKE :destinationName)');
+                //$qb->andWhere('ci.name LIKE :destinationName');
+                $qb->setParameter('destinationName', '%'.$value.'%');
+            }
+        }
 
-//     public function findBySubSpecializationAndCity(SubSpecialization $subSpecialization, City $city, Specialization $specialization)
-//     {
-//         $filters = array($subSpecialization, $country);
-//         if ($specialization) {
-//             $filters[] = $specialization;
-//         }
+        $qb->groupBy('imc.id');
 
-//         return $this->getQueryBuilderFilteredBy(array($subSpecialization, $city))->getQuery()->getResult();
-//     }
-
-//     public function findByTreatmentAndCountry(Treatment $treatment, Country $country)
-//     {
-//         return $this->getQueryBuilderFilteredBy(array($treatment, $country))->getQuery()->getResult();
-//     }
-
-//     public function findByTreatmentAndCity(Treatment $treatment, City $city)
-//     {
-//         return $this->getQueryBuilderFilteredBy(array($treatent, $city))->getQuery()->getResult();
-//     }
+        return $qb->getQuery()->getResult();
+    }
 
     public function findByFilters(array $filters = array()) {
         return $this->getQueryBuilderFilteredBy($filters)->getQuery()->getResult();

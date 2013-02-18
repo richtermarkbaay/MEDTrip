@@ -129,13 +129,13 @@ class DefaultController extends Controller
 
     public function searchTagsAction()
     {
-        $this->_rename('treatments', 'TreatmentBundle:Treatment');
+//         $this->_rename('treatments', 'TreatmentBundle:Treatment');
         
-        $this->_rename('sub_specializations', 'TreatmentBundle:SubSpecialization');
+//         $this->_rename('sub_specializations', 'TreatmentBundle:SubSpecialization');
         
-        $this->_rename('specializations', 'TreatmentBundle:Specialization');
+//         $this->_rename('specializations', 'TreatmentBundle:Specialization');
         
-        exit;
+//         exit;
 //         $data = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Tag')->searchTags($term);
 
 //         $response = new Response(json_encode($data));
@@ -143,6 +143,26 @@ class DefaultController extends Controller
 
 //         return $response;
     }
+    
+    
+    public function populateClinicDescriptionHighlightAction()
+    {
+        $allImcs = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+            ->findAll();
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        foreach ($allImcs as $imc) {
+            echo "Stripping {$imc->getName()}... ";
+            $highlight = \trim(\preg_replace('/&nbsp;/', ' ',\strip_tags($imc->getDescription())));
+            // cut this to 200 chars only
+            $imc->setDescriptionHighlight($highlight);
+            $em->persist($imc);
+            echo "<br/>";
+        }
+        $em->flush();
+        exit;
+    }
+    
     
     // TODO: DEPRECATED ??
     public function autoCompleteSearchAction()
