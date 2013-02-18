@@ -125,6 +125,14 @@ CREATE TABLE IF NOT EXISTS `cities` (
   KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `cities`
+--
+
+INSERT INTO `cities` (`id`, `country_id`, `name`, `slug`, `status`) VALUES
+(1, 1, 'test', 'test', 1),
+(2, 1, 'city', 'test', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -143,6 +151,12 @@ CREATE TABLE IF NOT EXISTS `countries` (
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `countries`
+--
+
+INSERT INTO `countries` (`id`, `name`, `abbr`, `code`, `slug`, `status`) VALUES
+(1, 'USA', 'test', 'test', 'test', 1);
 
 --
 -- Constraints for dumped tables

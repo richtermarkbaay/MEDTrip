@@ -517,7 +517,13 @@ CREATE TABLE IF NOT EXISTS `doctor_specializations` (
   PRIMARY KEY (`doctor_id`,`specialization_id`),
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+--
+-- Dumping data for table `doctor_specializations`
+--
 
+INSERT INTO `doctor_specializations` (`doctor_id`, `specialization_id`) VALUES
+(1, 1),
+(2, 1);
 
 -- --------------------------------------------------------
 
@@ -748,7 +754,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 
 INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo_id`, `contact_email`, `contact_number`, `websites`, `address1`, `city_id`, `country_id`, `zip_code`, `state`, `coordinates`, `date_modified`, `date_created`, `slug`, `signup_step_status`, `status`) VALUES
 (1, 1, 'Ahalia Eye Hospital', 'Ahalia Foundation Eye Hospital, a unit of Ahalia International Foundation which started in 2005 stands tall on a rock solid reputation of reliability, affordability, quality and innovation. Now it has added one more feather to its cap-accreditation by the prestigious Joint Commission International, USA. JCI accreditation is the ultimate recognition in the field of health care and is awarded after a strenuous quality audit conducted by a team of international healthcare experts. \r\n\r\nWith this recognition, Ahalia is proud to herald the arrival of international standard health care to Kerala with special focus on quality improvement, patient safety and infection control. \r\n\r\nEquipped with six operation theaters and state of the art equipments, AFEH has the expertise in all the areas of ophthalmology including advanced Phaco surgery for cataract, latest Lasik treatment for refractive errors and specialty services for Retina, Glaucoma, Pediatric Ophthalmology, Low Vision Aids etc - all this at very affordable rates.', NULL, 'mail@afeh.org', '{"country_code":"1","area_code":"4923","number":"225 000"}', '{"main":"http:\/\/www.ahaliafoundationeyehospital.org","facebook":"https:\/\/www.facebook.com\/pages\/Ahalia-foundation-eye-hospitals\/387889344602118","twitter":"http:\/\/"}', '{"room_number":"","building":"","street":"Kanal Pirivu"}', 1, 1, '1', 'Kerala', '', '2013-01-16 05:08:04', '2012-12-06 06:29:26', 'ahalia-eye-hospital', 0, 9),
-(2, 1, 'Apollo Gleneagles Hospital, Kolkata', 'Apollo Gleneagles Hospitals Kolkata, a 510-bedded multispecialty tertiary care hospital, is a perfect blend of technological excellence, complete infrastructure, competent care and heartfelt hospitality.\r\n\r\nApollo Gleneagles Hospitals is a joint venture of Apollo Group of Hospitals, India and Parkway Health of Singapore.\r\n\r\nThe Parkway Group is a leading healthcare group in Asia. It provides more than 70% of private healthcare in Singapore. Its subsidiaries include Parkway Group Healthcare, which owns a network of regional hospitals and medical centers in Malaysia, India and Brunei; and Parkway Hospitals Singapore, which owns three hospitals in Singapore - East Shore, Gleneagles, Mount Elizabeth Hospitals and Parkway Health Day surgery Centre.', NULL, 'hospital@apollogleneagles.in', '{"country_code":"1","area_code":" 3323","number":" 203 040"}', '{"main":"http:\\/\\/kolkata.apollohospitals.com\\/","facebook":"","twitter":""}', '{"room_number":"","building":"Apollo Gleneagles Hospital","street":"No. 58, Canal Circular Road"}', 40810, 1, '700054', 'West Bengal', '', '2013-01-16 05:08:04', '2012-12-06 06:49:56', 'apollo-gleneagles-hospital-kolkata', 0, 8),
+(2, 1, 'Apollo Gleneagles Hospital, Kolkata', 'Apollo Gleneagles Hospitals Kolkata, a 510-bedded multispecialty tertiary care hospital, is a perfect blend of technological excellence, complete infrastructure, competent care and heartfelt hospitality.\r\n\r\nApollo Gleneagles Hospitals is a joint venture of Apollo Group of Hospitals, India and Parkway Health of Singapore.\r\n\r\nThe Parkway Group is a leading healthcare group in Asia. It provides more than 70% of private healthcare in Singapore. Its subsidiaries include Parkway Group Healthcare, which owns a network of regional hospitals and medical centers in Malaysia, India and Brunei; and Parkway Hospitals Singapore, which owns three hospitals in Singapore - East Shore, Gleneagles, Mount Elizabeth Hospitals and Parkway Health Day surgery Centre.', NULL, 'hospital@apollogleneagles.in', '{"country_code":"1","area_code":" 3323","number":" 203 040"}', '{"main":"http:\\/\\/kolkata.apollohospitals.com\\/","facebook":"","twitter":""}', '{"room_number":"","building":"Apollo Gleneagles Hospital","street":"No. 58, Canal Circular Road"}', NULL, NULL, '700054', 'West Bengal', '', '2013-01-16 05:08:04', '2012-12-06 06:49:56', 'apollo-gleneagles-hospital-kolkata', 0, 2),
 (3, 1, 'Apollo Hospital, Bangalore', 'Apollo Hospitals, Bangalore Ð a world class JCI accredited super speciality hospital, a six-storied facility situated on Bannerghatta road is equipped with the latest in the medical world. \r\n\r\nApollo Hospitals, Bangalore is a tertiary care flagship unit of the Apollo Hospitals Group. The Hospital focuses on centers of excellence like Cardiac Sciences, Neuro Sciences, Orthopaedics, Cancer, Emergency Medicine and Solid Organ Transplants besides the complete range of more than 35 allied medical disciplines under the same roof.', NULL, 'customercare_bangalore@apollohospitals.com', '{"country_code":"1","area_code":"8026","number":"304 050"}', '{"main":"http:\\/\\/www.apollohospitalsbangalore.com\\/","facebook":"","twitter":""}', '{"room_number":"","building":"Apollo Hospitals - Bangalore","street":"154\\/11, Opp. IIM B, Bannerghatta Road"}', 7454, 1, '560076', 'Karnataka', '', '2013-01-16 05:08:04', '2012-12-06 07:01:40', 'apollo-hospital-bangalore', 0, 8),
 (4, 1, 'Apollo Hospital, Chennai', 'The flagship hospital of the Apollo Group, Apollo Hospitals Chennai, was established in 1983. Today it is one of the most respected hospitals in the world, and is also amongst the most preferred destinations for both patients from several parts of India, as well as for medical tourism and medical value travel. The hospital specializes in cutting-edge medical procedures. It has over 60 departments spearheaded by internationally trained doctors who are skillfully supported by dedicated patient-care personnel. It is one of the few hospitals in Chennai that have state of the art facilities for various health disorders.\r\n\r\nIt has been a pioneer among the hospitals in Chennai, and even in India, in many different treatments and procedures.', NULL, 'enquiry@apollohospitals.com', '{"country_code":"","area_code":"","number":""}', '{"main":"","facebook":"","twitter":""}', '{"room_number":"","building":"","street":"Apollo Hospitals - Chennai No. 21, Greams Lane, Off. Greams Road, Chennai 600006 India"}', 22151, 1, '600006', 'Tammil Nadu', '', '2013-01-16 05:08:04', '2012-12-06 07:46:49', 'apollo-hospital-chennai', 0, 8),
 (5, 1, 'Apollo Hospital, Hyderabad', 'Today, Apollo Hospitals, Hyderabad has risen to be on par with the best in the world, in terms of technical expertise, deliverables and outcomes. It has now evolved into a one of a kind institution , the Apollo Health City, Hyderabad, which is the first health city in Asia and a perfect example of an integrated healthcare system offering solutions across the healthcare space. A 350 bedded multi-specialty hospital with over 50 specialties and super-specialties, 10 Centers of Excellence, education, research, information technology, all in one sprawling campus creates an environment dedicated to healing.\r\n\r\nApollo Health City , Hyderabad covers the entire spectrum from illness to wellness and is thus a health city and not a medical city. Institutes for Heart Diseases, Cancer, Joint Diseases, Emergency, Renal Diseases, Neurosciences, Eye and Cosmetic Surgery are all centers of excellence and are positioned to offer the best care in the safest manner to every patient.\r\n\r\nApart from patient care, each of these Centers of Excellence spend a significant amount of time in training and research essentially aimed at preventing disease and improving outcomes when the disease does occur.\r\n\r\nMost of the consultants at the Health city have international experience either educational, work experience - related or observational. The average staff to patient ratio for the hospital is 3:1 with a 1:1 ratio prevailing in priority areas like the Intensive Care Unit and the Cardiac Care Unit.\r\n\r\nApollo Healthcity, Hyderabad handles close to 100,000 patients a year. International patients from Tanzania, the USA, the UAE, Kenya, Oman and neighbouring Asian countries are treated by the hospital every year.', NULL, 'apollohealthcity@apollohospitals.com', '', '', 'Apollo Hospitals Jubilee Hills Hyderabad Andhra Pradesh 500033 India', 20484, 1, '500033', 'Andra Pradesh', '', '2013-01-16 05:08:04', '2012-12-06 07:56:18', 'apollo-hospital-hyderabad', 0, 8);
@@ -834,18 +840,18 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
 -- Table structure for table `institution_medical_centers`
 --
 
-DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `coordinates` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `business_hours` varchar(500) COLLATE ucs2_unicode_ci DEFAULT NULL,
+  `business_hours` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact_number` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact_email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `websites` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `description` text CHARACTER SET latin1 NOT NULL,
+  `description_highlight` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'this is the text that will appear in the results pages. 200 chars only',
+  `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logo_id` bigint(20) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -854,14 +860,15 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `institution_id` (`institution_id`,`name`),
   KEY `logo_id` (`logo_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=ucs2 COLLATE=ucs2_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=ucs2 COLLATE=ucs2_unicode_ci AUTO_INCREMENT=734 ;
 
 --
 -- Dumping data for table `institution_medical_centers`
 --
-INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `coordinates`, `business_hours`, `contact_number`, `contact_email`, `websites`, `description`, `logo_id`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', '', '', '', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
-(2, 2, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', '', '', '', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
+
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `coordinates`, `business_hours`, `contact_number`, `contact_email`, `websites`, `description_highlight`, `description`, `logo_id`, `date_created`, `date_updated`, `slug`, `status`) VALUES
+(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', '', '', '', 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
+(2, 2, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', '', '', '', 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
 
 -- --------------------------------------------------------
 
@@ -1034,7 +1041,9 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 -- Dumping data for table `institution_users`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES ('2', '1', '1', CURRENT_TIMESTAMP, '1');
+INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
+(2, 1, 1, '2013-02-15 02:02:39', 1),
+(3, 2, 2, '2013-02-15 05:59:58', 1);
 -- --------------------------------------------------------
 
 --
@@ -1124,7 +1133,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
 --
 
 INSERT INTO `institution_user_types` (`id`, `institution_id`, `name`, `status`) VALUES
-(1, 1, 'ADMIN', 3);
+(1, 1, 'ADMIN', 3),
+(2, 2, 'ADMIN', 3),
+(3, 3, 'ADMIN', 3);
 
 -- --------------------------------------------------------
 
@@ -1145,7 +1156,8 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
 --
 
 INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
-(1, 1);
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
