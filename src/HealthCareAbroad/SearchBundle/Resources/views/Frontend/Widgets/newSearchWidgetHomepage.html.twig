@@ -249,10 +249,10 @@
 
 	function populateTreatmentOptions(params) {
 	    var selectedOption = $('#treatment-select').val();
-		$('#treatment-select').html('<option></option>');
+		$('#treatment-select').html('<option value="'+ selectedOption +'"></option>');
 	    $.post("{{ path('frontend_search_ajaxLoadTreatments') }}", params, function(response){
 
-   			var options = '';
+	    	var options = '<options></options>';
 			for(i in response) {
 
 				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
@@ -266,9 +266,9 @@
 
 	function populateDestinationOptions(params) {
 	    var selectedOption = $('#destination-select').val();
-		$('#destination-select').html('<option></option>');
+		$('#destination-select').html('<option value="'+ selectedOption +'"></option>');
 	    $.post("{{ path('frontend_search_ajaxLoadDestinations') }}", params, function(response){
-   			var options = '';
+   			var options = '<options></options>';
 			for(i in response) {
 				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
 
