@@ -1,4 +1,13 @@
 <style type="text/css">
+
+    .search_box {
+        width: 100% !important;
+    }
+    
+    .search_box > .btn.submit {
+        float: right;
+    }
+
     .ui-autocomplete {
         max-height: 200px;
         overflow-y: auto;
@@ -249,10 +258,10 @@
 
 	function populateTreatmentOptions(params) {
 	    var selectedOption = $('#treatment-select').val();
-		$('#treatment-select').html('<option></option>');
+		$('#treatment-select').html('<option value="'+ selectedOption +'"></option>');
 	    $.post("{{ path('frontend_search_ajaxLoadTreatments') }}", params, function(response){
 
-   			var options = '';
+	    	var options = '<options></options>';
 			for(i in response) {
 
 				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
@@ -266,9 +275,9 @@
 
 	function populateDestinationOptions(params) {
 	    var selectedOption = $('#destination-select').val();
-		$('#destination-select').html('<option></option>');
+		$('#destination-select').html('<option value="'+ selectedOption +'"></option>');
 	    $.post("{{ path('frontend_search_ajaxLoadDestinations') }}", params, function(response){
-   			var options = '';
+   			var options = '<options></options>';
 			for(i in response) {
 				selected = response[i].value == selectedOption ? ' selected="selected"' : '';
 
@@ -280,7 +289,7 @@
 	}
 </script>
 	
-<form id="mainSearchForm" action="{{ path('frontend_search_process') }}" method="POST" name="search_box" class="span12 search_box" style="width:100%">
+<form id="mainSearchForm" action="{{ path('frontend_search_process') }}" method="POST" class="search_box span12">
     <input type="hidden" id="sb-treatment" name="sb_treatment" value=""/>
     <input type="hidden" id="sb-destination" name="sb_destination" value=""/>
 
@@ -292,7 +301,7 @@
         <select id="destination-select" class="autocomplete-combobox" name="destination_id" data-placeholder="Search Destinations"></select>
     </div>
 
-    <button class="btn" style="float:right">Let's Go</button>
+    <button class="btn submit">Let's Go</button>
     
     <div class="helper-link">
         <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}">View all treatments</a>

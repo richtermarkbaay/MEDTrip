@@ -35,14 +35,14 @@ class AlertService
     public function prepareAlertDb($alertDb)
     {
         // Create Database if NOT EXISTS
-        $this->couchDB->put($alertDb);
+//         $this->couchDB->put($alertDb);
 
-        // Set Database - This will append the database name to the couchDB baseUrl. Ex: http://localhost:5984/{$alertDb} 
-        // as a preparation for every request to couchDB
-        $this->couchDB->setDatabase($alertDb);
+//         // Set Database - This will append the database name to the couchDB baseUrl. Ex: http://localhost:5984/{$alertDb} 
+//         // as a preparation for every request to couchDB
+//         $this->couchDB->setDatabase($alertDb);
 
-        // Create Design Views if NOT EXISTS
-        $this->createAlertViews();
+//         // Create Design Views if NOT EXISTS
+//         $this->createAlertViews();
     }
 
     private function createAlertViews()
