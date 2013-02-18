@@ -11,9 +11,11 @@
     
     		<ul class="thumbnails">
     		    {% for i, each in media if i > 0 %}
-        			<li class="thumbnail">
-        				<a href="">{{ media(each, institution, 'frontendGallery') | raw }}</a>
-        			</li>
+    		        {% if (logo and each.id != logo.id) %}
+            			<li class="thumbnail">
+            				<a href="">{{ media(each, institution, 'frontendGallery') | raw }}</a>
+            			</li>
+                    {% endif %}
     			{% endfor %}
     		</ul>
     		<img class="video" src="/../../images/frontend/media.png" alt="">
