@@ -35,6 +35,7 @@ twig:
     globals:
         site_url: %site_url%
         site_name: %site_name%
+        domain_name: %domain_name%
         cfe_site_url: %cfe_site_url%
         cfe_site_name: %cfe_site_name%
         cfe_company_name: %cfe_company_name%
