@@ -24,25 +24,25 @@ use Doctrine\ORM\EntityRepository;
 
 class SearchTermRepository extends EntityRepository
 {
-    
+
     public function findAllActiveTermsGroupedBySpecialization()
     {
         $parameters = array('treatmentType' => TermDocument::TYPE_TREATMENT, 'activeSearchTermStatus' => SearchTerm::STATUS_ACTIVE);
         // get the treatment_ids that are available in search terms
-        $sql = "SELECT a.documentId FROM TermBundle:SearchTerm a 
+        $sql = "SELECT a.documentId FROM TermBundle:SearchTerm a
         WHERE a.type = :treatmentType AND a.status = :activeSearchTermStatus
         GROUP BY a.documentId, a.type";
-        
+
         $query = $this->getEntityManager()->createQuery($sql)
             ->setParameters($parameters);
-        
+
         // find a way to flatten this result without looping
         $result = $query->getArrayResult();
         $treatmentIds = array();
         foreach ($result as $row) {
             $treatmentIds[] = $row['documentId'];
         }
-        
+
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('sp, tr, sub_sp')
             ->from('TreatmentBundle:Specialization', 'sp')
@@ -51,10 +51,10 @@ class SearchTermRepository extends EntityRepository
             ->where($qb->expr()->in('tr.id', ':treatmentIds'))
             ->orderBy('sp.name, tr.name')
             ->setParameter('treatmentIds', $treatmentIds);
-        
+
         return $qb->getQuery()->getResult();
     }
-    
+
     public function findByCity(City $city)
     {
         $qb = $this->getQueryBuilderByDestination($city->getCountry(), $city);
@@ -120,7 +120,7 @@ class SearchTermRepository extends EntityRepository
      * @param int $documentType
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getQueryBuilderByDocumentIdAndType($documentId, $documentType)
+    public function getQueryBuilderByDocumentIdAndType($documentId, $documentType, $groupedByCenters = true)
     {
         $params = array(
             'documentId' => $documentId,
@@ -139,6 +139,10 @@ class SearchTermRepository extends EntityRepository
         ->andWhere('a.type = :documentType')
         ->andWhere('a.status = :searchTermActiveStatus' )
         ->setParameters($params);
+
+        if ($groupedByCenters) {
+            $qb->groupBy('imc.id');
+        }
 
         return $qb;
     }

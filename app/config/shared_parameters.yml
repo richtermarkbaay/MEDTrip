@@ -1,4 +1,13 @@
 parameters:    
+
+    site_url: http://www.healthcareabroad.com
+    site_name: www.HealthCareAbroad.com
+    domain_name: healthcareabroad.com
+
+    cfe_site_url: http://www.chromedia.com
+    cfe_site_name: www.Chromedia.com
+    cfe_company_name: Chromedia Far East Inc.
+
     ## TinyMCE theme params
     tinymce_textarea_class: "tinymce"
 
