@@ -57,14 +57,6 @@ admin_institution_viewAncilliaryService:
         institutionId: \d+  
         _method:  GET
 
-
-admin_addInstitutionOfferedServices:
-    pattern:  /admin/institution/{institutionId}/add-offered-services
-    defaults: { _controller: AdminBundle:Institution:addInstitutionOfferedServices}
-    requirements:
-         institutionId: \d+
-         _method: GET|POST 
-
 admin_institution_addLanguageSpoken:
     pattern:  /admin/institution/{institutionId}/add-language-spoken
     defaults: { _controller: AdminBundle:InstitutionProperties:addLanguageSpoken }
@@ -94,16 +86,9 @@ admin_loadMedicalProcedures:
          institution_id: \d+
          procedure_type_id: \d+
 
-admin_addInstitutionLanguages:
-    pattern:  /admin/institution/{institutionId}/add-languages
-    defaults: { _controller: AdminBundle:Institution:addInstitutionLanguagesSpoken}
-    requirements:
-         institutionId: \d+
-         _method: GET|POST   
-
 admin_logo_upload:
-    pattern: /admin/institution/{institutionId}/logo/upload/
+    pattern: /admin/institution/{institutionId}/logo/upload
     defaults: { _controller: AdminBundle:Institution:upload }
     requirements:
-        _method: POST
+        _method: POST|GET
         institutionId: \d+

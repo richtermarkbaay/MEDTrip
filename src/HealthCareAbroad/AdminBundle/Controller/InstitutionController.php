@@ -272,66 +272,6 @@ class InstitutionController extends Controller
         return $this->redirect($this->generateUrl('admin_institution_index'));
     }
     
-    /**
-     * @author Chaztine Blance
-     * Add Institution Language Spoken
-     */
-    public function addInstitutionLanguagesSpokenAction(Request $request)
-    {
-    	$languages = $this->getDoctrine()->getRepository('AdminBundle:Language')->getActiveLanguages();
-    	$form = $this->createForm(new InstitutionLanguageSpokenFormType(),$this->institution);
- 
-    	if ($request->isMethod('POST')) {
-    
-    		$form->bind($request);
-    		if ($form->isValid()) {
-    
-    			$institution = $this->get('services.institution.factory')->save($form->getData());
-   				$this->get('session')->setFlash('notice', "Successfully updated Languages Spoken");
-    
-   				//create event on editInstitution and dispatch
-   				$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-   				return $this->redirect($this->generateUrl('admin_institution_edit_details', array('institutionId' => $this->institution->getId())));
-    		}
-    	}
-    	
-    	$languageArr = array();
-    	foreach ($languages as $e) {
-    		
-   			$languageArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-   		}
-    		
-    	$institutionLanguage = $this->getDoctrine()->getRepository('AdminBundle:Language')->getInstitutionLanguage($this->institution->getId());
-   
-    	return $this->render('AdminBundle:Institution:addLanguage.html.twig', array(
-    			'form' => $form->createView(),
-    			'institution' => $this->institution,
-    			'languagesJSON' => \json_encode($languageArr),
-    			'institutionLanguage' => $institutionLanguage,
-    			'newObject' => true
-    	));
-   	}
-   	
-   	public function addInstitutionOfferedServicesAction(Request $request)
-   	{
-   	    $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-   	    $formActionUrl = $this->generateUrl('admin_institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
-   	    if ($request->isMethod('POST')) {
-   	        $form->bind($request);
-   	        if ($form->isValid()) {
-   	            $this->get('services.institution_property')->save($form->getData());
-   	    
-   	            return $this->redirect($formActionUrl);
-   	        }
-   	    }
-   	    
-   	    $params = array(
-   	                    'formAction' => $formActionUrl,
-   	                    'form' => $form->createView()
-   	    );
-   	    return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
-   	}
-   	
    	/**
    	 * Upload logo for Institution
    	 * @param Request $request
@@ -340,9 +280,8 @@ class InstitutionController extends Controller
    	public function uploadAction(Request $request)
    	{
    	    $response = new Response();
-   	
    	    $fileBag = $request->files;
-   	
+   	   
    	    if ($fileBag->get('file')) {
    	
    	        $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
