@@ -44,7 +44,7 @@ class FrontendController extends Controller
                 break;
 
             case 'homepage':
-                $template = 'SearchBundle:Frontend/Widgets:searchWidgetHomepage.html.twig';
+                $template = 'SearchBundle:Frontend/Widgets:newSearchWidgetHomepage.html.twig';
                 break;
 
             case 'sidebar':
