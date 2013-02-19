@@ -128,9 +128,10 @@ class SearchTermRepository extends EntityRepository
             'searchTermActiveStatus' => SearchTerm::STATUS_ACTIVE
         );
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga')
+        $qb->select('a, imc, inst, co, ci, ga, imcLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
+        ->leftJoin('imc.logo', 'imcLogo')
         ->innerJoin('imc.institution', 'inst')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
@@ -157,10 +158,11 @@ class SearchTermRepository extends EntityRepository
     public function getQueryBuilderByDestination(Country $country, City $city = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga')
+        $qb->select('a, imc, inst, co, ci, ga,instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
         ->innerJoin('a.institution', 'inst')
+        ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
         ->leftJoin('inst.gallery', 'ga')
@@ -189,11 +191,13 @@ class SearchTermRepository extends EntityRepository
     public function getQueryBuilderByTerm($termId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga')
+        $qb->select('a, imc, inst, co, ci, ga,imcLogo,instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->leftJoin('a.term', 'term')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
+        ->leftJoin('imc.logo', 'imcLogo')
         ->innerJoin('a.institution', 'inst')
+        ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
         ->leftJoin('inst.gallery', 'ga')
@@ -259,10 +263,12 @@ class SearchTermRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select('a, imc, inst, co, ci, ga')
+        $qb->select('a, imc, inst, co, ci, ga,imcLogo,instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
+        ->leftJoin('imc.logo', 'imcLogo')
         ->innerJoin('a.institution', 'inst')
+        ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
         ->leftJoin('inst.gallery', 'ga')
