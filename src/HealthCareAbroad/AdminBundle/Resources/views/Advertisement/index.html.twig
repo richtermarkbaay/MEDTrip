@@ -24,7 +24,10 @@
                             <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
                             <th>Description</th>
                             <th id="column-advertisementType">
-                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'advertisementType' ? 'sort-' ~ sortOrder : default }}">Type</a>
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'advertisementType' ? 'sort-' ~ sortOrder : '' }}">Type</a>
+                            </th>
+                            <th id="column-dateExpiry">
+                                <a href="{{ app.request.uri }}" class="{{ sortBy == 'dateExpiry' ? 'sort-' ~ sortOrder : '' }}">Expiry Date</a>
                             </th>
                             <th>Status</th>
                             <th>Actions</th>
@@ -34,7 +37,8 @@
 	                    <tr>
 	                        <td>{{ each.title }}</td>
 	                        <td>{{ each.description(30) }}</td>
-	                        <td>{{ each.advertisementType.name }}</td>  
+	                        <td>{{ each.advertisementType.name }}</td>
+	                        <td>{{ each.dateExpiry.date|date("m/d/Y") }}</td>  
 	                        <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
 	                        <td width="60">
 	                            <a href="{{ path('admin_advertisement_edit', {advertisementId: each.id}) }}"><i class="icon-pencil"></i> Edit</a>
