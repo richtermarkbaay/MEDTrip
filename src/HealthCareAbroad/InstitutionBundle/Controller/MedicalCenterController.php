@@ -394,8 +394,10 @@ class MedicalCenterController extends InstitutionAwareController
         $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
         if (\count($submittedSpecializations) > 0) {
             
+
+            
             foreach ($submittedSpecializations as $specializationId => $_data) {
-                
+
                 $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
                 $_institutionSpecialization = new InstitutionSpecialization();
                 $_institutionSpecialization->setSpecialization($specialization);
@@ -1119,11 +1121,14 @@ class MedicalCenterController extends InstitutionAwareController
        
             $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
             if(is_object($result)) {
-                
-               $this->institutionMedicalCenter->setLogo($result);
-               $this->institutionMedicalCenter->addMedia($result);
-               $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-               $this->get('services.institution')->saveMediaToGallery($this->institution, $result);
+
+                $media = $result;
+
+                // Delete current logo
+                $this->get('services.media')->delete($this->institutionMedicalCenter->getLogo(), $this->institution);
+
+                // Save new media as logo
+                $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $media);
             }
         }
         return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));

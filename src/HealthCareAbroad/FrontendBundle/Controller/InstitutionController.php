@@ -97,13 +97,6 @@ class InstitutionController extends Controller
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
         }
-        
-
-        if($gallery && $gallery->getMedia()->count()) {
-            $mediaGallery = $gallery->getMedia()->toArray();
-            $params['featuredImage'] = $mediaGallery[array_rand($mediaGallery)];
-        }
-        
 
         return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
     }

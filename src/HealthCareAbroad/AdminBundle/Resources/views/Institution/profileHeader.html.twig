@@ -1,25 +1,46 @@
 <div class="container">
     <div class="institutionbox-inner">
+
+        <a href="javascript:void(0)" onclick="$('#featuredImageContainer').slideToggle();" style="display: block; margin: 0 auto; width: 150px; text-align:center">show / hide featured image</a>
+    
+        <!-- Institution Featured Image -->
+        <div id="featuredImageContainer" class="photo-group" style="margin-bottom: 10px;width: 950px;position:relative;margin: 0 auto 10px;">
+            <span class="label photo-label" style="position: absolute; right: 15px; top: 15px;">
+                <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionFeaturedImageModal" href="#" title="Edit Featured Image"> 
+                    <i class="icon-picture"></i>
+                </a>
+            </span>
+            <div class="institution-featuredImage" style="padding: 5px; border: 1px solid #ddd">
+                {% if institution.featuredMedia %}
+                    {{ media(institution.featuredMedia, institution, 'default', {alt: '', style: 'width: 950px;'}) | raw }}
+                {% else %}
+                    <img alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                {% endif %}
+            </div>
+        </div> 
+        <!-- End of Institution Featured Image -->
+
+    
         <div class="navbar-inner">
             <div class="span6">
-                <div class="span3">
+                <div class="span3" style="position:relative;">
+                    <span class="label photo-label" style="position: absolute; right: 0; top: 5px;">
+                        <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionLogoModal" href="#"> 
+                            <i class="icon-picture"></i>
+                        </a>
+                    </span>
                     <div class="photo-group">
-                        <div class="institution-logo">
-                            {% if institution.logo is not sameas(NULL) %}
-                                {{ media(institution.logo, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
+                        <div>
+                            {% if institution.logo %}
+                                {{ media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw }}
                             {% else %}
                                 <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                             {% endif %}
                         </div>
-                        <span class="label photo-label" >
-                            <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionLogoModal" href="#"> 
-                                <i class="icon-picture"></i>
-                            </a>
-                        </span>
                     </div>
                 </div>
                 <div class="span9">
-                    <h3>{{ institution.name }}</h3>
+                    <h3 style="padding: 0">{{ institution.name }}</h3>
                     <a href="#"><h5>Manage Your Accreditations, GlobalAwards and Awards</h5></a>
                     <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
                 </div>
@@ -48,6 +69,11 @@
 
 <!-- Modal Institution Logo -->
 {% include 'AdminBundle:Institution/Modals:modal.institutionLogo.html.twig'
+%} <!-- end Modal Institution name -->
+
+
+<!-- Modal Institution Logo -->
+{% include 'AdminBundle:Institution/Modals:modal.institutionFeaturedImage.html.twig'
 %} <!-- end Modal Institution name -->
 
 <!-- Old upload logo. TODO: Change this to bootstrap dialog upload.

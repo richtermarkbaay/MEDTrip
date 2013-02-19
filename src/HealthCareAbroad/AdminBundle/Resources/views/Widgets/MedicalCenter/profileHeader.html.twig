@@ -3,23 +3,23 @@
         <div class="navbar-inner">
             <div class="span6">
                 <div class="span3">
-                    <div class="photo-group">
-                        <div class="institution-logo">
+                    <div class="photo-group" style="position:relative">
+                        <span class="label photo-label" style="position: absolute; right: 0; top: 5px;">
+                            <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionMedicalCenterLogoModal" href="#"> 
+                                <i class="icon-picture"></i>
+                            </a>
+                        </span>
+                        <div>
                               {% if institutionMedicalCenter.logo is not sameas(NULL) %}
                                     {{ media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw }}
                                 {% else %}
                                 <img id="institution-medical-center-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                             {% endif %}
                         </div>
-                        <span class="label photo-label" >
-                            <a data-toggle="modal" role="button" id="institution-logo-link" class="gallerypic" data-target="#institutionMedicalCenterLogoModal" href="#"> 
-                                <i class="icon-picture"></i>
-                            </a>
-                        </span>
                     </div>
                 </div>
                 <div class="span9">
-                    <h3>{{ institutionMedicalCenter.name }}</h3>
+                    <h3 style="padding:0">{{ institutionMedicalCenter.name }}</h3>
                     <p>{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</p>
                     <p>{{ json_decode(institutionMedicalCenter.address) | join(' ') }} </p>
                     <p>{{ institution_address_to_array(institution) | join(', ')}}</p>

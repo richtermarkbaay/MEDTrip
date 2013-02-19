@@ -55,19 +55,23 @@ class InstitutionService
     {
         $this->institutionPropertyService = $v;
     }
-    
-    function saveMediaToGallery(Institution $institution, Media $media)
-    {
-        $this->saveMedia($institution, $media);
-    }
-    
+        
     function saveMediaAsLogo(Institution $institution, Media $media)
     {
         $institution->setLogo($media);
-        $this->saveMedia($institution, $media);
+
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institution);
+        $em->flush($institution);
+    }
+
+    function saveMediaAsFeaturedImage(Institution $institution, Media $media)
+    {
+        $institution->setFeaturedMedia($media);
+        $this->saveMediaToGallery($institution, $media);
     }
     
-    function saveMedia(Institution $institution, Media $media)
+    function saveMediaToGallery(Institution $institution, Media $media)
     {
         $gallery = $institution->getGallery();
     

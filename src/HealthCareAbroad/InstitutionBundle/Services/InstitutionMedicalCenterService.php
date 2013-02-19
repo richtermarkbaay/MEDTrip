@@ -386,4 +386,19 @@ class InstitutionMedicalCenterService
         
         return \json_encode($businessHours);
     }
+
+    /**
+     * Note: This doesn't add the media to institution gallery.
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Media $media
+     */
+    function saveMediaAsLogo(InstitutionMedicalCenter $institutionMedicalCenter, Media $media)
+    {
+        $institutionMedicalCenter->setLogo($media);
+
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionMedicalCenter);
+        $em->flush($institutionMedicalCenter);
+    }
 }

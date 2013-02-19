@@ -1,9 +1,25 @@
 <div class="span9">
+    
+    <a href="javascript:void(0)" onclick="$('#featuredImageContainer').slideToggle();" style="display: block; width: 150px; font-size: 12px; float: right;">show / hide featured image</a>
+    
+    <a id="featuredImageContainer" data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionFeaturedImageModal" style="width:100%;margin-bottom: 20px"> 
+ 
+        {% if institution.featuredMedia %}
+            {{ media(institution.featuredMedia, institution, 'default', {alt: 'Institution Featured Image', style: 'max-height: 310px; width: 100%;'}) | raw }}
+        {% else %}
+        <img width="" height="90" class="pic" alt="[Gallery Photo]" src="/images/institution/image_ph.png" style="max-height: 310px; width: 100%;"> 
+        {% endif %} 
+        
+        <span class="image-icon" style="top: 10px; right: 10px; left: auto;">
+            <img width="32" height="32" title="Change Featured Image" alt="Zoom" src="/images/institution/image-icon.png">
+        </span> 
+    </a>
+
     <div class="row"> 
         <div class="span2">
             <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
                 {% if institution.logo is not sameas(NULL) %}
-                    {{ media(institution.logo, institution, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'institution logo'}) | raw }}
+                    {{ media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw }}
                 {% else %}
                      <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
                 {% endif %} 

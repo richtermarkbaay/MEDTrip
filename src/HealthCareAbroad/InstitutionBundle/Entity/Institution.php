@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-
     /**
      * @var integer $id
      */
@@ -121,9 +120,9 @@ class Institution
     private $logo;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
      */
-    private $institutionLanguagesSpoken;
+    private $featuredMedia;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -134,7 +133,6 @@ class Institution
     {
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionUsers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->institutionLanguagesSpoken = new \Doctrine\Common\Collections\ArrayCollection();
         $this->medicalProviderGroups = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -631,35 +629,25 @@ class Institution
     }
 
     /**
-     * Add institutionLanguagesSpoken
+     * Set featuredMedia
      *
-     * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
+     * @param HealthCareAbroad\MediaBundle\Entity\Media $featuredMedia
      * @return Institution
      */
-    public function addInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
+    public function setFeaturedMedia(\HealthCareAbroad\MediaBundle\Entity\Media $featuredMedia = null)
     {
-        $this->institutionLanguagesSpoken[] = $institutionLanguagesSpoken;
+        $this->featuredMedia = $featuredMedia;
         return $this;
     }
 
     /**
-     * Remove institutionLanguagesSpoken
+     * Get featuredMedia
      *
-     * @param HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken
+     * @return HealthCareAbroad\MediaBundle\Entity\Media 
      */
-    public function removeInstitutionLanguagesSpoken(\HealthCareAbroad\AdminBundle\Entity\Language $institutionLanguagesSpoken)
+    public function getFeaturedMedia()
     {
-        $this->institutionLanguagesSpoken->removeElement($institutionLanguagesSpoken);
-    }
-
-    /**
-     * Get institutionLanguagesSpoken
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionLanguagesSpoken()
-    {
-        return $this->institutionLanguagesSpoken;
+        return $this->featuredMedia;
     }
 
     /**

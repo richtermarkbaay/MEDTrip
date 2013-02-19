@@ -88,7 +88,14 @@ admin_loadMedicalProcedures:
 
 admin_logo_upload:
     pattern: /admin/institution/{institutionId}/logo/upload
-    defaults: { _controller: AdminBundle:Institution:upload }
+    defaults: { _controller: AdminBundle:Institution:upload, media_type: logo }
+    requirements:
+        _method: POST|GET
+        institutionId: \d+
+        
+admin_featuredImage_upload:
+    pattern: /admin/institution/{institutionId}/featured-image/upload
+    defaults: { _controller: AdminBundle:Institution:upload, media_type: featuredImage }
     requirements:
         _method: POST|GET
         institutionId: \d+
