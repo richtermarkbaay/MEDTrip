@@ -17,7 +17,7 @@
 				<form novalidate="novalidate" action="{{ path('admin_institution_edit_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
 				    {{ form_errors(form) }}
 		            {{ form_row( form.name ) }}
-                    {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
+                    {{ form_row( form.description, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
                     {{ form_row( form.contactEmail ) }}
                     {{ form_row( form.contactNumber) }}
                     {{ form_widget( form.websites) }}

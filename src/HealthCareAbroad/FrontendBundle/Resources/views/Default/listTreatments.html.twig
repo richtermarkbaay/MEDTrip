@@ -1,52 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block content %}
-<style>
-<!--
-    .treatments-list div.matches {
-    
-    }
-
-    .treatments-list ul.level1 {
-        border-bottom: 1px solid #E6E6E6;
-        margin-bottom: 1.4em;
-    }
-
-    .treatments-list li {
-        margin: 0.5em 0;
-        list-style: none;
-    }
-    
-    .treatments-list li.level1 {
-        list-style: none;
-    }
-    
-    .treatments-list li.level2 {
-        list-style: none;
-    }
-    
-    .treatments-list li.level1 h5 {
-        font-size: 1.2em;
-    }
-    
-    .treatments-list li.level1 h5  a{
-        color: #4D4D4D;
-    }
-    
-    .treatments-list li.level2 h5 {
-        font-size: 1.0em;
-        font-weight: normal;
-    }
-    
-    .treatments-list li.level2 h5  a{
-        color: #4D4D4D;
-    }
-    
-    .treatments-list ul.level1:last-child {
-        border-bottom: none;
-    }
--->
-</style>
 
     <div id="details" class="row">
         <div id="main_content" class="span10">
@@ -54,13 +8,13 @@
                 <h2 class="total">Treatments</h2>
             </header>
             {#-- media search-matches treatments #}
-            <div class="treatments-list">
+            <div class="media search-matches treatments">
                 <div class="matches">
 
                         {% for specialization in specializations %}
                         
-                            <ul class="match level1" >
-                                <li class="level1">
+                            <ul class="match" >
+                                <li>
                                     <h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5>
                                 </li>
 
@@ -68,19 +22,22 @@
 
                                 {% for subSpecializationName,each in groupedSpecializations %}
 
+                                
                                 <li>
-                                    <ul>
+                                    <ul class="match">
                                     
                                     {% if each.subSpecialization %}
-                                        <li class="level2">
-                                            <h5>
+                                        <li><h5>
                                             <a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: each.subSpecialization.slug}) }}"> {{ subSpecializationName }}</a>
                                             </h5>
-                                        </li>
+                                        </li>    
+                                    {% else %}
+                                        {{ groupedSpecializations | length > 1 ? '<li><h5><a href="#">Other treatments</a></h5></li>' : '' }}
                                     {% endif %}
+                                        
 
                                     {% for treatment in each.treatments %}
-                                        <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.slug }) }}">- {{ treatment.name }}</a></li>
+                                        <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.slug }) }}">{{ treatment.name }}</a></li>
                                     {% endfor %}
                                     
                                     </ul>

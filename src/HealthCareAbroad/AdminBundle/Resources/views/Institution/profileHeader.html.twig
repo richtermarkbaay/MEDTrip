@@ -49,7 +49,6 @@
                 <a href="{{ path('admin_institution_edit_details', {'institutionId': institution.id } ) }}"><h5>Manage Your Institution Profile</h5></a>
 
                 <p>{{ json_decode(institution.contactNumber) | join('-') }}</p>
-                <p>{{ json_decode(institution.address1) | join(' ') }} </p>
                 <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
                 {# -- sites here <p></p> #}
             </div>

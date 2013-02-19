@@ -7,17 +7,21 @@
                 <h2 class="total">Destinations</h2>
             </header>
             {# -- media search-matches treatments -- #}
-            <div class="treatments-list">
+            <div class="media search-matches treatments">
                 <div class="matches">
 
                         {% for country in countries %}
 
-                            <ul class="match level1">
+                            <ul class="match">
                                 <li class="level1"><h5><a href="{{ path('frontend_search_results_countries', {country: country.slug}) }}">{{ country.name }}</a></h5></li>
 
                                 {% set cities = country.cities %}
+                                {% set _numCities = cities | length %}
                                 {% for city in cities %}
-                                    <li><a href="{{ path('frontend_search_results_cities', {country: country.id, city: city.slug}) }}">{{ city.name }}</a></li>
+                                    <li>
+                                        <a href="{{ path('frontend_search_results_cities', {country: country.id, city: city.slug}) }}">{{ city.name }}</a>{{ loop.index  != _numCities  ? ',':'' }}
+                                        
+                                    </li>
                                 {% endfor %}
 
                             </ul>
@@ -30,58 +34,5 @@
         </div><!--End of main_content-->
 
     </div>
-    
-    <style>
-<!--
-    .treatments-list div.matches {
-    
-    }
-
-    .treatments-list ul.level1 {
-        border-bottom: 1px solid #E6E6E6;
-        margin-bottom: 1.4em;
-    }
-
-    .treatments-list li {
-        list-style: none;
-        display: inline-block;
-        margin: 0.5em 0;
-    }
-    
-    .treatments-list li a:after {
-        content: ", ";
-    }
-    
-    .treatments-list li:last-child a:after {
-        content: "";
-    }
-    
-    .treatments-list li.level1 a:after {
-        content: "";
-    }
-    
-    .treatments-list li.level1 {
-        list-style: none;
-        display: block;
-    }
-    
-    .treatments-list li.level2 {
-        list-style: none;
-    }
-    
-    .treatments-list li.level1 h5 {
-        font-size: 1.2em;
-    }
-    
-    .treatments-list li.level1 h5  a{
-        color: #4D4D4D;
-    }
-    
-    .treatments-list ul.level1:last-child {
-        border-bottom: none;
-    }
--->
-</style>
-    
 <!--End of content-->
 {% endblock %}
