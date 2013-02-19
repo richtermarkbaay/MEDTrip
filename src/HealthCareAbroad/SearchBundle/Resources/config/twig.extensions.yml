@@ -1,0 +1,9 @@
+services:
+    search.widget.twig_extension:
+        class: HealthCareAbroad\SearchBundle\Twig\WidgetTwigExtension
+        calls: 
+            - [setTwig, [@twig]]
+        public: false
+        tags:
+            - { name: twig.extension }
+        

@@ -1,0 +1,50 @@
+<form class="">
+
+    <div>
+        <button class="search_dropdown_button btn text-left default btn-pop" data-toggle="dropdown" data-list-container="#treatment_dropdown_menu ul.autocomplete_list_container">
+            <span class="btn-label autocomplete_selected_value_container">
+                Specialization or Treatment
+            </span>
+            <span class="icon-chevron-down pull-right"></span>
+        </button>
+        
+        <div id="treatment_dropdown_menu" class="input-append dropdown-menu" role="menu">
+            <input class="search-field" type="text" data-listContainer="" data-filter="" />
+            <p class="test search-help-text" style="">Please select a treatment</p>
+            <ul id="" class="popup-list autocomplete_list_container"></ul>
+        </div>
+    </div>
+    
+    <div>
+        <button class="search_dropdown_button btn text-left default btn-pop" data-toggle="dropdown" data-target="">
+            <span class="btn-label autocomplete_selected_value_container">
+                City or Country
+            </span>
+            <span class="icon-chevron-down pull-right"></span>
+        </button>
+        
+        <div class="input-append dropdown-menu" role="menu">
+            <input class="search-field" type="text" data-listContainer="" data-filter="" />
+            <p class="test search-help-text" style="">Please select a destination</p>
+            <ul id="" class="popup-list autocomplete_list_container"></ul>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+(function($){
+    $(function(){
+        HomepageSearchWidget.initialize({
+            'treatments': {
+                'dropdown_button': 
+                'dropdown_list_container':
+                '
+            }
+        });
+        $('.search_dropdown_button').on('click', function(e){
+            e.preventDefault();
+            console.log('here');
+        });
+    });
+})(jQuery);
+</script>
