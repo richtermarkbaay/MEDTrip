@@ -74,26 +74,19 @@ class InstitutionSpecializationController extends Controller
      */
     public function ajaxRemoveSpecializationTreatmentAction(Request $request)
     {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId', 0));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
         
-        if (!$institutionSpecialization) {
-            throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
-        }
         if (!$treatment) {
-            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
+            throw $this->createNotFoundException("Invalid treatment {$request->get('tId', 0)}.");
         }
         
-        $institutionSpecialization->removeTreatment($treatment);
+        $this->institutionSpecialization->removeTreatment($treatment);
         
-        try {
+       if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($institutionSpecialization);
+            $em->persist($this->institutionSpecialization);
             $em->flush();
             $response = new Response("Treatment removed", 200);
-        }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
         }
         
         return $response;
@@ -101,19 +94,13 @@ class InstitutionSpecializationController extends Controller
     
     public function ajaxAddMedicalSpecializationTreatmentsAction(Request $request)
     {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
-        if (!$institutionSpecialization ) {
-            throw $this->createNotFoundException('Invalid institution specialization');
-        }
-    
-        
         if ($request->isMethod('POST')) {
             $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
             $em = $this->getDoctrine()->getEntityManager();
             $errors = array();
             $output = array('html' => '');
             foreach ($submittedSpecializations as $_isId => $_data) {
-                if ($_isId == $institutionSpecialization->getSpecialization()->getId()) {
+                if ($_isId == $this->institutionSpecialization->getSpecialization()->getId()) {
                     
                     // set passed treatments as choices
                     $default_choices = array();
@@ -121,17 +108,17 @@ class InstitutionSpecializationController extends Controller
                     foreach ($_treatment_choices as $_t) {
                         $default_choices[$_t->getId()] = $_t->getName();
                         // add the treatment
-                        $institutionSpecialization->addTreatment($_t);
+                        $this->institutionSpecialization->addTreatment($_t);
                     }
     
-                    $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization, array('default_choices' => $default_choices));
+                    $form = $this->createForm(new InstitutionSpecializationFormType(), $this->institutionSpecialization, array('default_choices' => $default_choices));
                     $form->bind($_data);
                     if ($form->isValid()) {
                         try {
-                            $em->persist($institutionSpecialization);
+                            $em->persist($this->institutionSpecialization);
                             $em->flush();
                             $output['html'] = $this->renderView('AdminBundle:InstitutionTreatments:list.institutionTreatments.html.twig', array(
-                                            'institutionSpecialization' => $institutionSpecialization,
+                                            'institutionSpecialization' => $this->institutionSpecialization,
                                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                             'institution' => $this->institution
                             ));
@@ -154,28 +141,22 @@ class InstitutionSpecializationController extends Controller
         }
         else {
             $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
-            $specialization = $institutionSpecialization->getSpecialization();
+            $specialization = $this->institutionSpecialization->getSpecialization();
             $availableTreatments = $this->get('services.institution_medical_center')
-            ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
+            ->getAvailableTreatmentsByInstitutionSpecialization($this->institutionSpecialization);
     
-            try {
-                $html = $this->renderView('AdminBundle:Widgets:modalEditSpecializationForm.html.twig', array(
-                            'availableTreatments' => $availableTreatments,
-                            'form' => $form->createView(),
-                            'formName' => InstitutionSpecializationFormType::NAME,
-                            'specialization' => $specialization,
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'institutionSpecialization' => $institutionSpecialization,
-                            //'currentTreatments' => $institutionSpecialization->getTreatments(),
-                            'institution' => $this->institution
-                ));
-    
-                $response = new Response(\json_encode(array('html' => $html)));
-            }
-            catch (\Exception $e) {
-                $response = new Response($e->getMessage(), 500);
-            }
-    
+            $html = $this->renderView('AdminBundle:Widgets:modalEditSpecializationForm.html.twig', array(
+                        'availableTreatments' => $availableTreatments,
+                        'form' => $form->createView(),
+                        'formName' => InstitutionSpecializationFormType::NAME,
+                        'specialization' => $specialization,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institutionSpecialization' => $this->institutionSpecialization,
+                        //'currentTreatments' => $institutionSpecialization->getTreatments(),
+                        'institution' => $this->institution
+            ));
+
+            $response = new Response(\json_encode(array('html' => $html)));
         }
     
         return $response;
@@ -190,12 +171,7 @@ class InstitutionSpecializationController extends Controller
     {
         $service = $this->get('services.institution_medical_center');
     
-        if (!$this->institutionMedicalCenter) {
-            throw $this->createNotFoundException('Invalid institutionMedicalCenter');
-        }
-    
         if ($this->request->isMethod('POST')) {
-    
             $submittedSpecializations = $this->request->get(InstitutionSpecializationFormType::NAME);
             $em = $this->getDoctrine()->getEntityManager();
             $errors = array();
