@@ -21,6 +21,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->where('a.status = :status')
+        ->orderBy('a.dateExpiry', 'ASC')
         ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
         ->setParameter('advertisementTypes', $types)
         ->setParameter('status', 1);
@@ -41,6 +42,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->leftJoin('c.logo', 'imcLogo')
            ->leftJoin('a.media', 'd')
            ->where('a.advertisementType = :type')
+           ->orderBy('a.dateExpiry', 'ASC')
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')
            ->andWhere('a.status = :status')
            ->setParameter('type', 2)
@@ -61,6 +63,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
         ->andWhere('a.status = :status')
+        ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('type', 3)
         ->setParameter('status', 1);
     
@@ -77,6 +80,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->leftJoin('a.media', 'c')
            ->where('a.advertisementType = :type')
            ->andWhere('a.status = :status')
+           ->orderBy('a.dateExpiry', 'ASC')
            ->setParameter('type', 6)
            ->setParameter('status', 1);
 
@@ -95,6 +99,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
         ->andWhere('a.status = :status')
+        ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('type', 7)
         ->setParameter('status', 1);
 
