@@ -511,7 +511,8 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($this->request);
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
-                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+                $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
+                //$request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
             }
         }
         else {
