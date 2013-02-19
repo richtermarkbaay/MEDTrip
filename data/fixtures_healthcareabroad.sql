@@ -1042,7 +1042,7 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 --
 
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
-(1, 1, 1, '2013-02-13 02:12:02', 1)(2, 1, 1, '2013-02-15 02:02:39', 1),
+(1, 1, 1, '2013-02-13 02:12:02', 1),(2, 1, 1, '2013-02-15 02:02:39', 1),
 (3, 2, 2, '2013-02-15 05:59:58', 1);
 
 -- --------------------------------------------------------
@@ -1159,15 +1159,6 @@ CREATE TABLE IF NOT EXISTS `institution_user_type_roles` (
 INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
 (1, 1),
 (2, 2);
-
---
--- Dumping data for table `institution_user_type_roles`
---
-
-INSERT INTO `institution_user_type_roles` (`institution_user_type_id`, `institution_user_role_id`) VALUES
-(1, 1);
-
-
 
 -- --------------------------------------------------------
 
@@ -1586,6 +1577,14 @@ CREATE TABLE IF NOT EXISTS `treatments` (
   UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `treatments`
+--
+
+INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slug`, `status`) VALUES
+(1, 1, 'treatment', 'test', 'tset', 1),
+(2, 2, 'test', 'test', 'test', 1);
 
 -- --------------------------------------------------------
 
