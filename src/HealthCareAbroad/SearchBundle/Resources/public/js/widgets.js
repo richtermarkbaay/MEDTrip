@@ -1,5 +1,23 @@
 var HomepageSearchWidget = {
-    initialize: function(_options) {
-        $.merge({}, _options)
+    
+    treatmentsSource: null,
+    
+    destinationsSource: null,
+    
+    remoteUrls: {
+        'all': '',
+        'treatments': '',
+        
     }
+        
+    initialize: function(_options) {
+        
+    }
+
+    loadAllSources: function() {
+        
+    },
+    
+    
+    
 }
