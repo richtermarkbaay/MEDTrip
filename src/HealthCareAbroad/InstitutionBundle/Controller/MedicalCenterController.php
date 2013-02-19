@@ -406,12 +406,12 @@ class MedicalCenterController extends InstitutionAwareController
                 // set passed treatments as choices
                 $default_choices = array();
                 if(!empty($_data['treatments'])){
-                $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
-                    foreach ($_treatment_choices as $_t) {
-                        $default_choices[$_t->getId()] = $_t->getName();
-                        // add the treatment
-                        $_institutionSpecialization->addTreatment($_t);
-                    }
+                    $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
+                        foreach ($_treatment_choices as $_t) {
+                            $default_choices[$_t->getId()] = $_t->getName();
+                            // add the treatment
+                            $_institutionSpecialization->addTreatment($_t);
+                        }
                 }
                 $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('default_choices' => $default_choices));
                 $form->bind($_data);
