@@ -3,6 +3,10 @@
         <a class="logo span5" href="{{ path('frontend_main_homepage') }}">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
+        
+        <div class="beta-banner">
+            <span class="message">Currently in BETA</span>
+        </div>
 
         <nav class="menu">
             <ul>
@@ -30,7 +34,7 @@
                 
                 {{ render_search_homepage_widget() | raw }}
                 
-                {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
+                {# render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} #}
             {% endblock %}
         </div>
     </div> <!--End of hero unit-->
