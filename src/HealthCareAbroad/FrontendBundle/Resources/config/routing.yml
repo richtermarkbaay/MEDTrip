@@ -39,6 +39,17 @@ frontend_page_exception_report_send:
     requirements:
         _method:  GET|POST
 
+frontend_page_privacy_policy:
+    pattern:  /privacy-policy.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewPrivacyPolicy }
+    requirements:
+       _method:  GET
+
+frontend_page_terms_of_use:
+    pattern:  /terms-of-use.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewTermsOfUse }
+    requirements:
+       _method:  GET
 
 frontend_treatment_list:
     pattern: /treatments
