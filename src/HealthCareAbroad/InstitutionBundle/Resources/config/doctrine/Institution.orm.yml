@@ -126,7 +126,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 city_id:
                     referencedColumnName: id
             orphanRemoval: false
-            
+
         logo:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             cascade: {  }
@@ -134,6 +134,16 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             inversedBy: null
             joinColumns:
                 logo_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+
+        featuredMedia:
+            targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                featured_media_id:
                     referencedColumnName: id
             orphanRemoval: false
 

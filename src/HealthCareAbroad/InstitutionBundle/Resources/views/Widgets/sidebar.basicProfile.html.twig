@@ -1,5 +1,5 @@
 <div class="box-content">
-    <h4>Basic Profile</h4>        
+    <h4>Basic Profile </h4>
         <div class="mapbox" id="map_canvas" style="width: 180px; height: 170px;"></div>            
         <p class="address_column">
             <span class="address_part">{% set _address = institution_address_to_array(institution) %}</span>
@@ -58,10 +58,10 @@
 <script type="text/javascript">
 $(function(){
 	var coordinates = "{{ institution.coordinates }}";
+	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
 	var mapParams = {
 		address: "{{ _address|join(',') }}",
-		defaultAddress: "{{ institution.city.name }}, {{ institution.city.country }}",
-
+		defaultAddress: city + "{{ institution.country.name }}",
 		mapOnChangeCallback: function(){
 			if(HCAGoogleMap && HCAGoogleMap.latLngString != coordinates) {
 		        $.ajax({
@@ -77,5 +77,6 @@ $(function(){
 	};
 
     HCAGoogleMap.initialize(mapParams);
+
 });
 </script>
