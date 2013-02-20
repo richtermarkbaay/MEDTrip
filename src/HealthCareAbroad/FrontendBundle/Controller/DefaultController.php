@@ -170,7 +170,19 @@ class DefaultController extends Controller
                     array('label' => $treatment->getName())
                 );
                 break;
-
+                
+            case 'frontend_page_privacy_policy' :
+                $templateParams['breadcrumbs'][] = array(
+                        'label' => 'Privacy Policy',
+                );
+                break;
+                    
+            case 'frontend_page_terms_of_use' :
+                $templateParams['breadcrumbs'][] = array(
+                    'label' => 'Terms of Use',
+                );
+                break;
+                    
             case 'frontend_search_combined' :
                 $country = $request->get('country');
                 if ($request->get('specialization')) {
