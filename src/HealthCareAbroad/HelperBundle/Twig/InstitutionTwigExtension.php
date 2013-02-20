@@ -29,12 +29,34 @@ class InstitutionTwigExtension extends \Twig_Extension
     {
         return array(
             'render_institution_logo' => new \Twig_Function_Method($this, 'render_institution_logo'),
+            'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number')
         );
     }
     
     public function getName()
     {
         return 'institution_twig_extension';    
+    }
+    
+    public function render_institution_contact_number(Institution $institution)
+    {
+        $contactNumber = \json_decode($institution->getContactNumber(), true);
+        if (\is_null($contactNumber) || $contactNumber == '') {
+            return null;
+        }
+        else {
+            if (isset($contactNumber['country_code'])) {
+                if (\preg_match('/^\+/', $contactNumber['country_code'])) {
+                    $contactNumber['country_code'] = \preg_replace('/^\++/','+', $contactNumber['country_code']);
+                }
+                else {
+                    // append + to country code
+                    $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
+                }
+            }
+        }
+        
+        return \implode('-', $contactNumber);
     }
     
     public function render_institution_logo(Institution $institution, array $options = array())
