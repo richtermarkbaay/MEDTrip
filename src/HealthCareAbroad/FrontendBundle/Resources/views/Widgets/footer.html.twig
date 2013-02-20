@@ -29,60 +29,10 @@
                         
                         <ul>
                             <li>
-                                <a href="#" data-toggle="modal">Feedback</a>
-                                <!-- Feedback Modal -->
-                                <div id="feedbackHca" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            x
-                                        </button>
-                                        <h3 id="myModalLabel modal-label">
-                                            We are glad to hear from you.
-                                        </h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="alert alert-error">
-                                            <strong>
-                                                Oh Snap!
-                                            </strong>
-                                            Naay Error Dattebayo!
-                                        </div>
-                                        <form class="form-horizontal">
-                                            <div class="control-group row-fluid">
-                                                <label for="inputFullName">
-                                                    <strong>
-                                                        Your Name
-                                                    </strong>
-                                                </label>
-                                                <input type="text" id="inputFullName" placeholder="John Doe">
-                                            </div>
-                                            <div class="control-group row-fluid">
-                                                <label for="inputEmail">
-                                                    <strong>
-                                                        Your Email Address
-                                                    </strong>
-                                                </label>
-                                                <input type="text" id="inputEmail" placeholder="you@domain.com">
-                                            </div>
-                                            <div class="control-group row-fluid">
-                                                <label for="inputMessage">
-                                                    <strong>
-                                                        Enter your message
-                                                    </strong>
-                                                </label>
-                                                <textarea id="inputMessage" rows="5" class="error"></textarea>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn" data-dismiss="modal" aria-hidden="true">
-                                            Cancel
-                                        </button>
-                                        <button class="btn btn-primary orange">
-                                            Send Feedback
-                                        </button>
-                                    </div>
-                                </div>
+                            <a data-toggle="modal" data-id="{{ path('frontend_feedback_modal')}}" data-target="#feedbackHca" onclick="Feedback.showModal(this);" href="#">Feedback</a>
+                             	{% include 'FrontendBundle:Embed:modal.feedbackMessage.html.twig' 
+                            	     with { modalId: 'feedbackHca', modalTitle: 'We are glad to hear from you.'} 
+                            	%}
                             </li>
                             <li>
                                 <a href="#">Inquiry</a>
@@ -132,3 +82,6 @@
 
 	</div> <!--End of class container-->
 </div>
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
+{% endblock %}

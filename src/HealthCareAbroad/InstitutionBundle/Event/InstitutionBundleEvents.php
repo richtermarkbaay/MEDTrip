@@ -40,4 +40,6 @@ final class InstitutionBundleEvents
     const ON_ADD_INSTITUTION_FEEDBACK= 'event.institution_feedback.add';
     const ON_EDIT_INSTITUTION_FEEDBACK = 'event.institution_feedback.edit';
     const ON_DELETE_INSTITUTION_FEEDBACK = 'event.institution_feedback.delete';
+    
+    const ON_ADD_FEEDBACK_MESSAGE= 'event.feedback_message.add';
 }

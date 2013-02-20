@@ -1,0 +1,36 @@
+HealthCareAbroad\HelperBundle\Entity\FeedbackMessage:
+    type: entity
+    table: feedback_messages 
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\FeedbackMessageRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            nullable: false
+            column: name
+        emailAddress:
+            type: string
+            nullable: false
+            column: email_address
+        message:
+            type: text
+            nullable: false
+        remoteAddress:
+            type: string
+            nullable: false
+            column: remote_address
+        httpUseAgent:
+            type: string
+            nullable: false
+            column: http_user_agent
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created         
+    lifecycleCallbacks: {  }

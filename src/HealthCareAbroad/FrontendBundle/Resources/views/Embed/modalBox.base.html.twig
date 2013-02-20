@@ -1,6 +1,10 @@
 <div id="{{ modal.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: auto">
     <div class="modal-header">
+    {% if formId is defined %}
         <button type="button" onclick="Institution.clearForm({{formId}}); return false;" class="close" data-dismiss="modal" aria-hidden="true">x</button> 
+    {% else  %}
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button> 
+    {% endif %}
         <h3 id="myModalLabel">{{ modal.title }}</h3> 
     </div>
 
