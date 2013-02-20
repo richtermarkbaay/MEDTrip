@@ -79,6 +79,32 @@ class AdminController extends Controller
 
         return $response;
     }
+    
+    /**
+     * This is a global/generic ADMIN delete media function. 
+     * Please use this function instead of creating another.
+     * 
+     * @author Adelbert D. Silla
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxDeleteAction(Request $request)
+    {
+        $result = false;
+
+        $mediaId = $request->get('media_id');
+        $parentId = $request->request->get('parent_id');
+        $parentClass = $request->request->get('parent_class');
+
+        $media = $this->getDoctrine()->getRepository('MediaBundle:Media')->find($mediaId);
+        $parentObject = $this->getDoctrine()->getRepository($parentClass)->find($parentId);
+
+        $this->get('services.media')->delete($media, $parentObject);
+        
+        $response = new Response(json_encode(true));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 
     private function extractContext(Request $request)
     {
