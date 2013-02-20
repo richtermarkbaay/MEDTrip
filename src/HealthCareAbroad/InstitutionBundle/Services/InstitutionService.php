@@ -74,18 +74,16 @@ class InstitutionService
     function saveMediaToGallery(Institution $institution, Media $media)
     {
         $gallery = $institution->getGallery();
-    
+
         if(!$gallery) {
             $gallery = new Gallery();
+            $gallery->addMedia($media);
             $gallery->setInstitution($institution);
+        } else {
+            $gallery->addMedia($media);
         }
-    
-        $gallery->addMedia($media);
-    
-        $institution->setGallery($gallery);
-    
+
         $em = $this->doctrine->getEntityManager();
-        $em->persist($institution);
         $em->persist($gallery);
         $em->flush();
     }

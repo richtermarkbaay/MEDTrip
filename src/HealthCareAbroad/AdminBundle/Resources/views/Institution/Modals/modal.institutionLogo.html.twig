@@ -3,7 +3,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
         <h3>Upload Logo</h3>
     </div>
-    <form id="logoModalForm" action="{{ path('admin_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
+    <form id="logoModalForm" action="{{ path('admin_institution_logo_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
         <div class="modal-body">
            <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" size="40" class="profilephoto" />
         </div>

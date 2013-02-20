@@ -16,6 +16,7 @@ var Feedback = {
                  _button.html("Send Feedback").attr('disabled', false);
             },
             error: function(json) {
+            	Feedback.removeErrors("#feedbackForm");
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (json.status == 400) {
                     // invalid form
@@ -23,12 +24,17 @@ var Feedback = {
                 	$.each(_json.html, function(key, item){
                 		_field = _fieldParent+item.field;
                 		$('#feedbackForm').find(_field).addClass('error');
-                		$('div.alert-error').addClass('alert').append(item.error+"<br>");
                 	});
-                    
+                	$('div.alert-error').addClass('alert').append("Please fill up the form properly.");
                 }
                 
             }
         });
-    }
+    },
+	removeErrors: function(_formId) {
+		_formId = $(_formId);
+		_formId.find('.control-group').removeClass('error');
+		_formId.find('.error').removeClass('error');
+		$('div.alert-error').removeClass('alert').html('');
+	},
 };
