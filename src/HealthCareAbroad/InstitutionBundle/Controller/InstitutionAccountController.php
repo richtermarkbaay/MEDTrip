@@ -217,8 +217,8 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
         $pagerParams = array(
-                        'page' => $request->get('page', 1),
-                        'limit' => 10
+            'page' => $request->get('page', 1),
+            'limit' => 10
         );
         $pager = new Pager($pagerAdapter, $pagerParams);
         
