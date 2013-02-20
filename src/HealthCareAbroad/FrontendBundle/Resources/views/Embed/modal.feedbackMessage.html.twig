@@ -1,0 +1,14 @@
+<!-- Feedback Modal -->
+
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:400px;', 'formId': 'feedbackForm'}} %}
+    {% block modalBody %}
+    <span class="ajax_loader"><img src="{{ asset('images/institution/loading.gif') }}" /></span>
+    
+    {% endblock %}
+    
+    {% block footerBody %}
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel </button>
+        <button class="btn btn-primary orange" onclick="return Feedback.submitFeedbackMessageForm(this); return false;" data-divParent="#feedbackMessage_">Send Feedback</button>
+    {% endblock %}
+    
+{% endembed %}

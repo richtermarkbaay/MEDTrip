@@ -55,3 +55,6 @@ parameters:
     event.institution_feedback.add: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent
     event.institution_feedback.edit: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent
     event.institution_feedback.delete: HealthCareAbroad\InstitutionBundle\Event\InstitutionFeedbackEvent
+    
+    # institution feedback message events
+    event.feedback_message.add: HealthCareAbroad\InstitutionBundle\Event\FeedbackMessageEvent
