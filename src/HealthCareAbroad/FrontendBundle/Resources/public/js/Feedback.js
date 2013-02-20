@@ -1,21 +1,4 @@
 var Feedback = {
-		
-    showModal: function (_linkElement) {
-        _linkElement = $(_linkElement);
-        _modal = $(_linkElement.attr('data-target'));
-        _modal.find('.ajax_loader').show();
-        _url = _linkElement.data('id');
-	        $.ajax({
-               url: _url,
-               type: 'GET',
-               dataType: 'json',
-               success: function(response){
-            	   _modal.find('.ajax_loader').hide();
-            	   _modal.find('.modal-body').html(response.html);
-               }
-            });
-    },
-    
     submitFeedbackMessageForm: function (_domButtonElement) {
         _button = $(_domButtonElement);
         _buttonHtml = _button.html();
