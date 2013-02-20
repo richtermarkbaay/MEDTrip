@@ -17,13 +17,10 @@ class FeedbackController extends Controller
     public function viewAction()
     {
         $form = $this->createForm(New FeedbackMessageFormType(), new FeedbackMessage());
-        $templateForm = array( 'form' => $form->createView() );
         
-        $html = $this->renderView('FrontendBundle:Embed:form.feedbackMessage.html.twig', $templateForm);
-        
-        $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        
-        return $response;
+        return $this->render('FrontendBundle:Embed:modal.feedbackMessage.html.twig', array(
+                        'feedbackForm' => $form->createView()
+        ));
     }
     
     public function sendAction(Request $request)

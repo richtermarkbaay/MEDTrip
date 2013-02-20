@@ -29,10 +29,8 @@
                         
                         <ul>
                             <li>
-                            <a data-toggle="modal" data-id="{{ path('frontend_feedback_modal')}}" data-target="#feedbackHca" onclick="Feedback.showModal(this);" href="#">Feedback</a>
-                             	{% include 'FrontendBundle:Embed:modal.feedbackMessage.html.twig' 
-                            	     with { modalId: 'feedbackHca', modalTitle: 'We are glad to hear from you.'} 
-                            	%}
+                            <a data-toggle="modal" data-target="#feedbackHca"  href="#">Feedback</a>
+                             	{% render 'FrontendBundle:Feedback:view' %}
                             </li>
                             <li>
                                 <a href="#">Inquiry</a>
