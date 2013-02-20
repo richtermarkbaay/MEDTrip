@@ -23,44 +23,33 @@
         </tr>
     </tfoot>
     {% endif %}
-
-    {% set mediaCount = 0 %}
-    {% for medium in media %}
-
-        {% if (loop.index - 1) % 4 == 0 %}
-            {% set mediaCount = 1 %}
-            <tr>
-        {% else %}
-            {% set mediaCount = mediaCount + 1 %}
-        {% endif %}
-
-                <td valign="top">{{ media(medium, institution, 'gallery') | raw }}</td>
-
-        {% if mediaCount == 4 %}
-            </tr>
-        {% endif %}
-
-    {% else %}
-        <tr class="">
-            <td colspan="4" align="center"> No media yet. </td>
-        </tr>
-    {% endfor %}
-
 </table>
 
-    <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
-        <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">
-            <label for="caption">Caption</label>
-            <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
-        </form>
-    </div>
+{% set mediaCount = 0 %}
+<ul style="display: table-cell">
+    {% for medium in media %}
+        <li style="display: inline-block; vertical-align: top; margin-bottom:30px; margin-right: 5px;position:relative">
+            {{ media(medium, institution, 'gallery') | raw }}
+        </li>
+    {% else %}
+        <li> No media yet. </li>
+    {% endfor %}
+</ul>
 
-    <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
-        <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
-        <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path(routes.media_delete) }}" method="post">
-            <input type="hidden" name="media_id" id="media_id" />
-        </form>
-    </div>
+
+<div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+    <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">
+        <label for="caption">Caption</label>
+        <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
+    </form>
+</div>
+
+<div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
+    <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+    <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path(routes.media_delete) }}" method="post">
+        <input type="hidden" name="media_id" id="media_id" />
+    </form>
+</div>
 
 {% block inlineJavascriptCode %}
 

@@ -127,6 +127,7 @@ admin_media_ajaxDelete:
         media_id: \d+
         parent_id: \d+
         parent_class: ".+"
+        field_name: ".+"
         _method: POST
 
 # END ADMIN CONTROLLER ROUTES
