@@ -36,8 +36,38 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
             'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
+            'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
         );
     }
+    
+    public function render_institution_medical_center_contact_number(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $contactNumber = \json_decode($institutionMedicalCenter->getContactNumber(), true);
+        if (\is_null($contactNumber) || '' == $contactNumber) {
+            // try to get the institution contact number
+            $contactNumber = \json_decode($institutionMedicalCenter->getInstitution()->getContactNumber(), true);
+        }
+        
+        if (\is_array($contactNumber) && !empty($contactNumber)) {
+            if (isset($contactNumber['country_code'])) {
+                if (\preg_match('/^\+/', $contactNumber['country_code'])) {
+                    $contactNumber['country_code'] = \preg_replace('/^\++/','+', $contactNumber['country_code']);
+                }
+                else {
+                    // append + to country code
+                    $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
+                }
+            }
+            
+            $contactNumber = \implode('-', $contactNumber);
+        }
+        else {
+            $contactNumber = null;
+        }
+        
+        return $contactNumber;
+        
+    } 
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
     {

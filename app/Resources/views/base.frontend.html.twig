@@ -23,18 +23,24 @@
             'js/jquery/jquery-ui-1.9.0.custom.min.js'
             'bundles/statistics/js/frontend.js'
         -->
-        <script type="text/javascript" src="/js/jquery/jquery-1.8.2.js"></script>
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/js/jquery/jquery-ui-1.9.0.custom.min.js"></script>
+        <script type="text/javascript" src="/js/jquery/jquery-ui-1.10.1.custom.min.js"></script>
         <script type="text/javascript" src="/bundles/statistics/js/frontend.js"></script>
-        {# javascripts
+        
+       {#-- 
+        {% javascripts
             'js/jquery/jquery-1.8.2.js'
             'js/bootstrap.min.js'
-            'js/jquery/jquery-ui-1.9.0.custom.min.js'
+            'js/jquery/jquery-ui-1.10.1.custom.min.js'
             'bundles/statistics/js/frontend.js'
+            output='js/compiled-frontend.js'
         %}
         <script src="{{ asset_url }}"></script>
-        {% endjavascripts #}
+        {% endjavascripts %}
+        -- #}
+        
     </head>
 
 
