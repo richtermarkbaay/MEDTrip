@@ -27,10 +27,25 @@
 	</aside> <!--End of aside_content-->
 </div>
 
-<!--Twitter bootstrap Tab JS -->
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{asset('bundles/frontend/js/institution.js')}}"></script>
 <script type="text/javascript">
-	$('#clinicTab a').click(function (e) {
-	  e.preventDefault();
-	  $(this).tab('show');
-	})
+<!--
+(function($){
+    $(function(){
+
+        $('#modal_multiple_institution_inquiry_form').institutionInquiryModalForm({
+            submitButton: $('#modal_institution_inquiry_submitButton'),
+            form: $('form#{{ formId }}') 
+        });
+        
+        $('#clinicTab a').click(function (e) {
+      	  e.preventDefault();
+      	  $(this).tab('show');
+      	})
+    });
+})(jQuery);
+//-->
 </script>
+{% endblock %}
+
