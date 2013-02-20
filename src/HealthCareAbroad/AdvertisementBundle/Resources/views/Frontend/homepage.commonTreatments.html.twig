@@ -11,7 +11,7 @@
 	        {% set link = each.externalUrl %}
             {% set target = hasSubstr(each.externalUrl, domain_name) ? '' : '_blank' %}
 	    {% else %}
-	        {% set link = each.treatment is defined ? get_treatment_url(each.treatment)  : '' %}
+	        {% set link = each.treatment is defined and each.treatment ? get_treatment_url(each.treatment)  : '' %}
 	        {% set target = '' %}
 	    {% endif %}
     
