@@ -68,12 +68,6 @@ institution_media_upload:
     requirements:
         _method: POST
 
-admin_media_delete:
-    pattern: /admin/media/delete
-    defaults: { _controller: MediaBundle:Default:delete}
-    requirements:
-        _method: POST
-
 institution_media_delete:
     pattern: /institution/media/delete
     defaults: { _controller: MediaBundle:Default:delete}
@@ -92,8 +86,10 @@ institution_media_edit_caption:
     requirements:
         _method: POST
 
+
+# Not being used.
 institution_media_ajaxDelete:
-    pattern: /admin/media/ajax-delete
+    pattern: /institution/media/ajax-delete
     defaults: { _controller: InstitutionBundle:Default:mediaAjaxDelete }
     requirements:
         media_id: \d+
@@ -121,14 +117,13 @@ admin_institution_gallery_add:
         institutionId: \d+
 
 admin_media_ajaxDelete:
-    pattern: /admin/media/{media_id}/ajax-delete
-    defaults: { _controller: AdminBundle:Default:mediaAjaxDelete, media_id: ~, parent_id: ~, parent_class: ~, remove_file: false }
+    pattern: /admin/media/ajax-delete
+    defaults: { _controller: MediaBundle:Admin:ajaxDelete }
     requirements:
+        _method: POST
         media_id: \d+
         parent_id: \d+
         parent_class: ".+"
-        field_name: ".+"
-        _method: POST
 
 # END ADMIN CONTROLLER ROUTES
 
