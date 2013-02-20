@@ -27,6 +27,20 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
         email:
             - NotBlank: ~
             - Email: ~
+
+HealthCareAbroad\AdminBundle\Entity\Inquiry:
+    properties:
+        firstName:
+            - NotBlank: {message: 'First Name is required.'}
+        lastName:
+            - NotBlank: {message: 'Last Name is required.'}
+        email:
+            - NotBlank: {message: 'Email Address is required.'}
+            - Email: {message: 'Please supply a valid email address.'}   
+        message:
+            - NotBlank: {message: 'Message is required.'}
+        inquirySubject:
+            - NotBlank: {message: 'Inquiry Subject is required.'}
             
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     properties:

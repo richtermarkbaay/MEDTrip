@@ -51,6 +51,12 @@ frontend_page_terms_of_use:
     requirements:
        _method:  GET
 
+frontend_page_inquiry:
+    pattern: /inquiry.html
+    defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
+    requirements:
+        _method: GET|POST
+        
 frontend_treatment_list:
     pattern: /treatments
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }

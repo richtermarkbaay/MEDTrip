@@ -30,7 +30,7 @@
 
         {% block callout %}{% endblock %}
         
-        <div id="content" class="container {{ class is defined ? class : '' }} {{ isHomePage is defined ? '' : 'content' }}">
+        <div id="{{ _layoutSpecificContentId is defined ? _layoutSpecificContentId : 'content' }}" class="container {{ class is defined ? class : '' }} {{ isHomePage is defined ? '' : 'content' }}">
             {% block content %}{% endblock %}
         </div>
 
