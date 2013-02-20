@@ -32,7 +32,7 @@ frontend_search_process:
 ###### AUTOCOMPLETE ROUTES #####################################################
 
 SearchBundle_widget:
-    resource: "@FrontendBundle/Resources/config/routing.widget.yml"
+    resource: "@SearchBundle/Resources/config/routing.widget.yml"
     prefix:   /
 
 #### END AUTOCOMPLETE ROUTES ###################################################

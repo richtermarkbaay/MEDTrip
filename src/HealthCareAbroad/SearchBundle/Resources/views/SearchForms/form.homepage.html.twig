@@ -2,88 +2,34 @@
     <label>
         Search
     </label>
-    <input type="text" name="procedure" placeholder="Specialization or Treatment">
+    <input type="text" name="treatment_id" placeholder="Specialization or Treatment">
     <label>
         Near
     </label>
-    <input type="text" name="location" placeholder="City, Country or Zip">
+    <input type="text" name="destination_id" placeholder="City, Country or Zip">
     <button onclick="return false" class="btn">
         Let's Go
     </button>
     
     <div class="helper-link">
-        <a class="helper treatment-link" href="treatments.html"> View all specializations</a>
-        <a class="helper white tiny destination-link" href="destinations.html"> View all destinations</a>
-        <div class="popup treatments row-fluid">
-            <button data-toggle="dropdown" class="btn text-left small default btn-pop">
-                <span class="icon-chevron-down pull-right">
-                </span>
+        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"> View all specializations</a>
+        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
+        
+        <div id="treatments_widget_container" class="popup treatments row-fluid" data-autocomplete-field="#treatment_id_autocomplete" data-dropdown-button="#treatments_dropdown_button" data-list-container="#treatments_list">
+            <button id="treatments_dropdown_button" data-toggle="dropdown" class="search_dropdown_button btn text-left small default btn-pop">
+                <span class="icon-chevron-down pull-right"></span>
             </button>
             <div role="menu" class="popup-box dropdown-menu">
-                <input type="text" class="search-field span12">
+                <input id="treatment_id_autocomplete" type="text" class="search-field span12" />
                 <p class="test">
                     Select a treatment
                 </p>
-                <ul class="popup-list treatment">
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                </ul>
+                <ul id="treatments_list" class="popup-list treatment"></ul>
             </div>
         </div>
-        <div class="popup destinations row-fluid">
-            <button data-toggle="dropdown" class="btn text-left small default btn-pop">
+        
+        <div id="destinations_widget_container" class="popup destinations row-fluid">
+            <button id="destinations_dropdown_button"data-toggle="dropdown" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right">
                 </span>
             </button>
@@ -92,63 +38,24 @@
                 <p class="test">
                     Select a destination
                 </p>
-                <ul class="popup-list country">
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                    <li>
-                        <a href="#">A very long treatment name</a>
-                    </li>
-                    <li>
-                        <a href="#">Some treatment</a>
-                    </li>
-                    <li>
-                        <a href="#">Facelift</a>
-                    </li>
-                    <li>
-                        <a href="#">Lorem ipsum</a>
-                    </li>
-                    <li>
-                        <a href="#">Plastic Surgery</a>
-                    </li>
-                    <li>
-                        <a href="#">Immortality</a>
-                    </li>
-                </ul>
+                <ul class="popup-list country"></ul>
             </div>
         </div>
     </div>
 </form>
+<script type="text/javascript" src="{{ asset('bundles/search/js/widgets.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        HomepageSearchWidget
+            .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
+            .initializeByWidgetContainer({
+                'treatments': $('#treatments_widget_container'),
+                'destinations': $('#destinations_widget_container')
+            });
+            
+    });
+})(jQuery);
+//-->
+</script>

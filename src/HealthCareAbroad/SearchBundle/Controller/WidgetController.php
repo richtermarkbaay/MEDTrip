@@ -19,7 +19,11 @@ class WidgetController extends Controller
             case 'destinations':
                 break;
             default:
-                
+                // defaults to loading all
+                $responseData = array(
+                    'treatments' => $this->get('services.search')->getAllTreatments(),
+                    'destinations' => $this->get('services.search')->getAllDestinations(),
+                );
         }
         
         return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
