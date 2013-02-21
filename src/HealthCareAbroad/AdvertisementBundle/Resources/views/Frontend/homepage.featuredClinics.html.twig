@@ -35,6 +35,8 @@
 				        <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
 				            <h3>{{ each.title }}</h3>
 			            </a>
+			            
+			            <a href="{{ get_institution_frontend_url(each.institution) }}"><small>{{ each.institution.name }}</small></a>
     					
     					<p>{{ each.description | raw }}</p>
     				</div>
