@@ -46,7 +46,7 @@ class CommonPageController extends Controller
                 $em->flush();
                 
                 $request->getSession()->setFlash('success', 'Inquiry has been send.');
-    
+                return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }
         }
         
