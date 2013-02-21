@@ -28,15 +28,16 @@ class FeedbackController extends Controller
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
-        
         $feedbackMessage = new FeedbackMessage();
         $form = $this->createForm(New FeedbackMessageFormType(), $feedbackMessage);
         $form->bind($request);
-    
+        
         if ($form->isValid()) {
+          
             $em = $this->getDoctrine()->getEntityManager();
             $feedbackMessage->setRemoteAddress($request->server->get('REMOTE_ADDR'));
             $feedbackMessage->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
+            
             $em->persist($feedbackMessage);
             $em->flush();
     
@@ -45,11 +46,13 @@ class FeedbackController extends Controller
             $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $feedbackMessage));
             
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
-        }else{
             
+        }else{
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
+         
             foreach ($form_errors as $_err) {
+           
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));

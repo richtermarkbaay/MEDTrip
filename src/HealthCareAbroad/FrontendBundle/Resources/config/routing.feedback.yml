@@ -8,4 +8,4 @@ frontend_send_feedback:
     pattern: /send-feedback
     defaults: { _controller: FrontendBundle:Feedback:send }
     requirements:
-        _method:  POST
+        _method:  GET|POST
