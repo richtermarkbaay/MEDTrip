@@ -1,6 +1,7 @@
 <!-- Feedback Modal -->
-{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'customBodyStyle' : 'max-height:400px;', 'formId': 'feedbackForm'}} %}
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'customBodyStyle' : 'max-height:300px; overflow-x: hidden;', 'formId': 'feedbackForm'}} %}
     {% block modalBody %}
+     <div class="alert-box"></div>
     <form novalidate="novalidate" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
         <div class="alert-error"></div>
             {{ form_errors(feedbackForm) }}
@@ -29,7 +30,7 @@
     
     {% block footerBody %}
         <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel </button>
-        <button class="btn btn-primary orange" onclick="return Feedback.submitFeedbackMessageForm(this); return false;" data-divParent="#feedbackMessage_">Send Feedback</button>
+        <button data-loader-text="Processing..."  class="btn btn-primary orange" data-divParent="#feedbackMessage_"  id="modal_feedback_submitButton" >Send Feedback</button>
     {% endblock %}
     
 {% endembed %}
