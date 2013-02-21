@@ -4,21 +4,14 @@
     <div class="row">
         <div class="span8">
             <form id="inquiryForm" novalidate="novalidate" class="inquiry" method="POST" action="{{ path('frontend_page_inquiry') }}">
-                <div id="notice"></div>
                 {{ form_errors(form) }}
                 <h1>Get In Contact</h1>
-                
                 <section class="section">
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="row-field">
                                 <label>My request concerns: *</label>
-                                {% for subject in inquirySubjects %}
-                                    <label class="radio">
-                                        <input value="{{subject.name}}" type="radio" name="inquirySubject">
-                                        {{subject.name | title}}
-                                    </label>
-                                {% endfor %}
+                                {{ form_widget(form.inquirySubject, {attr: {class: 'radio'} })}}
                             </div>
                         </div>
                     </div>
@@ -81,7 +74,8 @@
                             <div class="row-field">
                                 <label>Confirmation</label>
                                 <label class="checkbox">
-                                    <input id="inquiryCheck" type="checkbox" name="inquiry">
+                                    {{ form_widget(form.inquiryCheck) }}
+<!--                                     <input id="inquiryCheck" type="checkbox" name="inquiry"> -->
                                     I confirm that I have understood the legal note and have taken note of and accept the given risks as well as the terms of use and the privacy policy relating to the HCA website.
                                 </label>
                             </div>
@@ -113,8 +107,7 @@
 <!--
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 //-->
-
-    $('#inquirySubmit').click(function() {
+    /*$('#inquirySubmit').click(function() {
         if(!$('#inquiryCheck').attr('checked')) {
             $('#notice').addClass('alert alert-error').html('You need to agree of the terms and privacy policy.').focus();
             window.location.hash = '#notice';
@@ -126,6 +119,6 @@
             return false;
         }
         $('#inquirySubmit').submit();
-    });
+    });*/
 </script>
 {% endblock %}

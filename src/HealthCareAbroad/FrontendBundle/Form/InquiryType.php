@@ -24,6 +24,7 @@ class InquiryType extends AbstractType
     {
         $cityId = 0;
     	$builder
+    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => true, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subjects')))))
     		->add('firstName', 'text', array('error_bubbling' => true))
     		->add('lastName', 'text', array('error_bubbling' => true))
     		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
@@ -31,6 +32,7 @@ class InquiryType extends AbstractType
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => true))
     		->add('message', 'textarea', array('error_bubbling' => true))
+    		->add('inquiryCheck', 'checkbox',array('error_bubbling' => true, 'virtual' => true, 'constraints' => array(new NotBlank(array('message' => 'Please agree to Terms of Use and Privacy Policy.')))))
     		;
     }
     
