@@ -1,9 +1,9 @@
-{% if advertisements %}
+{% if featuredPostsAds %}
 
 <div class="aside-articles aside_wrapper">
 	<div class="viewport">
 		<div class="overview">
-		    {% for each in advertisements %}
+		    {% for each in featuredPostsAds %}
 
     		    {% if each.externalUrl %}
     		        {% set link = each.externalUrl %}

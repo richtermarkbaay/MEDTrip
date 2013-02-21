@@ -39,3 +39,8 @@ services:
         tags:
             - {name: form.type, alias: advertisement_highlight }
                 
+    twig.advertisement_widgets:
+        class: HealthCareAbroad\AdvertisementBundle\Twig\AdvertisementWidgetsTwigExtension
+        arguments: [@twig, @services.advertisement.retriever]
+        tags:
+            - name: twig.extension

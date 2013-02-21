@@ -1,4 +1,4 @@
-{% if advertisements %}
+{% if featuredClinicsAds %}
 
 <div class="featured_wrapper">
 	<div class="heading">
@@ -6,7 +6,7 @@
 	</div>
 	<div id="featured_content">
 
-	{% for each in advertisements %}
+	{% for each in featuredClinicsAds %}
 	    {% if each.institution and each.institutionMedicalCenter %}
 	    
 	        {#-- set statistic parameters for this advertisement --#}

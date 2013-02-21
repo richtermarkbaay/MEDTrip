@@ -32,7 +32,7 @@ class AdminController extends Controller
     public function galleryAction(Request $request)
     {
         $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($this->institution->getId())->toArray());
-        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 12));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 15));
 
         return $this->render('MediaBundle:Admin:gallery.html.twig', array(
                 'institution' => $this->institution,

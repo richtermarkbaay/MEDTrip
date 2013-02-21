@@ -5,23 +5,26 @@
 	<div id="main_content" class="row" style="margin-top: 40px;"> <!-- TODO: Remove Inline style -->
 	    <!-- Main Content -->
 		<div id="content" class="span8">
-            {% render 'AdvertisementBundle:Frontend:renderHomepagePremierAdvertisements' %}
-            
-            {% render 'AdvertisementBundle:Frontend:renderHomepageFeaturedClinics' %}
 
-            {% include 'FrontendBundle:Widgets/Ads:destinations.html.twig' %}
+		    {{ render_homepage_premier_ad() }}
+
+		    {{ render_homepage_featured_clinics_ads() }}
+
+		    {{ render_homepage_featured_destinations_ads() }}
+
 		</div> <!--End Main Content -->
 
 		
 		<!--Sidebar Content -->
 		<aside id="aside-content" class="span4">
-            {% render 'AdvertisementBundle:Frontend:renderHomepageFeaturedPosts' %}
 
-            {% render 'AdvertisementBundle:Frontend:renderHomepageCommonTreatments' %}
+		    {{ render_homepage_featured_posts_ads() }}
 
-            {% render 'AdvertisementBundle:Frontend:renderFeaturedHomepageVideo' %}
+		    {{ render_homepage_common_treatments_ads() }}
+
+            {{ render_homepage_featured_video_ad() }}
+
 		</aside> <!--End of Sidebar Content -->
-
 	</div>
 
 	{{ addInlineJavascript(getTemplateContents('FrontendBundle:Default:indexInline.js.twig')) }} 	

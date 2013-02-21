@@ -1,4 +1,4 @@
-{% if destinationAds|length %}
+{% if featuredDestinationsAds|length %}
     <div class="travel_section_wrapper">
         <div class="heading">
         	<div class="heading_text"><h3>Destinations</h3></div>
@@ -9,7 +9,7 @@
     			...
     		</div>
     		<div id="carousel-inner">
-    		    {% for each in destinationAds %}
+    		    {% for each in featuredDestinationsAds %}
     			<div class="thumb span2">
     				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
     			        {% if each.media %}
