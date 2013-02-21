@@ -48,11 +48,12 @@
                         <td>{{ each.lastName }}</td>
                         <td>{{ each.suffix }}</td>
                         <td>{{ each.country }}</td>
-                        <td><ul class="nav nav-pills">
-                        {% for institutionMedicalCenter in each.institutionMedicalCenters %}
-                            <li> <a href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id} ) }}"> {{ institutionMedicalCenter.institution.name }} </a></li>
-                        {% endfor %}
-                        </ul>
+                        <td>
+                            <ul class="nav nav-pills">
+                            {% for institutionMedicalCenter in each.institutionMedicalCenters %}
+                                <li> <a href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id} ) }}"> {{ institutionMedicalCenter.institution.name }} </a></li>
+                            {% endfor %}
+                            </ul>
                         </td>
                         <td>
                             <ul style="list-style: none;">
