@@ -170,7 +170,7 @@ class DefaultController extends Controller
                     array('label' => $treatment->getName())
                 );
                 break;
-
+                
             case 'frontend_search_combined' :
                 $country = $request->get('country');
                 if ($request->get('specialization')) {

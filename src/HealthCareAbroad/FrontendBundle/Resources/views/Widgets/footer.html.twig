@@ -14,10 +14,10 @@
                                 <a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a>
                             </li>
                              <li>
-                                <a href="#">Terms of Use</a>
+                                <a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a>
                             </li>
                              <li>
-                                <a href="#">Privacy Policy</a>
+                                <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>
                             </li>
                             <li>
                                 <a href="#">Site Map</a>
@@ -29,60 +29,8 @@
                         
                         <ul>
                             <li>
-                                <a href="#" data-toggle="modal">Feedback</a>
-                                <!-- Feedback Modal -->
-                                <div id="feedbackHca" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            x
-                                        </button>
-                                        <h3 id="myModalLabel modal-label">
-                                            We are glad to hear from you.
-                                        </h3>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="alert alert-error">
-                                            <strong>
-                                                Oh Snap!
-                                            </strong>
-                                            Naay Error Dattebayo!
-                                        </div>
-                                        <form class="form-horizontal">
-                                            <div class="control-group row-fluid">
-                                                <label for="inputFullName">
-                                                    <strong>
-                                                        Your Name
-                                                    </strong>
-                                                </label>
-                                                <input type="text" id="inputFullName" placeholder="John Doe">
-                                            </div>
-                                            <div class="control-group row-fluid">
-                                                <label for="inputEmail">
-                                                    <strong>
-                                                        Your Email Address
-                                                    </strong>
-                                                </label>
-                                                <input type="text" id="inputEmail" placeholder="you@domain.com">
-                                            </div>
-                                            <div class="control-group row-fluid">
-                                                <label for="inputMessage">
-                                                    <strong>
-                                                        Enter your message
-                                                    </strong>
-                                                </label>
-                                                <textarea id="inputMessage" rows="5" class="error"></textarea>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn" data-dismiss="modal" aria-hidden="true">
-                                            Cancel
-                                        </button>
-                                        <button class="btn btn-primary orange">
-                                            Send Feedback
-                                        </button>
-                                    </div>
-                                </div>
+                            <a id="feedback-message" href="#">Feedback</a>
+                             	{% render 'FrontendBundle:Feedback:view' %}
                             </li>
                             <li>
                                 <a href="#">Inquiry</a>
@@ -114,21 +62,37 @@
 			<div class="span5 navbar">
 				<p>Copyright 2012, Healthcareabroad.com.All rights reserved</p>
 				<ul class="nav">
-					<li><a href="#">TOS</a></li>
+					<li><a href="{{ path('frontend_page_terms_of_use') }}">TOS</a></li>
 					<li class="divider">/</li>
-					<li><a href="#">Privacy Policy</a></li>
+					<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
 					<li class="divider">/</li>
 					<li><a href="#">History</a></li>
 				</ul>
 			</div>
 			<div class="social span6">
 				<ul class="socials-nav">
-					<li><a href="#"><span class="g-icon"></span></a></li>
-					<li><a href="https://www.facebook.com/healthcareabroadcom"><span class="facebook-icon"></span></a></li>
-					<li><a href="https://twitter.com/HCAbroad"><span class="twitter-icon"></span></a></li>
+					<li><a href="https://plus.google.com/u/0/111671188601151092646/posts" target="_blank"><span class="g-icon"></span></a></li>
+					<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><span class="facebook-icon"></span></a></li>
+					<li><a href="https://twitter.com/HCAbroad" target="_blank"><span class="twitter-icon"></span></a></li>
 				</ul>
 			</div>
 		</div>
 
 	</div> <!--End of class container-->
 </div>
+
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
+    <script type="text/javascript">
+        $('#feedback-message').click(function(){
+        	$('div#feedbackHca').modal('show');
+            return false;
+        });
+
+        $('#feedbackHca').feedbackModalForm({
+            submitButton: $('#modal_feedback_submitButton'),
+            form: $('form#feedbackForm') 
+        });
+
+    </script>
+{% endblock %}

@@ -23,44 +23,30 @@
         </tr>
     </tfoot>
     {% endif %}
-
-    {% set mediaCount = 0 %}
-    {% for medium in media %}
-
-        {% if (loop.index - 1) % 4 == 0 %}
-            {% set mediaCount = 1 %}
-            <tr>
-        {% else %}
-            {% set mediaCount = mediaCount + 1 %}
-        {% endif %}
-
-                <td valign="top">{{ media(medium, institution, 'gallery') | raw }}</td>
-
-        {% if mediaCount == 4 %}
-            </tr>
-        {% endif %}
-
-    {% else %}
-        <tr class="">
-            <td colspan="4" align="center"> No media yet. </td>
-        </tr>
-    {% endfor %}
-
 </table>
 
-    <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
-        <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">
-            <label for="caption">Caption</label>
-            <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
-        </form>
-    </div>
+{% set mediaCount = 0 %}
+<ul style="display: table-cell">
+    {% for medium in media %}
+        <li style="display: inline-block; vertical-align: top; margin-bottom:30px; margin-right: 5px;position:relative" id="media-{{ medium.id }}">
+            {{ media(medium, institution, 'gallery') | raw  }}
+        </li>
+    {% else %}
+        <li> No media yet. </li>
+    {% endfor %}
+</ul>
 
-    <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
-        <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
-        <form id="deleteMediaForm" name="deleteMediaForm" action="{{ path(routes.media_delete) }}" method="post">
-            <input type="hidden" name="media_id" id="media_id" />
-        </form>
-    </div>
+
+<div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+    <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">
+        <label for="caption">Caption</label>
+        <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
+    </form>
+</div>
+
+<div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
+    <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 
 {% block inlineJavascriptCode %}
 
@@ -132,31 +118,26 @@ $(document).ready(function() {
         modal: true,
         buttons: {
             "Delete media": function() {
+
                 /*
                 TODO: it might be better if we don't do ajax here. e.g. normal form submission or link.
                 */
-                $.ajax({
-                    url: $('#deleteMediaForm').attr('action'),
-                    data: {id: media_id, institutionId: institution_id},
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(success) {
+                var deleteElem = '<div style="position:absolute;color: #c00;width:100%;text-align:center;background:#efefef;padding: 5px 0">deleting image...</div>';
+                $('#media-' + media_id).find('.delete-media-from-gallery').replaceWith(deleteElem);
 
-                        if (!success) {
-                            showMessage($('#deleteMediaForm'), 'An error occurred while processing your request.');
-                            setTimeout(function(){$("#delete-media-dialog").dialog("close")}, 2000);
-                        } else {
-                            window.location.reload();
-                        }
-
-                    },
-                    error: function() {
-                        alert('Server error');
-                        $("#edit-media-form-dialog").dialog("close");
+                
+                var url = "{{ path('admin_media_ajaxDelete') }}"; 
+                var params = {media_id: media_id, parent_id: {{ institution.id }}, parent_class: '{{ add_slashes(getClass(institution)) }}'};
+                $.post(url, params, function(response) {
+                    if (!response) {
+                        showMessage($('#deleteMediaForm'), 'An error occurred while processing your request.');
+                        setTimeout(function(){$("#delete-media-dialog").dialog("close")}, 2000);
+                    } else {
+                        $('#media-' + media_id).fadeOut();
                     }
                 });
 
-                $( this ).dialog( "close" );
+            	$(this).dialog("close");
             },
             Cancel: function() {
                 $( this ).dialog( "close" );
@@ -174,7 +155,7 @@ $(document).ready(function() {
     });
 
     $(".attached-delete-form").click(function() {
-        media_id = this.id.substring(11);/*'link_delete'+id*/
+        media_id = $(this).attr('data-media-id');/*'link_delete'+id*/
         $("#delete-media-dialog").dialog("open");
         return false;
     });

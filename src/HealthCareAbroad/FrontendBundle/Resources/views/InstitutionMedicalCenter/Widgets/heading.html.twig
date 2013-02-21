@@ -19,18 +19,11 @@
 	</div>
 	<div class="contact_clinic span6">
     	{% if number %}
-    	    <a id="institution-call" href="javascript:void(0)" class="call btn green">Call Us</a>
-            <script type="text/javascript">
-				$('#institution-call').tooltip({
-					title: '<h5><small>Landline: </small>{{ number }}</h5>',
-					html: true, delay: 0, animation: true, trigger: 'click'
-				});
-			</script>
-    		
+    	    <a rel="tooltip" href="#" class="call btn green" data-contact-number="{{ number }}">Call Us</a>
         {% endif %}
     
     	{% if email %}
-    		<a href="mailto:{{ email }}" id="email" class="email btn green" title="send email to {{email}}">Email</a>
+    		<a href="#modal_imc_inquiry_form" data-toggle="modal" id="email" class="email btn green" title="send email to {{email}}">Email</a>
         {% endif %}
         
     	{% if mainWebsites %}
@@ -44,12 +37,3 @@
        <!-- end Modal InstitutionMedicalCenter Inquiry -->
 	</div>
 </div>
-{% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
-    <script type="text/javascript">
-        $('#email').click(function(){
-        	$('div#modal_imc_inquiry_form').modal('show');
-            return false;
-        });
-    </script>
-{% endblock %}

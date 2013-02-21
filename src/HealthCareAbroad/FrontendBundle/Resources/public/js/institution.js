@@ -1,57 +1,111 @@
-var Institution = {
-	saveInquiry : function(_buttonElem) {
-		_button = $(_buttonElem);
-		_buttonHtml = _button.html();
-		_button.attr('disabled', true)
-		.html('Processing...');
-		_modal = $('#'+_button.attr('data-modalId'));
-		_formId = $(_button).attr('data-formId');
-		_href = $(_formId).attr('action');
-		_fieldParent = $(_button).attr('data-divParent');
-		$.ajax({
+var InstitutionInquiry = {  
+    institutionInquiryComponents: {},
+    
+    institutionInquiryFormInputIdPrefix: 'institutionInquiry',
+    
+    restoreInitialState: function() {
+        InstitutionInquiry.clearErrors().resetForm().resetAlertBox();
+    },
+    
+    resetForm: function() {
+        this.institutionInquiryComponents.form.show().find('input[type="text"],input[type="email"], textarea').val('');
+        this.institutionInquiryComponents.submitButton.attr('disabled', false).show();
+        return this;
+    },
+    
+    clearErrors: function() {
+        InstitutionInquiry.institutionInquiryComponents.form.find('.error').removeClass('error');
+        return this;
+    },
+    
+    resetAlertBox: function(){
+        InstitutionInquiry.institutionInquiryComponents.modal.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+        return this;
+    },
+    
+    showAlertError: function() {
+        InstitutionInquiry
+            .resetAlertBox()
+            .institutionInquiryComponents.modal.find('.alert-box')
+            .addClass('alert alert-error')
+            .html('Please fill up the form properly.');
+        return this;
+    },
+    
+    showAlertSuccess: function() {
+        InstitutionInquiry
+        .resetAlertBox()
+        .institutionInquiryComponents.modal.find('.alert-box')
+        .addClass('alert alert-success')
+        .html('Your inquiry was sent.');
+        return this;
+    },
+    
+    saveInquiry: function(){
+        InstitutionInquiry.clearErrors();
+        $.ajax({
+            url: InstitutionInquiry.institutionInquiryComponents.form.attr('action'),
+            data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
             type: 'POST',
-            url: _href,
-            dataType: "json",
-            data: $(_formId).serialize(),
-            success: function(response) {
-            	_button.html(_buttonHtml).attr('disabled', false);
-            	_modal.modal('hide');
-            	Institution.removeErrors(_formId);
+            dataType: 'json',
+            success: function(response){
+                InstitutionInquiry.institutionInquiryComponents.submitButton
+                .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
+                .attr('disabled', false)
+                .hide();
+                InstitutionInquiry.institutionInquiryComponents.form.hide();
+                InstitutionInquiry.showAlertSuccess();
             },
-            error: function(json) {
-            	Institution.removeErrors(_formId);
-                _button.html(_buttonHtml).attr('disabled', false);
-                if (json.status == 400) {
-                    // invalid form
-                	_json = $.parseJSON(json.responseText);
-                	$.each(_json.html, function(key, item){
-                		_field = _fieldParent+item.field;
-                		$(_formId).find(_field).addClass('error');
-                		$('div.alert-error').addClass('alert').append(item.error+"<br>");
-                	});
-                    
+            error: function(response){
+                InstitutionInquiry.institutionInquiryComponents.submitButton
+                .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
+                .attr('disabled', false);
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        InstitutionInquiry.showAlertError();
+                        $.each(errors, function(key, item){
+                            $('#'+InstitutionInquiry.institutionInquiryFormInputIdPrefix+'_'+item.field).addClass('error');
+                        });
+                    }
                 }
-                
             }
         });
-		
-		return this;
-	},
-	
-	removeErrors: function(_formId) {
-		_formId = $(_formId);
-		_formId.find('.control-group').removeClass('error');
-		_formId.find('.error').removeClass('error');
-		$('div.alert-error').removeClass('alert').html('');
-	},
-	
-	clearForm: function(_name) {
-		_name.reset();
-		_formId = $('#'+_name.id); 
-		_formId.find('.control-group').removeClass('error');
-		_formId.find('.error').removeClass('error');
-		$('div.alert-error').removeClass('alert').html('');
+    }
+    
+};
 
-		return this;
-    },
-}
+
+(function($){
+    $.fn.institutionInquiryModalForm = function(_components){
+        
+        InstitutionInquiry.institutionInquiryComponents = {
+            'modal': this,
+            'submitButton': _components.submitButton,
+            'form': _components.form
+        };
+        
+        InstitutionInquiry.institutionInquiryComponents.modal.live('show', function(){
+            InstitutionInquiry.restoreInitialState();
+        });
+        
+        // initialize submit submitButton
+        InstitutionInquiry.institutionInquiryComponents.submitButton.click(function(){
+            $(this).attr('data-html', $(this).html())
+                .html($(this).attr('data-loader-text'))
+                .attr('disabled', true);
+            
+            InstitutionInquiry.institutionInquiryComponents.form.submit();
+            
+            return false;
+        });
+        InstitutionInquiry.institutionInquiryComponents.form.submit(function(){
+            
+            InstitutionInquiry.saveInquiry();
+            
+            return false;
+        });
+        
+        return this;
+    }
+})(jQuery);

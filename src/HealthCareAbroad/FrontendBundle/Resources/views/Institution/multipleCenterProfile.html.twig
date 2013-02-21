@@ -14,7 +14,7 @@
 
 	<aside id="aside_content" class="span4">
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+	    {# include 'FrontendBundle:Widgets:profileLocationAside.html.twig' #}
 
 	    {% include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' %}
 
@@ -27,10 +27,38 @@
 	</aside> <!--End of aside_content-->
 </div>
 
-<!--Twitter bootstrap Tab JS -->
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{asset('bundles/frontend/js/institution.js')}}"></script>
 <script type="text/javascript">
-	$('#clinicTab a').click(function (e) {
-	  e.preventDefault();
-	  $(this).tab('show');
-	})
+<!--
+(function($){
+    $(function(){
+
+        $('#modal_multiple_institution_inquiry_form').institutionInquiryModalForm({
+            submitButton: $('#modal_institution_inquiry_submitButton'),
+            form: $('form#{{ formId }}') 
+        });
+        
+        $('a.call[rel="tooltip"]').tooltip({
+            title: function(){
+                return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
+            },
+            html: true,
+            delay: 0,
+            trigger: 'click',
+            animation: false,
+            placement: 'top'
+        }).click(function(){
+            return false;
+        });
+		
+        $('#clinicTab a').click(function (e) {
+      	  e.preventDefault();
+      	  $(this).tab('show');
+      	});
+    });
+})(jQuery);
+//-->
 </script>
+{% endblock %}
+
