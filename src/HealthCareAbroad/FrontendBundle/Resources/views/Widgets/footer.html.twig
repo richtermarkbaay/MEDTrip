@@ -29,7 +29,7 @@
                         
                         <ul>
                             <li>
-                            <a data-toggle="modal" data-target="#feedbackHca"  href="#">Feedback</a>
+                            <a id="feedback-message" href="#">Feedback</a>
                              	{% render 'FrontendBundle:Feedback:view' %}
                             </li>
                             <li>
@@ -80,6 +80,19 @@
 
 	</div> <!--End of class container-->
 </div>
+
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
+    <script src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
+    <script type="text/javascript">
+        $('#feedback-message').click(function(){
+        	$('div#feedbackHca').modal('show');
+            return false;
+        });
+
+        $('#feedbackHca').feedbackModalForm({
+            submitButton: $('#modal_feedback_submitButton'),
+            form: $('form#feedbackForm') 
+        });
+
+    </script>
 {% endblock %}
