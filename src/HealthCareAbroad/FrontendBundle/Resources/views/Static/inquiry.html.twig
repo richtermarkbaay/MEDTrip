@@ -1,0 +1,131 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+{% set _layoutSpecificContentId = 'inquiry-content'%}
+{% block content %}
+    <div class="row">
+        <div class="span8">
+            <form id="inquiryForm" novalidate="novalidate" class="inquiry" method="POST" action="{{ path('frontend_page_inquiry') }}">
+                <div id="notice"></div>
+                {{ form_errors(form) }}
+                <h1>Get In Contact</h1>
+                
+                <section class="section">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="row-field">
+                                <label>My request concerns: *</label>
+                                {% for subject in inquirySubjects %}
+                                    <label class="radio">
+                                        <input value="{{subject.name}}" type="radio" name="inquirySubject">
+                                        {{subject.name | title}}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section">
+                    <h2>Personal Details</h2>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="row-field">
+                                <label for="inquire_firstName">First Name *</label>
+                                {{ form_widget(form.firstName, {attr: {class: 'span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_lastName">Last Name *</label>
+                                {{ form_errors(form.lastName) }}
+                                {{ form_widget(form.lastName, {attr: {class: 'span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_country">Country</label>
+                                {{ form_widget(form.country, {attr: {class: 'span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_city">City</label>
+                                {{ form_widget(form.city, {attr: {class: 'city_dropdown span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_contactNumber">Phone</label>
+                                {{ form_widget(form.contactNumber, {attr: {class: 'span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_email">Email Address *</label>
+                                {{ form_widget(form.email, {attr: {class: 'span12'} } )}}
+                            </div>
+                            <div class="row-field">
+                                <label for="inquire_message">Message *</label>
+                                {{ form_widget(form.message, {attr: {class: 'span12', rows: 5, cols: 60} } ) }}
+                            </div>
+                                                        
+                        </div>
+                    </div>
+                </section>
+                <section class="section">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <strong>Legal note:</strong>
+                            <p>The data entered into this form is transmitted encrypted to HCA via the internet. Nevertheless, in order to maintain discretion, please do not include any confidential data such as account numbers. Via this form HCA does not accept any instructions for business transactions such as the opening of accounts, payment orders, trading orders, revocations of orders or authorizations, blocking of credit cards, changes of address, etc. Please contact the appropriate office or your client advisor for such transactions.</p>
+                            <p>By providing your telephone number and/or e-mail address above you expressly approve HCA contacting you via telephone and/or via unsecured e-mail.</p>
+                            <strong>Please note:</strong>
+                            <p>The use of e-mail can involve substantial risks such as lack of confidentiality, potential manipulation of contents or sender's address, wrong recipient, viruses etc. HCA assumes no responsibility for any loss or damage resulting from the use of e-mails. HCA recommends in particular that you do not send any sensitive information, that you do not include details of the previous message in any reply, and that you enter e-mail addresses manually every time you write an e-mail.</p>
+                            <p>
+                                <a href="terms-of-use.html">Terms of Use</a>
+                                <a href="privacy-policy">Privacy Policy</a>
+                            </p>
+                        </div>
+                    </div>
+                </section>
+                <section class="section">
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="row-field">
+                                <label>Confirmation</label>
+                                <label class="checkbox">
+                                    <input id="inquiryCheck" type="checkbox" name="inquiry">
+                                    I confirm that I have understood the legal note and have taken note of and accept the given risks as well as the terms of use and the privacy policy relating to the HCA website.
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="row-fluid terms">
+                        <p>Please complete all fields marked with *.</p>
+                    </div>
+                </section>
+                <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <button class="pull-right btn"> Cancel </button>
+                            <button id="inquirySubmit" class="pull-right btn btn-primary orange"> Submit </button>
+                        </div>
+                    </div>
+                </section>
+                {{ form_rest(form) }}    
+            </form>
+        </div>
+        <!--End of main_content-->
+    </div>
+{% endblock %}
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+<!--
+    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+//-->
+
+    $('#inquirySubmit').click(function() {
+        if(!$('#inquiryCheck').attr('checked')) {
+            $('#notice').addClass('alert alert-error').html('You need to agree of the terms and privacy policy.').focus();
+            window.location.hash = '#notice';
+            return false;
+        }
+        if(!$('input[name="inquirySubject"]:checked').val()) {
+            $('#notice').append('<ul><li>Inquiry Subject is required.</li></ul>');
+            window.location.hash = '#notice';
+            return false;
+        }
+        $('#inquirySubmit').submit();
+    });
+</script>
+{% endblock %}
