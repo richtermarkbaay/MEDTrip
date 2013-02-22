@@ -1000,7 +1000,8 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
 
 INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
 (1, 1, 1, '<p>asdfsdf asdf asdf asdf</p>', '2012-12-08 17:31:05', '2012-12-08 17:31:05', 1),
-(2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1);
+(2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1),
+(3, 1, 3, 'test 3', '2013-02-22 07:23:45', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -1596,7 +1597,7 @@ CREATE TABLE IF NOT EXISTS `treatments` (
 INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slug`, `status`) VALUES
 (1, 1, 'treatment', 'test', 'tset', 1),
 (2, 2, 'test', 'test', 'test', 1),
-(3, 3, 'test 3', 'test', 'test', 1),
+(3, 1, 'test 3', 'test', 'test', 1),
 (4, 3, 'testing', 'test', 'test', 1),
 (5, 4, 'test treatment', 'test', 'test', 1);
 
