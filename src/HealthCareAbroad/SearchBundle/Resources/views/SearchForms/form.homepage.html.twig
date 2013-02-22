@@ -1,9 +1,9 @@
 <form class="span12 search_box  form-inline broad_search_form" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <label>Search</label>
-    <input type="text" name="treatment_input_field" placeholder="Specialization or Treatment">
+    <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-provide="typeahead">
     <input type="hidden" name="treatment_id" id="treatment_id" />
     <label>Near</label>
-    <input type="text" name="destination_input_field" placeholder="City or Country">
+    <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-provide="typeahead">
     <input type="hidden" name="destination_id" id="destination_id"/>
     <button type="submit" class="btn">Let's Go</button>
     
@@ -44,12 +44,12 @@
             .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
             .initializeForm($('form.broad_search_form'), {
                 treatments: {
-                    'mainInputField': $('input[name="treatment_input_field"]'),
+                    'mainInputField': $('input#treatment_input_field'),
                     'dropdownButton': $('#treatments_dropdown_button'),
                     'autocompleteField': $('#treatments_autocomplete_field')
                 },
                 destinations: {
-                    'mainInputField': $('input[name="destination_input_field"]'),
+                    'mainInputField': $('input#destination_input_field'),
                     'dropdownButton': $('#destinations_dropdown_button'),
                     'autocompleteField': $('#destinations_autocomplete_field')
                 }

@@ -7,6 +7,10 @@ var BroadSearchWidget = {
     
     form: null,
     
+    submitButton: null,
+    
+    inputboxCommonClass: '.type_in',
+    
     formComponents: {
         treatments: {
             'mainInputField': null,
@@ -15,6 +19,7 @@ var BroadSearchWidget = {
             'autocompleteField': null,
             'dataSource': {},
             'valueField': '#treatment_id',
+            'selectedLabel': '',
         },
         destinations: {
             'mainInputField': null,
@@ -22,25 +27,14 @@ var BroadSearchWidget = {
             'dropdownButton': null,
             'autocompleteField': null,
             'dataSource': {},
-            'valueField': '#destination_id'
+            'valueField': '#destination_id',
+            'selectedLabel': '',
         }
     },
     
     setSourceUri: function(_v){
         this.sourceUri = _v;       
         return this;
-    },
-    
-    loadAllSources: function() {
-        $.ajax({
-           url: BroadSearchWidget.sourceUri,
-           data: {type:"all"},
-           dataType: 'json',
-           success: function(response) {
-               BroadSearchWidget.formComponents.treatments.dataSource = response.treatments;
-               BroadSearchWidget.formComponents.destinations.dataSource = response.destinations;
-           }
-        });
     },
     
     loadSourcesByType: function(params) {
@@ -63,24 +57,36 @@ var BroadSearchWidget = {
         }
     },
     
-    initializeForm: function(form, components){
-        
-        BroadSearchWidget.form = form;
-        $.extend(true, BroadSearchWidget.formComponents, components);
-        
-        // load all
-        // this may not always be the desirable, especially if ajax request is slow
-        BroadSearchWidget.loadAllSources();
-        
+    initializeComponents: function(){
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
-            componentOptions.mainInputField.click(function(e){
-                componentOptions.dropdownButton.click();
-                return false;
-            });
+            
+            /*componentOptions.mainInputField.typeahead({
+                minLength: 1, 
+                source: function(query, process){
+                    var src = BroadSearchWidget.formComponents[type].dataSource;
+                    
+                    
+                }
+            );*/
+            componentOptions.mainInputField.change(function(){
+                // value has changed from what was selected from the list
+                var _val = $.trim($(this).val());
+                if ( _val != BroadSearchWidget.formComponents[type].selectedLabel) {
+                    $(BroadSearchWidget.formComponents[type].valueField).val('0');
+                }
+                if (!_val.length) {
+                    // check if the other type_in inputs are empty
+                    var _emptyTextboxesLen = BroadSearchWidget.form.find(BroadSearchWidget.inputboxCommonClass+':text[value=""]').length;
+                    var _allTextboxesLen = BroadSearchWidget.form.find(BroadSearchWidget.inputboxCommonClass+':text').length;
+                    BroadSearchWidget.submitButton.attr('disabled', _emptyTextboxesLen == _allTextboxesLen);
+                }
+                $(this).val(_val); // just incase there are trailing whitespaces                
+                
+            })
+            .change();
             
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
-                componentOptions.autocompleteField.focus();
             });
             
             componentOptions.autocompleteField
@@ -121,11 +127,32 @@ var BroadSearchWidget = {
                             // set the value fields
                             BroadSearchWidget.formComponents[item.type].mainInputField.val(item.label);
                             $(BroadSearchWidget.formComponents[item.type].valueField).val(item.value);
+                            BroadSearchWidget.formComponents[item.type].selectedLabel = item.label;
+                            // enable the button
+                            BroadSearchWidget.submitButton.attr('disabled', false);
                         });
                         return $('<li>').append(_itemLink).appendTo(_listContainer);
                     })
                 };
         });
+    },
+    
+    initializeForm: function(form, components){
+        
+        BroadSearchWidget.form = form;
+        BroadSearchWidget.submitButton = form.find('button[type="submit"]');
+        $.extend(true, BroadSearchWidget.formComponents, components);
+        
+        $.ajax({
+            url: BroadSearchWidget.sourceUri,
+            data: {type:"all"},
+            dataType: 'json',
+            success: function(response) {
+                BroadSearchWidget.formComponents.treatments.dataSource = response.treatments;
+                BroadSearchWidget.formComponents.destinations.dataSource = response.destinations;
+                BroadSearchWidget.initializeComponents();
+            }
+         });
         
         return this;
     }

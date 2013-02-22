@@ -16,8 +16,8 @@ class WidgetController extends Controller
     {
         $responseData = array();
         $defaultParameters = array(
-            'destination' => 0,
-            'treatment' => 0,
+            'destination' => null,
+            'treatment' => null,
             'destinationLabel' => '',
             'treatmentLabel' => '',
             'filter' => $request->get('filter', '')
@@ -26,7 +26,7 @@ class WidgetController extends Controller
             case 'treatments':
                 $defaultParameters['destination'] = $request->get('value', 0);
                 $defaultParameters['destinationLabel'] = $request->get('label', '');
-                $responseData[$type] = $this->get('services.search')->getAllTreatments(new SearchParameterBag($defaultParameters));
+                $responseData[$type] = $this->get('services.search')->getTreatments(new SearchParameterBag($defaultParameters));
                 break;
             case 'destinations':
                 $defaultParameters['treatment'] = $request->get('value', 0);
