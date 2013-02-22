@@ -85,21 +85,6 @@ class FrontendController extends Controller
     }
 
     /**
-     * Search page
-     *
-     * @param Request $request
-     */
-    public function searchAction(Request $request)
-    {
-        $parameters = array();
-
-        $parameters['topDestinations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopCountries();
-        $parameters['topTreatments'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->getTopTreatments();
-
-        return  $this->render('SearchBundle:Frontend:search.html.twig', $parameters);
-    }
-
-    /**
      * ProcessSearchListener will direct us to this action if and only if keywords
      * are present in the form submission
      *
@@ -109,37 +94,49 @@ class FrontendController extends Controller
      */
     public function searchProcessKeywordsAction(Request $request)
     {
-        $termDocuments = $this->get('services.search')->getTermDocumentsFilteredOn(array(
-                        'treatmentName' => $request->get('sb_treatment'),
-                        'destinationName' => $request->get('sb_destination')
-        ));
+        $routeParameters = array();
+        $sessionVariables = array();
+
+        $filters = array(
+            'treatmentName' => $request->get('sb_treatment'),
+            'destinationName' => $request->get('sb_destination'),
+            'treatmentId' => $request->get('treatment_id'),
+            'countryId' => 0,
+            'cityId' => 0
+        );
+
+        if ($destinationId = $request->get('destination_id')) {
+            list ($countryId, $cityId) = explode('-', $destinationId);
+
+            $filters['countryId'] = $countryId;
+            $filters['cityId'] = $cityId;
+        }
+
+        $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
+
+        if (count($searchTerms) == 1) {
+            $searchTerm = $searchTerms[0];
+
+            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $request->attributes->get('context'));
+
+            // this is used to avoid using slugs after redirection
+            $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
+
+            return $this->redirect($this->generateUrl($routeConfig['routeName'], $routeConfig['routeParameters']));
+        }
 
         $termIds = array();
-        foreach ($termDocuments as $doc) {
-            $termIds[] = $doc['term_id'];
+        foreach ($searchTerms as $term) {
+            $termIds[] = $term['term_id'];
         }
         $uniqueTermIds = array_flip(array_flip($termIds));
 
-        $keywords = array();
-        $keywordsRouteParam = '';
-
-        if ($request->get('sb_treatment')) {
-            $keywords['treatmentName'] = $request->get('sb_treatment');
-            $keywordsRouteParam = Urlizer::urlize($request->get('sb_treatment'));
-        }
-        if ($request->get('sb_destination')) {
-            $keywords['destinationName'] = $request->get('sb_destination');
-            $keywordsRouteParam = $keywordsRouteParam ? $keywordsRouteParam . '-' . Urlizer::urlize($request->get('sb_destination')) : Urlizer::urlize($request->get('sb_destination'));
-        }
-
-        $routeParameters['keywords'] = $keywordsRouteParam;
-        $route = 'frontend_search_results_keywords';
-        $sessionVariables = array('termIds' => $uniqueTermIds, 'keywords' => $keywords);
+        $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->get('doctrine'), $uniqueTermIds);
 
         // this is used to avoid using slugs after redirection
-        $request->getSession()->set('search_terms', json_encode($sessionVariables));
+        $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
 
-        return $this->redirect($this->generateUrl($route, $routeParameters));
+        return $this->redirect($this->generateUrl($routeConfig['routeName'], $routeConfig['routeParameters']));
     }
 
     /**
@@ -243,6 +240,8 @@ class FrontendController extends Controller
             }
 
             //COMBINED SEARCH
+            //This is for cases when treatment/subspecialization is not known at the time of template's rendering but added by user
+            //through the search form.
             if (isset($searchParameters['treatment'])) {
                 $treatment = $this->getDoctrine()->getEntityManager()->getRepository('TreatmentBundle:Treatment')->find($searchParameters['treatment']);
                 $routeParameters['treatment'] = $treatment->getSlug();

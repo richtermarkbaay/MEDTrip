@@ -45,7 +45,7 @@ class DefaultController extends Controller
     {
         $newsletterSubscriber = new NewsletterSubscriber();
         $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
-        
+
         return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
                         'subscribeNewsletterForm' => $form->createView()
         ));
@@ -158,7 +158,7 @@ class DefaultController extends Controller
                     array('label' => $treatment->getName())
                 );
                 break;
-                
+
             case 'frontend_search_combined' :
                 $country = $request->get('country');
                 if ($request->get('specialization')) {
@@ -365,7 +365,7 @@ class DefaultController extends Controller
     public function listCountryTreatmentAction(Request $request)
     {
         $parameters = $request->attributes->get('_route_params');
-
+var_dump($parameters);
         $em = $this->getDoctrine()->getManager();
         if (!$country = $em->getRepository('HelperBundle:Country')->find(isset($parameters['countryId']) ? $parameters['countryId'] : $parameters['country'])) {
             throw new NotFoundHttpException();

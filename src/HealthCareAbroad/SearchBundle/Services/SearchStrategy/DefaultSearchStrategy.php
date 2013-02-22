@@ -255,7 +255,7 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getTermDocumentsFilteredOn(array $searchParams, $uniqueTermDocument = true) {
+    public function getSearchTermsFilteredOn(array $searchParams, $uniqueTermDocument = false) {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $sql ="
@@ -271,6 +271,15 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($destinationName = $searchParams['destinationName']) {
             $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
         }
+        if ($termId = $searchParams['treatmentId']) {
+            $sql .= ' AND a.term_id = :termId ';
+        }
+        if ($countryId = $searchParams['countryId']) {
+            $sql .= ' AND a.country_id = :countryId ';
+        }
+        if ($cityId = $searchParams['cityId']) {
+            $sql .= ' AND a.city_id = :cityId ';
+        }
 
         if ($uniqueTermDocument) {
             $sql .= " GROUP BY term_document_id ";
@@ -284,6 +293,17 @@ class DefaultSearchStrategy extends SearchStrategy
             $stmt->bindValue('destinationName', '%'.$destinationName.'%');
             //$stmt->bindValue('destinationName', '%'.$destinationName.'%');
         }
+        if ($termId) {
+            $stmt->bindValue('termId', $termId, \PDO::PARAM_INT);
+        }
+        if ($countryId) {
+            $stmt->bindValue('countryId', $countryId, \PDO::PARAM_INT);
+        }
+        if ($cityId) {
+            $stmt->bindValue('cityId', $cityId, \PDO::PARAM_INT);
+        }
+
+
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);

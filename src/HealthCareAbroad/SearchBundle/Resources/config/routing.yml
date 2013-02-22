@@ -21,27 +21,13 @@ institution_medicalCenter_search:
 
 
 ## FRONTEND BUNDLE #############################################################
-frontend_search:
-    pattern: /search
-    defaults: { _controller: SearchBundle:Frontend:search }
-
 frontend_search_process:
     pattern: /search-process
     defaults: { _controller: SearchBundle:Frontend:searchProcess }
 
-###### AUTOCOMPLETE ROUTES #####################################################
 frontend_search_ajaxLoadAllSearchOptions:
     pattern: /search/ajaxLoadAllSearchOptions
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllSearchOptions }
-
-
-frontend_search_ajaxLoadAllTreatments:
-    pattern: /search/ajaxLoadAllTreatments
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllTreatments }
-
-frontend_search_ajaxLoadAllDestinations:
-    pattern: /search/ajaxLoadAllDestinations
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllDestinations }
 
 frontend_search_ajaxLoadTreatments:
     pattern: /search/ajaxLoadTreatments
@@ -71,18 +57,24 @@ frontend_narrowSearch_autocomplete:
     pattern: /search/ajaxNarrowSearch
     defaults: { _controller: SearchBundle:Frontend:ajaxLoadNarrowSearch }
 
-#TODO: rename this route
-frontend_search_ajaxLoadTreatments2:
-    pattern: /search/ajaxLoadTreatments2
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'treatment' }
+#frontend_search_results_keywords:
+#    pattern: /keywords/related-search/{keywords}/{page}
+#    defaults: { _controller: SearchBundle:Frontend:searchResultsKeywords, page: 1 }
 
-#### END AUTOCOMPLETE ROUTES ###################################################
-frontend_search_results_keywords:
-    pattern: /keywords/related-search/{keywords}/{page}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsKeywords, page: 1 }
+frontend_search_results_related_terms:
+    pattern: /related-search/{tag}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    requirements:
+        page: \d+
 
-frontend_search_results_related:
-    pattern: /treatment/related-search/{tag}/{page}
+frontend_search_results_related_terms_country:
+    pattern: /related-search/{country}/{tag}/{page}
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    requirements:
+        page: \d+
+
+frontend_search_results_related_terms_city:
+    pattern: /related-search/{country}/{city}/{tag}/{page}
     defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
