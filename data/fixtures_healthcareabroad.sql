@@ -1521,7 +1521,8 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
 
 INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 1, 'test ', 'test', '2013-02-20 00:39:04', '0000-00-00 00:00:00', 'test', 1),
-(2, 2, 'sub specialization', 'test', '2013-02-20 00:39:30', '0000-00-00 00:00:00', 'test', 1);
+(2, 2, 'sub specialization', 'test', '2013-02-20 00:39:30', '0000-00-00 00:00:00', 'test', 1),
+(3, 3, 'sub specialization test', 'test', '2013-02-22 07:08:56', '0000-00-00 00:00:00', 'test', 1);
 
 -- --------------------------------------------------------
 
