@@ -19,9 +19,12 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
     public function testViewAllMedicalCentersAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
-    
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+         $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
+         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        //test for singleCenter
+        //$crawler = $client->request('GET', '/admin/institution/2/medical-centers');
+        //$this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testAddMedicalCenterAction()
@@ -100,6 +103,13 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
 
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit-status');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+   }
+   
+   public function testLoadMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       $crawler = $client->request('GET', '/ns-admin/institution/1/medical-center/1/medical-specialists/load?term=an');
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
    }
     
 //     public function testAddMedicalCenterDetailsAction()
