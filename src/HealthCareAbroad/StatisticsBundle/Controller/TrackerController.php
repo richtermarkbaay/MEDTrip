@@ -66,7 +66,8 @@ class TrackerController extends Controller
         
         $impressions = $request->get('impressions', array());
         if (!\count($impressions)) {
-            $this->_throwHttpException(400, 'Empty impressions');
+            return new Response('Empty impressions', 200);
+            //$this->_throwHttpException(400, 'Empty impressions');
         }
         
         $trackerFactory = $this->get('factory.statistics.dailyTracker');
