@@ -1,4 +1,4 @@
-<form class="span12 search_box  form-inline" name="search_box" action="post">
+<form class="span12 search_box  form-inline broad_search_form" name="search_box" action="post">
     <label>
         Search
     </label>
@@ -7,38 +7,31 @@
         Near
     </label>
     <input type="text" name="destination_id" placeholder="City, Country or Zip">
-    <button onclick="return false" class="btn">
-        Let's Go
-    </button>
+    <button onclick="return false" class="btn">Let's Go</button>
     
     <div class="helper-link">
         <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"> View all specializations</a>
         <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
         
-        <div id="treatments_widget_container" class="popup treatments row-fluid" data-autocomplete-field="#treatment_id_autocomplete" data-dropdown-button="#treatments_dropdown_button" data-list-container="#treatments_list">
+        <div class="popup treatments row-fluid">
             <button id="treatments_dropdown_button" data-toggle="dropdown" class="search_dropdown_button btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right"></span>
             </button>
             <div role="menu" class="popup-box dropdown-menu">
-                <input id="treatment_id_autocomplete" type="text" class="search-field span12" />
-                <p class="test">
-                    Select a treatment
-                </p>
+                <input id="treatments_autocomplete_field" type="text" class="search-field span12" data-container="#treatments_list" />
+                <p class="test">Select a treatment</p>
                 <ul id="treatments_list" class="popup-list treatment"></ul>
             </div>
         </div>
         
-        <div id="destinations_widget_container" class="popup destinations row-fluid">
-            <button id="destinations_dropdown_button"data-toggle="dropdown" class="btn text-left small default btn-pop">
-                <span class="icon-chevron-down pull-right">
-                </span>
+        <div class="popup destinations row-fluid">
+            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                <span class="icon-chevron-down pull-right"></span>
             </button>
             <div role="menu" class="popup-box dropdown-menu">
-                <input type="text" class="search-field span12">
-                <p class="test">
-                    Select a destination
-                </p>
-                <ul class="popup-list country"></ul>
+                <input id="destinations_autocomplete_field" type="text" class="search-field span12" data-container="#destinations_list">
+                <p class="test">Select a destination</p>
+                <ul id="destinations_list" class="popup-list country"></ul>
             </div>
         </div>
     </div>
@@ -48,11 +41,20 @@
 <!--
 (function($){
     $(function(){
-        HomepageSearchWidget
+        
+        BroadSearchWidget
             .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
-            .initializeByWidgetContainer({
-                'treatments': $('#treatments_widget_container'),
-                'destinations': $('#destinations_widget_container')
+            .initializeForm($('form.broad_search_form'), {
+                treatments: {
+                    'mainInputField': $('input[name="treatment_id"]'),
+                    'dropdownButton': $('#treatments_dropdown_button'),
+                    'autocompleteField': $('#treatments_autocomplete_field')
+                },
+                destinations: {
+                    'mainInputField': $('input[name="destination_id"]'),
+                    'dropdownButton': $('#destinations_dropdown_button'),
+                    'autocompleteField': $('#destinations_autocomplete_field')
+                }
             });
             
     });
