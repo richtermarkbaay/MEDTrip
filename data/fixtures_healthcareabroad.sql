@@ -1490,7 +1490,8 @@ CREATE TABLE IF NOT EXISTS `specializations` (
 INSERT INTO `specializations` (`id`, `name`, `description`, `media_id`, `date_created`, `slug`, `status`) VALUES
 (1, 'Allergy and Immunology', 'Medical center or department specializing in immunological disorders (autoimmune diseases, hypersensitivities, immune deficiency, transplant rejection, etc.)', NULL, '2012-09-03 03:50:10', 'allergy-and-immunology', 1),
 (2, 'Pathology', 'Medical centers specialized in the diagnosis and characterization of disease in living patients by examining biopsies or bodily fluids.', NULL, '2012-09-03 06:54:38', 'pathology', 1),
-(3, 'test', 'test', NULL, '2013-02-19 05:26:06', 'test', 1);
+(3, 'test', 'test', NULL, '2013-02-19 05:26:06', 'test', 1),
+(4, 'dermatology', 'test', NULL, '2013-02-22 07:00:50', 'test', 1);
 
 -- --------------------------------------------------------
 
@@ -1594,7 +1595,9 @@ CREATE TABLE IF NOT EXISTS `treatments` (
 INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slug`, `status`) VALUES
 (1, 1, 'treatment', 'test', 'tset', 1),
 (2, 2, 'test', 'test', 'test', 1),
-(3, 3, 'test 3', 'test', 'test', 1);
+(3, 3, 'test 3', 'test', 'test', 1),
+(4, 3, 'testing', 'test', 'test', 1),
+(5, 4, 'test treatment', 'test', 'test', 1);
 
 -- --------------------------------------------------------
 
