@@ -111,7 +111,47 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
        $crawler = $client->request('GET', '/ns-admin/institution/1/medical-center/1/medical-specialists/load?term=an');
        $this->assertEquals(200, $client->getResponse()->getStatusCode());
    }
+   
+   public function testAjaxAddMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       
+       //add valid medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 2));
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+       //test for invalid medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 21));
+       $this->assertEquals(404, $client->getResponse()->getStatusCode());
+       
+       //test for existing medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 1));
+       $this->assertEquals(500, $client->getResponse()->getStatusCode());
+       
+   }
     
+   public function testAjaxRemoveMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2');
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+        //test for valid form       
+       $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+       $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+       $csrf_token = $extract[0];
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 2)));
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+       //test for invalid form
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('id' => 2)));
+       $this->assertEquals(400, $client->getResponse()->getStatusCode());
+       
+       //test for invalid medicalSpecialist Id
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/21',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 21)));
+       $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+   }
 //     public function testAddMedicalCenterDetailsAction()
 //     {
 //         $uri = '/admin/institution/1/medical-centers';
