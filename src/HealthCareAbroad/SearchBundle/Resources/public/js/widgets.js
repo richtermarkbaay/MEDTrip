@@ -14,7 +14,7 @@ var BroadSearchWidget = {
             'dropdownButton': null,
             'autocompleteField': null,
             'dataSource': {},
-            'autocompleteSearchParams': {'id': '', 'label':''}
+            'valueField': '#treatment_id',
         },
         destinations: {
             'mainInputField': null,
@@ -22,7 +22,7 @@ var BroadSearchWidget = {
             'dropdownButton': null,
             'autocompleteField': null,
             'dataSource': {},
-            'autocompleteSearchParams': {'id': '', 'label':''}
+            'valueField': '#destination_id'
         }
     },
     
@@ -43,14 +43,21 @@ var BroadSearchWidget = {
         });
     },
     
-    loadSourcesByType: function(type, params) {
-        if (!(type != 'treatments' || type != 'destinations')) {
+    loadSourcesByType: function(params) {
+        var _type = params.type || null;
+        if (_type != 'treatments' || _type != 'destinations') {
+            
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
-                data: {type:type},
+                // replace the type since we will be updating the dataSource for the other type
+                data: {type: (_type == 'treatments' ? 'destinations' : 'treatments'), 'value': params.value, 'label': params.label}, 
                 dataType: 'json',
                 success: function(response) {
-                    BroadSearchWidget.formComponents['type'].dataSource = response['type'];
+                    // update the value of the dataSource for this type
+                    $.each(response, function(_key, _data){
+                        BroadSearchWidget.formComponents[_key].dataSource = _data;
+                    });
+                    
                 }
              });
         }
@@ -58,11 +65,12 @@ var BroadSearchWidget = {
     
     initializeForm: function(form, components){
         
-        // load all
-        BroadSearchWidget.loadAllSources();
-        
         BroadSearchWidget.form = form;
-        $.extend(BroadSearchWidget.formComponents, components);
+        $.extend(true, BroadSearchWidget.formComponents, components);
+        
+        // load all
+        // this may not always be the desirable, especially if ajax request is slow
+        BroadSearchWidget.loadAllSources();
         
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             componentOptions.mainInputField.click(function(e){
@@ -73,7 +81,6 @@ var BroadSearchWidget = {
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
                 componentOptions.autocompleteField.focus();
-                console.log($(this).attr('id'));
             });
             
             componentOptions.autocompleteField
@@ -109,7 +116,11 @@ var BroadSearchWidget = {
                         _itemLink.bind('click', function(){
                             // set value to form
                             var _this = $(this);
-                            //BroadSearchWidget
+                            // reload the other sources
+                            BroadSearchWidget.loadSourcesByType(item);
+                            // set the value fields
+                            BroadSearchWidget.formComponents[item.type].mainInputField.val(item.label);
+                            $(BroadSearchWidget.formComponents[item.type].valueField).val(item.value);
                         });
                         return $('<li>').append(_itemLink).appendTo(_listContainer);
                     })

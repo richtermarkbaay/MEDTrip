@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +15,23 @@ class WidgetController extends Controller
     public function ajaxLoadSearchSourcesAction(Request $request)
     {
         $responseData = array();
-        switch ($request->get('type', 'all')) {
+        $defaultParameters = array(
+            'destination' => 0,
+            'treatment' => 0,
+            'destinationLabel' => '',
+            'treatmentLabel' => '',
+            'filter' => $request->get('filter', '')
+        );
+        switch ($type = $request->get('type', 'all')) {
             case 'treatments':
+                $defaultParameters['destination'] = $request->get('value', 0);
+                $defaultParameters['destinationLabel'] = $request->get('label', '');
+                $responseData[$type] = $this->get('services.search')->getAllTreatments(new SearchParameterBag($defaultParameters));
                 break;
             case 'destinations':
+                $defaultParameters['treatment'] = $request->get('value', 0);
+                $defaultParameters['treatmentLabel'] = $request->get('label', '');
+                $responseData[$type] = $this->get('services.search')->getDestinations(new SearchParameterBag($defaultParameters));
                 break;
             default:
                 // defaults to loading all
@@ -27,5 +42,18 @@ class WidgetController extends Controller
         }
         
         return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
+    }
+    
+    private function getSearchParams(Request $request, $isAutoComplete = false)
+    {
+        $parameters = array(
+                        
+        );
+    
+        if ($isAutoComplete) {
+            $parameters['term'] = $request->get('term');
+        }
+    
+        return ;
     }
 }
