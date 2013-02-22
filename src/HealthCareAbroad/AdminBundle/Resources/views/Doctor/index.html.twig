@@ -50,14 +50,14 @@
                         <td>{{ each.suffix }}</td>
                         <td>{{ each.country }}</td>
                         <td>
-                            <ul class="nav nav-pills">
+                            <ul class="nav">
                             {% for institutionMedicalCenter in each.institutionMedicalCenters %}
                                 <li> <a href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id} ) }}"> {{ institutionMedicalCenter.institution.name }} </a></li>
                             {% endfor %}
                             </ul>
                         </td>
                         <td>
-                            <ul class="nav nav-pills">
+                            <ul class="nav">
                                 {% for specialization in each.specializations %}
                                     <li> <a href="{{ path('admin_specialization_edit',{ id: specialization.id} ) }}">{{ specialization.name }} </a></li>
                                 {% endfor %}
