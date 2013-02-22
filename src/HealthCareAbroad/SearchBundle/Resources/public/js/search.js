@@ -56,7 +56,7 @@ var NarrowSearchWidgetManager = {
                 // prevent value inserted on focus
                 return false;
             }
-        }).data('autocomplete')._renderMenu = function(ul, data){
+        }).data('ui-autocomplete')._renderMenu = function(ul, data){
             ul.remove();
             var _listContainer = $(this.element.attr('data-listContainer'));
             _listContainer.html('');

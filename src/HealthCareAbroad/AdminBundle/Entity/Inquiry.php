@@ -11,6 +11,8 @@ class Inquiry
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
+    
+    
     /**
      * @var integer $id
      */
@@ -32,6 +34,11 @@ class Inquiry
     private $email;
 
     /**
+     * @var string $contactNumber
+     */
+    private $contactNumber;
+
+    /**
      * @var text $message
      */
     private $message;
@@ -42,6 +49,11 @@ class Inquiry
     private $dateCreated;
 
     /**
+     * @var string $remoteAddress
+     */
+    private $remoteAddress;
+
+    /**
      * @var smallint $status
      */
     private $status;
@@ -50,6 +62,16 @@ class Inquiry
      * @var HealthCareAbroad\AdminBundle\Entity\InquirySubject
      */
     private $inquirySubject;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+
+    /**
+     * @var HealthCareAbroad\HelperBundle\Entity\City
+     */
+    private $city;
 
 
     /**
@@ -129,6 +151,28 @@ class Inquiry
     }
 
     /**
+     * Set contactNumber
+     *
+     * @param string $contactNumber
+     * @return Inquiry
+     */
+    public function setContactNumber($contactNumber)
+    {
+        $this->contactNumber = $contactNumber;
+        return $this;
+    }
+
+    /**
+     * Get contactNumber
+     *
+     * @return string 
+     */
+    public function getContactNumber()
+    {
+        return $this->contactNumber;
+    }
+
+    /**
      * Set message
      *
      * @param text $message
@@ -173,6 +217,28 @@ class Inquiry
     }
 
     /**
+     * Set remoteAddress
+     *
+     * @param string $remoteAddress
+     * @return Inquiry
+     */
+    public function setRemoteAddress($remoteAddress)
+    {
+        $this->remoteAddress = $remoteAddress;
+        return $this;
+    }
+
+    /**
+     * Get remoteAddress
+     *
+     * @return string 
+     */
+    public function getRemoteAddress()
+    {
+        return $this->remoteAddress;
+    }
+
+    /**
      * Set status
      *
      * @param smallint $status
@@ -214,5 +280,49 @@ class Inquiry
     public function getInquirySubject()
     {
         return $this->inquirySubject;
+    }
+
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return Inquiry
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set city
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\City $city
+     * @return Inquiry
+     */
+    public function setCity(\HealthCareAbroad\HelperBundle\Entity\City $city = null)
+    {
+        $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\City 
+     */
+    public function getCity()
+    {
+        return $this->city;
     }
 }

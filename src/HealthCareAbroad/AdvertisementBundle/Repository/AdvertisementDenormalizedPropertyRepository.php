@@ -53,29 +53,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         return $result;
     }
 
-    public function getFeaturedDestinations()
-    {
-        $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c,d,gal')
-        ->leftJoin('a.institution', 'b')
-        ->leftJoin('b.gallery', 'gal')
-        ->leftJoin('a.media', 'c')
-        ->leftJoin('a.treatment', 'd')
-        ->where('a.advertisementType = :type')
-        ->andWhere('a.status = :status')
-        ->orderBy('a.dateExpiry', 'ASC')
-        ->setParameter('type', 3)
-        ->setParameter('status', 1);
-    
-        $result = $qb->getQuery()->getResult();
-    
-        return $result;
-    }
 
     public function getActiveNews()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b, c')
+        $qb->select('a,b,c')
            ->leftJoin('a.institution', 'b')
            ->leftJoin('a.media', 'c')
            ->where('a.advertisementType = :type')

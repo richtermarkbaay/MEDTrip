@@ -38,21 +38,9 @@ class DefaultController extends Controller
 
     public function indexAction(Request $request)
     {
-        $advertisementRepo = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty');
-
-        //$highlightAds = $advertisementRepo->getActiveHomepagePremier();
-        $featuredDestinations = $advertisementRepo->getFeaturedDestinations();
-
-        $params = array(
-//             'highlightAds' => $highlightAds,
-//             'highlight' => $highlightAds && count($highlightAds) ? $highlightAds[array_rand($highlightAds)] : null,
-            'destinationAds' => $featuredDestinations,
-            'searchParams' => array()
-        );
-        //var_dump($params['highlight']->getInstitution()->getLogo()); exit;
-        return $this->render('FrontendBundle:Default:index.html.twig', $params);
+        return $this->render('FrontendBundle:Default:index.html.twig');
     }
-    
+
     public function renderNewsletterFormAction()
     {
         $newsletterSubscriber = new NewsletterSubscriber();

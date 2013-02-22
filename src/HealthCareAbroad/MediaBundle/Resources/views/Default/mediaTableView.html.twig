@@ -1,29 +1,10 @@
-<table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table">
-    {% if media.isPaginable is defined %}
-    <thead>
-        <tr>
-            <td colspan="4">
-                <div style="float: right; margin-right: 10px">
-                    {% if media.isPaginable %}
-                        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
-                    {% endif %}
-                </div>
-            </td>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <td colspan="4">
-                <div style="float: right; margin-right: 10px">
-                    {% if media.isPaginable %}
-                        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
-                    {% endif %}
-                </div>
-            </td>
-        </tr>
-    </tfoot>
-    {% endif %}
-</table>
+
+
+{% if media.isPaginable is defined %}
+    <div style="margin-right: 10px">
+        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+    </div>
+{% endif %}
 
 {% set mediaCount = 0 %}
 <ul style="display: table-cell">
@@ -36,6 +17,11 @@
     {% endfor %}
 </ul>
 
+{% if media.isPaginable is defined %}
+    <div style="margin-right: 10px">
+        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+    </div>
+{% endif %}
 
 <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
     <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">

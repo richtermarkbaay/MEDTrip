@@ -28,12 +28,15 @@ class CountryTransformer implements DataTransformerInterface
     
     public function reverseTransform($data)
     {
+        
+        if (\is_null($data)) {
+            return $data;
+        }
         $country = $this->service->getCountryById($data);
         if (!$country) {
             $countryGlobalData = $this->service->getGlobalCountryById($data);
             $country = $this->service->createCountryFromArray($countryGlobalData);
         }
-        
         return $country;
     }
 }
