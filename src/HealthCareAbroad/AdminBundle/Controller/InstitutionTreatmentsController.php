@@ -462,7 +462,7 @@ class InstitutionTreatmentsController extends Controller
                         'institution' => $this->institution,
                         'form' => $form->createView(),
                         'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(), 
-                                        'institutionId' => $this->institution->getId()))
+                        'institutionId' => $this->institution->getId()))
         ));
     }
 
@@ -512,7 +512,6 @@ class InstitutionTreatmentsController extends Controller
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
                 $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
-                //$request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
             }
         }
         else {

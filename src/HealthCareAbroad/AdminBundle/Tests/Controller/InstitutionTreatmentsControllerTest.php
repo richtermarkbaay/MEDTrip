@@ -15,66 +15,15 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
 //         $client->request('GET', $uri);
 //         $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expected not found after invalid institutionId');
 //     }
-    
-//     public function testViewAllMedicalCentersAction()
-//     {
-//         $invalidMethods = array('POST', 'PUT', 'DELETE');
-//         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find(1);
-//         $uri = "/admin/institution/{$institution->getId()}/medical-centers";
-//         $client = $this->getBrowserWithActualLoggedInUser();
-        
-//         // test invalid method access
-//         foreach ($invalidMethods as $method) {
-//             $client->request($method, $uri);
-//             $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Expected method '.$method.' is invalid');
-//         }
-        
-//         $crawler = $client->request('GET', $uri);
-//         //echo $client->getResponse(); exit;
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("' .$institution->getName(). ' Medical Centers")')->count(), '"Add Treatment" string not found!');
-        
-//     }
-//     public function testEditMedicalCenterAction()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
-    
-//         $validValues = array(
-//                         'institutionMedicalCenter[name]' => 'asd anem',
-//                         'institutionMedicalCenter[description]' => 'sad description',
-//                         'institutionMedicalCenter[contactEmail]' => '',
-//                         'institutionMedicalCenter[contactNumber][country_code]' => '',
-//                         'institutionMedicalCenter[address][room_number]' => '',
-//                         'institutionMedicalCenter[address][building]' => '',
-//                         'institutionMedicalCenter[address][street]' => '',
-//                         'institutionMedicalCenter[websites][main]' => '',
-//                         'institutionMedicalCenter[websites][facebook]' => '',
-//                         'institutionMedicalCenter[websites][twitter]' => '',
-//         );
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $validValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//     }
+
     public function testViewAllMedicalCentersAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
     
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $crawler = $client->request('GET', '/admin/institution/2/medical-centers');
-        
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
     }
-    public function testViewMedicalCenterAction()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/medical-center/view/1');
     
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
     public function testAddMedicalCenterAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
@@ -99,62 +48,59 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
                         'institutionMedicalCenter[businessHours]' => ''
         );
         $invalidValues = array();
-        
+    
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $invalidValues);
-        //$this->assertEquals(404, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Center name is required.")')->count());
-        
+    
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/add');
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $validValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+    }
+    public function testViewMedicalCenterAction()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/view/1');
+    
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+    public function testEditMedicalCenterAction()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+    
+        $validValues = array(
+                        'institutionMedicalCenter[name]' => 'ako nasdad alsdkj',
+                        'institutionMedicalCenter[description]' => 'sad description',
+                        'institutionMedicalCenter[contactEmail]' => '',
+                        'institutionMedicalCenter[contactNumber][country_code]' => '',
+                        'institutionMedicalCenter[address][room_number]' => '',
+                        'institutionMedicalCenter[address][building]' => '',
+                        'institutionMedicalCenter[address][street]' => '',
+                        'institutionMedicalCenter[websites][main]' => '',
+                        'institutionMedicalCenter[websites][facebook]' => '',
+                        'institutionMedicalCenter[websites][twitter]' => '',
+        );
         $form = $crawler->selectButton('submit')->form();
         $crawler = $client->submit($form, $validValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
-    public function testAddGlobalAwardsAction()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/global_awards');
-        
-        $this->assertEquals(500, $client->getResponse()->getStatusCode());
-    }
-    
-    public function testUpdateGlobalAwardsAction()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/global_awards/1');
-    
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-    }
-    
-    
-    public function testAddInstitutionTreatmentsAction()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/global_awards/1');
-        
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-    }
     public function testEditMedicalCenterStatusAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $invalidStatus = 35;
-        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/edit-status', array('status' => $invalidStatus));
-
-        $response = $client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+        $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
         
+        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/edit-status', array('institutionMedicalCenter' => array('status' => 1, '_token' => $csrf_token)));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit-status');
-        $response = $client->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-//         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit-status');
-//         $validValues = array('institutionMedicalCenter[status]' => '2');
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $validValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
    }
-    
     
 //     public function testAddMedicalCenterDetailsAction()
 //     {
