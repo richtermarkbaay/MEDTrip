@@ -1,9 +1,9 @@
 <form class="span12 search_box  form-inline broad_search_form" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <label>Search</label>
-    <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-provide="typeahead">
+    <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
     <input type="hidden" name="treatment_id" id="treatment_id" />
     <label>Near</label>
-    <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-provide="typeahead">
+    <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list">
     <input type="hidden" name="destination_id" id="destination_id"/>
     <button type="submit" class="btn">Let's Go</button>
     
@@ -15,9 +15,7 @@
             <button id="treatments_dropdown_button" data-toggle="dropdown" class="search_dropdown_button btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right"></span>
             </button>
-            <div role="menu" class="popup-box dropdown-menu">
-                <input id="treatments_autocomplete_field" type="text" class="search-field span12" data-container="#treatments_list" />
-                <p class="test">Select a treatment</p>
+            <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
                 <ul id="treatments_list" class="popup-list treatment"></ul>
             </div>
         </div>
@@ -26,9 +24,7 @@
             <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right"></span>
             </button>
-            <div role="menu" class="popup-box dropdown-menu">
-                <input id="destinations_autocomplete_field" type="text" class="search-field span12" data-container="#destinations_list">
-                <p class="test">Select a destination</p>
+            <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu">
                 <ul id="destinations_list" class="popup-list country"></ul>
             </div>
         </div>
@@ -44,14 +40,16 @@
             .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
             .initializeForm($('form.broad_search_form'), {
                 treatments: {
-                    'mainInputField': $('input#treatment_input_field'),
+                    //'mainInputField': $('input#treatment_input_field'),
                     'dropdownButton': $('#treatments_dropdown_button'),
-                    'autocompleteField': $('#treatments_autocomplete_field')
+                    'autocompleteField': $('input#treatment_input_field'),
+                    'dropdown': $('#treatments_dropdown_menu') 
                 },
                 destinations: {
-                    'mainInputField': $('input#destination_input_field'),
+                    //'mainInputField': $('input#destination_input_field'),
                     'dropdownButton': $('#destinations_dropdown_button'),
-                    'autocompleteField': $('#destinations_autocomplete_field')
+                    'autocompleteField': $('input#destination_input_field'),
+                    'dropdown': $('#destinations_dropdown_menu')
                 }
             });
             

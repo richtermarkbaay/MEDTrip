@@ -58,6 +58,7 @@ var BroadSearchWidget = {
     },
     
     initializeComponents: function(){
+        
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             
             /*componentOptions.mainInputField.typeahead({
@@ -68,7 +69,7 @@ var BroadSearchWidget = {
                     
                 }
             );*/
-            componentOptions.mainInputField.change(function(){
+            /**componentOptions.mainInputField.change(function(){
                 // value has changed from what was selected from the list
                 var _val = $.trim($(this).val());
                 if ( _val != BroadSearchWidget.formComponents[type].selectedLabel) {
@@ -83,16 +84,13 @@ var BroadSearchWidget = {
                 $(this).val(_val); // just incase there are trailing whitespaces                
                 
             })
-            .change();
+            .change();**/
             
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
             });
             
             componentOptions.autocompleteField
-                .click(function(e){
-                    e.stopPropagation();
-                })
                 // setup autocomplete
                 .autocomplete({
                     delay: 0,
@@ -101,6 +99,10 @@ var BroadSearchWidget = {
                         if (ui.content.length == 0) {
                             $($(this).attr('data-container')).html(''); // clear list
                         }
+                        /*console.log(componentOptions.dropdown.css('display'));
+                        if (componentOptions.dropdown.css('display') == 'none') {
+                            componentOptions.dropdown.css('display', 'block');
+                        }*/
                     },
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
@@ -114,6 +116,11 @@ var BroadSearchWidget = {
                    }
                 })
                 .data('ui-autocomplete')._renderMenu = function(ul, data){
+                    // hackish approach to keep the dropdown open
+                    if (!componentOptions.dropdown.parent().hasClass('open')) {
+                        componentOptions.dropdown.dropdown('toggle');
+                    }
+                    
                     ul.remove();
                     var _listContainer = $(this.element.attr('data-container'));
                     _listContainer.html('');
@@ -125,14 +132,13 @@ var BroadSearchWidget = {
                             // reload the other sources
                             BroadSearchWidget.loadSourcesByType(item);
                             // set the value fields
-                            BroadSearchWidget.formComponents[item.type].mainInputField.val(item.label);
                             $(BroadSearchWidget.formComponents[item.type].valueField).val(item.value);
-                            BroadSearchWidget.formComponents[item.type].selectedLabel = item.label;
+                            BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
                             // enable the button
                             BroadSearchWidget.submitButton.attr('disabled', false);
                         });
                         return $('<li>').append(_itemLink).appendTo(_listContainer);
-                    })
+                    });
                 };
         });
     },
