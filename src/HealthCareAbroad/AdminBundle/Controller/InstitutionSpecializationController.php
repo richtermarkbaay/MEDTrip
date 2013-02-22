@@ -100,17 +100,18 @@ class InstitutionSpecializationController extends Controller
             $errors = array();
             $output = array('html' => '');
             foreach ($submittedSpecializations as $_isId => $_data) {
+                
                 if ($_isId == $this->institutionSpecialization->getSpecialization()->getId()) {
                     
                     // set passed treatments as choices
                     $default_choices = array();
                     $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
                     foreach ($_treatment_choices as $_t) {
+                        
                         $default_choices[$_t->getId()] = $_t->getName();
                         // add the treatment
                         $this->institutionSpecialization->addTreatment($_t);
                     }
-    
                     $form = $this->createForm(new InstitutionSpecializationFormType(), $this->institutionSpecialization, array('default_choices' => $default_choices));
                     $form->bind($_data);
                     if ($form->isValid()) {
@@ -171,8 +172,9 @@ class InstitutionSpecializationController extends Controller
     {
         $service = $this->get('services.institution_medical_center');
     
-        if ($this->request->isMethod('POST')) {
-            $submittedSpecializations = $this->request->get(InstitutionSpecializationFormType::NAME);
+        if ($request->isMethod('POST')) {
+            
+            $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
             $em = $this->getDoctrine()->getEntityManager();
             $errors = array();
             if (\count($submittedSpecializations) > 0) {
