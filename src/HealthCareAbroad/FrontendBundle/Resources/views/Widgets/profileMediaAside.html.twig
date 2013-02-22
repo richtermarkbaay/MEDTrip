@@ -5,7 +5,7 @@
         {% block asideContent %}
     		<ul class="large-thumbnail">
     			<li>
-                    <a href="#">{{ media(media.first, institution, 'frontendGallery') | raw }}</a>
+                    {{ media(media.first, institution, 'frontendGallery') | raw }}
     			</li>
     		</ul>
     
@@ -13,13 +13,11 @@
     		    {% for i, each in media if i > 0 %}
     		        {% if (logo and each.id != logo.id) %}
             			<li class="thumbnail">
-            				<a href="">{{ media(each, institution, 'frontendGallery') | raw }}</a>
+            				{{ media(each, institution, 'frontendGallery') | raw }}
             			</li>
                     {% endif %}
     			{% endfor %}
     		</ul>
-    		<img class="video" src="/../../images/frontend/media.png" alt="">
-    
     	{% endblock %}
     	
     {% endembed %}

@@ -42,7 +42,6 @@ class DoctorController extends Controller
     
     public function editAction(Request $request)
     {
-        
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findAll();
         
         if($doctorId = $request->get('idId', 0)) {
@@ -56,8 +55,7 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
-        
-        $doctor->setMedia(null);
+
         $form = $this->createForm(new DoctorFormType(), $doctor);
     
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -95,20 +93,16 @@ class DoctorController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             $doctorData = $request->get('doctor');
             
-            if($newMedia = $this->saveMedia($request->files->get('doctor'), $doctor)) {
-                $doctorData['media'] = $newMedia;                
-            } else {
-                if($doctor->getId()) {
-                    $doctorData['media'] = $media;
-                }
-            }
-
             $form->bind($doctorData);
 
             if($form->isValid()) {
                 // Get contactNumbers and convert to json format
                 $contactNumber = json_encode($request->get('contactNumber'));
 
+                if($media = $this->saveMedia($request->files->get('doctor'), $doctor)) {
+                    $doctor->setMedia($media);
+                }
+                
                 $doctor->setContactNumber($contactNumber);
                 $em = $this->getDoctrine()->getEntityManager();
 
