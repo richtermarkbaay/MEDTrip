@@ -37,6 +37,7 @@
                         <th id="column-name">Suffix</th>
                         <th id="column-name">Country</th>
                         <th id="column-name">Affiliated Hospitals</th>
+                        <th id="column-name">Specializations</th>
                        <th width="15%">Actions</th>
                     </tr>
             
@@ -55,6 +56,12 @@
                             {% endfor %}
                             </ul>
                         </td>
+                        <td>
+                            <ul class="nav nav-pills">
+                                {% for specialization in each.specializations %}
+                                    <li> <a href="{{ path('admin_specialization_edit',{ id: specialization.id} ) }}">{{ specialization.name }} </a></li>
+                                {% endfor %}
+                            </ul>
                         <td>
                             <ul style="list-style: none;">
                                 <li><a href="{{ path('admin_doctor_edit', { idId:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
