@@ -1,3 +1,13 @@
+<style>
+    .ui-corner-all {
+        border-radius:0!important;
+        -moz-border-radius:0!important
+    }
+    .ui-state-focus{
+        background-color: #FE6500!important;
+        color: #FFFFFF!important;
+    }
+</style>
 <form class="span12 search_box  form-inline broad_search_form" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <label>Search</label>
     <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
@@ -16,7 +26,7 @@
                 <span class="icon-chevron-down pull-right"></span>
             </button>
             <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
-                <ul id="treatments_list" class="popup-list treatment"></ul>
+                
             </div>
         </div>
         
@@ -25,11 +35,14 @@
                 <span class="icon-chevron-down pull-right"></span>
             </button>
             <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu">
-                <ul id="destinations_list" class="popup-list country"></ul>
+                
             </div>
         </div>
     </div>
 </form>
+
+
+
 <script type="text/javascript" src="{{ asset('bundles/search/js/widgets.js') }}"></script>
 <script type="text/javascript">
 <!--

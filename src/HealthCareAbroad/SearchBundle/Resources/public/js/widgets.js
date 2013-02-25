@@ -44,7 +44,7 @@ var BroadSearchWidget = {
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
                 // replace the type since we will be updating the dataSource for the other type
-                data: {type: (_type == 'treatments' ? 'destinations' : 'treatments'), 'value': params.value, 'label': params.label}, 
+                data: {type: (_type == 'treatments' ? 'destinations' : 'treatments'), 'value': params.id, 'label': params.label}, 
                 dataType: 'json',
                 success: function(response) {
                     // update the value of the dataSource for this type
@@ -61,31 +61,6 @@ var BroadSearchWidget = {
         
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             
-            /*componentOptions.mainInputField.typeahead({
-                minLength: 1, 
-                source: function(query, process){
-                    var src = BroadSearchWidget.formComponents[type].dataSource;
-                    
-                    
-                }
-            );*/
-            /**componentOptions.mainInputField.change(function(){
-                // value has changed from what was selected from the list
-                var _val = $.trim($(this).val());
-                if ( _val != BroadSearchWidget.formComponents[type].selectedLabel) {
-                    $(BroadSearchWidget.formComponents[type].valueField).val('0');
-                }
-                if (!_val.length) {
-                    // check if the other type_in inputs are empty
-                    var _emptyTextboxesLen = BroadSearchWidget.form.find(BroadSearchWidget.inputboxCommonClass+':text[value=""]').length;
-                    var _allTextboxesLen = BroadSearchWidget.form.find(BroadSearchWidget.inputboxCommonClass+':text').length;
-                    BroadSearchWidget.submitButton.attr('disabled', _emptyTextboxesLen == _allTextboxesLen);
-                }
-                $(this).val(_val); // just incase there are trailing whitespaces                
-                
-            })
-            .change();**/
-            
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
             });
@@ -93,53 +68,69 @@ var BroadSearchWidget = {
             componentOptions.autocompleteField
                 // setup autocomplete
                 .autocomplete({
+                    appendTo: componentOptions.dropdown,
                     delay: 0,
                     minLength: 0,
                     response: function(event, ui) {
                         if (ui.content.length == 0) {
                             $($(this).attr('data-container')).html(''); // clear list
                         }
-                        /*console.log(componentOptions.dropdown.css('display'));
-                        if (componentOptions.dropdown.css('display') == 'none') {
-                            componentOptions.dropdown.css('display', 'block');
-                        }*/
                     },
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
                         var matches = [];
                         componentOptions.dataSource.map(function(_i){
                             if (_i.value && ( !request.term || matcher.test(_i.label))) {
-                                matches.push($.extend(_i, {'type': type}));
+                                matches.push({'value': _i.label, 'id': _i.value, 'label': _i.label, 'type': type});
                             }
                         });
                        response(matches);
+                   },
+                   select: function(event, ui) {
+                       // reload the other sources
+                       BroadSearchWidget.loadSourcesByType(ui.item);
+                       // set the values
+                       $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
                    }
-                })
-                .data('ui-autocomplete')._renderMenu = function(ul, data){
-                    // hackish approach to keep the dropdown open
-                    if (!componentOptions.dropdown.parent().hasClass('open')) {
-                        componentOptions.dropdown.dropdown('toggle');
-                    }
-                    
-                    ul.remove();
-                    var _listContainer = $(this.element.attr('data-container'));
-                    _listContainer.html('');
-                    $.each(data, function(index, item){
-                        var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
-                        _itemLink.bind('click', function(){
-                            // set value to form
-                            var _this = $(this);
-                            // reload the other sources
-                            BroadSearchWidget.loadSourcesByType(item);
-                            // set the value fields
-                            $(BroadSearchWidget.formComponents[item.type].valueField).val(item.value);
-                            BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
-                            // enable the button
-                            BroadSearchWidget.submitButton.attr('disabled', false);
-                        });
-                        return $('<li>').append(_itemLink).appendTo(_listContainer);
-                    });
-                };
+                });
+            
+            componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
+                var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                return $("<li>").append(_itemLink).appendTo(ul);
+            };
+            
+            componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData = function (ul, item) {
+                var _renderedItem = componentOptions.autocompleteField.data('ui-autocomplete')._renderItem( ul, item ); 
+                return _renderedItem.data( "ui-autocomplete-item", item ); 
+            };
+            //ui-menu-item
+            componentOptions.autocompleteField.data('ui-autocomplete')._renderMenu = function(ul, data) {
+                console.log(data.length);
+                if (!componentOptions.dropdown.parent().hasClass('open')) {
+                    componentOptions.dropdown.dropdown('toggle');
+                }
+                
+                $.each( data, function( index, item ) {
+                    componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData( ul, item );
+                });
+                ul.attr('class', 'popup-list').attr('style', ''); 
+            }
+            
+            // override suggest function not to resize and reposition menu
+            componentOptions.autocompleteField.data('ui-autocomplete')._suggest = function( items ) {
+                var ul = this.menu.element.empty();
+                this._renderMenu( ul, items );
+                this.menu.refresh();
+                ul.show();
+
+                if ( this.options.autoFocus ) {
+                    this.menu.next();
+                }
+            };
+            
+            componentOptions.autocompleteField.data('ui-autocomplete')._resizeMenu = function() {
+                console.log('do not resize menu');
+            };
         });
     },
     
