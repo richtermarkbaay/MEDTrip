@@ -91,6 +91,9 @@ var BroadSearchWidget = {
                        BroadSearchWidget.loadSourcesByType(ui.item);
                        // set the values
                        $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
+                   },
+                   change: function(event, ui) {
+                       $(BroadSearchWidget.formComponents[type].valueField).val(0);
                    }
                 });
             
@@ -105,7 +108,6 @@ var BroadSearchWidget = {
             };
             //ui-menu-item
             componentOptions.autocompleteField.data('ui-autocomplete')._renderMenu = function(ul, data) {
-                console.log(data.length);
                 if (!componentOptions.dropdown.parent().hasClass('open')) {
                     componentOptions.dropdown.dropdown('toggle');
                 }
