@@ -91,11 +91,21 @@ var BroadSearchWidget = {
                        BroadSearchWidget.loadSourcesByType(ui.item);
                        // set the values
                        $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
+                       BroadSearchWidget.submitButton.attr('disabled', false);
                    },
                    change: function(event, ui) {
                        if (!ui.item) {
                            $(BroadSearchWidget.formComponents[type].valueField).val(0);
+                           // check if this field allows an empty value
+                           var _allowEmpty = $(this).attr('data-allow-empty') ? Boolean($(this).attr('data-allow-empty')) : false;
+                           if (_allowEmpty) {
+                               $(this).val('');
+                           }
                        }
+                       
+                       // check if both type-in values are empty
+                       var _allEmpty = BroadSearchWidget.form.find('input.type_in:text[value=""]').length >= BroadSearchWidget.form.find('input.type_in:text').length;
+                       BroadSearchWidget.submitButton.attr('disabled', _allEmpty);
                    }
                 });
             
@@ -142,6 +152,7 @@ var BroadSearchWidget = {
         
         BroadSearchWidget.form = form;
         BroadSearchWidget.submitButton = form.find('button[type="submit"]');
+        BroadSearchWidget.submitButton.attr('disabled', true);
         $.extend(true, BroadSearchWidget.formComponents, components);
         
         $.ajax({
