@@ -1,6 +1,7 @@
 parameters:
     services.inquiry_list: HealthCareAbroad\FrontendBundle\Form\ListType\InquirySubjectListType
     services.inquiry_class: HealthCareAbroad\FrontendBundle\Services\InquireService
+    services.breadcrumb_class: HealthCareAbroad\FrontendBundle\Services\FrontendBreadcrumbService
 
 services:
     services.frontend.router:
@@ -32,4 +33,12 @@ services:
         tags:
             - { name: form.type, alias: inquiry_subject_list }
 
+    services.frontend_breadcrumb:
+        class: %services.breadcrumb_class%
+        arguments: [@service_container]
 
+    twig.frontend_breadcrumb_widget:
+        class: HealthCareAbroad\FrontendBundle\Twig\BreadcrumbWidgetTwigExtension
+        arguments: [@services.frontend_breadcrumb]
+        tags:
+            - name: twig.extension
