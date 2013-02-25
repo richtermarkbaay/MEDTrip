@@ -1,0 +1,45 @@
+frontend_search_ajaxLoadAllSearchOptions:
+    pattern: /search/ajaxLoadAllSearchOptions
+    defaults: { _controller: SearchBundle:Widget:ajaxLoadSearchSources }
+
+
+frontend_search_ajaxLoadAllTreatments:
+    pattern: /search/ajaxLoadAllTreatments
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllTreatments }
+
+frontend_search_ajaxLoadAllDestinations:
+    pattern: /search/ajaxLoadAllDestinations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllDestinations }
+
+frontend_search_ajaxLoadTreatments:
+    pattern: /search/ajaxLoadTreatments
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
+
+frontend_search_ajaxLoadDestinations:
+    pattern: /search/ajaxLoadDestinations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
+
+frontend_search_ajaxLoadCountries:
+    pattern: /search/ajaxLoadCountries
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'country' }
+
+frontend_search_ajaxLoadCities:
+    pattern: /search/ajaxLoadCities
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'city' }
+
+frontend_search_ajaxLoadSpecializations:
+    pattern: /search/ajaxLoadSpecializations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'specialization' }
+
+frontend_search_ajaxLoadSubSpecializations:
+    pattern: /search/ajaxLoadSubSpecializations
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'subSpecialization' }
+
+frontend_narrowSearch_autocomplete:
+    pattern: /search/ajaxNarrowSearch
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadNarrowSearch }
+
+#TODO: rename this route
+frontend_search_ajaxLoadTreatments2:
+    pattern: /search/ajaxLoadTreatments2
+    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'treatment' }
