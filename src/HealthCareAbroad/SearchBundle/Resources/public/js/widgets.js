@@ -93,7 +93,9 @@ var BroadSearchWidget = {
                        $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
                    },
                    change: function(event, ui) {
-                       $(BroadSearchWidget.formComponents[type].valueField).val(0);
+                       if (!ui.item) {
+                           $(BroadSearchWidget.formComponents[type].valueField).val(0);
+                       }
                    }
                 });
             
