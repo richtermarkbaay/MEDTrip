@@ -926,7 +926,12 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_properties` (
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
-
+--
+-- Dumping data for table `institution_medical_center_properties`
+--
+INSERT INTO `institution_medical_center_properties` (`id`, `institution_id`, `institution_medical_center_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
+(1, 1, 1, 1, '1', NULL),
+(2, 2, 2, 1, '2', NULL);
 -- --------------------------------------------------------
 
 --
