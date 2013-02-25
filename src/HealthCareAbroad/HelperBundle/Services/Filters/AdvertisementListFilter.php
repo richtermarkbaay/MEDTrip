@@ -6,6 +6,8 @@
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
 
 class AdvertisementListFilter extends ListFilter
@@ -17,6 +19,8 @@ class AdvertisementListFilter extends ListFilter
 
         // Add advertisementType in validCriteria
         $this->addValidCriteria('advertisementType');
+        
+        $this->statusFilterOptions = AdvertisementStatuses::getList();
     }
 
     function setFilterOptions()
