@@ -7,17 +7,17 @@
 
         <title>{% block title %}HealthCareAbroad{% endblock %}</title>
         <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
-        {#---
+        
         {% block stylesheets %}
             
             <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/frontend/hca.min.css') }}" rel="stylesheet"/>
             <!--<link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>-->
-            <link href="{{ asset('http://fonts.googleapis.com/css?family=Muli') }}" rel="stylesheet"/>
+            
         {% endblock %}
-        ---#}
         
+        {#--
         {% stylesheets 
 			'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
 			'css/bootstrap.min.css'
@@ -26,6 +26,7 @@
         %}
             <link href="{{ asset_url }}" rel="stylesheet"/>
         {% endstylesheets %}
+        -- #}
         <link href="{{ asset('http://fonts.googleapis.com/css?family=Muli') }}" rel="stylesheet"/>
 
 <!-- JS IMPORTANT NOTE: Please do NOT rearange the include Ordering. It should be:  
