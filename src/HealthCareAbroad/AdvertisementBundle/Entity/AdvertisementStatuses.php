@@ -15,8 +15,8 @@ final class AdvertisementStatuses
     static function getList()
     {
         return array(
-            self::INACTIVE => 'Inactive',
             self::ACTIVE => 'Active',
+            self::INACTIVE => 'Inactive',
             self::EXPIRED => 'Expired',
             self::ARCHIVED => 'Archived' 
         );

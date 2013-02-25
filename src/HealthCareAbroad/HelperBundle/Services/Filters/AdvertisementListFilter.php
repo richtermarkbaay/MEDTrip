@@ -19,16 +19,14 @@ class AdvertisementListFilter extends ListFilter
 
         // Add advertisementType in validCriteria
         $this->addValidCriteria('advertisementType');
-        
-        $this->statusFilterOptions = AdvertisementStatuses::getList();
     }
 
     function setFilterOptions()
     {
         $this->setAdvertisementTypeFilterOption();
 
-        $this->setStatusFilterOption();
-        
+        $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + AdvertisementStatuses::getList();
+        $this->setStatusFilterOption($statusOptions);        
     }
 
     function setAdvertisementTypeFilterOption()
