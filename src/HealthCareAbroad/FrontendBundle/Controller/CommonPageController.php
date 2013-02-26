@@ -28,7 +28,7 @@ class CommonPageController extends Controller
         $inquiry = new Inquiry();
         $form = $this->createForm(new InquiryType(), $inquiry);
         $inquirySubjects = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findAll();
-        
+        $error = false;
         if($request->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
@@ -47,12 +47,15 @@ class CommonPageController extends Controller
                 
                 $request->getSession()->setFlash('success', 'Inquiry has been send.');
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
+            }else {
+                $error = true;
             }
-        }
+        } 
         
         return $this->render('FrontendBundle:Static:inquiry.html.twig', 
                         array('form' => $form->createView(),
                               'inquirySubjects' => $inquirySubjects,
-                              'isInquiry' => 1));
+                              'isInquiry' => 1,
+                                'error' => $error));
     }
 }

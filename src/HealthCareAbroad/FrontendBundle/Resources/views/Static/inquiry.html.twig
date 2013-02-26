@@ -1,15 +1,23 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 {% set _layoutSpecificContentId = 'inquiry-content'%}
+
 {% block content %}
+
     <div class="row">
         <div class="span8">
             <form id="inquiryForm" novalidate="novalidate" class="inquiry" method="POST" action="{{ path('frontend_page_inquiry') }}">
-                {{ form_errors(form) }}
+                
                 <h1>Get In Contact</h1>
+                {% if error %}
+                    <div class="alert alert-error">
+                        <strong> Error Alert! </strong>
+                        Please fill the necessary fields. 
+                    </div>
+                {% endif %}
                 <section class="section">
                     <div class="row-fluid">
                         <div class="span12">
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.inquirySubject.vars.valid ? '' : 'error') }}">
                                 <label>My request concerns: *</label>
                                 {{ form_widget(form.inquirySubject, {attr: {class: 'radio'} })}}
                             </div>
@@ -20,32 +28,31 @@
                     <h2>Personal Details</h2>
                     <div class="row-fluid">
                         <div class="span12">
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_firstName">First Name *</label>
                                 {{ form_widget(form.firstName, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_lastName">Last Name *</label>
-                                {{ form_errors(form.lastName) }}
                                 {{ form_widget(form.lastName, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_country">Country</label>
                                 {{ form_widget(form.country, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.city.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_city">City</label>
                                 {{ form_widget(form.city, {attr: {class: 'city_dropdown span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.contactNumber.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_contactNumber">Phone</label>
                                 {{ form_widget(form.contactNumber, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_email">Email Address *</label>
                                 {{ form_widget(form.email, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.message.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_message">Message *</label>
                                 {{ form_widget(form.message, {attr: {class: 'span12', rows: 5, cols: 60} } ) }}
                             </div>
@@ -71,7 +78,7 @@
                 <section class="section">
                     <div class="row-fluid">
                         <div class="span12">
-                            <div class="row-field">
+                            <div class="control-group row-field {{ (form.inquiryCheck.vars.valid ? '' : 'error') }}">
                                 <label>Confirmation</label>
                                 <label class="checkbox">
                                     {{ form_widget(form.inquiryCheck) }}
