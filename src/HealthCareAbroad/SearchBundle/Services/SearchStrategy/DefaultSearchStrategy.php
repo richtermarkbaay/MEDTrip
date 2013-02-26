@@ -592,7 +592,7 @@ class DefaultSearchStrategy extends SearchStrategy
 
         //TODO: test if cast really helps speed up query?
         $sqlCountry = "
-            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country
             FROM search_terms AS a
             $optionalJoin
             WHERE a.country_name LIKE :name AND a.status = {$this->searchTermActiveStatus}
@@ -600,7 +600,7 @@ class DefaultSearchStrategy extends SearchStrategy
         ";
 
         $sqlCity = "
-            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country
             FROM search_terms AS a
             $optionalJoin
             WHERE (a.country_name LIKE :name OR a.city_name LIKE :name) AND a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
@@ -617,7 +617,7 @@ class DefaultSearchStrategy extends SearchStrategy
             $sql = $sqlCountry . ' UNION ' . $sqlCity;
         }
 
-        $sql .= ' GROUP BY label ORDER BY label ASC ';
+        $sql .= ' GROUP BY label ORDER BY country, label ASC ';
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('name', '%'.$searchParams->get('searchedTerm').'%');
@@ -636,17 +636,17 @@ class DefaultSearchStrategy extends SearchStrategy
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $stmt = $connection->query("
-            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country
             FROM search_terms AS a
             WHERE a.status = {$this->searchTermActiveStatus}
 
             UNION
 
-            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country
             FROM search_terms AS a
             WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
 
-            GROUP BY label ORDER BY label ASC
+            GROUP BY label ORDER BY country, label ASC
         ");
 
         $stmt->execute();

@@ -10,4 +10,15 @@ final class AdvertisementStatuses
     const EXPIRED = 4;
     
     const ARCHIVED = 8;
+    
+    
+    static function getList()
+    {
+        return array(
+            self::ACTIVE => 'Active',
+            self::INACTIVE => 'Inactive',
+            self::EXPIRED => 'Expired',
+            self::ARCHIVED => 'Archived' 
+        );
+    }
 }

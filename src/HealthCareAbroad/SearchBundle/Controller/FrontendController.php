@@ -638,10 +638,7 @@ class FrontendController extends Controller
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
     }
 
-    public function ajaxLoadAllTreatmentsAction(Request $request)
-    {
-        return new Response(json_encode($this->get('services.search')->getAllTreatments()), 200, array('Content-Type'=>'application/json'));
-    }
+    
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
@@ -650,20 +647,8 @@ class FrontendController extends Controller
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
     }
 
-    public function ajaxLoadAllDestinationsAction(Request $request)
-    {
-        return new Response(json_encode($this->get('services.search')->getAllDestinations()), 200, array('Content-Type'=>'application/json'));
-    }
 
-    public function ajaxLoadAllSearchOptionsAction(Request $request)
-    {
-        $data = array(
-            'treatments' => $this->get('services.search')->getAllTreatments(),
-            'destinations' => $this->get('services.search')->getAllDestinations(),
-        );
-
-        return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
-    }
+    
     /**
      * AJAX handler for narrow search results widget
      *

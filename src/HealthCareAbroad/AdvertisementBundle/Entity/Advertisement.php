@@ -32,7 +32,7 @@ class Advertisement
     private $dateExpiry;
 
     /**
-     * @var boolean $status
+     * @var smallint $status
      */
     private $status;
 
@@ -157,7 +157,7 @@ class Advertisement
     /**
      * Set status
      *
-     * @param boolean $status
+     * @param smallint $status
      * @return Advertisement
      */
     public function setStatus($status)
@@ -169,7 +169,7 @@ class Advertisement
     /**
      * Get status
      *
-     * @return boolean 
+     * @return smallint 
      */
     public function getStatus()
     {

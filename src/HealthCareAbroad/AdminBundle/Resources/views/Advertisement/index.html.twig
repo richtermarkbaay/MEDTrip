@@ -30,22 +30,28 @@
                                 <a href="{{ app.request.uri }}" class="{{ sortBy == 'dateExpiry' ? 'sort-' ~ sortOrder : '' }}">Expiry Date</a>
                             </th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th width="80">Actions</th>
                         </tr>
 
   						{% for each in advertisements %}
-	                    <tr>
-	                        <td>{{ each.title }}</td>
-	                        <td>{{ each.description(30) }}</td>
-	                        <td>{{ each.advertisementType.name }}</td>
-	                        <td>{{ each.dateExpiry.date|date("m/d/Y") }}</td>  
-	                        <td>{{ each.status ? 'Active' : 'Inactive' }}</td>
-	                        <td width="60">
-	                            <a href="{{ path('admin_advertisement_edit', {advertisementId: each.id}) }}"><i class="icon-pencil"></i> Edit</a>
-	                        </td>
-                   		</tr>
+    	                    <tr>
+    	                        <td>{{ each.title }}</td>
+    	                        <td>{{ each.description(30) }}</td>
+    	                        <td>{{ each.advertisementType.name }}</td>
+    	                        <td>{{ each.dateExpiry.date|date("m/d/Y") }}</td>  
+    	                        <td>
+    	                            <select style="width:110px" class="advertisement-update-status" data-advertisement-id="{{ each.id }}">
+    	                                {% for statusValue, statusName in advertisementStatus %}
+    	                                    <option value="{{ statusValue }}" {{ each.status is sameas(statusValue) ? 'selected' : '' }}>{{ statusName }}</option>
+    	                                {% endfor %}
+    	                            </select>
+    	                        </td>
+    	                        <td>
+    	                            <a href="{{ path('admin_advertisement_edit', {advertisementId: each.id}) }}"><i class="icon-edit"></i> Edit</a>
+    	                        </td>
+                       		</tr>
                    		{% else %}
-	                    <tr class="error"><td colspan="5">No ads found!</td></tr>
+	                    <tr class="error"><td colspan="6">No ads found!</td></tr>
                         {% endfor %}
                 </table>
             {% endblock %}
@@ -56,5 +62,29 @@
            {{ paginate(pager, 'admin_advertisement_index', app.request.query.all) }}
         {% endif %}
     </div>
+    
+    <script type="text/javascript">
+        $(function(){
+            $('.advertisement-update-status').change(function(){
+                var elem = $(this);
+                var url = "{{ path('admin_advertisement_updateStatus') }}";
+                params = { advertisementId: elem.attr('data-advertisement-id'), status: $(this).val()};
+
+                elem.after('<div style="color:#0088CC">Updating status...</div>');
+                
+                console.log(url);
+                console.log(params);
+                $.post(url, params, function(response){
+                	elem.next().html('Done!');
+                	elem.next().fadeOut(2000, function(){$(this).remove()});
+                	
+                    if(!response) {
+                        alert('Unable to update status.');
+                    }
+                    //alert(response);
+                });
+            });
+        });
+    </script>
     
 {% endblock %}

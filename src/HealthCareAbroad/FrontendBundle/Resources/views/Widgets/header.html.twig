@@ -25,11 +25,8 @@
 {% if isInquiry is defined and isInquiry %}
     <div id="breadcrumbs" class="container">
         <ul class="breadcrumb row">
-            <li>
-                <a href="index.html">
-                    <span class="home"></span>
-                </a>
-            </li>
+            <li><a href="index.html"><span class="home"></span></a></li>
+            <li><a class="home">Inquiry</a></li>
         </ul>
     </div>
 {% endif %}
@@ -41,7 +38,10 @@
             </h1>
             {% block searchBox %}
                 {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
-                {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
+                
+                {{ render_search_homepage_widget() | raw }}
+                
+                {# render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} #}
             {% endblock %}
         </div>
     </div> <!--End of hero unit-->
