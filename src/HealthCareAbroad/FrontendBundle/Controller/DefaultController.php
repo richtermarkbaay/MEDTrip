@@ -45,7 +45,7 @@ class DefaultController extends Controller
     {
         $newsletterSubscriber = new NewsletterSubscriber();
         $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
-        
+
         return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
                         'subscribeNewsletterForm' => $form->createView()
         ));
@@ -163,7 +163,7 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($specialization, $country)));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $country->getName() . ' - ' . $specialization->getName(),
+                        'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $country->getName()),
                         'country' => $country,
                         'specialization' => $specialization,
                         'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'city'),
@@ -194,7 +194,7 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($subSpecialization, $country)));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $country->getName() . ' - ' . $subSpecialization->getName(),
+                        'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $country->getName()),
                         'country' => $country,
                         'subSpecialization' => $subSpecialization,
                         'includedNarrowSearchWidgets' => array('treatment', 'city'),
@@ -226,7 +226,7 @@ class DefaultController extends Controller
 
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $country->getName() . ' - ' . $treatment->getName(),
+                        'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $country->getName()),
                         'country' => $country,
                         'specialization' => $treatment->getSpecialization(),
                         'treatment' => $treatment,
@@ -258,7 +258,7 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($specialization, $city)));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $specialization->getName(),
+                        'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
                         'specialization' => $specialization,
                         'city' => $city,
                         'includedNarrowSearchWidgets' => array('sub-specialization', 'treatment'),
@@ -293,7 +293,7 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($subSpecialization, $city)));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $subSpecialization->getName(),
+                        'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
                         'subSpecialization' => $subSpecialization,
                         'city' => $city,
                         'includedNarrowSearchWidgets' => array('treatment'),
@@ -326,7 +326,7 @@ class DefaultController extends Controller
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($treatment, $city)));
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                     'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                    'searchLabel' => $city->getName() . ', ' . $city->getCountry()->getName() . ' - ' . $treatment->getName(),
+                    'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
                     'treatment' => $treatment,
                     'city' => $city,
                     'includedNarrowSearchWidgets' => array(),
@@ -417,7 +417,7 @@ class DefaultController extends Controller
                     $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
                     $em->persist($errorReport);
                     $em->flush();
-                    
+
                     $output = "Your report has been submitted. Thank you.";
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
 

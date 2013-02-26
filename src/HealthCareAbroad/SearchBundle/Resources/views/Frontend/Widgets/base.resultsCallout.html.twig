@@ -4,7 +4,14 @@
         <div class="span9">
             <div class="media">
                 <div class="media-body">
-                    <h1 class="search-info"> Search Results for <small>{{ searchLabel }}</small></h1>
+                    <h1 class="search-info">
+                        {% if isArraySearchLabel is defined and isArraySearchLabel %}
+                            {% set count = searchResults.getTotalResults %}
+                            We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} {{ searchLabel.treatment }} in {{ searchLabel.destination }}
+                        {% else %}
+                            Search Results for <small>{{ searchLabel }}</small>
+                        {% endif %}
+                    </h1>
                 </div>
             </div>
         </div>

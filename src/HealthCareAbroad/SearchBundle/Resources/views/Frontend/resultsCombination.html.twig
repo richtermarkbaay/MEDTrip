@@ -1,7 +1,7 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block callout %}
-    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
+    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' with { 'isArraySearchLabel': true } %}
 {% endblock %}
 
 {% block content %}
