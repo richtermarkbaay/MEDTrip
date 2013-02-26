@@ -17,9 +17,16 @@
 
     	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' 
     	    with { awards: institutionAwards, services: institutionServices} %}
-    	
-    	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
-    	    with { doctors: institutionDoctors} %}
+
+
+        {% if institutionDoctors|length %}
+            {% embed 'FrontendBundle:Embed:profileSection.html.twig' 
+                with {title: 'DOCTORS', headingClass : 'doctors-heading', class: 'one-col-description content' } %}
+                {% block sectionContent %}
+                    {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionDoctors } %}
+                {% endblock %}
+            {% endembed %}
+        {% endif %}
 
 	</div> <!--End of main_content-->
 

@@ -2,14 +2,25 @@
 
 <div id="details" class="row">
 	<div class="tab-content span8">
-		<ul class="nav nav-tabs" id="clinicTab">
-		  	<li class="active"><a href="#main_content">OVERVIEW</a></li>
-		  	<li><a href="#clinics">CLINIC LIST</a></li>
+		<ul class="nav nav-tabs" id="institutionTab">
+		  	<li class="active"><a href="#overview">OVERVIEW</a></li>
+		  	{% if institutionDoctors|length %}
+		  	    <li><a href="#doctors">DOCTORS</a></li>
+            {% endif %}
 		</ul> <!--Twitter bootstrap Tabs-->
 
-        {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
+		<!-- Tabs Content -->
+		<div id="overview" class="tab-pane active">
+            {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
+        </div>
+
+        {% if institutionDoctors|length %}
+            <div id="doctors" class="tab-pane one-col-description borderless">
+                {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with {doctors: institutionDoctors} %}
+            </div>
+        {% endif %}
+        <!-- End of Tabs Content -->
         
-        {% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
 	</div>
 
 	<aside id="aside_content" class="span4">
@@ -52,7 +63,7 @@
             return false;
         });
 		
-        $('#clinicTab a').click(function (e) {
+        $('#institutionTab a').click(function (e) {
       	  e.preventDefault();
       	  $(this).tab('show');
       	});

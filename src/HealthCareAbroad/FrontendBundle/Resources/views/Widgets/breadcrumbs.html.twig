@@ -1,16 +1,16 @@
 {% if breadcrumbs is defined %}
 <div id="breadcrumbs" class="container">
-    {% spaceless %}
 	<ul class="breadcrumb row">
-		<li><a href="{{ path('frontend_main_homepage')}}" style="padding-right:10px;"><img src="/images/frontend/home_icon.png" /></a></li>
+		<li><a href="{{ path('frontend_main_homepage')}}"><span class="home"></span></a></li>
 		{% for each in breadcrumbs %}
     		{% if not loop.last %}
-                <li class="active"><a href="{{ each.url }}">{{ each.label }}</a></li>
+                <li class="active"><a href="{{ each.url }}">{{ each.label }}</a>
+                </li>
     		{% else %}
-    		    <li><a>{{ each.label }}</a></li>
+    		    <li><a>{{ each.label }}</a>
+    		    </li>
 		    {% endif %}
 		{% endfor %}
 	</ul>
-	{% endspaceless %}
 </div>
 {% endif %}
