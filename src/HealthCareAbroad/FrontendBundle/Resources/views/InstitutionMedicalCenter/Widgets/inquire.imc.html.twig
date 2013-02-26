@@ -1,4 +1,4 @@
-{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:300px;overflow-x:hidden;','formId': formId}} %}
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'formId': formId}} %}
     {% block modalBody %}
     <div class="alert-box"></div>
     <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
@@ -23,7 +23,6 @@
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
             {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
-            <span class="help-inline"></span>    
         </div>
         {{ form_rest(form) }}
                             	                        	
