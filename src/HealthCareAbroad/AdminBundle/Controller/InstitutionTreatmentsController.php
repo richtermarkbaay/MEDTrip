@@ -771,12 +771,15 @@ class InstitutionTreatmentsController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author acgvelarde
+     * @author ajacobe
      */
     public function portInstitutionAncillaryServiceAction(Request $request)
     {
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+        
+        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
         
         if($request->get('isCopy')) {
             foreach ($institutionAncillaryServices as $ancillaryService)
@@ -943,8 +946,13 @@ class InstitutionTreatmentsController extends Controller
             $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
             if(is_object($result)) {
     
-                $this->institutionMedicalCenter->setLogo($result);
-                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                $media = $result;
+                
+                // Delete current logo
+                $this->get('services.media')->delete($this->institutionMedicalCenter->getLogo(), $this->institution);
+                
+                // Save new media as logo
+                $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $media);
             }
         }
         return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId(),'institutionId' => $this->institution->getId())));

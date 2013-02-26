@@ -1,0 +1,72 @@
+<style>
+    .ui-corner-all {
+        border-radius:0!important;
+        -moz-border-radius:0!important
+    }
+    .ui-state-focus{
+        background-color: #FE6500!important;
+        color: #FFFFFF!important;
+    }
+</style>
+<form class="span12 search_box  form-inline broad_search_form" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
+    <label>Search</label>
+    <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
+    <input type="hidden" name="treatment_id" id="treatment_id" />
+    <label>Near</label>
+    <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
+    <input type="hidden" name="destination_id" id="destination_id"/>
+    <button type="submit" class="btn">Let's Go</button>
+    
+    <div class="helper-link">
+        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"> View all specializations</a>
+        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
+        
+        <div class="popup treatments row-fluid">
+            <button id="treatments_dropdown_button" data-toggle="dropdown" class="search_dropdown_button btn text-left small default btn-pop">
+                <span class="icon-chevron-down pull-right"></span>
+            </button>
+            <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
+                
+            </div>
+        </div>
+        
+        <div class="popup destinations row-fluid">
+            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                <span class="icon-chevron-down pull-right"></span>
+            </button>
+            <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu">
+                
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script type="text/javascript" src="{{ asset('bundles/search/js/widgets.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        
+        BroadSearchWidget
+            .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
+            .initializeForm($('form.broad_search_form'), {
+                treatments: {
+                    //'mainInputField': $('input#treatment_input_field'),
+                    'dropdownButton': $('#treatments_dropdown_button'),
+                    'autocompleteField': $('input#treatment_input_field'),
+                    'dropdown': $('#treatments_dropdown_menu') 
+                },
+                destinations: {
+                    //'mainInputField': $('input#destination_input_field'),
+                    'dropdownButton': $('#destinations_dropdown_button'),
+                    'autocompleteField': $('input#destination_input_field'),
+                    'dropdown': $('#destinations_dropdown_menu')
+                }
+            });
+            
+    });
+})(jQuery);
+//-->
+</script>

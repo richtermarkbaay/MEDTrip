@@ -1,0 +1,29 @@
+<div class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="institutionFeaturedImageModal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3>Upload Featured Image</h3>
+    </div>
+    <form id="featuredImageModalForm" action="{{ path('admin_institution_featuredImage_upload', {'institutionId': institution.id}) }}" enctype="multipart/form-data" onsubmit="validate(this);" method="POST" style="min-width: 400px;padding: 20px 20px 0;">
+        <div class="modal-body">
+           <input type="file" name="file" accept="image/gif, image/jpeg , image/jpg, image/png" size="40" class="profilephoto" />
+        </div>
+        <div class="modal-footer">
+             <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+            <input type="submit" class="btn btn-primary" value="Submit">
+         </div>
+    </form>
+</div>
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+function validate(form) {
+   if ((/.(gif|jpe?g|png)$/i.test(form['file'].value))==false) {
+
+       return (false);
+   }
+       return(true);
+}
+</script>
+{% endblock %}
+
+

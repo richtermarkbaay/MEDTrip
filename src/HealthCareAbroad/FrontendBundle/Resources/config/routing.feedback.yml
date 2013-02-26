@@ -1,0 +1,11 @@
+frontend_feedback_modal:
+    pattern: /modal-feedback
+    defaults: { _controller: FrontendBundle:Feedback:view }
+    requirements:
+        _method:  GET
+        
+frontend_send_feedback:
+    pattern: /send-feedback
+    defaults: { _controller: FrontendBundle:Feedback:send }
+    requirements:
+        _method:  GET|POST

@@ -10,7 +10,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormViewInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use HealthCareAbroad\HelperBundle\Form\FieldType\LocationFieldType;
 
+use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
 class InquiryType extends AbstractType
 {
 	private $container;
@@ -20,12 +22,17 @@ class InquiryType extends AbstractType
 	}
 	public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $cityId = 0;
     	$builder
-    		->add('firstName', 'text', array('constraints' => new NotBlank()))
-    		->add('lastName', 'text', array('constraints' => new NotBlank()))
-    		->add('email','email', array('constraints' => array(new Email(), new NotBlank())))
-    		->add('inquiry_subject', 'inquiry_subject_list')
-    		->add('message', 'textarea', array('constraints' => new NotBlank()))
+    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subjects')))))
+    		->add('firstName', 'text', array('error_bubbling' => false))
+    		->add('lastName', 'text', array('error_bubbling' => false))
+    		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
+    		->add('city','city_list')
+    		->add('contactNumber','text')
+    		->add('email', 'email', array('error_bubbling' => false))
+    		->add('message', 'textarea', array('error_bubbling' => false))
+    		->add('inquiryCheck', 'checkbox',array('error_bubbling' => false, 'virtual' => true, 'constraints' => array(new NotBlank(array('message' => 'Please agree to Terms of Use and Privacy Policy.')))))
     		;
     }
     

@@ -1,17 +1,15 @@
-{% set number = institution.contactNumber %}
-{% set number = json_decode(number) | join %}
+{% set number = render_institution_contact_number(institution) %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
-
 <div id="highlight" class="row">
     <div class="top_box span12">
         <div class="description">
             <p>{{ institution.name }}</p>
         </div>
         
-        {% if featuredImage is defined %}
-            {{ media(featuredImage, institution, 'default', {class: 'institution_picture'}) | raw }}
+        {% if institution.featuredMedia %}
+            {{ media(institution.featuredMedia, institution, 'default', {class: 'institution_picture'}) | raw }}
         {% else %}
             <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
         {% endif %}
@@ -32,39 +30,27 @@
         <ul class="contact_now span5">
             {% if number %}
                 <li>
-                    <a id="institution-call" class="call btn orange" href="javascript:void(0)">Call Us</a>
-                    <script type="text/javascript">
-						$('#institution-call').tooltip({
-							title: '<h5><small>Landline: </small>{{ number }}</h5>',
-							html: true, delay: 0, animation: true, trigger: 'click'
-						});
-					</script>
+                    <a class="call btn orange" href="#" rel="tooltip" data-contact-number="{{ number }}" >Call Us</a>
                 </li>
             {% endif %}
 
             {% if institution.contactEmail %}
-                <li><a class="email btn orange" id="email_multiple" href="mailto:{{ institution.contactEmail }}">Email</a></li>
+                <li>
+                    <a class="email btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">Email</a>
+                    <!-- Modal Multiple Institution Inquiry -->
+                	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+                	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+                	%}
+                   <!-- end Modal Multiple Institution Inquiry -->
+                </li>
             {% endif %}
 
             {% if mainWebsites %}
                 <!--li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li-->
             {% endif %}
             
-            <!-- Modal Multiple Institution Inquiry -->
-            	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-            	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
-            	%}
-           <!-- end Modal Multiple Institution Inquiry -->
+            
         </ul>    
     </div>
 </div>
-{% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
-    <script type="text/javascript">
-        $('#email_multiple').click(function(){
-        	$('div#modal_multiple_institution_inquiry_form').modal('show');
-            return false;
-        });
 
-    </script>
-{% endblock %}

@@ -5,15 +5,27 @@
         <a href="{{ searchResultItem.url }}">
             {{ searchResultItem.logo | raw }}
         </a>
+        <div class="location">{{ searchResultItem.mainAddress }}</div>
     </div>
 
     <div class="media-body">
         <h3 class="media-heading">{{ searchResultItem.name }}</h3>
-        {% if searchResultItem.description is defined %}
-        <div class="description-box" style="color:#657174; font-size:14px;" >
-            {{ searchResultItem.description }}...
+        {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
+            <small class="institution">{{ searchResultItem.institutionName }}</small>
+        {% endif %}
+        
+        {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
+        <div class="description" >
+            <p>{{ searchResultItem.description ~'...'}}</p>
         </div>
         {% endif %}
+        <div class="link">
+            <a href="{{ searchResultItem.url }}" class="more-info btn pull-right green">
+                <span class="icon-search icon-white"></span> More Info
+            </a>
+        </div>
+        
+        {#---
         <div class="media">
             <div class="pull-left">
                 <span class="address-icon2"></span>
@@ -28,10 +40,9 @@
                     <b>{{ searchResultItem.mainAddress }}</b>
                 </small>
             </div>
-            <a href="{{ searchResultItem.url }}" class="more-info btn pull-right green">
-                <span class="icon-search icon-white"></span> More Info
-            </a>
+            
         </div>
+        --- #}
     </div>
 </article>
 {% endif %}

@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use Doctrine\ORM\Query\Expr\Join;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
@@ -35,6 +39,11 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 class InstitutionService
 {    	
     protected $doctrine;
+
+    /** 
+     * @var static Institution
+     */
+    protected static $institution;
     
     /**
      * @var HealthCareAbroad\UserBundle\Services\InstitutionUserService
@@ -51,37 +60,73 @@ class InstitutionService
     	$this->doctrine = $doctrine;
     }
     
+    public function getFullInstitutionBySlug($slug = '')
+    {
+        if(!$slug) {
+            return null;
+        }
+
+        static $isLoaded = false;
+
+        if(!$isLoaded) {
+            $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+            $qb->select('a, b, c, d, e, f, g, h, i, j')->from('InstitutionBundle:Institution', 'a')
+            ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
+            ->leftJoin('b.institutionSpecializations', 'c')
+            ->leftJoin('c.specialization', 'd')
+            ->leftJoin('c.treatments', 'e')
+            ->leftJoin('a.country', 'f')
+            ->leftJoin('a.city', 'g')
+            ->leftJoin('a.logo', 'h')
+            ->leftJoin('b.doctors', 'i')
+            ->leftJoin('i.specializations', 'j')
+            ->where('a.slug = :institutionSlug')
+            ->andWhere('a.status = :status')
+            ->setParameter('institutionSlug', $slug)
+            ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus())
+            ->setParameter('medicalCenterStatus', InstitutionMedicalCenterStatus::APPROVED);
+            
+            self::$institution = $qb->getQuery()->getOneOrNullResult();
+
+            $isLoaded = true;
+        }
+        
+        return self::$institution;
+    }
+    
     public function setInstitutionPropertyService(InstitutionPropertyService $v)
     {
         $this->institutionPropertyService = $v;
     }
-    
-    function saveMediaToGallery(Institution $institution, Media $media)
-    {
-        $this->saveMedia($institution, $media);
-    }
-    
+        
     function saveMediaAsLogo(Institution $institution, Media $media)
     {
         $institution->setLogo($media);
-        $this->saveMedia($institution, $media);
-    }
-    
-    function saveMedia(Institution $institution, Media $media)
-    {
-        $gallery = $institution->getGallery();
-    
-        if(!$gallery) {
-            $gallery = new Gallery();
-            $gallery->setInstitution($institution);
-        }
-    
-        $gallery->addMedia($media);
-    
-        $institution->setGallery($gallery);
-    
+
         $em = $this->doctrine->getEntityManager();
         $em->persist($institution);
+        $em->flush($institution);
+    }
+
+    function saveMediaAsFeaturedImage(Institution $institution, Media $media)
+    {
+        $institution->setFeaturedMedia($media);
+        $this->saveMediaToGallery($institution, $media);
+    }
+    
+    function saveMediaToGallery(Institution $institution, Media $media)
+    {
+        $gallery = $institution->getGallery();
+
+        if(!$gallery) {
+            $gallery = new Gallery();
+            $gallery->addMedia($media);
+            $gallery->setInstitution($institution);
+        } else {
+            $gallery->addMedia($media);
+        }
+
+        $em = $this->doctrine->getEntityManager();
         $em->persist($gallery);
         $em->flush();
     }

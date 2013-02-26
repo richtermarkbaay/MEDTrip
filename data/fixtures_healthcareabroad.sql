@@ -563,6 +563,22 @@ CREATE TABLE IF NOT EXISTS `error_reports` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 
+--
+-- Table structure for table `feedback_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `feedback_messages` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) NOT NULL,
+  `email_address` varchar(250) NOT NULL,
+  `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `remote_address` varchar(100) NOT NULL,
+  `http_user_agent` varchar(500) DEFAULT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='feedback messages' AUTO_INCREMENT=2 ;
+
+
 -- --------------------------------------------------------
 
 --

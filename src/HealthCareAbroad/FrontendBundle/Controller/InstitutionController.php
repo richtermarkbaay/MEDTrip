@@ -42,29 +42,8 @@ class InstitutionController extends Controller
     {
         $request = $this->getRequest();
 
-        if($request->get('institutionSlug')) {
-            $criteria = array('slug' => $request->get('institutionSlug'));
-            $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneBy($criteria);
-
-            $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h, i, j')->from('InstitutionBundle:Institution', 'a')
-               ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
-               ->leftJoin('b.institutionSpecializations', 'c')
-               ->leftJoin('c.specialization', 'd')
-               ->leftJoin('c.treatments', 'e')
-               ->leftJoin('a.country', 'f')
-               ->leftJoin('a.city', 'g')
-               ->leftJoin('a.logo', 'h')
-               ->leftJoin('b.doctors', 'i')
-               ->leftJoin('i.specializations', 'j')
-               ->where('a.slug = :institutionSlug')
-               ->andWhere('a.status = :status')
-               ->setParameter('institutionSlug', $criteria['slug'])
-               ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus())
-               ->setParameter('medicalCenterStatus', InstitutionMedicalCenterStatus::APPROVED);
-
-            $this->institution = $qb->getQuery()->getOneOrNullResult();
-
+        if($slug = $request->get('institutionSlug')) {
+            $this->institution = $this->get('services.institution')->getFullInstitutionBySlug($slug);
             
             if(!$this->institution) {
                 throw $this->createNotFoundException('Invalid institution');                
@@ -97,13 +76,6 @@ class InstitutionController extends Controller
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
         }
-        
-
-        if($gallery && $gallery->getMedia()->count()) {
-            $mediaGallery = $gallery->getMedia()->toArray();
-            $params['featuredImage'] = $mediaGallery[array_rand($mediaGallery)];
-        }
-        
 
         return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
     }

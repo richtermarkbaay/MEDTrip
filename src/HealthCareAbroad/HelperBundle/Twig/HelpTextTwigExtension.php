@@ -23,7 +23,9 @@ class HelpTextTwigExtension extends \Twig_Extension
     {
         return array(
             'get_help_text_by_route' => new \Twig_Function_Method($this, 'getHelpTextByRoute'),
-            'add_slashes' => new \Twig_Function_Method($this, 'addSlashes'), 
+            'add_slashes' => new \Twig_Function_Method($this, 'addSlashes'),
+            'strpos' => new \Twig_Function_Method($this, 'strpos'),
+            'hasSubstr' => new \Twig_Function_Method($this, 'hasSubstr'),
         );
      }
      
@@ -44,6 +46,18 @@ class HelpTextTwigExtension extends \Twig_Extension
          return addslashes($string);
      }
      
+     public function strpos($string, $findme)
+     {
+         return strpos($string, $findme);
+     }
+     
+     public function hasSubstr($string, $findme)
+     {
+         $pos = strpos($string, $findme);
+
+         return $pos !== false;
+     }
+
      public function getName()
      {
          return 'helptext';

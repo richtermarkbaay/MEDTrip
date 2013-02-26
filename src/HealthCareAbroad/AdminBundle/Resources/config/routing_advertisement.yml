@@ -30,6 +30,14 @@ admin_advertisement_update:
         _method: POST
         advertisementId: \d+
 
+admin_advertisement_updateStatus:
+    pattern:  /admin/advertisement/update-status
+    defaults: { _controller: AdminBundle:Advertisement:updateStatus, advertisementId: ~, status: ~ }
+    requirements:
+        _method: POST
+        advertisementId: \d+
+        status: \d+
+
 admin_advertisement_addInvoice:
     pattern:  /admin/advertisement/{advertisementId}/add-invoice
     defaults: { _controller: AdminBundle:Advertisement:addInvoice }

@@ -6,6 +6,8 @@
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
 
 class AdvertisementListFilter extends ListFilter
@@ -23,8 +25,8 @@ class AdvertisementListFilter extends ListFilter
     {
         $this->setAdvertisementTypeFilterOption();
 
-        $this->setStatusFilterOption();
-        
+        $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + AdvertisementStatuses::getList();
+        $this->setStatusFilterOption($statusOptions);        
     }
 
     function setAdvertisementTypeFilterOption()

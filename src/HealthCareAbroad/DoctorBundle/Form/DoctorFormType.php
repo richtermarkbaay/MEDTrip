@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\DoctorBundle\Form;
 
+use HealthCareAbroad\MediaBundle\Form\AdminMediaFileType;
+
 use HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -23,7 +25,8 @@ class DoctorFormType extends AbstractType
     {
         
         $gender = array(Doctor::GENDER_NONE => '--Select--', Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
-        
+        $media = $options['data']->getMedia();
+
     	$builder
      		->add('firstName', 'text', array('label' => 'First name'))
      		->add('middleName', 'text', array('label' => 'Middle name'))
@@ -32,7 +35,7 @@ class DoctorFormType extends AbstractType
      		->add('gender', 'choice', array('choices'=>$gender))
      		->add('country','country_list')
      		->add('details', 'textarea')
-     		->add('media', 'file', array('label' => 'Image'))
+     		->add('media', new AdminMediaFileType($media), array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
     	    ->add('contactNumber', 'contact_number', array('label' => 'Contact Number'));

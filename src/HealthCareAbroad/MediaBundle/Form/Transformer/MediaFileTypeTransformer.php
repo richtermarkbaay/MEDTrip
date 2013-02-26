@@ -24,6 +24,6 @@ class MediaFileTypeTransformer implements DataTransformerInterface
 
     public function reverseTransform($media)
     {
-        return new Media();
+        return null;
     }
 }

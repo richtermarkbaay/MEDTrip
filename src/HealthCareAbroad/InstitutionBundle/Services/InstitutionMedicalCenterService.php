@@ -42,6 +42,8 @@ class InstitutionMedicalCenterService
      */
     private $doctrine;
     
+    static private $institutionMedicalCenter;
+    
     /**
      * @var InstitutionMedicalCenterPropertyService
      */
@@ -50,6 +52,40 @@ class InstitutionMedicalCenterService
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
+    }
+    
+    public function getFullInstitutionMedicalCenterBySlug($slug = '')
+    {
+        if(!$slug) {
+            return null;
+        }
+
+        static $isLoaded = false;
+
+        if(!$isLoaded) {
+            $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+            $qb->select('a, b, c, d, e, f, g, h, i, j, k')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->leftJoin('a.institution', 'b')
+            ->leftJoin('b.country', 'c')
+            ->leftJoin('b.city', 'd')
+            ->leftJoin('a.institutionSpecializations', 'e')
+            ->leftJoin('e.specialization', 'f')
+            ->leftJoin('e.treatments', 'g')
+            ->leftJoin('g.subSpecializations', 'h')
+            ->leftJoin('a.media', 'i')
+            ->leftJoin('a.logo', 'j')
+            ->leftJoin('a.doctors', 'k')
+            ->where('a.slug = :centerSlug')
+            ->andWhere('a.status = :status')
+            ->setParameter('centerSlug', $slug)
+            ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
+
+            self::$institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
+
+            $isLoaded = true;
+        }
+
+        return self::$institutionMedicalCenter;
     }
     
     public function setInstitutionMedicalCenterPropertyService(InstitutionMedicalCenterPropertyService $service)
@@ -385,5 +421,20 @@ class InstitutionMedicalCenterService
         $businessHours = \array_merge($defaultWeekValue, $businessHours);
         
         return \json_encode($businessHours);
+    }
+
+    /**
+     * Note: This doesn't add the media to institution gallery.
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Media $media
+     */
+    function saveMediaAsLogo(InstitutionMedicalCenter $institutionMedicalCenter, Media $media)
+    {
+        $institutionMedicalCenter->setLogo($media);
+
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institutionMedicalCenter);
+        $em->flush($institutionMedicalCenter);
     }
 }

@@ -32,7 +32,7 @@ class AdminController extends Controller
     public function galleryAction(Request $request)
     {
         $adapter = new ArrayAdapter($this->get('services.media')->retrieveAllMedia($this->institution->getId())->toArray());
-        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 12));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 15));
 
         return $this->render('MediaBundle:Admin:gallery.html.twig', array(
                 'institution' => $this->institution,
@@ -75,6 +75,32 @@ class AdminController extends Controller
         $success = $this->get('services.media')->addMedicalCenterMedia($request->get('imcId'), $request->get('mediaId'));
 
         $response = new Response(json_encode($success));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+    
+    /**
+     * This is a global/generic ADMIN delete media function. 
+     * Please use this function instead of creating another.
+     * 
+     * @author Adelbert D. Silla
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxDeleteAction(Request $request)
+    {
+        $result = false;
+
+        $mediaId = $request->get('media_id');
+        $parentId = $request->request->get('parent_id');
+        $parentClass = $request->request->get('parent_class');
+
+        $media = $this->getDoctrine()->getRepository('MediaBundle:Media')->find($mediaId);
+        $parentObject = $this->getDoctrine()->getRepository($parentClass)->find($parentId);
+
+        $this->get('services.media')->delete($media, $parentObject);
+        
+        $response = new Response(json_encode(true));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

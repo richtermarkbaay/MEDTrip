@@ -1,0 +1,35 @@
+<!-- Feedback Modal -->
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'formId': 'feedbackForm'}} %}
+    {% block modalBody %}
+     <div class="alert-box"></div>
+    <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
+        <div class="alert-error"></div>
+            {{ form_errors(feedbackForm) }}
+        <div class="name control-group">
+            <label for="{{ feedbackForm.children.name.vars.id }}">
+                <strong>{{ feedbackForm.children.name.vars.label }}</strong>
+            </label>
+            {{ form_widget(feedbackForm.name) }}
+        </div>
+        <div class="emailAddress control-group">
+            <label for="{{ feedbackForm.children.emailAddress.vars.id }}">
+                <strong>{{ feedbackForm.children.emailAddress.vars.label }}</strong>
+            </label>
+            {{ form_widget(feedbackForm.emailAddress) }}
+        </div>
+        <div class="message control-group ">
+            <label for="{{ feedbackForm.children.message.vars.id }}">
+                <strong>{{ feedbackForm.children.message.vars.label }}</strong>
+            </label>
+              {{ form_widget(feedbackForm.message, { 'attr': {'rows': 4} }) }}
+        </div>
+        {{ form_rest(feedbackForm) }}    
+    </form>
+    {% endblock %}
+    
+    {% block footerBody %}
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel </button>
+        <button data-loader-text="Processing..."  class="btn btn-primary orange" data-divParent="#feedbackMessage_"  id="modal_feedback_submitButton" >Send Feedback</button>
+    {% endblock %}
+    
+{% endembed %}

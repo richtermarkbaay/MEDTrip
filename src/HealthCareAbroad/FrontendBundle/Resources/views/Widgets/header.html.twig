@@ -1,5 +1,8 @@
 <header id="header"> <!--Header-->
     <div class="container">
+        <div class="beta-banner">
+            <span class="message">Currently in BETA</span>
+        </div>
         <a class="logo span5" href="{{ path('frontend_main_homepage') }}">
             <h1 class="title">HealthcareAbroad</h1>
         </a>
@@ -19,6 +22,14 @@
         
     </div>
 </header> <!--End of header-->
+{% if isInquiry is defined and isInquiry %}
+    <div id="breadcrumbs" class="container">
+        <ul class="breadcrumb row">
+            <li><a href="index.html"><span class="home"></span></a></li>
+            <li><a class="home">Inquiry</a></li>
+        </ul>
+    </div>
+{% endif %}
 {% if isHomePage is defined and isHomePage %}
     <div id="hero_unit_wrapper" class="container"> <!--Hero Unit-->
         <div id="hero_unit">
@@ -27,7 +38,10 @@
             </h1>
             {% block searchBox %}
                 {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
-                {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
+                
+                {{ render_search_homepage_widget() | raw }}
+                
+                {# render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} #}
             {% endblock %}
         </div>
     </div> <!--End of hero unit-->

@@ -15,7 +15,7 @@
 $(function() {
     $("#uploader").plupload({
         runtimes : 'html5',
-        url : '{{ path(routes.media_upload, {'institutionId': institution.id}) }}' + '?isLogo=false',
+        url : '{{ path(routes.media_upload, {institutionId: institution.id}) }}',
         max_file_size : '10mb',
         unique_names : true,
         filters : [

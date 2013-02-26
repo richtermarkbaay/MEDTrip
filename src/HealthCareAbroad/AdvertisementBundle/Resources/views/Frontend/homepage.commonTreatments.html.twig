@@ -1,17 +1,17 @@
-{% if advertisements %}
+{% if commonTreatmentsAds %}
 
 <div class="heading">
     <h3>Common Treatments</h3>
 </div>
 
 <div class="aside_wrapper">
-    {% for each in advertisements %}
+    {% for each in commonTreatmentsAds %}
 
 	    {% if each.externalUrl %}
 	        {% set link = each.externalUrl %}
-	        {% set target = '_blank' %}
+            {% set target = hasSubstr(each.externalUrl, domain_name) ? '' : '_blank' %}
 	    {% else %}
-	        {% set link = each.treatment is defined ? get_treatment_url(each.treatment)  : '' %}
+	        {% set link = each.treatment is defined and each.treatment ? get_treatment_url(each.treatment)  : '' %}
 	        {% set target = '' %}
 	    {% endif %}
     
@@ -35,3 +35,5 @@
 </div>
 
 {% endif %}
+
+

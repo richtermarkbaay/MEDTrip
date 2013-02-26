@@ -287,9 +287,20 @@ class InstitutionController extends Controller
    	        $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
    	
    	        if(is_object($result)) {
-   	             
+
    	            $media = $result;
-   	            $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
+   	            $mediaType = $request->get('media_type');
+
+                if($mediaType == 'logo') {
+                    // Delete current logo
+                    $this->get('services.media')->delete($this->institution->getLogo(), $this->institution);
+
+                    // save uploaded logo
+                    $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
+
+                } else if($mediaType == 'featuredImage') {
+                    $this->get('services.institution')->saveMediaAsFeaturedImage($this->institution, $media);
+                }
    	        }
    	    }
    	

@@ -39,28 +39,16 @@ class InstitutionMedicalCenterController extends Controller
         $request = $this->getRequest();
 
         if($request->get('imcSlug', null)) {
-            $criteria = array('slug' => $request->get('imcSlug'));
 
-            $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-               ->leftJoin('a.institution', 'b')
-               ->leftJoin('b.country', 'c')
-               ->leftJoin('b.city', 'd')
-               ->leftJoin('a.institutionSpecializations', 'e')
-               ->leftJoin('e.specialization', 'f')
-               ->leftJoin('e.treatments', 'g')
-               ->leftJoin('g.subSpecializations', 'h')
-               ->where('a.slug = :centerSlug')
-               ->andWhere('a.status = :status')
-               ->setParameter('centerSlug', $criteria['slug'])
-               ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
-            
-            $this->institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
+            $slug = $request->get('imcSlug');
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
 
             if(!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institutionMedicalCenter');                
             }
+
             $this->institution = $this->institutionMedicalCenter->getInstitution();
+
             $twigService = $this->get('twig'); 
             $twigService->addGlobal('institution', $this->institution);
             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);

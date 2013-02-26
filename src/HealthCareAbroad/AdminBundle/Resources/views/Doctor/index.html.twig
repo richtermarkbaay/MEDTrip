@@ -36,6 +36,8 @@
                         <th id="column-name">Last Name</th>
                         <th id="column-name">Suffix</th>
                         <th id="column-name">Country</th>
+                        <th id="column-name">Affiliated Hospitals</th>
+                        <th id="column-name">Specializations</th>
                        <th width="15%">Actions</th>
                     </tr>
             
@@ -47,6 +49,19 @@
                         <td>{{ each.lastName }}</td>
                         <td>{{ each.suffix }}</td>
                         <td>{{ each.country }}</td>
+                        <td>
+                            <ul class="nav">
+                            {% for institutionMedicalCenter in each.institutionMedicalCenters %}
+                                <li> <a href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id} ) }}"> {{ institutionMedicalCenter.institution.name }} </a></li>
+                            {% endfor %}
+                            </ul>
+                        </td>
+                        <td>
+                            <ul class="nav">
+                                {% for specialization in each.specializations %}
+                                    <li> <a href="{{ path('admin_specialization_edit',{ id: specialization.id} ) }}">{{ specialization.name }} </a></li>
+                                {% endfor %}
+                            </ul>
                         <td>
                             <ul style="list-style: none;">
                                 <li><a href="{{ path('admin_doctor_edit', { idId:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>

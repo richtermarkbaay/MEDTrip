@@ -38,7 +38,14 @@ institution_ajaxRemovePropertyValue:
         
 institution_logo_upload:
     pattern: /institution/{institutionId}/logo/upload/
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload }
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload, media_type: logo }
+    requirements:
+        _method: POST
+        institutionId: \d+
+
+institution_featuredImage_upload:
+    pattern: /institution/{institutionId}/featured-image/upload/
+    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload, media_type: featuredImage }
     requirements:
         _method: POST
         institutionId: \d+

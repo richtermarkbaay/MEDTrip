@@ -48,6 +48,7 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value 
         WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId
         AND a.institution_property_type_id = :propertyType
+        AND b.status = 1
         ORDER BY b.name ASC";
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
             ->setParameter('id', $institutionMedicalCenter->getInstitution()->getId())
