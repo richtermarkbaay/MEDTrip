@@ -76,7 +76,7 @@ class CustomExceptionController extends ExceptionController
     {
         if ($debug) {
             // debug 
-            //return parent::findTemplate($templating, $format, $code, $debug);
+            return parent::findTemplate($templating, $format, $code, $debug);
         }
         
         if ($this->request->server->has('PATH_INFO')) {
