@@ -86,6 +86,7 @@ var Feedback = {
         };
         
         Feedback.feedbackComponents.modal.live('show', function(){
+        	$('body').append($(this));
             Feedback.restoreInitialState();
         });
         
