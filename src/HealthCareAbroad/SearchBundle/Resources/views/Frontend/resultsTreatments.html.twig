@@ -35,6 +35,7 @@
 
     </div> <!--End of main_content-->
 
+    {{ render_narrow_search_widget() }}
     {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
 
     {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %#}
