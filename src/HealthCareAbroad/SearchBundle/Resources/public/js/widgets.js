@@ -123,9 +123,14 @@ var BroadSearchWidget = {
                 if (!componentOptions.dropdown.parent().hasClass('open')) {
                     componentOptions.dropdown.dropdown('toggle');
                 }
-                
+                var _cnt = 0;
                 $.each( data, function( index, item ) {
+                    if (_cnt > 50) {
+                        return false;
+                    }
                     componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData( ul, item );
+                    console.log(_cnt);
+                    _cnt++;
                 });
                 ul.attr('class', 'popup-list').attr('style', ''); 
             }
