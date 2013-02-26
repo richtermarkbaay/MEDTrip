@@ -74,12 +74,13 @@ class DoctorController extends Controller
     {
         if ($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
-            $media = $doctor->getMedia();
-            $doctor->setMedia(null);
             
             if (!$doctor) {
                 throw $this->createNotFoundException("Invalid doctor.");
             }
+            
+            $media = $doctor->getMedia();
+            $doctor->setMedia(null);
             $msg = "Successfully updated account";
             $title = 'Edit Doctor Details';
         }
@@ -89,12 +90,10 @@ class DoctorController extends Controller
             $msg = "Successfully added doctor";
             $title = 'Add Doctor Details';
         }
-        
         $form = $this->createForm(new DoctorFormType(), $doctor);
         
         if ($this->getRequest()->isMethod('POST')) {
             $doctorData = $request->get('doctor');
-            
             if($newMedia = $this->saveMedia($request->files->get('doctor'), $doctor)) {
                 $doctorData['media'] = $newMedia;                
             } else {

@@ -19,8 +19,8 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
     public function testViewAllMedicalCentersAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-         $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
-         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $client->request('GET', '/admin/institution/1/medical-centers');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         //test for singleCenter
         //$crawler = $client->request('GET', '/admin/institution/2/medical-centers');
@@ -65,114 +65,124 @@ class InstitutionTreatmentsControllerTest extends AdminBundleWebTestCase
     public function testViewMedicalCenterAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
+        echo "REQUEST /admin/institution/1/medical-center/view/1 \n";
         $crawler = $client->request('GET', '/admin/institution/1/medical-center/view/1');
     
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-//     public function testEditMedicalCenterAction()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
-    
-//         $validValues = array(
-//                         'institutionMedicalCenter[name]' => 'ako nasdad alsdkj',
-//                         'institutionMedicalCenter[description]' => 'sad description',
-//                         'institutionMedicalCenter[contactEmail]' => '',
-//                         'institutionMedicalCenter[contactNumber][country_code]' => '',
-//                         'institutionMedicalCenter[address][room_number]' => '',
-//                         'institutionMedicalCenter[address][building]' => '',
-//                         'institutionMedicalCenter[address][street]' => '',
-//                         'institutionMedicalCenter[websites][main]' => '',
-//                         'institutionMedicalCenter[websites][facebook]' => '',
-//                         'institutionMedicalCenter[websites][twitter]' => '',
-//         );
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $validValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//     }
-    
-//     public function testEditMedicalCenterStatusAction()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
-//         $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
-//         $csrf_token = $extract[0];
-        
-//         $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/edit-status', array('institutionMedicalCenter' => array('status' => 1, '_token' => $csrf_token)));
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-//         $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit-status');
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//    }
-   
-//    public function testLoadMedicalSpecialistAction()
-//    {
-//        $client = $this->getBrowserWithActualLoggedInUser();
-//        $crawler = $client->request('GET', '/ns-admin/institution/1/medical-center/1/medical-specialists/load?term=an');
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//    }
-   
-//    public function testAjaxAddMedicalSpecialistAction()
-//    {
-//        $client = $this->getBrowserWithActualLoggedInUser();
-       
-//        //add valid medicalSpecialist
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 2));
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-       
-//        //test for invalid medicalSpecialist
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 21));
-//        $this->assertEquals(404, $client->getResponse()->getStatusCode());
-       
-//        //test for existing medicalSpecialist
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 1));
-//        $this->assertEquals(500, $client->getResponse()->getStatusCode());
-       
-//    }
-    
-//    public function testAjaxRemoveMedicalSpecialistAction()
-//    {
-//        $client = $this->getBrowserWithActualLoggedInUser();
-//        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2');
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-       
-//         //test for valid form       
-//        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
-//        $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
-//        $csrf_token = $extract[0];
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 2)));
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-       
-//        //test for invalid form
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('id' => 2)));
-//        $this->assertEquals(400, $client->getResponse()->getStatusCode());
-       
-//        //test for invalid medicalSpecialist Id
-//        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/21',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 21)));
-//        $this->assertEquals(404, $client->getResponse()->getStatusCode());
-        
-//    }
-   
-    public function testAjaxAddAncillaryServiceAction()
+    public function testEditMedicalCenterAction()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxAddAncillaryService?asId=3');
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+    
+        $validValues = array(
+                        'institutionMedicalCenter[name]' => 'ako nasdad alsdkj',
+                        'institutionMedicalCenter[description]' => 'sad description',
+                        'institutionMedicalCenter[contactEmail]' => '',
+                        'institutionMedicalCenter[contactNumber][country_code]' => '',
+                        'institutionMedicalCenter[address][room_number]' => '',
+                        'institutionMedicalCenter[address][building]' => '',
+                        'institutionMedicalCenter[address][street]' => '',
+                        'institutionMedicalCenter[websites][main]' => '',
+                        'institutionMedicalCenter[websites][facebook]' => '',
+                        'institutionMedicalCenter[websites][twitter]' => '',
+        );
+        $form = $crawler->selectButton('submit')->form();
+        $crawler = $client->submit($form, $validValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
-    public function testAjaxRemoveAncillaryServiceAction()
+    public function testEditMedicalCenterStatusAction()
     {
-       //$client = $this->getBrowserWithActualLoggedInUser();
-       //$crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveAncillaryService?asId=1');
-       //$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+        $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
+        
+        $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/edit-status', array('institutionMedicalCenter' => array('status' => 1, '_token' => $csrf_token)));
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit-status');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+   }
+   
+   public function testLoadMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       $crawler = $client->request('GET', '/ns-admin/institution/1/medical-center/1/medical-specialists/load?term=an');
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+   }
+   
+   public function testAjaxAddMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       
+       //add valid medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 2));
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+       //test for invalid medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 21));
+       $this->assertEquals(404, $client->getResponse()->getStatusCode());
+       
+       //test for existing medicalSpecialist
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/medical-specialists/add',array('id' => 1));
+       $this->assertEquals(500, $client->getResponse()->getStatusCode());
+       
+   }
     
-    public function testAjaxAddGlobalAwardAction()
+   public function testAjaxRemoveMedicalSpecialistAction()
+   {
+       $client = $this->getBrowserWithActualLoggedInUser();
+       $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2');
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+        //test for valid form       
+       $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/edit');
+       $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+       $csrf_token = $extract[0];
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 2)));
+       $this->assertEquals(200, $client->getResponse()->getStatusCode());
+       
+       //test for invalid form
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/2',array('common_delete_form' => array('id' => 2)));
+       $this->assertEquals(400, $client->getResponse()->getStatusCode());
+       
+       //test for invalid medicalSpecialist Id
+       $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveMedicalSpecialist/21',array('common_delete_form' => array('_token' => $csrf_token, 'id' => 21)));
+       $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+   }
+   
+    public function testCenterSpecializationAction()
     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/awards-certificates-and-affiliations/ajaxAdd?id=1');
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', '/admin/institution/1/medical-center/1/specializations');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+//     public function testAjaxAddAncillaryServiceAction()
+//     {
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         echo "REQUEST /admin/institution/1/medical-center/1/ajaxAddAncillaryService?asId=3 \n";
+//         $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxAddAncillaryService?asId=3');
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         echo  $client->getResponse();
+//     }
+    
+//     public function testAjaxRemoveAncillaryServiceAction()
+//     {
+//        //$client = $this->getBrowserWithActualLoggedInUser();
+//        //$crawler = $client->request('POST', '/admin/institution/1/medical-center/1/ajaxRemoveAncillaryService?asId=1');
+//        //$this->assertEquals(200, $client->getResponse()->getStatusCode());
+//     }
+    
+//     public function testAjaxAddGlobalAwardAction()
+//     {
+// //         $client = $this->getBrowserWithActualLoggedInUser();
+// //         $crawler = $client->request('POST', '/admin/institution/1/medical-center/1/awards-certificates-and-affiliations/ajaxAdd?id=1');
+// //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//     }
 //     public function testAddMedicalCenterDetailsAction()
 //     {
 //         $uri = '/admin/institution/1/medical-centers';
