@@ -129,7 +129,6 @@ var BroadSearchWidget = {
                         return false;
                     }
                     componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData( ul, item );
-                    console.log(_cnt);
                     _cnt++;
                 });
                 ul.attr('class', 'popup-list').attr('style', ''); 
